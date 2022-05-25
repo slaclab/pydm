@@ -1,5 +1,3 @@
-from PyQt5.QtCore import QPointF
-
 from .base import PyDMWidget, TextFormatter
 from qtpy.QtGui import QColor, QPolygon, QPen, QPainter
 from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
@@ -9,7 +7,7 @@ from .channel import PyDMChannel
 import sys
 
 
-class QScale(QFrame):
+class QScale(QWidget):
     """
     A bar-shaped indicator for scalar value.
     Configurable features include indicator type (bar/pointer), scale tick
@@ -25,10 +23,10 @@ class QScale(QFrame):
         self._value = 1
         self._lower_limit = -5
         self._upper_limit = 5
-        self._lower_minor_alarm = -5
-        self._upper_minor_alarm = 5
-        self._lower_major_alarm = -5
-        self._upper_major_alarm = 5
+        self._lower_minor_alarm = 0
+        self._upper_minor_alarm = 0
+        self._lower_major_alarm = 0
+        self._upper_major_alarm = 0
         self.position = None  # unit: pixel
 
         self._bg_color = QColor('lightblue')
@@ -40,7 +38,6 @@ class QScale(QFrame):
 
         self._indicator_color = QColor('black')
         self._pointer_width_rate = 0.05
-        self._barIndicator = False
 
         self._num_divisions = 10
         self._show_ticks = False
@@ -64,8 +61,6 @@ class QScale(QFrame):
         self._inverted_appearance = False
         self._flip_scale = False
         self._scale_height = 40
-        self._origin_at_zero = False
-        self._origin_position = 0
 
         self.set_position()
 
@@ -121,17 +116,18 @@ class QScale(QFrame):
         self.set_tick_pen()
         self._painter.setPen(self._tick_pen)
         division_size = self._widget_width / self._num_divisions
-        #tick_y0 = self._widget_height
         tick_y0 = self._scale_height * self._bg_size_rate
         tick_yf = tick_y0 + self._scale_height * self._tick_size_rate * .25
         for i in range(self._num_divisions+1):
             x = i*division_size
             self._painter.drawLine(x, tick_y0, x, tick_yf) # x1, y1, x2, y2
 
+    """
+    Currently unused, needs pulling in a second PV to be fully implemented
     def draw_set_point(self):
-        """
-        Draw a pointer as indicator of current value.
-        """
+        
+        #Draw a pointer as indicator of current value.
+        
         self.set_position()
         if self.position < 0 or self.position > self._widget_width:
             return
@@ -146,6 +142,7 @@ class QScale(QFrame):
             QPoint(self.position - 0.5*pointer_width, 0.5*pointer_height+15)
         ]
         self._painter.drawPolygon(QPolygon(points))
+    """
 
     def draw_indicator(self):
         """
@@ -174,7 +171,6 @@ class QScale(QFrame):
         pointer_height = self._bg_size_rate * self._scale_height
         bg_width = self._widget_width
         bg_height = self._bg_size_rate * self._widget_height - 2
-        #bg_height = self._scale_height - 5
         self._painter.drawRect(0, pointer_height, bg_width, bg_height)
 
     def draw_minor_alarm_region(self):
@@ -190,13 +186,11 @@ class QScale(QFrame):
         upper_minor_alarm_width = self._widget_width - upper_minor_alarm_start
         pointer_height = self._bg_size_rate * self._scale_height
         minor_alarm_height = self._bg_size_rate * self._widget_height - 2
-        #minor_alarm_height = self._scale_height - 5
-
 
         """
         sets the pen color to alarm if the value is in the lower minor alarm region
         """
-        if self._value < self._lower_minor_alarm and self._value > self._lower_major_alarm:
+        if self._value <= self._lower_minor_alarm and self._value > self._lower_major_alarm:
             self._painter.setBrush(self._minor_alarm_color)
         else:
             self._painter.setBrush(self._minor_alarm_region_color)
@@ -205,7 +199,7 @@ class QScale(QFrame):
         """
         sets the pen color to alarm if the value is in the upper minor alarm region
         """
-        if self._value > self._upper_minor_alarm and self._value < self._upper_major_alarm:
+        if self._value >= self._upper_minor_alarm and self._value < self._upper_major_alarm:
             self._painter.setBrush(self._minor_alarm_color)
         else:
             self._painter.setBrush(self._minor_alarm_region_color)
@@ -225,14 +219,13 @@ class QScale(QFrame):
         upper_major_alarm_width = self._widget_width - upper_major_alarm_start
         pointer_height = self._bg_size_rate * self._scale_height
 
-        major_alarm_height = self._bg_size_rate * self._widget_height -2
-        #major_alarm_height = self._scale_height - 5
+        major_alarm_height = self._bg_size_rate * self._widget_height - 2
 
 
         """
         sets the pen color to alarm if the value is in the lower major alarm region
         """
-        if self._value < self._lower_major_alarm:
+        if self._value <= self._lower_major_alarm:
             self._painter.setBrush(self._major_alarm_color)
         else:
             self._painter.setBrush(self._major_alarm_region_color)
@@ -243,7 +236,7 @@ class QScale(QFrame):
         """
         sets the pen color to alarm if the value is in the upper major alarm region
         """
-        if self._value > self._upper_major_alarm:
+        if self._value >= self._upper_major_alarm:
             self._painter.setBrush(self._major_alarm_color)
         else:
             self._painter.setBrush(self._major_alarm_region_color)
@@ -280,12 +273,31 @@ class QScale(QFrame):
         self.draw_ticks() -> draws scale ticks
         self.draw_set_point -> draws diamond in the middle of the scale. can use current self.draw_indicator() for this
         """
-        self.draw_background()
-        self.draw_minor_alarm_region()
-        self.draw_major_alarm_region()
-        self.draw_ticks()
-        self.draw_indicator()
-        #self.draw_set_point()
+        """
+        bad metadata or user input can cause designer or pydm to crash when drawing the widget, hence the try except block
+        """
+        try:
+            self.draw_background()
+        except:
+            print("Error: can't draw background, check upper and lower limits")
+        try:
+            if not self._upper_minor_alarm == self._lower_minor_alarm == 0:
+                self.draw_minor_alarm_region()
+        except:
+            print("Error: can't draw minor alarm region, check minor alarm values and limits")
+        try:
+            if not self._upper_major_alarm == self._lower_major_alarm ==0:
+                self.draw_major_alarm_region()
+        except:
+            print("Error: can't draw major alarm region, check major alarm values and limits")
+        try:
+            self.draw_ticks()
+        except:
+            print("Error: can't draw ticks")
+        try:
+            self.draw_indicator()
+        except:
+            print("Error: can't draw_indicator")
 
         self._painter.end()
 
@@ -301,15 +313,6 @@ class QScale(QFrame):
 
         position = int(proportion * self._widget_width)
         return position
-
-    def set_origin(self):
-        """
-        Set the position (pixel) in which the origin should be drawn.
-        """
-        if self._origin_at_zero:
-            self._origin_position = self.calculate_position_for_value(0)
-        else:
-            self._origin_position = 0
 
     def set_position(self):
         """
@@ -429,14 +432,6 @@ class QScale(QFrame):
         self.adjust_transformation()
         self.repaint()
 
-    def get_bar_indicator(self):
-        return self._barIndicator
-
-    def set_bar_indicator(self, checked):
-        if self._barIndicator != bool(checked):
-            self._barIndicator = checked
-            self.repaint()
-
     def get_background_color(self):
         return self._bg_color
 
@@ -517,15 +512,6 @@ class QScale(QFrame):
         self._scale_height = int(value)
         self.adjust_transformation()
         self.repaint()
-
-    def get_origin_at_zero(self):
-        return self._origin_at_zero
-
-    def set_origin_at_zero(self, checked):
-        if self._origin_at_zero != bool(checked):
-            self._origin_at_zero = checked
-            self.repaint()
-
 
 class PyDMAnalogIndicator(QFrame, TextFormatter, PyDMWidget):
     """
@@ -961,28 +947,6 @@ class PyDMAnalogIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_inverted_appearance(inverted)
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, inverted, self._value_position)
 
-    @Property(bool)
-    def barIndicator(self):
-        """
-        Whether or not the scale indicator should be a bar instead of a pointer.
-
-        Returns
-        -------
-        bool
-        """
-        return self.scale_indicator.get_bar_indicator()
-
-    @barIndicator.setter
-    def barIndicator(self, checked):
-        """
-        Whether or not the scale indicator should be a bar instead of a pointer.
-
-        Parameters
-        ----------
-        checked : bool
-        """
-        self.scale_indicator.set_bar_indicator(checked)
-
     @Property(QColor)
     def backgroundColor(self):
         """
@@ -1255,30 +1219,6 @@ class PyDMAnalogIndicator(QFrame, TextFormatter, PyDMWidget):
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, self.invertedAppearance, position)
 
     @Property(bool)
-    def originAtZero(self):
-        """
-        Whether or not the scale indicator should start at zero value.
-        Applies only for bar indicator.
-
-        Returns
-        -------
-        bool
-        """
-        return self.scale_indicator.get_origin_at_zero()
-
-    @originAtZero.setter
-    def originAtZero(self, checked):
-        """
-        Whether or not the scale indicator should start at zero value.
-        Applies only for bar indicator.
-
-        Parameters
-        ----------
-        checked : bool
-        """
-        self.scale_indicator.set_origin_at_zero(checked)
-
-    @Property(bool)
     def limitsFromChannel(self):
         """
         Whether or not the scale indicator should use the limits information
@@ -1302,14 +1242,7 @@ class PyDMAnalogIndicator(QFrame, TextFormatter, PyDMWidget):
             True to use the limits from the Channel, False to use the user-defined
             values.
         """
-        print("_limits_from_channel")
-        print(self._limits_from_channel)
-        print("checked outside of if (limits)")
-        print(checked)
-        print("_lower_ctrl_limit")
-        print(self._lower_ctrl_limit)
         if self._limits_from_channel != checked:
-            print("inside limists if")
             self._limits_from_channel = checked
             if checked:
                 if self._lower_ctrl_limit:
@@ -1497,29 +1430,20 @@ class PyDMAnalogIndicator(QFrame, TextFormatter, PyDMWidget):
             True to use the major alarms from the Channel, False to use the user-defined
             values.
         """
-        print("_major_alarm_from_channel")
-        print(self._major_alarm_from_channel)
-        print("checked outside of if")
-        print(checked)
         if self._major_alarm_from_channel != checked:
             self._major_alarm_from_channel = checked
-            print("checked inside of if")
-            print(checked)
 
             if checked:
-                print("new limit")
                 if self.lower_alarm_limit:
                     self.scale_indicator.set_lower_major_alarm(self.lower_alarm_limit)
                 if self.upper_alarm_limit:
                     self.scale_indicator.set_upper_major_alarm(self.upper_alarm_limit)
             else:
-                print("major alarm from user")
                 self.scale_indicator.set_lower_major_alarm(self._user_lower_major_alarm)
                 self.scale_indicator.set_upper_major_alarm(self._user_upper_major_alarm)
 
             self.scale_indicator.set_lower_major_alarm(self.lower_alarm_limit)
             self.scale_indicator.set_upper_major_alarm(self.upper_alarm_limit)
-            print(self.upper_alarm_limit)
             self.update_labels()
 
 
@@ -1552,7 +1476,6 @@ class PyDMAnalogIndicator(QFrame, TextFormatter, PyDMWidget):
 
         self._user_upper_major_alarm = value
         self.scale_indicator.set_upper_major_alarm(self._user_upper_major_alarm)
-        #self.update_labels()
 
     @Property(float)
     def userLowerMajorAlarm(self):
@@ -1581,4 +1504,3 @@ class PyDMAnalogIndicator(QFrame, TextFormatter, PyDMWidget):
 
         self._user_lower_major_alarm = value
         self.scale_indicator.set_lower_major_alarm(self._user_lower_major_alarm)
-        #self.update_labels()

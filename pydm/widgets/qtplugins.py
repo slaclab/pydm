@@ -244,10 +244,10 @@ PyDMScaleIndicatorPlugin = qtplugin_factory(PyDMScaleIndicator,
 
 # Analog Indicator plugin
 PyDMAnalogIndicatorPlugin = qtplugin_factory(PyDMAnalogIndicator,
-                                            group=WidgetCategory.DISPLAY,
-                                            extensions=BASE_EXTENSIONS,
-                                            icon=ifont.icon("level-up-alt")
-                                            )
+                                             group=WidgetCategory.DISPLAY,
+                                             extensions=BASE_EXTENSIONS,
+                                             icon=ifont.icon("level-up-alt")
+                                             )
 
 # Symbol plugin
 PyDMSymbolPlugin = qtplugin_factory(PyDMSymbol, group=WidgetCategory.DISPLAY,
