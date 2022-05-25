@@ -3,6 +3,7 @@ from collections import Counter
 from pyqtgraph import PlotItem, ViewBox
 from .multi_axis_viewbox import MultiAxisViewBox
 from .multi_axis_viewbox_menu import MultiAxisViewBoxMenu
+from ..utilities import is_qt_designer
 
 
 class MultiAxisPlot(PlotItem):
@@ -31,18 +32,18 @@ class MultiAxisPlot(PlotItem):
         self.axesOriginalRanges = {}  # Dict from axis name to floats (x, y) representing original range of the axis
 
         # A set containing view boxes which are stacked underneath the top level view. These views will be needed
-        # in order to support multiple axes on the same plot. This set will remain empty if the plot has only one set of axes
+        # in order to support multiple axes on the same plot. This set will remain empty if the plot has only
+        # one set of axes
         self.stackedViews = weakref.WeakSet()
         viewBox.sigResized.connect(self.updateStackedViews)
 
         # Signals that will be emitted when mouse wheel or mouse drag events happen
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
+        self.vb.setZValue(100)  # Keep this view box on top
         if self.vb.menuEnabled():
-            self.vb.menu.sigMouseModeChanged.connect(self.changeMouseMode)
-            self.vb.menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
-            self.vb.menu.sigRestoreRanges.connect(self.restoreAxisRanges)
-            self.vb.menu.sigSetAutorange.connect(self.setPlotAutoRange)
+            self.connectMenuSignals(self.vb.menu)
+        self.stackedViews.add(self.vb)
 
     def addAxis(self, axis, name, plotDataItem=None, setXLink=False, enableAutoRangeX=True, enableAutoRangeY=True,
                 minRange=-1.0, maxRange=1.0):
@@ -81,7 +82,7 @@ class MultiAxisPlot(PlotItem):
         self.axes['bottom']['item'].linkToView(view)  # Ensure the x axis will update when the view does
 
         view.setMouseMode(self.vb.state['mouseMode'])  # Ensure that mouse behavior is consistent between stacked views
-        view.menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
+        self.connectMenuSignals(view.menu)
         axis.linkToView(view)
 
         if plotDataItem is not None:
@@ -115,6 +116,20 @@ class MultiAxisPlot(PlotItem):
         view.sigMouseDragged.connect(self.handleMouseDragEvent)
         view.sigMouseWheelZoomed.connect(self.handleWheelEvent)
         self.vb.sigHistoryChanged.connect(view.scaleHistory)
+
+    def connectMenuSignals(self, view_box_menu: MultiAxisViewBoxMenu) -> None:
+        """
+        Connect the signals of a view box menu to the appropriate slots.
+
+        Parameters
+        ----------
+        view_box_menu : MultiAxisViewBoxMenu
+            The menu to connect actions to the correct slots.
+        """
+        view_box_menu.sigMouseModeChanged.connect(self.changeMouseMode)
+        view_box_menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
+        view_box_menu.sigRestoreRanges.connect(self.restoreAxisRanges)
+        view_box_menu.sigSetAutorange.connect(self.setPlotAutoRange)
 
     def updateStackedViews(self):
         """
@@ -353,6 +368,21 @@ class MultiAxisPlot(PlotItem):
             if axis is not None:
                 self.layout.addItem(axis, y, leftOffset)
 
+    def updateGrid(self, *args) -> None:
+        """ Show or hide the grid on a per-axis basis """
+        if is_qt_designer():
+            return
+        # Get the user-set value for the alpha used to draw the grid lines
+        alpha = self.ctrl.gridAlphaSlider.value()
+        x = alpha if self.ctrl.xGridCheck.isChecked() else False
+        y = alpha if self.ctrl.yGridCheck.isChecked() else False
+        all_axes = [val['item'] for val in self.axes.values()]
+        for axis in all_axes:
+            if axis.orientation in ('left', 'right'):
+                axis.setGrid(y)
+            elif axis.orientation in ('top', 'bottom'):
+                axis.setGrid(x)
+
     def handleWheelEvent(self, view, ev, axis):
         """
         A simple slot for propagating a mouse wheel event to all the stacked view boxes (except for the one
@@ -402,6 +432,7 @@ class MultiAxisPlot(PlotItem):
         """
         for stackedView in self.stackedViews:
             stackedView.setLeftButtonAction(mode)
+        self.vb.setLeftButtonAction(mode)
 
     def updateXAutoRange(self, val):
         """ Update the autorange values for the x-axis on all view boxes """
