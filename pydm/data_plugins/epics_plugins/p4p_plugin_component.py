@@ -127,6 +127,7 @@ class Connection(PyDMConnection):
     def put_value(self, value):
         """ Write a value to the PV """
         if is_read_only():
+            logger.warning(f'PyDM read-only mode is enabled, could not write value: {value} to {self.address}')
             return
 
         try:
