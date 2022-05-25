@@ -47,7 +47,7 @@ jobs:
 
   - script: |
       call activate test-environment-$(python_name)
-      conda install python=$(python) pytest-azurepipelines pydm --file dev-requirements.txt --update-deps
+      conda install python=$(python) pytest-azurepipelines pydm --file windows-dev-requirements.txt --update-deps
     displayName: 'Anaconda - Install Dependencies'
 
   - script: |
