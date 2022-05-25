@@ -43,6 +43,7 @@ as well as a straightforward python framework to build complex applications.
 
    data_plugins/local_plugin.rst
    data_plugins/calc_plugin.rst
+   data_plugins/p4p_plugin.rst
    data_plugins/external_plugins.rst
 
 .. toctree::
