@@ -140,8 +140,6 @@ class PyDMPrimitiveWidget(object):
         'Opacity': ['set_opacity', float]
     }
 
-    designer_icon = QIcon()
-
     def __init__(self, **kwargs):
         self.app = QApplication.instance()
         self._rules = None
@@ -150,6 +148,11 @@ class PyDMPrimitiveWidget(object):
             # We should  install the Event Filter only if we are running
             # and not at the Designer
             self.installEventFilter(self)
+
+    @staticmethod
+    def get_designer_icon():
+        """Icon for usage in Qt designer."""
+        return QIcon()
 
     def eventFilter(self, obj, event):
         """
