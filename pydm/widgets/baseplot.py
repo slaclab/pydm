@@ -374,7 +374,7 @@ class BasePlotAxisItem(AxisItem):
         'bottom', or 'left'. See: https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
     label: str, optional
         The label to be displayed along the axis
-    axisMinRange: float, optional
+    minRange: float, optional
         The minimum value to be displayed on this axis
     maxRange: float, optional
         The maximum value to be displayed on this axis
