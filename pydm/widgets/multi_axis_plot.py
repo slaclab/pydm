@@ -1,6 +1,7 @@
 import weakref
 from collections import Counter
-from pyqtgraph import PlotItem, ViewBox
+from pyqtgraph import AxisItem, PlotDataItem, PlotItem, ViewBox
+from typing import List
 from .multi_axis_viewbox import MultiAxisViewBox
 from .multi_axis_viewbox_menu import MultiAxisViewBoxMenu
 from ..utilities import is_qt_designer
@@ -138,7 +139,7 @@ class MultiAxisPlot(PlotItem):
         for view in self.stackedViews:
             view.setGeometry(self.vb.sceneBoundingRect())
 
-    def linkDataToAxis(self, plotDataItem, axisName):
+    def linkDataToAxis(self, plotDataItem: PlotDataItem, axisName: str) -> None:
         """
         Links the input PlotDataItem to the axis with the given name. Raises an exception if that axis does not exist.
         Unlinks the data from any view it was previously linked to.
@@ -165,6 +166,9 @@ class MultiAxisPlot(PlotItem):
         if currentView is not None:
             currentView.removeItem(plotDataItem)
             plotDataItem.forgetViewBox()
+
+        if axisToLink.logMode:
+            plotDataItem.setLogMode(False, True)
 
         axisToLink.linkedView().addItem(plotDataItem)
         self.dataItems.append(plotDataItem)
@@ -272,6 +276,10 @@ class MultiAxisPlot(PlotItem):
         """ Disable x-axis autorange for all views in the plot. """
         for view in self.stackedViews:
             view.enableAutoRange(x=False)
+
+    def getAxes(self) -> List[AxisItem]:
+        """ Returns all axes that have been added to this plot """
+        return [val['item'] for val in self.axes.values()]
 
     def clearAxes(self):
         """
@@ -439,3 +447,26 @@ class MultiAxisPlot(PlotItem):
         self.vb.enableAutoRange(ViewBox.XAxis, val)
         for stackedView in self.stackedViews:
             stackedView.enableAutoRange(ViewBox.XAxis, val)
+
+    def updateLogMode(self) -> None:
+        """ Toggle log mode on or off for each item in the plot """
+        x = self.ctrl.logXCheck.isChecked()
+        y = self.ctrl.logYCheck.isChecked()
+
+        allAxes = self.getAxes()
+        for axis in allAxes:
+            if axis.orientation in ('bottom', 'top'):
+                axis.setLogMode(x)
+            elif axis.orientation in ('left', 'right'):
+                axis.setLogMode(y)
+
+        for i in self.items:
+            if hasattr(i, 'setLogMode'):
+                i.setLogMode(x, y)
+
+        for i in self.dataItems:
+            if hasattr(i, 'setLogMode'):
+                i.setLogMode(x, y)
+
+        self.enableAutoRange()
+        self.recomputeAverages()
