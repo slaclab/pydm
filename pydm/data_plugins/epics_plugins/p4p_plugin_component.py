@@ -135,7 +135,7 @@ class Connection(PyDMConnection):
         try:
             P4PPlugin.context.put(self.monitor.name, value)
         except Exception as e:
-            logger.exception(f"Unable to put value: {value} to channel: {self.monitor.name}  Exception: {e}")
+            logger.error(f"Unable to put value: {value} to channel {self.monitor.name}: {e}")
 
     def add_listener(self, channel: PyDMChannel):
         """
