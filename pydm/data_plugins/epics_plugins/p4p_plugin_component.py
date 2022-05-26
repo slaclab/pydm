@@ -32,7 +32,7 @@ class Connection(PyDMConnection):
              The parent object of this connection.
         """
         super().__init__(channel, address, protocol, parent)
-        self._connected = True
+        self._connected = False
         self.monitor = P4PPlugin.context.monitor(name=address,
                                                  cb=self.send_new_value,
                                                  notify_disconnect=True)
