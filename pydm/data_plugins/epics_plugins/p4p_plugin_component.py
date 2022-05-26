@@ -82,6 +82,8 @@ class Connection(PyDMConnection):
                             if 'NTNDArray' in value.getID():
                                 new_value = decompress(value)
                             self.new_value_signal[np.ndarray].emit(new_value)
+                        elif isinstance(new_value, list):
+                            self.new_value_signal[np.ndarray].emit(np.array(new_value))
                         elif isinstance(new_value, float):
                             self.new_value_signal[float].emit(new_value)
                         elif isinstance(new_value, int):
@@ -89,7 +91,7 @@ class Connection(PyDMConnection):
                         elif isinstance(new_value, str):
                             self.new_value_signal[str].emit(new_value)
                         else:
-                            raise ValueError(f'No matching signal for value: {value} with type: {type(value)}')
+                            raise ValueError(f'No matching signal for value: {new_value} with type: {type(new_value)}')
                 # Sometimes unchanged control variables appear to be returned with value changes, so checking against
                 # stored values to avoid sending misleading signals. Will revisit on data plugin changes.
                 elif changed_value == 'alarm.severity' and value.alarm.severity != self._severity:
