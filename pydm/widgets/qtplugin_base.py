@@ -117,7 +117,10 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         if icon is None and get_designer_icon is not None:
             icon = get_designer_icon()
 
-        self._icon = icon or QtGui.QIcon()
+        if icon is None and QtWidgets.QApplication.instance() is not None:
+            icon = QtGui.QIcon()
+
+        self._icon = icon
         self.extensions = extensions
         self.manager = None
 
