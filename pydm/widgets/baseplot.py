@@ -595,7 +595,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.redraw_timer = QTimer(self)
         self.redraw_timer.timeout.connect(self.redrawPlot)
 
-        self._redraw_rate = 30  # Redraw at 30 Hz by default.
+        self._redraw_rate = 1  # Redraw at 1 Hz by default.
         self.maxRedrawRate = self._redraw_rate
         self._axes = []
         self._curves = []

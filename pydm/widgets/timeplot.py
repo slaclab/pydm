@@ -20,12 +20,11 @@ DEFAULT_X_MIN = -30
 DEFAULT_Y_MIN = 0
 
 DEFAULT_TIME_SPAN = 5.0
-DEFAULT_UPDATE_INTERVAL = 100
+DEFAULT_UPDATE_INTERVAL = 1000  # Plot update rate for fixed rate mode in milliseconds
+
 
 class updateMode(object):
-    '''
-    updateMode as new type for plot update
-    '''
+    """ updateMode as new type for plot update """
     OnValueChange = 1
     AtFixedRate = 2
 
