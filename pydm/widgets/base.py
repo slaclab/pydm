@@ -29,21 +29,22 @@ except NameError:
     str_types = (str,)
 
 
-def get_icon_file(name):
+def get_icon_file(name: str) -> str:
     """
-    Returns the full path to the icon represented by name.
+    Returns the absolute path to the icon filename provided.
 
     Parameters
     ----------
     name : str
-        The filename to load the file path.
+        The filename of the icon, relative to ``pydm.icons``.
 
     Returns
     -------
     str
+        The absolute path to the icon file.
     """
     base_path = os.path.dirname(os.path.realpath(__file__))
-    icon_path = os.path.join(base_path, "icons", "terminator.png")
+    icon_path = os.path.join(base_path, "icons", name)
     return icon_path
 
 
@@ -140,8 +141,6 @@ class PyDMPrimitiveWidget(object):
         'Opacity': ['set_opacity', float]
     }
 
-    designer_icon = QIcon()
-
     def __init__(self, **kwargs):
         self.app = QApplication.instance()
         self._rules = None
@@ -150,6 +149,11 @@ class PyDMPrimitiveWidget(object):
             # We should  install the Event Filter only if we are running
             # and not at the Designer
             self.installEventFilter(self)
+
+    @staticmethod
+    def get_designer_icon():
+        """Icon for usage in Qt designer."""
+        return QIcon()
 
     def eventFilter(self, obj, event):
         """

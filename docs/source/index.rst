@@ -52,6 +52,7 @@ as well as a straightforward python framework to build complex applications.
    development/development.rst
    development/external_tools.rst
    widgets/widget_rules/customizing.rst
+   development/designer_widgets.rst
    development/resources.rst
 
 .. toctree::
