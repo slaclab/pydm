@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P4P Plugin &mdash; PyDM v1.15.1+207.gd64a24b9 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="External Data Plugins" href="external_plugins.html" />
+    <link rel="prev" title="Calc Plugin" href="calc_plugin.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyDM
+          </a>
+              <div class="version">
+                v1.15.1+207.gd64a24b9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">P4P Plugin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#supported-types">Supported Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/designer_widgets.html">Designer Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>P4P Plugin</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/data_plugins/p4p_plugin.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="p4p-plugin">
+<h1>P4P Plugin<a class="headerlink" href="#p4p-plugin" title="Permalink to this headline"></a></h1>
+<p>The P4P data plugin is defined in <code class="docutils literal notranslate"><span class="pre">pydm/data_plugins/p4p_plugin_component.py</span></code> and supports the pvAccess
+protocol using the <a class="reference external" href="https://mdavidsaver.github.io/p4p/">P4P package</a>.</p>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
+<p>The P4P plugin is the default pvAccess plugin, so any address using the “pva://” protocol will be
+routed to it as in the example below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pva</span><span class="p">:</span><span class="o">//</span><span class="n">MTEST</span><span class="p">:</span><span class="n">Voltage</span><span class="p">:</span><span class="n">LI30</span>
+</pre></div>
+</div>
+<p>P4P is not currently specified as a required package of PyDM, and as such, will not be automatically included
+alongside PyDM when installing it into an environment. P4P must therefore be installed manually. The versions
+on conda-forge and PyPI are both supported, so feel free to choose whichever is most convenient:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">p4p</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">p4p</span>
+</pre></div>
+</div>
+<p>The choice of plugin to use can be controlled with the <code class="docutils literal notranslate"><span class="pre">PYDM_PVA_LIB</span></code> environment variable. As of now
+P4P is the only option (and will be chosen automatically if this variable is not set) but more may be added
+in the future.</p>
+</section>
+<section id="supported-types">
+<h2>Supported Types<a class="headerlink" href="#supported-types" title="Permalink to this headline"></a></h2>
+<p>Currently this data plugin supports all <a class="reference external" href="https://github.com/epics-base/normativeTypesCPP/wiki/Normative+Types+Specification">normative types</a>. The values and control variables are pulled out of
+the data received and sent through the existing PyDM signals to be read by widgets via the channels they are
+connected to.</p>
+<p>In order to support compatibility with all existing signals and widgets, full structured data support is not
+currently possible in this version of the plugin. For example, defining a group PV using Q:Group will not
+result in the named fields being sent to the widgets. Full support for structured data is planned to be supported
+as part of a future release.</p>
+<p>Image decompression is performed when image data is specified using an <code class="docutils literal notranslate"><span class="pre">NTNDArray</span></code> with the <code class="docutils literal notranslate"><span class="pre">codec</span></code> field set.
+The decompression algorithm to apply will be determined by what the <code class="docutils literal notranslate"><span class="pre">codec</span></code> field is set to. In order
+for decompression to happen, the python package for the associated codec must be installed in the environment
+PyDM is running in. Since we do not want to require all of these packages to be installed alongside PyDM when they
+may not all be used in many cases, they must be installed manually as needed in the same way as P4P. Each package
+is available on both conda-forge and PyPI and may be installed from either.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Pillow</span> <span class="p">(</span><span class="k">for</span> <span class="n">jpeg</span><span class="p">),</span> <span class="n">blosc</span><span class="p">,</span> <span class="n">lz4</span><span class="p">,</span> <span class="n">bitshuffle</span> <span class="p">(</span><span class="k">for</span> <span class="n">bslz4</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<p>A small pva testing ioc is included under <code class="docutils literal notranslate"><span class="pre">examples/testing/pva_testing_ioc.py</span></code>. This can be run in order to
+generate a couple of test PVs, which can be connected to using the example .ui file under
+<code class="docutils literal notranslate"><span class="pre">examples/pva/pva.ui</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="calc_plugin.html" class="btn btn-neutral float-left" title="Calc Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="external_plugins.html" class="btn btn-neutral float-right" title="External Data Plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
