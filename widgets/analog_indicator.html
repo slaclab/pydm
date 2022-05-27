@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analog Indicator &mdash; PyDM v1.15.1+176.g62c413d1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyDM
+          </a>
+              <div class="version">
+                v1.15.1+176.g62c413d1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/designer_widgets.html">Designer Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Analog Indicator</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/widgets/analog_indicator.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="analog-indicator">
+<h1>Analog Indicator<a class="headerlink" href="#analog-indicator" title="Permalink to this headline"></a></h1>
+<p>PyDM analog indicator meant to be an easily scannable widget that provides additional context to the current value of a PV.
+It provides context via drawing alarm regions and a normal range region.  When the value is in an alarm region the alarm
+region changes color.</p>
+<a class="reference internal image-reference" href="../_images/analog_indicator.png"><img alt="../_images/analog_indicator.png" class="align-center" src="../_images/analog_indicator.png" style="width: 448.0px; height: 466.0px;" /></a>
+<p>The indicator and scale are not drawn when the widget is initially dragged in to designer.  The widget must be rescaled for the
+indicator and scale to be drawn.</p>
+<p>The indicator and scale size do not depend on the size of the widget.  The indicator and scale can be resized with the use
+of the scaleHeight and backgroundSizeRate properties.  Smallest suggested size is scaleHeight = 23 and
+backgroundSizeRate = 0.4.</p>
+<a class="reference internal image-reference" href="../_images/smallest_size_visual.png"><img alt="../_images/smallest_size_visual.png" class="align-center" src="../_images/smallest_size_visual.png" style="width: 506.0px; height: 197.0px;" /></a>
+<a class="reference internal image-reference" href="../_images/smallest_size_set.png"><img alt="../_images/smallest_size_set.png" class="align-center" src="../_images/smallest_size_set.png" style="width: 289.0px; height: 99.0px;" /></a>
+<ul class="simple">
+<li><p>Suggested Orientations</p></li>
+</ul>
+<p>Horizontal with value displayed on the right.
+Vertical with value displayed on bottom.</p>
+<section id="alarm-region-configuration">
+<h2>Alarm Region Configuration<a class="headerlink" href="#alarm-region-configuration" title="Permalink to this headline"></a></h2>
+<p>Alarm regions can be fetched from the channel or hard coded in designer.</p>
+<p>Alarm region color change is not tied ot the alarmSensitiveContent property.  If the color change is not
+desired set the alarm colors to be the same as the alarm region color.</p>
+<dl class="simple">
+<dt>There are a few methods of not drawing alarm regions.</dt><dd><ol class="arabic simple">
+<li><p>Set the alarm to the corresponding limit. Do not set the alarm to outside of the limits, this will cause drawing errors.</p></li>
+<li><p>Set userUpperMajorAlarm = userLowerMajorAlarm = 0.  Or set userUpperMinorAlarm = userLowerMinorAlarm = 0.</p></li>
+<li><p>If any alarm value is set to nan (not a number), those regions won’t draw.  Setting an alarm value to nan is not possible in designer.</p></li>
+</ol>
+</dd>
+</dl>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/no_upper_minor.png"><img alt="../_images/no_upper_minor.png" src="../_images/no_upper_minor.png" style="width: 920.0px; height: 207.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Alarm region value set to corresponding limit</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/no_minor.png"><img alt="../_images/no_minor.png" src="../_images/no_minor.png" style="width: 967.0px; height: 198.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Alarm region values both set to zero</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
