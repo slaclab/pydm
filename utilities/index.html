@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Utilities &mdash; PyDM v1.15.1+161.g179cbfb9 documentation</title>
+  <title>Utilities &mdash; PyDM v1.15.1+167.gada30d0a documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+161.g179cbfb9
+                v1.15.1+167.gada30d0a
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -423,8 +423,40 @@ path.</p>
 <dd><p>IconFont represents an icon font.  Users will generally want
 to use IconFont.icon() to get a QIcon object for the character they want.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.utilities.iconfont.IconFont.font">
+<span class="sig-name descname"><span class="pre">font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtGui.QFont</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.font"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.font" title="Permalink to this definition"></a></dt>
+<dd><p>Load the font at a given pixel size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The font, if available.  If a QApplication is not yet created,
+None will be returned.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>QtGui.QFont or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.utilities.iconfont.IconFont.get_char_for_name">
+<span class="sig-name descname"><span class="pre">get_char_for_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.get_char_for_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.get_char_for_name" title="Permalink to this definition"></a></dt>
+<dd><p>Get a character icon for the given name from the character map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The user-friendly icon name.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Qt-facing icon text to use with the font.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.utilities.iconfont.IconFont.icon">
-<span class="sig-name descname"><span class="pre">icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.icon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.icon" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtGui.QIcon</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.icon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.icon" title="Permalink to this definition"></a></dt>
 <dd><p>Retrieve the icon given a name and color.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -435,12 +467,19 @@ Icon strings can be found at: <a class="reference external" href="https://fontaw
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The desired Icon.</p>
+<dd class="field-even"><p>The desired Icon.  <code class="docutils literal notranslate"><span class="pre">None</span></code> if a QApplication is not yet available.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>QIcon</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.utilities.iconfont.IconFont.load_font">
+<span class="sig-name descname"><span class="pre">load_font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttf_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charmap_filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.load_font"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.load_font" title="Permalink to this definition"></a></dt>
+<dd><p>Load font from <code class="docutils literal notranslate"><span class="pre">ttf_filename</span></code> with a mapping defined in
+<code class="docutils literal notranslate"><span class="pre">charmap_filename</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
