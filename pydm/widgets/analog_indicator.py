@@ -1,27 +1,23 @@
-from .base import PyDMWidget, TextFormatter
-from qtpy.QtGui import QColor, QPolygon, QPen, QPainter, QFontMetrics
-from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
+from .base import PyDMWidget
+from qtpy.QtGui import QColor, QPolygon, QPainter, QFontMetrics
+from qtpy.QtWidgets import QFrame, QSizePolicy
 from qtpy.QtCore import Qt, QPoint, Property, QSize
 from qtpy.QtWidgets import QWIDGETSIZE_MAX
 from .scale import QScale, PyDMScaleIndicator
-from .channel import PyDMChannel
-import sys
 
 
 class QScaleAlarmed(QScale):
     """
     Adds alarm regions and features for QScale.
-    Additional configurable features include indicator type (bar/pointer), scale tick
-    marks and orientation (horizontal/vertical).
-
+    Additional configurable features include indicator type (bar/pointer),
+    scale tick marks and orientation (horizontal/vertical).
     Parameters
     ----------
     parent : QWidget
         The parent widget for the PyDMAnalogIndicator
     """
+
     def __init__(self, parent=None):
-        #delete stuff already in scale
-        #super(QScale, self).draw_back_ground(parameters)
         super(QScaleAlarmed, self).__init__(parent)
         self._lower_minor_alarm = 0
         self._upper_minor_alarm = 0
@@ -33,29 +29,31 @@ class QScaleAlarmed(QScale):
         self._minor_alarm_color = QColor('yellow')
         self._major_alarm_region_color = QColor('grey')
         self._major_alarm_color = QColor('red')
-        self._bg_size_rate = 0.5    # from 0 to 1
+        self._bg_size_rate = 0.5  # from 0 to 1
         self._scale_height = 40
 
         self._show_ticks = False
 
         self.set_position()
 
-
     def adjust_transformation(self):
         """
-        This method sets parameters for the widget transformations (needed to for
-        orientation, flipping and appearance inversion).
-
-        Rewritren to expand scale when in horizontal position and value displaed on left/right
+        This method sets parameters for the widget transformations
+        (needed to for orientation, flipping and appearance inversion).
+        Rewritten to expand scale when in horizontal position and value
+        displayed on left/right
         also helpful for use in layouts
         """
-        self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)  # Unset fixed size
+        self.setMaximumSize(QWIDGETSIZE_MAX,
+                            QWIDGETSIZE_MAX)  # Unset fixed size
         if self._orientation == Qt.Horizontal:
             self._widget_width = self.width()
             self._widget_height = self.height()
             self._painter_translation_y = 0
             self._painter_rotation = 0
-            self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)  # expands scale in horizontal position
+            # expands scale in horizontal position
+            self.setSizePolicy(QSizePolicy.Expanding,
+                               QSizePolicy.Fixed)
             self.setFixedHeight(self._scale_height)
         elif self._orientation == Qt.Vertical:
             # Invert dimensions for paintEvent()
@@ -82,7 +80,8 @@ class QScaleAlarmed(QScale):
 
     def draw_ticks(self):
         """
-        Draw tick marks on the scale.  Rewrote to draw them in a different place.
+        Draw tick marks on the scale.
+        Rewrote to draw them in a different place.
         """
         if not self._show_ticks:
             return
@@ -91,16 +90,16 @@ class QScaleAlarmed(QScale):
         division_size = self._widget_width / self._num_divisions
         tick_y0 = self._scale_height * self._bg_size_rate
         tick_yf = tick_y0 + self._scale_height * self._tick_size_rate * .25
-        for i in range(self._num_divisions+1):
-            x = i*division_size
-            self._painter.drawLine(x, tick_y0, x, tick_yf) # x1, y1, x2, y2
+        for i in range(self._num_divisions + 1):
+            x = i * division_size
+            self._painter.drawLine(x, tick_y0, x, tick_yf)  # x1, y1, x2, y2
 
     """
     Currently unused, needs pulling in a second PV to be fully implemented
     def draw_set_point(self):
-        
+
         #Draw a pointer as indicator of current value.
-        
+
         self.set_position()
         if self.position < 0 or self.position > self._widget_width:
             return
@@ -194,7 +193,6 @@ class QScaleAlarmed(QScale):
 
         major_alarm_height = self._bg_size_rate * self._widget_height - 2
 
-
         """
         sets the pen color to alarm if the value is in the lower major alarm region
         """
@@ -202,7 +200,7 @@ class QScaleAlarmed(QScale):
             self._painter.setBrush(self._major_alarm_color)
         else:
             self._painter.setBrush(self._major_alarm_region_color)
-        #makes sure alarm value is in range
+        # makes sure alarm value is in range
         if self._lower_major_alarm > self._lower_limit:
             self._painter.drawRect(0, pointer_height, lower_major_alarm_width, major_alarm_height)
 
@@ -213,7 +211,7 @@ class QScaleAlarmed(QScale):
             self._painter.setBrush(self._major_alarm_color)
         else:
             self._painter.setBrush(self._major_alarm_region_color)
-        #makes sure alarm value is in range
+        # makes sure alarm value is in range
         if self._upper_major_alarm < self._upper_limit:
             self._painter.drawRect(upper_major_alarm_start, pointer_height, upper_major_alarm_width, major_alarm_height)
 
@@ -222,56 +220,53 @@ class QScaleAlarmed(QScale):
         Paint events are sent to widgets that need to update themselves,
         for instance when part of a widget is exposed because a covering
         widget was moved.
-
         Parameters
         ----------
         event : QPaintEvent
         """
         self.adjust_transformation()
         self._painter.begin(self)
-        self._painter.translate(0, self._painter_translation_y) # Draw vertically if needed
+        self._painter.translate(0, self._painter_translation_y)  # Draw vertically if needed
         self._painter.rotate(self._painter_rotation)
-        self._painter.translate(self._painter_translation_x, 0) # Invert appearance if needed
+        self._painter.translate(self._painter_translation_x, 0)  # Invert appearance if needed
         self._painter.scale(self._painter_scale_x, 1)
 
-        self._painter.translate(0, self._flip_traslation_y)     # Invert scale if needed
+        self._painter.translate(0, self._flip_traslation_y)  # Invert scale if needed
         self._painter.scale(1, self._flip_scale_y)
 
         self._painter.setRenderHint(QPainter.Antialiasing)
-        
+
         """
         bad metadata or user input can cause designer or pydm to crash when drawing the widget, hence the try except block
         """
         try:
             self.draw_background()
-        except:
+        except Exception:
             print("Error: can't draw background, check upper and lower limits")
         try:
             if not self._upper_minor_alarm == self._lower_minor_alarm == 0:
                 self.draw_minor_alarm_region()
-        except:
+        except Exception:
             print("Error: can't draw minor alarm region, check minor alarm values and limits")
         try:
-            if not self._upper_major_alarm == self._lower_major_alarm ==0:
+            if not self._upper_major_alarm == self._lower_major_alarm == 0:
                 self.draw_major_alarm_region()
-        except:
+        except Exception:
             print("Error: can't draw major alarm region, check major alarm values and limits")
         try:
             self.draw_ticks()
-        except:
+        except Exception:
             print("Error: can't draw ticks")
         try:
             self.draw_indicator()
-        except:
+        except Exception:
             print("Error: can't draw_indicator")
 
         self._painter.end()
 
-
     def set_upper_minor_alarm(self, new_minor_alarm):
         """
         Set the scale upper minor alarm.
-
         Parameters
         ----------
         new_minor_alarm : float
@@ -282,7 +277,6 @@ class QScaleAlarmed(QScale):
     def set_lower_minor_alarm(self, new_minor_alarm):
         """
         Set the scale lower minor alarm.
-
         Parameters
         ----------
         new_minor_alarm : float
@@ -293,7 +287,6 @@ class QScaleAlarmed(QScale):
     def set_upper_major_alarm(self, new_major_alarm):
         """
         Set the scale upper major alarm.
-
         Parameters
         ----------
         new_major_alarm : float
@@ -304,7 +297,6 @@ class QScaleAlarmed(QScale):
     def set_lower_major_alarm(self, new_major_alarm):
         """
         Set the scale lower major alarm.
-
         Parameters
         ----------
         new_major_alarm : float
@@ -346,13 +338,13 @@ class QScaleAlarmed(QScale):
 
     # reject some inherited things here
 
+
 class PyDMAnalogIndicator(PyDMScaleIndicator):
     """
     A bar-shaped indicator for scalar value with support for Channels and
     more from PyDM.
     Configurable features include indicator type (bar/pointer), scale tick
     marks and orientation (horizontal/vertical).
-
     Parameters
     ----------
     parent : QWidget
@@ -429,7 +421,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def minorAlarmRegionColor(self):
         """
         The color of the scale background.
-
         Returns
         -------
         QColor
@@ -440,7 +431,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def minorAlarmRegionColor(self, color):
         """
         The color of the scale background.
-
         Parameters
         -------
         color : QColor
@@ -451,7 +441,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def minorAlarmColor(self):
         """
         The color of the scale background.
-
         Returns
         -------
         QColor
@@ -462,7 +451,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def minorAlarmColor(self, color):
         """
         The color of the scale background.
-
         Parameters
         -------
         color : QColor
@@ -473,7 +461,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def majorAlarmRegionColor(self):
         """
         The color of the scale background.
-
         Returns
         -------
         QColor
@@ -484,7 +471,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def majorAlarmRegionColor(self, color):
         """
         The color of the scale background.
-
         Parameters
         -------
         color : QColor
@@ -495,7 +481,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def majorAlarmColor(self):
         """
         The color of the scale background.
-
         Returns
         -------
         QColor
@@ -506,7 +491,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def majorAlarmColor(self, color):
         """
         The color of the scale background.
-
         Parameters
         -------
         color : QColor
@@ -527,20 +511,17 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Whether or not the scale indicator should use the minor alarm information
         from the channel.
-
         Returns
         -------
         bool
         """
         return self._minor_alarm_from_channel
 
-
     @minorAlarmFromChannel.setter
     def minorAlarmFromChannel(self, checked):
         """
         Whether or not the scale indicator should use the minor alarm information
         from the channel.
-
         Parameters
         ----------
         checked : bool
@@ -563,7 +544,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def userUpperMinorAlarm(self):
         """
         The user-defined upper minor alarm for the scale.
-
         Returns
         -------
         float
@@ -574,7 +554,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def userUpperMinorAlarm(self, value):
         """
         The user-defined upper minor alarm for the scale.
-
         Parameters
         ----------
         value : float
@@ -587,11 +566,11 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         self._user_upper_minor_alarm = value
         self.scale_indicator.set_upper_minor_alarm(self._user_upper_minor_alarm)
         self.update_labels()
+
     @Property(float)
     def userLowerMinorAlarm(self):
         """
         The user-defined lower minor alarm for the scale.
-
         Returns
         -------
         float
@@ -602,7 +581,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def userLowerMinorAlarm(self, value):
         """
         The user-defined lower minor alarm for the scale.
-
         Parameters
         ----------
         value : float
@@ -621,7 +599,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Whether or not the scale indicator should use the major alarm information
         from the channel.
-
         Returns
         -------
         bool
@@ -633,7 +610,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Whether or not the scale indicator should use the minor alarm information
         from the channel.
-
         Parameters
         ----------
         checked : bool
@@ -660,7 +636,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def userUpperMajorAlarm(self):
         """
         The user-defined upper major alarm for the scale.
-
         Returns
         -------
         float
@@ -671,7 +646,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def userUpperMajorAlarm(self, value):
         """
         The user-defined upper major alarm for the scale.
-
         Parameters
         ----------
         value : float
@@ -688,7 +662,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def userLowerMajorAlarm(self):
         """
         The user-defined lower major alarm for the scale.
-
         Returns
         -------
         float
@@ -699,7 +672,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def userLowerMajorAlarm(self, value):
         """
         The user-defined lower major alarm for the scale.
-
         Parameters
         ----------
         value : float
