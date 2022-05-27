@@ -18,7 +18,6 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
     """
     A watchdog widget to close a window after X seconds of inactivity.
     """
-    designer_icon = QIcon(get_icon_file("terminator.png"))
 
     def __init__(self, parent=None, timeout=60, *args, **kwargs):
         super(PyDMTerminator, self).__init__(parent=parent, *args, **kwargs)
@@ -40,6 +39,11 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
 
         self._setup_activity_hook()
         self._update_label()
+
+    @staticmethod
+    def get_designer_icon():
+        """Icon for usage in Qt designer."""
+        return QIcon(get_icon_file("terminator.png"))
 
     def _find_window(self):
         """

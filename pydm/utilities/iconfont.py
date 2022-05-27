@@ -3,11 +3,15 @@ iconfont provides a barebones system to get QIcons from icon fonts (like Font Aw
 The inspiration and methodology come from the 'QtAwesome' module, which does exactly this, but
 is a little too big, complicated, and flexible for PyDM's needs.
 """
+import json
 import os
 import sys
-import json
-from qtpy.QtGui import QFontDatabase, QIconEngine, QPixmap, QPainter, QColor, QFont, QIcon
-from qtpy.QtCore import Qt, QRect, QPoint, qRound
+from typing import Optional
+
+from qtpy import QtGui, QtWidgets
+from qtpy.QtCore import QPoint, QRect, Qt, qRound
+from qtpy.QtGui import (QColor, QFont, QFontDatabase, QIcon, QIconEngine,
+                        QPainter, QPixmap)
 
 if sys.version_info[0] == 3:
     unichr = chr
@@ -24,9 +28,8 @@ class IconFont(object):
         self.font_file = "fontawesome.otf"  # specify these relative to this file.
         self.charmap_file = "fontawesome-charmap.json"
         self.font_name = None
-        self.char_map = None
+        self.char_map = {}
         self.loaded_fonts = {}
-        self.load_font(self.font_file, self.charmap_file)
         self.__initialized = True
 
     def __new__(cls, *args, **kwargs):
@@ -36,47 +39,100 @@ class IconFont(object):
         return cls.__instance
 
     def load_font(self, ttf_filename, charmap_filename):
-
+        """
+        Load font from ``ttf_filename`` with a mapping defined in
+        ``charmap_filename``.
+        """
         def hook(obj):
             result = {}
             for key in obj:
                 result[key] = unichr(int(obj[key], 16))
             return result
 
-        if self.char_map is None:
-            cache_key = ttf_filename + "|" + charmap_filename
-            ttf_fname = os.path.join(os.path.dirname(os.path.realpath(__file__)), ttf_filename)
-            font_id = QFontDatabase.addApplicationFont(ttf_fname)
-            if font_id >= 0:
-                font_families = QFontDatabase.applicationFontFamilies(font_id)
-            else:
-                cache = self.loaded_fonts.get(cache_key, None)
-                if cache is None:
-                    raise OSError("Could not load ttf file for icon font.")
-                else:
-                    self.char_map = cache['char_map']
-                    self.font_name = cache['font_name']
-                    return
+        if self.char_map:
+            return
 
-            self.font_name = font_families[0]
+        cache_key = ttf_filename + "|" + charmap_filename
+        ttf_fname = os.path.join(os.path.dirname(os.path.realpath(__file__)), ttf_filename)
+        font_id = QFontDatabase.addApplicationFont(ttf_fname)
+        if font_id >= 0:
+            font_families = QFontDatabase.applicationFontFamilies(font_id)
+        else:
+            cache = self.loaded_fonts.get(cache_key, None)
+            if cache is None:
+                raise OSError("Could not load ttf file for icon font.")
+            self.char_map = cache["char_map"]
+            self.font_name = cache["font_name"]
+            return
 
-            with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), charmap_filename), 'r') as codes:
-                self.char_map = json.load(codes, object_hook=hook)
+        self.font_name = font_families[0]
 
-            self.loaded_fonts[cache_key] = {'char_map': self.char_map, 'font_name': self.font_name}
+        filename = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), charmap_filename
+        )
+        with open(filename, 'r') as codes:
+            self.char_map = json.load(codes, object_hook=hook)
 
-    def get_char_for_name(self, name):
+        self.loaded_fonts[cache_key] = {
+            "char_map": self.char_map,
+            "font_name": self.font_name,
+        }
+
+    def get_char_for_name(self, name: str) -> str:
+        """
+        Get a character icon for the given name from the character map.
+
+        Parameters
+        ----------
+        name : str
+            The user-friendly icon name.
+
+        Returns
+        -------
+        str
+            The Qt-facing icon text to use with the font.
+        """
         if name in self.char_map:
             return self.char_map[name]
-        else:
-            raise ValueError("Invalid icon name for font.")
+        raise ValueError("Invalid icon name for font.")
 
-    def font(self, size):
+    def _load_font_if_needed(self) -> bool:
+        """
+        Load the configured font if a QApplication is available
+        and the font was not already loaded.
+
+        Returns
+        -------
+        bool
+            Readiness indicator - return True if the font has been loaded.
+        """
+        if QtWidgets.QApplication.instance() is None:
+            return False
+
+        if not self.char_map:
+            self.load_font(self.font_file, self.charmap_file)
+
+        # If it was loaded correctly, the char map will be populated:
+        return bool(self.char_map)
+
+    def font(self, size: int) -> Optional[QtGui.QFont]:
+        """
+        Load the font at a given pixel size.
+
+        Returns
+        -------
+        QtGui.QFont or None
+            The font, if available.  If a QApplication is not yet created,
+            None will be returned.
+        """
+        if not self._load_font_if_needed():
+            return None
+
         font = QFont(self.font_name)
         font.setPixelSize(int(size))
         return font
 
-    def icon(self, name, color=None):
+    def icon(self, name, color=None) -> Optional[QtGui.QIcon]:
         """
         Retrieve the icon given a name and color.
 
@@ -92,8 +148,11 @@ class IconFont(object):
         Returns
         -------
         QIcon
-            The desired Icon.
+            The desired Icon.  ``None`` if a QApplication is not yet available.
         """
+        if not self._load_font_if_needed():
+            return None
+
         char = self.get_char_for_name(name)
         engine = CharIconEngine(self, char, color)
         return QIcon(engine)
