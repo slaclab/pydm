@@ -238,15 +238,7 @@ class QScaleAlarmed(QScale):
         self._painter.scale(1, self._flip_scale_y)
 
         self._painter.setRenderHint(QPainter.Antialiasing)
-
-        """
-        self.draw_indicator() -> draws a triangle outside of the scale, used as the value indicator
-        self.draw_background() -> draws the background of the scale
-        self.draw_major() -> draws the major alarm area
-        self.draw_minor() -> draws the minor alarm area
-        self.draw_ticks() -> draws scale ticks
-        self.draw_set_point -> draws diamond in the middle of the scale. can use current self.draw_indicator() for this
-        """
+        
         """
         bad metadata or user input can cause designer or pydm to crash when drawing the widget, hence the try except block
         """
