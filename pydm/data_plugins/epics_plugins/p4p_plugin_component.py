@@ -37,6 +37,7 @@ class Connection(PyDMConnection):
                                                  cb=self.send_new_value,
                                                  notify_disconnect=True)
         self.add_listener(channel)
+        self._value = None
         self._severity = None
         self._precision = None
         self._enum_strs = None
@@ -50,6 +51,7 @@ class Connection(PyDMConnection):
 
     def clear_cache(self) -> None:
         """ Clear out all the stored values of this connection. """
+        self._value = None
         self._severity = None
         self._precision = None
         self._enum_strs = None
@@ -74,6 +76,7 @@ class Connection(PyDMConnection):
                 # Note that there is no way to get the actual write access value from p4p, so defaulting to True for now
                 self.write_access_signal.emit(True)
 
+            self._value = value
             for changed_value in value.changedSet():
                 if changed_value == 'value':
                     new_value = value.value
@@ -147,6 +150,15 @@ class Connection(PyDMConnection):
             The channel that will be listening to any changes from this connection
         """
         super().add_listener(channel)
+        if self.monitor is not None and self._connected:
+            # Adding a listener to an already connected PV. Manually send the signals indicating the PV is
+            # connected, and what the last known values were.
+            self.connection_state_signal.emit(True)
+            self.write_access_signal.emit(True)
+            value_to_send = self._value
+            self.clear_cache()
+            if value_to_send is not None:
+                self.send_new_value(value_to_send)
 
         if channel.value_signal is not None:
             try:
