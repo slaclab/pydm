@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.timeplot &mdash; PyDM v1.15.1+159.g2ad72c52 documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM v1.15.1+161.g179cbfb9 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.15.1+159.g2ad72c52
+                v1.15.1+161.g179cbfb9
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -126,12 +126,11 @@
 <span class="n">DEFAULT_Y_MIN</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="n">DEFAULT_TIME_SPAN</span> <span class="o">=</span> <span class="mf">5.0</span>
-<span class="n">DEFAULT_UPDATE_INTERVAL</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">DEFAULT_UPDATE_INTERVAL</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># Plot update rate for fixed rate mode in milliseconds</span>
+
 
 <span class="k">class</span> <span class="nc">updateMode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    updateMode as new type for plot update</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; updateMode as new type for plot update &quot;&quot;&quot;</span>
     <span class="n">OnValueChange</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">AtFixedRate</span> <span class="o">=</span> <span class="mi">2</span>
 
