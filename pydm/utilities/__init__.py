@@ -451,6 +451,10 @@ def import_module_by_filename(
     module : types.ModuleType
         The imported module.
     """
+    module_dir = os.path.dirname(os.path.abspath(source_filename))
+    if module_dir not in sys.path:
+        sys.path.append(module_dir)
+
     module_name = str(uuid.uuid4())
     spec = importlib.util.spec_from_file_location(module_name, source_filename)
     module = importlib.util.module_from_spec(spec)
