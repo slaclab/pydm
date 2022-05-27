@@ -5,7 +5,7 @@ from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
-from qtpy.QtCore import Signal, Slot, Property, QTimer
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from .. utilities import remove_protocol
@@ -20,7 +20,13 @@ DEFAULT_X_MIN = -30
 DEFAULT_Y_MIN = 0
 
 DEFAULT_TIME_SPAN = 5.0
-DEFAULT_UPDATE_INTERVAL = 100
+DEFAULT_UPDATE_INTERVAL = 1000  # Plot update rate for fixed rate mode in milliseconds
+
+
+class updateMode(object):
+    """ updateMode as new type for plot update """
+    OnValueChange = 1
+    AtFixedRate = 2
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
@@ -81,7 +87,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.plot_style = plot_style
 
         self._bufferSize = MINIMUM_BUFFER_SIZE
-        self._update_mode = PyDMTimePlot.SynchronousMode
+        self._update_mode = PyDMTimePlot.OnValueChange
 
         self._min_y_value = None
         self._max_y_value = None
@@ -179,7 +185,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """
         self.update_min_max_y_values(new_value)
 
-        if self._update_mode == PyDMTimePlot.SynchronousMode:
+        if self._update_mode == PyDMTimePlot.OnValueChange:
             self.data_buffer = np.roll(self.data_buffer, -1)
             # The first array row is to record timestamps, when a new value arrives.
             self.data_buffer[0, self._bufferSize - 1] = time.time()
@@ -189,7 +195,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             if self.points_accumulated < self._bufferSize:
                 self.points_accumulated += 1
             self.data_changed.emit()
-        elif self._update_mode == PyDMTimePlot.AsynchronousMode:
+        elif self._update_mode == PyDMTimePlot.AtFixedRated:
             self.latest_value = new_value
 
     @Slot()
@@ -199,7 +205,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         buffer, together with the timestamp when this happens. Also increments
         the accumulated point counter.
         """
-        if self._update_mode != PyDMTimePlot.AsynchronousMode:
+        if self._update_mode != PyDMTimePlot.AtFixedRated:
             return
         self.data_buffer = np.roll(self.data_buffer, -1)
         self.data_buffer[0, self._bufferSize - 1] = time.time()
@@ -305,14 +311,17 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.bar_graph_item.setOpts(x=x, height=y, brushes=brushes)
 
     def setUpdatesAsynchronously(self, value):
-        if value is True:
-            self._update_mode = PyDMTimePlot.AsynchronousMode
+        """
+        Check if value is from updatesAsynchronously(bool) or updateMode(int)
+        """
+        if type(value)==int and value == updateMode.AtFixedRate or type(value)==bool and value is True:
+            self._update_mode = PyDMTimePlot.AtFixedRate
         else:
-            self._update_mode = PyDMTimePlot.SynchronousMode
+            self._update_mode = PyDMTimePlot.OnValueChange
         self.initialize_buffer()
-
+        
     def resetUpdatesAsynchronously(self):
-        self._update_mode = PyDMTimePlot.SynchronousMode
+        self._update_mode = PyDMTimePlot.OnValueChange
         self.initialize_buffer()
 
     def min_x(self):
@@ -342,7 +351,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         return [self.channel]
 
 
-class PyDMTimePlot(BasePlot):
+class PyDMTimePlot(BasePlot,updateMode):
     """
     PyDMTimePlot is a widget to plot one or more channels vs. time.
 
@@ -366,8 +375,11 @@ class PyDMTimePlot(BasePlot):
         Will set the bottom axis of this plot to the input axis. If not set, will default
         to either a TimeAxisItem if plot_by_timestamps is true, or a regular AxisItem otherwise
     """
-    SynchronousMode = 1
-    AsynchronousMode = 2
+    OnValueChange = 1
+    AtFixedRated = 2
+
+    Q_ENUMS(updateMode)
+    updateMode = updateMode
 
     plot_redrawn_signal = Signal(TimePlotCurveItem)
 
@@ -388,6 +400,7 @@ class PyDMTimePlot(BasePlot):
             The background color for the plot.  Accepts any arguments that
             pyqtgraph.mkColor will accept.
         """
+        self._updateMode = updateMode.OnValueChange
         self._plot_by_timestamps = plot_by_timestamps
 
         if bottom_axis is not None:
@@ -419,7 +432,7 @@ class PyDMTimePlot(BasePlot):
 
         self.update_timer = QTimer(self)
         self.update_timer.setInterval(self._update_interval)
-        self._update_mode = PyDMTimePlot.SynchronousMode
+        self._update_mode = PyDMTimePlot.OnValueChange
         self._needs_redraw = True
 
         self.labels = {
@@ -498,7 +511,7 @@ class PyDMTimePlot(BasePlot):
         new_curve = self.createCurveItem(y_channel=y_channel, plot_by_timestamps=self._plot_by_timestamps,
                                          plot_style=plot_style, name=name, color=color, yAxisName=yAxisName,
                                          useArchiveData=useArchiveData, **plot_opts)
-        new_curve.setUpdatesAsynchronously(self.updatesAsynchronously)
+        new_curve.setUpdatesAsynchronously(self.updateMode)
         new_curve.setBufferSize(self._bufferSize)
 
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
@@ -585,7 +598,7 @@ class PyDMTimePlot(BasePlot):
             return
 
         if self._plot_by_timestamps:
-            if self._update_mode == PyDMTimePlot.SynchronousMode:
+            if self._update_mode == PyDMTimePlot.OnValueChange:
                 maxrange = max([curve.max_x() for curve in self._curves])
             else:
                 maxrange = time.time()
@@ -766,20 +779,23 @@ class PyDMTimePlot(BasePlot):
     bufferSize = Property("int", getBufferSize, setBufferSize, resetBufferSize)
 
     def getUpdatesAsynchronously(self):
-        return self._update_mode == PyDMTimePlot.AsynchronousMode
+        return self._update_mode == PyDMTimePlot.AtFixedRated
 
-    def setUpdatesAsynchronously(self, value):
+    def setUpdatesAsynchronously(self, value): 
         for curve in self._curves:
             curve.setUpdatesAsynchronously(value)
-        if value is True:
-            self._update_mode = PyDMTimePlot.AsynchronousMode
+        """
+        Check if value is from updatesAsynchronously(bool) or updateMode(int)
+        """
+        if type(value)==int and value == updateMode.AtFixedRate or type(value)==bool and value is True: 
+            self._update_mode = PyDMTimePlot.AtFixedRate
             self.update_timer.start()
         else:
-            self._update_mode = PyDMTimePlot.SynchronousMode
+            self._update_mode = PyDMTimePlot.OnValueChange
             self.update_timer.stop()
 
     def resetUpdatesAsynchronously(self):
-        self._update_mode = PyDMTimePlot.SynchronousMode
+        self._update_mode = PyDMTimePlot.OnValueChange
         self.update_timer.stop()
         for curve in self._curves:
             curve.resetUpdatesAsynchronously()
@@ -787,7 +803,31 @@ class PyDMTimePlot(BasePlot):
     updatesAsynchronously = Property("bool",
                                      getUpdatesAsynchronously,
                                      setUpdatesAsynchronously,
-                                     resetUpdatesAsynchronously)
+                                     resetUpdatesAsynchronously, designable=False)
+
+    @Property(updateMode)
+    def updateMode(self):
+        """
+        The updateMode to be used as property to set plot update mode.
+
+        Returns
+        -------
+        updateMode
+        """
+        return self._updateMode
+
+    @updateMode.setter
+    def updateMode(self, new_type):
+        """
+        The updateMode to be used as property to set plot update mode.
+
+        Parameters
+        ----------
+        new_type : updateMode
+        """
+        if new_type != self._updateMode:
+            self._updateMode = new_type
+            self.setUpdatesAsynchronously(self._updateMode)
 
     def getTimeSpan(self):
         """

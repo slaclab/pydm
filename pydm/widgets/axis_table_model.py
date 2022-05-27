@@ -12,7 +12,7 @@ class BasePlotAxesModel(QAbstractTableModel):
         super(BasePlotAxesModel, self).__init__(parent=parent)
         self._plot = plot
         self._column_names = ("Y-Axis Name", "Y-Axis Orientation", "Y-Axis Label",
-                              "Min Y Range", "Max Y Range", "Enable Auto Range")
+                              "Min Y Range", "Max Y Range", "Enable Auto Range", "Log Mode")
 
     @property
     def plot(self):
@@ -60,6 +60,9 @@ class BasePlotAxesModel(QAbstractTableModel):
             return axis.max_range
         elif column_name == "Enable Auto Range":
             return axis.auto_range
+        elif column_name == "Log Mode":
+            return axis.log_mode
+
 
     def setData(self, index, value, role=Qt.EditRole):
         if not index.isValid():
@@ -96,6 +99,8 @@ class BasePlotAxesModel(QAbstractTableModel):
             axis.max_range = float(value)
         elif column_name == "Enable Auto Range":
             axis.auto_range = bool(value)
+        elif column_name == "Log Mode":
+            axis.log_mode = bool(value)
         else:
             return False
         return True

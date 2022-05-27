@@ -84,7 +84,7 @@ def test_baseplot_construct(qtbot):
     assert base_plot.getShowXGrid() is False
     assert base_plot.getShowYGrid() is False
     assert isinstance(base_plot.redraw_timer, QTimer)
-    assert base_plot._redraw_rate == 30
+    assert base_plot._redraw_rate == 1
     assert base_plot.maxRedrawRate == base_plot._redraw_rate
     assert len(base_plot._curves) == 0
     assert base_plot._title is None
