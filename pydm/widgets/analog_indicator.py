@@ -497,15 +497,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         self.scale_indicator.set_major_alarm_color(color)
 
-    # Reject originAtZero setter and getter
-    @Property(bool)
-    def originAtZero(self):
-        raise AttributeError("origin at zero disabled for analog indicator")
-
-    @Property(bool)
-    def barIndicator(self):
-        raise AttributeError("bar indicator disalbed for analog indicator")
-
     @Property(bool)
     def minorAlarmFromChannel(self):
         """
@@ -683,3 +674,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
 
         self._user_lower_major_alarm = value
         self.scale_indicator.set_lower_major_alarm(self._user_lower_major_alarm)
+
+    # Two properties available on PyDMScaleIndicator we don't support for PyDMAnalogIndicator
+    originAtZero = Property(bool, None, None, designable=False)
+    barIndicator = Property(bool, None, None, designable=False)
