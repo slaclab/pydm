@@ -79,5 +79,4 @@ def test_load_python_file_with_macros(qtbot):
     qtbot.addWidget(display)
     assert display.loaded_file() == valid_display_test_py_path
     assert display.ui_filename() == 'test.ui'
-    # The macros parameter will only be used if the display itself does not set them
     assert display.macros() == {'MACRO_1': 7, 'MACRO_2': 'test_string'}
