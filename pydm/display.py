@@ -191,7 +191,8 @@ def load_py_file(pyfile, args=None, macros=None):
         cls = module.intelclass
         if not issubclass(cls, Display):
             raise ValueError(
-                "Invalid class definition at file {}. {} does not inherit from Display. Nothing to open at this time.".format(
+                "Invalid class definition at file {}. {} does not inherit from Display. "
+                "Nothing to open at this time.".format(
                     pyfile, cls.__name__))
     else:
         classes = [obj for name, obj in inspect.getmembers(module) if
@@ -203,16 +204,12 @@ def load_py_file(pyfile, args=None, macros=None):
                     pyfile))
         if len(classes) > 1:
             warnings.warn(
-                "More than one Display class in file {}. The first occurence (in alphabetical order) will be opened: {}".format(
+                "More than one Display class in file {}. "
+                "The first occurrence (in alphabetical order) will be opened: {}".format(
                     pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
         cls = classes[0]
 
-    try:
-        # This only works in python 3 and up.
-        module_params = inspect.signature(cls).parameters
-    except AttributeError:
-        # Works in python 2, deprecated in 3.0 and up.
-        module_params = inspect.getargspec(cls.__init__).args
+    module_params = inspect.signature(cls).parameters
 
     # Because older versions of Display may not have the args parameter or the macros parameter, we check
     # to see if it does before trying to use them.
