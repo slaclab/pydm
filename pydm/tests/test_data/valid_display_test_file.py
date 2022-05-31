@@ -9,14 +9,14 @@ import no_display_test_file
 class DisplayExample(Display):
     """ An example of a simple display that can be loaded by `load_py_file` in `display.py` """
     def __init__(self, parent=None, args=None, macros=None):
-        super().__init__(parent=parent, args=args, macros=None)
+        super().__init__(parent=parent, args=args, macros=macros)
         self.button = PyDMPushButton()
         self.button.clicked.connect(self.delete_widget)
 
         self.label = PyDMLabel(init_channel='TST:Val1')
 
-    def print_label(self):
-        print(f'{self.label.text()}')
+    def print_file(self):
+        print(f'{no_display_test_file}')
 
     def delete_widget(self):
         self.label.deleteLater()

@@ -2,7 +2,6 @@ import os
 import pytest
 from pydm import Display
 from pydm.display import load_py_file
-from pydm.widgets import PyDMLabel
 
 # The path to the .ui file used in these tests
 test_ui_path = os.path.join(
@@ -64,7 +63,21 @@ def test_load_valid_python_display_file(qtbot):
     """ Verify that loading a valid python only file inheriting from Display works as expected """
     display = load_py_file(valid_display_test_py_path)
     qtbot.addWidget(display)
+
+    # Confirm that the file loaded everything as expected
     assert display.loaded_file() == valid_display_test_py_path
     assert display.ui_filename() == 'test.ui'
+    assert display.macros() == {}
     assert display.previous_display is None
     assert display.next_display is None
+
+
+def test_load_python_file_with_macros(qtbot):
+    """ Attempt to add macros to the display while loading the file """
+    macros = {'MACRO_1': 7, 'MACRO_2': 'test_string'}
+    display = load_py_file(valid_display_test_py_path, macros=macros)
+    qtbot.addWidget(display)
+    assert display.loaded_file() == valid_display_test_py_path
+    assert display.ui_filename() == 'test.ui'
+    # The macros parameter will only be used if the display itself does not set them
+    assert display.macros() == {'MACRO_1': 7, 'MACRO_2': 'test_string'}
