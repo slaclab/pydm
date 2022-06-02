@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>External Data Plugins &mdash; PyDM v1.16.1 documentation</title>
+  <title>External Data Plugins &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -111,7 +112,7 @@
            <div itemprop="articleBody">
              
   <section id="external-data-plugins">
-<h1>External Data Plugins<a class="headerlink" href="#external-data-plugins" title="Permalink to this headline"></a></h1>
+<h1>External Data Plugins<a class="headerlink" href="#external-data-plugins" title="Permalink to this heading"></a></h1>
 <p>To add an external data plugin to PyDM, you will need to subclass the following
 base class and customize its methods:</p>
 <dl class="py class">
@@ -121,7 +122,7 @@ base class and customize its methods:</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.data_plugins.PyDMPlugin.connection_class">
 <span class="sig-name descname"><span class="pre">connection_class</span></span><a class="headerlink" href="#pydm.data_plugins.PyDMPlugin.connection_class" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection" title="pydm.data_plugins.plugin.PyDMConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.data_plugins.plugin.PyDMConnection</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection" title="pydm.data_plugins.plugin.PyDMConnection"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMConnection</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -132,7 +133,7 @@ following:</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.data_plugins.plugin.PyDMConnection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.data_plugins.plugin.</span></span><span class="sig-name descname"><span class="pre">PyDMConnection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/data_plugins/plugin.html#PyDMConnection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.data_plugins.plugin.PyDMConnection" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtCore.QObject</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QObject</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.data_plugins.plugin.PyDMConnection.blockSignals">
 <span class="sig-name descname"><span class="pre">blockSignals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.data_plugins.plugin.PyDMConnection.blockSignals" title="Permalink to this definition"></a></dt>
@@ -378,7 +379,7 @@ If set to False, any active signals/slots on the channel will be manually discon
 </dd></dl>
 
 <section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline"></a></h2>
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h2>
 <p>There are two options for telling PyDM where your external data plugin can
 be found.</p>
 <p>The first is the <code class="docutils literal notranslate"><span class="pre">PYDM_DATA_PLUGINS_PATH</span></code> environment variable, which is an

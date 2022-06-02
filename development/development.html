@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Development Guidelines &mdash; PyDM v1.16.1 documentation</title>
+  <title>Development Guidelines &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -114,12 +115,12 @@
            <div itemprop="articleBody">
              
   <section id="development-guidelines">
-<h1>Development Guidelines<a class="headerlink" href="#development-guidelines" title="Permalink to this headline"></a></h1>
+<h1>Development Guidelines<a class="headerlink" href="#development-guidelines" title="Permalink to this heading"></a></h1>
 <p>It is recommended that PyDM is updated and maintained in the
 following way. This workflow was not invented here at SLAC,
 there are many helpful tutorials online like <a class="reference external" href="https://guides.github.com/introduction/flow">this</a> if you want more information.</p>
 <section id="creating-a-local-checkout">
-<h2>Creating a Local Checkout<a class="headerlink" href="#creating-a-local-checkout" title="Permalink to this headline"></a></h2>
+<h2>Creating a Local Checkout<a class="headerlink" href="#creating-a-local-checkout" title="Permalink to this heading"></a></h2>
 <p>If you want to make changes to a repository the first step is to create your
 own fork. This allows you to create feature branches without cluttering the
 main repository. It also assures that the main repository is only added to by
@@ -140,7 +141,7 @@ nothing to commit, working tree clean
 </div>
 </section>
 <section id="commit-guidelines">
-<h2>Commit Guidelines<a class="headerlink" href="#commit-guidelines" title="Permalink to this headline"></a></h2>
+<h2>Commit Guidelines<a class="headerlink" href="#commit-guidelines" title="Permalink to this heading"></a></h2>
 <p>Now you are ready to start working! Make changes to files and commit them to
 your new branch. We like to preface our commit messages with a descriptor code.
 This makes it easier for someone reviewing your commit history to see what you
@@ -204,7 +205,7 @@ tool for exploration of a codebase within an IPython terminal. Docstrings
 should follow the form described in the <a class="reference external" href="http://www.sphinx-doc.org/en/stable/ext/example_numpy.html">NumPy documentation</a></p>
 </section>
 <section id="merging-changes">
-<h2>Merging Changes<a class="headerlink" href="#merging-changes" title="Permalink to this headline"></a></h2>
+<h2>Merging Changes<a class="headerlink" href="#merging-changes" title="Permalink to this heading"></a></h2>
 <p>Once you are happy with your code, <code class="docutils literal notranslate"><span class="pre">push</span></code> it back to your fork on GitHub.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git push origin my-feature
 </pre></div>
@@ -223,7 +224,7 @@ they:</p>
 Pull Request can be merged.</p>
 </section>
 <section id="syncing-your-local-checkout">
-<h2>Syncing your Local Checkout<a class="headerlink" href="#syncing-your-local-checkout" title="Permalink to this headline"></a></h2>
+<h2>Syncing your Local Checkout<a class="headerlink" href="#syncing-your-local-checkout" title="Permalink to this heading"></a></h2>
 <p>Inevitably, changes to the upstream repository will occur and you will need to
 update your local checkout to reflect those. The first step is to make your
 local checkout aware of the upstream repository. If this is done correctly, you

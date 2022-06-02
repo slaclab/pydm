@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Including Data Plugins &mdash; PyDM v1.16.1 documentation</title>
+  <title>Including Data Plugins &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -30,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -108,7 +109,7 @@
            <div itemprop="articleBody">
              
   <section id="including-data-plugins">
-<h1>Including Data Plugins<a class="headerlink" href="#including-data-plugins" title="Permalink to this headline"></a></h1>
+<h1>Including Data Plugins<a class="headerlink" href="#including-data-plugins" title="Permalink to this heading"></a></h1>
 <p>PyDM is built with a flexible architecture such that information from multiple
 sources can be displayed without changing widget code. This allows widgets to
 be agnostic of the data source that updates them and focus on the logic of
@@ -128,7 +129,7 @@ plugins should be registered before the <code class="docutils literal notranslat
 otherwise they will not be registered in time for connections to be made.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.data_plugins.add_plugin">
-<span class="sig-prename descclassname"><span class="pre">pydm.data_plugins.</span></span><span class="sig-name descname"><span class="pre">add_plugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plugin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin" title="pydm.data_plugins.plugin.PyDMPlugin"><span class="pre">pydm.data_plugins.plugin.PyDMPlugin</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin" title="pydm.data_plugins.plugin.PyDMPlugin"><span class="pre">pydm.data_plugins.plugin.PyDMPlugin</span></a></span></span><a class="reference internal" href="_modules/pydm/data_plugins.html#add_plugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.data_plugins.add_plugin" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pydm.data_plugins.</span></span><span class="sig-name descname"><span class="pre">add_plugin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plugin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin" title="pydm.data_plugins.plugin.PyDMPlugin"><span class="pre">PyDMPlugin</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin" title="pydm.data_plugins.plugin.PyDMPlugin"><span class="pre">PyDMPlugin</span></a></span></span><a class="reference internal" href="_modules/pydm/data_plugins.html#add_plugin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.data_plugins.add_plugin" title="Permalink to this definition"></a></dt>
 <dd><p>Add a PyDM plugin to the global registry of protocol vs. plugins</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -145,7 +146,7 @@ otherwise they will not be registered in time for connections to be made.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.data_plugins.load_plugins_from_path">
-<span class="sig-prename descclassname"><span class="pre">pydm.data_plugins.</span></span><span class="sig-name descname"><span class="pre">load_plugins_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'_plugin.py'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin" title="pydm.data_plugins.plugin.PyDMPlugin"><span class="pre">pydm.data_plugins.plugin.PyDMPlugin</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pydm/data_plugins.html#load_plugins_from_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.data_plugins.load_plugins_from_path" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pydm.data_plugins.</span></span><span class="sig-name descname"><span class="pre">load_plugins_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'_plugin.py'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="data_plugins/external_plugins.html#pydm.data_plugins.PyDMPlugin" title="pydm.data_plugins.plugin.PyDMPlugin"><span class="pre">PyDMPlugin</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pydm/data_plugins.html#load_plugins_from_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.data_plugins.load_plugins_from_path" title="Permalink to this definition"></a></dt>
 <dd><p>Load plugins from file locations that match a specific token</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

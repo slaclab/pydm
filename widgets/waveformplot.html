@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMWaveformPlot &mdash; PyDM v1.16.1 documentation</title>
+  <title>PyDMWaveformPlot &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -129,11 +130,11 @@
            <div itemprop="articleBody">
              
   <section id="pydmwaveformplot">
-<h1>PyDMWaveformPlot<a class="headerlink" href="#pydmwaveformplot" title="Permalink to this headline"></a></h1>
+<h1>PyDMWaveformPlot<a class="headerlink" href="#pydmwaveformplot" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformplot.PyDMWaveformPlot">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.waveformplot.</span></span><span class="sig-name descname"><span class="pre">PyDMWaveformPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_x_channels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_y_channels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#PyDMWaveformPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.baseplot.BasePlot</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BasePlot</span></code></p>
 <p>PyDMWaveformPlot is a widget to plot one or more waveforms.</p>
 <p>Each curve can plot either a Y-axis waveform vs. its indices,
 or a Y-axis waveform against an X-axis waveform.</p>
@@ -163,10 +164,10 @@ pyqtgraph.mkColor will accept.</p></li>
 <dt class="sig sig-object py" id="pydm.widgets.waveformplot.PyDMWaveformPlot.CacheMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CacheMode</span></span><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.CacheMode" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CacheMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QGraphicsView.CacheMode,</span> <span class="pre">QGraphicsView.CacheModeFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CacheMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QGraphicsView.CacheMode,</span> <span class="pre">QGraphicsView.CacheModeFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CacheMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QGraphicsView.CacheMode</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CacheMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QGraphicsView.CacheMode</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py class">
@@ -443,10 +444,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.waveformplot.PyDMWaveformPlot.OptimizationFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OptimizationFlags</span></span><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.OptimizationFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OptimizationFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QGraphicsView.OptimizationFlags,</span> <span class="pre">QGraphicsView.OptimizationFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OptimizationFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QGraphicsView.OptimizationFlags,</span> <span class="pre">QGraphicsView.OptimizationFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OptimizationFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QGraphicsView.OptimizationFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OptimizationFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QGraphicsView.OptimizationFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py class">
@@ -633,10 +634,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.waveformplot.PyDMWaveformPlot.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py class">
@@ -1221,7 +1222,7 @@ is raised.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformplot.PyDMWaveformPlot.addAxis">
-<span class="sig-name descname"><span class="pre">addAxis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_data_item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.baseplot.BasePlotCurveItem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_auto_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.addAxis" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">addAxis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_data_item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BasePlotCurveItem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_auto_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.addAxis" title="Permalink to this definition"></a></dt>
 <dd><p>Create an AxisItem with the input name and orientation, and add it to
 this plot.</p>
 <dl class="field-list simple">
@@ -3554,6 +3555,34 @@ EDM. If the QWidget does not have a valid PyDMChannel nothing will be
 displayed</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.waveformplot.PyDMWaveformPlot.sigTransformChanged">
+<span class="sig-name descname"><span class="pre">sigTransformChanged</span></span><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.sigTransformChanged" title="Permalink to this definition"></a></dt>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphicsView</span></code> widget with a single
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PlotItem</span></code> inside.</p>
+<p>The following methods are wrapped directly from PlotItem:
+<code class="xref py py-func docutils literal notranslate"><span class="pre">addItem</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">removeItem</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">clear</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">setAxisItems</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">setXRange</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">setYRange</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">setRange</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">autoRange</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">setXLink</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">setYLink</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">viewRect</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">setMouseEnabled</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">enableAutoRange</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">disableAutoRange</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">setAspectLocked</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">setLimits</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">register</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">unregister</span></code></p>
+<p>For all
+other methods, use <code class="xref py py-func docutils literal notranslate"><span class="pre">getPlotItem</span></code>.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformplot.PyDMWaveformPlot.signalsBlocked">
 <span class="sig-name descname"><span class="pre">signalsBlocked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.widgets.waveformplot.PyDMWaveformPlot.signalsBlocked" title="Permalink to this definition"></a></dt>
@@ -3904,11 +3933,11 @@ settings</p>
 
 </section>
 <section id="waveformcurveitem">
-<h1>WaveformCurveItem<a class="headerlink" href="#waveformcurveitem" title="Permalink to this headline"></a></h1>
+<h1>WaveformCurveItem<a class="headerlink" href="#waveformcurveitem" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformplot.WaveformCurveItem">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.waveformplot.</span></span><span class="sig-name descname"><span class="pre">WaveformCurveItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redraw_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Line'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformplot.html#WaveformCurveItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.baseplot.BasePlotCurveItem</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BasePlotCurveItem</span></code></p>
 <p>WaveformCurveItem represents a single curve in a waveform plot.</p>
 <p>It can be used to plot one waveform vs. its indices, or one waveform
 vs. another.  In addition to the parameters listed below,
@@ -4212,10 +4241,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.waveformplot.WaveformCurveItem.GraphicsItemFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsItemFlags</span></span><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.GraphicsItemFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsItemFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QGraphicsItem.GraphicsItemFlags,</span> <span class="pre">QGraphicsItem.GraphicsItemFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsItemFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QGraphicsItem.GraphicsItemFlags,</span> <span class="pre">QGraphicsItem.GraphicsItemFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsItemFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QGraphicsItem.GraphicsItemFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsItemFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QGraphicsItem.GraphicsItemFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py class">
@@ -5379,7 +5408,7 @@ re-drawn with new data.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformplot.WaveformCurveItem.setBarGraphInfo">
-<span class="sig-name descname"><span class="pre">setBarGraphInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bar_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtGui.QColor</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.setBarGraphInfo" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">setBarGraphInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bar_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QColor</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.setBarGraphInfo" title="Permalink to this definition"></a></dt>
 <dd><p>Set the attributes associated with displaying a plot as a bar graph. These will only be set
 if the plot is to be rendered as a bar graph. And any or all of them may be omitted even if it
 is a bar graph. Omitting color parameters will result in the plot displaying a uniform color.</p>
@@ -5697,7 +5726,7 @@ and should generally be assigned greater width than the primary pen.</div>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pydm.widgets.waveformplot.WaveformCurveItem.threshold_color">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">threshold_color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PyQt5.QtGui.QColor</span></em><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.threshold_color" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">threshold_color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">QColor</span></em><a class="headerlink" href="#pydm.widgets.waveformplot.WaveformCurveItem.threshold_color" title="Permalink to this definition"></a></dt>
 <dd><p>The color used for bars exceeding either the upper or lower thresholds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>

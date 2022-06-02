@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customizing the Look and Feel &mdash; PyDM v1.16.1 documentation</title>
+  <title>Customizing the Look and Feel &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -30,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -112,7 +113,7 @@
            <div itemprop="articleBody">
              
   <section id="customizing-the-look-and-feel">
-<h1>Customizing the Look and Feel<a class="headerlink" href="#customizing-the-look-and-feel" title="Permalink to this headline"></a></h1>
+<h1>Customizing the Look and Feel<a class="headerlink" href="#customizing-the-look-and-feel" title="Permalink to this heading"></a></h1>
 <p>Instead of rolling out hardcoded styles or reinvent the wheel, PyDM leverages
 the existing Qt Style Sheet mechanism.</p>
 <p>Qt Style Sheet terminology and syntactic rules are almost identical to those of
@@ -136,14 +137,14 @@ files. Note that the PyDM default stylesheet will have lower precedence
 compared to files specified at <code class="docutils literal notranslate"><span class="pre">PYDM_STYLESHEET</span></code>.</p></li>
 </ul>
 <section id="processing-order-of-style-sheets">
-<h2>Processing Order of Style Sheets<a class="headerlink" href="#processing-order-of-style-sheets" title="Permalink to this headline"></a></h2>
+<h2>Processing Order of Style Sheets<a class="headerlink" href="#processing-order-of-style-sheets" title="Permalink to this heading"></a></h2>
 <p>The file will be processed from top to bottom and the bottom-most rules will
 take precedence over rules defined at the top in case of repeated/conflicts.</p>
 <p>Rules defined at widgets will always take precedence over general rules defined
 at higher levels.</p>
 </section>
 <section id="important-notes">
-<h2>Important Notes<a class="headerlink" href="#important-notes" title="Permalink to this headline"></a></h2>
+<h2>Important Notes<a class="headerlink" href="#important-notes" title="Permalink to this heading"></a></h2>
 <p>When writing your own style sheet rules please be always mindful about your
 selectors since, as with HTML CSS, the style rules will cascade to child widgets.</p>
 </section>

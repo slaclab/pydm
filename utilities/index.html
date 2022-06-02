@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Utilities &mdash; PyDM v1.16.1 documentation</title>
+  <title>Utilities &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -115,11 +116,11 @@
            <div itemprop="articleBody">
              
   <section id="utilities">
-<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline"></a></h1>
+<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading"></a></h1>
 <p>PyDM comes with a set of utility methods ranging from simple replacement
 of protocol in a string, handling macro substitution in files, etc.</p>
 <section id="module-pydm.utilities">
-<span id="general"></span><h2>General<a class="headerlink" href="#module-pydm.utilities" title="Permalink to this headline"></a></h2>
+<span id="general"></span><h2>General<a class="headerlink" href="#module-pydm.utilities" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.utilities.copy_to_clipboard">
 <span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">copy_to_clipboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#copy_to_clipboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.copy_to_clipboard" title="Permalink to this definition"></a></dt>
@@ -194,7 +195,7 @@ Which ensure that the file exists and we can read it.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.utilities.get_clipboard">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">get_clipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtGui.QClipboard</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities.html#get_clipboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.get_clipboard" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">get_clipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QClipboard</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities.html#get_clipboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.get_clipboard" title="Permalink to this definition"></a></dt>
 <dd><p>Get the clipboard instance. Requires a QApplication.</p>
 </dd></dl>
 
@@ -308,7 +309,7 @@ available</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.utilities.log_failures">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">log_failures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explanation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Failed</span> <span class="pre">to</span> <span class="pre">run</span> <span class="pre">{func.__name__}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_traceback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#log_failures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.log_failures" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">log_failures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explanation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Failed</span> <span class="pre">to</span> <span class="pre">run</span> <span class="pre">{func.__name__}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_traceback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#log_failures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.log_failures" title="Permalink to this definition"></a></dt>
 <dd><p>Decorator that wraps a function to be run.</p>
 <p>Exceptions raised while executing that function will be logged.
 In case of an exception, the wrapper will return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
@@ -417,7 +418,7 @@ path.</p>
 
 </section>
 <section id="icons">
-<h2>Icons<a class="headerlink" href="#icons" title="Permalink to this headline"></a></h2>
+<h2>Icons<a class="headerlink" href="#icons" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.utilities.iconfont.IconFont">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.utilities.iconfont.</span></span><span class="sig-name descname"><span class="pre">IconFont</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont" title="Permalink to this definition"></a></dt>
@@ -425,7 +426,7 @@ path.</p>
 to use IconFont.icon() to get a QIcon object for the character they want.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.utilities.iconfont.IconFont.font">
-<span class="sig-name descname"><span class="pre">font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtGui.QFont</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.font"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.font" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QFont</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.font"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.font" title="Permalink to this definition"></a></dt>
 <dd><p>Load the font at a given pixel size.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -457,7 +458,7 @@ None will be returned.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.utilities.iconfont.IconFont.icon">
-<span class="sig-name descname"><span class="pre">icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtGui.QIcon</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.icon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.icon" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QIcon</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.icon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.iconfont.IconFont.icon" title="Permalink to this definition"></a></dt>
 <dd><p>Retrieve the icon given a name and color.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -487,7 +488,7 @@ Icon strings can be found at: <a class="reference external" href="https://fontaw
 
 </section>
 <section id="module-pydm.utilities.macro">
-<span id="macro"></span><h2>Macro<a class="headerlink" href="#module-pydm.utilities.macro" title="Permalink to this headline"></a></h2>
+<span id="macro"></span><h2>Macro<a class="headerlink" href="#module-pydm.utilities.macro" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.utilities.macro.parse_macro_string">
 <span class="sig-prename descclassname"><span class="pre">pydm.utilities.macro.</span></span><span class="sig-name descname"><span class="pre">parse_macro_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">macro_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/macro.html#parse_macro_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.macro.parse_macro_string" title="Permalink to this definition"></a></dt>
@@ -520,7 +521,7 @@ closely based on macParseDefns in libCom/macUtil.c</p>
 
 </section>
 <section id="module-pydm.utilities.colors">
-<span id="colors"></span><h2>Colors<a class="headerlink" href="#module-pydm.utilities.colors" title="Permalink to this headline"></a></h2>
+<span id="colors"></span><h2>Colors<a class="headerlink" href="#module-pydm.utilities.colors" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.utilities.colors.hex_from_svg_color">
 <span class="sig-prename descclassname"><span class="pre">pydm.utilities.colors.</span></span><span class="sig-name descname"><span class="pre">hex_from_svg_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/colors.html#hex_from_svg_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.colors.hex_from_svg_color" title="Permalink to this definition"></a></dt>
@@ -561,7 +562,7 @@ Default is False.</p></li>
 
 </section>
 <section id="module-pydm.utilities.units">
-<span id="units"></span><h2>Units<a class="headerlink" href="#module-pydm.utilities.units" title="Permalink to this headline"></a></h2>
+<span id="units"></span><h2>Units<a class="headerlink" href="#module-pydm.utilities.units" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.utilities.units.convert">
 <span class="sig-prename descclassname"><span class="pre">pydm.utilities.units.</span></span><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.units.convert" title="Permalink to this definition"></a></dt>

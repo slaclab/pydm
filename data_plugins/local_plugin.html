@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Local Plugin &mdash; PyDM v1.16.1 documentation</title>
+  <title>Local Plugin &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -118,7 +119,7 @@
            <div itemprop="articleBody">
              
   <section id="local-plugin">
-<h1>Local Plugin<a class="headerlink" href="#local-plugin" title="Permalink to this headline"></a></h1>
+<h1>Local Plugin<a class="headerlink" href="#local-plugin" title="Permalink to this heading"></a></h1>
 <p>PyDM uses Data Plugins as sources of information to be displayed at the widgets.
 Local Data Plugin allows users to create and use local variables.</p>
 <p>The Local Data Plugin stores the data that is sent by the widgets through a channel, and broadcasts it to all the listeners connected to this particular local variable channel.</p>
@@ -137,7 +138,7 @@ For example, if the user has added a Local Variable channel to a PyDMEditLine, t
 </div>
 <hr class="docutils" />
 <section id="required-attributes">
-<span id="id1"></span><h2>Required Attributes<a class="headerlink" href="#required-attributes" title="Permalink to this headline"></a></h2>
+<span id="id1"></span><h2>Required Attributes<a class="headerlink" href="#required-attributes" title="Permalink to this heading"></a></h2>
 <p>In order to be able to properly create a Local Variable channel, all the <a class="reference internal" href="#required-attributes-table"><span class="std std-ref">required attributes</span></a> must be provided in the channel’s address.</p>
 <p id="required-attributes-table">The table below explains the attributes that are required to create a local plugin channel:</p>
 <table class="docutils align-default">
@@ -191,7 +192,7 @@ For example, if the user has added a Local Variable channel to a PyDMEditLine, t
 <hr class="docutils" />
 </section>
 <section id="extra-attributes">
-<span id="local-plugin-extra-attributes"></span><h2>Extra Attributes<a class="headerlink" href="#extra-attributes" title="Permalink to this headline"></a></h2>
+<span id="local-plugin-extra-attributes"></span><h2>Extra Attributes<a class="headerlink" href="#extra-attributes" title="Permalink to this heading"></a></h2>
 <p>Along with the <a class="reference internal" href="#required-attributes"><span class="std std-ref">required attributes</span></a>, the Local Data Plugin can also accept some optional attributes to configure the Local Variables with.
 The optional attributes are described in the <a class="reference internal" href="#extra-attributes-table"><span class="std std-ref">extra attributes</span></a> table below:</p>
 <p id="extra-attributes-table">The table below explains the optional attributes that can go in the <em>extras</em>:</p>
@@ -248,7 +249,7 @@ The optional attributes are described in the <a class="reference internal" href=
 <hr class="docutils" />
 </section>
 <section id="variable-types">
-<span id="id2"></span><h2>Variable Types<a class="headerlink" href="#variable-types" title="Permalink to this headline"></a></h2>
+<span id="id2"></span><h2>Variable Types<a class="headerlink" href="#variable-types" title="Permalink to this heading"></a></h2>
 <p>Local Data Plugin supports the following types:</p>
 <ul class="simple">
 <li><p><strong>int</strong></p></li>
@@ -258,7 +259,7 @@ The optional attributes are described in the <a class="reference internal" href=
 <li><p><strong>array</strong> - this will be treated as a numpy.ndarray type</p></li>
 </ul>
 <section id="arrays">
-<h3>Arrays<a class="headerlink" href="#arrays" title="Permalink to this headline"></a></h3>
+<h3>Arrays<a class="headerlink" href="#arrays" title="Permalink to this heading"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Arrays will be constructed using <strong>numpy.array</strong> built in function. See <a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.array.html#numpy.array">numpy.array</a> for more information on how to construct an array.</p>
@@ -333,7 +334,7 @@ The optional attributes are described in the <a class="reference internal" href=
 </section>
 <hr class="docutils" />
 <section id="simple-local-data-plugin-example">
-<h2>Simple Local Data Plugin Example<a class="headerlink" href="#simple-local-data-plugin-example" title="Permalink to this headline"></a></h2>
+<h2>Simple Local Data Plugin Example<a class="headerlink" href="#simple-local-data-plugin-example" title="Permalink to this heading"></a></h2>
 <p>The picture below represents a simple example using the Local Data Plugin, where a Waveform Curve Editor has two local data plugin channels:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loc://y?type=array&amp;init=[1,2,3,4,5,6]&amp;dtype=float64
 
@@ -351,7 +352,7 @@ loc://x?type=array&amp;init=[1,2,3,4,5,6]&amp;dtype=float64
 </section>
 <hr class="docutils" />
 <section id="miscellaneous">
-<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline"></a></h2>
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>If precision is not set through the “extras”, and it is set to receive the precision from the PV (Process Variable), the Local Data Plugin will match the precision from the values inserted by the users in the widgets.</p></li>
 </ul>

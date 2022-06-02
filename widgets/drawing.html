@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMDrawing Widgets &mdash; PyDM v1.16.1 documentation</title>
+  <title>PyDMDrawing Widgets &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -120,11 +121,11 @@
            <div itemprop="articleBody">
              
   <section id="pydmdrawing-widgets">
-<h1>PyDMDrawing Widgets<a class="headerlink" href="#pydmdrawing-widgets" title="Permalink to this headline"></a></h1>
+<h1>PyDMDrawing Widgets<a class="headerlink" href="#pydmdrawing-widgets" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingLine">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingLine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
 <p>A widget with a line drawn in it.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -319,10 +320,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingLine.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -416,7 +417,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingLine.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2602,7 +2603,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingImage">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
 <p>Renders an image given by the <code class="docutils literal notranslate"><span class="pre">filename</span></code> property.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -2808,10 +2809,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingImage.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -2905,7 +2906,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingImage.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -5124,7 +5125,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingRectangle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingRectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingRectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
 <p>A widget with a rectangle drawn in it.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -5319,10 +5320,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingRectangle.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -5416,7 +5417,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingRectangle.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingRectangle.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -7580,7 +7581,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingTriangle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingTriangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingTriangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
 <p>A widget with a triangle drawn in it.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -7775,10 +7776,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingTriangle.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -7872,7 +7873,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingTriangle.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingTriangle.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -10036,7 +10037,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingEllipse">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingEllipse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingEllipse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
 <p>A widget with an ellipse drawn in it.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -10231,10 +10232,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingEllipse.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -10328,7 +10329,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingEllipse.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingEllipse.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -12492,7 +12493,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingCircle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingCircle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingCircle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
 <p>A widget with a circle drawn in it.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -12687,10 +12688,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingCircle.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -12784,7 +12785,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingCircle.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingCircle.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -14948,7 +14949,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingArc">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingArc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingArc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
 <p>A widget with an arc drawn in it.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -15143,10 +15144,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingArc.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -15240,7 +15241,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingArc.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -17432,7 +17433,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPie">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingPie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPie"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pydm.widgets.drawing.PyDMDrawingArc" title="pydm.widgets.drawing.PyDMDrawingArc"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawingArc</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pydm.widgets.drawing.PyDMDrawingArc" title="pydm.widgets.drawing.PyDMDrawingArc"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawingArc</span></code></a></p>
 <p>A widget with a pie drawn in it.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -17627,10 +17628,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPie.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -17724,7 +17725,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPie.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPie.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -19916,7 +19917,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingChord">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingChord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingChord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pydm.widgets.drawing.PyDMDrawingArc" title="pydm.widgets.drawing.PyDMDrawingArc"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawingArc</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pydm.widgets.drawing.PyDMDrawingArc" title="pydm.widgets.drawing.PyDMDrawingArc"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawingArc</span></code></a></p>
 <p>A widget with a chord drawn in it.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -20111,10 +20112,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingChord.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -20208,7 +20209,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingChord.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingChord.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -22400,7 +22401,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolygon">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingPolygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPolygon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
 <p>A widget with a polygon drawn in it.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -22595,10 +22596,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolygon.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -22692,7 +22693,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolygon.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -24870,7 +24871,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingPolyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPolyline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
 <p>A widget with a multi-segment, piecewise-linear line drawn in it.
 This class inherits from PyDMDrawing.</p>
 <dl class="field-list simple">
@@ -25065,10 +25066,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -25162,7 +25163,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -27338,7 +27339,7 @@ This slot sends the new limit value to the
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingIrregularPolygon">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingIrregularPolygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingIrregularPolygon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pydm.widgets.drawing.PyDMDrawingPolyline" title="pydm.widgets.drawing.PyDMDrawingPolyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.drawing.PyDMDrawingPolyline</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pydm.widgets.drawing.PyDMDrawingPolyline" title="pydm.widgets.drawing.PyDMDrawingPolyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawingPolyline</span></code></a></p>
 <p>A widget contains an irregular polygon (arbitrary number of vertices, arbitrary lengths).</p>
 <p>This is a special case of the PyDMDrawingPolyline, adding the requirement that
 the last point is always identical to the first point.</p>
@@ -27535,10 +27536,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingIrregularPolygon.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py method">
@@ -27632,7 +27633,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingIrregularPolygon.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

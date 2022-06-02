@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMTabWidget &mdash; PyDM v1.16.1 documentation</title>
+  <title>PyDMTabWidget &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -128,7 +129,7 @@
            <div itemprop="articleBody">
              
   <section id="pydmtabwidget">
-<h1>PyDMTabWidget<a class="headerlink" href="#pydmtabwidget" title="Permalink to this headline"></a></h1>
+<h1>PyDMTabWidget<a class="headerlink" href="#pydmtabwidget" title="Permalink to this heading"></a></h1>
 <p>The PyDM Tab Widget is a container widget that lets you switch between different pages of content using a tab bar.  Each tab has an optional alarm channel.  When a tab specifies an alarm channel, an alarm indicator will appear next to the label for that tab.  When the channel’s alarm severity changes, the indicator will update accordingly.  This is most useful for ‘summary’ alarms, where you have one alarm that represents the alarm state of a whole group of devices.</p>
 <figure class="align-default" id="id17">
 <a class="reference internal image-reference" href="../_images/tab_widget.png"><img alt="A screenshot of the PyDM Tab Widget." src="../_images/tab_widget.png" style="width: 401.0px; height: 142.0px;" /></a>
@@ -137,11 +138,11 @@
 </figcaption>
 </figure>
 <section id="using-the-pydm-tab-widget-in-designer">
-<h2>Using the PyDM Tab Widget in Designer<a class="headerlink" href="#using-the-pydm-tab-widget-in-designer" title="Permalink to this headline"></a></h2>
+<h2>Using the PyDM Tab Widget in Designer<a class="headerlink" href="#using-the-pydm-tab-widget-in-designer" title="Permalink to this heading"></a></h2>
 <p>In designer, drag a tab widget from the widget list onto your display, and resize it appropriately.  You can use the property editor to give the current tab a label (the ‘currentTabText’ property), a name (the ‘currentTabName’ property - this is what you will use to refer to this tab in code), and an alarm channel (‘currentTabAlarmChannel’).  To add a new tab to the tab widget, right click on the widget and select ‘Insert Page’.  You can choose to insert before or after the current tab.  To remove a tab, right click on the tab widget, and select ‘Page X of Y’ -&gt; Delete.</p>
 </section>
 <section id="widget-properties">
-<h2>Widget Properties<a class="headerlink" href="#widget-properties" title="Permalink to this headline"></a></h2>
+<h2>Widget Properties<a class="headerlink" href="#widget-properties" title="Permalink to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 22%" />
@@ -171,11 +172,11 @@
 </table>
 </section>
 <section id="api-documentation">
-<h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline"></a></h2>
+<h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.tab_bar.PyDMTabWidget">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.tab_bar.</span></span><span class="sig-name descname"><span class="pre">PyDMTabWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/tab_bar.html#PyDMTabWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QTabWidget</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QTabWidget</span></code></p>
 <p>PyDMTabWidget provides a tabbed container widget.  Each tab has an
 alarm channel property which can be used to show an alarm indicator on
 the tab.  The indicator is driven by the alarm severity of the specified
@@ -369,10 +370,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.tab_bar.PyDMTabWidget.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py class">

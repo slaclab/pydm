@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calc Plugin &mdash; PyDM v1.16.1 documentation</title>
+  <title>Calc Plugin &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -117,7 +118,7 @@
            <div itemprop="articleBody">
              
   <section id="calc-plugin">
-<h1>Calc Plugin<a class="headerlink" href="#calc-plugin" title="Permalink to this headline"></a></h1>
+<h1>Calc Plugin<a class="headerlink" href="#calc-plugin" title="Permalink to this heading"></a></h1>
 <p>PyDM uses Data Plugins as sources of information to be displayed at the widgets.
 Calc Plugin allows users to create and use mathematical expressions.</p>
 <p>The Calc Plugin takes in data from given channels and then applies a mathematical expression, the result is broadcast to all the listeners connected to this particular calc channel.</p>
@@ -142,7 +143,7 @@ separated by the ? symbol and all other attributes are separated by the &amp;
 symbol.</p>
 </div>
 <section id="required-attributes">
-<h2>Required Attributes<a class="headerlink" href="#required-attributes" title="Permalink to this headline"></a></h2>
+<h2>Required Attributes<a class="headerlink" href="#required-attributes" title="Permalink to this heading"></a></h2>
 <p>In order to be able to properly create a calc channel, all the <a class="reference internal" href="local_plugin.html#required-attributes-table"><span class="std std-ref">required attributes</span></a> must be provided in the channel’s address.</p>
 <p id="required-attributes-table">The table below explains the attributes that are required to create a local plugin channel:</p>
 <table class="docutils align-default">
@@ -193,7 +194,7 @@ symbol.</p>
 </div>
 <hr class="docutils" />
 <section id="extra-attributes">
-<span id="id1"></span><h3>Extra Attributes<a class="headerlink" href="#extra-attributes" title="Permalink to this headline"></a></h3>
+<span id="id1"></span><h3>Extra Attributes<a class="headerlink" href="#extra-attributes" title="Permalink to this heading"></a></h3>
 <p>Along with the <a class="reference internal" href="local_plugin.html#required-attributes"><span class="std std-ref">required attributes</span></a>, the Local Data Plugin can also accept some optional attributes to configure the Local Variables with. These attributes should be provided in the <cite>“extras”</cite> dictionary.
 The optional attributes are described in the <a class="reference internal" href="local_plugin.html#extra-attributes-table"><span class="std std-ref">extra attributes</span></a> table below:</p>
 <p id="extra-attributes-table">The table below explains the optional attributes that can go in the <em>extras</em>:</p>
@@ -234,7 +235,7 @@ The optional attributes are described in the <a class="reference internal" href=
 </section>
 <hr class="docutils" />
 <section id="built-in-calc-helpers">
-<h3>Built-in Calc Helpers<a class="headerlink" href="#built-in-calc-helpers" title="Permalink to this headline"></a></h3>
+<h3>Built-in Calc Helpers<a class="headerlink" href="#built-in-calc-helpers" title="Permalink to this heading"></a></h3>
 <p>Certain helper functions are built in to PyDM because they get semi-frequent use in
 the context of EPICS values.</p>
 <table class="docutils align-default">
@@ -267,7 +268,7 @@ interpreted as a positive integer but is instead a negative integer because chan
 access does not support any unsigned types and we have overflowed to negative values.</p>
 </section>
 <section id="simple-calc-plugin-example">
-<h3>Simple Calc Plugin Example<a class="headerlink" href="#simple-calc-plugin-example" title="Permalink to this headline"></a></h3>
+<h3>Simple Calc Plugin Example<a class="headerlink" href="#simple-calc-plugin-example" title="Permalink to this heading"></a></h3>
 <p>The picture below represents an example of using the Calc Plugin.
 Calc addresses given in the channels of the Wavefrom Curve Editor of a PYDMWavefromPlot:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>calc://circleX?angle=ca://DEMO:ANGLE&amp;expr=-1*math.cos(math.radians(180-angle))
@@ -283,7 +284,7 @@ calc://circley?angle=ca://DEMO:ANGLE&amp;expr=math.sin(math.radians(180-angle))
 </section>
 <hr class="docutils" />
 <section id="miscellaneous">
-<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline"></a></h3>
+<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>See <a class="reference external" href="https://docs.python.org/3/library/math.html">https://docs.python.org/3/library/math.html</a> for mathematical operations which can be used in the given expression.</p></li>
 <li><p>NumPy is a valid library for the mathematical expression and can be accessed via ‘numpy.xyz’ or ‘np.xyz’.</p></li>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Designer Widgets &mdash; PyDM v1.16.1 documentation</title>
+  <title>Designer Widgets &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -112,9 +113,9 @@
            <div itemprop="articleBody">
              
   <section id="designer-widgets">
-<h1>Designer Widgets<a class="headerlink" href="#designer-widgets" title="Permalink to this headline"></a></h1>
+<h1>Designer Widgets<a class="headerlink" href="#designer-widgets" title="Permalink to this heading"></a></h1>
 <section id="widgets-in-pydm-itself">
-<h2>Widgets in PyDM itself<a class="headerlink" href="#widgets-in-pydm-itself" title="Permalink to this headline"></a></h2>
+<h2>Widgets in PyDM itself<a class="headerlink" href="#widgets-in-pydm-itself" title="Permalink to this heading"></a></h2>
 <p>If you are developing a new widget for PyDM, please make it compatible with
 Qt designer by editing <code class="docutils literal notranslate"><span class="pre">pydm/widgets/qtplugins.py</span></code>.</p>
 <p>For example, if you create a widget called <code class="docutils literal notranslate"><span class="pre">MyWidget</span></code> and have it in
@@ -185,7 +186,7 @@ The available options can be found in <code class="docutils literal notranslate"
 Google search should help you find an icon that will fit your scenario.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pydm.widgets.qtplugin_base.qtplugin_factory">
-<span class="sig-prename descclassname"><span class="pre">pydm.widgets.qtplugin_base.</span></span><span class="sig-name descname"><span class="pre">qtplugin_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtWidgets.QWidget</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'PyDM</span> <span class="pre">Widgets'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extensions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">PyQt5.QtGui.QIcon</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">pydm.widgets.qtplugin_base.PyDMDesignerPlugin</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/widgets/qtplugin_base.html#qtplugin_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.qtplugin_base.qtplugin_factory" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pydm.widgets.qtplugin_base.</span></span><span class="sig-name descname"><span class="pre">qtplugin_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'PyDM</span> <span class="pre">Widgets'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extensions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QIcon</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">PyDMDesignerPlugin</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/widgets/qtplugin_base.html#qtplugin_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.qtplugin_base.qtplugin_factory" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to create a generic PyDMDesignerPlugin class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -204,7 +205,7 @@ the PyDM-provided fontawesome <code class="docutils literal notranslate"><span c
 
 </section>
 <section id="widgets-in-external-packages">
-<h2>Widgets in external packages<a class="headerlink" href="#widgets-in-external-packages" title="Permalink to this headline"></a></h2>
+<h2>Widgets in external packages<a class="headerlink" href="#widgets-in-external-packages" title="Permalink to this heading"></a></h2>
 <p>If you develop a package which has Qt Designer-compatible widgets, you can use
 PyDM’s built-in support for adding widgets to the designer via entrypoints.</p>
 <p>Here is an example <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> that could be used to locate a designable

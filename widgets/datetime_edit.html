@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMDateTimeEdit &mdash; PyDM v1.16.1 documentation</title>
+  <title>PyDMDateTimeEdit &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -30,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1
+                v1.16.1+2.g8b8a4c63
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -129,11 +130,11 @@
            <div itemprop="articleBody">
              
   <section id="pydmdatetimeedit">
-<h1>PyDMDateTimeEdit<a class="headerlink" href="#pydmdatetimeedit" title="Permalink to this headline"></a></h1>
+<h1>PyDMDateTimeEdit<a class="headerlink" href="#pydmdatetimeedit" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.datetime.</span></span><span class="sig-name descname"><span class="pre">PyDMDateTimeEdit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/datetime.html#PyDMDateTimeEdit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDateTimeEdit</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.base.PyDMWritableWidget</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pydm.widgets.datetime.TimeBase</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QDateTimeEdit</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMWritableWidget</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeBase</span></code></p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit.ButtonSymbols">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ButtonSymbols</span></span><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit.ButtonSymbols" title="Permalink to this definition"></a></dt>
@@ -498,10 +499,10 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit.RenderFlags">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit.RenderFlags" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QWidget.RenderFlags,</span> <span class="pre">QWidget.RenderFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWidget.RenderFlags</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py class">
@@ -598,20 +599,20 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit.Sections">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sections</span></span><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit.Sections" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QDateTimeEdit.Sections,</span> <span class="pre">QDateTimeEdit.Section]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QDateTimeEdit.Sections,</span> <span class="pre">QDateTimeEdit.Section]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QDateTimeEdit.Sections</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QDateTimeEdit.Sections</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit.StepEnabled">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepEnabled</span></span><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit.StepEnabled" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QAbstractSpinBox.StepEnabled,</span> <span class="pre">QAbstractSpinBox.StepEnabledFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Union[QAbstractSpinBox.StepEnabled,</span> <span class="pre">QAbstractSpinBox.StepEnabledFlag]</span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QAbstractSpinBox.StepEnabled</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sip.simplewrapper</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StepEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QAbstractSpinBox.StepEnabled</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">simplewrapper</span></code></p>
 </dd></dl>
 
 <dl class="py class">
@@ -795,7 +796,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit.alarm_limit_changed">
-<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydm.widgets.base.AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit.alarm_limit_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
