@@ -13,8 +13,8 @@
 # You should have received a copy of the CC0 legalcode along with this
 # work.  If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-from distutils.version import LooseVersion
-import pyqtgraph
+import numpy as np
+
 __all__ = ['magma', 'inferno', 'plasma', 'viridis', 'jet', 'monochrome', 'hot']
 
 _magma_data = [[0.001462, 0.000466, 0.013866],
@@ -1048,7 +1048,6 @@ _viridis_data = [[0.267004, 0.004874, 0.329415],
 _jet_data = [[0,0,127,255],[0,0,255,255],[0,127,255,255],[0,255,255,255],[127,255,127,255],[255,255,0,255],[255,127,0,255],[255,0,0,255], [127,0,0,255]]
 _monochrome_data = [[0,0,0,255],[255,255,255,255]]
 _hot_data = [[0,0,0,255],[255,0,0,255],[255,255,0,255],[255,255,255,255]]
-import numpy as np
 cmaps = {}
 
 class PyDMColorMap(object):
@@ -1068,11 +1067,17 @@ for (name, data) in ((PyDMColorMap.Magma, np.array(_magma_data)),
                      (PyDMColorMap.Monochrome, np.array(_monochrome_data)),
                      (PyDMColorMap.Hot, np.array(_hot_data))):
     cmaps[name] = data
-# This is a temporary fix with pyqtgraph
-if LooseVersion(pyqtgraph.__version__) > LooseVersion('0.10.0'):
-    for name in (PyDMColorMap.Magma, PyDMColorMap.Inferno,
-                 PyDMColorMap.Plasma, PyDMColorMap.Viridis):
-        cmaps[name] *= 255
+
+# pyqtgraph > 0.10.0 does not take normalized floating point values as in
+# [0., 1.] for the RGB values but rather a scaled [0., 255.] value.  Fix that
+# here:
+for name in (
+    PyDMColorMap.Magma,
+    PyDMColorMap.Inferno,
+    PyDMColorMap.Plasma,
+    PyDMColorMap.Viridis,
+):
+    cmaps[name] *= 255
 
 magma = cmaps[PyDMColorMap.Magma]
 inferno = cmaps[PyDMColorMap.Inferno]
