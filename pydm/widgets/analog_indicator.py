@@ -24,6 +24,17 @@ class QScaleAlarmed(QScale):
         self._lower_major_alarm = 0
         self._upper_major_alarm = 0
 
+        """
+        self._cannot_draw_*_flag variables are used so draw errors only printout once.
+        False = last time the paint event was called the element was able to draw
+        True = last time the paint event was called the element was not able to draw because of an error
+        """
+        self._cannot_draw_background_flag = False
+        self._cannot_draw_major_alarm_region_flag = False
+        self._cannot_draw_minor_alarm_region_flag = False
+        self._cannot_draw_ticks_flag = False
+        self._cannot_draw_indicator_flag = False
+
         self._bg_color = QColor('lightblue')
         self._minor_alarm_region_color = QColor('white')
         self._minor_alarm_color = QColor('yellow')
@@ -238,29 +249,51 @@ class QScaleAlarmed(QScale):
 
         """
         bad metadata or user input can cause designer or pydm to crash when drawing the widget, hence the try except block
+        self._cannot_draw_*_flag variables are so that the errors only print once, otherwise they would print on each redraw
+        flags are reset when the element can draw without error
         """
         try:
             self.draw_background()
         except Exception:
-            print("Error: can't draw background, check upper and lower limits")
+            if not self._cannot_draw_background_flag:
+                print("Error: PyDMAlalogIndicator can't draw background, check upper and lower limits")
+            self._cannot_draw_background_flag = True
+        else:
+            self._cannot_draw_background_flag = False
         try:
             if not self._upper_minor_alarm == self._lower_minor_alarm == 0:
                 self.draw_minor_alarm_region()
         except Exception:
-            print("Error: can't draw minor alarm region, check minor alarm values and limits")
+            if not self._cannot_draw_minor_alarm_region_flag:
+                print("Error: PyDMAlalogIndicator can't draw minor alarm region, check minor alarm values and limits")
+                self._cannot_draw_minor_alarm_region_flag = True
+        else:
+            self._cannot_draw_minor_alarm_region_flag = False
         try:
             if not self._upper_major_alarm == self._lower_major_alarm == 0:
                 self.draw_major_alarm_region()
         except Exception:
-            print("Error: can't draw major alarm region, check major alarm values and limits")
+            if not self._cannot_draw_major_alarm_region_flag:
+                print("Error: PyDMAlalogIndicator can't draw major alarm region, check major alarm values and limits")
+                self._cannot_draw_major_alarm_region_flag = True
+        else:
+            self._cannot_draw_major_alarm_region_flag = False
         try:
             self.draw_ticks()
         except Exception:
-            print("Error: can't draw ticks")
+            if not self._cannot_draw_ticks_flag:
+                print("Error: PyDMAlalogIndicator can't draw ticks")
+                self._cannot_draw_ticks_flag = True
+        else:
+            self._cannot_draw_ticks_flag = False
         try:
             self.draw_indicator()
         except Exception:
-            print("Error: can't draw_indicator")
+            if not self._cannot_draw_indicator_flag:
+                print("Error: PyDMAlalogIndicator can't draw_indicator")
+                self._cannot_draw_indicator_flag = True
+        else:
+            self._cannot_draw_indicator_flag = False
 
         self._painter.end()
 
