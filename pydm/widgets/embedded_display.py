@@ -1,3 +1,4 @@
+from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from qtpy.QtWidgets import QAction, QFrame, QApplication, QLabel, QMenu, QVBoxLayout, QWidget
 from qtpy.QtCore import QPoint, Qt, QSize, Property, QTimer
 
@@ -388,6 +389,13 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             try:
                 if plot.geometry().contains(pos):
                     menu = plot.getViewBox().getMenu(None)
+                    if menu is not None:  # Need to add sub-menus still
+                        # Mock up an event that the pyqtgraph api requires. Just want to create it without any
+                        # initialization of attributes (would require more unnecessary object creations)
+                        accept_event = object.__new__(MouseClickEvent)
+                        accept_event.accepted = True
+                        accept_event.acceptedItem = plot.getViewBox()
+                        menu = plot.getViewBox().scene().addParentContextMenus(plot.getViewBox(), menu, accept_event)
             except AttributeError:
                 pass
 
