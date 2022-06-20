@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.16.1+2.g8b8a4c63 documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.16.1+4.g222719fc documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.1+2.g8b8a4c63
+                v1.16.1+4.g222719fc
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -106,7 +106,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pydm.widgets.embedded_display</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QWidget</span>
+<span></span><span class="kn">from</span> <span class="nn">pyqtgraph.GraphicsScene.mouseEvents</span> <span class="kn">import</span> <span class="n">MouseClickEvent</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QWidget</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span>
 
 <span class="kn">import</span> <span class="nn">copy</span>
@@ -496,6 +497,13 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">plot</span><span class="o">.</span><span class="n">geometry</span><span class="p">()</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
                     <span class="n">menu</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">getMenu</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">menu</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Need to add sub-menus still</span>
+                        <span class="c1"># Mock up an event that the pyqtgraph api requires. Just want to create it without any</span>
+                        <span class="c1"># initialization of attributes (would require more unnecessary object creations)</span>
+                        <span class="n">accept_event</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">MouseClickEvent</span><span class="p">)</span>
+                        <span class="n">accept_event</span><span class="o">.</span><span class="n">accepted</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">accept_event</span><span class="o">.</span><span class="n">acceptedItem</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span>
+                        <span class="n">menu</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">addParentContextMenus</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">(),</span> <span class="n">menu</span><span class="p">,</span> <span class="n">accept_event</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="k">pass</span>
 
