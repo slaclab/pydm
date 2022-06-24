@@ -194,6 +194,7 @@ class MultiAxisPlot(PlotItem):
         if self.legend is not None and plotDataItem.name():
             self.legend.addItem(plotDataItem, name=plotDataItem.name())
 
+        self.curves.append(plotDataItem)
         self.curvesPerAxis[axisName] += 1
 
     def removeAxis(self, axisName):
