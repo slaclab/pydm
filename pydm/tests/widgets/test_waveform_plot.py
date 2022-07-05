@@ -71,3 +71,42 @@ def test_mismatched_shapes(qtbot):
     # Opposite case: the x-waveform was longer than the y one, so it gets truncated to match the length of y
     assert np.array_equal(data_item_1.x_waveform, np.array([1, 5, 10]))
     assert np.array_equal(data_item_1.y_waveform, np.array([10, 11, 12]))
+
+
+def test_clear_curves(qtbot):
+    """ Verify that all curves are removed from a waveform plot when clearCurves() is called """
+    # Create a plot with two curves added to it
+    waveform_plot = PyDMWaveformPlot()
+    qtbot.addWidget(waveform_plot)
+    data_one = WaveformCurveItem()
+    data_two = WaveformCurveItem()
+    waveform_plot.addCurve(data_one)
+    waveform_plot.addCurve(data_two)
+
+    assert len(waveform_plot.plotItem.curves) == 2  # Confirm that the curves were added properly
+
+    waveform_plot.clearCurves()
+    assert len(waveform_plot.plotItem.curves) == 0  # Now they should be gone
+
+
+def test_clear_axes(qtbot):
+    """ Verify that when multiple y-axes are added to a plot, clearing out the curves and axes cleans up everything """
+    # Create a plot with two separate y axes on it, each with its own associated view box
+    waveform_plot = PyDMWaveformPlot()
+    qtbot.addWidget(waveform_plot)
+    data_one = WaveformCurveItem()
+    data_two = WaveformCurveItem()
+    waveform_plot.addCurve(data_one, y_axis_name='Axis 1')
+    waveform_plot.addCurve(data_two, y_axis_name='Axis 2')
+
+    # Ensure both axes were properly added
+    assert 'Axis 1' in waveform_plot.plotItem.axes
+    assert 'Axis 2' in waveform_plot.plotItem.axes
+    assert len(waveform_plot.plotItem.stackedViews) == 3  # There is a main top level view in addition to the 2 we added
+
+    waveform_plot.clearAxes()
+
+    # After the call to clear both axes should be removed, and the stacked views are also empty until more data is added
+    assert 'Axis 1' not in waveform_plot.plotItem.axes
+    assert 'Axis 2' not in waveform_plot.plotItem.axes
+    assert len(waveform_plot.plotItem.stackedViews) == 0
