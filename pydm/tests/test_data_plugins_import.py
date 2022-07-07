@@ -24,10 +24,12 @@ def test_plugin_directory_loading(qapp):
         handle.flush()
 
     try:
-        # Load plugins
+        # Load plugins. One of them will raise an exception during initialization. This will
+        # prevent it from being added to the available plugins, but the others should still load.
         load_plugins_from_path([cur_dir], 'foo.py')
         assert 'tst1' in plugin_modules
         assert 'tst2' in plugin_modules
+        assert 'fail' not in plugin_modules
     finally:
         os.remove(os.path.join(cur_dir, 'plugin_foo.py'))
 
@@ -50,6 +52,12 @@ from pydm.data_plugins import PyDMPlugin
 class TestPlugin1(PyDMPlugin):
     protocol = 'tst1'
 
+
+class FailingPlugin(PyDMPlugin):
+    protocol = 'fail'
+
+    def __init__(self, *args, **kwargs):
+        raise Exception  # Purposefully fail to initialize for testing purposes
 
 class TestPlugin2(PyDMPlugin):
     protocol = 'tst2'
