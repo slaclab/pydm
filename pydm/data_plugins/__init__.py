@@ -101,7 +101,7 @@ def plugin_for_address(address: str) -> Optional[PyDMPlugin]:
     return None
 
 
-def add_plugin(plugin: Type[PyDMPlugin]) -> PyDMPlugin:
+def add_plugin(plugin: Type[PyDMPlugin]) -> Optional[PyDMPlugin]:
     """
     Add a PyDM plugin to the global registry of protocol vs. plugins
 
@@ -112,8 +112,8 @@ def add_plugin(plugin: Type[PyDMPlugin]) -> PyDMPlugin:
 
     Returns
     -------
-    plugin : PyDMPlugin
-        The instantiated PyDMPlugin.
+    plugin : PyDMPlugin, optional
+        The instantiated PyDMPlugin. If instantiation failed, will return None.
     """
     # Warn users if we are overwriting a protocol which already has a plugin
     if plugin.protocol in plugin_modules:
@@ -123,7 +123,12 @@ def add_plugin(plugin: Type[PyDMPlugin]) -> PyDMPlugin:
             plugin_modules[plugin.protocol],
             plugin.protocol,
         )
-    instance = plugin()
+    try:
+        instance = plugin()
+    except Exception:
+        logger.exception(f"Data plugin: {plugin} failed to load and will not be available for use!")
+        return None
+
     plugin_modules[plugin.protocol] = instance
     return instance
 
@@ -254,7 +259,9 @@ def load_plugins_from_entrypoints(
                 plugin,
             )
             continue
-        added_plugins[plugin.protocol] = add_plugin(plugin)
+        added_plugin = add_plugin(plugin)
+        if added_plugin is not None:
+            added_plugins[plugin.protocol] = added_plugin
     return added_plugins
 
 
@@ -290,7 +297,9 @@ def load_plugins_from_path(
                 )
                 continue
 
-            added_plugins[plugin.protocol] = add_plugin(plugin)
+            added_plugin = add_plugin(plugin)
+            if added_plugin is not None:
+                added_plugins[plugin.protocol] = added_plugin
 
     return added_plugins
 
