@@ -194,7 +194,9 @@ class MultiAxisPlot(PlotItem):
         if self.legend is not None and plotDataItem.name():
             self.legend.addItem(plotDataItem, name=plotDataItem.name())
 
+        # pyqtgraph expects data items on plots to be added to both the list of curves and items to function properly
         self.curves.append(plotDataItem)
+        self.items.append(plotDataItem)
         self.curvesPerAxis[axisName] += 1
 
     def removeAxis(self, axisName):
