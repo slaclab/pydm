@@ -482,3 +482,4 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     def show_context_menu(self, pos):
         menu = self.context_menu()
         menu.exec_(self.mapToGlobal(pos))
+	
