@@ -3,8 +3,8 @@ import os
 import logging
 import warnings
 from functools import partial
-
-from qtpy.QtWidgets import QPushButton, QMenu, QAction
+import hashlib
+from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit
 from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 
@@ -72,6 +72,10 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             self.handle_open_new_window_action)
         self._show_icon = True
         self._menu_needs_rebuild = True
+
+        self._password_protected = False
+        self._password = ""
+        self._protected_password = ""
 
     @Property('QStringList')
     def filenames(self):
@@ -243,7 +247,77 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
         open_in_new : bool
         """
         self._open_in_new_window = open_in_new
-    
+
+    @Property(bool)
+    def passwordProtected(self):
+        """
+        Whether or not this button is password protected.
+        Returns
+        -------
+        bool
+        -------
+        """
+        return self._password_protected
+
+    @passwordProtected.setter
+    def passwordProtected(self, value):
+        """
+        Whether or not this button is password protected.
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._password_protected != value:
+            self._password_protected = value
+
+    @Property(str)
+    def password(self):
+        """
+		Password to be encrypted using SHA256.
+
+		.. warning::
+			To avoid issues exposing the password this method
+			always returns an empty string.
+
+		Returns
+		-------
+		str
+		"""
+        return ""
+
+    @password.setter
+    def password(self, value):
+        """
+		Password to be encrypted using SHA256.
+
+		Parameters
+		----------
+		value : str
+			The password to be encrypted
+		"""
+        if value is not None and value != "":
+            sha = hashlib.sha256()
+            sha.update(value.encode())
+            # Use the setter as it also checks whether the existing password is the same with the
+            # new one, and only updates if the new password is different
+            self.protectedPassword = sha.hexdigest()
+
+    @Property(str)
+    def protectedPassword(self):
+        """
+		The encrypted password.
+
+		Returns
+		-------
+		str
+		"""
+        return self._protected_password
+
+    @protectedPassword.setter
+    def protectedPassword(self, value):
+        if self._protected_password != value:
+            self._protected_password = value
+
     def mousePressEvent(self, event):
         if self._menu_needs_rebuild:
             self._rebuild_menu()
@@ -284,6 +358,42 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(
                 mouse_event)
 
+    def validate_password(self):
+        """
+        If the widget is ```passwordProtected```, this method will propmt
+        the user for the correct password.
+
+        Returns
+        -------
+        bool
+            True in case the password was correct of if the widget is not
+            password protected.
+        """
+        if not self._password_protected:
+            return True
+
+        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:",
+                                         QLineEdit.Password, "")
+        pwd = str(pwd)
+        if not ok or pwd == "":
+            return False
+
+        sha = hashlib.sha256()
+        sha.update(pwd.encode())
+        pwd_encrypted = sha.hexdigest()
+        if pwd_encrypted != self._protected_password:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Invalid password.")
+            msg.setWindowTitle("Error")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.setDefaultButton(QMessageBox.Ok)
+            msg.setEscapeButton(QMessageBox.Ok)
+            msg.exec_()
+            return False
+        return True
+
+
     @Slot()
     def handle_open_new_window_action(self):
         """
@@ -323,6 +433,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
             file on the same window. PyDMRelatedDisplayButton.NEW_WINDOW
             or 1 will result on a new process.
         """
+        if not self.validate_password():
+            return None
+
         parent_display = self.find_parent_display()
         base_path = ""
         macros = {}
@@ -374,3 +487,4 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     def show_context_menu(self, pos):
         menu = self.context_menu()
         menu.exec_(self.mapToGlobal(pos))
+	
