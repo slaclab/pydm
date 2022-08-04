@@ -5,7 +5,7 @@ from qtpy.QtCore import QPoint, Qt, QSize, Property, QTimer
 import copy
 import os.path
 import logging
-from .base import PyDMPrimitiveWidget
+from .base import PyDMPrimitiveWidget, rule_properties
 from .baseplot import BasePlot
 from ..utilities import (is_pydm_app, establish_widget_connections,
                          close_widget_connections, macro, is_qt_designer,
@@ -14,7 +14,9 @@ from ..display import (load_file, ScreenTarget)
 
 logger = logging.getLogger(__name__)
 
+_embeddedDisplayRuleProperties = {'Filename': ['filename', str]}
 
+@rule_properties(_embeddedDisplayRuleProperties)
 class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     """
     A QFrame capable of rendering a PyDM Display
@@ -29,10 +31,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     def __init__(self, parent=None):
         QFrame.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
-        if 'Filename' not in PyDMEmbeddedDisplay.RULE_PROPERTIES:
-            PyDMEmbeddedDisplay.RULE_PROPERTIES = PyDMPrimitiveWidget.RULE_PROPERTIES.copy()
-            PyDMEmbeddedDisplay.RULE_PROPERTIES.update(
-                {'Filename': ['filename', str]})
         self.app = QApplication.instance()
         self._filename = None
         self._macros = None

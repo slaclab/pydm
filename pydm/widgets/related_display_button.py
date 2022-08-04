@@ -8,7 +8,7 @@ from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialo
 from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 
-from .base import PyDMPrimitiveWidget
+from .base import PyDMPrimitiveWidget, rule_properties
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
 from ..display import (load_file, ScreenTarget)
@@ -16,7 +16,12 @@ from ..display import (load_file, ScreenTarget)
 
 logger = logging.getLogger(__name__)
 
+_relatedDisplayRuleProperties = {
+    'Text': ['setText', str],
+    'Filenames': ['filenames', list]
+    }
 
+@rule_properties(_relatedDisplayRuleProperties)
 class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     """
     A QPushButton capable of opening a new Display at the same of at a
@@ -37,16 +42,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     def __init__(self, parent=None, filename=None):
         QPushButton.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
-
-        if 'Text' not in PyDMRelatedDisplayButton.RULE_PROPERTIES:
-            PyDMRelatedDisplayButton.RULE_PROPERTIES = PyDMRelatedDisplayButton.RULE_PROPERTIES.copy()
-            PyDMRelatedDisplayButton.RULE_PROPERTIES.update(
-                {'Text': ['setText', str]})
-
-        if 'Filename' not in PyDMRelatedDisplayButton.RULE_PROPERTIES:
-            PyDMRelatedDisplayButton.RULE_PROPERTIES = PyDMRelatedDisplayButton.RULE_PROPERTIES.copy()
-            PyDMRelatedDisplayButton.RULE_PROPERTIES.update(
-                {'Filenames': ['filenames', list]})
 
         self.mouseReleaseEvent = self.push_button_release_event
         self.setContextMenuPolicy(Qt.CustomContextMenu)

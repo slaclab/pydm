@@ -127,6 +127,34 @@ def refresh_style(widget):
             # Widget was probably destroyed
             logger.debug('Error while refreshing stylesheet. %s ', ex)
 
+def rule_properties(new_properties):
+    """
+    Returns a decorator that will add new rule properties to the
+    class.
+
+    Parameters
+    ----------
+    new_properties : dict
+        A dictionary containing the properties that can be modified
+        through rule triggers. The format of this dictionary must
+        follow the one for entries in PyDMPrimitiveWidget.RULE_PROPERTIES.
+        Namely, the key should be a name to be displayed by the Rule
+        Editor (in designer), and the value a list containing two elements:
+        a string naming the method in the class that will handle the
+        rule dispatch, and a type matching the one that we expect to
+        receive from the PV value.
+
+    Returns
+    -------
+    callable
+        A decorator function for PyDM classes.
+    """
+    def decorator(cls):
+        cls.RULE_PROPERTIES = cls.RULE_PROPERTIES.copy()
+        cls.RULE_PROPERTIES.update(new_properties)
+        return cls
+    return decorator
+
 
 class PyDMPrimitiveWidget(object):
     """
@@ -560,6 +588,12 @@ class TextFormatter(object):
         self.update_format_string()
 
 
+_positionRuleProperties = {
+    'Position - X': ['setX', int],
+    'Position - Y': ['setY', int]
+    }
+
+@rule_properties(_positionRuleProperties)
 class PyDMWidget(PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
@@ -581,13 +615,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
     def __init__(self, init_channel=None):
         super(PyDMWidget, self).__init__()
-
-        if not all([prop in PyDMPrimitiveWidget.RULE_PROPERTIES for prop in
-                    ['Position - X', 'Position - Y']]):
-            PyDMWidget.RULE_PROPERTIES = PyDMPrimitiveWidget.RULE_PROPERTIES.copy()
-            PyDMWidget.RULE_PROPERTIES.update(
-                {'Position - X': ['setX', int],
-                 'Position - Y': ['setY', int]})
 
         self._connected = True
         self._channel = None
