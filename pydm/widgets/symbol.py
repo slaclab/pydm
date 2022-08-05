@@ -10,8 +10,9 @@ from .base import PyDMWidget
 
 logger = logging.getLogger(__name__)
 
+_symbolRuleProperties = {'Index': ['set_current_key', int]}
 
-class PyDMSymbol(QWidget, PyDMWidget):
+class PyDMSymbol(QWidget, PyDMWidget, new_properties=_symbolRuleProperties):
     """
     PyDMSymbol will render an image (symbol) for each value of a channel.
 
@@ -25,10 +26,6 @@ class PyDMSymbol(QWidget, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
-        if 'Index' not in PyDMSymbol.RULE_PROPERTIES:
-            PyDMSymbol.RULE_PROPERTIES = PyDMWidget.RULE_PROPERTIES.copy()
-            PyDMSymbol.RULE_PROPERTIES.update(
-                {'Index': ['set_current_key', int]})
         self.app = QApplication.instance()
         self._current_key = 0
         self._state_images_string = ""

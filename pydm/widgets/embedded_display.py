@@ -14,8 +14,9 @@ from ..display import (load_file, ScreenTarget)
 
 logger = logging.getLogger(__name__)
 
+_embeddedDisplayRuleProperties = {'Filename': ['filename', str]}
 
-class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
+class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedDisplayRuleProperties):
     """
     A QFrame capable of rendering a PyDM Display
 
@@ -29,10 +30,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     def __init__(self, parent=None):
         QFrame.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
-        if 'Filename' not in PyDMEmbeddedDisplay.RULE_PROPERTIES:
-            PyDMEmbeddedDisplay.RULE_PROPERTIES = PyDMPrimitiveWidget.RULE_PROPERTIES.copy()
-            PyDMEmbeddedDisplay.RULE_PROPERTIES.update(
-                {'Filename': ['filename', str]})
         self.app = QApplication.instance()
         self._filename = None
         self._macros = None
