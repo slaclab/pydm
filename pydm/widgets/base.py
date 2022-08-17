@@ -149,7 +149,7 @@ class PyDMPrimitiveWidget(object):
             # and not at the Designer
             self.installEventFilter(self)
 
-    def __init_subclass__(cls, /, new_properties={}):
+    def __init_subclass__(cls, new_properties={}):
         """
         Adds or redefines rule-triggered property configuration for derivative
         classes.
