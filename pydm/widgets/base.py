@@ -127,35 +127,6 @@ def refresh_style(widget):
             # Widget was probably destroyed
             logger.debug('Error while refreshing stylesheet. %s ', ex)
 
-def rule_properties(new_properties):
-    """
-    Returns a decorator that will add new rule properties to the
-    class.
-
-    Parameters
-    ----------
-    new_properties : dict
-        A dictionary containing the properties that can be modified
-        through rule triggers. The format of this dictionary must
-        follow the one for entries in PyDMPrimitiveWidget.RULE_PROPERTIES.
-        Namely, the key should be a name to be displayed by the Rule
-        Editor (in designer), and the value a list containing two elements:
-        a string naming the method in the class that will handle the
-        rule dispatch, and a type matching the one that we expect to
-        receive from the PV value.
-
-    Returns
-    -------
-    callable
-        A decorator function for PyDM classes.
-    """
-    def decorator(cls):
-        cls.RULE_PROPERTIES = cls.RULE_PROPERTIES.copy()
-        cls.RULE_PROPERTIES.update(new_properties)
-        return cls
-    return decorator
-
-
 class PyDMPrimitiveWidget(object):
     """
     Primitive class that determines that a given widget is a PyDMWidget.
@@ -177,6 +148,27 @@ class PyDMPrimitiveWidget(object):
             # We should  install the Event Filter only if we are running
             # and not at the Designer
             self.installEventFilter(self)
+
+    def __init_subclass__(cls, /, new_properties={}):
+        """
+        Adds or redefines rule-triggered property configuration for derivative
+        classes.
+
+        Parameters
+        ----------
+        new_properties: dict
+            A dictionary containing the properties that can be modified
+            through rule triggers. The format of this dictionary must
+            follow the one for entries in PyDMPrimitiveWidget.RULE_PROPERTIES.
+            Namely, the key should be a name to be displayed by the Rule
+            Editor (in designer), and the value a list containing two elements:
+            a string naming the method in the class that will handle the
+            rule dispatch, and a type matching the one that we expect to
+            receive from the PV value.
+        """
+        if new_properties:
+            cls.RULE_PROPERTIES = cls.RULE_PROPERTIES.copy()
+            cls.RULE_PROPERTIES.update(new_properties)
 
     @staticmethod
     def get_designer_icon():
@@ -593,8 +585,7 @@ _positionRuleProperties = {
     'Position - Y': ['setY', int]
     }
 
-@rule_properties(_positionRuleProperties)
-class PyDMWidget(PyDMPrimitiveWidget):
+class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
     """
     PyDM base class for Read-Only widgets.
     This class implements all the functions of connection, alarm

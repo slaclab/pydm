@@ -1,4 +1,4 @@
-from .base import PyDMWidget, TextFormatter, str_types, rule_properties
+from .base import PyDMWidget, TextFormatter, str_types
 from qtpy.QtWidgets import QLabel, QApplication
 from qtpy.QtCore import Qt, Property, Q_ENUMS
 from .display_format import DisplayFormat, parse_value_for_display
@@ -8,8 +8,7 @@ from pydm.widgets.base import only_if_channel_set
 
 _labelRuleProperties = {'Text': ['value_changed', str]}
 
-@rule_properties(_labelRuleProperties)
-class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat):
+class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties=_labelRuleProperties):
     Q_ENUMS(DisplayFormat)
     DisplayFormat = DisplayFormat
     """

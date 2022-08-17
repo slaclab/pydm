@@ -8,7 +8,7 @@ from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialo
 from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 
-from .base import PyDMPrimitiveWidget, rule_properties
+from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
 from ..display import (load_file, ScreenTarget)
@@ -21,8 +21,7 @@ _relatedDisplayRuleProperties = {
     'Filenames': ['filenames', list]
     }
 
-@rule_properties(_relatedDisplayRuleProperties)
-class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
+class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=_relatedDisplayRuleProperties):
     """
     A QPushButton capable of opening a new Display at the same of at a
     new window.

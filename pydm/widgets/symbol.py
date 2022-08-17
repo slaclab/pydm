@@ -6,14 +6,13 @@ from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
 from ..utilities import is_pydm_app, find_file
-from .base import PyDMWidget, rule_properties
+from .base import PyDMWidget
 
 logger = logging.getLogger(__name__)
 
 _symbolRuleProperties = {'Index': ['set_current_key', int]}
 
-@rule_properties(_symbolRuleProperties)
-class PyDMSymbol(QWidget, PyDMWidget):
+class PyDMSymbol(QWidget, PyDMWidget, new_properties=_symbolRuleProperties):
     """
     PyDMSymbol will render an image (symbol) for each value of a channel.
 
