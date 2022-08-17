@@ -16,8 +16,12 @@ from ..display import (load_file, ScreenTarget)
 
 logger = logging.getLogger(__name__)
 
+_relatedDisplayRuleProperties = {
+    'Text': ['setText', str],
+    'Filenames': ['filenames', list]
+    }
 
-class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
+class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=_relatedDisplayRuleProperties):
     """
     A QPushButton capable of opening a new Display at the same of at a
     new window.
@@ -37,16 +41,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget):
     def __init__(self, parent=None, filename=None):
         QPushButton.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
-
-        if 'Text' not in PyDMRelatedDisplayButton.RULE_PROPERTIES:
-            PyDMRelatedDisplayButton.RULE_PROPERTIES = PyDMRelatedDisplayButton.RULE_PROPERTIES.copy()
-            PyDMRelatedDisplayButton.RULE_PROPERTIES.update(
-                {'Text': ['setText', str]})
-
-        if 'Filename' not in PyDMRelatedDisplayButton.RULE_PROPERTIES:
-            PyDMRelatedDisplayButton.RULE_PROPERTIES = PyDMRelatedDisplayButton.RULE_PROPERTIES.copy()
-            PyDMRelatedDisplayButton.RULE_PROPERTIES.update(
-                {'Filenames': ['filenames', list]})
 
         self.mouseReleaseEvent = self.push_button_release_event
         self.setContextMenuPolicy(Qt.CustomContextMenu)
