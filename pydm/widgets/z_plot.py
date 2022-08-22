@@ -8,8 +8,25 @@ from .channel import PyDMChannel
 
 class PyDMZPlot(QWidget):
     """
+      The PyDMZPlot, is a plotting widget that couples a PyDMScatterPlot and a pyqtgraph PlotWidget to create a plot
+      widget that has a corresponding dynamic diagram that can represent a positional direction of a machine
+      or facility.
 
-    """
+      Note:
+
+      Parameters
+      ----------
+      parent : QWidget
+          The parent widget for the plot
+      y_axis_channels : str, optional
+          The channels to be used by the widget.
+      x_axis_channels : str, optional
+          The channels to be used by the widget.
+      symbol_list : list, optional
+          The symbols to be used by the data points in the diagram.
+      y_axis_symbol : str, optional
+          The symbol to be used by the y-axis data points.
+      """
 
     def __init__(self, parent=None, y_axis_channels=None, x_axis_channels=None, symbol_list=[], y_axis_symbol='o'):
         super().__init__()
@@ -42,7 +59,7 @@ class PyDMZPlot(QWidget):
 
     def ui_components(self):
         """
-
+        creates the layout and widgets for the z-plot
         """
         self.setGeometry(100, 100, 800, 500)
         self.text = 'z-plot'
@@ -81,7 +98,7 @@ class PyDMZPlot(QWidget):
 
     def establish_channel_connections(self):
         """
-
+        Sets up the pydm channels for the given x_axis addresses.
         """
         channels = []
         for address in self._x_axis_channels:
