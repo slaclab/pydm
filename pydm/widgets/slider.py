@@ -1,10 +1,13 @@
 import logging
 logger = logging.getLogger(__name__)
 
-from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget
-from qtpy.QtCore import Qt, Signal, Slot, Property
+from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, \
+    QWidget, QLineEdit, QPushButton, QApplication
+from qtpy.QtCore import Qt, Signal, Slot, Property, QCoreApplication
 from .base import PyDMWritableWidget, TextFormatter
 import numpy as np
+from pydm.widgets import PyDMLabel, PyDMLineEdit, PyDMByteIndicator, PyDMDrawingLine
+import sys
 
 
 class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
@@ -80,6 +83,64 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         else:
             super(PyDMSlider, self).wheelEvent(e)
         return
+
+    def mousePressEvent(self, mouse_event):
+        if mouse_event.button() == Qt.RightButton:
+            self.step_size_menu()
+
+    def step_size_menu(self):
+        #app = QApplication(sys.argv)
+        self.widget = QWidget()
+        self.widget.show()
+
+        self.widget.setWindowTitle("PyDM Silder Parameters")
+        self.widget.resize(300, 200)
+
+        main_layout = QVBoxLayout(self.widget)
+
+        self.input = []
+        self.label = []
+        self.button = []
+        self.layout = []
+
+        text_info = ['Value', 'Increment', 'Increment', 'OK', 'Apply', 'Cancel']
+
+        for key in range(0, 3):
+            self.input.append(key)
+            self.label.append(key)
+            self.layout.append(key)
+
+            self.layout[key] = QHBoxLayout()
+
+            self.label[key] = PyDMLabel(self.widget)
+            self.label[key].setText(text_info[key])
+            self.layout[key].addWidget(self.label[key])
+
+            self.input[key] = QLineEdit()
+            self.input[key].setText("hmm")
+            self.layout[key].addWidget(self.input[key])
+            main_layout.addLayout(self.layout[key])
+
+        self.layout.append(3)
+        self.layout[3] = QHBoxLayout()
+        self.input[1].setText(str(self._num_steps))
+
+        for key in range(0, 3):
+            self.button.append(key)
+            self.button[key] = QPushButton(self.widget)
+            self.button[key].setText(text_info[key+3])
+            self.layout[3].addWidget(self.button[key])
+
+        main_layout.addLayout(self.layout[3])
+
+        self.button[0].clicked.connect(self.widget.close)
+        self.button[1].clicked.connect(self.apply_step_size_menu_changes)
+        self.button[2].clicked.connect(self.widget.close)
+
+    def apply_step_size_menu_changes(self):
+        for key in range(0, len(self.input)):
+            print(self.input[key].text())
+
 
     def init_for_designer(self):
         """
