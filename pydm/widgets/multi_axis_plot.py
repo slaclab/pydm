@@ -1,8 +1,10 @@
 import weakref
 from collections import Counter
-from pyqtgraph import PlotItem, ViewBox
+from pyqtgraph import AxisItem, PlotDataItem, PlotItem, ViewBox
+from typing import List
 from .multi_axis_viewbox import MultiAxisViewBox
 from .multi_axis_viewbox_menu import MultiAxisViewBoxMenu
+from ..utilities import is_qt_designer
 
 
 class MultiAxisPlot(PlotItem):
@@ -31,18 +33,18 @@ class MultiAxisPlot(PlotItem):
         self.axesOriginalRanges = {}  # Dict from axis name to floats (x, y) representing original range of the axis
 
         # A set containing view boxes which are stacked underneath the top level view. These views will be needed
-        # in order to support multiple axes on the same plot. This set will remain empty if the plot has only one set of axes
+        # in order to support multiple axes on the same plot. This set will remain empty if the plot has only
+        # one set of axes
         self.stackedViews = weakref.WeakSet()
         viewBox.sigResized.connect(self.updateStackedViews)
 
         # Signals that will be emitted when mouse wheel or mouse drag events happen
         self.vb.sigMouseDragged.connect(self.handleMouseDragEvent)
         self.vb.sigMouseWheelZoomed.connect(self.handleWheelEvent)
+        self.vb.setZValue(100)  # Keep this view box on top
         if self.vb.menuEnabled():
-            self.vb.menu.sigMouseModeChanged.connect(self.changeMouseMode)
-            self.vb.menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
-            self.vb.menu.sigRestoreRanges.connect(self.restoreAxisRanges)
-            self.vb.menu.sigSetAutorange.connect(self.setPlotAutoRange)
+            self.connectMenuSignals(self.vb.menu)
+        self.stackedViews.add(self.vb)
 
     def addAxis(self, axis, name, plotDataItem=None, setXLink=False, enableAutoRangeX=True, enableAutoRangeY=True,
                 minRange=-1.0, maxRange=1.0):
@@ -81,7 +83,7 @@ class MultiAxisPlot(PlotItem):
         self.axes['bottom']['item'].linkToView(view)  # Ensure the x axis will update when the view does
 
         view.setMouseMode(self.vb.state['mouseMode'])  # Ensure that mouse behavior is consistent between stacked views
-        view.menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
+        self.connectMenuSignals(view.menu)
         axis.linkToView(view)
 
         if plotDataItem is not None:
@@ -116,6 +118,20 @@ class MultiAxisPlot(PlotItem):
         view.sigMouseWheelZoomed.connect(self.handleWheelEvent)
         self.vb.sigHistoryChanged.connect(view.scaleHistory)
 
+    def connectMenuSignals(self, view_box_menu: MultiAxisViewBoxMenu) -> None:
+        """
+        Connect the signals of a view box menu to the appropriate slots.
+
+        Parameters
+        ----------
+        view_box_menu : MultiAxisViewBoxMenu
+            The menu to connect actions to the correct slots.
+        """
+        view_box_menu.sigMouseModeChanged.connect(self.changeMouseMode)
+        view_box_menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
+        view_box_menu.sigRestoreRanges.connect(self.restoreAxisRanges)
+        view_box_menu.sigSetAutorange.connect(self.setPlotAutoRange)
+
     def updateStackedViews(self):
         """
         Callback for resizing stacked views when the geometry of their top level view changes
@@ -123,7 +139,7 @@ class MultiAxisPlot(PlotItem):
         for view in self.stackedViews:
             view.setGeometry(self.vb.sceneBoundingRect())
 
-    def linkDataToAxis(self, plotDataItem, axisName):
+    def linkDataToAxis(self, plotDataItem: PlotDataItem, axisName: str) -> None:
         """
         Links the input PlotDataItem to the axis with the given name. Raises an exception if that axis does not exist.
         Unlinks the data from any view it was previously linked to.
@@ -151,6 +167,9 @@ class MultiAxisPlot(PlotItem):
             currentView.removeItem(plotDataItem)
             plotDataItem.forgetViewBox()
 
+        if axisToLink.logMode:
+            plotDataItem.setLogMode(False, True)
+
         axisToLink.linkedView().addItem(plotDataItem)
         self.dataItems.append(plotDataItem)
         # Maintain all configurable options set by this plot
@@ -175,6 +194,9 @@ class MultiAxisPlot(PlotItem):
         if self.legend is not None and plotDataItem.name():
             self.legend.addItem(plotDataItem, name=plotDataItem.name())
 
+        # pyqtgraph expects data items on plots to be added to both the list of curves and items to function properly
+        self.curves.append(plotDataItem)
+        self.items.append(plotDataItem)
         self.curvesPerAxis[axisName] += 1
 
     def removeAxis(self, axisName):
@@ -258,6 +280,10 @@ class MultiAxisPlot(PlotItem):
         for view in self.stackedViews:
             view.enableAutoRange(x=False)
 
+    def getAxes(self) -> List[AxisItem]:
+        """ Returns all axes that have been added to this plot """
+        return [val['item'] for val in self.axes.values()]
+
     def clearAxes(self):
         """
         Cleans up all axis related data from this plot.
@@ -315,11 +341,9 @@ class MultiAxisPlot(PlotItem):
         y: bool, optional
             Set to true to enable y autorange or false to disable it. Defaults to None which will result in no change
         """
-        if len(self.stackedViews) > 0:
-            for stackedView in self.stackedViews:
-                stackedView.enableAutoRange(x=x, y=y)
-        else:
-            self.getViewBox().enableAutoRange(x=x, y=y)
+        for stackedView in self.stackedViews:
+            stackedView.enableAutoRange(x=x, y=y)
+        self.getViewBox().enableAutoRange(x=x, y=y)
 
     def clearLayout(self):
         """
@@ -354,6 +378,21 @@ class MultiAxisPlot(PlotItem):
         for y, axis in enumerate([None] + orientations["top"] + [None] + orientations["bottom"]):
             if axis is not None:
                 self.layout.addItem(axis, y, leftOffset)
+
+    def updateGrid(self, *args) -> None:
+        """ Show or hide the grid on a per-axis basis """
+        if is_qt_designer():
+            return
+        # Get the user-set value for the alpha used to draw the grid lines
+        alpha = self.ctrl.gridAlphaSlider.value()
+        x = alpha if self.ctrl.xGridCheck.isChecked() else False
+        y = alpha if self.ctrl.yGridCheck.isChecked() else False
+        all_axes = [val['item'] for val in self.axes.values()]
+        for axis in all_axes:
+            if axis.orientation in ('left', 'right'):
+                axis.setGrid(y)
+            elif axis.orientation in ('top', 'bottom'):
+                axis.setGrid(x)
 
     def handleWheelEvent(self, view, ev, axis):
         """
@@ -404,9 +443,33 @@ class MultiAxisPlot(PlotItem):
         """
         for stackedView in self.stackedViews:
             stackedView.setLeftButtonAction(mode)
+        self.vb.setLeftButtonAction(mode)
 
     def updateXAutoRange(self, val):
         """ Update the autorange values for the x-axis on all view boxes """
         self.vb.enableAutoRange(ViewBox.XAxis, val)
         for stackedView in self.stackedViews:
             stackedView.enableAutoRange(ViewBox.XAxis, val)
+
+    def updateLogMode(self) -> None:
+        """ Toggle log mode on or off for each item in the plot """
+        x = self.ctrl.logXCheck.isChecked()
+        y = self.ctrl.logYCheck.isChecked()
+
+        allAxes = self.getAxes()
+        for axis in allAxes:
+            if axis.orientation in ('bottom', 'top'):
+                axis.setLogMode(x)
+            elif axis.orientation in ('left', 'right'):
+                axis.setLogMode(y)
+
+        for i in self.items:
+            if hasattr(i, 'setLogMode'):
+                i.setLogMode(x, y)
+
+        for i in self.dataItems:
+            if hasattr(i, 'setLogMode'):
+                i.setLogMode(x, y)
+
+        self.enableAutoRange()
+        self.recomputeAverages()

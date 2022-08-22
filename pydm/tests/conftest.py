@@ -1,11 +1,8 @@
 # coding: utf-8
 # Fixtures for PyDM Unit Tests
 
-import pytest
-
-from pytestqt.qt_compat import qt_api
-
 import numpy as np
+import pytest
 import tempfile
 import logging
 
@@ -43,13 +40,19 @@ class ConnectionSignals(QObject):
     prec_signal = Signal(int)
     upper_ctrl_limit_signal = Signal([float])
     lower_ctrl_limit_signal = Signal([float])
+    upper_alarm_limit_signal = Signal([float])
+    lower_alarm_limit_signal = Signal([float])
+    upper_warning_limit_signal = Signal([float])
+    lower_warning_limit_signal = Signal([float])
 
     def __init__(self):
         super(ConnectionSignals, self).__init__()
         self._value = None
+        self._received_values = {}
 
     def reset(self):
         self._value = None
+        self._received_values.clear()
 
     @property
     def value(self):
@@ -76,6 +79,23 @@ class ConnectionSignals(QObject):
             The value received from a PyDM widget
         """
         self._value = val
+
+    @Slot(object)
+    def receive_value(self, name: str, value: object) -> None:
+        """
+        Slot for receiving a value from a signal.
+
+        Parameters
+        ----------
+        name : str
+            Name to associate with the value received
+        value : object
+            The value that was sent by the signal
+        """
+        self._received_values[name] = value
+
+    def __getitem__(self, name):
+        return self._received_values[name]
 
 
 @pytest.fixture(scope="function")

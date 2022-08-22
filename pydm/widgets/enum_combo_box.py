@@ -44,6 +44,11 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         # This flag helps tracking title change followed immediately after adding a new item.
         self._new_item_added = False
 
+    def wheelEvent(self, e):
+        #To ignore mouse wheel events
+        e.ignore()
+        return
+
     def addItem(self, text, userData=None):
         """
         Adds an item to the combobox.

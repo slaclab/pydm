@@ -367,19 +367,21 @@ class BasePlotAxisItem(AxisItem):
 
     Parameters
     ----------
-    axisName: str
+    name: str
         The name of the axis
-    axisOrientation: str, optional
+    orientation: str, optional
         The orientation of this axis. The default for this value is 'left'. Must be set to either 'right', 'top',
         'bottom', or 'left'. See: https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
     label: str, optional
         The label to be displayed along the axis
-    axisMinRange: float, optional
+    minRange: float, optional
         The minimum value to be displayed on this axis
-    axisMaxRange: float, optional
+    maxRange: float, optional
         The maximum value to be displayed on this axis
-    axisAutoRange: bool, optional
+    autoRange: bool, optional
         Whether or not this axis should automatically update its range as it receives new data
+    logMode: bool, optional
+        If true, this axis will start in logarithmic mode, will be linear otherwise
     **kws: optional
         Extra arguments for CSS style options for this axis
     """
@@ -388,7 +390,7 @@ class BasePlotAxisItem(AxisItem):
                                      ('Right', 'right')])
 
     def __init__(self, name, orientation='left', label=None, minRange=-1.0,
-                 maxRange=1.0, autoRange=True, **kws):
+                 maxRange=1.0, autoRange=True, logMode=False, **kws):
         super(BasePlotAxisItem, self).__init__(orientation, **kws)
 
         self._name = name
@@ -397,6 +399,7 @@ class BasePlotAxisItem(AxisItem):
         self._min_range = minRange
         self._max_range = maxRange
         self._auto_range = autoRange
+        self._log_mode = logMode
 
     @property
     def name(self):
@@ -519,6 +522,28 @@ class BasePlotAxisItem(AxisItem):
         """
         self._auto_range = auto_range
 
+    @property
+    def log_mode(self):
+        """
+        Return whether or not this axis is using logarithmic mode
+
+        Returns
+        -------
+        bool
+        """
+        return self._log_mode
+
+    @log_mode.setter
+    def log_mode(self, log_mode):
+        """
+        Set whether or not this axis is using logarithmic mode
+
+        Parameters
+        ----------
+        log_mode: bool
+        """
+        self._log_mode = log_mode
+
     def to_dict(self):
         """
         Returns an OrderedDict representation with values for all properties
@@ -533,7 +558,8 @@ class BasePlotAxisItem(AxisItem):
                             ("label", self._label),
                             ("minRange", self._min_range),
                             ("maxRange", self._max_range),
-                            ("autoRange", self._auto_range)])
+                            ("autoRange", self._auto_range),
+                            ("logMode", self._log_mode)])
 
 
 class BasePlot(PlotWidget, PyDMPrimitiveWidget):
@@ -569,7 +595,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.redraw_timer = QTimer(self)
         self.redraw_timer.timeout.connect(self.redrawPlot)
 
-        self._redraw_rate = 30  # Redraw at 30 Hz by default.
+        self._redraw_rate = 1  # Redraw at 1 Hz by default.
         self.maxRedrawRate = self._redraw_rate
         self._axes = []
         self._curves = []
@@ -615,8 +641,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def addCurve(self, plot_data_item, curve_color=None, y_axis_name=None):
         """
-        Adds a curve to this plot. If the y axis parameters are specified, either link this curve to an existing
-        axis if that axis is already part of this plot, or create a new one and link the curve to it.
+        Adds a curve to this plot. 
+
+        If the y axis parameters are specified, either link this curve to an
+        existing axis if that axis is already part of this plot, or create a
+        new one and link the curve to it.
+
         Parameters
         ----------
         plot_data_item: BasePlotCurveItem
@@ -624,8 +654,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         curve_color: QColor, optional
             The color to draw the curve and axis label in
         y_axis_name: str, optional
-            The name of the axis to link the curve with. If this is the first time seeing this name,
-            then a new axis will be created for it.
+            The name of the axis to link the curve with. If this is the first
+            time seeing this name, then a new axis will be created for it.
         """
 
         if curve_color is None:
@@ -636,9 +666,14 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._curves.append(plot_data_item)
 
         if y_axis_name is None:
-            # If the user did not name the axis, use the default ones. Note: multiple calls to setAxisItems() are ok
-            self.plotItem.setAxisItems()
-            self.addItem(plot_data_item)
+            if utilities.is_qt_designer():
+                # If we are just in designer, add an axis that will not conflict with the pyqtgraph default
+                self.addAxis(plot_data_item=plot_data_item, name='Axis 1', orientation='left')
+            # If not in designer and the user did not name the axis, use the pyqtgraph default one named left
+            elif 'left' not in self.plotItem.axes:
+                self.addAxis(plot_data_item=plot_data_item, name='left', orientation='left')
+            else:
+                self.plotItem.linkDataToAxis(plot_data_item, 'left')
         elif y_axis_name in self.plotItem.axes:
             # If the user has chosen an axis that already exists for this curve, simply link the data to that axis
             self.plotItem.linkDataToAxis(plot_data_item, y_axis_name)
@@ -653,9 +688,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def addAxis(self, plot_data_item: BasePlotCurveItem, name: str, orientation: str,
                 label: Optional[str] = None, min_range: Optional[float] = -1.0,
-                max_range: Optional[float] = 1.0, enable_auto_range: Optional[bool] = True):
+                max_range: Optional[float] = 1.0, enable_auto_range: Optional[bool] = True,
+                log_mode: Optional[bool] = False):
         """
-        Create an AxisItem with the input name and orientation, and add it to this plot.
+        Create an AxisItem with the input name and orientation, and add it to
+        this plot.
+
         Parameters
         ----------
         plot_data_item: BasePlotCurveItem
@@ -670,9 +708,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             The minimum range to display on the axis
         max_range: float
             The maximum range to display on the axis
-        enable_auto_range: bool
+        enable_auto_range: bool, optional
             Whether or not to use autorange for this axis. Min and max range will not be respected
             when data goes out of range if this is set to True
+        log_mode: bool, optional
+            Whether or not this axis should start out in logarithmic mode.
 
         Raises
         ------
@@ -684,9 +724,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             return
 
         axis = BasePlotAxisItem(name=name, orientation=orientation, label=label, minRange=min_range,
-                                maxRange=max_range, autoRange=enable_auto_range)
+                                maxRange=max_range, autoRange=enable_auto_range, logMode=log_mode)
         axis.setLabel(text=label)
         axis.enableAutoSIPrefix(False)
+        if plot_data_item is not None:
+            plot_data_item.setLogMode(False, log_mode)
+        axis.setLogMode(log_mode)
         self._axes.append(axis)
         # If the x axis is just timestamps, we don't want autorange on the x axis
         setXLink = hasattr(self, '_plot_by_timestamps') and self._plot_by_timestamps
@@ -788,11 +831,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         return self.getAxis('bottom')._pen.color()
 
     def setAxisColor(self, color):
-        if self.getAxis('bottom')._pen.color() != color:
-            self.getAxis('bottom').setPen(color)
-            self.getAxis('left').setPen(color)
-            self.getAxis('top').setPen(color)
-            self.getAxis('right').setPen(color)
+        for axis in self.plotItem.axes.values():
+            axis['item'].setPen(color)
 
     axisColor = Property(QColor, getAxisColor, setAxisColor)
 
@@ -828,7 +868,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         for d in new_list:
             self.addAxis(plot_data_item=None, name=d.get('name'), orientation=d.get('orientation'),
                          label=d.get('label'), min_range=d.get('minRange'), max_range=d.get('maxRange'),
-                         enable_auto_range=d.get('autoRange'))
+                         enable_auto_range=d.get('autoRange'), log_mode=d.get('logMode'))
+        if 'bottom' in self.plotItem.axes:
+            # Ensure the added y axes get the color that was set
+            self.setAxisColor(self.getAxis('bottom')._pen.color())
+        if self.getShowYGrid() or self.getShowXGrid():
+            self.plotItem.updateGrid()
 
     yAxes = Property("QStringList", getYAxes, setYAxes, designable=False)
 
@@ -839,10 +884,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         Provide whether the right y-axis is being shown.
 
-        Returns : bool
+        Returns
         -------
-        True if the graph shows the right y-axis. False if not.
-
+        bool
+            True if the graph shows the right y-axis. False if not.
         """
         return self._show_right_axis
 
@@ -931,8 +976,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         Check if the legend is being shown.
 
-        Returns : bool
+        Returns
         -------
+        bool
             True if the legend is displayed on the graph; False if not.
         """
         return self._show_legend

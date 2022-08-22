@@ -3,9 +3,9 @@
 
 import pytest
 
-from qtpy.QtWidgets import QApplication, QDoubleSpinBox
+from qtpy.QtWidgets import QApplication
 from qtpy.QtGui import QKeyEvent
-from qtpy.QtCore import Property, QEvent, Qt
+from qtpy.QtCore import QEvent, Qt
 
 from ...widgets.spinbox import PyDMSpinbox
 from ...tests.widgets.test_lineedit import find_action_from_menu
@@ -69,6 +69,7 @@ def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_
     """
     pydm_spinbox = PyDMSpinbox()
     qtbot.addWidget(pydm_spinbox)
+    pydm_spinbox.setEnabled(True)
 
     with qtbot.waitExposed(pydm_spinbox):
         pydm_spinbox.show()
@@ -334,7 +335,7 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
 def test_write_on_press(qtbot, signals, monkeypatch, key_pressed, initial_spinbox_value,
                         expected_result, write_on_press):
     """
-    Test sending the value from the widget to the channel on key press when writeOnPress enabled. 
+    Test sending the value from the widget to the channel on key press when writeOnPress enabled.
 
     Expectations:
     The correct value is sent to the channelValueChanged slot on key press and no value is send when disabled.
@@ -390,11 +391,10 @@ def test_write_on_press(qtbot, signals, monkeypatch, key_pressed, initial_spinbo
         # Check for change if write on press enabled
         if pydm_spinbox.writeOnPress:
             assert signals.value == expected_value
-            
-        # Check for no change if disabled
-        else: 
-            assert signals.value == initial_spinbox_value
 
+        # Check for no change if disabled
+        else:
+            assert signals.value == initial_spinbox_value
 
     # check the key press with write_on_press
     press_key_and_verify(key_pressed, Qt.NoModifier, expected_result, write_on_press)

@@ -26,7 +26,7 @@ def test_timeplotcurveitem_construct(qtbot, channel_address, name):
             not pydm_timeplot_curve_item.to_dict()["name"]
 
     assert pydm_timeplot_curve_item._bufferSize == MINIMUM_BUFFER_SIZE
-    assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.SynchronousMode
+    assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.OnValueChange
     assert np.array_equal(pydm_timeplot_curve_item.data_buffer, np.zeros((2, pydm_timeplot_curve_item._bufferSize),
                                                                          order='f', dtype=float))
     assert pydm_timeplot_curve_item.connected is False
@@ -104,12 +104,12 @@ def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data)
     """
     pydm_timeplot_curve_item = TimePlotCurveItem()
 
-    assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.SynchronousMode
+    assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.OnValueChange
 
     pydm_timeplot_curve_item.setUpdatesAsynchronously(async_update)
     if async_update:
-        assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.AsynchronousMode if async_update else \
-            pydm_timeplot_curve_item._update_mode == PyDMTimePlot.SynchronousMode
+        assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.AtFixedRated if async_update else \
+            pydm_timeplot_curve_item._update_mode == PyDMTimePlot.OnValueChange
 
     expected_data_buffer = np.zeros((2, pydm_timeplot_curve_item._bufferSize), order='f', dtype=float)
     expected_data_buffer[0] = pydm_timeplot_curve_item.data_buffer[0]
@@ -126,7 +126,7 @@ def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data)
         assert pydm_timeplot_curve_item.points_accumulated == 1
 
     pydm_timeplot_curve_item.resetUpdatesAsynchronously()
-    assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.SynchronousMode
+    assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.OnValueChange
 
 
 @pytest.mark.parametrize("async_update, new_data", [
@@ -138,7 +138,7 @@ def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data)
 def test_timeplotcurveitem_async_update(qtbot, signals, async_update, new_data):
     pydm_timeplot_curve_item = TimePlotCurveItem()
 
-    assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.SynchronousMode
+    assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.OnValueChange
 
     pydm_timeplot_curve_item.setUpdatesAsynchronously(async_update)
 

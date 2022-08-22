@@ -1,21 +1,24 @@
-import os
-import sys
+import functools
+import importlib
+import importlib.util
 import logging
-import platform
 import ntpath
+import os
+import platform
 import shlex
+import sys
+import types
+import uuid
 
-from qtpy import QtWidgets, QtCore
+from typing import List, Optional
 
-from .units import find_unittype, convert, find_unit_options
-from . import macro
-from . import colors
-from .remove_protocol import remove_protocol, protocol_and_address
-from .connection import establish_widget_connections, close_widget_connections
+from qtpy import QtCore, QtGui, QtWidgets
+
+from . import colors, macro, shortcuts
+from .connection import close_widget_connections, establish_widget_connections
 from .iconfont import IconFont
-from ..qtdesigner import DesignerHooks
-
-from . import shortcuts
+from .remove_protocol import protocol_and_address, remove_protocol
+from .units import convert, find_unit_options, find_unittype
 
 logger = logging.getLogger(__name__)
 
@@ -60,8 +63,9 @@ def is_pydm_app(app=None):
     bool
         True if it is a PyDMApplication, False otherwise.
     """
-    from ..application import PyDMApplication
     from qtpy.QtWidgets import QApplication
+
+    from ..application import PyDMApplication
     if app is None:
         app = QApplication.instance()
     if isinstance(app, PyDMApplication):
@@ -79,6 +83,7 @@ def is_qt_designer():
     bool
         True if inside Designer, False otherwise.
     """
+    from ..qtdesigner import DesignerHooks
     return DesignerHooks().form_editor is not None
 
 
@@ -94,6 +99,8 @@ def get_designer_current_path():
     """
     if not is_qt_designer():
         return None
+
+    from ..qtdesigner import DesignerHooks
     form_editor = DesignerHooks().form_editor
     win_manager = form_editor.formWindowManager()
     form_window = win_manager.activeFormWindow()
@@ -157,7 +164,7 @@ def _screen_file_extensions(preferred_extension):
     """
     extensions = [".py", ".ui"]  # search for screens with these extensions
     try:
-        import adl2pydm  # proceed only if package is importable
+        import adl2pydm  # proceed only if package is importable  # noqa: F401
         extensions.append(".adl")
     except ImportError:
         pass
@@ -175,13 +182,14 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
     """
     Look for files at the search paths common to PyDM.
 
-    Search Order
-    ------------
-    - base_path
-    - Qt Designer Path
-    - Current Dir
-    - Dirs in extra_path
-    - Dirs in PYDM_DISPLAYS_PATH
+    The search order is as follows:
+
+    * The ``base_path`` argument
+    * Qt Designer Path - the path for the current form as reported by the
+      designer
+    * The current working directory
+    * Directories listed in ``extra_path``
+    * Directories listed in the environment variable ``PYDM_DISPLAYS_PATH``
 
     Parameters
     ----------
@@ -361,6 +369,7 @@ def only_main_thread(func):
     -------
     wrapper
     """
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         main_t = QtWidgets.QApplication.instance().thread()
         curr_t = QtCore.QThread.currentThread()
@@ -376,3 +385,165 @@ def only_main_thread(func):
         raise ValueError("Parameter must be a callable.")
 
     return wrapper
+
+
+def log_failures(
+    logger: logging.Logger,
+    explanation: str = "Failed to run {func.__name__}",
+    include_traceback: bool = False,
+    level: int = logging.WARNING,
+):
+    """
+    Decorator that wraps a function to be run.
+
+    Exceptions raised while executing that function will be logged.
+    In case of an exception, the wrapper will return ``None``.
+
+    Parameters
+    ----------
+    logger : logging.Logger
+        The logger instance to log messages to.
+    explanation : str, optional
+        The explanation message to include.  Format arguments include:
+            ``func``, ``args``, ``kwargs``, and the exception ``ex``.
+    include_traceback : bool, optional
+        Include traceback information in the log message.
+    level : int, optional
+        Logging level to use.
+    """
+    def wrapper(func: callable):
+        @functools.wraps(func)
+        def wrapped(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as ex:
+                msg = explanation.format(
+                    func=func, args=args, kwargs=kwargs, ex=ex
+                )
+                if include_traceback:
+                    logger.log(level, msg, exc_info=ex)
+                else:
+                    logger.log(level, msg)
+                return None
+
+        return wrapped
+
+    return wrapper
+
+
+def import_module_by_filename(
+    source_filename: str, *,
+    add_to_modules: bool = True
+) -> types.ModuleType:
+    """
+    For a given source filename, import it and search for objects.
+
+    Parameters
+    ----------
+    source_filename : str
+        The source code filename.
+
+    add_to_modules : bool, optional, keyword-only
+        Add the imported module to ``sys.modules``.  Defaults to ``True``.
+
+    Returns
+    -------
+    module : types.ModuleType
+        The imported module.
+    """
+    module_dir = os.path.dirname(os.path.abspath(source_filename))
+    if module_dir not in sys.path:
+        sys.path.append(module_dir)
+
+    module_name = str(uuid.uuid4())
+    spec = importlib.util.spec_from_file_location(module_name, source_filename)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if add_to_modules:
+        sys.modules[module_name] = module
+    return module
+
+def get_clipboard() -> Optional[QtGui.QClipboard]:
+    """Get the clipboard instance. Requires a QApplication."""
+    app = QtWidgets.QApplication.instance()
+    if app is None:
+        return None
+
+    return QtWidgets.QApplication.clipboard()
+
+
+def get_clipboard_modes() -> List[int]:
+    """
+    Get the clipboard modes for the current platform.
+
+    Returns
+    -------
+    list of int
+        Qt-specific modes to try for interacting with the clipboard.
+    """
+    clipboard = get_clipboard()
+    if clipboard is None:
+        return []
+
+    if platform.system() == "Linux":
+        # Mode selection is only valid for X11.
+        return [
+            QtGui.QClipboard.Selection,
+            QtGui.QClipboard.Clipboard
+        ]
+
+    return [QtGui.QClipboard.Clipboard]
+
+
+def copy_to_clipboard(text: str, *, quiet: bool = False):
+    """
+    Copy ``text`` to the clipboard.
+
+    Parameters
+    ----------
+    text : str
+        The text to copy to the clipboard.
+
+    quiet : bool, optional, keyword-only
+        If quiet is set, do not log the copied text.  Defaults to False.
+    """
+    clipboard = get_clipboard()
+    if clipboard is None:
+        return None
+
+    for mode in get_clipboard_modes():
+        clipboard.setText(text, mode=mode)
+        event = QtCore.QEvent(QtCore.QEvent.Clipboard)
+        app = QtWidgets.QApplication.instance()
+        if app is not None:
+            app.sendEvent(clipboard, event)
+
+    if not quiet:
+        logger.warning(
+            (
+                "Copied text to clipboard:\n"
+                "-------------------------\n"
+                "%s\n"
+                "-------------------------\n"
+            ),
+            text
+        )
+
+
+def get_clipboard_text() -> str:
+    """
+    Get ``text`` from the clipboard. If unavailable or unset, empty string.
+
+    Returns
+    -------
+    str
+        The clipboard text, if available.
+    """
+    clipboard = get_clipboard()
+    if clipboard is None:
+        return ""
+    for mode in get_clipboard_modes():
+        text = clipboard.text(mode=mode)
+        if text:
+            return text
+    return ""

@@ -12,7 +12,7 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
     def __init__(self, plot, parent=None):
         super(PyDMScatterPlotCurvesModel, self).__init__(plot, parent=parent)
         self._column_names = ('Y Channel', 'X Channel') + self._column_names
-        self._column_names += ('Redraw Mode', 'Buffer Size')
+        self._column_names += ('Redraw Mode', 'Buffer Size', 'Buffer Size Channel')
 
     def get_data(self, column_name, curve):
         if column_name == "Y Channel":
@@ -27,6 +27,8 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
             return curve.redraw_mode
         elif column_name == "Buffer Size":
             return curve.getBufferSize()
+        elif column_name == "Buffer Size Channel":
+            return curve.bufferSizeChannelAddress or ""
         return super(PyDMScatterPlotCurvesModel, self).get_data(
             column_name, curve)
 
@@ -39,6 +41,10 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
             curve.redraw_mode = int(value)
         elif column_name == "Buffer Size":
             curve.setBufferSize(int(value))
+        elif column_name == "Buffer Size Channel":
+            if len(str(value).strip()) < 1:
+                value = None
+            curve.bufferSizeChannelAddress = str(value)
         else:
             return super(PyDMScatterPlotCurvesModel, self).set_data(
                 column_name=column_name, curve=curve, value=value)

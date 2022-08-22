@@ -20,3 +20,10 @@ STYLESHEET = os.getenv("PYDM_STYLESHEET", None)
 STYLESHEET_INCLUDE_DEFAULT = os.getenv("PYDM_STYLESHEET_INCLUDE_DEFAULT", False)
 
 CONFIRM_QUIT = os.getenv("PYDM_CONFIRM_QUIT", "n").lower() in ("y", "t", "1", "true")
+
+ENTRYPOINT_EXTERNAL_TOOL = "pydm.tool"
+ENTRYPOINT_DATA_PLUGIN = "pydm.data_plugin"
+ENTRYPOINT_WIDGET = "pydm.widget"
+
+EXTERNAL_TOOL_SUFFIX = "_tool.py"
+DATA_PLUGIN_SUFFIX = "_plugin.py"

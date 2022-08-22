@@ -40,16 +40,20 @@ as well as a straightforward python framework to build complex applications.
 .. toctree::
    :maxdepth: 1
    :caption: Data Plugins
-   
+
    data_plugins/local_plugin.rst
    data_plugins/calc_plugin.rst
+   data_plugins/p4p_plugin.rst
+   data_plugins/external_plugins.rst
 
 .. toctree::
    :maxdepth: 1
    :caption: Developers Corner
 
    development/development.rst
+   development/external_tools.rst
    widgets/widget_rules/customizing.rst
+   development/designer_widgets.rst
    development/resources.rst
 
 .. toctree::

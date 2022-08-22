@@ -1,3 +1,4 @@
+import ast
 import math
 import os
 import logging
@@ -655,8 +656,7 @@ class PyDMDrawingImage(PyDMDrawing):
                 base_path = os.path.dirname(parent_display.loaded_file())
             abs_path = find_file(abs_path, base_path=base_path)
             if not abs_path:
-                logger.exception("Unable to find full filepath for %s",
-                                 self._file)
+                logger.error("Unable to find full filepath for %s", self._file)
                 return
 
         # Check that the path exists
@@ -1102,7 +1102,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
     def draw_item(self, painter):
         """
         Draws the segmented line after setting up the canvas with a call to
-        ```PyDMDrawing.draw_item```.
+        ``PyDMDrawing.draw_item``.
         """
         super(PyDMDrawingPolyline, self).draw_item(painter)
         x, y, w, h = self.get_bounds()
@@ -1111,7 +1111,12 @@ class PyDMDrawingPolyline(PyDMDrawing):
             "convert point to drawing coordinates"
             # drawing coordinates are centered: (0,0) is in center
             # our points are absolute: (0,0) is upper-left corner
-            u, v = map(int, pt.split(","))
+            if isinstance(pt, str):
+                # 2022-05-11: needed for backwards compatibility support
+                # PyDM releases up to v1.15.1
+                # adl2pydm tags up to 0.0.2
+                pt = tuple(map(int, pt.split(",")))
+            u, v = pt
             return QPointF(u+x, v+y)
 
         if len(self._points) > 1:
@@ -1119,68 +1124,118 @@ class PyDMDrawingPolyline(PyDMDrawing):
                 painter.drawLine(p2d(p1), p2d(self._points[i+1]))
 
     def getPoints(self):
-        return self._points
+        """Convert internal points representation for use as QStringList."""
+        points = [
+            f"{pt[0]}, {pt[1]}"
+            for pt in self._points
+        ]
+        return points
 
-    def _validator_(self, value):
+    def _validator(self, value):
         """
         ensure that `value` has correct form
 
         Parameters
         ----------
-        value : [str]
+        value : [ordered pairs]
             List of strings representing ordered pairs
             of integer coordinates.  Each ordered pair
-            is comma-separated (although white-space
-            separated is acceptable as input).
+            is a tuple or list.
 
         Returns
         ----------
-        verified : [str]
-            List of strings in standard format
+        verified : [ordered pairs]
+            List of `tuple(number, number)`.
 
         """
-        def isinteger(value):
-            value = value.strip()
+        def isfloat(value):
+            if isinstance(value, str):
+                value = value.strip()
             try:
                 float(value)
                 return True
             except:
                 return False
 
+        def validate_point(i, point):
+            """Ignore (instead of fail on) any of these pathologies."""
+            if isinstance(point, str):
+                try:
+                    point = ast.literal_eval(point)
+                except SyntaxError:
+                    logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
+                    return
+            if not isinstance(point, (list, tuple)) or len(point) != 2:
+                logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
+                return
+            try:
+                point = list(map(float, point))  # ensure all values are float
+            except ValueError:
+                logger.error("point %d content must be numeric, received '%s'", i, pt)
+                return
+
+            return point
+
         verified = []
-        for i, pt in enumerate(value):
-            point = pt.split(",")
-            if len(point) != 2:
-                point = pt.split()    # tolerant of space-separated
-            if len(point) != 2:
-                emsg = "polyline point %d must be two values, comma-separated, received '%s'" % (i+1, pt)
-                logger.exception(emsg)
-                return
-            if not isinteger(point[0]):
-                emsg = "polyline point %d content must be integer, received '%s'" % (i+1, point[0])
-                logger.exception(emsg)
-                return
-            if not isinteger(point[1]):
-                emsg = "polyline point %d content must be integer, received '%s'" % (i+1, point[1])
-                logger.exception(emsg)
-                return
-            verified.append(", ".join(point))
+        for i, pt in enumerate(value, start=1):
+            point = validate_point(i, pt)
+            if point is not None:
+                verified.append(point)
 
         return verified
 
     def setPoints(self, value):
-        if len(value) < 2:
-            emsg = "Must have two or more points"
-            logger.exception(emsg)
-            return
-
-        verified = self._validator_(value)
+        verified = self._validator(value)
         if verified is not None:
+            if len(verified) < 2:
+                logger.error("Must have two or more points")
+                return
+
             self._points = verified
             self.update()
 
     def resetPoints(self):
         self._points = []
         self.update()
+
+    points = Property("QStringList", getPoints, setPoints, resetPoints)
+
+
+class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
+    """
+    A widget contains an irregular polygon (arbitrary number of vertices, arbitrary lengths).
+
+    This is a special case of the PyDMDrawingPolyline, adding the requirement that
+    the last point is always identical to the first point.
+
+    This widget is created for compatibility with MEDM's *polygon* widget.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
+
+    def getPoints(self):
+        return super(PyDMDrawingIrregularPolygon, self).getPoints()
+
+    def resetPoints(self):
+        super(PyDMDrawingIrregularPolygon, self).resetPoints()
+
+    def setPoints(self, points):
+        verified = self._validator(points)
+        if verified is not None:
+            if len(verified) > 1:
+                if verified[0] != verified[-1]:
+                    verified.append(verified[0])  # close the polygon
+
+            if len(verified) < 3:
+                logger.error("Must have three or more points")
+                return
+
+            self._points = verified
+            self.update()
 
     points = Property("QStringList", getPoints, setPoints, resetPoints)

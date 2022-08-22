@@ -18,15 +18,14 @@ To help users extend this feature, PyDM offers two main configurations that can
 be used:
 
 - **PYDM_STYLESHEET**
-Path to the QSS files defining the global stylesheets for the PyDM application.
-When used, it will override the default look. If using multiple files they
-must be separated by the path separator.
-E.g.: ``/path_to/my_style_1.qss:/path_to/other/my_other_style.qss``
-
+  Path to the QSS files defining the global stylesheets for the PyDM
+  application. When used, it will override the default look. If using multiple
+  files they must be separated by the path separator.
+  For example: ``/path_to/my_style_1.qss:/path_to/other/my_other_style.qss``
 - **PYDM_STYLESHEET_INCLUDE_DEFAULT**
-Whether or not to include the PyDM Default stylesheet along with customized
-files. Note that the PyDM default stylesheet will have lower precedence compared
-to files specified at ``PYDM_STYLESHEET``
+  Whether or not to include the PyDM Default stylesheet along with customized
+  files. Note that the PyDM default stylesheet will have lower precedence
+  compared to files specified at ``PYDM_STYLESHEET``.
 
 Processing Order of Style Sheets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

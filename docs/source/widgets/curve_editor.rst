@@ -68,13 +68,18 @@ And for the axes tab:
    max values specified will not be respected, so set this to false if you wish to only view data falling
    within those values.
 
+* Log Mode
+   When set to true this axis will plot data using a logarithmic scale. Setting it to false will keep
+   the scale as the linear default.
+
 .. Note::
   This is not applicable for users interacting with widgets via Python code.
   In this case you will need to serialize the list of JSON strings and use the
   ``setAxes`` and  ``setCurves`` property to configure the plot properly.
 
 Bar Graphs
-++++
+++++++++++
+
 By selecting "Bar" from the style drop-down as described above, a curve can be plotted as a bar
 graph for waveform and time plots. This style of plot will have four additional options that may be set:
 

@@ -30,8 +30,14 @@ class Connection(PyDMConnection):
         self._unit = None
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
+        self._upper_alarm_limit = None
+        self._lower_alarm_limit = None
+        self._upper_warning_limit = None
+        self._lower_warning_limit = None
 
-        self.pv = epics.get_pv(pv, connection_callback=self.send_connection_state, form='ctrl', auto_monitor=SubscriptionType.DBE_VALUE|SubscriptionType.DBE_ALARM|SubscriptionType.DBE_PROPERTY, access_callback=self.send_access_state)
+        monitor_mask = SubscriptionType.DBE_VALUE | SubscriptionType.DBE_ALARM | SubscriptionType.DBE_PROPERTY
+        self.pv = epics.get_pv(pv, connection_callback=self.send_connection_state, form='ctrl',
+                               auto_monitor=monitor_mask, access_callback=self.send_access_state)
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
         self.add_listener(channel)
 
@@ -43,6 +49,10 @@ class Connection(PyDMConnection):
         self._unit = None
         self._upper_ctrl_limit = None
         self._lower_ctrl_limit = None
+        self._upper_alarm_limit = None
+        self._lower_alarm_limit = None
+        self._upper_warning_limit = None
+        self._lower_warning_limit = None
 
     def send_new_value(self, value=None, char_value=None, count=None, typefull=None, type=None, *args, **kws):
         self.update_ctrl_vars(**kws)
@@ -65,7 +75,9 @@ class Connection(PyDMConnection):
                 else:
                     self.new_value_signal[str].emit(char_value)
 
-    def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None, precision=None, *args, **kws):
+    def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None,
+                         upper_alarm_limit=None, lower_alarm_limit=None, upper_warning_limit=None,
+                         lower_warning_limit=None, precision=None, *args, **kws):
         if severity is not None and self._severity != severity:
             self._severity = severity
             self.new_severity_signal.emit(int(severity))
@@ -90,6 +102,18 @@ class Connection(PyDMConnection):
         if lower_ctrl_limit is not None and self._lower_ctrl_limit != lower_ctrl_limit:
             self._lower_ctrl_limit = lower_ctrl_limit
             self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)
+        if upper_alarm_limit is not None and self._upper_alarm_limit != upper_alarm_limit:
+            self._upper_alarm_limit = upper_alarm_limit
+            self.upper_alarm_limit_signal.emit(upper_alarm_limit)
+        if lower_alarm_limit is not None and self._lower_alarm_limit != lower_alarm_limit:
+            self._lower_alarm_limit = lower_alarm_limit
+            self.lower_alarm_limit_signal.emit(lower_alarm_limit)
+        if upper_warning_limit is not None and self._upper_warning_limit != upper_warning_limit:
+            self._upper_warning_limit = upper_warning_limit
+            self.upper_warning_limit_signal.emit(upper_warning_limit)
+        if lower_warning_limit is not None and self._lower_warning_limit != lower_warning_limit:
+            self._lower_warning_limit = lower_warning_limit
+            self.lower_warning_limit_signal.emit(lower_warning_limit)
 
     def send_access_state(self, read_access, write_access, *args, **kws):
         if is_read_only():

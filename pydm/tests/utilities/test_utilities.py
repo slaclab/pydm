@@ -1,10 +1,14 @@
+import logging
 import os
 import platform
 import tempfile
 
-from ...utilities import (is_pydm_app, path_info, which, find_display_in_path,
-                          is_qt_designer)
 from qtpy import QtWidgets
+
+from ...utilities import (find_display_in_path, is_pydm_app, is_qt_designer,
+                          log_failures, path_info, which)
+
+logger = logging.getLogger(__name__)
 
 
 def test_is_pydm_app(qapp):
@@ -51,22 +55,48 @@ def test_find_display_in_path():
 def test_which():
     if platform.system() == 'Windows':
         out = which('ping')
-        assert (out.lower() == 'c:\windows\system32\ping.exe')
+        assert out.lower() == r'c:\windows\system32\ping.exe'
 
-        out = which('C:\Windows\System32\PING.EXE')
-        assert (out.lower() == 'c:\windows\system32\ping.exe')
+        out = which(r'C:\Windows\System32\PING.EXE')
+        assert out.lower() == r'c:\windows\system32\ping.exe'
     else:
         out = which('ls')
-        assert ('ls' in out)
+        assert 'ls' in out
 
         out = which('/bin/ls')
-        assert ('ls' in out)
+        assert 'ls' in out
 
     out = which('non_existant_binary')
-    assert (out is None)
+    assert out is None
 
     out = which('/bin/non_existant_binary')
-    assert (out is None)
+    assert out is None
 
     out = which('ls', path='')
-    assert (out is None)
+    assert out is None
+
+
+def test_log_failure_capture(caplog):
+    @log_failures(logger)
+    def inner():
+        raise ValueError()
+
+    with caplog.at_level(logging.WARNING):
+        result = inner()
+
+    assert result is None
+
+    assert len(caplog.records) == 1
+    assert "Failed to run inner" in str(caplog.records[0])
+
+
+def test_log_failure_pass(caplog):
+    @log_failures(logger)
+    def inner():
+        return 5
+
+    with caplog.at_level(logging.WARNING):
+        result = inner()
+
+    assert result == 5
+    assert not caplog.records

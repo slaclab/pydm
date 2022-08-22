@@ -116,14 +116,17 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.archive_data_received_signal.emit()
 
     def insert_archive_data(self, data: np.ndarray) -> None:
-        """ Inserts data directly into the archive buffer. An example use case would be
-            zooming into optimized mean-value data and replacing it with the raw data
+        """
+        Inserts data directly into the archive buffer.
 
-             Parameters
-             ----------
-             data : np.ndarray
-                A numpy array of shape (2, length_of_data). Index 0 contains timestamps and index 1 contains
-                the data observations.
+        An example use case would be zooming into optimized mean-value data and
+        replacing it with the raw data.
+
+        Parameters
+        ----------
+        data : np.ndarray
+           A numpy array of shape (2, length_of_data). Index 0 contains
+           timestamps and index 1 contains the data observations.
         """
         archive_data_length = len(data[0])
         min_x = data[0][0]
@@ -216,14 +219,13 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     def __init__(self, parent: Optional[QObject] = None, init_y_channels: List[str] = [],
                  background: str = 'default', optimized_data_bins: int = 2000):
         super(PyDMArchiverTimePlot, self).__init__(parent=parent, init_y_channels=init_y_channels,
-                                                   plot_by_timestamps=True, background=background)
+                                                   plot_by_timestamps=True, background=background,
+                                                   bottom_axis=DateAxisItem('bottom'))
         self.optimized_data_bins = optimized_data_bins
         self._min_x = None
         self._prev_x = None  # Holds the minimum x-value of the previous update of the plot
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
         self._archive_request_queued = False
-        self._bottom_axis = DateAxisItem('bottom')  # Nice for displaying data across long periods of time
-        self.plotItem.setAxisItems({'bottom': self._bottom_axis})
 
     def updateXAxis(self, update_immediately: bool = False) -> None:
         """ Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,

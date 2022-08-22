@@ -84,7 +84,7 @@ def test_baseplot_construct(qtbot):
     assert base_plot.getShowXGrid() is False
     assert base_plot.getShowYGrid() is False
     assert isinstance(base_plot.redraw_timer, QTimer)
-    assert base_plot._redraw_rate == 30
+    assert base_plot._redraw_rate == 1
     assert base_plot.maxRedrawRate == base_plot._redraw_rate
     assert len(base_plot._curves) == 0
     assert base_plot._title is None
@@ -142,7 +142,6 @@ def test_baseplot_no_added_y_axes(qtbot):
     """ Confirm that if the user does not name or create any new y-axes, the plot will still work just fine """
     base_plot = BasePlot()
     base_plot.clear()
-    base_plot.clearAxes()
 
     # Add 3 curves to our plot, but don't bother to use any of the y-axis parameters
     # in addCurve() leaving them to their default of None

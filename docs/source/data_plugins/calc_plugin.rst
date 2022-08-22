@@ -14,17 +14,23 @@ General Calc Plugin channel syntax::
 
     calc://my_variable_name?expr_var_name=channel://address&expr_var_name_two=channel://address&expr=math expression
 
-.. note:: Once a calc channel is created, multiple widgets can be connected to the same channel by providing the name of the variable, like so:
-    ::
+.. note:: 
+
+   Once a calc channel is created, multiple widgets can be connected to the
+   same channel by providing the name of the variable, like so:
+
+   ::
 
         calc://my_variable_name
 
-.. note:: The calc functions uses url formatting. Where the name attribute is separated by the ? symbol and all other attributes are separated by the & symbol.
-    ::
+.. note:: 
 
--------------
+   The calc functions uses url formatting. Where the name attribute is
+   separated by the ? symbol and all other attributes are separated by the &
+   symbol.
 
 
+-------------------
 Required Attributes
 -------------------
 
@@ -90,8 +96,30 @@ Here is a simple example of a channel address format with some optional attribut
 
 -------------
 
+
+Built-in Calc Helpers
+---------------------
+
+Certain helper functions are built in to PyDM because they get semi-frequent use in
+the context of EPICS values.
+
+================== ================================================== ====================================================================
+Helpers            Description                                        Usage Example
+================== ================================================== ====================================================================
+**epics_string**   Convert a char waveform to a string.               `calc://my_string?var=ca://WAVEFORM:PV&expr=epics_string(var)`
+**epics_unsigned** Force a signed integer to be unsigned.             `calc://my_int?var=ca://SOME:16BIT:INT&expr=epics_unsigned(var, 16)`
+================== ================================================== ====================================================================
+
+You should use epics_string when you have a string PV that is expressed as a char
+waveform, but you need to use the corresponding string value internally.
+
+You should use epics_unsigned when you are dealing with a PV that is supposed to be
+interpreted as a positive integer but is instead a negative integer because channel
+access does not support any unsigned types and we have overflowed to negative values.
+
+
 Simple Calc Plugin Example
----------------------------------
+--------------------------
 
 
 The picture below represents an example of using the Calc Plugin.

@@ -84,7 +84,7 @@ def generic_mon_cb(source, signal):
     return cb
 
 
-def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mon_cb_once=False):
+def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mon_cb_once=False, control=False):
     """
     Initialize an EPICS PV using psp with proper callbacks.
 
@@ -104,9 +104,11 @@ def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mo
     :type signal:  Signal
     :param mon_cb_once: True if we only want the monitor callback to run once.
     :type mon_cb_once: bool
+    :param control: True if we want to monitor control values
+    :type control: bool
     :rtype: Pv
     """
-    pv = Pv(pvname, use_numpy=True)
+    pv = Pv(pvname, use_numpy=True, control=control)
 
     if signal is None:
         default_mon_cb = lambda e: None
@@ -143,11 +145,17 @@ class Connection(PyDMConnection):
         self.pv = setup_pv(pv,
                            con_cb=self.connected_cb,
                            mon_cb=self.monitor_cb,
-                           rwaccess_cb=self.rwaccess_cb)
+                           rwaccess_cb=self.rwaccess_cb,
+                           control=True)
         self.enums = None
         self.sevr = None
         self.ctrl_llim = None
         self.ctrl_hlim = None
+        self.alarm_hlim = None
+        self.alarm_llim = None
+        self.warn_hlim = None
+        self.warn_llim = None
+
         self.units = None
         self.prec = None
         self.count = None
@@ -243,35 +251,75 @@ class Connection(PyDMConnection):
 
         try:
             prec = self.pv.data['precision']
+        except KeyError:
+            pass
+        else:
             if self.prec != prec:
                 self.prec = prec
                 self.prec_signal.emit(int(self.prec))
-        except KeyError:
-            pass
 
         try:
             units = self.pv.data['units']
+        except KeyError:
+            pass
+        else:
             if self.units != units:
                 self.units = units
                 self.unit_signal.emit(self.units.decode(encoding='ascii') if isinstance(self.units, bytes) else self.units)
-        except KeyError:
-            pass
 
         try:
             ctrl_llim = self.pv.data['ctrl_llim']
+        except KeyError:
+            pass
+        else:
             if self.ctrl_llim != ctrl_llim:
                 self.ctrl_llim = ctrl_llim
                 self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
-        except KeyError:
-            pass
-        
+
         try:
             ctrl_hlim = self.pv.data['ctrl_hlim']
+        except KeyError:
+            pass
+        else:
             if self.ctrl_hlim != ctrl_hlim:
                 self.ctrl_hlim = ctrl_hlim
                 self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
+
+        try:
+            alarm_hlim = self.pv.data['alarm_hlim']
         except KeyError:
             pass
+        else:
+            if self.alarm_hlim != alarm_hlim:
+                self.alarm_hlim = alarm_hlim
+                self.upper_alarm_limit_signal.emit(self.alarm_hlim)
+
+        try:
+            alarm_llim = self.pv.data['alarm_llim']
+        except KeyError:
+            pass
+        else:
+            if self.alarm_llim != alarm_llim:
+                self.alarm_llim = alarm_llim
+                self.lower_alarm_limit_signal.emit(self.alarm_llim)
+
+        try:
+            warn_hlim = self.pv.data['warn_hlim']
+        except KeyError:
+            pass
+        else:
+            if self.warn_hlim != warn_hlim:
+                self.warn_hlim = warn_hlim
+                self.upper_warning_limit_signal.emit(self.warn_hlim)
+
+        try:
+            warn_llim = self.pv.data['warn_llim']
+        except KeyError:
+            pass
+        else:
+            if self.warn_llim != warn_llim:
+                self.warn_llim = warn_llim
+                self.lower_warning_limit_signal.emit(self.warn_llim)
 
         if self.count > 1:
             self.new_value_signal[np.ndarray].emit(value)
@@ -296,9 +344,9 @@ class Connection(PyDMConnection):
                 self.prec = self.pv.data['precision']
             except KeyError:
                 pass
-        if self.prec:
+        if self.prec is not None:
             self.prec_signal.emit(int(self.prec))
-            
+
         if self.units is None:
             try:
                 self.units = self.pv.data['units']
@@ -314,16 +362,48 @@ class Connection(PyDMConnection):
                 self.ctrl_llim = self.pv.data['ctrl_llim']
             except KeyError:
                 pass
-        if self.ctrl_llim:
+        if self.ctrl_llim is not None:
             self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
-            
+
         if self.ctrl_hlim is None:
             try:
                 self.ctrl_hlim = self.pv.data['ctrl_hlim']
             except KeyError:
                 pass
-        if self.ctrl_hlim:
+        if self.ctrl_hlim is not None:
             self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
+
+        if self.alarm_hlim is None:
+            try:
+                self.alarm_hlim = self.pv.data['alarm_hlim']
+            except KeyError:
+                pass
+        if self.alarm_hlim is not None:
+            self.upper_alarm_limit_signal.emit(self.alarm_hlim)
+
+        if self.alarm_llim is None:
+            try:
+                self.alarm_llim = self.pv.data['alarm_llim']
+            except KeyError:
+                pass
+        if self.alarm_llim is not None:
+            self.lower_alarm_limit_signal.emit(self.alarm_llim)
+
+        if self.warn_hlim is None:
+            try:
+                self.warn_hlim = self.pv.data['warn_hlim']
+            except KeyError:
+                pass
+        if self.warn_hlim is not None:
+            self.upper_warning_limit_signal.emit(self.warn_hlim)
+
+        if self.warn_llim is None:
+            try:
+                self.warn_llim = self.pv.data['warn_llim']
+            except KeyError:
+                pass
+        if self.warn_llim is not None:
+            self.lower_warning_limit_signal.emit(self.warn_llim)
 
     def send_connection_state(self, conn=None):
         """
@@ -410,7 +490,7 @@ class Connection(PyDMConnection):
         """
         try:
             scan = scan_list[self.scan_pv.value]
-        except:
+        except Exception:
             scan = float("inf")
         if 0 < refresh_rate < 1 / scan:
             self.pv.monitor_stop()

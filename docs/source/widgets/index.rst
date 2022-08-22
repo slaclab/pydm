@@ -61,3 +61,11 @@ Drawing Widgets
    :maxdepth: 1
 
    drawing.rst
+
+Utilities
+---------
+
+.. toctree::
+   :maxdepth: 1
+
+   utilities.rst

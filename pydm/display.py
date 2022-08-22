@@ -1,19 +1,17 @@
 import functools
-import imp
-import six
 import inspect
 import logging
 import os
 import sys
-import uuid
 import warnings
 from os import path
 from string import Template
 
+import six
 from qtpy import uic
-from qtpy.QtWidgets import QWidget, QApplication
+from qtpy.QtWidgets import QApplication, QWidget
 
-from .utilities import macro, is_pydm_app
+from .utilities import import_module_by_filename, is_pydm_app, macro
 from .utilities.stylesheet import merge_widget_stylesheet
 
 
@@ -137,9 +135,8 @@ def load_adl_file(filename, macros=None, args=None):
         Ignored for load_adl_file.
     """
     try:
-        import adl2pydm
-        from adl2pydm import adl_parser
-        from adl2pydm import output_handler
+        import adl2pydm  # noqa: F401
+        from adl2pydm import adl_parser, output_handler
     except ImportError:
         raise RuntimeError("Sorry, adl2pydm is not installed.")
 
@@ -188,18 +185,14 @@ def load_py_file(pyfile, args=None, macros=None):
     # submodules can be loaded.
     # Eventually, this should go away, and intelligence modules should behave
     # as real python modules.
-    module_dir = os.path.dirname(os.path.abspath(pyfile))
-    if module_dir not in sys.path:
-        sys.path.append(module_dir)
-    temp_name = str(uuid.uuid4())
+    module = import_module_by_filename(os.path.abspath(pyfile))
 
-    # Now load the intelligence module.
-    module = imp.load_source(temp_name, pyfile)
     if hasattr(module, 'intelclass'):
         cls = module.intelclass
         if not issubclass(cls, Display):
             raise ValueError(
-                "Invalid class definition at file {}. {} does not inherit from Display. Nothing to open at this time.".format(
+                "Invalid class definition at file {}. {} does not inherit from Display. "
+                "Nothing to open at this time.".format(
                     pyfile, cls.__name__))
     else:
         classes = [obj for name, obj in inspect.getmembers(module) if
@@ -211,16 +204,12 @@ def load_py_file(pyfile, args=None, macros=None):
                     pyfile))
         if len(classes) > 1:
             warnings.warn(
-                "More than one Display class in file {}. The first occurence (in alphabetical order) will be opened: {}".format(
+                "More than one Display class in file {}. "
+                "The first occurrence (in alphabetical order) will be opened: {}".format(
                     pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
         cls = classes[0]
 
-    try:
-        # This only works in python 3 and up.
-        module_params = inspect.signature(cls).parameters
-    except AttributeError:
-        # Works in python 2, deprecated in 3.0 and up.
-        module_params = inspect.getargspec(cls.__init__).args
+    module_params = inspect.signature(cls).parameters
 
     # Because older versions of Display may not have the args parameter or the macros parameter, we check
     # to see if it does before trying to use them.
