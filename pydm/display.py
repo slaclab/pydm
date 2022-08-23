@@ -4,8 +4,10 @@ import logging
 import os
 import sys
 import warnings
+from functools import lru_cache
 from os import path
 from string import Template
+from typing import Optional, Any, List, Dict
 
 import six
 from qtpy import uic
@@ -68,7 +70,7 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
 
 
 def _load_ui_into_display(uifile, display):
-    klass, _ = uic.loadUiType(uifile)
+    klass = _get_qt_class(uifile)
 
     # Python 2.7 compatibility. More info at the following links:
     # https://github.com/universe-proton/universe-topology/issues/3
@@ -83,7 +85,18 @@ def _load_ui_into_display(uifile, display):
     display.ui = display
 
 
-def load_ui_file(uifile, macros=None, args=None):
+@lru_cache
+def _get_qt_class(uifile):
+    klass, _ = uic.loadUiType(uifile)
+    print(f'loaded class from {uifile}')
+    return klass
+
+
+def load_ui_file(
+    uifile: str,
+    macros: Optional[Dict[str, str]]= None,
+    args: Optional[List[Any]] = None,
+) -> QWidget:
     """
     Load a .ui file, perform macro substitution, then return the resulting QWidget.
 
@@ -104,18 +117,15 @@ def load_ui_file(uifile, macros=None, args=None):
     QWidget
     """
 
-    d = Display(macros=macros)
-    merge_widget_stylesheet(d)
+    display = Display(macros=macros)
+    merge_widget_stylesheet(display)
+
+    display._loaded_file = uifile
+    _load_ui_into_display(uifile, display)
 
     if macros:
-        f = macro.substitute_in_file(uifile, macros)
-    else:
-        f = uifile
-
-    d._loaded_file = uifile
-    _load_ui_into_display(f, d)
-
-    return d
+        return macro.substitute_in_widget(display, macros, uifile)
+    return display
 
 
 def load_adl_file(filename, macros=None, args=None):
