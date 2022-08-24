@@ -1,13 +1,14 @@
 import logging
-logger = logging.getLogger(__name__)
-
-from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, \
-    QWidget, QLineEdit, QPushButton, QApplication
-from qtpy.QtCore import Qt, Signal, Slot, Property, QCoreApplication
-from .base import PyDMWritableWidget, TextFormatter
 import numpy as np
-from pydm.widgets import PyDMLabel, PyDMLineEdit, PyDMByteIndicator, PyDMDrawingLine
-import sys
+from decimal import Decimal
+from qtpy.QtCore import Qt, Signal, Slot, Property
+from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, \
+    QWidget, QLineEdit, QPushButton, QCheckBox, QComboBox
+from pydm.widgets import PyDMLabel
+from .base import PyDMWritableWidget, TextFormatter
+
+
+logger = logging.getLogger(__name__)
 
 
 class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
@@ -43,6 +44,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self._maximum = None
         self._user_minimum = -10.0
         self._user_maximum = 10.0
+        self._step_size = 0
         self._num_steps = 101
         self._orientation = Qt.Horizontal
         # Set up all the internal widgets that make up a PyDMSlider.
@@ -76,8 +78,16 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.setup_widgets_for_orientation(self._orientation)
         self.reset_slider_limits()
 
+        self.widget = None
+        self.input = None
+        self.label = None
+        self.button = None
+        self.layout = None
+
+        self.step_max = self.maximum
+
     def wheelEvent(self, e):
-        #We specifically want to ignore mouse wheel events.
+        # We specifically want to ignore mouse wheel events.
         if self._ignore_mouse_wheel:
             e.ignore()
         else:
@@ -89,11 +99,10 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             self.step_size_menu()
 
     def step_size_menu(self):
-        #app = QApplication(sys.argv)
         self.widget = QWidget()
         self.widget.show()
 
-        self.widget.setWindowTitle("PyDM Silder Parameters")
+        self.widget.setWindowTitle("PyDM Slider Parameters")
         self.widget.resize(300, 200)
 
         main_layout = QVBoxLayout(self.widget)
@@ -103,32 +112,50 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.button = []
         self.layout = []
 
-        text_info = ['Value', 'Increment', 'Increment', 'OK', 'Apply', 'Cancel']
+        text_info = ['Value', 'Increment', 'Increment scale', 'Precision', 'Precision from PV', 'Number Format',
+                     'OK', 'Apply', 'Cancel']
 
-        for key in range(0, 3):
+        combo_box_table_scale = ['1e0', '1e1', '1e2', '1e3', '1e4', '1e5']
+        combo_box_table_format = ['Float', 'Exp']
+
+        for key in range(0, 6):
             self.input.append(key)
             self.label.append(key)
             self.layout.append(key)
 
             self.layout[key] = QHBoxLayout()
+            self.layout[key].setAlignment(Qt.AlignLeft)
 
             self.label[key] = PyDMLabel(self.widget)
             self.label[key].setText(text_info[key])
             self.layout[key].addWidget(self.label[key])
 
-            self.input[key] = QLineEdit()
-            self.input[key].setText("hmm")
+            if key == 4:
+                self.input[key] = QCheckBox()
+                self.input[key].setTristate(on=False)
+                self.input[key].setCheckState(self.precisionFromPV)
+            elif key == 2 or key == 5:
+                self.input[key] = QComboBox()
+            else:
+                self.input[key] = QLineEdit()
+                self.input[key].setText("")
+
             self.layout[key].addWidget(self.input[key])
             main_layout.addLayout(self.layout[key])
 
         self.layout.append(3)
         self.layout[3] = QHBoxLayout()
-        self.input[1].setText(str(self._num_steps))
+        self.input[0].setText(str(self.value))
+        self.input[1].setText(str(self._step_size))
+        self.input[3].setText(str(self.precision))
+
+        self.input[2].addItems(combo_box_table_scale)
+        self.input[5].addItems(combo_box_table_format)
 
         for key in range(0, 3):
             self.button.append(key)
             self.button[key] = QPushButton(self.widget)
-            self.button[key].setText(text_info[key+3])
+            self.button[key].setText(text_info[key+6])
             self.layout[3].addWidget(self.button[key])
 
         main_layout.addLayout(self.layout[3])
@@ -138,9 +165,40 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.button[2].clicked.connect(self.widget.close)
 
     def apply_step_size_menu_changes(self):
-        for key in range(0, len(self.input)):
-            print(self.input[key].text())
+        try:
+            val = float(self.input[1].text())
+            val = val*float(self.input[2].currentText())
 
+            if val > 0:
+                self.step_size = val
+            else:
+                logger.debug("step input is incorrect")
+
+        except ValueError:
+            logger.debug("step input is incorrect")
+
+        try:
+            val = float(self.input[0].text())
+            self.value_changed(val)
+            self.update_labels()
+        except ValueError:
+            logger.debug("Value input is incorrect")
+
+        val = self.input[4].isChecked()
+        self.precisionFromPV = val
+
+        try:
+            val = float(self.input[3].text())
+            self.precision = val
+        except ValueError:
+            logger.debug("precision input is incorrect")
+
+        format_type = self.input[5].currentText()
+
+        if format_type == 'Float':
+            self.update_labels()
+        else:
+            self.update_labels(True)
 
     def init_for_designer(self):
         """
@@ -218,24 +276,32 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             QWidget().setLayout(self.layout())
         self.setLayout(layout)
 
-    def update_labels(self):
+    def update_labels(self, exp=False):
         """
         Update the limits and value labels with the correct values.
         """
-        def set_label(value, label_widget):
+        def set_label(value, label_widget, exp_format):
             if value is None:
                 label_widget.setText("")
             else:
-                label_widget.setText(self.format_string.format(value))
+                if not exp_format:
+                    label_widget.setText(self.format_string.format(value))
+                else:
+                    text = '%.' + str(self.precision) + 'E'
+                    text = text % Decimal(str(value))
+                    if self._show_units and self._unit != "":
+                        text += " {}".format(self._unit)
+                    label_widget.setText(text)
 
-        set_label(self.minimum, self.low_lim_label)
-        set_label(self.maximum, self.high_lim_label)
-        set_label(self.value, self.value_label)
+        set_label(self.minimum, self.low_lim_label, exp)
+        set_label(self.maximum, self.high_lim_label, exp)
+        set_label(self.value, self.value_label, exp)
 
     def reset_slider_limits(self):
         """
         Reset the limits and adjust the labels properly for the slider.
         """
+
         logger.debug("Running reset_slider_limits.")
         if self.minimum is None or self.maximum is None:
             self._needs_limit_info = True
@@ -248,7 +314,18 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self._slider.setMaximum(self._num_steps - 1)
         self._slider.setSingleStep(1)
         self._slider.setPageStep(10)
-        self._slider_position_to_value_map = np.linspace(self.minimum, self.maximum, num=self._num_steps)
+
+        if self._step_size != 0:
+            self.step_max = self._slider_position_to_value_map[-1]
+            self._slider_position_to_value_map = np.arange(self.minimum, self.maximum + self._step_size, self._step_size)
+
+            if self._slider_position_to_value_map[-1] != self.maximum:
+                self._slider.setMaximum(len(self._slider_position_to_value_map) - 1)
+            else:
+                self._slider.setMaximum(len(self._slider_position_to_value_map))
+        else:
+            self._slider_position_to_value_map = np.linspace(self.minimum, self.maximum, num=self._num_steps)
+
         self.update_labels()
         self.set_slider_to_closest_value(self.value)
         self.rangeChanged.emit(self.minimum, self.maximum)
@@ -423,13 +500,17 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         Parameters
         ----------
         val : int
-        """        
+        """
+
         # Avoid potential crash if limits are undefined
         if self._slider_position_to_value_map is None:
             return
         if not self._mute_internal_slider_changes:
-            self.value = self._slider_position_to_value_map[val]
-            self.send_value_signal[float].emit(self.value)
+            try:
+                self.value = self._slider_position_to_value_map[val]
+                self.send_value_signal[float].emit(self.value)
+            except IndexError:
+                pass
 
     @Property(bool)
     def tracking(self):
@@ -675,4 +756,27 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_steps : int
         """
         self._num_steps = int(new_steps)
+        self.reset_slider_limits()
+
+    @Property(int)
+    def step_size(self):
+        """
+        The number of steps on the slider
+
+        Returns
+        -------
+        int
+        """
+        return self._step_size
+
+    @step_size.setter
+    def step_size(self, new_step_size):
+        """
+        The number of steps on the slider
+
+        Parameters
+        ----------
+        new_step_size : int
+        """
+        self._step_size = float(new_step_size)
         self.reset_slider_limits()
