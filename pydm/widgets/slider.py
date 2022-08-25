@@ -89,7 +89,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.step_max = self.maximum
 
     def wheelEvent(self, e):
-        # We specifically want to ignore mouse wheel events.
+        """
+        Method to specifically ignore mouse wheel events.
+        """
         if self._ignore_mouse_wheel:
             e.ignore()
         else:
@@ -97,10 +99,24 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         return
 
     def mousePressEvent(self, mouse_event):
-        if mouse_event.button() == Qt.RightButton:
-            self.step_size_menu()
+        """
+        Method to open slider parameters menu with a right click.
 
-    def step_size_menu(self):
+        Parameters
+        ----------
+        mouse_event : mousePressEvent
+        """
+        if mouse_event.button() == Qt.RightButton:
+            self.slider_parameters_menu()
+
+    def slider_parameters_menu(self):
+        """
+        Method that builds a menu to modify a set of Slider Parameters:
+            1)	value
+            2)	new step size (float or channel) and scale factor for step size
+            3)	precision or if precision is defined from a channel
+            4)	format of numbers on slider (min, max, value) - float or exp
+        """
         self.widget = QWidget()
         self.widget.show()
 
@@ -168,6 +184,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.button[2].clicked.connect(self.widget.close)
 
     def apply_step_size_menu_changes(self):
+        """
+        Method which attempts to set the user imputed data from the slider parameters menu.
+        """
         try:
             val = float(self.input[1].text())
             val = val*float(self.input[2].currentText())
@@ -338,6 +357,14 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.set_enable_state()
 
     def float_range(self):
+        """
+        Creates a range of numbers from the min, max and given step size.
+
+        Returns
+        -------
+        new_indexes : list of floats
+        """
+
         # found online, might be a faster way of doing this.
         scale = 10 ** (len(str(self.step_size)) - str(self.step_size).find('.') - 1)
         new_indexes_scaled = list(range(int(self.minimum * scale), int((self.maximum + self.step_size) * scale),
@@ -801,13 +828,11 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
     def step_size_changed(self, new_val):
         """
         PyQT Slot for changes on the Value of the Channel
-        This slot sends the value to the ```self.step_size``` callback.
+        This slot sends the value to the step_size setter.
 
         Parameters
         ----------
         new_val : int, float
         """
-        print(new_val)
-
         if new_val > 0:
             self.step_size = new_val
