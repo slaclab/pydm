@@ -1,9 +1,12 @@
 import typing
+import logging
 import pyqtgraph as pg
 from functools import partial
 from qtpy.QtWidgets import QWidget, QLabel, QVBoxLayout
 from pydm.widgets import PyDMScatterPlot
 from .channel import PyDMChannel
+
+logger = logging.getLogger(__name__)
 
 
 class PyDMZPlot(QWidget):
@@ -11,8 +14,6 @@ class PyDMZPlot(QWidget):
       The PyDMZPlot, is a plotting widget that couples a PyDMScatterPlot and a pyqtgraph PlotWidget to create a plot
       widget that has a corresponding dynamic diagram that can represent a positional direction of a machine
       or facility.
-
-      Note:
 
       Parameters
       ----------
@@ -110,7 +111,7 @@ class PyDMZPlot(QWidget):
 
     def update_x_values(self, new_value, address):
         """
-
+        Update the x values of the self.accelerator_diagram (pyqtgraph PlotWidget) plot.
         """
         self.x_points_table.update({address: new_value})
         self.x_points.clear()
@@ -123,7 +124,8 @@ class PyDMZPlot(QWidget):
         if len(self._symbol_list) == len(self.x_points):
             symbols = self._symbol_list
         else:
-            # should throw a warning here
+            logger.debug("The length of the list of symbols did not match the "
+                         "number of x points so the default symbol was set.")
             symbols = 's'
 
         self.accelerator_diagram.clear()
@@ -204,6 +206,7 @@ class PyDMZPlot(QWidget):
     @property
     def symbol_list(self):
         """
+        list of symbols to be passed to the self.accelerator_diagram (pyqtgraph PlotWidget) plot.
 
         Returns
         -------
@@ -215,6 +218,7 @@ class PyDMZPlot(QWidget):
     @symbol_list.setter
     def symbol_list(self, symbols):
         """
+        list of symbols to be passed to the self.accelerator_diagram (pyqtgraph PlotWidget) plot.
 
         Parameters
         -------
