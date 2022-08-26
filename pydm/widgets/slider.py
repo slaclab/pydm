@@ -362,8 +362,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         -------
         new_indexes : list of floats
         """
-
-        # found online, might be a faster way of doing this.
         scale = 10 ** (len(str(self.step_size)) - str(self.step_size).find('.') - 1)
         new_indexes_scaled = list(range(int(self.minimum * scale), int((self.maximum + self.step_size) * scale),
                                         int(self.step_size * scale)))
