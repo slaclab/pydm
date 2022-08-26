@@ -179,9 +179,16 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         main_layout.addLayout(self.layout[3])
 
-        self.button[0].clicked.connect(self.widget.close)
+        self.button[0].clicked.connect(self.apply_and_close_menu)
         self.button[1].clicked.connect(self.apply_step_size_menu_changes)
         self.button[2].clicked.connect(self.widget.close)
+
+    def apply_and_close_menu(self):
+        """
+        Method for the 'ok' button in the slider parameters menu.
+        """
+        self.apply_step_size_menu_changes
+        self.widget.close
 
     def apply_step_size_menu_changes(self):
         """
