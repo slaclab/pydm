@@ -187,8 +187,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         Method for the 'ok' button in the slider parameters menu.
         """
-        self.apply_step_size_menu_changes
-        self.widget.close
+        self.apply_step_size_menu_changes()
+        self.widget.close()
 
     def apply_step_size_menu_changes(self):
         """
