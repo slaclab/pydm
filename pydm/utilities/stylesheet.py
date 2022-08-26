@@ -2,7 +2,7 @@
 import os
 import logging
 
-from qtpy.QtWidgets import QApplication
+from qtpy.QtWidgets import QApplication, QWidget
 
 from ..config import STYLESHEET, STYLESHEET_INCLUDE_DEFAULT
 
@@ -58,7 +58,6 @@ def apply_stylesheet(stylesheet_file_path=None, widget=None):
         widget = QApplication.instance()
 
     widget.setStyleSheet(style)
-
 
 def _get_style_data(stylesheet_file_path=None):
     """
@@ -116,3 +115,6 @@ def _get_style_data(stylesheet_file_path=None):
                     GLOBAL_STYLESHEET,
                     str(ex)))
     return __style_data
+
+def global_style():
+    return _get_style_data()

@@ -12,7 +12,7 @@ from qtpy import uic
 from qtpy.QtWidgets import QApplication, QWidget
 
 from .utilities import import_module_by_filename, is_pydm_app, macro
-from .utilities.stylesheet import merge_widget_stylesheet
+from .utilities.stylesheet import merge_widget_stylesheet, global_style
 
 
 class ScreenTarget:
@@ -75,7 +75,6 @@ def _load_ui_into_display(uifile, display):
     # https://stackoverflow.com/questions/3296993/python-how-to-call-unbound-method-with-other-type-parameter
     retranslateUi = six.get_unbound_function(klass.retranslateUi)
     setupUi = six.get_unbound_function(klass.setupUi)
-
     # Add retranslateUi to Display class
     display.retranslateUi = functools.partial(retranslateUi, display)
     setupUi(display, display)
@@ -105,8 +104,6 @@ def load_ui_file(uifile, macros=None, args=None):
     """
 
     d = Display(macros=macros)
-    merge_widget_stylesheet(d)
-
     if macros:
         f = macro.substitute_in_file(uifile, macros)
     else:
@@ -114,7 +111,6 @@ def load_ui_file(uifile, macros=None, args=None):
 
     d._loaded_file = uifile
     _load_ui_into_display(f, d)
-
     return d
 
 
@@ -149,7 +145,6 @@ def load_adl_file(filename, macros=None, args=None):
     ui_contents = writer.writer.generate_ui_contents()
 
     d = Display(macros=macros)
-    merge_widget_stylesheet(d)
     d._loaded_file = filename
 
     fp = macro.replace_macros_in_template(Template(ui_contents), macros or {})
@@ -220,7 +215,6 @@ def load_py_file(pyfile, args=None, macros=None):
         kwargs['macros'] = macros
     instance = cls(**kwargs)
     instance._loaded_file = pyfile
-    merge_widget_stylesheet(instance)
     return instance
 
 
@@ -241,6 +235,7 @@ class Display(QWidget):
         self._macros = macros
         self._previous_display = None
         self._next_display = None
+        self._local_style = ""
         if ui_filename or self.ui_filename():
             self.load_ui(macros=macros)
 
@@ -306,6 +301,35 @@ class Display(QWidget):
                 f = macro.substitute_in_file(self.ui_filepath(), macros)
             else:
                 f = self.ui_filepath()
-
             _load_ui_into_display(f, self)
-            merge_widget_stylesheet(self.ui)
+
+    def setStyleSheet(self, new_stylesheet):
+        # Handle the case where the widget's styleSheet property contains a filename, rather than a stylesheet.
+        possible_stylesheet_filename = os.path.expanduser(os.path.expandvars(new_stylesheet))
+        logger.debug("Calling Display.setStyleSheet, new_stylesheet is %s", possible_stylesheet_filename)
+        stylesheet_filename = None
+        try:
+            #First, check if the file is already an absolute path.
+            if os.path.exists(possible_stylesheet_filename):
+                stylesheet_filename = possible_stylesheet_filename
+            #Second, check if the css file is specified relative to the display file.
+            else:
+                rel_path = os.path.join(os.path.dirname(os.path.abspath(self._loaded_file)), possible_stylesheet_filename)
+                if os.path.exists(rel_path):
+                    stylesheet_filename = rel_path
+        except Exception as e:
+            logger.debug("Exception while checking if stylesheet is a filename: %s", e)
+            pass
+        self._local_style = new_stylesheet
+        if stylesheet_filename is not None:
+            logger.debug("styleSheet property contains a filename, loading %s", stylesheet_filename)
+            with open(stylesheet_filename) as f:
+                self._local_style = f.read()
+        style = global_style() + self._local_style
+        logger.debug("Setting stylesheet to: %s", style)
+        super(Display, self).setStyleSheet(style)
+
+    def styleSheet(self):
+        logger.debug("local styleSheet is: %s", self._local_style)
+        logger.debug("real styleSheet is: %s", super(Display, self).styleSheet())
+        return self._local_style
