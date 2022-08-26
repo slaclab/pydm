@@ -345,8 +345,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             if self._slider_position_to_value_map[-1] > self.maximum:
                 self._slider_position_to_value_map[-1] = self.maximum
 
-            #print(self._slider_position_to_value_map)
-
             self._parameters_menu_flag = False
         else:
             self._slider_position_to_value_map = np.linspace(self.minimum, self.maximum, num=self._num_steps)
