@@ -84,7 +84,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.input = None
         self.label = None
         self.button = None
-        self.layout = None
+        self.menu_layout = None
         self._parameters_menu_flag = False
         self.step_max = self.maximum
 
@@ -128,7 +128,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.input = []
         self.label = []
         self.button = []
-        self.layout = []
+        self.menu_layout = []
 
         text_info = ['Value', 'Increment', 'Increment scale', 'Precision', 'Precision from PV', 'Number Format',
                      'OK', 'Apply', 'Cancel']
@@ -139,14 +139,14 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         for key in range(0, 6):
             self.input.append(key)
             self.label.append(key)
-            self.layout.append(key)
+            self.menu_layout.append(key)
 
-            self.layout[key] = QHBoxLayout()
-            self.layout[key].setAlignment(Qt.AlignLeft)
+            self.menu_layout[key] = QHBoxLayout()
+            self.menu_layout[key].setAlignment(Qt.AlignLeft)
 
             self.label[key] = PyDMLabel(self.widget)
             self.label[key].setText(text_info[key])
-            self.layout[key].addWidget(self.label[key])
+            self.menu_layout[key].addWidget(self.label[key])
 
             if key == 4:
                 self.input[key] = QCheckBox()
@@ -158,11 +158,11 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
                 self.input[key] = QLineEdit()
                 self.input[key].setText("")
 
-            self.layout[key].addWidget(self.input[key])
-            main_layout.addLayout(self.layout[key])
+            self.menu_layout[key].addWidget(self.input[key])
+            main_layout.addLayout(self.menu_layout[key])
 
-        self.layout.append(3)
-        self.layout[3] = QHBoxLayout()
+        self.menu_layout.append(3)
+        self.menu_layout[3] = QHBoxLayout()
 
         self.input[0].setText(str(self.value))
         self.input[1].setText(str(self._step_size))
@@ -175,9 +175,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             self.button.append(key)
             self.button[key] = QPushButton(self.widget)
             self.button[key].setText(text_info[key+6])
-            self.layout[3].addWidget(self.button[key])
+            self.menu_layout[3].addWidget(self.button[key])
 
-        main_layout.addLayout(self.layout[3])
+        main_layout.addLayout(self.menu_layout[3])
 
         self.button[0].clicked.connect(self.apply_and_close_menu)
         self.button[1].clicked.connect(self.apply_step_size_menu_changes)
