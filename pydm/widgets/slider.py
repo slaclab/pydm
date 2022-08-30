@@ -1,6 +1,5 @@
 import logging
 import numpy as np
-from functools import partial
 from decimal import Decimal
 from qtpy.QtCore import Qt, Signal, Slot, Property
 from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, \
@@ -80,10 +79,10 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.setup_widgets_for_orientation(self._orientation)
         self.reset_slider_limits()
 
-        self.widget = None
-        self.input = None
-        self.label = None
-        self.button = None
+        self.slider_parameters_menu_widget = None
+        self.slider_parameters_menu_input_widgets = None
+        self.slider_parameters_menu_labels = None
+        self.slider_parameters_menu_buttons = None
         self.menu_layout = None
         self._parameters_menu_flag = False
         self.step_max = self.maximum
@@ -107,9 +106,10 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         mouse_event : mousePressEvent
         """
         if mouse_event.button() == Qt.RightButton:
-            self.slider_parameters_menu()
+            position_of_click = mouse_event.pos()
+            self.slider_parameters_menu(position_of_click)
 
-    def slider_parameters_menu(self):
+    def slider_parameters_menu(self, position_of_click):
         """
         Method that builds a menu to modify a set of Slider Parameters:
             1)	value
@@ -117,17 +117,18 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             3)	precision or if precision is defined from a channel
             4)	format of numbers on slider (min, max, value) - float or exp
         """
-        self.widget = QWidget()
-        self.widget.show()
+        self.slider_parameters_menu_widget = QWidget()
+        self.slider_parameters_menu_widget.move(self._slider.parentWidget().mapToGlobal(position_of_click))
+        self.slider_parameters_menu_widget.show()
 
-        self.widget.setWindowTitle("PyDM Slider Parameters")
-        self.widget.resize(300, 200)
+        self.slider_parameters_menu_widget.setWindowTitle("PyDM Slider Parameters")
+        self.slider_parameters_menu_widget.resize(300, 200)
 
-        main_layout = QVBoxLayout(self.widget)
+        main_layout = QVBoxLayout(self.slider_parameters_menu_widget)
 
-        self.input = []
-        self.label = []
-        self.button = []
+        self.slider_parameters_menu_input_widgets = []
+        self.slider_parameters_menu_labels = []
+        self.slider_parameters_menu_buttons = []
         self.menu_layout = []
 
         text_info = ['Value', 'Increment', 'Increment scale', 'Precision', 'Precision from PV', 'Number Format',
@@ -137,94 +138,94 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         combo_box_table_format = ['Float', 'Exp']
 
         for key in range(0, 6):
-            self.input.append(key)
-            self.label.append(key)
+            self.slider_parameters_menu_input_widgets.append(key)
+            self.slider_parameters_menu_labels.append(key)
             self.menu_layout.append(key)
 
             self.menu_layout[key] = QHBoxLayout()
             self.menu_layout[key].setAlignment(Qt.AlignLeft)
 
-            self.label[key] = PyDMLabel(self.widget)
-            self.label[key].setText(text_info[key])
-            self.menu_layout[key].addWidget(self.label[key])
+            self.slider_parameters_menu_labels[key] = PyDMLabel(self.slider_parameters_menu_widget)
+            self.slider_parameters_menu_labels[key].setText(text_info[key])
+            self.menu_layout[key].addWidget(self.slider_parameters_menu_labels[key])
 
             if key == 4:
-                self.input[key] = QCheckBox()
-                self.input[key].setTristate(on=False)
-                self.input[key].setChecked(self.precisionFromPV)
+                self.slider_parameters_menu_input_widgets[key] = QCheckBox()
+                self.slider_parameters_menu_input_widgets[key].setTristate(on=False)
+                self.slider_parameters_menu_input_widgets[key].setChecked(self.precisionFromPV)
             elif key == 2 or key == 5:
-                self.input[key] = QComboBox()
+                self.slider_parameters_menu_input_widgets[key] = QComboBox()
             else:
-                self.input[key] = QLineEdit()
-                self.input[key].setText("")
+                self.slider_parameters_menu_input_widgets[key] = QLineEdit()
+                self.slider_parameters_menu_input_widgets[key].setText("")
 
-            self.menu_layout[key].addWidget(self.input[key])
+            self.menu_layout[key].addWidget(self.slider_parameters_menu_input_widgets[key])
             main_layout.addLayout(self.menu_layout[key])
 
         self.menu_layout.append(3)
         self.menu_layout[3] = QHBoxLayout()
 
-        self.input[0].setText(str(self.value))
-        self.input[1].setText(str(self._step_size))
-        self.input[3].setText(str(self.precision))
+        self.slider_parameters_menu_input_widgets[0].setText(str(self.value))
+        self.slider_parameters_menu_input_widgets[1].setText(str(self._step_size))
+        self.slider_parameters_menu_input_widgets[3].setText(str(self.precision))
 
-        self.input[2].addItems(combo_box_table_scale)
-        self.input[5].addItems(combo_box_table_format)
+        self.slider_parameters_menu_input_widgets[2].addItems(combo_box_table_scale)
+        self.slider_parameters_menu_input_widgets[5].addItems(combo_box_table_format)
 
         for key in range(0, 3):
-            self.button.append(key)
-            self.button[key] = QPushButton(self.widget)
-            self.button[key].setText(text_info[key+6])
-            self.menu_layout[3].addWidget(self.button[key])
+            self.slider_parameters_menu_buttons.append(key)
+            self.slider_parameters_menu_buttons[key] = QPushButton(self.slider_parameters_menu_widget)
+            self.slider_parameters_menu_buttons[key].setText(text_info[key+6])
+            self.menu_layout[3].addWidget(self.slider_parameters_menu_buttons[key])
 
         main_layout.addLayout(self.menu_layout[3])
 
-        self.button[0].clicked.connect(self.apply_and_close_menu)
-        self.button[1].clicked.connect(self.apply_step_size_menu_changes)
-        self.button[2].clicked.connect(self.widget.close)
+        self.slider_parameters_menu_buttons[0].clicked.connect(self.apply_and_close_menu)
+        self.slider_parameters_menu_buttons[1].clicked.connect(self.apply_step_size_menu_changes)
+        self.slider_parameters_menu_buttons[2].clicked.connect(self.slider_parameters_menu_widget.close)
 
     def apply_and_close_menu(self):
         """
         Method for the 'ok' button in the slider parameters menu.
         """
         self.apply_step_size_menu_changes()
-        self.widget.close()
+        self.slider_parameters_menu_widget.close()
 
     def apply_step_size_menu_changes(self):
         """
         Method which attempts to set the user imputed data from the slider parameters menu.
         """
         try:
-            val = float(self.input[1].text())
-            val = val*float(self.input[2].currentText())
-            if val > 0:
-                self.step_size = val
+            new_step_size = float(self.slider_parameters_menu_input_widgets[1].text())
+            new_step_size_scaled = new_step_size*float(self.slider_parameters_menu_input_widgets[2].currentText())
+            if new_step_size_scaled > 0:
+                self.step_size = new_step_size_scaled
             else:
                 logger.debug("step input is incorrect")
         except ValueError:
-            if is_channel_valid(self.input[1].text()):
-                address = self.input[1].text()
+            if is_channel_valid(self.slider_parameters_menu_input_widgets[1].text()):
+                address = self.slider_parameters_menu_input_widgets[1].text()
                 new_channel = PyDMChannel(address=address, value_slot=self.step_size_changed)
                 new_channel.connect()
             else:
                 logger.debug("step input is incorrect")
 
-        val = self.input[4].isChecked()
-        self.precisionFromPV = val
+        precision_source = self.slider_parameters_menu_input_widgets[4].isChecked()
+        self.precisionFromPV = precision_source
 
         try:
-            val = float(self.input[3].text())
-            self.precision = val
+            user_inputted_precision = float(self.slider_parameters_menu_input_widgets[3].text())
+            self.precision = user_inputted_precision
         except ValueError:
             logger.debug("precision input is incorrect")
 
         try:
-            val = float(self.input[0].text())
-            self.value_changed(val)
+            slider_value = float(self.slider_parameters_menu_input_widgets[0].text())
+            self.value_changed(slider_value)
         except ValueError:
             logger.debug("Value input is incorrect")
 
-        format_type = self.input[5].currentText()
+        format_type = self.slider_parameters_menu_input_widgets[5].currentText()
 
         if format_type == 'Float':
             self.update_labels()
