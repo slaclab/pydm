@@ -1058,6 +1058,48 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.alarm_severity_changed(self._alarm_state)
 
     @Property(str)
+    def toolTip(self):
+        """
+        The tooltip for this widget.
+
+            Returns
+            -------
+            toolTip : str
+                tooltip info
+        """
+        return self._tooltip
+
+    @toolTip.setter
+    def toolTip(self, new_tip):
+        """
+        The tooltip for this widget.
+
+        Parameters
+        ----------
+        new_tip : str
+            tooltip info
+        """
+        if new_tip != self._tooltip:
+            self.parseTip(new_tip)
+            self.setToolTip(new_tip)
+
+    def parseTip(self, new_tip):
+        # fetch property values
+
+        if False:
+            list_of_properties = []
+
+        for value in list_of_properties:
+            if value == 'pv_value':
+                pass
+            else:
+                eval(self.value)
+
+
+
+
+
+    @Property(str)
     def channel(self):
         """
         The channel address in use for this widget.
