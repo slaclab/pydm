@@ -221,7 +221,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         try:
             slider_value = float(self.slider_parameters_menu_input_widgets[0].text())
-            self.value_changed(slider_value)
+            if slider_value != self.value:
+                self.value_changed(slider_value)
         except ValueError:
             logger.debug("Value input is incorrect")
 
@@ -342,10 +343,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             return
         logger.debug("Has both limits, proceeding.")
         self._needs_limit_info = False
-        self._slider.setMinimum(0)
-        self._slider.setMaximum(self._num_steps - 1)
-        self._slider.setSingleStep(1)
-        self._slider.setPageStep(10)
 
         if self._parameters_menu_flag:
             self._slider_position_to_value_map = np.array(self.float_range())
@@ -358,8 +355,12 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             self._slider_position_to_value_map = np.linspace(self.minimum, self.maximum, num=self._num_steps)
 
         self.update_labels()
-        self.set_slider_to_closest_value(self.value)
         self.rangeChanged.emit(self.minimum, self.maximum)
+        self.set_slider_to_closest_value(self.value)
+        self._slider.setMinimum(0)
+        self._slider.setMaximum(self._num_steps - 1)
+        self._slider.setSingleStep(1)
+        self._slider.setPageStep(10)
         self.set_enable_state()
 
     def float_range(self):
