@@ -6,6 +6,7 @@ import weakref
 import logging
 import functools
 import json
+import copy
 import numpy as np
 from qtpy.QtWidgets import (QApplication, QMenu, QGraphicsOpacityEffect,
                             QToolTip, QWidget)
@@ -631,6 +632,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.subtype = None
 
         self.pydm_tool_tip = ""
+        self._tool_tip_substrings = []
 
         # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
@@ -1101,25 +1103,34 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         tip_with_attribute_info : str
             ToolTip string which has had the attribute names replaced with the attribute values.
         """
-        list_of_attributes = [substring.start() for substring in re.finditer('\$\(', new_tip)]
-        substrings = []
-        tip_with_attribute_info = new_tip
 
-        for index in list_of_attributes:
-            substrings.append([new_tip[index+2:new_tip.index(")", index)], new_tip[index:new_tip.index(")", index)+1]])
+        if not self._tool_tip_substrings:
+            list_of_attributes = [substring.start() for substring in re.finditer('\$\(', new_tip)]
+            tool_tip_substrings = []
 
-        if substrings:
-            for index, value in enumerate(substrings):
+            for index in list_of_attributes:
+                tool_tip_substrings.append([new_tip[index+2:new_tip.index(")", index)],
+                                            new_tip[index:new_tip.index(")", index)+1]])
+
+            self._tool_tip_substrings = copy.deepcopy(tool_tip_substrings)
+        else:
+            tool_tip_substrings = copy.deepcopy(self._tool_tip_substrings)
+
+        if tool_tip_substrings:
+            for index, value in enumerate(tool_tip_substrings):
                 if value[0] == 'name':
                     value_of_attribute = self.channel
-                elif value[0] == 'pv_value':
+                elif value[0].split('.')[0] == 'pv_value':
+                    print(value[0])
                     value_of_attribute = self.value
                 else:
                     value_of_attribute = getattr(self, value[0], None)
 
-                substrings[index][0] = str(value_of_attribute)
+                tool_tip_substrings[index][0] = str(value_of_attribute)
 
-        for value in substrings:
+        tip_with_attribute_info = new_tip
+
+        for value in tool_tip_substrings:
             tip_with_attribute_info = tip_with_attribute_info.replace(value[1], value[0])
 
         return tip_with_attribute_info
