@@ -25,7 +25,7 @@ from .qtplugin_base import (WidgetCategory, get_widgets_from_entrypoints,
 from .qtplugin_extensions import (ArchiveTimeCurveEditorExtension,
                                   BasicSettingsExtension, RulesExtension,
                                   ScatterCurveEditorExtension, 
-                                  CorrelationCurveEditorExtension,
+                                  EventCurveEditorExtension,
                                   SymbolExtension,
                                   TimeCurveEditorExtension,
                                   WaveformCurveEditorExtension)
@@ -43,7 +43,7 @@ from .timeplot import PyDMTimePlot
 from .archiver_time_plot import PyDMArchiverTimePlot
 from .waveformplot import PyDMWaveformPlot
 from .scatterplot import PyDMScatterPlot
-from .correlationplot import PyDMCorrelationPlot
+from .eventplot import PyDMEventPlot
 from .tab_bar_qtplugin import TabWidgetPlugin
 from .template_repeater import PyDMTemplateRepeater
 from .terminator import PyDMTerminator

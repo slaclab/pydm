@@ -12,7 +12,7 @@ from ..widgets.archiver_time_plot_editor import ArchiverTimePlotCurveEditorDialo
 from ..widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 from ..widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
 from ..widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
-from ..widgets.correlationplot_curve_editor import CorrelationPlotCurveEditorDialog
+from ..widgets.eventplot_curve_editor import EventPlotCurveEditorDialog
 from ..widgets.symbol_editor import SymbolEditor
 
 
