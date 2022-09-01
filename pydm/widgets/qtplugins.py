@@ -24,7 +24,9 @@ from .qtplugin_base import (WidgetCategory, get_widgets_from_entrypoints,
                             qtplugin_factory)
 from .qtplugin_extensions import (ArchiveTimeCurveEditorExtension,
                                   BasicSettingsExtension, RulesExtension,
-                                  ScatterCurveEditorExtension, SymbolExtension,
+                                  ScatterCurveEditorExtension, 
+                                  CorrelationCurveEditorExtension,
+                                  SymbolExtension,
                                   TimeCurveEditorExtension,
                                   WaveformCurveEditorExtension)
 from .related_display_button import PyDMRelatedDisplayButton
@@ -41,6 +43,7 @@ from .timeplot import PyDMTimePlot
 from .archiver_time_plot import PyDMArchiverTimePlot
 from .waveformplot import PyDMWaveformPlot
 from .scatterplot import PyDMScatterPlot
+from .correlationplot import PyDMCorrelationPlot
 from .tab_bar_qtplugin import TabWidgetPlugin
 from .template_repeater import PyDMTemplateRepeater
 from .terminator import PyDMTerminator
@@ -88,6 +91,14 @@ PyDMScatterPlotPlugin = qtplugin_factory(PyDMScatterPlot,
                                          group=WidgetCategory.PLOT,
                                          extensions=[
                                              ScatterCurveEditorExtension,
+                                             RulesExtension],
+                                         icon=ifont.icon("project-diagram"))
+
+# Correlation Plot plugin
+PyDMCorrelationPlotPlugin = qtplugin_factory(PyDMCorrelationPlot,
+                                         group=WidgetCategory.PLOT,
+                                         extensions=[
+                                             CorrelationCurveEditorExtension,
                                              RulesExtension],
                                          icon=ifont.icon("project-diagram"))
 

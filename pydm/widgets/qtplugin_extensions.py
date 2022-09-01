@@ -12,6 +12,7 @@ from ..widgets.archiver_time_plot_editor import ArchiverTimePlotCurveEditorDialo
 from ..widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 from ..widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
 from ..widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
+from ..widgets.correlationplot_curve_editor import CorrelationPlotCurveEditorDialog
 from ..widgets.symbol_editor import SymbolEditor
 
 
@@ -205,3 +206,8 @@ class TimeCurveEditorExtension(BasePlotExtension):
 class ScatterCurveEditorExtension(BasePlotExtension):
     def __init__(self, widget):
         super(ScatterCurveEditorExtension, self).__init__(widget, ScatterPlotCurveEditorDialog)
+
+
+class CorrelationCurveEditorExtension(BasePlotExtension):
+    def __init__(self, widget):
+        super(CorrelationCurveEditorExtension, self).__init__(widget, CorrelationPlotCurveEditorDialog)
