@@ -1089,7 +1089,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
     def parseTip(self, new_tip):
         """
-        Fetch the data for the tooltip.
+        Fetch the object attribute data for the tooltip.
 
         Parameters
         ----------
@@ -1098,33 +1098,31 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         Returns
         -------
-        tip : str
-            tip info which replaced values for the properties inside $()
+        tip_with_attribute_info : str
+            ToolTip string which has had the attribute names replaced with the attribute values.
         """
-        list_of_properties = [substring.start() for substring in re.finditer('\$\(', new_tip)]
+        list_of_attributes = [substring.start() for substring in re.finditer('\$\(', new_tip)]
         substrings = []
-        tip = new_tip
+        tip_with_attribute_info = new_tip
 
-        for index in list_of_properties:
+        for index in list_of_attributes:
             substrings.append([new_tip[index+2:new_tip.index(")", index)], new_tip[index:new_tip.index(")", index)+1]])
 
         if substrings:
             for index, value in enumerate(substrings):
                 if value[0] == 'name':
-                    value_of_parameter = self.channel
+                    value_of_attribute = self.channel
                 elif value[0] == 'pv_value':
-                    value_of_parameter = self.value
+                    value_of_attribute = self.value
                 else:
-                    value_of_parameter = getattr(self, value[0], None)
+                    value_of_attribute = getattr(self, value[0], None)
 
-                substrings[index][0] = str(value_of_parameter)
-
-                print(substrings)
+                substrings[index][0] = str(value_of_attribute)
 
         for value in substrings:
-            tip = tip.replace(value[1], value[0])
+            tip_with_attribute_info = tip_with_attribute_info.replace(value[1], value[0])
 
-        return tip
+        return tip_with_attribute_info
 
     @Property(str)
     def channel(self):
