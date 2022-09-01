@@ -221,10 +221,15 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         try:
             slider_value = float(self.slider_parameters_menu_input_widgets[0].text())
+
+            if slider_value < self.minimum or slider_value > self.maximum:
+                raise ValueError
+
             if slider_value != self.value:
                 self.value_changed(slider_value)
+                self.send_value_signal[float].emit(self.value)
         except ValueError:
-            logger.debug("Value input is incorrect")
+            logger.debug("the given value is not a valid type or outside of the slider range")
 
         format_type = self.slider_parameters_menu_input_widgets[5].currentText()
 
