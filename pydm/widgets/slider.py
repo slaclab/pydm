@@ -86,6 +86,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.menu_layout = None
         self._parameters_menu_flag = False
         self.step_max = self.maximum
+        self.step_size_channel = None
 
     def wheelEvent(self, e):
         """
@@ -200,24 +201,28 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             new_step_size_scaled = new_step_size*float(self.slider_parameters_menu_input_widgets[2].currentText())
             if new_step_size_scaled > 0:
                 self.step_size = new_step_size_scaled
+
+                if self.step_size_channel is not None:
+                    self.step_size_channel.disconnect()
+                    self.step_size_channel = None
             else:
-                logger.debug("step input is incorrect")
+                logger.error("step input is incorrect or 0")
         except ValueError:
             if is_channel_valid(self.slider_parameters_menu_input_widgets[1].text()):
                 address = self.slider_parameters_menu_input_widgets[1].text()
-                new_channel = PyDMChannel(address=address, value_slot=self.step_size_changed)
-                new_channel.connect()
+                self.step_size_channel = PyDMChannel(address=address, value_slot=self.step_size_changed)
+                self.step_size_channel.connect()
             else:
-                logger.debug("step input is incorrect")
+                logger.error("step input is incorrect")
 
         precision_source = self.slider_parameters_menu_input_widgets[4].isChecked()
         self.precisionFromPV = precision_source
-
         try:
             user_inputted_precision = float(self.slider_parameters_menu_input_widgets[3].text())
             self.precision = user_inputted_precision
+
         except ValueError:
-            logger.debug("precision input is incorrect")
+            logger.error("precision input is incorrect")
 
         try:
             slider_value = float(self.slider_parameters_menu_input_widgets[0].text())
@@ -229,7 +234,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
                 self.value_changed(slider_value)
                 self.send_value_signal[float].emit(self.value)
         except ValueError:
-            logger.debug("the given value is not a valid type or outside of the slider range")
+            logger.error("the given value is not a valid type or outside of the slider range")
 
         format_type = self.slider_parameters_menu_input_widgets[5].currentText()
 
