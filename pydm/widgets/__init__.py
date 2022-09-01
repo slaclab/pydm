@@ -26,3 +26,4 @@ from .waveformplot import PyDMWaveformPlot
 from .scatterplot import PyDMScatterPlot
 from .eventplot import PyDMEventPlot
 from .tab_bar import PyDMTabWidget
+from .template_repeater import PyDMTemplateRepeater
