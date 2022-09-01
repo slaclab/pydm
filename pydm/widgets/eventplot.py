@@ -13,7 +13,7 @@ DEFAULT_BUFFER_SIZE = 1200
 MINIMUM_BUFFER_SIZE = 2
 
 
-class CorrelationPlotCurveItem(BasePlotCurveItem):
+class EventPlotCurveItem(BasePlotCurveItem):
     _channels = ('channel')
 
     def __init__(self, addr, y_idx, x_idx, bufferSizeChannelAddress=None, **kws):
@@ -34,7 +34,7 @@ class CorrelationPlotCurveItem(BasePlotCurveItem):
             kws['symbol'] = 'o'
         if 'lineStyle' not in kws.keys():
             kws['lineStyle'] = Qt.NoPen
-        super(CorrelationPlotCurveItem, self).__init__(**kws)
+        super(EventPlotCurveItem, self).__init__(**kws)
         self.bufferSizeChannelAddress = bufferSizeChannelAddress
 
     def to_dict(self):
@@ -50,7 +50,7 @@ class CorrelationPlotCurveItem(BasePlotCurveItem):
         dic_ = OrderedDict([("channel", self.address),
                             ("y_idx", self.y_idx),
                             ("x_idx", self.x_idx)])
-        dic_.update(super(CorrelationPlotCurveItem, self).to_dict())
+        dic_.update(super(EventPlotCurveItem, self).to_dict())
         dic_['buffer_size'] = self.getBufferSize()
         dic_["bufferSizeChannelAddress"] = self.bufferSizeChannelAddress
         return dic_
@@ -212,9 +212,9 @@ class CorrelationPlotCurveItem(BasePlotCurveItem):
         return [self.channel]
 
 
-class PyDMCorrelationPlot(BasePlot):
+class PyDMEventPlot(BasePlot):
     """
-    PyDMCorrelationPlot is a widget to plot one scalar value against another.
+    PyDMEventPlot is a widget to plot one scalar value against another.
     All of the values arrive in a single event-built array, and indices are
     used to identify which values to plot.  Multiple scalar pairs can be 
     plotted on the same plot.  Each pair has a buffer which stores previous
@@ -248,7 +248,7 @@ class PyDMCorrelationPlot(BasePlot):
     """
     def __init__(self, parent=None, channel=None, init_x_indices=[], init_y_indices=[],
                  background='default'):
-        super(PyDMCorrelationPlot, self).__init__(parent, background)
+        super(PyDMEventPlot, self).__init__(parent, background)
         # If the user supplies a single integer instead of a list,
         # wrap it in a list.
         if isinstance(init_x_indices, int):
@@ -264,7 +264,7 @@ class PyDMCorrelationPlot(BasePlot):
             raise ValueError("If lists are provided for both X and Y " +
                              "indices, they must be the same length.")
         # self.index_pairs is an ordered dictionary that is keyed on a
-        # (x_idx, y_idx) tuple, with CorrelationPlotCurveItem values.
+        # (x_idx, y_idx) tuple, with EventPlotCurveItem values.
         # It gets populated in self.addChannel().
         self.index_pairs = OrderedDict()
         init_index_pairs = zip(init_x_indices, init_y_indices)
@@ -324,7 +324,7 @@ class PyDMCorrelationPlot(BasePlot):
             plot_opts['lineStyle'] = lineStyle
         if lineWidth is not None:
             plot_opts['lineWidth'] = lineWidth
-        curve = CorrelationPlotCurveItem(addr=channel,
+        curve = EventPlotCurveItem(addr=channel,
                                          y_idx=y_idx,
                                          x_idx=x_idx,
                                          name=name,
@@ -344,7 +344,7 @@ class PyDMCorrelationPlot(BasePlot):
 
         Parameters
         ----------
-        curve: CorrelationPlotCurveItem
+        curve: EventPlotCurveItem
             The curve to remove.
         """
         self.removeCurve(curve)
@@ -382,7 +382,7 @@ class PyDMCorrelationPlot(BasePlot):
         """
         Remove all curves from the plot.
         """
-        super(PyDMCorrelationPlot, self).clear()
+        super(PyDMEventPlot, self).clear()
 
     def getCurves(self):
         """

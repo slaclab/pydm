@@ -94,11 +94,11 @@ PyDMScatterPlotPlugin = qtplugin_factory(PyDMScatterPlot,
                                              RulesExtension],
                                          icon=ifont.icon("project-diagram"))
 
-# Correlation Plot plugin
-PyDMCorrelationPlotPlugin = qtplugin_factory(PyDMCorrelationPlot,
+# Event Plot plugin
+PyDMEventPlotPlugin = qtplugin_factory(PyDMEventPlot,
                                          group=WidgetCategory.PLOT,
                                          extensions=[
-                                             CorrelationCurveEditorExtension,
+                                             EventCurveEditorExtension,
                                              RulesExtension],
                                          icon=ifont.icon("project-diagram"))
 

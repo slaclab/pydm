@@ -3,14 +3,14 @@ from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate, RedrawModeColumnDelegate
 
 
-class PyDMCorrelationPlotCurvesModel(BasePlotCurvesModel):
+class PyDMEventPlotCurvesModel(BasePlotCurvesModel):
     """ This is the data model used by the waveform plot curve editor.
     It basically acts as a go-between for the curves in a plot, and
     QTableView items.
     """
 
     def __init__(self, plot, parent=None):
-        super(PyDMCorrelationPlotCurvesModel, self).__init__(plot, parent=parent)
+        super(PyDMEventPlotCurvesModel, self).__init__(plot, parent=parent)
         self._column_names = ('Channel', 'Y Index', 'X Index') + self._column_names
         self._column_names += ('Buffer Size', 'Buffer Size Channel')
 
@@ -31,7 +31,7 @@ class PyDMCorrelationPlotCurvesModel(BasePlotCurvesModel):
             return curve.getBufferSize()
         elif column_name == "Buffer Size Channel":
             return curve.bufferSizeChannelAddress or ""
-        return super(PyDMCorrelationPlotCurvesModel, self).get_data(
+        return super(PyDMEventPlotCurvesModel, self).get_data(
             column_name, curve)
 
     def set_data(self, column_name, curve, value):
@@ -48,7 +48,7 @@ class PyDMCorrelationPlotCurvesModel(BasePlotCurvesModel):
                 value = None
             curve.bufferSizeChannelAddress = str(value)
         else:
-            return super(PyDMCorrelationPlotCurvesModel, self).set_data(
+            return super(PyDMEventPlotCurvesModel, self).set_data(
                 column_name=column_name, curve=curve, value=value)
         return True
 
@@ -64,18 +64,18 @@ class PyDMCorrelationPlotCurvesModel(BasePlotCurvesModel):
         self.endRemoveRows()
 
 
-class CorrelationPlotCurveEditorDialog(BasePlotCurveEditorDialog):
-    """CorrelationPlotCurveEditorDialog is a QDialog that is used in Qt Designer
+class EventPlotCurveEditorDialog(BasePlotCurveEditorDialog):
+    """EventPlotCurveEditorDialog is a QDialog that is used in Qt Designer
     to edit the properties of the curves in a waveform plot.  This dialog is
     shown when you double-click the plot, or when you right click it and
     choose 'edit curves'.
 
     This thing is mostly just a wrapper for a table view, with a couple
     buttons to add and remove curves, and a button to save the changes."""
-    TABLE_MODEL_CLASS = PyDMCorrelationPlotCurvesModel
+    TABLE_MODEL_CLASS = PyDMEventPlotCurvesModel
 
     def __init__(self, plot, parent=None):
-        super(CorrelationPlotCurveEditorDialog, self).__init__(plot, parent)
+        super(EventPlotCurveEditorDialog, self).__init__(plot, parent)
 
         plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
         plot_style_delegate.hideColumns(hide_line_columns=False, hide_bar_columns=True)

@@ -208,6 +208,6 @@ class ScatterCurveEditorExtension(BasePlotExtension):
         super(ScatterCurveEditorExtension, self).__init__(widget, ScatterPlotCurveEditorDialog)
 
 
-class CorrelationCurveEditorExtension(BasePlotExtension):
+class EventCurveEditorExtension(BasePlotExtension):
     def __init__(self, widget):
-        super(CorrelationCurveEditorExtension, self).__init__(widget, CorrelationPlotCurveEditorDialog)
+        super(EventCurveEditorExtension, self).__init__(widget, EventPlotCurveEditorDialog)
