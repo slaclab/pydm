@@ -1,5 +1,6 @@
 import enum
 import os
+import re
 import platform
 import weakref
 import logging
@@ -629,6 +630,8 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.channeltype = None
         self.subtype = None
 
+        self.pydm_tool_tip = ""
+
         # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
@@ -1080,24 +1083,48 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             tooltip info
         """
         if new_tip != self._tooltip:
-            self.parseTip(new_tip)
-            self.setToolTip(new_tip)
+            self.pydm_tool_tip = str(new_tip)
+            parsed_tool_tip = self.parseTip(new_tip)
+            self.setToolTip(parsed_tool_tip)
 
     def parseTip(self, new_tip):
-        # fetch property values
+        """
+        Fetch the data for the tooltip.
 
-        if False:
-            list_of_properties = []
+        Parameters
+        ----------
+        new_tip : str
+            given tooltip string
 
-        for value in list_of_properties:
-            if value == 'pv_value':
-                pass
-            else:
-                eval(self.value)
+        Returns
+        -------
+        tip : str
+            tip info which replaced values for the properties inside $()
+        """
+        list_of_properties = [substring.start() for substring in re.finditer('\$\(', new_tip)]
+        substrings = []
+        tip = new_tip
 
+        for index in list_of_properties:
+            substrings.append([new_tip[index+2:new_tip.index(")", index)], new_tip[index:new_tip.index(")", index)+1]])
 
+        if substrings:
+            for index, value in enumerate(substrings):
+                if value[0] == 'name':
+                    value_of_parameter = self.channel
+                elif value[0] == 'pv_value':
+                    value_of_parameter = self.value
+                else:
+                    value_of_parameter = getattr(self, value[0], None)
 
+                substrings[index][0] = str(value_of_parameter)
 
+                print(substrings)
+
+        for value in substrings:
+            tip = tip.replace(value[1], value[0])
+
+        return tip
 
     @Property(str)
     def channel(self):
@@ -1228,6 +1255,29 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         """
         return self.channels()
 
+    def eventFilter(self, obj, event):
+        """
+        Filters events on this object.
+
+        Params
+        ------
+        object : QObject
+            The object that is being handled.
+        event : QEvent
+            The event that is happening.
+
+        Returns
+        -------
+        bool
+            True to stop the event from being handled further; otherwise
+            return false.
+        """
+        if event.type() == QEvent.Enter:
+            self.setToolTip(self.parseTip(self.pydm_tool_tip))
+            return True
+
+        return False
+
 
 class PyDMWritableWidget(PyDMWidget):
     """
@@ -1280,6 +1330,7 @@ class PyDMWritableWidget(PyDMWidget):
             return false.
         """
         channel = getattr(self, 'channel', None)
+
         if is_channel_valid(channel):
             status = self._write_access and self._connected
 
