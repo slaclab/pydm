@@ -158,6 +158,7 @@ class Connection(PyDMConnection):
 
         self.units = None
         self.prec = None
+        self.time = None
         self.count = None
         self.epics_type = None
         self.read_access = False
@@ -268,6 +269,14 @@ class Connection(PyDMConnection):
                 self.unit_signal.emit(self.units.decode(encoding='ascii') if isinstance(self.units, bytes) else self.units)
 
         try:
+            time = self.timestamp()
+        except KeyError:
+            pass
+        else:
+            if self.time != time:
+                self.time = time
+                self.timestamp_signal.emit(self.time)
+        try:
             ctrl_llim = self.pv.data['ctrl_llim']
         except KeyError:
             pass
@@ -346,6 +355,14 @@ class Connection(PyDMConnection):
                 pass
         if self.prec is not None:
             self.prec_signal.emit(int(self.prec))
+
+        if self.time is None:
+            try:
+                self.time = self.timestamp()
+            except KeyError:
+                pass
+        if self.time is not None:
+            self.timestamp_signal.emit(self.time)
 
         if self.units is None:
             try:
