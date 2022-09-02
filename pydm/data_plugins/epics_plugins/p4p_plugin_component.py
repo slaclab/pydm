@@ -48,6 +48,7 @@ class Connection(PyDMConnection):
         self._lower_alarm_limit = None
         self._upper_warning_limit = None
         self._lower_warning_limit = None
+        self._timestamp = None
 
     def clear_cache(self) -> None:
         """ Clear out all the stored values of this connection. """
@@ -62,6 +63,7 @@ class Connection(PyDMConnection):
         self._lower_alarm_limit = None
         self._upper_warning_limit = None
         self._lower_warning_limit = None
+        self._timestamp = None
 
     def send_new_value(self, value: Value) -> None:
         """ Callback invoked whenever a new value is received by our monitor. Emits signals based on values changed. """
@@ -128,6 +130,10 @@ class Connection(PyDMConnection):
                         value.valueAlarm.lowWarningLimit != self._lower_warning_limit:
                     self._lower_warning_limit = value.valueAlarm.lowWarningLimit
                     self.lower_warning_limit_signal.emit(value.valueAlarm.lowWarningLimit)
+                elif changed_value == 'timeStamp.secondsPastEpoch' and \
+                        value.timeStamp.secondsPastEpoch != self._timestamp:
+                    self._timestamp = value.timeStamp.secondsPastEpoch
+                    self.timestamp_signal.emit(value.timeStamp.secondsPastEpoch)
 
     def put_value(self, value):
         """ Write a value to the PV """

@@ -34,6 +34,7 @@ class Connection(PyDMConnection):
         self._lower_alarm_limit = None
         self._upper_warning_limit = None
         self._lower_warning_limit = None
+        self._timestamp = None
 
         monitor_mask = SubscriptionType.DBE_VALUE | SubscriptionType.DBE_ALARM | SubscriptionType.DBE_PROPERTY
         self.pv = epics.get_pv(pv, connection_callback=self.send_connection_state, form='ctrl',
@@ -53,6 +54,7 @@ class Connection(PyDMConnection):
         self._lower_alarm_limit = None
         self._upper_warning_limit = None
         self._lower_warning_limit = None
+        self._timestamp = None
 
     def send_new_value(self, value=None, char_value=None, count=None, typefull=None, type=None, *args, **kws):
         self.update_ctrl_vars(**kws)
@@ -77,7 +79,7 @@ class Connection(PyDMConnection):
 
     def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None,
                          upper_alarm_limit=None, lower_alarm_limit=None, upper_warning_limit=None,
-                         lower_warning_limit=None, precision=None, *args, **kws):
+                         lower_warning_limit=None, precision=None, timestamp=None, *args, **kws):
         if severity is not None and self._severity != severity:
             self._severity = severity
             self.new_severity_signal.emit(int(severity))
@@ -114,6 +116,9 @@ class Connection(PyDMConnection):
         if lower_warning_limit is not None and self._lower_warning_limit != lower_warning_limit:
             self._lower_warning_limit = lower_warning_limit
             self.lower_warning_limit_signal.emit(lower_warning_limit)
+        if timestamp is not None and self._timestamp != timestamp:
+            self._timestamp = timestamp
+            self.timestamp_signal.emit(timestamp)
 
     def send_access_state(self, read_access, write_access, *args, **kws):
         if is_read_only():

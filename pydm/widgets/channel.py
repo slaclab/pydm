@@ -94,7 +94,7 @@ class PyDMChannel(object):
                  upper_ctrl_limit_slot=None, lower_ctrl_limit_slot=None,
                  upper_alarm_limit_slot=None, lower_alarm_limit_slot=None,
                  upper_warning_limit_slot=None, lower_warning_limit_slot=None,
-                 value_signal=None):
+                 value_signal=None, timestamp_slot=None):
         self._address = None
         self.address = address
 
@@ -112,6 +112,7 @@ class PyDMChannel(object):
         self.lower_alarm_limit_slot = lower_alarm_limit_slot
         self.upper_warning_limit_slot = upper_warning_limit_slot
         self.lower_warning_limit_slot = lower_warning_limit_slot
+        self.timestamp_slot = timestamp_slot
 
         self.value_signal = value_signal
 
@@ -166,6 +167,7 @@ class PyDMChannel(object):
             upper_warning_slot_matched = self.upper_warning_limit_slot == other.upper_warning_limit_slot
             lower_warning_slot_matched = self.lower_warning_limit_slot == other.lower_warning_limit_slot
             write_access_slot_matched = self.write_access_slot == other.write_access_slot
+            timestamp_slot_matched = self.timestamp_slot == other.timestamp_slot
 
             value_signal_matched = self.value_signal is None and other.value_signal is None
             if self.value_signal and other.value_signal:
@@ -185,7 +187,8 @@ class PyDMChannel(object):
                     upper_warning_slot_matched and
                     lower_warning_slot_matched and
                     write_access_slot_matched and
-                    value_signal_matched)
+                    value_signal_matched and
+                    timestamp_slot_matched)
 
         return NotImplemented
 

@@ -48,6 +48,7 @@ class Connection(PyDMConnection):
         self._lower_alarm_limit = None
         self._upper_warning_limit = None
         self._lower_warning_limit = None
+        self._timestamp = None
 
         PyEPICSPlugin.thread_pool.submit(self.setup_callbacks, channel)
 
@@ -68,6 +69,7 @@ class Connection(PyDMConnection):
         self._lower_alarm_limit = None
         self._upper_warning_limit = None
         self._lower_warning_limit = None
+        self._timestamp = None
 
     def send_new_value(self, value=None, char_value=None, count=None, ftype=None, *args, **kws):
         self.update_ctrl_vars(**kws)
@@ -92,7 +94,7 @@ class Connection(PyDMConnection):
 
     def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None,
                          precision=None, upper_alarm_limit=None, lower_alarm_limit=None, upper_warning_limit=None,
-                         lower_warning_limit=None, *args, **kws):
+                         lower_warning_limit=None, timestamp=None, *args, **kws):
         """ Callback invoked when there is a change any of these variables. For a full description see:
             https://cars9.uchicago.edu/software/python/pyepics3/pv.html#user-supplied-callback-functions
         """
@@ -132,7 +134,9 @@ class Connection(PyDMConnection):
         if lower_warning_limit is not None and self._lower_warning_limit != lower_warning_limit:
             self._lower_warning_limit = lower_warning_limit
             self.lower_warning_limit_signal.emit(lower_warning_limit)
-
+        if timestamp is not None and self._timestamp != timestamp:
+            self._timestamp = timestamp
+            self.timestamp_signal.emit(timestamp)
 
     def send_access_state(self, read_access, write_access, *args, **kws):
         if is_read_only():

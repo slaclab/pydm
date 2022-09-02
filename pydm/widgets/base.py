@@ -626,6 +626,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.upper_warning_limit = None
         self.lower_warning_limit = None
         self.enum_strings = None
+        self.timestamp = None
 
         self.value = None
         self.channeltype = None
@@ -633,6 +634,19 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         self.pydm_tool_tip = ""
         self._tool_tip_substrings = []
+        self._tool_tip_channel_table = {"address": '_channel',
+                                        "connection": '_connected',
+                                        "severity": '_alarm_state',
+                                        "enum_strings": 'enum_strings',
+                                        "units": '_unit',
+                                        "precision": '_prec',
+                                        "upper_ctrl_limit": '_upper_ctrl_limit',
+                                        "lower_ctrl_limit": '_lower_ctrl_limit',
+                                        "upper_alarm_limit": 'upper_alarm_limit',
+                                        "lower_alarm_limit": 'lower_alarm_limit',
+                                        "upper_warning_limit": 'upper_warning_limit',
+                                        "lower_warning_limit": 'lower_warning_limit',
+                                        "timestamp": "timestamp"}
 
         # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
@@ -783,6 +797,19 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         if new_enum_strings != self.enum_strings:
             self.enum_strings = new_enum_strings
             self.value_changed(self.value)
+
+    def timestamp_changed(self, new_timestamp):
+        """
+        Callback invoked when the Channel has new timestamp values.
+
+
+        Parameters
+        ----------
+        new_timestamp : int
+            The new timestamp value
+        """
+        if new_timestamp != self.timestamp:
+            self.timestamp = new_timestamp
 
     def get_address(self):
         if not len(self._channels):
@@ -1121,12 +1148,16 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                 if value[0] == 'name':
                     value_of_attribute = self.channel
                 elif value[0].split('.')[0] == 'pv_value':
-                    print(value[0])
-                    value_of_attribute = self.value
+                    if value[0].count(".") == 0:
+                        value_of_attribute = self.value
+                    else:
+                        attribute = self._tool_tip_channel_table[value[0].split(".", 1)[1]]
+                        value_of_attribute = getattr(self, attribute, None)
                 else:
                     value_of_attribute = getattr(self, value[0], None)
 
                 tool_tip_substrings[index][0] = str(value_of_attribute)
+
 
         tip_with_attribute_info = new_tip
 
@@ -1184,7 +1215,8 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                                   upper_warning_limit_slot=self.upper_warning_limit_changed,
                                   lower_warning_limit_slot=self.lower_warning_limit_changed,
                                   value_signal=None,
-                                  write_access_slot=None)
+                                  write_access_slot=None,
+                                  timestamp_slot=self.timestamp_changed)
             # Load writeable channels if our widget requires them. These should
             # not exist on the base PyDMWidget but prevents us from duplicating
             # the method below to only make two more connections
