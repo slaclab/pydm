@@ -87,6 +87,9 @@ class PyDMChannel(object):
         Attach a signal here that emits a desired value to be sent
         through the plugin
 
+    timestamp_slot : Slot, optional
+        A function to be run when the timestamp updates
+
     """
     def __init__(self, address=None, connection_slot=None, value_slot=None,
                  severity_slot=None, write_access_slot=None,
