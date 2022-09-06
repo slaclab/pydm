@@ -103,6 +103,8 @@ class EventPlotCurveItem(BasePlotCurveItem):
         """
         if new_data is None:
             return
+        if self.x_idx is None or self.y_idx is None:
+            return
         if len(new_data) <= self.x_idx or len(new_data) <= self.y_idx:
             return
         self.data_buffer = np.roll(self.data_buffer, -1)
@@ -226,22 +228,27 @@ class PyDMEventPlot(BasePlot):
     parent : optional
         The parent of this widget.
     channel : optional
-        A string with the address for a channel.
+        A string with the address for a channel.  This channel should produce
+        an array of data for each event.  The index parameters are used to
+        select data from this array to be plotted.
     init_x_indices: optional
-        init_x_indices can be a string with the address for a channel,
-        or a list of strings, each containing an address for a channel.
-        If not specified, y-axis waveforms will be plotted against their
-        indices.  If a list is specified for both init_x_channels and
-        init_y_channels, they both must have the same length.
-        If a single x channel was specified, and a list of y channels are
-        specified, all y channels will be plotted against the same x channel.
+        init_x_indices can be None, an integer, or a list of integers possibly
+        containing None.  These indices are used to select values from the
+        data array provided by channel to be plotted.  In the event that
+        an index is None, the curve will be created, but no plotting will
+        occur until an integer index is set.  If lists are specified for
+        both init_x_indices and init_y_indices, they both must have the same
+        length. If a single x index was specified, and a list of y indices is
+        specified, all of the selected y data will be plotted against the same x.
     init_y_indices: optional
-        init_y_channels can be a string with the address for a channel,
-        or a list of strings, each containing an address for a channel.
-        If a list is specified for both init_x_channels and init_y_channels,
-        they both must have the same length.
-        If a single x channel was specified, and a list of y channels are
-        specified, all y channels will be plotted against the same x channel.
+        init_y_indices can be None, an integer, or a list of integers possibly
+        containing None.  These indices are used to select values from the
+        data array provided by channel to be plotted.  In the event that
+        an index is None, the curve will be created, but no plotting will
+        occur until an integer index is set.  If lists are specified for
+        both init_x_indices and init_y_indices, they both must have the same
+        length. If a single x index was specified, and a list of y indices is
+        specified, all of the selected y data will be plotted against the same x.
     background: optional
         The background color for the plot. Accepts any arguments that
         pyqtgraph.mkColor will accept.
@@ -255,9 +262,11 @@ class PyDMEventPlot(BasePlot):
             init_x_indices = [init_x_indices]
         if isinstance(init_y_indices, int):
             init_y_indices = [init_y_indices]
-        if len(init_x_indices) == 0:
+        if init_y_indices is None:
+            init_y_indices = []
+        if init_x_indices is None or len(init_x_indices) == 0:
             init_x_indices = list(itertools.repeat(None,
-                                                    len(init_y_indices)))
+                                                   len(init_y_indices)))
         if len(init_x_indices) == 1:
             init_x_indices = init_x_indices*len(init_y_indices)
         if len(init_x_indices) != len(init_y_indices):
@@ -292,7 +301,7 @@ class PyDMEventPlot(BasePlot):
             The channel for the curve data.
         y_idx: int
             The index for the y data for the curve.
-        x_channel: int, optional
+        x_idx: int, optional
             The index for the x data for the curve.
         name: str, optional
             A name for this curve.  The name will be used in the plot legend.
@@ -325,13 +334,13 @@ class PyDMEventPlot(BasePlot):
         if lineWidth is not None:
             plot_opts['lineWidth'] = lineWidth
         curve = EventPlotCurveItem(addr=channel,
-                                         y_idx=y_idx,
-                                         x_idx=x_idx,
-                                         name=name,
-                                         color=color,
-                                         yAxisName=yAxisName,
-                                         bufferSizeChannelAddress=bufferSizeChannelAddress,
-                                         **plot_opts)
+                                   y_idx=y_idx,
+                                   x_idx=x_idx,
+                                   name=name,
+                                   color=color,
+                                   yAxisName=yAxisName,
+                                   bufferSizeChannelAddress=bufferSizeChannelAddress,
+                                   **plot_opts)
         if buffer_size is not None:
             curve.setBufferSize(buffer_size)
         self.index_pairs[(x_idx, y_idx)] = curve
