@@ -637,17 +637,17 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self._tool_tip_substrings = []
         self._tool_tip_channel_table = {"address": '_channel',
                                         "connection": '_connected',
-                                        "severity": '_alarm_state',
+                                        "SEVR": '_alarm_state',
                                         "enum_strings": 'enum_strings',
-                                        "units": '_unit',
-                                        "precision": '_prec',
-                                        "upper_ctrl_limit": '_upper_ctrl_limit',
-                                        "lower_ctrl_limit": '_lower_ctrl_limit',
-                                        "upper_alarm_limit": 'upper_alarm_limit',
-                                        "lower_alarm_limit": 'lower_alarm_limit',
-                                        "upper_warning_limit": 'upper_warning_limit',
-                                        "lower_warning_limit": 'lower_warning_limit',
-                                        "timestamp": "timestamp"}
+                                        "EGU": '_unit',
+                                        "PREC": '_prec',
+                                        "DRVH": '_upper_ctrl_limit',
+                                        "DRVL": '_lower_ctrl_limit',
+                                        "HIHI": 'upper_alarm_limit',
+                                        "LOLO": 'lower_alarm_limit',
+                                        "HIGH": 'upper_warning_limit',
+                                        "LOW": 'lower_warning_limit',
+                                        "TIME": "timestamp"}
 
         # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
