@@ -155,9 +155,9 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
         assert signals.value is None
 
 
-@pytest.mark.parametrize("value", "step_size", "precision", "precision_from_pv", [
-    (0.5, 1, 5, 0),
-    (1, 0.1, 3, 0)
+@pytest.mark.parametrize("value, step_size, precision, precision_from_pv", [
+    ('0.5', '1', '5', False),
+    ('1', '0.1', '3', False)
 ])
 def test_parameters_menu(qtbot, value, step_size, precision, precision_from_pv):
     """
@@ -173,23 +173,26 @@ def test_parameters_menu(qtbot, value, step_size, precision, precision_from_pv):
     """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
+    pydm_slider.userDefinedLimits = True
+    pydm_slider.userMaximum = 10
+    pydm_slider.userMinimum = -10
 
     pydm_slider.slider_parameters_menu(QPoint(0, 0))
 
     # value
-    pydm_slider.slider_parameters_menu_input_widgets[0] = value
+    pydm_slider.slider_parameters_menu_input_widgets[0].setText(value)
     # step size
-    pydm_slider.slider_parameters_menu_input_widgets[1] = step_size
+    pydm_slider.slider_parameters_menu_input_widgets[1].setText(step_size)
     # precision
-    pydm_slider.slider_parameters_menu_input_widgets[3] = precision
+    pydm_slider.slider_parameters_menu_input_widgets[3].setText(precision)
     # boolean precision from PV
-    pydm_slider.slider_parameters_menu_input_widgets[4] = precision_from_pv
+    pydm_slider.slider_parameters_menu_input_widgets[4].setChecked(precision_from_pv)
     # apply changes
     pydm_slider.apply_step_size_menu_changes()
 
-    assert pydm_slider.value == value
-    assert pydm_slider.step_size == step_size
-    assert pydm_slider.precision == precision
+    assert pydm_slider.value == float(value)
+    assert pydm_slider.step_size == float(step_size)
+    assert pydm_slider.precision == float(precision)
 
 @pytest.mark.parametrize("show_labels, tick_position", [
     (True, 0),
