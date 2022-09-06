@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.related_display_button &mdash; PyDM v1.16.3 documentation</title>
+  <title>pydm.widgets.related_display_button &mdash; PyDM v1.16.3+11.g44723833 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.3
+                v1.16.3+11.g44723833
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -111,8 +111,8 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QAction</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QIcon</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QPoint</span>
 
@@ -124,8 +124,12 @@
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+<span class="n">_relatedDisplayRuleProperties</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setText&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="s1">&#39;Filenames&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;filenames&#39;</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span>
+    <span class="p">}</span>
 
-<div class="viewcode-block" id="PyDMRelatedDisplayButton"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMRelatedDisplayButton</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMRelatedDisplayButton</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_relatedDisplayRuleProperties</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QPushButton capable of opening a new Display at the same of at a</span>
 <span class="sd">    new window.</span>
@@ -145,16 +149,6 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QPushButton</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="s1">&#39;Text&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">:</span>
-            <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span> <span class="o">=</span> <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;Text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setText&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]})</span>
-
-        <span class="k">if</span> <span class="s1">&#39;Filename&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">:</span>
-            <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span> <span class="o">=</span> <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">PyDMRelatedDisplayButton</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;Filenames&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;filenames&#39;</span><span class="p">,</span> <span class="nb">list</span><span class="p">]})</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mouseReleaseEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_button_release_event</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
@@ -180,6 +174,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">handle_open_new_window_action</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_icon</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_password</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="s1">&#39;QStringList&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">filenames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -351,7 +349,77 @@
 <span class="sd">        open_in_new : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span> <span class="o">=</span> <span class="n">open_in_new</span>
-    
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not this button is password protected.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        -------</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span>
+
+    <span class="nd">@passwordProtected</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not this button is password protected.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Password to be encrypted using SHA256.</span>
+
+<span class="sd">		.. warning::</span>
+<span class="sd">			To avoid issues exposing the password this method</span>
+<span class="sd">			always returns an empty string.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		str</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="nd">@password</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Password to be encrypted using SHA256.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		value : str</span>
+<span class="sd">			The password to be encrypted</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">sha</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+            <span class="n">sha</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+            <span class="c1"># Use the setter as it also checks whether the existing password is the same with the</span>
+            <span class="c1"># new one, and only updates if the new password is different</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">protectedPassword</span> <span class="o">=</span> <span class="n">sha</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		The encrypted password.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		str</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span>
+
+    <span class="nd">@protectedPassword</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="n">value</span>
+
 <div class="viewcode-block" id="PyDMRelatedDisplayButton.mousePressEvent"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rebuild_menu</span><span class="p">()</span>
@@ -392,6 +460,42 @@
             <span class="nb">super</span><span class="p">(</span><span class="n">PyDMRelatedDisplayButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span>
                 <span class="n">mouse_event</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.validate_password"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.validate_password">[docs]</a>    <span class="k">def</span> <span class="nf">validate_password</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If the widget is ```passwordProtected```, this method will propmt</span>
+<span class="sd">        the user for the correct password.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True in case the password was correct of if the widget is not</span>
+<span class="sd">            password protected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="n">pwd</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">QInputDialog</span><span class="p">()</span><span class="o">.</span><span class="n">getText</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Authentication&quot;</span><span class="p">,</span> <span class="s2">&quot;Please enter your password:&quot;</span><span class="p">,</span>
+                                         <span class="n">QLineEdit</span><span class="o">.</span><span class="n">Password</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">pwd</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pwd</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="ow">or</span> <span class="n">pwd</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">sha</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+        <span class="n">sha</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pwd</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">pwd_encrypted</span> <span class="o">=</span> <span class="n">sha</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">pwd_encrypted</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Critical</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Invalid password.&quot;</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setDefaultButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">setEscapeButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
 <div class="viewcode-block" id="PyDMRelatedDisplayButton.handle_open_new_window_action"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.handle_open_new_window_action">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">handle_open_new_window_action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -431,6 +535,9 @@
 <span class="sd">            file on the same window. PyDMRelatedDisplayButton.NEW_WINDOW</span>
 <span class="sd">            or 1 will result on a new process.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_password</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
         <span class="n">parent_display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_parent_display</span><span class="p">()</span>
         <span class="n">base_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">macros</span> <span class="o">=</span> <span class="p">{}</span>
@@ -482,6 +589,7 @@
     <span class="k">def</span> <span class="nf">show_context_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
         <span class="n">menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="p">()</span>
         <span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span></div>
+	
 </pre></div>
 
            </div>

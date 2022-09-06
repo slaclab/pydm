@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customizing the Look and Feel &mdash; PyDM v1.16.3 documentation</title>
+  <title>Customizing the Look and Feel &mdash; PyDM v1.16.3+11.g44723833 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.3
+                v1.16.3+11.g44723833
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,6 +56,7 @@
 <p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Customizing the Look and Feel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#specifying-style-sheets-in-displays">Specifying Style Sheets in Displays</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#processing-order-of-style-sheets">Processing Order of Style Sheets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#important-notes">Important Notes</a></li>
 </ul>
@@ -136,6 +137,27 @@ Whether or not to include the PyDM Default stylesheet along with customized
 files. Note that the PyDM default stylesheet will have lower precedence
 compared to files specified at <code class="docutils literal notranslate"><span class="pre">PYDM_STYLESHEET</span></code>.</p></li>
 </ul>
+<section id="specifying-style-sheets-in-displays">
+<h2>Specifying Style Sheets in Displays<a class="headerlink" href="#specifying-style-sheets-in-displays" title="Permalink to this heading"></a></h2>
+<p>If you would like to use a custom style sheet in your PyDM display, you have a
+few different options:</p>
+<ol class="arabic simple">
+<li><p>Put QSS code directly into your Display’s <cite>styleSheet</cite> property.  This is mostly
+useful if you only need a small amount of QSS, and you only expect to use it once.
+The <cite>styleSheet</cite> property can be set in Qt Designer, or with Python code.</p></li>
+<li><p>Put a path to a QSS file in the Display’s <cite>styleSheet</cite> property.  This is useful
+if you want to reuse the same QSS file for many files, but don’t want the custom style
+to apply to <em>all</em> displays, just some subset.</p></li>
+<li><p>Set the <cite>PYDM_STYLESHEET</cite> environment variable to a path to a QSS file.  This will
+apply to all displays you load.</p></li>
+<li><p>Set the <cite>–stylesheet</cite> argument when launching PyDM.  This will apply to all displays
+you load from this instance of PyDM.  It takes precedence over the <cite>PYDM_STYLESHEET</cite>
+property.</p></li>
+</ol>
+<p>A combination of 1/2 and 3/4 are also possible - the styles from 3/4 are applied
+first, then the styles from 1/2 are applied.  This gives you the ability to override pieces
+of the global style with the <cite>styleSheet</cite> property.</p>
+</section>
 <section id="processing-order-of-style-sheets">
 <h2>Processing Order of Style Sheets<a class="headerlink" href="#processing-order-of-style-sheets" title="Permalink to this heading"></a></h2>
 <p>The file will be processed from top to bottom and the bottom-most rules will

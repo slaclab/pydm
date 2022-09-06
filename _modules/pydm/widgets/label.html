@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.label &mdash; PyDM v1.16.3 documentation</title>
+  <title>pydm.widgets.label &mdash; PyDM v1.16.3+11.g44723833 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.3
+                v1.16.3+11.g44723833
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -114,8 +114,9 @@
 <span class="kn">from</span> <span class="nn">pydm</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span> <span class="nn">pydm.widgets.base</span> <span class="kn">import</span> <span class="n">only_if_channel_set</span>
 
+<span class="n">_labelRuleProperties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;value_changed&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]}</span>
 
-<div class="viewcode-block" id="PyDMLabel"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel">[docs]</a><span class="k">class</span> <span class="nc">PyDMLabel</span><span class="p">(</span><span class="n">QLabel</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMLabel"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel">[docs]</a><span class="k">class</span> <span class="nc">PyDMLabel</span><span class="p">(</span><span class="n">QLabel</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_labelRuleProperties</span><span class="p">):</span>
     <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">)</span>
     <span class="n">DisplayFormat</span> <span class="o">=</span> <span class="n">DisplayFormat</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -137,10 +138,6 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QLabel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;Text&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PyDMLabel</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">:</span>
-            <span class="n">PyDMLabel</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span> <span class="o">=</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">PyDMLabel</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;Text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;value_changed&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setTextFormat</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PlainText</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setTextInteractionFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NoTextInteraction</span><span class="p">)</span>

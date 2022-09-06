@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.16.3 documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.16.3+11.g44723833 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.3
+                v1.16.3+11.g44723833
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -122,8 +122,9 @@
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+<span class="n">_embeddedDisplayRuleProperties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Filename&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]}</span>
 
-<div class="viewcode-block" id="PyDMEmbeddedDisplay"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay">[docs]</a><span class="k">class</span> <span class="nc">PyDMEmbeddedDisplay</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEmbeddedDisplay"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay">[docs]</a><span class="k">class</span> <span class="nc">PyDMEmbeddedDisplay</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_embeddedDisplayRuleProperties</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QFrame capable of rendering a PyDM Display</span>
 
@@ -137,10 +138,6 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;Filename&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PyDMEmbeddedDisplay</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">:</span>
-            <span class="n">PyDMEmbeddedDisplay</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span> <span class="o">=</span> <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">PyDMEmbeddedDisplay</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;Filename&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span> <span class="o">=</span> <span class="kc">None</span>
