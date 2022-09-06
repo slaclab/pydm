@@ -7,8 +7,8 @@ import numpy as np
 from qtpy.QtWidgets import QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
 from qtpy.QtCore import Qt, Signal, Property, QMargins, QPoint
 
-from pydm.widgets.slider import PyDMSlider
-from pydm.widgets.base import PyDMWidget
+from ...widgets.slider import PyDMSlider
+from ...widgets.base import PyDMWidget
 
 
 # --------------------
