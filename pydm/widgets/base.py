@@ -17,6 +17,7 @@ from .. import data_plugins, tools, config
 from ..utilities import is_qt_designer, remove_protocol
 from ..display import Display
 from .rules import RulesDispatcher
+from datetime import datetime
 
 try:
     from json.decoder import JSONDecodeError
@@ -1153,11 +1154,16 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                     else:
                         attribute = self._tool_tip_channel_table[value[0].split(".", 1)[1]]
                         value_of_attribute = getattr(self, attribute, None)
+
+                        if attribute == "timestamp" and value_of_attribute is not None:
+                            value_of_attribute = datetime.fromtimestamp(value_of_attribute)
                 else:
                     value_of_attribute = getattr(self, value[0], None)
 
-                tool_tip_substrings[index][0] = str(value_of_attribute)
+                if value[0] == "timestamp" and value_of_attribute is not None:
+                    value_of_attribute = datetime.fromtimestamp(value_of_attribute)
 
+                tool_tip_substrings[index][0] = str(value_of_attribute)
 
         tip_with_attribute_info = new_tip
 
