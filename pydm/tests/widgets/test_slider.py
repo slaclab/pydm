@@ -5,10 +5,10 @@ from logging import ERROR
 import numpy as np
 
 from qtpy.QtWidgets import QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
-from qtpy.QtCore import Qt, Signal, Property, QMargins
+from qtpy.QtCore import Qt, Signal, Property, QMargins, QPoint
 
-from ...widgets.slider import PyDMSlider
-from ...widgets.base import PyDMWidget
+from pydm.widgets.slider import PyDMSlider
+from pydm.widgets.base import PyDMWidget
 
 
 # --------------------
@@ -154,6 +154,42 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
         # unchanged
         assert signals.value is None
 
+
+@pytest.mark.parametrize("value", "step_size", "precision", "precision_from_pv", [
+    (0.5, 1, 5, 0),
+    (1, 0.1, 3, 0)
+])
+def test_parameters_menu(qtbot, value, step_size, precision, precision_from_pv):
+    """
+        Tests the slider widgets parameters menu
+
+        Expectations:
+        The values passed from the menu will update the corresponding values of the widget.
+
+        Parameters
+        ----------
+        qtbot : fixture
+            pytest-qt window for widget test
+    """
+    pydm_slider = PyDMSlider()
+    qtbot.addWidget(pydm_slider)
+
+    pydm_slider.slider_parameters_menu(QPoint(0, 0))
+
+    # value
+    pydm_slider.slider_parameters_menu_input_widgets[0] = value
+    # step size
+    pydm_slider.slider_parameters_menu_input_widgets[1] = step_size
+    # precision
+    pydm_slider.slider_parameters_menu_input_widgets[3] = precision
+    # boolean precision from PV
+    pydm_slider.slider_parameters_menu_input_widgets[4] = precision_from_pv
+    # apply changes
+    pydm_slider.apply_step_size_menu_changes()
+
+    assert pydm_slider.value == value
+    assert pydm_slider.step_size == step_size
+    assert pydm_slider.precision == precision
 
 @pytest.mark.parametrize("show_labels, tick_position", [
     (True, 0),
