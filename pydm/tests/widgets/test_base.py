@@ -469,7 +469,8 @@ def test_pydmwidget_channels(qtbot):
                                         lower_alarm_limit_slot=pydm_label.lower_alarm_limit_changed,
                                         lower_warning_limit_slot=pydm_label.lower_warning_limit_changed,
                                         value_signal=None,
-                                        write_access_slot=None)
+                                        write_access_slot=None,
+                                        timestamp_slot=pydm_label.timestamp_changed)
     assert pydm_channels == default_pydm_channels
 
 
@@ -511,7 +512,8 @@ def test_pydmwritablewidget_channels(qtbot):
                                         upper_warning_limit_slot=pydm_lineedit.upper_warning_limit_changed,
                                         lower_warning_limit_slot=pydm_lineedit.lower_warning_limit_changed,
                                         value_signal=pydm_lineedit.send_value_signal,
-                                        write_access_slot=pydm_lineedit.writeAccessChanged)
+                                        write_access_slot=pydm_lineedit.writeAccessChanged,
+                                        timestamp_slot=pydm_lineedit.timestamp_changed)
     assert pydm_channels == default_pydm_channels
 
 
