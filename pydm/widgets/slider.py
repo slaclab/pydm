@@ -834,9 +834,11 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         ----------
         new_step_size : float
         """
-        self._step_size = float(new_step_size)
-        self._parameters_menu_flag = True
-        self.num_steps = ((self.maximum - self.minimum) / self._step_size + 1) + 1
+
+        if self.maximum is not None or self.minimum is not None and new_step_size >= 0:
+            self._step_size = float(new_step_size)
+            self._parameters_menu_flag = True
+            self.num_steps = ((self.maximum - self.minimum) / self._step_size + 1) + 1
 
     @Slot(int)
     @Slot(float)
