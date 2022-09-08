@@ -444,7 +444,7 @@ class TextFormatter(object):
         # from the PV
         if self._precision_from_pv is not None and self._precision_from_pv:
             return
-        if new_prec and self._prec != int(new_prec) and new_prec >= 0:
+        if new_prec and self._user_prec != int(new_prec) and new_prec >= 0:
             self._user_prec = int(new_prec)
             if not is_qt_designer() or config.DESIGNER_ONLINE:
                 self.value_changed(self.value)
