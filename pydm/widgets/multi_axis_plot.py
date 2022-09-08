@@ -345,6 +345,31 @@ class MultiAxisPlot(PlotItem):
             stackedView.enableAutoRange(x=x, y=y)
         self.getViewBox().enableAutoRange(x=x, y=y)
 
+    def removeItem(self, item):
+        """
+        Remove an item from this plot. An override of the pyqtgraph implementation which assumes
+        that there is only one view box and will delete items that do not exist on that view if called.
+        """
+
+        # First remove the item from all the lists on the plot itself
+        if item not in self.items:
+            return
+
+        self.items.remove(item)
+        if item in self.dataItems:
+            self.dataItems.remove(item)
+
+        if item in self.curves:
+            self.curves.remove(item)
+            self.updateDecimation()
+            self.updateParamList()
+
+        # Then let any view box it is associated with remove it from its internal lists as well
+        if hasattr(item, 'getViewBox'):
+            linked_view = item.getViewBox()
+            if linked_view is not None:
+                linked_view.removeItem(item)
+
     def clearLayout(self):
         """
         Remove all items from the layout, but leave them intact in the scene so that we can replace them in a new
