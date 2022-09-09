@@ -103,6 +103,7 @@ jobs:
       displayName: 'Tests - Run'
       continueOnError: false
       env:
+        QT_MAC_WANTS_LAYER: 1
         DISPLAY: :99.0
 
     - bash: |
