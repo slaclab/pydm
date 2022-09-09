@@ -125,3 +125,41 @@ def test_update_log_mode(qtbot, sample_plot):
     assert data_item.opts['logMode'] == [False, False]
     for axis in sample_plot.getAxes():
         assert not axis.logMode
+
+
+def test_remove_item(qtbot, sample_plot: MultiAxisPlot):
+    """ Verify that removing an item from the plot works as expected """
+
+    # First create a couple of mock data items to plot, and add them to the plot
+    data_item_one = PlotDataItem()
+    data_item_two = PlotDataItem()
+
+    sample_plot.addItem(data_item_one)
+    sample_plot.addItem(data_item_two)
+    linked_viewbox = data_item_one.getViewBox()
+
+    assert len(sample_plot.items) == 2
+    assert len(sample_plot.dataItems) == 2
+    assert len(linked_viewbox.addedItems) == 2
+
+    # Now remove them one at a time, and ensure they are cleared out correctly
+    sample_plot.removeItem(data_item_one)
+    assert len(sample_plot.items) == 1
+    assert len(sample_plot.dataItems) == 1
+    assert len(linked_viewbox.addedItems) == 1
+    assert sample_plot.items[0] == data_item_two
+    assert sample_plot.dataItems[0] == data_item_two
+    assert linked_viewbox.addedItems[0] == data_item_two
+
+    sample_plot.removeItem(data_item_two)
+    assert len(sample_plot.items) == 0
+    assert len(sample_plot.dataItems) == 0
+    assert len(linked_viewbox.addedItems) == 0
+
+    # Finally, re-add them and verify that clear() will remove both at the same time
+    sample_plot.addItem(data_item_one)
+    sample_plot.addItem(data_item_two)
+    sample_plot.clear()
+    assert len(sample_plot.items) == 0
+    assert len(sample_plot.dataItems) == 0
+    assert len(linked_viewbox.addedItems) == 0
