@@ -502,10 +502,47 @@ class PyDMDrawingLine(PyDMDrawing):
         super(PyDMDrawingLine, self).draw_item(painter)
         x, y, w, h = self.get_bounds()
 
-        start_point = QPointF(x, 0)
-        end_point = QPointF(x + w, 0)
+        # Figure out how long to make the line to touch the bounding box
+        # Length varies depending on rotation
 
+        # Find the quadrant 1 angle equivalent
+        angle = self._rotation % 360
+        if 90 < angle <= 180:
+            angle = 180 - angle
+        elif 180 < angle <= 270:
+            angle = angle - 180
+        elif 270 < angle <= 360:
+            angle = 360 - angle
+        angle_rad = math.radians(angle)
+
+        # Find the angle of the rop right corner of the bounding box
+        try:
+            critical_angle = math.atan(h/w)
+        except ZeroDivisionError:
+            critical_angle = math.pi / 2
+
+        # Pick a length based on which side we intersect with
+        if angle_rad > critical_angle:
+            try:
+                length = h / math.sin(angle_rad)
+            except ZeroDivisionError:
+                length = w
+        else:
+            try:
+                length = w / math.cos(angle_rad)
+            except ZeroDivisionError:
+                length = h
+
+        # Define endpoints potentially outside the bounding box
+        # Will land on the bounding box after rotation
+        midpoint = x + w/2
+        start_point = QPointF(midpoint - length/2, 0)
+        end_point = QPointF(midpoint + length/2, 0)
+
+        # Draw the line
         painter.drawLine(start_point, end_point)
+
+        # Draw the arrows
         if self._arrow_end_point_selection:
             points = self._arrow_points(start_point, end_point, 6, 6)
             painter.drawPolygon(points)
