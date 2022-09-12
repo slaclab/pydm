@@ -103,6 +103,8 @@ jobs:
       displayName: 'Tests - Run'
       continueOnError: false
       env:
+        # Setting this fixes an issue with macOS 11+ and pyqt
+        QT_MAC_WANTS_LAYER: 1
         DISPLAY: :99.0
 
     - bash: |
