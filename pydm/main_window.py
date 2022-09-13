@@ -76,12 +76,14 @@ class PyDMMainWindow(QMainWindow):
 
         if hide_nav_bar:
             self.toggle_nav_bar(False)
+            self.ui.actionShow_Navigation_Bar.setChecked(False)
         if hide_menu_bar:
             # Toggle the menu bar via the QAction so that the menu item
             # stays in sync with menu visibility.
             self.ui.actionShow_Menu_Bar.activate(QAction.Trigger)
         if hide_status_bar:
             self.toggle_status_bar(False)
+            self.ui.actionShow_Status_Bar.setChecked(False)
         #Try to find the designer binary.
         self.ui.actionEdit_in_Designer.setEnabled(False)
 
