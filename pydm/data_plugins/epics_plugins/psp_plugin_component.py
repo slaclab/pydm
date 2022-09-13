@@ -268,14 +268,12 @@ class Connection(PyDMConnection):
                 self.units = units
                 self.unit_signal.emit(self.units.decode(encoding='ascii') if isinstance(self.units, bytes) else self.units)
 
-        try:
-            time = self.timestamp()
-        except KeyError:
-            pass
-        else:
-            if self.time != time:
-                self.time = time
-                self.timestamp_signal.emit(self.time)
+        time = self.timestamp()
+
+        if time is not None and self.time != time:
+            self.time = time
+            self.timestamp_signal.emit(self.time)
+
         try:
             ctrl_llim = self.pv.data['ctrl_llim']
         except KeyError:
@@ -357,10 +355,8 @@ class Connection(PyDMConnection):
             self.prec_signal.emit(int(self.prec))
 
         if self.time is None:
-            try:
-                self.time = self.timestamp()
-            except KeyError:
-                pass
+            self.time = self.timestamp()
+
         if self.time is not None:
             self.timestamp_signal.emit(self.time)
 

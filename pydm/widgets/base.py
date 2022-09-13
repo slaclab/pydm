@@ -806,7 +806,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         Parameters
         ----------
-        new_timestamp : int
+        new_timestamp : float
             The new timestamp value
         """
         if new_timestamp != self.timestamp:
