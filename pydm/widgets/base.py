@@ -1112,7 +1112,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         new_tip : str
             tooltip info
         """
-        if new_tip != self._tooltip:
+        if new_tip != self.pydm_tool_tip:
             self.pydm_tool_tip = str(new_tip)
             parsed_tool_tip = self.parseTip(new_tip)
             self.setToolTip(parsed_tool_tip)
