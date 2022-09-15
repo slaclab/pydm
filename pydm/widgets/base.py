@@ -1112,11 +1112,9 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         new_tip : str
             tooltip info
         """
-        print(new_tip)
         if new_tip != self.pydm_tool_tip:
             self.pydm_tool_tip = str(new_tip)
             parsed_tool_tip = self.parseTip(new_tip)
-            print(new_tip)
             self.setToolTip(parsed_tool_tip)
 
     def parseTip(self, new_tip):
@@ -1321,9 +1319,12 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             True to stop the event from being handled further; otherwise
             return false.
         """
+
         if event.type() == QEvent.Enter:
-            print(self._tooltip)
-            self.setToolTip(self.parseTip(self.pydm_tool_tip))
+            if not self.pydm_tool_tip:
+                self.setToolTip(self.parseTip(self.toolTip()))
+            else:
+                self.setToolTip(self.parseTip(self.pydm_tool_tip))
             return True
 
         return False
