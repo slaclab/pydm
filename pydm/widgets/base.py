@@ -633,7 +633,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.channeltype = None
         self.subtype = None
 
-        self.pydm_tool_tip = ""
+        self._pydm_tool_tip = ""
         self._tool_tip_substrings = []
         self._tool_tip_channel_table = {"address": '_channel',
                                         "connection": '_connected',
@@ -1100,7 +1100,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             toolTip : str
                 tooltip info
         """
-        return self.pydm_tool_tip
+        return self._pydm_tool_tip
 
     @PyDMToolTip.setter
     def PyDMToolTip(self, new_tip):
@@ -1112,8 +1112,8 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         new_tip : str
             tooltip info
         """
-        if new_tip != self.pydm_tool_tip:
-            self.pydm_tool_tip = str(new_tip)
+        if new_tip != self._pydm_tool_tip:
+            self._pydm_tool_tip = str(new_tip)
             parsed_tool_tip = self.parseTip(new_tip)
             self.setToolTip(parsed_tool_tip)
 
@@ -1322,10 +1322,10 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         """
 
         if event.type() == QEvent.Enter:
-            if not self.pydm_tool_tip:
+            if not self._pydm_tool_tip:
                 self.setToolTip(self.parseTip(self.toolTip()))
             else:
-                self.setToolTip(self.parseTip(self.pydm_tool_tip))
+                self.setToolTip(self.parseTip(self._pydm_tool_tip))
             return True
 
         return False
