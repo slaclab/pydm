@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.16.3+56.g23db1d15 documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.16.3+59.gf4224d9b documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.16.3+56.g23db1d15
+                v1.16.3+59.gf4224d9b
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -266,6 +266,23 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear_error_text</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">load_if_needed</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.set_macros_and_filename"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.set_macros_and_filename">[docs]</a>    <span class="k">def</span> <span class="nf">set_macros_and_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_filename</span><span class="p">,</span> <span class="n">new_macros</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method to change both macros and the filename of an embedded display.</span>
+<span class="sd">        the method takes in a Filename of the display to embed and a</span>
+<span class="sd">        JSON-formatted string containing macro variables to pass to the embedded file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_macros : str</span>
+<span class="sd">        new_filename : str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_macros</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_macros</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_macros</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span> <span class="o">=</span> <span class="n">new_macros</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">new_filename</span></div>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.parsed_macros"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.parsed_macros">[docs]</a>    <span class="k">def</span> <span class="nf">parsed_macros</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
