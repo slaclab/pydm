@@ -159,6 +159,23 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
                 self.clear_error_text()
             self.load_if_needed()
 
+    def set_macros_and_filename(self, new_filename, new_macros):
+        """
+        A method to change both macros and the filename of an embedded display.
+        the method takes in a Filename of the display to embed and a
+        JSON-formatted string containing macro variables to pass to the embedded file.
+
+        Parameters
+        ----------
+        new_macros : str
+        new_filename : str
+        """
+        new_macros = str(new_macros)
+        if new_macros != self._macros:
+            self._macros = new_macros
+
+        self.filename = new_filename
+
     def parsed_macros(self):
         """
         Dictionary containing the key value pair for each macro specified.
