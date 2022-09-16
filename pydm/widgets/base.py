@@ -1091,7 +1091,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.alarm_severity_changed(self._alarm_state)
 
     @Property(str)
-    def toolTip(self):
+    def PyDMToolTip(self):
         """
         The tooltip for this widget.
 
@@ -1100,10 +1100,10 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             toolTip : str
                 tooltip info
         """
-        return self._tooltip
+        return self.pydm_tool_tip
 
-    @toolTip.setter
-    def toolTip(self, new_tip):
+    @PyDMToolTip.setter
+    def PyDMToolTip(self, new_tip):
         """
         The tooltip for this widget.
 
@@ -1133,6 +1133,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         """
 
         if not self._tool_tip_substrings:
+            print(new_tip)
             list_of_attributes = [substring.start() for substring in re.finditer('\$\(', new_tip)]
             tool_tip_substrings = []
 
