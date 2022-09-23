@@ -1,3 +1,4 @@
+from pyqtgraph.graphicsItems.ViewBox import ViewBox
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 from qtpy.QtCore import QCoreApplication, Signal
 from qtpy.QtWidgets import QAction
@@ -22,6 +23,10 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
     sigSetAutorange = Signal(bool, bool)
     # A signal for updating the x autorange value
     sigXAutoRangeChanged = Signal(object)
+    # A signal for updating the y autorange value
+    sigYAutoRangeChanged = Signal(object)
+    # A signal for inverting the x or y axis
+    sigInvertAxis = Signal(int, bool)
 
     def __init__(self, view):
         super(MultiAxisViewBoxMenu, self).__init__(view)
@@ -53,6 +58,27 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
         """ Disable x auto-range for each view box """
         super().xManualClicked()
         self.sigXAutoRangeChanged.emit(False)
+
+    def yAutoClicked(self):
+        """ Update the y auto-range value for each view box """
+        super().yAutoClicked()
+        val = self.ctrl[1].autoPercentSpin.value() * 0.01
+        self.sigYAutoRangeChanged.emit(val)
+
+    def yManualClicked(self):
+        """ Disable y auto-range for each view box """
+        super().yManualClicked()
+        self.sigYAutoRangeChanged.emit(False)
+
+    def yInvertToggled(self, inverted: bool):
+        """ Toggle the inverted status of the y axis. """
+        super().yInvertToggled(inverted)
+        self.sigInvertAxis.emit(ViewBox.YAxis, inverted)
+
+    def xInvertToggled(self, inverted: bool):
+        """ Toggle the inverted status of the x axis """
+        super().xInvertToggled(inverted)
+        self.sigInvertAxis.emit(ViewBox.XAxis, inverted)
 
     def autoRange(self):
         """ Sets autorange to True for all elements on the plot """

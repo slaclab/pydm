@@ -76,14 +76,12 @@ class MultiAxisPlot(PlotItem):
         # Create a new view box to link this axis with
         self.axes[str(name)] = {'item': axis, 'pos': None}  # The None will become an actual position in rebuildLayout() below
         view = MultiAxisViewBox()
-        view.menu = MultiAxisViewBoxMenu(view)
         view.setYRange(minRange, maxRange)
         view.enableAutoRange(axis=ViewBox.XAxis, enable=enableAutoRangeX)
         view.enableAutoRange(axis=ViewBox.YAxis, enable=enableAutoRangeY)
         self.axes['bottom']['item'].linkToView(view)  # Ensure the x axis will update when the view does
 
         view.setMouseMode(self.vb.state['mouseMode'])  # Ensure that mouse behavior is consistent between stacked views
-        self.connectMenuSignals(view.menu)
         axis.linkToView(view)
 
         if plotDataItem is not None:
@@ -129,8 +127,10 @@ class MultiAxisPlot(PlotItem):
         """
         view_box_menu.sigMouseModeChanged.connect(self.changeMouseMode)
         view_box_menu.sigXAutoRangeChanged.connect(self.updateXAutoRange)
+        view_box_menu.sigYAutoRangeChanged.connect(self.updateYAutoRange)
         view_box_menu.sigRestoreRanges.connect(self.restoreAxisRanges)
         view_box_menu.sigSetAutorange.connect(self.setPlotAutoRange)
+        view_box_menu.sigInvertAxis.connect(self.invertAxis)
 
     def updateStackedViews(self):
         """
@@ -345,6 +345,23 @@ class MultiAxisPlot(PlotItem):
             stackedView.enableAutoRange(x=x, y=y)
         self.getViewBox().enableAutoRange(x=x, y=y)
 
+    def invertAxis(self, axis: int, inverted: bool) -> None:
+        """
+        Toggle whether or not the input axis should be inverted.
+
+        Parameters
+        ----------
+        axis : int
+            An int associated with the axis to modify. Must be either ViewBox.XAxis or ViewBox.YAxis from pyqtgraph
+        inverted : bool
+            True if we are inverting the axis, False if not
+        """
+        for stackedView in self.stackedViews:
+            if axis == ViewBox.XAxis:
+                stackedView.invertX(inverted)
+            elif axis == ViewBox.YAxis:
+                stackedView.invertY(inverted)
+
     def removeItem(self, item):
         """
         Remove an item from this plot. An override of the pyqtgraph implementation which assumes
@@ -475,6 +492,12 @@ class MultiAxisPlot(PlotItem):
         self.vb.enableAutoRange(ViewBox.XAxis, val)
         for stackedView in self.stackedViews:
             stackedView.enableAutoRange(ViewBox.XAxis, val)
+
+    def updateYAutoRange(self, val):
+        """ Update the autorange values for the y-axis on all view boxes """
+        self.vb.enableAutoRange(ViewBox.YAxis, val)
+        for stackedView in self.stackedViews:
+            stackedView.enableAutoRange(ViewBox.YAxis, val)
 
     def updateLogMode(self) -> None:
         """ Toggle log mode on or off for each item in the plot """
