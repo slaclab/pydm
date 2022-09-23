@@ -24,7 +24,8 @@ logger = logging.getLogger(__name__)
 
 class PyDMMainWindow(QMainWindow):
 
-    def __init__(self, parent=None, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False):
+    def __init__(self, parent=None, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False,
+                 home_file=None, macros=None, command_line_args=None):
         super(PyDMMainWindow, self).__init__(parent)
         self.app = QApplication.instance()
         self.font_factor = 1
@@ -38,8 +39,11 @@ class PyDMMainWindow(QMainWindow):
 
         self.default_font_size = QApplication.instance().font().pointSizeF()
 
-        self.home_file = None
+        self.home_file = home_file
         self.home_widget = None
+        if home_file:
+            self.home_widget = load_file(home_file, macros=macros, args=command_line_args, target=ScreenTarget.HOME)
+            close_widget_connections(self.home_widget)
 
         self.designer_path = None
 
@@ -200,6 +204,10 @@ class PyDMMainWindow(QMainWindow):
                       args=args,
                       target=ScreenTarget.NEW_PROCESS)
         else:
+            if self.home_widget != self.display_widget():
+                self.home_widget.previous_display = self.display_widget()
+            establish_widget_connections(self.home_widget)
+            register_widget_rules(self.home_widget)
             self.set_display_widget(self.home_widget)
 
     def enable_disable_navigation(self):

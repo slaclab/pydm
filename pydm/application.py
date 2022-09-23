@@ -15,11 +15,10 @@ from qtpy.QtCore import Qt, QTimer, Slot
 from qtpy.QtWidgets import QApplication, QWidget
 from .main_window import PyDMMainWindow
 
-from .display import load_file
-from .utilities import macro, which, path_info, find_display_in_path
+from .utilities import which, path_info
 from .utilities.stylesheet import apply_stylesheet
 from .utilities import connection
-from . import data_plugins
+from . import config, data_plugins
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +66,8 @@ class PyDMApplication(QApplication):
         create a PyDMMainWindow in the initialization (Default is True).
     fullscreen : bool, optional
         Whether or not to launch PyDM in a full screen mode.
+    homefile : str, optional
+        The path to a PyDM file to return to whenever the home button is clicked in the navigation bar.
     """
     # Instantiate our plugins.
     plugins = data_plugins.plugin_modules
@@ -74,7 +75,7 @@ class PyDMApplication(QApplication):
     def __init__(self, ui_file=None, command_line_args=[], display_args=[],
                  perfmon=False, hide_nav_bar=False, hide_menu_bar=False,
                  hide_status_bar=False, read_only=False, macros=None,
-                 use_main_window=True, stylesheet_path=None, fullscreen=False):
+                 use_main_window=True, stylesheet_path=None, fullscreen=False, home_file=None):
         super(PyDMApplication, self).__init__(command_line_args)
         # Enable High DPI display, if available.
         if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
@@ -90,12 +91,21 @@ class PyDMApplication(QApplication):
         self.stylesheet_path = stylesheet_path
         self.perfmon = perfmon
 
+        # The home_file param is set by command line option. If the option wasn't set, try the environment variable
+        # from config. Note that this may not be set either, in which case home_file will eventually be set to
+        # the first display opened.
+        self.home_file = home_file
+        if self.home_file is None:
+            self.home_file = config.HOME_FILE
+
         # Open a window if required.
         if ui_file is not None:
-            self.make_main_window(stylesheet_path=stylesheet_path)
+            self.make_main_window(stylesheet_path=stylesheet_path, home_file=self.home_file,
+                                  macros=macros, command_line_args=command_line_args)
             self.main_window.open(ui_file, macros, command_line_args)
         elif use_main_window:
-            self.make_main_window(stylesheet_path=stylesheet_path)
+            self.make_main_window(stylesheet_path=stylesheet_path, home_file=self.home_file,
+                                  macros=macros, command_line_args=command_line_args)
 
         self.had_file = ui_file is not None
         # Re-enable sigint (usually blocked by pyqt)
@@ -185,6 +195,8 @@ class PyDMApplication(QApplication):
             args.append("--read-only")
         if self.stylesheet_path:
             args.extend(["--stylesheet", self.stylesheet_path])
+        if self.home_file:
+            args.extend(["--homefile", self.home_file])
         if macros is not None:
             args.extend(["-m", json.dumps(macros)])
         args.extend(["--log_level", logging.getLevelName(logging.getLogger("").getEffectiveLevel())])
@@ -195,7 +207,7 @@ class PyDMApplication(QApplication):
             args.extend(command_line_args)
         subprocess.Popen(args, shell=False)
 
-    def make_main_window(self, stylesheet_path=None):
+    def make_main_window(self, stylesheet_path=None, home_file=None, macros=None, command_line_args=None):
         """
         Instantiate a new PyDMMainWindow, add it to the application's
         list of windows. Typically, this function is only called as part
@@ -204,7 +216,10 @@ class PyDMApplication(QApplication):
         """
         main_window = PyDMMainWindow(hide_nav_bar=self.hide_nav_bar,
                                      hide_menu_bar=self.hide_menu_bar,
-                                     hide_status_bar=self.hide_status_bar)
+                                     hide_status_bar=self.hide_status_bar,
+                                     home_file=home_file,
+                                     macros=macros,
+                                     command_line_args=command_line_args)
 
         self.main_window = main_window
         apply_stylesheet(stylesheet_path, widget=self.main_window)

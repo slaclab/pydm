@@ -36,6 +36,10 @@ PYDM_DATA_PLUGINS_PATH          | Path in which PyDM should look for Data Plugin
                                 | **Default:** None
 PYDM_TOOLS_PATH                 | Path in which PyDM should look for External Tools to be loaded.
                                 | **Default:** None
+PYDM_HOME_FILE                  | Path to a PyDM display file to use as the home display in the navigation bar.
+                                | Will be returned to when the user clicks on the home button. If not set, the
+                                | first display opened will be used as the home display. If the command line option
+                                | ``--homefile`` is set, that will take precedence over this environment variable.
 PYDM_STRING_ENCODING            | The string encoding to be used when converting arrays to strings.
                                 | **Default:** utf-8
 PYDM_STYLESHEET                 | Path to the QSS files defining the global stylesheets for the
