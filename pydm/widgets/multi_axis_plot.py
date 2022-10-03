@@ -1,7 +1,7 @@
 import weakref
 from collections import Counter
 from pyqtgraph import AxisItem, PlotDataItem, PlotItem, ViewBox
-from typing import List
+from typing import List, Optional
 from .multi_axis_viewbox import MultiAxisViewBox
 from .multi_axis_viewbox_menu import MultiAxisViewBoxMenu
 from ..utilities import is_qt_designer
@@ -131,6 +131,10 @@ class MultiAxisPlot(PlotItem):
         view_box_menu.sigRestoreRanges.connect(self.restoreAxisRanges)
         view_box_menu.sigSetAutorange.connect(self.setPlotAutoRange)
         view_box_menu.sigInvertAxis.connect(self.invertAxis)
+        view_box_menu.sigVisibleOnly.connect(self.setPlotAutoRangeVisibleOnly)
+        view_box_menu.sigAutoPan.connect(self.setPlotAutoPan)
+        view_box_menu.sigXManualRange.connect(self.setXRange)
+        view_box_menu.sigYManualRange.connect(self.setYRange)
 
     def updateStackedViews(self):
         """
@@ -344,6 +348,36 @@ class MultiAxisPlot(PlotItem):
         for stackedView in self.stackedViews:
             stackedView.enableAutoRange(x=x, y=y)
         self.getViewBox().enableAutoRange(x=x, y=y)
+
+    def setPlotAutoPan(self, auto_pan_x: Optional[bool] = None, auto_pan_y: Optional[bool] = None) -> None:
+        """
+        Toggle pan only mode (no scaling) when auto range is enabled.
+
+        Parameters
+        ----------
+        auto_pan_x : bool, optional
+            Whether or not the x-axis should be set to auto pan. If omitted, will be unchanged from current value.
+        auto_pan_y : bool, optional
+            Whether or not the y-axis should be set to auto pan. If omitted, will be unchanged from current value.
+        """
+        for stackedView in self.stackedViews:
+            stackedView.setAutoPan(x=auto_pan_x, y=auto_pan_y)
+
+    def setPlotAutoRangeVisibleOnly(self, visible_only_x: Optional[bool] = None,
+                                    visible_only_y: Optional[bool] = None) -> None:
+        """
+        Toggle if auto range should use only visible data when calculating the range to show
+
+        Parameters
+        ----------
+        visible_only_x : bool, optional
+            Whether or not the x-axis should be set to visible only. If omitted, will be unchanged from current value.
+        visible_only_y : bool, optional
+            Whether or not the y-axis should be set to visible only. If omitted, will be unchanged from current value.
+        """
+        for stackedView in self.stackedViews:
+            stackedView.setAutoVisible(x=visible_only_x, y=visible_only_y)
+
 
     def invertAxis(self, axis: int, inverted: bool) -> None:
         """
