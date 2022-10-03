@@ -182,7 +182,6 @@ class MultiAxisPlot(PlotItem):
         plotDataItem.setFftMode(self.ctrl.fftCheck.isChecked())
         plotDataItem.setDownsampling(*self.downsampleMode())
         plotDataItem.setClipToView(self.clipToViewMode())
-        plotDataItem.setPointMode(self.pointMode())
 
         # Add to average if needed
         self.updateParamList()
