@@ -18,6 +18,7 @@ from .utilities.stylesheet import merge_widget_stylesheet, global_style
 class ScreenTarget:
     NEW_PROCESS = 0
     DIALOG = 1
+    HOME = 2
 
 
 logger = logging.getLogger(__file__)
