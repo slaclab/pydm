@@ -70,6 +70,7 @@ class PyDMApplication(QApplication):
     """
     # Instantiate our plugins.
     plugins = data_plugins.plugin_modules
+    MainWindowClass = PyDMMainWindow
 
     def __init__(self, ui_file=None, command_line_args=[], display_args=[],
                  perfmon=False, hide_nav_bar=False, hide_menu_bar=False,
@@ -202,9 +203,9 @@ class PyDMApplication(QApplication):
         of starting up a new process, because PyDMApplications only have
         one window per process.
         """
-        main_window = PyDMMainWindow(hide_nav_bar=self.hide_nav_bar,
-                                     hide_menu_bar=self.hide_menu_bar,
-                                     hide_status_bar=self.hide_status_bar)
+        main_window = self.MainWindowClass(hide_nav_bar=self.hide_nav_bar,
+                                           hide_menu_bar=self.hide_menu_bar,
+                                           hide_status_bar=self.hide_status_bar)
 
         self.main_window = main_window
         apply_stylesheet(stylesheet_path, widget=self.main_window)

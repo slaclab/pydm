@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 class PyDMMainWindow(QMainWindow):
+    UiClass = Ui_MainWindow
 
     def __init__(self, parent=None, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False):
         super(PyDMMainWindow, self).__init__(parent)
@@ -43,7 +44,7 @@ class PyDMMainWindow(QMainWindow):
 
         self.designer_path = None
 
-        self.ui = Ui_MainWindow()
+        self.ui = self.UiClass()
         self.ui.setupUi(self)
 
         self.showMacros = QAction("Show Macros...", self)
