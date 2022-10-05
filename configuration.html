@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Configuration &mdash; PyDM v1.17.0 documentation</title>
+  <title>Configuration &mdash; PyDM v1.17.0+6.gb75dc3a7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.17.0
+                v1.17.0+6.gb75dc3a7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -190,14 +191,23 @@ default values.</p>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>PYDM_STRING_ENCODING</p></td>
+<tr class="row-even"><td><p>PYDM_HOME_FILE</p></td>
+<td><div class="line-block">
+<div class="line">Path to a PyDM display file to use as the home display in the navigation bar.</div>
+<div class="line">Will be returned to when the user clicks on the home button. If not set, the</div>
+<div class="line">first display opened will be used as the home display. If the command line option</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--homefile</span></code> is set, that will take precedence over this environment variable.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>PYDM_STRING_ENCODING</p></td>
 <td><div class="line-block">
 <div class="line">The string encoding to be used when converting arrays to strings.</div>
 <div class="line"><strong>Default:</strong> utf-8</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>PYDM_STYLESHEET</p></td>
+<tr class="row-even"><td><p>PYDM_STYLESHEET</p></td>
 <td><div class="line-block">
 <div class="line">Path to the QSS files defining the global stylesheets for the</div>
 <div class="line">PyDM application. When used, it will override the default look.</div>
@@ -209,7 +219,7 @@ default values.</p>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>PYDM_STYLESHEET_INCLUDE_DEFAULT</p></td>
+<tr class="row-odd"><td><p>PYDM_STYLESHEET_INCLUDE_DEFAULT</p></td>
 <td><div class="line-block">
 <div class="line">Whether or not to include the PyDM Default stylesheet along with customized</div>
 <div class="line">files. Note that the PyDM default stylesheet will have lower precedence compared</div>
@@ -218,7 +228,7 @@ default values.</p>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>PYDM_DESIGNER_ONLINE</p></td>
+<tr class="row-even"><td><p>PYDM_DESIGNER_ONLINE</p></td>
 <td><div class="line-block">
 <div class="line">This flag enables receiving live data in Qt Designer. If disabled,</div>
 <div class="line">channels will not be connected to in Qt Designer.</div>

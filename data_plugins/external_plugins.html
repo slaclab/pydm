@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>External Data Plugins &mdash; PyDM v1.17.0 documentation</title>
+  <title>External Data Plugins &mdash; PyDM v1.17.0+6.gb75dc3a7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -31,7 +32,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.17.0
+                v1.17.0+6.gb75dc3a7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -69,6 +70,55 @@
 <li class="toctree-l1"><a class="reference internal" href="calc_plugin.html">Calc Plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="p4p_plugin.html">P4P Plugin</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">External Data Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pydm.data_plugins.PyDMPlugin"><code class="docutils literal notranslate"><span class="pre">PyDMPlugin</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.PyDMPlugin.connection_class"><code class="docutils literal notranslate"><span class="pre">PyDMPlugin.connection_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection"><code class="docutils literal notranslate"><span class="pre">PyDMConnection</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.blockSignals"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.blockSignals()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.childEvent"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.childEvent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.children"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.children()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.connectNotify"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.connectNotify()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.customEvent"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.customEvent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.deleteLater"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.deleteLater()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.destroyed"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.destroyed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.disconnect"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.disconnect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.disconnectNotify"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.disconnectNotify()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.dumpObjectInfo"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.dumpObjectInfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.dumpObjectTree"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.dumpObjectTree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.dynamicPropertyNames"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.dynamicPropertyNames()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.event"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.event()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.eventFilter"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.eventFilter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.findChild"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.findChild()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.findChildren"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.findChildren()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.inherits"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.inherits()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.installEventFilter"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.installEventFilter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.isSignalConnected"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.isSignalConnected()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.isWidgetType"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.isWidgetType()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.isWindowType"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.isWindowType()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.killTimer"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.killTimer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.metaObject"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.metaObject()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.moveToThread"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.moveToThread()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.objectName"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.objectName()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.objectNameChanged"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.objectNameChanged</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.parent"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.parent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.property"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.pyqtConfigure"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.pyqtConfigure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.receivers"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.receivers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.removeEventFilter"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.removeEventFilter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.remove_listener"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.remove_listener()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.sender"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.sender()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.senderSignalIndex"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.senderSignalIndex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.setObjectName"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.setObjectName()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.setParent"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.setParent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.setProperty"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.setProperty()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.signalsBlocked"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.signalsBlocked()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.startTimer"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.startTimer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.thread"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.thread()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.timerEvent"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.timerEvent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.tr"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.tr()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
 </ul>
 </li>

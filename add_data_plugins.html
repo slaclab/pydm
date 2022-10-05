@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Including Data Plugins &mdash; PyDM v1.17.0 documentation</title>
+  <title>Including Data Plugins &mdash; PyDM v1.17.0+6.gb75dc3a7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.17.0
+                v1.17.0+6.gb75dc3a7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -58,7 +59,11 @@
 <li class="toctree-l1"><a class="reference internal" href="stylesheets.html">Customizing the Look and Feel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/widget_rules/index.html">Widget Rules</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Including Data Plugins</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Including Data Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pydm.data_plugins.add_plugin"><code class="docutils literal notranslate"><span class="pre">add_plugin()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pydm.data_plugins.load_plugins_from_path"><code class="docutils literal notranslate"><span class="pre">load_plugins_from_path()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="application.html">Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
@@ -151,7 +156,7 @@ otherwise they will not be registered in time for connections to be made.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>locations</strong> (<em>list of str</em>) – List of file locations</p></li>
+<li><p><strong>locations</strong> (<em>list</em><em> of </em><em>str</em>) – List of file locations</p></li>
 <li><p><strong>token</strong> (<em>str</em>) – Phrase that must match the end of the filename for it to be checked for
 PyDMPlugins</p></li>
 </ul>

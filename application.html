@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application &mdash; PyDM v1.17.0 documentation</title>
+  <title>Application &mdash; PyDM v1.17.0+6.gb75dc3a7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.17.0
+                v1.17.0+6.gb75dc3a7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -59,7 +60,22 @@
 <li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="widgets/widget_rules/index.html">Widget Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_data_plugins.html">Including Data Plugins</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Application</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pydm.PyDMApplication"><code class="docutils literal notranslate"><span class="pre">PyDMApplication</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.PyDMApplication.add_connection"><code class="docutils literal notranslate"><span class="pre">PyDMApplication.add_connection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.PyDMApplication.close_widget_connections"><code class="docutils literal notranslate"><span class="pre">PyDMApplication.close_widget_connections()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.PyDMApplication.establish_widget_connections"><code class="docutils literal notranslate"><span class="pre">PyDMApplication.establish_widget_connections()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.PyDMApplication.eventFilter"><code class="docutils literal notranslate"><span class="pre">PyDMApplication.eventFilter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.PyDMApplication.exec_"><code class="docutils literal notranslate"><span class="pre">PyDMApplication.exec_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.PyDMApplication.get_CPU_usage"><code class="docutils literal notranslate"><span class="pre">PyDMApplication.get_CPU_usage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.PyDMApplication.make_main_window"><code class="docutils literal notranslate"><span class="pre">PyDMApplication.make_main_window()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.PyDMApplication.new_pydm_process"><code class="docutils literal notranslate"><span class="pre">PyDMApplication.new_pydm_process()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.PyDMApplication.plugin_for_channel"><code class="docutils literal notranslate"><span class="pre">PyDMApplication.plugin_for_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.PyDMApplication.remove_connection"><code class="docutils literal notranslate"><span class="pre">PyDMApplication.remove_connection()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
 </ul>
@@ -112,7 +128,7 @@
 <h1>Application<a class="headerlink" href="#application" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.PyDMApplication">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.</span></span><span class="sig-name descname"><span class="pre">PyDMApplication</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ui_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_line_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perfmon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_nav_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_menu_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_status_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">macros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_main_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stylesheet_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fullscreen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.</span></span><span class="sig-name descname"><span class="pre">PyDMApplication</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ui_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_line_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perfmon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_nav_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_menu_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_status_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">macros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_main_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stylesheet_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fullscreen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">home_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication" title="Permalink to this definition"></a></dt>
 <dd><p>PyDMApplication handles loading PyDM display files, opening
 new windows, and most importantly, establishing and managing
 connections to channels via data plugins.</p>
@@ -143,6 +159,7 @@ being loaded.</p></li>
 <li><p><strong>use_main_window</strong> (<em>bool</em><em>, </em><em>optional</em>) – If ui_file is note given, this parameter controls whether or not to
 create a PyDMMainWindow in the initialization (Default is True).</p></li>
 <li><p><strong>fullscreen</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to launch PyDM in a full screen mode.</p></li>
+<li><p><strong>homefile</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a PyDM file to return to whenever the home button is clicked in the navigation bar.</p></li>
 </ul>
 </dd>
 </dl>
@@ -202,7 +219,7 @@ use this method.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.PyDMApplication.make_main_window">
-<span class="sig-name descname"><span class="pre">make_main_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stylesheet_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_main_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.make_main_window" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">make_main_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stylesheet_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">home_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">macros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_line_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydm/application.html#PyDMApplication.make_main_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.PyDMApplication.make_main_window" title="Permalink to this definition"></a></dt>
 <dd><p>Instantiate a new PyDMMainWindow, add it to the application’s
 list of windows. Typically, this function is only called as part
 of starting up a new process, because PyDMApplications only have

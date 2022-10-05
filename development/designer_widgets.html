@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Designer Widgets &mdash; PyDM v1.17.0 documentation</title>
+  <title>Designer Widgets &mdash; PyDM v1.17.0+6.gb75dc3a7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -31,7 +32,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.17.0
+                v1.17.0+6.gb75dc3a7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -76,7 +77,19 @@
 <li class="toctree-l1"><a class="reference internal" href="external_tools.html">External Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Designer Widgets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#widgets-in-pydm-itself">Widgets in PyDM itself</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#widgets-in-pydm-itself">Widgets in PyDM itself</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.widgets.qtplugin_base.WidgetCategory"><code class="docutils literal notranslate"><span class="pre">WidgetCategory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.widgets.qtplugin_base.WidgetCategory.CONTAINER"><code class="docutils literal notranslate"><span class="pre">WidgetCategory.CONTAINER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.widgets.qtplugin_base.WidgetCategory.DISPLAY"><code class="docutils literal notranslate"><span class="pre">WidgetCategory.DISPLAY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.widgets.qtplugin_base.WidgetCategory.DRAWING"><code class="docutils literal notranslate"><span class="pre">WidgetCategory.DRAWING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.widgets.qtplugin_base.WidgetCategory.INPUT"><code class="docutils literal notranslate"><span class="pre">WidgetCategory.INPUT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.widgets.qtplugin_base.WidgetCategory.MISC"><code class="docutils literal notranslate"><span class="pre">WidgetCategory.MISC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.widgets.qtplugin_base.WidgetCategory.PLOT"><code class="docutils literal notranslate"><span class="pre">WidgetCategory.PLOT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.widgets.qtplugin_base.qtplugin_factory"><code class="docutils literal notranslate"><span class="pre">qtplugin_factory()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#widgets-in-external-packages">Widgets in external packages</a></li>
 </ul>
 </li>
@@ -195,7 +208,7 @@ Google search should help you find an icon that will fit your scenario.</p>
 <li><p><strong>is_container</strong> (<em>bool</em><em>, </em><em>optional</em>) – True if this widget can contain other widgets (as in a Frame).
 This will also affect whether or not the widget can be used as the
 top-level widget of a display. Defaults to False.</p></li>
-<li><p><strong>extensions</strong> (<em>list of extension classes</em><em>, </em><em>optional</em>) – Extension classes to use with the widget.</p></li>
+<li><p><strong>extensions</strong> (<em>list</em><em> of </em><em>extension classes</em><em>, </em><em>optional</em>) – Extension classes to use with the widget.</p></li>
 <li><p><strong>icon</strong> (<em>QtGui.QIcon</em><em>, </em><em>optional</em>) – An icon to use with the widget in the designer.  Consider using
 the PyDM-provided fontawesome <code class="docutils literal notranslate"><span class="pre">ifont</span></code> here for simplicity.</p></li>
 </ul>

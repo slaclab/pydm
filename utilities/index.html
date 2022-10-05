@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Utilities &mdash; PyDM v1.17.0 documentation</title>
+  <title>Utilities &mdash; PyDM v1.17.0+6.gb75dc3a7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -31,7 +32,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.17.0
+                v1.17.0+6.gb75dc3a7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -62,11 +63,54 @@
 <li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities">General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#icons">Icons</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities.macro">Macro</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities.colors">Colors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities.units">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities">General</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.copy_to_clipboard"><code class="docutils literal notranslate"><span class="pre">copy_to_clipboard()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.find_display_in_path"><code class="docutils literal notranslate"><span class="pre">find_display_in_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.find_file"><code class="docutils literal notranslate"><span class="pre">find_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.get_clipboard"><code class="docutils literal notranslate"><span class="pre">get_clipboard()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.get_clipboard_modes"><code class="docutils literal notranslate"><span class="pre">get_clipboard_modes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.get_clipboard_text"><code class="docutils literal notranslate"><span class="pre">get_clipboard_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.get_designer_current_path"><code class="docutils literal notranslate"><span class="pre">get_designer_current_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.import_module_by_filename"><code class="docutils literal notranslate"><span class="pre">import_module_by_filename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.is_pydm_app"><code class="docutils literal notranslate"><span class="pre">is_pydm_app()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.is_qt_designer"><code class="docutils literal notranslate"><span class="pre">is_qt_designer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.is_ssh_session"><code class="docutils literal notranslate"><span class="pre">is_ssh_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.log_failures"><code class="docutils literal notranslate"><span class="pre">log_failures()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.only_main_thread"><code class="docutils literal notranslate"><span class="pre">only_main_thread()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.path_info"><code class="docutils literal notranslate"><span class="pre">path_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.setup_renderer"><code class="docutils literal notranslate"><span class="pre">setup_renderer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.which"><code class="docutils literal notranslate"><span class="pre">which()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.remove_protocol.protocol_and_address"><code class="docutils literal notranslate"><span class="pre">protocol_and_address()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.remove_protocol.remove_protocol"><code class="docutils literal notranslate"><span class="pre">remove_protocol()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#icons">Icons</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.iconfont.IconFont"><code class="docutils literal notranslate"><span class="pre">IconFont</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.utilities.iconfont.IconFont.font"><code class="docutils literal notranslate"><span class="pre">IconFont.font()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.utilities.iconfont.IconFont.get_char_for_name"><code class="docutils literal notranslate"><span class="pre">IconFont.get_char_for_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.utilities.iconfont.IconFont.icon"><code class="docutils literal notranslate"><span class="pre">IconFont.icon()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.utilities.iconfont.IconFont.load_font"><code class="docutils literal notranslate"><span class="pre">IconFont.load_font()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities.macro">Macro</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.macro.parse_macro_string"><code class="docutils literal notranslate"><span class="pre">parse_macro_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.macro.substitute_in_file"><code class="docutils literal notranslate"><span class="pre">substitute_in_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities.colors">Colors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.colors.hex_from_svg_color"><code class="docutils literal notranslate"><span class="pre">hex_from_svg_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.colors.svg_color_from_hex"><code class="docutils literal notranslate"><span class="pre">svg_color_from_hex()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities.units">Units</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.units.convert"><code class="docutils literal notranslate"><span class="pre">convert()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.units.find_unit"><code class="docutils literal notranslate"><span class="pre">find_unit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.units.find_unit_options"><code class="docutils literal notranslate"><span class="pre">find_unit_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.units.find_unittype"><code class="docutils literal notranslate"><span class="pre">find_unittype()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
