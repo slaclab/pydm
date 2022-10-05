@@ -1,3 +1,4 @@
+from pyqtgraph.graphicsItems.ViewBox import ViewBox
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 from qtpy.QtCore import QCoreApplication, Signal
 from qtpy.QtWidgets import QAction
@@ -22,6 +23,18 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
     sigSetAutorange = Signal(bool, bool)
     # A signal for updating the x autorange value
     sigXAutoRangeChanged = Signal(object)
+    # A signal for updating the y autorange value
+    sigYAutoRangeChanged = Signal(object)
+    # A signal for inverting the x or y axis
+    sigInvertAxis = Signal(int, bool)
+    # Only panning when auto range is enabled (no scaling)
+    sigAutoPan = Signal(object, object)
+    # Auto range using only the visible portion of the plot when checked
+    sigVisibleOnly = Signal(object, object)
+    # Set the x range manually
+    sigXManualRange = Signal(float, float)
+    # Set the y range manually
+    sigYManualRange = Signal(float, float)
 
     def __init__(self, view):
         super(MultiAxisViewBoxMenu, self).__init__(view)
@@ -53,6 +66,59 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
         """ Disable x auto-range for each view box """
         super().xManualClicked()
         self.sigXAutoRangeChanged.emit(False)
+
+    def xRangeTextChanged(self):
+        """ Manually set the x-axis range to the user's input. Range will be unchanged if input was invalid """
+        super().xRangeTextChanged()
+        updated_values = self._validateRangeText(ViewBox.XAxis)
+        self.sigXManualRange.emit(*updated_values)
+
+    def yAutoClicked(self):
+        """ Update the y auto-range value for each view box """
+        super().yAutoClicked()
+        val = self.ctrl[1].autoPercentSpin.value() * 0.01
+        self.sigYAutoRangeChanged.emit(val)
+
+    def yManualClicked(self):
+        """ Disable y auto-range for each view box """
+        super().yManualClicked()
+        self.sigYAutoRangeChanged.emit(False)
+
+    def yRangeTextChanged(self):
+        """ Manually set the y-axis range to the user's input. Range will be unchanged if input was invalid """
+        super().yRangeTextChanged()
+        updated_values = self._validateRangeText(ViewBox.YAxis)
+        self.sigYManualRange.emit(*updated_values)
+
+    def xAutoPanToggled(self, autoPan: bool):
+        """ Toggle the auto pan status of the x-axis """
+        super().xAutoPanToggled(autoPan)
+        self.sigAutoPan.emit(autoPan, None)
+
+    def xVisibleOnlyToggled(self, autoVisible: bool):
+        """ Toggle the visible only status of autorange for the x-axis """
+        super().xVisibleOnlyToggled(autoVisible)
+        self.sigVisibleOnly.emit(autoVisible, None)
+
+    def yAutoPanToggled(self, autoPan: bool):
+        """ Toggle the auto pan status of the y-axis """
+        super().yAutoPanToggled(autoPan)
+        self.sigAutoPan.emit(None, autoPan)
+
+    def yVisibleOnlyToggled(self, autoVisible: bool):
+        """ Toggle the visible only status of autorange for the y-axis """
+        super().yVisibleOnlyToggled(autoVisible)
+        self.sigVisibleOnly.emit(None, autoVisible)
+
+    def yInvertToggled(self, inverted: bool):
+        """ Toggle the inverted status of the y-axis. """
+        super().yInvertToggled(inverted)
+        self.sigInvertAxis.emit(ViewBox.YAxis, inverted)
+
+    def xInvertToggled(self, inverted: bool):
+        """ Toggle the inverted status of the x-axis """
+        super().xInvertToggled(inverted)
+        self.sigInvertAxis.emit(ViewBox.XAxis, inverted)
 
     def autoRange(self):
         """ Sets autorange to True for all elements on the plot """
