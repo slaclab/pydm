@@ -25,6 +25,7 @@ class PyDMConnection(QObject):
     lower_alarm_limit_signal = Signal([float], [int])
     upper_warning_limit_signal = Signal([float], [int])
     lower_warning_limit_signal = Signal([float], [int])
+    timestamp_signal = Signal(float)
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super(PyDMConnection, self).__init__(parent)
@@ -94,6 +95,9 @@ class PyDMConnection(QObject):
 
         if channel.prec_slot is not None:
             self.prec_signal.connect(channel.prec_slot, Qt.QueuedConnection)
+
+        if channel.timestamp_slot is not None:
+            self.timestamp_signal.connect(channel.timestamp_slot, Qt.QueuedConnection)
 
     def remove_listener(self, channel, destroying: Optional[bool] = False) -> None:
         """
@@ -201,6 +205,12 @@ class PyDMConnection(QObject):
         if self._should_disconnect(channel.prec_slot, destroying):
             try:
                 self.prec_signal.disconnect(channel.prec_slot)
+            except (KeyError, TypeError):
+                pass
+
+        if self._should_disconnect(channel.timestamp_slot, destroying):
+            try:
+                self.timestamp_signal.disconnect(channel.timestamp_slot)
             except (KeyError, TypeError):
                 pass
 
