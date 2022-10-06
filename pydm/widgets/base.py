@@ -1131,9 +1131,10 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         tip_with_attribute_info : str
             ToolTip string which has had the attribute names replaced with the attribute values.
         """
+        if is_qt_designer:
+            return new_tip
 
         if not self._tool_tip_substrings:
-            print(new_tip)
             list_of_attributes = [substring.start() for substring in re.finditer('\$\(', new_tip)]
             tool_tip_substrings = []
 
