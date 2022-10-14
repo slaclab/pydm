@@ -293,6 +293,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                         max_x = self._starting_timestamp
                 requested_seconds = max_x - min_x
                 if requested_seconds <= 5:
+                    self._archive_request_queued = False
                     continue  # Avoids noisy requests when first rendering the plot
                 # Max amount of raw data to return before using optimized data
                 max_data_request = int(0.80 * self.getArchiveBufferSize())
