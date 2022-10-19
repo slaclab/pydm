@@ -6,7 +6,7 @@ import sys
 import logging
 import warnings
 import hashlib
-
+from ast import literal_eval
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit
 from qtpy.QtGui import QCursor, QIcon, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
@@ -53,7 +53,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
 
         self.env_var = None
 
-    @Property(dict)
+    @Property(str)
     def environment_variables(self):
         """
         Return the environment variables which would be set along with the shell command.
@@ -71,7 +71,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
 
         Parameters
         ----------
-        new_dict : dict
+        new_dict : str
         """
         if self.env_var != new_dict:
             self.env_var = new_dict
@@ -399,6 +399,8 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             try:
                 logger.debug("Launching process: %s", repr(args))
                 stdout = subprocess.PIPE
+                if self.env_var is not None and type(self.env_var) == str:
+                    self.env_var = literal_eval(self.env_var)
                 if self._redirect_output:
                     stdout = None
                 self.process = subprocess.Popen(
