@@ -6,7 +6,7 @@ import sys
 import logging
 import warnings
 import hashlib
-
+from ast import literal_eval
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit
 from qtpy.QtGui import QCursor, QIcon, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
@@ -50,6 +50,31 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self._password_protected = False
         self._password = ""
         self._protected_password = ""
+
+        self.env_var = None
+
+    @Property(str)
+    def environmentVariables(self):
+        """
+        Return the environment variables which would be set along with the shell command.
+
+        Returns
+        -------
+        self.env_var : str
+        """
+        return self.env_var
+
+    @environmentVariables.setter
+    def environmentVariables(self, new_dict):
+        """
+        Set environment variables which would be set along with the shell command.
+
+        Parameters
+        ----------
+        new_dict : str
+        """
+        if self.env_var != new_dict:
+            self.env_var = new_dict
 
     @Property(bool)
     def showIcon(self):
@@ -374,10 +399,16 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             try:
                 logger.debug("Launching process: %s", repr(args))
                 stdout = subprocess.PIPE
+
+                if self.env_var is not None:
+                    env_var = literal_eval(self.env_var)
+                else:
+                    env_var = None
+
                 if self._redirect_output:
                     stdout = None
                 self.process = subprocess.Popen(
-                    args, stdout=stdout, stderr=subprocess.PIPE)
+                    args, stdout=stdout, stderr=subprocess.PIPE, env=env_var)
             except Exception as exc:
                 self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)
