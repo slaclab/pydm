@@ -60,7 +60,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
 
         Returns
         -------
-        self.env_var : dict
+        self.env_var : str
         """
         return self.env_var
 
@@ -399,12 +399,16 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             try:
                 logger.debug("Launching process: %s", repr(args))
                 stdout = subprocess.PIPE
-                if self.env_var is not None and type(self.env_var) == str:
-                    self.env_var = literal_eval(self.env_var)
+
+                if self.env_var is not None:
+                    env_var = literal_eval(self.env_var)
+                else:
+                    env_var = None
+
                 if self._redirect_output:
                     stdout = None
                 self.process = subprocess.Popen(
-                    args, stdout=stdout, stderr=subprocess.PIPE, env=self.env_var)
+                    args, stdout=stdout, stderr=subprocess.PIPE, env=env_var)
             except Exception as exc:
                 self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)
