@@ -8,7 +8,7 @@ from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialo
 from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 
-from .base import PyDMPrimitiveWidget
+from .base import PyDMWidget
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
 from ..display import (load_file, ScreenTarget)
@@ -21,7 +21,8 @@ _relatedDisplayRuleProperties = {
     'Filenames': ['filenames', list]
     }
 
-class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=_relatedDisplayRuleProperties):
+
+class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedDisplayRuleProperties):
     """
     A QPushButton capable of opening a new Display at the same of at a
     new window.
@@ -40,7 +41,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
 
     def __init__(self, parent=None, filename=None):
         QPushButton.__init__(self, parent)
-        PyDMPrimitiveWidget.__init__(self)
+        PyDMWidget.__init__(self)
 
         self.mouseReleaseEvent = self.push_button_release_event
         self.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -70,6 +71,30 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         self._password_protected = False
         self._password = ""
         self._protected_password = ""
+
+    @Property(str)
+    def alarm_channel(self):
+        """
+        The channel address in use for this widget.
+
+        Returns
+        -------
+        channel : str
+            Channel address
+        """
+        return super().channel()
+
+    @alarm_channel.setter
+    def alarm_channel(self, value):
+        """
+        The channel address to use for this widget.
+
+        Parameters
+        ----------
+        value : str
+            Channel address
+        """
+        super().channel(value)
 
     @Property('QStringList')
     def filenames(self):
@@ -267,28 +292,28 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
     @Property(str)
     def password(self):
         """
-		Password to be encrypted using SHA256.
+        Password to be encrypted using SHA256.
 
-		.. warning::
-			To avoid issues exposing the password this method
-			always returns an empty string.
+        .. warning::
+        To avoid issues exposing the password this method
+        always returns an empty string.
 
-		Returns
-		-------
-		str
-		"""
+        Returns
+        -------
+        str
+        """
         return ""
 
     @password.setter
     def password(self, value):
         """
-		Password to be encrypted using SHA256.
+        Password to be encrypted using SHA256.
 
-		Parameters
-		----------
-		value : str
-			The password to be encrypted
-		"""
+        Parameters
+        ----------
+        value : str
+        The password to be encrypted
+        """
         if value is not None and value != "":
             sha = hashlib.sha256()
             sha.update(value.encode())
@@ -299,12 +324,12 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
     @Property(str)
     def protectedPassword(self):
         """
-		The encrypted password.
+        The encrypted password.
 
-		Returns
-		-------
-		str
-		"""
+        Returns
+        -------
+        str
+        """
         return self._protected_password
 
     @protectedPassword.setter

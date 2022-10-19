@@ -8,21 +8,22 @@ import warnings
 import hashlib
 
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit
-from qtpy.QtGui import QCursor, QIcon, QColor
+from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Property, QSize, Qt, QTimer
-from .base import PyDMPrimitiveWidget
+from .base import PyDMWidget
 from ..utilities import IconFont
 
 logger = logging.getLogger(__name__)
 
-class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
+
+class PyDMShellCommand(QPushButton, PyDMWidget):
     """
     A QPushButton capable of execute shell commands.
     """
 
     def __init__(self, parent=None, command=None, title=None):
         QPushButton.__init__(self, parent)
-        PyDMPrimitiveWidget.__init__(self)
+        PyDMWidget.__init__(self)
         self.iconFont = IconFont()
         self._icon = self.iconFont.icon("cog")
         self._warning_icon = self.iconFont.icon('exclamation-circle')
