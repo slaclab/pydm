@@ -1,10 +1,6 @@
-import logging
 from qtpy.QtWidgets import QDoubleSpinBox, QApplication, QLineEdit
 from qtpy.QtCore import Property, QEvent, Qt
 from .base import PyDMWritableWidget, TextFormatter
-from ..utilities import is_qt_designer
-
-logger = logging.getLogger(__name__)
 
 
 class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
@@ -235,8 +231,8 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
     def reset_limits(self) -> None:
         """
         Will reset the lower and upper limits to either the ones set by the user, or the ones from the
-        channel depending on the current state of userDefinedLimits(). If this would result in a None value,
-        log an error showing the values and do not change anything.
+        channel depending on the current state of userDefinedLimits(). If a None value would be set,
+        do not attempt the update.
         """
         if self.userDefinedLimits:
             if self.userMinimum is None or self.userMaximum is None:
