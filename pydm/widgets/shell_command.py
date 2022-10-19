@@ -51,6 +51,31 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self._password = ""
         self._protected_password = ""
 
+        self.env_var = None
+
+    @Property(dict)
+    def environment_variables(self):
+        """
+        Return the environment variables which would be set along with the shell command.
+
+        Returns
+        -------
+        self.env_var : dict
+        """
+        return self.env_var
+
+    @environment_variables.setter
+    def environment_variables(self, new_dict):
+        """
+        Set environment variables which would be set along with the shell command.
+
+        Parameters
+        ----------
+        new_dict : dict
+        """
+        if self.env_var != new_dict:
+            self.env_var = new_dict
+
     @Property(bool)
     def showIcon(self):
         """
@@ -377,7 +402,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
                 if self._redirect_output:
                     stdout = None
                 self.process = subprocess.Popen(
-                    args, stdout=stdout, stderr=subprocess.PIPE)
+                    args, stdout=stdout, stderr=subprocess.PIPE, env=self.env_var)
             except Exception as exc:
                 self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)
