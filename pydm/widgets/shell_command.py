@@ -54,7 +54,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self.env_var = None
 
     @Property(str)
-    def environment_variables(self):
+    def environmentVariables(self):
         """
         Return the environment variables which would be set along with the shell command.
 
@@ -64,8 +64,8 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         """
         return self.env_var
 
-    @environment_variables.setter
-    def environment_variables(self, new_dict):
+    @environmentVariables.setter
+    def environmentVariables(self, new_dict):
         """
         Set environment variables which would be set along with the shell command.
 
