@@ -83,6 +83,7 @@ def test_load_python_file_with_macros(qtbot):
     assert display.ui_filename() == 'test.ui'
     assert display.macros() == {'MACRO_1': 7, 'MACRO_2': 'test_string'}
 
+
 def test_file_path_in_stylesheet_property(qtbot):
     """If you supply a valid filename argument, you shouldn't get any exceptions."""
     my_display = Display(parent=None, ui_filename=test_ui_path)
@@ -93,15 +94,12 @@ def test_file_path_in_stylesheet_property(qtbot):
         css = css_file.read()
         # Assert that the stylesheet property is populated with the contents of the file.
         assert my_display.styleSheet() == css
-        # Assert that the stylesheet property "hides" the global stylesheet info.
-        assert QWidget.styleSheet(my_display) == pydm.utilities.stylesheet.global_style() + css
+
 
 def test_stylesheet_property_without_path(qtbot):
-        """If you supply a valid filename argument, you shouldn't get any exceptions."""
-        my_display = Display(parent=None, ui_filename=test_ui_path)
-        qtbot.addWidget(my_display)
-        css = "PyDMLabel { font-weight: bold; }"
-        my_display.setStyleSheet(css)
-        assert my_display.styleSheet() == css
-        # Assert that the stylesheet property "hides" the global stylesheet info.
-        assert QWidget.styleSheet(my_display) == pydm.utilities.stylesheet.global_style() + css
+    """If you supply a valid filename argument, you shouldn't get any exceptions."""
+    my_display = Display(parent=None, ui_filename=test_ui_path)
+    qtbot.addWidget(my_display)
+    css = "PyDMLabel { font-weight: bold; }"
+    my_display.setStyleSheet(css)
+    assert my_display.styleSheet() == css

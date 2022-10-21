@@ -12,7 +12,6 @@ from qtpy import uic
 from qtpy.QtWidgets import QApplication, QWidget
 
 from .utilities import import_module_by_filename, is_pydm_app, macro
-from .utilities.stylesheet import merge_widget_stylesheet, global_style
 
 
 class ScreenTarget:
@@ -310,10 +309,10 @@ class Display(QWidget):
         logger.debug("Calling Display.setStyleSheet, new_stylesheet is %s", possible_stylesheet_filename)
         stylesheet_filename = None
         try:
-            #First, check if the file is already an absolute path.
+            # First, check if the file is already an absolute path.
             if os.path.isfile(possible_stylesheet_filename):
                 stylesheet_filename = possible_stylesheet_filename
-            #Second, check if the css file is specified relative to the display file.
+            # Second, check if the css file is specified relative to the display file.
             else:
                 rel_path = os.path.join(os.path.dirname(os.path.abspath(self._loaded_file)), possible_stylesheet_filename)
                 if os.path.isfile(rel_path):
@@ -326,11 +325,5 @@ class Display(QWidget):
             logger.debug("styleSheet property contains a filename, loading %s", stylesheet_filename)
             with open(stylesheet_filename) as f:
                 self._local_style = f.read()
-        style = global_style() + self._local_style
-        logger.debug("Setting stylesheet to: %s", style)
-        super(Display, self).setStyleSheet(style)
-
-    def styleSheet(self):
-        logger.debug("local styleSheet is: %s", self._local_style)
-        logger.debug("real styleSheet is: %s", super(Display, self).styleSheet())
-        return self._local_style
+        logger.debug("Setting stylesheet to: %s", self._local_style)
+        super(Display, self).setStyleSheet(self._local_style)

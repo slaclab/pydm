@@ -28,12 +28,6 @@ def clear_cache():
     __style_data = None
 
 
-def merge_widget_stylesheet(widget, stylesheet_file_path=None):
-    curr_style = widget.styleSheet() or ""
-    env_style = _get_style_data(stylesheet_file_path) or ""
-    widget.setStyleSheet(env_style + curr_style)
-
-
 def apply_stylesheet(stylesheet_file_path=None, widget=None):
     """
     Apply a stylesheet to the current Qt Designer form (a .ui file) or to a
@@ -58,6 +52,7 @@ def apply_stylesheet(stylesheet_file_path=None, widget=None):
         widget = QApplication.instance()
 
     widget.setStyleSheet(style)
+
 
 def _get_style_data(stylesheet_file_path=None):
     """
@@ -115,6 +110,7 @@ def _get_style_data(stylesheet_file_path=None):
                     GLOBAL_STYLESHEET,
                     str(ex)))
     return __style_data
+
 
 def global_style():
     return _get_style_data()
