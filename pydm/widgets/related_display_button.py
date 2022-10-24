@@ -73,6 +73,42 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         self._protected_password = ""
 
     @Property(str)
+    def channel(self):
+        """
+        Avoid calling this method and use the alarm_channel method instead to set the channel on the widget.
+        if both channel and alarm_channel are set, which ever is called last with overwrite the first called, which may
+        lead to unintended behavior.
+        The channel address in use for this widget.
+
+        Returns
+        -------
+        channel : str
+            Channel address
+        """
+        warnings.warn("'PyDMRelatedDisplayButton.channel' is not recommended for getting/setting the channel property "
+                      "for the shell command, use 'PyDMRelatedDisplayButton.alarm_channel' instead.")
+
+        return super().channel()
+
+    @channel.setter
+    def channel(self, value):
+        """
+        Avoid calling this method and use the alarm_channel method instead to set the channel on the widget.
+        if both channel and alarm_channel are set, which ever is called last with overwrite the first called, which may
+        lead to unintended behavior.
+        The channel address in use for this widget.
+
+        Parameters
+        ----------
+        value : str
+            Channel address
+        """
+        warnings.warn("'PyDMRelatedDisplayButton.channel' is not recommended for getting/setting the channel property "
+                      "for the shell command, use 'PyDMRelatedDisplayButton.alarm_channel' instead.")
+
+        super().channel(value)
+
+    @Property(str)
     def alarm_channel(self):
         """
         The channel address in use for this widget. This channel is only for attaching an alarm
