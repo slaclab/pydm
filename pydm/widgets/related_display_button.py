@@ -109,7 +109,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         super().channel(value)
 
     @Property(str)
-    def alarm_channel(self):
+    def alarmChannel(self):
         """
         The channel address in use for this widget. This channel is only for attaching an alarm
         to the related display button.
@@ -121,8 +121,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         """
         return super().channel()
 
-    @alarm_channel.setter
-    def alarm_channel(self, value):
+    @alarmChannel.setter
+    def alarmChannel(self, value):
         """
         The channel address in use for this widget. This channel is only for attaching an alarm
         to the related display button.
