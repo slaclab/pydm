@@ -9,7 +9,7 @@ from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 
 from .base import PyDMWidget
-from ..utilities import IconFont, find_file, is_pydm_app
+from ..utilities import IconFont, find_file, is_pydm_app, is_qt_designer
 from ..utilities.macro import parse_macro_string
 from ..display import (load_file, ScreenTarget)
 
@@ -75,7 +75,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @Property(str)
     def alarm_channel(self):
         """
-        The channel address in use for this widget.
+        The channel address in use for this widget. This channel is only for attaching an alarm
+        to the related display button.
 
         Returns
         -------
@@ -87,7 +88,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @alarm_channel.setter
     def alarm_channel(self, value):
         """
-        The channel address to use for this widget.
+        The channel address in use for this widget. This channel is only for attaching an alarm
+        to the related display button.
 
         Parameters
         ----------
@@ -506,4 +508,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def show_context_menu(self, pos):
         menu = self.context_menu()
         menu.exec_(self.mapToGlobal(pos))
-	
+
+    # if is_qt_designer hide the channel property:
+    channel = Property(bool, PyDMWidget.channel.fget, PyDMWidget.channel.fset, designable=False)

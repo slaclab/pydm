@@ -11,7 +11,7 @@ from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineE
 from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from .base import PyDMWidget
-from ..utilities import IconFont
+from ..utilities import IconFont, is_qt_designer
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +51,32 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self._password_protected = False
         self._password = ""
         self._protected_password = ""
+
+    @Property(str)
+    def alarm_channel(self):
+        """
+        The channel address in use for this widget. This channel is only for attaching an alarm
+        to the shell command button.
+
+        Returns
+        -------
+        channel : str
+            Channel address
+        """
+        return super().channel()
+
+    @alarm_channel.setter
+    def alarm_channel(self, value):
+        """
+        The channel address in use for this widget. This channel is only for attaching an alarm
+        to the shell command button.
+
+        Parameters
+        ----------
+        value : str
+            Channel address
+        """
+        super().channel(value)
 
     @Property(bool)
     def showIcon(self):
@@ -384,3 +410,6 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
                 logger.error("Error in shell command: %s", exc)
         else:
             logger.error("Command '%s' already active.", command)
+
+    # if is_qt_designer hide the channel property:
+    channel = Property(bool, PyDMWidget.channel.fget, PyDMWidget.channel.fset, designable=False)
