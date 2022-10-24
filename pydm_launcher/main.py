@@ -40,6 +40,10 @@ def main():
         default=None
         )
     parser.add_argument(
+        '--homefile',
+        help='Path to a PyDM file to return to when the home button is clicked in the navigation bar'
+    )
+    parser.add_argument(
         '--perfmon',
         action='store_true',
         help='Enable performance monitoring,' +
@@ -134,7 +138,8 @@ def main():
         fullscreen=pydm_args.fullscreen,
         read_only=pydm_args.read_only,
         macros=macros,
-        stylesheet_path=pydm_args.stylesheet
+        stylesheet_path=pydm_args.stylesheet,
+        home_file=pydm_args.homefile
         )
 
     pydm.utilities.shortcuts.install_connection_inspector(

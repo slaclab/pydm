@@ -41,7 +41,8 @@ def test_construct(qtbot):
         pydm_channel.upper_warning_limit_slot is None and \
         pydm_channel.lower_warning_limit_slot is None and \
         pydm_channel.write_access_slot is None and \
-        pydm_channel.value_signal is None
+        pydm_channel.value_signal is None and \
+        pydm_channel.timestamp_slot is None
 
     pydm_label = PyDMLabel(init_channel='tst://this')
     qtbot.addWidget(pydm_label)
@@ -61,7 +62,8 @@ def test_construct(qtbot):
                                               upper_warning_limit_slot=pydm_label.upper_warning_limit_changed,
                                               lower_warning_limit_slot=pydm_label.lower_warning_limit_changed,
                                               value_signal=None,
-                                              write_access_slot=None)
+                                              write_access_slot=None,
+                                              timestamp_slot=pydm_label.timestamp_changed)
     assert pydm_label_channels == default_pydm_label_channels
 
     pydm_lineedit = PyDMLineEdit(init_channel='tst://this2')

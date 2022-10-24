@@ -469,8 +469,33 @@ def test_pydmwidget_channels(qtbot):
                                         lower_alarm_limit_slot=pydm_label.lower_alarm_limit_changed,
                                         lower_warning_limit_slot=pydm_label.lower_warning_limit_changed,
                                         value_signal=None,
-                                        write_access_slot=None)
+                                        write_access_slot=None,
+                                        timestamp_slot=pydm_label.timestamp_changed)
     assert pydm_channels == default_pydm_channels
+
+def test_pydmwidget_tooltip(qtbot):
+    """
+       Test the tooltip. This test is for a widget whose base class is PyDMWidget.
+
+       Expectations:
+       1. The widget's tooltip will update
+
+       Parameters
+       ----------
+       qtbot : fixture
+           Window for widget testing
+    """
+    pydm_label = PyDMLabel()
+    qtbot.addWidget(pydm_label)
+
+    assert pydm_label.toolTip() == ""
+
+    pydm_label.toolTip = "hello world"
+    assert pydm_label.toolTip == "hello world"
+
+    pydm_label.value = 5
+    tool_tip = pydm_label.parseTip("$(pv_value)")
+    assert tool_tip == str(pydm_label.value)
 
 
 def test_pydmwritablewidget_channels(qtbot):
@@ -511,7 +536,8 @@ def test_pydmwritablewidget_channels(qtbot):
                                         upper_warning_limit_slot=pydm_lineedit.upper_warning_limit_changed,
                                         lower_warning_limit_slot=pydm_lineedit.lower_warning_limit_changed,
                                         value_signal=pydm_lineedit.send_value_signal,
-                                        write_access_slot=pydm_lineedit.writeAccessChanged)
+                                        write_access_slot=pydm_lineedit.writeAccessChanged,
+                                        timestamp_slot=pydm_lineedit.timestamp_changed)
     assert pydm_channels == default_pydm_channels
 
 

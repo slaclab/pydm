@@ -1,10 +1,12 @@
 import enum
 import os
+import re
 import platform
 import weakref
 import logging
 import functools
 import json
+import copy
 import numpy as np
 from qtpy.QtWidgets import (QApplication, QMenu, QGraphicsOpacityEffect,
                             QToolTip, QWidget)
@@ -15,6 +17,7 @@ from .. import data_plugins, tools, config
 from ..utilities import is_qt_designer, remove_protocol
 from ..display import Display
 from .rules import RulesDispatcher
+from datetime import datetime
 
 try:
     from json.decoder import JSONDecodeError
@@ -444,7 +447,7 @@ class TextFormatter(object):
         # from the PV
         if self._precision_from_pv is not None and self._precision_from_pv:
             return
-        if new_prec and self._prec != int(new_prec) and new_prec >= 0:
+        if new_prec and self._user_prec != int(new_prec) and new_prec >= 0:
             self._user_prec = int(new_prec)
             if not is_qt_designer() or config.DESIGNER_ONLINE:
                 self.value_changed(self.value)
@@ -624,10 +627,27 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.upper_warning_limit = None
         self.lower_warning_limit = None
         self.enum_strings = None
+        self.timestamp = None
 
         self.value = None
         self.channeltype = None
         self.subtype = None
+
+        self._pydm_tool_tip = ""
+        self._tool_tip_substrings = []
+        self._tool_tip_channel_table = {"address": '_channel',
+                                        "connection": '_connected',
+                                        "SEVR": '_alarm_state',
+                                        "enum_strings": 'enum_strings',
+                                        "EGU": '_unit',
+                                        "PREC": '_prec',
+                                        "DRVH": '_upper_ctrl_limit',
+                                        "DRVL": '_lower_ctrl_limit',
+                                        "HIHI": 'upper_alarm_limit',
+                                        "LOLO": 'lower_alarm_limit',
+                                        "HIGH": 'upper_warning_limit',
+                                        "LOW": 'lower_warning_limit',
+                                        "TIME": "timestamp"}
 
         # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
@@ -778,6 +798,19 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         if new_enum_strings != self.enum_strings:
             self.enum_strings = new_enum_strings
             self.value_changed(self.value)
+
+    def timestamp_changed(self, new_timestamp):
+        """
+        Callback invoked when the Channel has new timestamp values.
+
+
+        Parameters
+        ----------
+        new_timestamp : float
+            The new timestamp value
+        """
+        if new_timestamp != self.timestamp:
+            self.timestamp = new_timestamp
 
     def get_address(self):
         if not len(self._channels):
@@ -1058,6 +1091,90 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.alarm_severity_changed(self._alarm_state)
 
     @Property(str)
+    def PyDMToolTip(self):
+        """
+        The tooltip for this widget.
+
+            Returns
+            -------
+            toolTip : str
+                tooltip info
+        """
+        return self._pydm_tool_tip
+
+    @PyDMToolTip.setter
+    def PyDMToolTip(self, new_tip):
+        """
+        The tooltip for this widget.
+
+        Parameters
+        ----------
+        new_tip : str
+            tooltip info
+        """
+        if new_tip != self._pydm_tool_tip:
+            self._pydm_tool_tip = str(new_tip)
+            parsed_tool_tip = self.parseTip(new_tip)
+            self.setToolTip(parsed_tool_tip)
+
+    def parseTip(self, new_tip):
+        """
+        Fetch the object attribute data for the tooltip.
+
+        Parameters
+        ----------
+        new_tip : str
+            given tooltip string
+
+        Returns
+        -------
+        tip_with_attribute_info : str
+            ToolTip string which has had the attribute names replaced with the attribute values.
+        """
+        if is_qt_designer():
+            return new_tip
+
+        if not self._tool_tip_substrings:
+            list_of_attributes = [substring.start() for substring in re.finditer('\$\(', new_tip)]
+            tool_tip_substrings = []
+
+            for index in list_of_attributes:
+                tool_tip_substrings.append([new_tip[index+2:new_tip.index(")", index)],
+                                            new_tip[index:new_tip.index(")", index)+1]])
+
+            self._tool_tip_substrings = copy.deepcopy(tool_tip_substrings)
+        else:
+            tool_tip_substrings = copy.deepcopy(self._tool_tip_substrings)
+
+        if tool_tip_substrings:
+            for index, value in enumerate(tool_tip_substrings):
+                if value[0] == 'name':
+                    value_of_attribute = self.channel
+                elif value[0].split('.')[0] == 'pv_value':
+                    if value[0].count(".") == 0:
+                        value_of_attribute = self.value
+                    else:
+                        attribute = self._tool_tip_channel_table[value[0].split(".", 1)[1]]
+                        value_of_attribute = getattr(self, attribute, None)
+
+                        if attribute == "timestamp" and value_of_attribute is not None:
+                            value_of_attribute = datetime.fromtimestamp(value_of_attribute)
+                else:
+                    value_of_attribute = getattr(self, value[0], None)
+
+                if value[0] == "timestamp" and value_of_attribute is not None:
+                    value_of_attribute = datetime.fromtimestamp(value_of_attribute)
+
+                tool_tip_substrings[index][0] = str(value_of_attribute)
+
+        tip_with_attribute_info = new_tip
+
+        for value in tool_tip_substrings:
+            tip_with_attribute_info = tip_with_attribute_info.replace(value[1], value[0])
+
+        return tip_with_attribute_info
+
+    @Property(str)
     def channel(self):
         """
         The channel address in use for this widget.
@@ -1106,7 +1223,8 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                                   upper_warning_limit_slot=self.upper_warning_limit_changed,
                                   lower_warning_limit_slot=self.lower_warning_limit_changed,
                                   value_signal=None,
-                                  write_access_slot=None)
+                                  write_access_slot=None,
+                                  timestamp_slot=self.timestamp_changed)
             # Load writeable channels if our widget requires them. These should
             # not exist on the base PyDMWidget but prevents us from duplicating
             # the method below to only make two more connections
@@ -1186,6 +1304,33 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         """
         return self.channels()
 
+    def eventFilter(self, obj, event):
+        """
+        Filters events on this object.
+
+        Params
+        ------
+        object : QObject
+            The object that is being handled.
+        event : QEvent
+            The event that is happening.
+
+        Returns
+        -------
+        bool
+            True to stop the event from being handled further; otherwise
+            return false.
+        """
+
+        if event.type() == QEvent.Enter:
+            if not self._pydm_tool_tip:
+                self.setToolTip(self.parseTip(self.toolTip()))
+            else:
+                self.setToolTip(self.parseTip(self._pydm_tool_tip))
+            return True
+
+        return False
+
 
 class PyDMWritableWidget(PyDMWidget):
     """
@@ -1238,6 +1383,7 @@ class PyDMWritableWidget(PyDMWidget):
             return false.
         """
         channel = getattr(self, 'channel', None)
+
         if is_channel_valid(channel):
             status = self._write_access and self._connected
 

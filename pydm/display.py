@@ -18,6 +18,7 @@ from .utilities.stylesheet import merge_widget_stylesheet, global_style
 class ScreenTarget:
     NEW_PROCESS = 0
     DIALOG = 1
+    HOME = 2
 
 
 logger = logging.getLogger(__file__)
@@ -310,12 +311,12 @@ class Display(QWidget):
         stylesheet_filename = None
         try:
             #First, check if the file is already an absolute path.
-            if os.path.exists(possible_stylesheet_filename):
+            if os.path.isfile(possible_stylesheet_filename):
                 stylesheet_filename = possible_stylesheet_filename
             #Second, check if the css file is specified relative to the display file.
             else:
                 rel_path = os.path.join(os.path.dirname(os.path.abspath(self._loaded_file)), possible_stylesheet_filename)
-                if os.path.exists(rel_path):
+                if os.path.isfile(rel_path):
                     stylesheet_filename = rel_path
         except Exception as e:
             logger.debug("Exception while checking if stylesheet is a filename: %s", e)

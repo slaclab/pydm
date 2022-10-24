@@ -21,6 +21,9 @@ STYLESHEET_INCLUDE_DEFAULT = os.getenv("PYDM_STYLESHEET_INCLUDE_DEFAULT", False)
 
 CONFIRM_QUIT = os.getenv("PYDM_CONFIRM_QUIT", "n").lower() in ("y", "t", "1", "true")
 
+# Environment variable pointing to a pydm display to return to when the home button is clicked
+HOME_FILE = os.getenv("PYDM_HOME_FILE")
+
 ENTRYPOINT_EXTERNAL_TOOL = "pydm.tool"
 ENTRYPOINT_DATA_PLUGIN = "pydm.data_plugin"
 ENTRYPOINT_WIDGET = "pydm.widget"
