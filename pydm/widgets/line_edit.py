@@ -41,6 +41,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         self.create_unit_options()
         self._display_format_type = self.DisplayFormat.Default
         self._string_encoding = "utf_8"
+        self._allow_rw = True
         if utilities.is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
 
@@ -131,12 +132,17 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         self.clearFocus()
         self.set_display()
 
+    def setReadOnly(self, noaccess):
+        self._allow_rw = not noaccess
+        super(PyDMLineEdit, self).setReadOnly(noaccess)
+
     def write_access_changed(self, new_write_access):
         """
         Change the PyDMLineEdit to read only if write access is denied
         """
         super(PyDMLineEdit, self).write_access_changed(new_write_access)
-        self.setReadOnly(not new_write_access)
+        if self._allow_rw:
+            super(PyDMLineEdit, self).setReadOnly(not new_write_access)
 
     def unit_changed(self, new_unit):
         """
