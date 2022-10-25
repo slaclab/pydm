@@ -145,7 +145,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         if not status:
             if tooltip != '':
                 tooltip += '\n'
-            tooltip += "PV is disconnected."
+            tooltip += "Alarm PV is disconnected."
             tooltip += '\n'
             tooltip += self.get_address()
 
