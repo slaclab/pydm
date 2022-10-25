@@ -10,7 +10,7 @@ from ast import literal_eval
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit
 from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Property, QSize, Qt, QTimer
-from .base import PyDMWidget
+from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont, is_qt_designer
 
 logger = logging.getLogger(__name__)
@@ -114,6 +114,23 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             Channel address
         """
         super().channel(value)
+
+    @only_if_channel_set
+    def check_enable_state(self):
+        """
+        override parent method, so this widget does not get disabled when the pv disconnects.
+        This method adds a Tool Tip with the reason why it is disabled.
+        """
+        status = self._connected
+        tooltip = self.restore_original_tooltip()
+        if not status:
+            if tooltip != '':
+                tooltip += '\n'
+            tooltip += "PV is disconnected."
+            tooltip += '\n'
+            tooltip += self.get_address()
+
+        self.setToolTip(tooltip)
         
     @Property(str)
     def environmentVariables(self):
