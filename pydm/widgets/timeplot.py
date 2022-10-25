@@ -603,7 +603,12 @@ class PyDMTimePlot(BasePlot,updateMode):
             else:
                 maxrange = time.time()
             minrange = maxrange - self._time_span
-            self.plotItem.setXRange(minrange, maxrange, padding=0.0, update=update_immediately)
+            current_min_x = self.plotItem.getAxis('bottom').range[0]  # Minimum x value currently displayed on the plot
+            if not self.plotItem.isAnyXAutoRange() or (self.plotItem.isAnyXAutoRange() and
+                                                       maxrange - current_min_x >= self._time_span):
+                # Keep the rolling window of data moving, unless the user asked for autorange and we've
+                # not yet hit the maximum amount of data to display based on the time span
+                self.plotItem.setXRange(minrange, maxrange, padding=0.0, update=update_immediately)
         else:
             diff_time = self.starting_epoch_time - max([curve.max_x() for curve in self._curves])
             if diff_time > DEFAULT_X_MIN:
