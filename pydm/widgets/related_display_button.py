@@ -563,4 +563,4 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         menu.exec_(self.mapToGlobal(pos))
 
     # if is_qt_designer hide the channel property:
-    channel = Property(bool, PyDMWidget.channel.fget, PyDMWidget.channel.fset, designable=False)
+    channel = Property(str, PyDMWidget.channel.fget, PyDMWidget.channel.fset, designable=False)

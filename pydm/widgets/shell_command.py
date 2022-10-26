@@ -495,4 +495,4 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             logger.error("Command '%s' already active.", command)
 
     # if is_qt_designer hide the channel property:
-    channel = Property(bool, PyDMWidget.channel.fget, PyDMWidget.channel.fset, designable=False)
+    channel = Property(str, PyDMWidget.channel.fget, PyDMWidget.channel.fset, designable=False)
