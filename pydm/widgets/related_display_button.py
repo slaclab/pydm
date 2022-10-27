@@ -88,7 +88,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         warnings.warn("'PyDMRelatedDisplayButton.channel' is not recommended for getting/setting the channel property "
                       "for the shell command, use 'PyDMRelatedDisplayButton.alarm_channel' instead.")
 
-        return super().channel()
+        return super().channel
 
     @channel.setter
     def channel(self, value):
@@ -119,7 +119,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         channel : str
             Channel address
         """
-        return super().channel()
+        return super().channel
 
     @alarmChannel.setter
     def alarmChannel(self, value):
