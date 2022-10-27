@@ -69,7 +69,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         warnings.warn("'PyDMShellCommand.channel' is not recommended for getting/setting the channel property "
                       "for the shell command, use 'PyDMShellCommand.alarm_channel' instead.")
 
-        return super().channel
+        return PyDMWidget.channel()
 
     @channel.setter
     def channel(self, value):
@@ -87,7 +87,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         warnings.warn("'PyDMShellCommand.channel' is not recommended for getting/setting the channel property "
                       "for the shell command, use 'PyDMShellCommand.alarm_channel' instead.")
 
-        super().channel(value)
+        PyDMWidget.channel(value)
 
     @Property(str)
     def alarmChannel(self):
@@ -100,7 +100,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         channel : str
             Channel address
         """
-        return super().channel
+        return PyDMWidget.channel()
 
     @alarmChannel.setter
     def alarmChannel(self, value):
@@ -113,7 +113,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         value : str
             Channel address
         """
-        super().channel(value)
+        PyDMWidget.channel(value)
 
     @only_if_channel_set
     def check_enable_state(self):
