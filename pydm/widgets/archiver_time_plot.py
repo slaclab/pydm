@@ -329,6 +329,14 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             return
         self._time_span = value
 
+    def clearCurves(self) -> None:
+        """ Clear all curves from the plot """
+        for curve in self._curves:
+            # Need to clear out any bars from optimized data, then super() can handle the rest
+            if not curve.error_bar_needs_set:
+                curve.getViewBox().removeItem(curve.error_bar_item)
+        super().clearCurves()
+
     def getCurves(self) -> List[str]:
         """
         Dump and return the current list of curves and each curve's settings into a list
