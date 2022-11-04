@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMSpinbox &mdash; PyDM v1.17.0+34.gd37f3cf4 documentation</title>
+  <title>PyDMSpinbox &mdash; PyDM v1.17.0+49.g72111a26 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.17.0+34.gd37f3cf4
+                v1.17.0+49.g72111a26
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -121,9 +121,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Widgets</a> &raquo;</li>
-      <li>PyDMSpinbox</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Widgets</a></li>
+      <li class="breadcrumb-item active">PyDMSpinbox</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/widgets/spinbox.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -2080,6 +2080,14 @@ callable.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.reset_limits">
+<span class="sig-name descname"><span class="pre">reset_limits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.reset_limits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.reset_limits" title="Permalink to this definition"></a></dt>
+<dd><p>Will reset the lower and upper limits to either the ones set by the user, or the ones from the
+channel depending on the current state of userDefinedLimits(). If a None value would be set,
+do not attempt the update.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.resize">
 <span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QSize</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.resize" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
@@ -2980,6 +2988,40 @@ This slot sends the new limit value to the
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the HIGH limit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.userDefinedLimits">
+<span class="sig-name descname"><span class="pre">userDefinedLimits</span></span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.userDefinedLimits" title="Permalink to this definition"></a></dt>
+<dd><p>True if the range of the spinbox should be set based on user-defined limits, False if
+it should be set based on the limits received from the channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.userMaximum">
+<span class="sig-name descname"><span class="pre">userMaximum</span></span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.userMaximum" title="Permalink to this definition"></a></dt>
+<dd><p>Upper user-defined limit value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.userMinimum">
+<span class="sig-name descname"><span class="pre">userMinimum</span></span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.userMinimum" title="Permalink to this definition"></a></dt>
+<dd><p>Lower user-defined limit value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>

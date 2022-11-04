@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.spinbox &mdash; PyDM v1.17.0+34.gd37f3cf4 documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM v1.17.0+49.g72111a26 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.17.0+34.gd37f3cf4
+                v1.17.0+49.g72111a26
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -95,9 +95,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pydm.widgets.spinbox</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pydm.widgets.spinbox</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -131,6 +131,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_sensitive_border</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_step_exponent</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_on_press</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_limits</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_minimum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_maximum</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
@@ -140,7 +143,6 @@
         <span class="c1"># in order to catch the click events</span>
         <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChild</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">)</span>
         <span class="n">child</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
 
 <div class="viewcode-block" id="PyDMSpinbox.stepBy"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.stepBy">[docs]</a>    <span class="k">def</span> <span class="nf">stepBy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -154,7 +156,6 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">stepBy</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_on_press</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">()</span></div>
-
 
 <div class="viewcode-block" id="PyDMSpinbox.keyPressEvent"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -183,7 +184,6 @@
     
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span></div>
-            
 
 <div class="viewcode-block" id="PyDMSpinbox.widget_ctx_menu"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.widget_ctx_menu">[docs]</a>    <span class="k">def</span> <span class="nf">widget_ctx_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -265,6 +265,95 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">valueBeingSet</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">userDefinedLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        True if the range of the spinbox should be set based on user-defined limits, False if</span>
+<span class="sd">        it should be set based on the limits received from the channel</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_limits</span>
+
+    <span class="nd">@userDefinedLimits</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">userDefinedLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_defined_limits</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not to set the range of the spinbox based on user-defined limits. Will also reset</span>
+<span class="sd">        the range of the spinbox in case this is called while the application is running to ensure it matches</span>
+<span class="sd">        what the user requested.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        user_defined_limits : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_limits</span> <span class="o">=</span> <span class="n">user_defined_limits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_limits</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">userMinimum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lower user-defined limit value</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_minimum</span>
+
+    <span class="nd">@userMinimum</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">userMinimum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_min</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the Lower user-defined limit value, updates the range of the spinbox if needed</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_min : float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_minimum</span> <span class="o">=</span> <span class="n">new_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_limits</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">userMaximum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Upper user-defined limit value</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_maximum</span>
+
+    <span class="nd">@userMaximum</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">userMaximum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the upper user-defined limit value, updates the range of the spinbox if needed</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_max : float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_maximum</span> <span class="o">=</span> <span class="n">new_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_limits</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PyDMSpinbox.reset_limits"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.reset_limits">[docs]</a>    <span class="k">def</span> <span class="nf">reset_limits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Will reset the lower and upper limits to either the ones set by the user, or the ones from the</span>
+<span class="sd">        channel depending on the current state of userDefinedLimits(). If a None value would be set,</span>
+<span class="sd">        do not attempt the update.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">userDefinedLimits</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">userMinimum</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">userMaximum</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">userMinimum</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">userMaximum</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_ctrl_limit</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_ctrl_limit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_ctrl_limit</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_ctrl_limit</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="PyDMSpinbox.ctrl_limit_changed"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.ctrl_limit_changed">[docs]</a>    <span class="k">def</span> <span class="nf">ctrl_limit_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel receives new control limit</span>
@@ -278,10 +367,11 @@
 <span class="sd">            New value for the control limit</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">ctrl_limit_changed</span><span class="p">(</span><span class="n">which</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">which</span> <span class="o">==</span> <span class="s2">&quot;UPPER&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">userDefinedLimits</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">which</span> <span class="o">==</span> <span class="s2">&quot;UPPER&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.precision_changed"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.precision_changed">[docs]</a>    <span class="k">def</span> <span class="nf">precision_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_precision</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

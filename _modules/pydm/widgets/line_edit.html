@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.line_edit &mdash; PyDM v1.17.0+34.gd37f3cf4 documentation</title>
+  <title>pydm.widgets.line_edit &mdash; PyDM v1.17.0+49.g72111a26 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.17.0+34.gd37f3cf4
+                v1.17.0+49.g72111a26
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -95,9 +95,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pydm.widgets.line_edit</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pydm.widgets.line_edit</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -150,6 +150,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">create_unit_options</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Default</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span> <span class="o">=</span> <span class="s2">&quot;utf_8&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_set_read_only</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Are we *really* read only?</span>
         <span class="k">if</span> <span class="n">utilities</span><span class="o">.</span><span class="n">is_pydm_app</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_string_encoding</span><span class="p">()</span>
 
@@ -240,12 +241,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">clearFocus</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_display</span><span class="p">()</span></div>
 
+<div class="viewcode-block" id="PyDMLineEdit.setReadOnly"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.setReadOnly">[docs]</a>    <span class="k">def</span> <span class="nf">setReadOnly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">readOnly</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_set_read_only</span> <span class="o">=</span> <span class="n">readOnly</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLineEdit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="kc">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_set_read_only</span> <span class="k">else</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="PyDMLineEdit.write_access_changed"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.write_access_changed">[docs]</a>    <span class="k">def</span> <span class="nf">write_access_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_write_access</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Change the PyDMLineEdit to read only if write access is denied</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLineEdit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">write_access_changed</span><span class="p">(</span><span class="n">new_write_access</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="ow">not</span> <span class="n">new_write_access</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_set_read_only</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLineEdit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="ow">not</span> <span class="n">new_write_access</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMLineEdit.unit_changed"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.unit_changed">[docs]</a>    <span class="k">def</span> <span class="nf">unit_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
