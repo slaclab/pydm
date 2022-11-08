@@ -335,6 +335,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             # Need to clear out any bars from optimized data, then super() can handle the rest
             if not curve.error_bar_needs_set:
                 curve.getViewBox().removeItem(curve.error_bar_item)
+
+        # reset _min_x to let updateXAxis make requests anew
+        self._min_x = self._starting_timestamp 
         super().clearCurves()
 
     def getCurves(self) -> List[str]:
