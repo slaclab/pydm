@@ -1,6 +1,6 @@
-##########################################
+#####################################
 Archiver Appliance Enabled Time Plots
-##########################################
+#####################################
 
 Time plots can be augmented with the ability to automatically request archived data from an instance
 of the EPICS archiver appliance if such an instance is available to the user.
@@ -52,18 +52,18 @@ of 365, a request for a year of data for a PV that updates every second would re
    :alt: Requesting additional data from a live plot
 
 
-
+#######################
 PyDMArchiverTimePlot
-
+#######################
 
 .. autoclass:: pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot
    :members:
    :inherited-members:
    :show-inheritance:
 
-
+#######################
 ArchivePlotCurveItem
-
+#######################
 
 .. autoclass:: pydm.widgets.archiver_time_plot.ArchivePlotCurveItem
    :members:
