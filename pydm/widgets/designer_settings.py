@@ -347,7 +347,7 @@ class BasicSettingsEditor(QtWidgets.QDialog):
         self.setLayout(vlayout)
 
         settings_form = QtWidgets.QFormLayout()
-        settings_form.setFieldGrowthPolicy(QtWidgets.QFormLayout.AllNonFixedFieldsGrow)
+        settings_form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         vlayout.addLayout(settings_form)
 
         for helper_widget in self._create_helper_widgets(settings_form):
