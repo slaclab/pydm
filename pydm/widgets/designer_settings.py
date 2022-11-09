@@ -287,7 +287,7 @@ def get_qt_properties(cls):
 
 
 def get_helper_label_text(attr: str) -> str:
-    spaced = re.sub("(.)([A-Z])", r"\1 \2", attr)
+    spaced = re.sub("(PyDM|.)([A-Z])", r"\1 \2", attr)
     return spaced.strip().capitalize()
 
 
@@ -347,6 +347,7 @@ class BasicSettingsEditor(QtWidgets.QDialog):
         self.setLayout(vlayout)
 
         settings_form = QtWidgets.QFormLayout()
+        settings_form.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
         vlayout.addLayout(settings_form)
 
         for helper_widget in self._create_helper_widgets(settings_form):
