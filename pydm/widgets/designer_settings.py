@@ -287,7 +287,7 @@ def get_qt_properties(cls):
 
 
 def get_helper_label_text(attr: str) -> str:
-    spaced = re.sub("(.)([A-Z])", r"\1 \2", attr)
+    spaced = re.sub("(PyDM|.)([A-Z])", r"\1 \2", attr)
     return spaced.strip().capitalize()
 
 
