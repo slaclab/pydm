@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.18.0 documentation</title>
+  <title>pydm.widgets.archiver_time_plot &mdash; PyDM v1.18.0+2.g2777b328 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.0
+                v1.18.0+2.g2777b328
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -444,6 +444,9 @@
             <span class="c1"># Need to clear out any bars from optimized data, then super() can handle the rest</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">curve</span><span class="o">.</span><span class="n">error_bar_needs_set</span><span class="p">:</span>
                 <span class="n">curve</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">error_bar_item</span><span class="p">)</span>
+
+        <span class="c1"># reset _min_x to let updateXAxis make requests anew</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_starting_timestamp</span> 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">clearCurves</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot.getCurves"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getCurves">[docs]</a>    <span class="k">def</span> <span class="nf">getCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
