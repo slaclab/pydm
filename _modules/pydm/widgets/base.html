@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.base &mdash; PyDM v1.18.0+6.g7bf65fa4 documentation</title>
+  <title>pydm.widgets.base &mdash; PyDM v1.18.0+8.gdc034600 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.0+6.g7bf65fa4
+                v1.18.0+8.gdc034600
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -1438,7 +1438,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parseTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pydm_tool_tip</span><span class="p">))</span>
             <span class="k">return</span> <span class="kc">True</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">PyDMWritableWidget</span><span class="p">(</span><span class="n">PyDMWidget</span><span class="p">):</span>
