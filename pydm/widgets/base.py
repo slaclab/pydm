@@ -1329,7 +1329,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                 self.setToolTip(self.parseTip(self._pydm_tool_tip))
             return True
 
-        return False
+        return super().eventFilter(obj, event)
 
 
 class PyDMWritableWidget(PyDMWidget):
