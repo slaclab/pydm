@@ -241,6 +241,13 @@ class Connection(PyDMConnection):
             logger.debug('Connection was not available yet for calc.')
         try:
             val = data.get('value')
+            if isinstance(val, np.generic):
+                if np.issubdtype(type(val), np.floating):
+                    val = float(val)
+                elif np.issubdtype(type(val), np.integer):
+                    val = int(val)
+                elif np.issubdtype(type(val), np.bool_):
+                    val = bool(val)
             self.value = val
             if val is not None:
                 self.new_value_signal[type(val)].emit(val)
