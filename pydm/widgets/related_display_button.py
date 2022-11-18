@@ -11,7 +11,7 @@ from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
-from ..utilities.stylesheet import apply_stylesheet
+from ..utilities.stylesheet import merge_widget_stylesheet
 from ..display import (load_file, ScreenTarget)
 
 
@@ -462,8 +462,10 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
             else:
                 self.window().open(fname, macros=macros)
         else:
-            w = load_file(fname, macros=macros, target=ScreenTarget.DIALOG)
-            apply_stylesheet(widget=w)
+            display = load_file(fname, macros=macros, target=ScreenTarget.DIALOG)
+            # Not a pydm app: need to give our new display proper pydm styling
+            # Usually done in PyDMApplication
+            merge_widget_stylesheet(widget=display)
 
     def context_menu(self):
         try:
