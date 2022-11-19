@@ -427,6 +427,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
             PyDMRelatedDisplayButton.EXISTING_WINDOW or 0 will open the
             file on the same window. PyDMRelatedDisplayButton.NEW_WINDOW
             or 1 will result on a new process.
+
+        Returns
+        -------
+        display : Display
+            The widget that was opened. Useful for testing and debug.
         """
         if not self.validate_password():
             return None
@@ -458,14 +463,15 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
 
         if is_pydm_app():
             if target == self.NEW_WINDOW:
-                load_file(fname, macros=macros, target=screen_target)
+                return load_file(fname, macros=macros, target=screen_target)
             else:
-                self.window().open(fname, macros=macros)
+                return self.window().open(fname, macros=macros)
         else:
             display = load_file(fname, macros=macros, target=ScreenTarget.DIALOG)
             # Not a pydm app: need to give our new display proper pydm styling
             # Usually done in PyDMApplication
             merge_widget_stylesheet(widget=display)
+            return display
 
     def context_menu(self):
         try:
