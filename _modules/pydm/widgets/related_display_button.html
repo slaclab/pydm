@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.related_display_button &mdash; PyDM v1.18.1 documentation</title>
+  <title>pydm.widgets.related_display_button &mdash; PyDM v1.18.1+6.ge904d493 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1
+                v1.18.1+6.ge904d493
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -120,6 +120,7 @@
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMPrimitiveWidget</span>
 <span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">IconFont</span><span class="p">,</span> <span class="n">find_file</span><span class="p">,</span> <span class="n">is_pydm_app</span>
 <span class="kn">from</span> <span class="nn">..utilities.macro</span> <span class="kn">import</span> <span class="n">parse_macro_string</span>
+<span class="kn">from</span> <span class="nn">..utilities.stylesheet</span> <span class="kn">import</span> <span class="n">merge_widget_stylesheet</span>
 <span class="kn">from</span> <span class="nn">..display</span> <span class="kn">import</span> <span class="p">(</span><span class="n">load_file</span><span class="p">,</span> <span class="n">ScreenTarget</span><span class="p">)</span>
 
 
@@ -535,6 +536,11 @@
 <span class="sd">            PyDMRelatedDisplayButton.EXISTING_WINDOW or 0 will open the</span>
 <span class="sd">            file on the same window. PyDMRelatedDisplayButton.NEW_WINDOW</span>
 <span class="sd">            or 1 will result on a new process.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        display : Display</span>
+<span class="sd">            The widget that was opened. Useful for testing and debug.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_password</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -566,11 +572,15 @@
 
         <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">target</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">NEW_WINDOW</span><span class="p">:</span>
-                <span class="n">load_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">screen_target</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">load_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">screen_target</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">()</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">()</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">ScreenTarget</span><span class="o">.</span><span class="n">DIALOG</span><span class="p">)</span></div>
+            <span class="n">display</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">ScreenTarget</span><span class="o">.</span><span class="n">DIALOG</span><span class="p">)</span>
+            <span class="c1"># Not a pydm app: need to give our new display proper pydm styling</span>
+            <span class="c1"># Usually done in PyDMApplication</span>
+            <span class="n">merge_widget_stylesheet</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">display</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">display</span></div>
 
     <span class="k">def</span> <span class="nf">context_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
