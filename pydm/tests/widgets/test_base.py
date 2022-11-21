@@ -1,13 +1,11 @@
 # Unit Tests for the base widget classes
-
 import pytest
 import json
 import logging
-logger = logging.getLogger(__name__)
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QMenu
-from qtpy.QtGui import QColor, QMouseEvent
+from qtpy.QtGui import QClipboard, QColor, QMouseEvent
 from ..conftest import ConnectionSignals
 from ...utilities import is_pydm_app
 from ... import data_plugins
@@ -16,10 +14,12 @@ from ...widgets.label import PyDMLabel
 from ...widgets.line_edit import PyDMLineEdit
 from ...widgets.channel import PyDMChannel
 
+logger = logging.getLogger(__name__)
 
 # --------------------
 # POSITIVE TEST CASES
 # --------------------
+
 
 @pytest.mark.parametrize("channel_address, expected", [
     ("CA://MA_TEST", True),
@@ -187,6 +187,33 @@ def test_open_context_menu(qtbot, monkeypatch, caplog):
                               Qt.RightButton, Qt.ShiftModifier)
     pydm_label.open_context_menu(mouse_event)
     assert "Context Menu displayed." in caplog.text
+
+
+@pytest.mark.parametrize("init_channel, expected_clipboard_text", [
+    ("CA://MA_TEST", "MA_TEST"),
+    (None, "")
+])
+def test_middle_click(qtbot, monkeypatch, init_channel, expected_clipboard_text):
+    """
+    Verify that when a middle click happens on a PyDM widget, the PV name of the channel connected to will be
+    copied to the clipboard as expected. Also verify the copy does not happen if there is no connected channel.
+    """
+    pydm_label = PyDMLabel(init_channel=init_channel)
+    qtbot.addWidget(pydm_label)
+    copied_text = ''
+
+    # Create a function that will store what would have been copied to the clipboard instead of
+    # doing the actual copy so that the user who is running the test does not have their actual clipboard modified
+
+    def mock_copy(self, text, mode=None):
+        nonlocal copied_text
+        copied_text = text
+    monkeypatch.setattr(QClipboard, "setText", mock_copy)
+
+    # Perform the middle click and verify the correct text (if any) was copied
+    qtbot.waitExposed(pydm_label)
+    qtbot.mouseClick(pydm_label, Qt.MiddleButton)
+    assert copied_text == expected_clipboard_text
 
 
 @pytest.mark.parametrize("init_channel", [
@@ -472,6 +499,7 @@ def test_pydmwidget_channels(qtbot):
                                         write_access_slot=None,
                                         timestamp_slot=pydm_label.timestamp_changed)
     assert pydm_channels == default_pydm_channels
+
 
 def test_pydmwidget_tooltip(qtbot):
     """
