@@ -3,6 +3,7 @@ import cProfile
 import logging
 import pstats
 import sys
+import faulthandler
 
 
 def main():
@@ -53,6 +54,11 @@ def main():
         '--profile',
         action='store_true',
         help='Enable cProfile function profiling, printing on exit.'
+    )
+    parser.add_argument(
+        '--faulthandler',
+        action='store_true',
+        help='Enable faulthandler to trace segmentation faults.'
     )
     parser.add_argument(
         '--hide-nav-bar',
@@ -120,6 +126,9 @@ def main():
         profile = cProfile.Profile()
         profile.enable()
 
+    if pydm_args.faulthandler:
+        faulthandler.enable()
+
     macros = None
     if pydm_args.macro is not None:
         macros = parse_macro_string(pydm_args.macro)
@@ -154,6 +163,9 @@ def main():
             stream=sys.stdout,
         ).sort_stats(pstats.SortKey.CUMULATIVE)
         stats.print_stats()
+
+    if pydm_args.faulthandler:
+        faulthandler.disable()
 
     sys.exit(exit_code)
 
