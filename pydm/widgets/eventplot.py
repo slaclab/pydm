@@ -105,6 +105,9 @@ class EventPlotCurveItem(BasePlotCurveItem):
             return
         if self.x_idx is None or self.y_idx is None:
             return
+        if not isinstance(self.x_idx, int) or not isinstance(self.y_idx, int):
+            self.x_idx = int(self.x_idx)
+            self.y_idx = int(self.y_idx)
         if len(new_data) <= self.x_idx or len(new_data) <= self.y_idx:
             return
         self.data_buffer = np.roll(self.data_buffer, -1)

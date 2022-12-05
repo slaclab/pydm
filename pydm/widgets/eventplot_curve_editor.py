@@ -38,9 +38,10 @@ class PyDMEventPlotCurvesModel(BasePlotCurvesModel):
         if column_name == "Channel":
             curve.address = str(value)
         elif column_name == "Y Index":
-            curve.y_idx = int(value)
+            print(f'yindex: {value}')
+            curve.y_idx = value
         elif column_name == "X Index":
-            curve.x_idx = int(value)
+            curve.x_idx = value
         elif column_name == "Buffer Size":
             curve.setBufferSize(int(value))
         elif column_name == "Buffer Size Channel":
