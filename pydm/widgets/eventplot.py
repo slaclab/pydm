@@ -6,7 +6,7 @@ from qtpy.QtGui import QColor
 from qtpy.QtCore import Slot, Property, Qt
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
-from ..utilities import remove_protocol
+from ..utilities import remove_protocol, is_qt_designer
 
 
 DEFAULT_BUFFER_SIZE = 1200
@@ -19,8 +19,13 @@ class EventPlotCurveItem(BasePlotCurveItem):
     def __init__(self, addr, y_idx, x_idx, bufferSizeChannelAddress=None, **kws):
         self.channel = None
         self.address = addr
-        self.x_idx = x_idx
-        self.y_idx = y_idx
+        if not is_qt_designer():
+            self.x_idx = int(x_idx)
+            self.y_idx = int(y_idx)
+        else:
+            print('On designer the live update is not available for this widget.')
+            self.x_idx = x_idx
+            self.y_idx = y_idx
         self.connected = False
         if kws.get('name') is None:
             kws['name'] = ""
@@ -105,9 +110,6 @@ class EventPlotCurveItem(BasePlotCurveItem):
             return
         if self.x_idx is None or self.y_idx is None:
             return
-        if not isinstance(self.x_idx, int) or not isinstance(self.y_idx, int):
-            self.x_idx = int(self.x_idx)
-            self.y_idx = int(self.y_idx)
         if len(new_data) <= self.x_idx or len(new_data) <= self.y_idx:
             return
         self.data_buffer = np.roll(self.data_buffer, -1)
