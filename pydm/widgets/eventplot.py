@@ -23,9 +23,9 @@ class EventPlotCurveItem(BasePlotCurveItem):
             self.x_idx = int(x_idx)
             self.y_idx = int(y_idx)
         else:
-            print('On designer the live update is not available for this widget.')
-            self.x_idx = x_idx
-            self.y_idx = y_idx
+            print('The live update is not available for this widget on QtDesigner.')
+            self.x_idx = None
+            self.y_idx = None
         self.connected = False
         if kws.get('name') is None:
             kws['name'] = ""
