@@ -19,13 +19,15 @@ class EventPlotCurveItem(BasePlotCurveItem):
     def __init__(self, addr, y_idx, x_idx, bufferSizeChannelAddress=None, **kws):
         self.channel = None
         self.address = addr
-        if not is_qt_designer():
-            self.x_idx = int(x_idx)
-            self.y_idx = int(y_idx)
-        else:
-            print('The live update is not available for this widget on QtDesigner.')
-            self.x_idx = None
-            self.y_idx = None
+        self.x_idx = x_idx
+        self.y_idx = y_idx
+        #if not is_qt_designer():
+        #    self.x_idx = int(x_idx)
+        #    self.y_idx = int(y_idx)
+        #else:
+        #    print('The live update is not available for this widget on QtDesigner.')
+        #    self.x_idx = None
+        #    self.y_idx = None
         self.connected = False
         if kws.get('name') is None:
             kws['name'] = ""
@@ -110,6 +112,11 @@ class EventPlotCurveItem(BasePlotCurveItem):
             return
         if self.x_idx is None or self.y_idx is None:
             return
+        if not isinstance(self.x_idx, int) or not isinstance(self.y_idx, int):
+            """ The x_idx and y_idx typing is made this late so that macros can
+            can be used alongside regular indexing. """
+            self.x_idx = int(self.x_idx)
+            self.y_idx = int(self.y_idx)
         if len(new_data) <= self.x_idx or len(new_data) <= self.y_idx:
             return
         self.data_buffer = np.roll(self.data_buffer, -1)
@@ -293,7 +300,7 @@ class PyDMEventPlot(BasePlot):
 
     def addChannel(self, channel=None, y_idx=None, x_idx=None, name=None,
                    color=None, lineStyle=None, lineWidth=None,
-                   symbol=None, symbolSize=None, buffer_size=None,
+                   symbol='o', symbolSize=5, buffer_size=None,
                    yAxisName=None, bufferSizeChannelAddress=None):
         """
         Add a new curve to the plot.  In addition to the arguments below,
