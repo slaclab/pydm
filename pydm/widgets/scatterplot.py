@@ -288,8 +288,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         Called by the curve's parent plot whenever the curve needs to be
         re-drawn with new data.
         """
-        self.setData(x=self.data_buffer[0, -self.points_accumulated:].astype(np.float),
-                     y=self.data_buffer[1, -self.points_accumulated:].astype(np.float))
+        self.setData(x=self.data_buffer[0, -self.points_accumulated:].astype(float),
+                     y=self.data_buffer[1, -self.points_accumulated:].astype(float))
         self.needs_new_x = True
         self.needs_new_y = True
 

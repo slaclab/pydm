@@ -159,11 +159,11 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             super(ArchivePlotCurveItem, self).redrawCurve()
         else:
             try:
-                x = np.concatenate((self.archive_data_buffer[0, -self.archive_points_accumulated:].astype(np.float),
-                                    self.data_buffer[0, -self.points_accumulated:].astype(np.float)))
+                x = np.concatenate((self.archive_data_buffer[0, -self.archive_points_accumulated:].astype(float),
+                                    self.data_buffer[0, -self.points_accumulated:].astype(float)))
 
-                y = np.concatenate((self.archive_data_buffer[1, -self.archive_points_accumulated:].astype(np.float),
-                                    self.data_buffer[1, -self.points_accumulated:].astype(np.float)))
+                y = np.concatenate((self.archive_data_buffer[1, -self.archive_points_accumulated:].astype(float),
+                                    self.data_buffer[1, -self.points_accumulated:].astype(float)))
 
                 self.setData(y=y, x=x)
             except (ZeroDivisionError, OverflowError, TypeError):
