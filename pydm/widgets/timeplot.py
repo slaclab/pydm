@@ -275,8 +275,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
             The maximum timestamp to render when plotting as a bar graph.
         """
         try:
-            x = self.data_buffer[0, -self.points_accumulated:].astype(np.float)
-            y = self.data_buffer[1, -self.points_accumulated:].astype(np.float)
+            x = self.data_buffer[0, -self.points_accumulated:].astype(float)
+            y = self.data_buffer[1, -self.points_accumulated:].astype(float)
 
             if not self._plot_by_timestamps:
                 x -= time.time()
