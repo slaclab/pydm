@@ -91,7 +91,7 @@ jobs:
     - bash: |
         conda install pyqt==5.12.3
       displayName: 'Anaconda - mac os python 3.7 pyqt update'
-      condition: eq(variables.name, 'MacOS_3_7')
+      condition: eq('${{ parameters.name }}', 'MacOS_3_7')
 
     - bash: |
         source activate test-environment-$(python)
