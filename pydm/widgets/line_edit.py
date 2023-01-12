@@ -127,7 +127,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                 self.send_value_signal[str].emit(send_value)
         except ValueError:
             logger.exception("Error trying to set data '{0}' with type '{1}' and format '{2}' at widget '{3}'."
-                         .format(self.text(), self.channeltype, self._display_format_type, self.objectName()))
+                             .format(self.text(), self.channeltype, self._display_format_type, self.objectName()))
 
         self.clearFocus()
         self.set_display()
@@ -260,11 +260,10 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         else:
             self._display = str(new_value)
 
-        if self._display_format_type == DisplayFormat.Default:
-            if isinstance(new_value, (int, float)):
-                self._display = str(self.format_string.format(new_value))
-                self.setText(self._display)
-                return
+        if isinstance(new_value, (int, float)):
+            self._display = str(self.format_string.format(new_value))
+            self.setText(self._display)
+            return
 
         if self._show_units:
             self._display = "{} {}".format(self._display, self._unit)
@@ -292,4 +291,3 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
             return 0
         else:
             raise ValueError("invalid boolean input")
-
