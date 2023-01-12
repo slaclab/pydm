@@ -86,6 +86,13 @@ jobs:
         conda install python=$(python) pytest-azurepipelines pydm --file dev-requirements.txt
       displayName: 'Anaconda - Install Dependencies'
 
+    # mac os with python 3.7 was not solving the environment correctly (using a too old version of pyqt).
+    # This will force it to use a working version
+    - bash: |
+        conda install pyqt==5.12.3
+      displayName: 'Anaconda - mac os python 3.7 pyqt update'
+      condition: eq(variables.name, 'MacOS_3_7')
+
     - bash: |
         source activate test-environment-$(python)
         # debug of conda environment

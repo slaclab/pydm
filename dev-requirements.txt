@@ -5,4 +5,3 @@ pytest-cov
 pytest-timeout
 p4p
 pyca
-pyqt==5.12.3
