@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.tools.tools &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.tools.tools &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -110,7 +110,7 @@
 <span></span>
 
 <div class="viewcode-block" id="ExternalTool"><a class="viewcode-back" href="../../../development/external_tools.html#pydm.tools.ExternalTool">[docs]</a><span class="k">class</span> <span class="nc">ExternalTool</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PyDM base class for External Tools hook-up.</span>
 <span class="sd">    This class offers a boilerplate for tools to be added to PyDM.</span>
 <span class="sd">    Code available at PyDMApplication will automatically install</span>
@@ -147,7 +147,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">use_without_widget</span> <span class="o">=</span> <span class="n">use_without_widget</span>
 
 <div class="viewcode-block" id="ExternalTool.call"><a class="viewcode-back" href="../../../development/external_tools.html#pydm.tools.ExternalTool.call">[docs]</a>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">sender</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method is invoked when the tool is selected at the menu.</span>
 
 <span class="sd">        Parameters</span>
@@ -161,7 +161,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="ExternalTool.to_json"><a class="viewcode-back" href="../../../development/external_tools.html#pydm.tools.ExternalTool.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Serialize the information at this tool in order to make it possible</span>
 <span class="sd">        to be added to another PyDM Application without user interference.</span>
 
@@ -172,7 +172,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="ExternalTool.from_json"><a class="viewcode-back" href="../../../development/external_tools.html#pydm.tools.ExternalTool.from_json">[docs]</a>    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Recreate the tool based on the serialized information sent as parameter.</span>
 
 <span class="sd">        Parameters</span>
@@ -182,7 +182,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="ExternalTool.get_info"><a class="viewcode-back" href="../../../development/external_tools.html#pydm.tools.ExternalTool.get_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve basic information about the External Tool in a format</span>
 <span class="sd">        that is parsed and used at the About screen.</span>
 
@@ -201,7 +201,7 @@
             <span class="p">}</span></div>
 
 <div class="viewcode-block" id="ExternalTool.is_compatible_with"><a class="viewcode-back" href="../../../development/external_tools.html#pydm.tools.ExternalTool.is_compatible_with">[docs]</a>    <span class="k">def</span> <span class="nf">is_compatible_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Verify if the ExternalTool is compatible with the given widget.</span>
 
 <span class="sd">        Parameters</span>

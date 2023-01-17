@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.datetime &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.datetime &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -123,7 +123,7 @@
 <div class="viewcode-block" id="PyDMDateTimeEdit"><a class="viewcode-back" href="../../../widgets/datetime_edit.html#pydm.widgets.datetime.PyDMDateTimeEdit">[docs]</a><span class="k">class</span> <span class="nc">PyDMDateTimeEdit</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QDateTimeEdit</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">TimeBase</span><span class="p">):</span>
     <span class="n">QtCore</span><span class="o">.</span><span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">)</span>
     <span class="n">returnPressed</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">()</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QDateTimeEdit with support for setting the text via a PyDM Channel, or</span>
 <span class="sd">    through the PyDM Rules system.</span>
 
@@ -148,7 +148,7 @@
 
     <span class="nd">@QtCore</span><span class="o">.</span><span class="n">Property</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">timeBase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Whether to use milliseconds or seconds as time base for the widget&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether to use milliseconds or seconds as time base for the widget&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_base</span>
 
     <span class="nd">@timeBase</span><span class="o">.</span><span class="n">setter</span>
@@ -158,7 +158,7 @@
 
     <span class="nd">@QtCore</span><span class="o">.</span><span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">relative</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether the value in milliseconds is relative to current date or if it</span>
 <span class="sd">        is milliseconds since epoch.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -171,7 +171,7 @@
 
     <span class="nd">@QtCore</span><span class="o">.</span><span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">blockPastDate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Error out if user tries to set value to a date older than current.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Error out if user tries to set value to a date older than current.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_block_past_date</span>
 
     <span class="nd">@blockPastDate</span><span class="o">.</span><span class="n">setter</span>
@@ -217,7 +217,7 @@
 
 <div class="viewcode-block" id="PyDMDateTimeLabel"><a class="viewcode-back" href="../../../widgets/datetime_label.html#pydm.widgets.datetime.PyDMDateTimeLabel">[docs]</a><span class="k">class</span> <span class="nc">PyDMDateTimeLabel</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QLabel</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">TimeBase</span><span class="p">):</span>
     <span class="n">QtCore</span><span class="o">.</span><span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QLabel with support for setting the text via a PyDM Channel, or</span>
 <span class="sd">    through the PyDM Rules system.</span>
 
@@ -241,7 +241,7 @@
 
     <span class="nd">@QtCore</span><span class="o">.</span><span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">textFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The format to use when displaying the date/time values.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The format to use when displaying the date/time values.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_format</span>
 
     <span class="nd">@textFormat</span><span class="o">.</span><span class="n">setter</span>
@@ -252,7 +252,7 @@
 
     <span class="nd">@QtCore</span><span class="o">.</span><span class="n">Property</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">timeBase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Whether to use milliseconds or seconds as time base for the widget&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether to use milliseconds or seconds as time base for the widget&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_base</span>
 
     <span class="nd">@timeBase</span><span class="o">.</span><span class="n">setter</span>
@@ -262,7 +262,7 @@
 
     <span class="nd">@QtCore</span><span class="o">.</span><span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">relative</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether the value in milliseconds is relative to current date or if it</span>
 <span class="sd">        is milliseconds since epoch.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.label &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.label &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -120,7 +120,7 @@
 <div class="viewcode-block" id="PyDMLabel"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel">[docs]</a><span class="k">class</span> <span class="nc">PyDMLabel</span><span class="p">(</span><span class="n">QLabel</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_labelRuleProperties</span><span class="p">):</span>
     <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">)</span>
     <span class="n">DisplayFormat</span> <span class="o">=</span> <span class="n">DisplayFormat</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QLabel with support for setting the text via a PyDM Channel, or</span>
 <span class="sd">    through the PyDM Rules system.</span>
 <span class="sd">    </span>
@@ -162,7 +162,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMLabel.value_changed"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
 <span class="sd">        Sets the value of new_value accordingly at the Label.</span>
 
@@ -202,7 +202,7 @@
 
 <div class="viewcode-block" id="PyDMLabel.check_enable_state"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel.check_enable_state">[docs]</a>    <span class="nd">@only_if_channel_set</span>
     <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; If the channel this label is connected to becomes disconnected, display only the name of the channel. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; If the channel this label is connected to becomes disconnected, display only the name of the channel. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span></div></div>

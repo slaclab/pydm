@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Development Guidelines &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>Development Guidelines &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -128,16 +128,16 @@ main repository. It also assures that the main repository is only added to by
 Pull Request and review. Repositories can be forked from the GitHub site like
 presented at <a class="reference external" href="https://help.github.com/articles/fork-a-repo">this example</a>.
 Once this repository is created, you can clone into your own workspace.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git clone https://YOUR-USERNAME@github.com/YOUR-USERNAME/REPOSITORY.git
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://YOUR-USERNAME@github.com/YOUR-USERNAME/REPOSITORY.git
 </pre></div>
 </div>
 <p>Now, that we have a copy of the repository create a branch for the feature or
 bug you would like to work on.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git checkout -b my-feature
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>my-feature
 
-$ git status
-On branch my-feature
-nothing to commit, working tree clean
+$<span class="w"> </span>git<span class="w"> </span>status
+On<span class="w"> </span>branch<span class="w"> </span>my-feature
+nothing<span class="w"> </span>to<span class="w"> </span>commit,<span class="w"> </span>working<span class="w"> </span>tree<span class="w"> </span>clean
 </pre></div>
 </div>
 </section>
@@ -208,7 +208,7 @@ should follow the form described in the <a class="reference external" href="http
 <section id="merging-changes">
 <h2>Merging Changes<a class="headerlink" href="#merging-changes" title="Permalink to this heading"></a></h2>
 <p>Once you are happy with your code, <code class="docutils literal notranslate"><span class="pre">push</span></code> it back to your fork on GitHub.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git push origin my-feature
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>my-feature
 </pre></div>
 </div>
 <p>You should now be able to create a Pull Request back to the original
@@ -230,17 +230,17 @@ Pull Request can be merged.</p>
 update your local checkout to reflect those. The first step is to make your
 local checkout aware of the upstream repository. If this is done correctly, you
 should see something like this:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git remote add upstream https://github.com/UPSTREAM-ORG/REPOSITORY.git
-$ git remote -v
-origin   https://github.com/YOUR-USERNAME/REPOSITORY.git <span class="o">(</span>fetch<span class="o">)</span>
-origin   https://github.com/YOUR-USERNAME/REPOSITORY.git <span class="o">(</span>push<span class="o">)</span>
-upstream https://github.com/UPSTREAM-ORG/REPOSITORY.git <span class="o">(</span>fetch<span class="o">)</span>
-upstream https://github.com/UPSTREAM-ORG/REPOSITORY.git <span class="o">(</span>push<span class="o">)</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>upstream<span class="w"> </span>https://github.com/UPSTREAM-ORG/REPOSITORY.git
+$<span class="w"> </span>git<span class="w"> </span>remote<span class="w"> </span>-v
+origin<span class="w">   </span>https://github.com/YOUR-USERNAME/REPOSITORY.git<span class="w"> </span><span class="o">(</span>fetch<span class="o">)</span>
+origin<span class="w">   </span>https://github.com/YOUR-USERNAME/REPOSITORY.git<span class="w"> </span><span class="o">(</span>push<span class="o">)</span>
+upstream<span class="w"> </span>https://github.com/UPSTREAM-ORG/REPOSITORY.git<span class="w"> </span><span class="o">(</span>fetch<span class="o">)</span>
+upstream<span class="w"> </span>https://github.com/UPSTREAM-ORG/REPOSITORY.git<span class="w"> </span><span class="o">(</span>push<span class="o">)</span>
 </pre></div>
 </div>
 <p>Now, we need to fetch any changes from the upstream repository. <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span></code>
 will grab the latest commits that were merged since we made our own fork</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git fetch upstream
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>fetch<span class="w"> </span>upstream
 </pre></div>
 </div>
 <p>Ideally you haven’t made any changes to your <code class="docutils literal notranslate"><span class="pre">master</span></code> branch. So you should be
@@ -248,9 +248,9 @@ able to merge the latest <code class="docutils literal notranslate"><span class=
 concern. All you need to do is to switch to your <code class="docutils literal notranslate"><span class="pre">master</span></code> branch, and pull in
 the changes from the upstream remote. It is usually a good idea to push any
 changes back to your fork as well.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git checkout master
-$ git pull upstream master
-$ git push origin master
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span>master
+$<span class="w"> </span>git<span class="w"> </span>pull<span class="w"> </span>upstream<span class="w"> </span>master
+$<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>master
 </pre></div>
 </div>
 <p>Finally, we need to update our feature-branch to have the new changes. Here we
@@ -259,8 +259,8 @@ the upstream changes into our branch, and then re-add our local changes on the
 tip of the commit history. This avoids extraneous merge commits that clog the
 commit history of the branch. A more in-depth discussion can be found <a class="reference external" href="https://www.atlassian.com/git/tutorials/merging-vs-rebasing">here</a>. This process
 should look like this:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git checkout my-feature
-$ git rebase upstream/master
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span>my-feature
+$<span class="w"> </span>git<span class="w"> </span>rebase<span class="w"> </span>upstream/master
 </pre></div>
 </div>
 <div class="admonition note">

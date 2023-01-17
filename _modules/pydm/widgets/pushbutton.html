@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.pushbutton &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.pushbutton &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -119,7 +119,7 @@
 
 
 <div class="viewcode-block" id="PyDMPushButton"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMPushButton</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Basic PushButton to send a fixed value.</span>
 
 <span class="sd">    The PyDMPushButton is meant to hold a specific value, and send that value</span>
@@ -184,7 +184,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not this button is password protected.</span>
 
 <span class="sd">        Returns</span>
@@ -195,7 +195,7 @@
 
     <span class="nd">@passwordProtected</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not this button is password protected.</span>
 
 <span class="sd">        Parameters</span>
@@ -207,7 +207,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Password to be encrypted using SHA256.</span>
 
 <span class="sd">        .. warning::</span>
@@ -222,7 +222,7 @@
 
     <span class="nd">@password</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Password to be encrypted using SHA256.</span>
 
 <span class="sd">        Parameters</span>
@@ -239,7 +239,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The encrypted password.</span>
 
 <span class="sd">        Returns</span>
@@ -255,7 +255,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Wether or not to display a confirmation dialog.</span>
 
 <span class="sd">        Returns</span>
@@ -266,7 +266,7 @@
 
     <span class="nd">@showConfirmDialog</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">showConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Wether or not to display a confirmation dialog.</span>
 
 <span class="sd">        Parameters</span>
@@ -278,7 +278,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">confirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Message to be displayed at the Confirmation dialog.</span>
 
 <span class="sd">        Returns</span>
@@ -289,7 +289,7 @@
 
     <span class="nd">@confirmMessage</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">confirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Message to be displayed at the Confirmation dialog.</span>
 
 <span class="sd">        Parameters</span>
@@ -301,7 +301,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">pressValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This property holds the value to send back through the channel.</span>
 
 <span class="sd">        The type of this value does not matter because it is automatically</span>
@@ -316,7 +316,7 @@
 
     <span class="nd">@pressValue</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">pressValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This property holds the value to send back through the channel.</span>
 
 <span class="sd">        The type of this value does not matter because it is automatically</span>
@@ -333,7 +333,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">releaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This property holds the value to send back through the channel.</span>
 
 <span class="sd">        The type of this value does not matter because it is automatically</span>
@@ -348,7 +348,7 @@
 
     <span class="nd">@releaseValue</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">releaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This property holds the value to send back through the channel.</span>
 
 <span class="sd">        The type of this value does not matter because it is automatically</span>
@@ -365,7 +365,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">relativeChange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The mode of operation of the PyDMPushButton.</span>
 
 <span class="sd">        If set to True, the :attr:`pressValue` will be added to the current</span>
@@ -385,7 +385,7 @@
 
     <span class="nd">@relativeChange</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">relativeChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The mode of operation of the PyDMPushButton.</span>
 
 <span class="sd">        If set to True, the :attr:`pressValue` will be added to the current</span>
@@ -405,7 +405,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="o">=</span> <span class="n">choice</span>
 
 <div class="viewcode-block" id="PyDMPushButton.confirm_dialog"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog">[docs]</a>    <span class="k">def</span> <span class="nf">confirm_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_release</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Show the confirmation dialog with the proper message in case</span>
 <span class="sd">        ```showConfirmMessage``` is True.</span>
 
@@ -442,7 +442,7 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="PyDMPushButton.validate_password"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.validate_password">[docs]</a>    <span class="k">def</span> <span class="nf">validate_password</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If the widget is ```passwordProtected```, this method will propmt</span>
 <span class="sd">        the user for the correct password.</span>
 
@@ -478,7 +478,7 @@
 
 <div class="viewcode-block" id="PyDMPushButton.sendValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.sendValue">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">sendValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a new value to the channel.</span>
 
 <span class="sd">        This function interprets the settings of the PyDMPushButton and sends</span>
@@ -507,7 +507,7 @@
 
     <span class="k">def</span> <span class="nf">__execute_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">,</span> <span class="n">skip_confirm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_password</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                        <span class="n">is_release</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Execute the send operation for push and release.</span>
 
 <span class="sd">        Parameters</span>
@@ -553,7 +553,7 @@
 
 <div class="viewcode-block" id="PyDMPushButton.sendReleaseValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.sendReleaseValue">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">sendReleaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send new release value to the channel.</span>
 
 <span class="sd">        This function interprets the settings of the PyDMPushButton and sends</span>
@@ -583,7 +583,7 @@
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">updatePressValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the pressValue of a function by passing a signal to the</span>
 <span class="sd">        PyDMPushButton.</span>
 
@@ -602,7 +602,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">writeWhenRelease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Wether or not to write releaseValue on release</span>
 
 <span class="sd">        Returns</span>
@@ -613,7 +613,7 @@
 
     <span class="nd">@writeWhenRelease</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">writeWhenRelease</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Wether or not to write releaseValue on release</span>
 
 <span class="sd">        Parameters</span>
@@ -634,7 +634,7 @@
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">updateReleaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the releaseValue of a function by passing a signal to the</span>
 <span class="sd">        PyDMPushButton.</span>
 

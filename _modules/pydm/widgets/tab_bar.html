@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.tab_bar &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.tab_bar &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -118,7 +118,7 @@
 
 
 <span class="k">class</span> <span class="nc">PyDMTabBar</span><span class="p">(</span><span class="n">QTabBar</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;PyDMTabBar is used internally by PyDMTabWidget, and shouldn&#39;t be directly used on its own.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;PyDMTabBar is used internally by PyDMTabWidget, and shouldn&#39;t be directly used on its own.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTabBar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
@@ -136,7 +136,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">currentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A channel to use for this tab&#39;s alarm indicator.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A channel to use for this tab&#39;s alarm indicator.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">try</span><span class="p">:</span>
@@ -190,7 +190,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tab_alarm_severity</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">alarm_state</span>
 
     <span class="k">def</span> <span class="nf">getAlarmChannels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;alarmChannels is a property used to store the configuration of this tab bar</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;alarmChannels is a property used to store the configuration of this tab bar</span>
 <span class="sd">        when it has been created in Qt Designer.  This property isn&#39;t directly editable</span>
 <span class="sd">        by users, they will go through the currentTabAlarmChannel property to edit this</span>
 <span class="sd">        information.&quot;&quot;&quot;</span>
@@ -283,7 +283,7 @@
 
 
 <div class="viewcode-block" id="PyDMTabWidget"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget">[docs]</a><span class="k">class</span> <span class="nc">PyDMTabWidget</span><span class="p">(</span><span class="n">QTabWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;PyDMTabWidget provides a tabbed container widget.  Each tab has an</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;PyDMTabWidget provides a tabbed container widget.  Each tab has an</span>
 <span class="sd">    alarm channel property which can be used to show an alarm indicator on</span>
 <span class="sd">    the tab.  The indicator is driven by the alarm severity of the specified</span>
 <span class="sd">    channel, not the value.</span>
@@ -301,7 +301,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QByteArray</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">currentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A channel to use for the current tab&#39;s alarm indicator.</span>
 
 <span class="sd">        Returns</span>
@@ -319,7 +319,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">currentTabAlarmChannel</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">new_alarm_channel</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMTabWidget.channels"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.channels">[docs]</a>    <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A list of the channels used by the tab widget.</span>
 
 <span class="sd">        Returns</span>
@@ -329,14 +329,14 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMTabWidget.getAlarmChannels"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.getAlarmChannels">[docs]</a>    <span class="k">def</span> <span class="nf">getAlarmChannels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;alarmChannels is a property used to store the configuration of this tab bar</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;alarmChannels is a property used to store the configuration of this tab bar</span>
 <span class="sd">        when it has been created in Qt Designer.  This property isn&#39;t directly editable</span>
 <span class="sd">        by users, they will go through the currentTabAlarmChannel property to edit this</span>
 <span class="sd">        information.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">getAlarmChannels</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMTabWidget.setAlarmChannels"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.setAlarmChannels">[docs]</a>    <span class="k">def</span> <span class="nf">setAlarmChannels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_channels</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the list of alarm channels for each tab.  This is needed for instantiating</span>
 <span class="sd">        a tab widget from a .ui file, and is probably not very useful for users.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -344,7 +344,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">noAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_NONE severity level.</span>
 <span class="sd">        This property can be defined in a stylesheet by using &#39;qproperty-noAlarmIconColor&#39;.</span>
 
@@ -362,7 +362,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">minorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MINOR severity level.</span>
 <span class="sd">        This property can be defined in a stylesheet by using &#39;qproperty-minorAlarmIconColor&#39;.</span>
 
@@ -378,7 +378,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">majorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MAJOR severity level.</span>
 <span class="sd">        This property can be defined in a stylesheet by using &#39;qproperty-majorAlarmIconColor&#39;.</span>
 
@@ -394,7 +394,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">invalidAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_INVALID severity level.</span>
 <span class="sd">        This property can be defined in a stylesheet by using &#39;qproperty-majorAlarmIconColor&#39;.</span>
 
@@ -410,7 +410,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">disconnectedAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_DISCONNECTED severity level.</span>
 <span class="sd">        This property can be defined in a stylesheet by using &#39;qproperty-disconnectedAlarmIconColor&#39;.</span>
 

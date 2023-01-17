@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.byte &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.byte &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -114,7 +114,7 @@
 
 
 <span class="k">class</span> <span class="nc">PyDMBitIndicator</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QWidget which draws a colored circle or rectangle</span>
 
 <span class="sd">    Parameters</span>
@@ -131,7 +131,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span> <span class="o">=</span> <span class="n">QPen</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Paint events are sent to widgets that need to update themselves,</span>
 <span class="sd">        for instance when part of a widget is exposed because a covering</span>
 <span class="sd">        widget was moved.</span>
@@ -158,7 +158,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">setColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Property for the color to be used when drawing</span>
 
 <span class="sd">        Parameters</span>
@@ -174,7 +174,7 @@
 
 
 <div class="viewcode-block" id="PyDMByteIndicator"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator">[docs]</a><span class="k">class</span> <span class="nc">PyDMByteIndicator</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Widget for graphical representation of bits from an integer number</span>
 <span class="sd">    with support for Channels and more from PyDM</span>
 
@@ -221,7 +221,7 @@
         <span class="c1"># the first rebuild_layout.</span>
 
 <div class="viewcode-block" id="PyDMByteIndicator.init_for_designer"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.init_for_designer">[docs]</a>    <span class="k">def</span> <span class="nf">init_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method called after the constructor to tweak configurations for</span>
 <span class="sd">        when using the widget with the Qt Designer</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -230,7 +230,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMByteIndicator.connection_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.connection_changed">[docs]</a>    <span class="k">def</span> <span class="nf">connection_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the connection state of the Channel is changed.</span>
 <span class="sd">        This callback acts on the connection state to enable/disable the widget</span>
 <span class="sd">        and also trigger the change on alarm severity to ALARM_DISCONNECTED.</span>
@@ -244,7 +244,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMByteIndicator.rebuild_layout"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.rebuild_layout">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to reorganize the top-level widget and its contents</span>
 <span class="sd">        according to the layout property values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -287,7 +287,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMByteIndicator.clear"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove all inner widgets from the layout</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()):</span>
@@ -299,7 +299,7 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">removeWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMByteIndicator.update_indicators"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.update_indicators">[docs]</a>    <span class="k">def</span> <span class="nf">update_indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the inner bit indicators accordingly with the new value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -323,7 +323,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">onColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;on&#39; state.</span>
 
 <span class="sd">        Returns</span>
@@ -334,7 +334,7 @@
 
     <span class="nd">@onColor</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">onColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;on&#39; state.</span>
 
 <span class="sd">        Parameters</span>
@@ -347,7 +347,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">offColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;off&#39; state.</span>
 
 <span class="sd">        Returns</span>
@@ -358,7 +358,7 @@
 
     <span class="nd">@offColor</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">offColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;off&#39; state.</span>
 
 <span class="sd">        Parameters</span>
@@ -371,7 +371,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to lay out the bit indicators vertically or horizontally.</span>
 
 <span class="sd">        Returns</span>
@@ -382,7 +382,7 @@
 
     <span class="nd">@orientation</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to lay out the bit indicators vertically or horizontally.</span>
 
 <span class="sd">        Parameters</span>
@@ -394,7 +394,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMByteIndicator.set_spacing"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.set_spacing">[docs]</a>    <span class="k">def</span> <span class="nf">set_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Configures the correct spacing given the selected orientation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">label_spacing</span> <span class="o">=</span> <span class="mi">5</span>
@@ -414,7 +414,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to show labels next to each bit indicator.</span>
 
 <span class="sd">        Returns</span>
@@ -425,7 +425,7 @@
 
     <span class="nd">@showLabels</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">showLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to show labels next to each bit indicator.</span>
 
 <span class="sd">        Parameters</span>
@@ -439,7 +439,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">bigEndian</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether the most significant bit is at the start or end of the widget.</span>
 
 <span class="sd">        Returns</span>
@@ -450,7 +450,7 @@
 
     <span class="nd">@bigEndian</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">bigEndian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_big_endian</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether the most significant bit is at the start or end of the widget.</span>
 
 <span class="sd">        Parameters</span>
@@ -471,7 +471,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">circles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw indicators as circles, rather than rectangles.</span>
 
 <span class="sd">        Returns</span>
@@ -482,7 +482,7 @@
 
     <span class="nd">@circles</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">circles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">draw_circles</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw indicators as circles, rather than rectangles.</span>
 
 <span class="sd">        Parameters</span>
@@ -498,7 +498,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">labelPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The side of the widget to display labels on.</span>
 
 <span class="sd">        Returns</span>
@@ -509,7 +509,7 @@
 
     <span class="nd">@labelPosition</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">labelPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_pos</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The side of the widget to display labels on.</span>
 
 <span class="sd">        Parameters</span>
@@ -521,7 +521,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">numBits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Number of bits to interpret.</span>
 
 <span class="sd">        Returns</span>
@@ -532,7 +532,7 @@
 
     <span class="nd">@numBits</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">numBits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_num_bits</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Number of bits to interpret.</span>
 
 <span class="sd">        Parameters</span>
@@ -556,7 +556,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Bit shift.</span>
 
 <span class="sd">        Returns</span>
@@ -567,7 +567,7 @@
 
     <span class="nd">@shift</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_shift</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Bit shift.</span>
 
 <span class="sd">        Parameters</span>
@@ -579,7 +579,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="s1">&#39;QStringList&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Labels for each bit.</span>
 
 <span class="sd">        Returns</span>
@@ -590,7 +590,7 @@
 
     <span class="nd">@labels</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Labels for each bit.</span>
 
 <span class="sd">        Parameters</span>
@@ -606,7 +606,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMByteIndicator.value_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
 
 <span class="sd">        Parameters</span>
@@ -622,7 +622,7 @@
             <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="PyDMByteIndicator.paintEvent"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Paint events are sent to widgets that need to update themselves,</span>
 <span class="sd">        for instance when part of a widget is exposed because a covering</span>
 <span class="sd">        widget was moved.</span>
@@ -642,7 +642,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMByteIndicator.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                Callback invoked when the Channel alarm severity is changed.</span>
 
 <span class="sd">                Parameters</span>

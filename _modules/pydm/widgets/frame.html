@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.frame &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.frame &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -113,7 +113,7 @@
 
 
 <div class="viewcode-block" id="PyDMFrame"><a class="viewcode-back" href="../../../widgets/frame.html#pydm.widgets.frame.PyDMFrame">[docs]</a><span class="k">class</span> <span class="nc">PyDMFrame</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    QFrame with support for alarms</span>
 <span class="sd">    This class inherits from QFrame and PyDMWidget.</span>
 
@@ -133,7 +133,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">disableOnDisconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the PyDMFrame should be disabled in case the</span>
 <span class="sd">        channel is disconnected.</span>
 
@@ -146,7 +146,7 @@
 
     <span class="nd">@disableOnDisconnect</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">disableOnDisconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the PyDMFrame should be disabled in case the</span>
 <span class="sd">        channel is disconnected.</span>
 
@@ -160,7 +160,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMFrame.check_enable_state"><a class="viewcode-back" href="../../../widgets/frame.html#pydm.widgets.frame.PyDMFrame.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks whether or not the widget should be disable.</span>
 <span class="sd">        This method also disables the widget and add a Tool Tip</span>
 <span class="sd">        with the reason why it is disabled.</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.scale &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.scale &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -117,7 +117,7 @@
 
 
 <span class="k">class</span> <span class="nc">QScale</span><span class="p">(</span><span class="n">QFrame</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A bar-shaped indicator for scalar value.</span>
 <span class="sd">    Configurable features include indicator type (bar/pointer), scale tick</span>
 <span class="sd">    marks and orientation (horizontal/vertical).</span>
@@ -169,7 +169,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_position</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">adjust_transformation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method sets parameters for the widget transformations (needed to for</span>
 <span class="sd">        orientation, flipping and appearance inversion).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -205,14 +205,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_flip_scale_y</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="k">def</span> <span class="nf">set_tick_pen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Define pen style for drawing scale tick marks.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tick_pen</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tick_color</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tick_pen</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tick_width</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">draw_ticks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw tick marks on the scale.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_ticks</span><span class="p">:</span>
@@ -227,7 +227,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawLine</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tick_y0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tick_yf</span><span class="p">)</span> <span class="c1"># x1, y1, x2, y2</span>
 
     <span class="k">def</span> <span class="nf">draw_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw a bar as indicator of current value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_origin</span><span class="p">()</span>
@@ -242,7 +242,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_origin_position</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bar_width</span><span class="p">,</span> <span class="n">bar_height</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">draw_pointer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw a pointer as indicator of current value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_position</span><span class="p">()</span>
@@ -261,7 +261,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">QPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">draw_indicator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw the selected indicator for current value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_barIndicator</span><span class="p">:</span>
@@ -270,7 +270,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_pointer</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">draw_background</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw the background of the scale.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">transparent</span><span class="p">)</span>
@@ -280,7 +280,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bg_width</span><span class="p">,</span> <span class="n">bg_height</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Paint events are sent to widgets that need to update themselves,</span>
 <span class="sd">        for instance when part of a widget is exposed because a covering</span>
 <span class="sd">        widget was moved.</span>
@@ -308,7 +308,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">calculate_position_for_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the position (pixel) in which the pointer should be drawn for a given value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_limit</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_limit</span> <span class="ow">or</span> \
@@ -321,7 +321,7 @@
         <span class="k">return</span> <span class="n">position</span>
 
     <span class="k">def</span> <span class="nf">set_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the position (pixel) in which the origin should be drawn.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_origin_at_zero</span><span class="p">:</span>
@@ -330,27 +330,27 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_origin_position</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the position (pixel) in which the pointer should be drawn.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_position_for_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">update_indicator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the position and the drawing of indicator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_position</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">repaint</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set a new current value for the indicator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_indicator</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">set_upper_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the scale upper limit.</span>
 
 <span class="sd">        Parameters</span>
@@ -361,7 +361,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_upper_limit</span> <span class="o">=</span> <span class="n">new_limit</span>
 
     <span class="k">def</span> <span class="nf">set_lower_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the scale lower limit.</span>
 
 <span class="sd">        Parameters</span>
@@ -474,7 +474,7 @@
 
 
 <div class="viewcode-block" id="PyDMScaleIndicator"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator">[docs]</a><span class="k">class</span> <span class="nc">PyDMScaleIndicator</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A bar-shaped indicator for scalar value with support for Channels and</span>
 <span class="sd">    more from PyDM.</span>
 <span class="sd">    Configurable features include indicator type (bar/pointer), scale tick</span>
@@ -512,7 +512,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMScaleIndicator.update_labels"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.update_labels">[docs]</a>    <span class="k">def</span> <span class="nf">update_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the limits and value labels with the correct values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lower_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">_lower_limit</span><span class="p">))</span>
@@ -520,7 +520,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">_value</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="PyDMScaleIndicator.value_changed"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
 
 <span class="sd">        Parameters</span>
@@ -533,7 +533,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMScaleIndicator.upperCtrlLimitChanged"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.upperCtrlLimitChanged">[docs]</a>    <span class="k">def</span> <span class="nf">upperCtrlLimitChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Slot for changes on the upper control limit value of the Channel</span>
 <span class="sd">        This slot sends the new limit value to the</span>
 <span class="sd">        ```ctrl_limit_changed``` callback.</span>
@@ -548,7 +548,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMScaleIndicator.lowerCtrlLimitChanged"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.lowerCtrlLimitChanged">[docs]</a>    <span class="k">def</span> <span class="nf">lowerCtrlLimitChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Slot for changes on the lower control limit value of the Channel</span>
 <span class="sd">        This slot sends the new limit value to the</span>
 <span class="sd">        ```ctrl_limit_changed``` callback.</span>
@@ -564,7 +564,7 @@
 
 <div class="viewcode-block" id="PyDMScaleIndicator.setup_widgets_for_orientation"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">,</span> <span class="n">flipped</span><span class="p">,</span> <span class="n">inverted</span><span class="p">,</span>
                                       <span class="n">value_position</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reconstruct the widget given the orientation.</span>
 
 <span class="sd">        Parameters</span>
@@ -717,7 +717,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the current value should be displayed on the scale.</span>
 
 <span class="sd">        Returns</span>
@@ -728,7 +728,7 @@
 
     <span class="nd">@showValue</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">showValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the current value should be displayed on the scale.</span>
 
 <span class="sd">        Parameters</span>
@@ -744,7 +744,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the high and low limits should be displayed on the scale.</span>
 
 <span class="sd">        Returns</span>
@@ -755,7 +755,7 @@
 
     <span class="nd">@showLimits</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">showLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the high and low limits should be displayed on the scale.</span>
 
 <span class="sd">        Parameters</span>
@@ -773,7 +773,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showTicks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the tick marks should be displayed on the scale.</span>
 
 <span class="sd">        Returns</span>
@@ -784,7 +784,7 @@
 
     <span class="nd">@showTicks</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">showTicks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the tick marks should be displayed on the scale.</span>
 
 <span class="sd">        Parameters</span>
@@ -795,7 +795,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The scale orientation (Horizontal or Vertical)</span>
 
 <span class="sd">        Returns</span>
@@ -807,7 +807,7 @@
 
     <span class="nd">@orientation</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The scale orientation (Horizontal or Vertical)</span>
 
 <span class="sd">        Parameters</span>
@@ -820,7 +820,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">flipScale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale should be flipped.</span>
 
 <span class="sd">        Returns</span>
@@ -831,7 +831,7 @@
 
     <span class="nd">@flipScale</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">flipScale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale should be flipped.</span>
 
 <span class="sd">        Parameters</span>
@@ -843,7 +843,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">invertedAppearance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale appearence should be inverted.</span>
 
 <span class="sd">        Returns</span>
@@ -854,7 +854,7 @@
 
     <span class="nd">@invertedAppearance</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">invertedAppearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inverted</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale appearence should be inverted.</span>
 
 <span class="sd">        Parameters</span>
@@ -866,7 +866,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">barIndicator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should be a bar instead of a pointer.</span>
 
 <span class="sd">        Returns</span>
@@ -877,7 +877,7 @@
 
     <span class="nd">@barIndicator</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">barIndicator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should be a bar instead of a pointer.</span>
 
 <span class="sd">        Parameters</span>
@@ -888,7 +888,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">backgroundColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale background.</span>
 
 <span class="sd">        Returns</span>
@@ -899,7 +899,7 @@
 
     <span class="nd">@backgroundColor</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">backgroundColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale background.</span>
 
 <span class="sd">        Parameters</span>
@@ -910,7 +910,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">indicatorColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale indicator.</span>
 
 <span class="sd">        Returns</span>
@@ -921,7 +921,7 @@
 
     <span class="nd">@indicatorColor</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">indicatorColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale indicator.</span>
 
 <span class="sd">        Parameters</span>
@@ -932,7 +932,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">tickColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale tick marks.</span>
 
 <span class="sd">        Returns</span>
@@ -943,7 +943,7 @@
 
     <span class="nd">@tickColor</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">tickColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale tick marks.</span>
 
 <span class="sd">        Parameters</span>
@@ -954,7 +954,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">backgroundSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The rate of background height size (from top to bottom).</span>
 
 <span class="sd">        Returns</span>
@@ -965,7 +965,7 @@
 
     <span class="nd">@backgroundSizeRate</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">backgroundSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The rate of background height size (from top to bottom).</span>
 
 <span class="sd">        Parameters</span>
@@ -977,7 +977,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">tickSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The rate of tick marks height size (from bottom to top).</span>
 
 <span class="sd">        Returns</span>
@@ -988,7 +988,7 @@
 
     <span class="nd">@tickSizeRate</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">tickSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The rate of tick marks height size (from bottom to top).</span>
 
 <span class="sd">        Parameters</span>
@@ -1000,7 +1000,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">numDivisions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number in which the scale is divided.</span>
 
 <span class="sd">        Returns</span>
@@ -1011,7 +1011,7 @@
 
     <span class="nd">@numDivisions</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">numDivisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">divisions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number in which the scale is divided.</span>
 
 <span class="sd">        Parameters</span>
@@ -1023,7 +1023,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">scaleHeight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The scale height, fixed so it do not wiggle when value label resizes.</span>
 
 <span class="sd">        Returns</span>
@@ -1034,7 +1034,7 @@
 
     <span class="nd">@scaleHeight</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">scaleHeight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The scale height, fixed so it do not wiggle when value label resizes.</span>
 
 <span class="sd">        Parameters</span>
@@ -1046,7 +1046,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Edge</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">valuePosition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The position of the value label (Top, Bottom, Left or Right).</span>
 
 <span class="sd">        Returns</span>
@@ -1058,7 +1058,7 @@
 
     <span class="nd">@valuePosition</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">valuePosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">       The position of the value label (Top, Bottom, Left or Right).</span>
 
 <span class="sd">        Parameters</span>
@@ -1071,7 +1071,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">originAtZero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should start at zero value.</span>
 <span class="sd">        Applies only for bar indicator.</span>
 
@@ -1083,7 +1083,7 @@
 
     <span class="nd">@originAtZero</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">originAtZero</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should start at zero value.</span>
 <span class="sd">        Applies only for bar indicator.</span>
 
@@ -1095,7 +1095,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">limitsFromChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should use the limits information</span>
 <span class="sd">        from the channel.</span>
 
@@ -1107,7 +1107,7 @@
 
     <span class="nd">@limitsFromChannel</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">limitsFromChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should use the limits information</span>
 <span class="sd">        from the channel.</span>
 
@@ -1131,7 +1131,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">userLowerLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The user-defined lower limit for the scale.</span>
 
 <span class="sd">        Returns</span>
@@ -1142,7 +1142,7 @@
 
     <span class="nd">@userLowerLimit</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">userLowerLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The user-defined lower limit for the scale.</span>
 
 <span class="sd">        Parameters</span>
@@ -1158,7 +1158,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">userUpperLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The user-defined upper limit for the scale.</span>
 
 <span class="sd">        Returns</span>
@@ -1169,7 +1169,7 @@
 
     <span class="nd">@userUpperLimit</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">userUpperLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The user-defined upper limit for the scale.</span>
 
 <span class="sd">        Parameters</span>

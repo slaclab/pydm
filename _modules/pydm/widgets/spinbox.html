@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.spinbox &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -113,7 +113,7 @@
 
 
 <div class="viewcode-block" id="PyDMSpinbox"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox">[docs]</a><span class="k">class</span> <span class="nc">PyDMSpinbox</span><span class="p">(</span><span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QDoubleSpinBox with support for Channels and more from PyDM.</span>
 
 <span class="sd">    Parameters</span>
@@ -145,7 +145,7 @@
         <span class="n">child</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMSpinbox.stepBy"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.stepBy">[docs]</a>    <span class="k">def</span> <span class="nf">stepBy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method triggered whenever user triggers a step. If the writeOnPress property</span>
 <span class="sd">        is enabled, the updated value will be sent.</span>
 
@@ -158,7 +158,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.keyPressEvent"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method invoked when a key press event happens on the QDoubleSpinBox.</span>
 
 <span class="sd">        For PyDMSpinBox we are interested on the Keypress events for:</span>
@@ -186,7 +186,7 @@
             <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.widget_ctx_menu"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.widget_ctx_menu">[docs]</a>    <span class="k">def</span> <span class="nf">widget_ctx_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fetch the Widget specific context menu which will be populated with additional tools by `assemble_tools_menu`.</span>
 
 <span class="sd">        Returns</span>
@@ -211,14 +211,14 @@
         <span class="k">return</span> <span class="n">menu</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.update_step_size"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.update_step_size">[docs]</a>    <span class="k">def</span> <span class="nf">update_step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the Single Step size on the QDoubleSpinBox.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.update_format_string"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.update_format_string">[docs]</a>    <span class="k">def</span> <span class="nf">update_format_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reconstruct the format string to be used when representing the</span>
 <span class="sd">        output value.</span>
 
@@ -239,7 +239,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">lineEdit</span><span class="p">()</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Step: 1E</span><span class="si">{0:+d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_exponent</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.value_changed"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
 
 <span class="sd">        Parameters</span>
@@ -257,7 +257,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">valueBeingSet</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.send_value"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.send_value">[docs]</a>    <span class="k">def</span> <span class="nf">send_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method invoked to send the current value on the QDoubleSpinBox to</span>
 <span class="sd">        the channel using the `send_value_signal`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -267,7 +267,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">userDefinedLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        True if the range of the spinbox should be set based on user-defined limits, False if</span>
 <span class="sd">        it should be set based on the limits received from the channel</span>
 
@@ -279,7 +279,7 @@
 
     <span class="nd">@userDefinedLimits</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">userDefinedLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_defined_limits</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to set the range of the spinbox based on user-defined limits. Will also reset</span>
 <span class="sd">        the range of the spinbox in case this is called while the application is running to ensure it matches</span>
 <span class="sd">        what the user requested.</span>
@@ -293,7 +293,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">userMinimum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Lower user-defined limit value</span>
 
 <span class="sd">        Returns</span>
@@ -304,7 +304,7 @@
 
     <span class="nd">@userMinimum</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">userMinimum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_min</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the Lower user-defined limit value, updates the range of the spinbox if needed</span>
 
 <span class="sd">        Parameters</span>
@@ -316,7 +316,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">userMaximum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Upper user-defined limit value</span>
 
 <span class="sd">        Returns</span>
@@ -327,7 +327,7 @@
 
     <span class="nd">@userMaximum</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">userMaximum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the upper user-defined limit value, updates the range of the spinbox if needed</span>
 
 <span class="sd">        Parameters</span>
@@ -338,7 +338,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_limits</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMSpinbox.reset_limits"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.reset_limits">[docs]</a>    <span class="k">def</span> <span class="nf">reset_limits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Will reset the lower and upper limits to either the ones set by the user, or the ones from the</span>
 <span class="sd">        channel depending on the current state of userDefinedLimits(). If a None value would be set,</span>
 <span class="sd">        do not attempt the update.</span>
@@ -355,7 +355,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_ctrl_limit</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.ctrl_limit_changed"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.ctrl_limit_changed">[docs]</a>    <span class="k">def</span> <span class="nf">ctrl_limit_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel receives new control limit</span>
 <span class="sd">        values.</span>
 
@@ -374,7 +374,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.precision_changed"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.precision_changed">[docs]</a>    <span class="k">def</span> <span class="nf">precision_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_precision</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel has new precision value.</span>
 <span class="sd">        This callback also triggers an update_format_string call so the</span>
 <span class="sd">        new precision value is considered.</span>
@@ -405,7 +405,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showStepExponent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to show or not the step exponent</span>
 
 <span class="sd">        Returns</span>
@@ -416,7 +416,7 @@
 
     <span class="nd">@showStepExponent</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">showStepExponent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to show or not the step exponent</span>
 
 <span class="sd">        Parameters</span>
@@ -428,7 +428,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">writeOnPress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to write value on key press</span>
 
 <span class="sd">        Returns</span>
@@ -439,7 +439,7 @@
 
     <span class="nd">@writeOnPress</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">writeOnPress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether value to write on key press.</span>
 
 <span class="sd">        Parameters</span>

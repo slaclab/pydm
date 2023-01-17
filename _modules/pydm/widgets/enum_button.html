@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.enum_button &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.enum_button &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -128,7 +128,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEnumButton"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton">[docs]</a><span class="k">class</span> <span class="nc">PyDMEnumButton</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">WidgetType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QWidget that renders buttons for every option of Enum Items.</span>
 <span class="sd">    For now, two types of buttons can be rendered:</span>
 <span class="sd">    - Push Button</span>
@@ -170,7 +170,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_widgets</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMEnumButton.minimumSizeHint"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.minimumSizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">minimumSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This property holds the recommended minimum size for the widget.</span>
 
 <span class="sd">        Returns</span>
@@ -182,7 +182,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Items to be displayed in the button group.</span>
 
 <span class="sd">        This property can be overridden by the items coming from the control system.</span>
@@ -200,7 +200,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">useCustomOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to use custom order for the button group.</span>
 
 <span class="sd">        Returns</span>
@@ -217,7 +217,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">invertOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to invert the order for the button group.</span>
 
 <span class="sd">        Returns</span>
@@ -235,7 +235,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">customOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Index list in which items are to be displayed in the button group.</span>
 
 <span class="sd">        Returns</span>
@@ -258,7 +258,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">WidgetType</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">widgetType</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The widget type to be used when composing the group.</span>
 
 <span class="sd">        Returns</span>
@@ -269,7 +269,7 @@
 
     <span class="nd">@widgetType</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">widgetType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The widget type to be used when composing the group.</span>
 
 <span class="sd">        Parameters</span>
@@ -282,7 +282,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to lay out the bit indicators vertically or horizontally.</span>
 
 <span class="sd">        Returns</span>
@@ -293,7 +293,7 @@
 
     <span class="nd">@orientation</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to lay out the bit indicators vertically or horizontally.</span>
 
 <span class="sd">        Parameters</span>
@@ -306,7 +306,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">marginTop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The top margin of the QGridLayout of buttons.</span>
 
 <span class="sd">        Returns</span>
@@ -317,7 +317,7 @@
 
     <span class="nd">@marginTop</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">marginTop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the top margin of the QGridLayout of buttons.</span>
 
 <span class="sd">        Parameters</span>
@@ -330,7 +330,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">marginBottom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The bottom margin of the QGridLayout of buttons.</span>
 
 <span class="sd">        Returns</span>
@@ -341,7 +341,7 @@
 
     <span class="nd">@marginBottom</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">marginBottom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the bottom margin of the QGridLayout of buttons.</span>
 
 <span class="sd">        Parameters</span>
@@ -354,7 +354,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">marginLeft</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The left margin of the QGridLayout of buttons.</span>
 
 <span class="sd">        Returns</span>
@@ -365,7 +365,7 @@
 
     <span class="nd">@marginLeft</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">marginLeft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the left margin of the QGridLayout of buttons.</span>
 
 <span class="sd">        Parameters</span>
@@ -378,7 +378,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">marginRight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The right margin of the QGridLayout of buttons.</span>
 
 <span class="sd">        Returns</span>
@@ -389,7 +389,7 @@
 
     <span class="nd">@marginRight</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">marginRight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the right margin of the QGridLayout of buttons.</span>
 
 <span class="sd">        Parameters</span>
@@ -402,7 +402,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">horizontalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The horizontal gap of the QGridLayout containing the QButtonGroup.</span>
 
 <span class="sd">        Returns</span>
@@ -413,7 +413,7 @@
 
     <span class="nd">@horizontalSpacing</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">horizontalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the layout horizontal gap between buttons.</span>
 
 <span class="sd">        Parameters</span>
@@ -427,7 +427,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">verticalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The vertical gap of the QGridLayout containing the QButtonGroup.</span>
 
 <span class="sd">        Returns</span>
@@ -438,7 +438,7 @@
 
     <span class="nd">@verticalSpacing</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">verticalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the layout vertical gap between buttons.</span>
 
 <span class="sd">        Parameters</span>
@@ -452,7 +452,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">checkable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the button should be checkable.</span>
 
 <span class="sd">        Returns</span>
@@ -470,7 +470,7 @@
 
 <div class="viewcode-block" id="PyDMEnumButton.handle_button_clicked"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.handle_button_clicked">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">handle_button_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handles the event of a button being clicked.</span>
 
 <span class="sd">        Parameters</span>
@@ -481,7 +481,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMEnumButton.clear"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove all inner widgets from the layout</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()):</span>
@@ -494,7 +494,7 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">removeWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMEnumButton.rebuild_widgets"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.rebuild_widgets">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Rebuild the list of widgets based on a new enum or generates a default</span>
 <span class="sd">        list of fake strings so we can see something at Designer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -523,7 +523,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMEnumButton.rebuild_layout"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.rebuild_layout">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to reorganize the top-level widget and its contents</span>
 <span class="sd">        according to the layout property values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -553,7 +553,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMEnumButton.check_enable_state"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks whether or not the widget should be disable.</span>
 <span class="sd">        This method also disables the widget and add a Tool Tip</span>
 <span class="sd">        with the reason why it is disabled.</span>
@@ -575,7 +575,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">status</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMEnumButton.value_changed"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
 
 <span class="sd">        Parameters</span>
@@ -590,7 +590,7 @@
                 <span class="n">btn</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMEnumButton.enum_strings_changed"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.enum_strings_changed">[docs]</a>    <span class="k">def</span> <span class="nf">enum_strings_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_enum_strings</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel has new enum values.</span>
 <span class="sd">        This callback also triggers a value_changed call so the</span>
 <span class="sd">        new enum values to be broadcasted.</span>
@@ -608,7 +608,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_widgets</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMEnumButton.paintEvent"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Paint events are sent to widgets that need to update themselves,</span>
 <span class="sd">        for instance when part of a widget is exposed because a covering</span>
 <span class="sd">        widget was moved.</span>

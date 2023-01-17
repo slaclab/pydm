@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Archiver Appliance Enabled Time Plots &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>Archiver Appliance Enabled Time Plots &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -142,15 +142,41 @@
 of the EPICS archiver appliance if such an instance is available to the user.</p>
 <p>In order to use this functionality, the environment variable PYDM_ARCHIVER_URL must be set to point to
 the archiver appliance instance. For example:</p>
-<dl class="simple">
-<dt>::</dt><dd><p>export PYDM_ARCHIVER_URL=http://lcls-archapp.slac.stanford.edu</p>
-</dd>
-</dl>
-<p>Archiver time plots will then be able to be created in designer through the usual drag and drop flow. Upon
-opening designer, you will notice that the time plot is now called PyDMArchiverTimePlot indicating it can
-be used with the archiver appliance. The channel connections can be created in the same way as a regular
+<blockquote>
+<div><p>export PYDM_ARCHIVER_URL=http://lcls-archapp.slac.stanford.edu</p>
+</div></blockquote>
+<p>These plots can then be created with python code, or using designer.</p>
+<ul class="simple">
+<li><p>Creating in Designer</p></li>
+</ul>
+<p>After setting the above environment variable, archiver time plots will then be able to be created in designer through
+the usual drag and drop flow. Upon opening designer, there will now be a plotting widget called PyDMArchiverTimePlot
+available for use. The channel connections can be created in the same way as a regular
 time plot, no need to preface anything with “archiver://”, the requests to archiver will happen
 automatically upon running the plot and panning the x-axis to the left, or zooming out.</p>
+<p>One property that will be particularly useful to set is the timeSpan. This value (in seconds) will determine how much
+data to request from archiver upon plot initialization. For example, setting it to 600 will cause the plot to backfill
+with the last 10 minutes worth of data for the plotted values anytime the plot is opened. If more data is needed after
+starting up the plot, it can be requested as described below.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/archiver_time_plot_designer.png"><img alt="Creating PyDMArchiverTimePlot in Qt Designer" src="../_images/archiver_time_plot_designer.png" style="width: 673.0px; height: 463.0px;" /></a>
+</figure>
+<ul class="simple">
+<li><p>Plot Usage</p></li>
+</ul>
+<p>Upon opening the plot, it will plot the requested amount of archived data. It will then behave like a regular time plot
+with live data being added to the plot. If more archived data would be useful, requests can be made by either panning
+the x-axis to the left, or zooming out on the entire plot. This will automatically generate a call to the archiver
+appliance that will add data to the plot once it is received.</p>
+<p>Note that there is a property on the plot called bufferSize which determines how many data points can be displayed on
+the plot at once. If the request for archived data would return an amount greater than that buffer, it will convert
+to a request for optimized data which includes the average, min, and max of each data point returned. These will then
+be plotted as bars to show the full range of data represented by each point. As an example - with a buffer size
+of 365, a request for a year of data for a PV that updates every second would return roughly
+365 points each of which will contain the min and max of that day’s data to plot the full range represented.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="_static/widgets/archiver_time_plot/archiver_time_plot.gif"><img alt="Requesting additional data from a live plot" src="_static/widgets/archiver_time_plot/archiver_time_plot.gif" /></a>
+</figure>
 </section>
 <section id="pydmarchivertimeplot">
 <h1>PyDMArchiverTimePlot<a class="headerlink" href="#pydmarchivertimeplot" title="Permalink to this heading"></a></h1>

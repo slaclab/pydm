@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.template_repeater &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.template_repeater &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -231,7 +231,7 @@
 
 
 <div class="viewcode-block" id="PyDMTemplateRepeater"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater">[docs]</a><span class="k">class</span> <span class="nc">PyDMTemplateRepeater</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">LayoutType</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PyDMTemplateRepeater takes a .ui file with macro variables as a template, and a JSON</span>
 <span class="sd">    file (or a list of dictionaries) with a list of values to use to fill in</span>
 <span class="sd">    the macro variables, then creates a layout with one instance of the</span>
@@ -269,7 +269,7 @@
     
     <span class="nd">@Property</span><span class="p">(</span><span class="n">LayoutType</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">layoutType</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The layout type to use.</span>
 
 <span class="sd">        Returns</span>
@@ -280,7 +280,7 @@
 
     <span class="nd">@layoutType</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">layoutType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The layout type to use.</span>
 <span class="sd">        Options are:</span>
 <span class="sd">        - **Vertical**: Instances of the template are laid out vertically, in rows.</span>
@@ -309,7 +309,7 @@
     
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">countShownInDesigner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of instances to show in Qt Designer.  This property has no</span>
 <span class="sd">        effect outside of Designer.</span>
 <span class="sd">        </span>
@@ -321,7 +321,7 @@
     
     <span class="nd">@countShownInDesigner</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">countShownInDesigner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_count</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of instances to show in Qt Designer.  This property has no</span>
 <span class="sd">        effect outside of Designer.</span>
 <span class="sd">        </span>
@@ -343,7 +343,7 @@
     
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">templateFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The path to the .ui file to use as a template.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
@@ -354,7 +354,7 @@
     
     <span class="nd">@templateFilename</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">templateFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The path to the .ui file to use as a template.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
@@ -370,7 +370,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_is_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validate if the string source is a valid json.</span>
 
 <span class="sd">        Parameters</span>
@@ -392,7 +392,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">dataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The path to the JSON file or a valid JSON string to fill in each</span>
 <span class="sd">        instance of the template.</span>
 <span class="sd">        </span>
@@ -404,7 +404,7 @@
     
     <span class="nd">@dataSource</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">dataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the path to the JSON file or a valid JSON string to fill in each</span>
 <span class="sd">        instance of the template.</span>
 <span class="sd">        </span>
@@ -452,7 +452,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMTemplateRepeater.open_template_file"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_template_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Opens the widget specified in the templateFilename property.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
@@ -488,7 +488,7 @@
         <span class="k">return</span> <span class="n">w</span></div>
 
 <div class="viewcode-block" id="PyDMTemplateRepeater.rebuild"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.rebuild">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Clear out all existing widgets, and populate the list using the</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Clear out all existing widgets, and populate the list using the</span>
 <span class="sd">        template file and data source.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">templateFilename</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
@@ -526,7 +526,7 @@
             <span class="n">pydm</span><span class="o">.</span><span class="n">data_plugins</span><span class="o">.</span><span class="n">establish_queued_connections</span><span class="p">()</span></div>
     
 <div class="viewcode-block" id="PyDMTemplateRepeater.clear"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Clear out any existing instances of the template inside</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Clear out any existing instances of the template inside</span>
 <span class="sd">        the widget.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">():</span>
             <span class="k">return</span>
@@ -542,7 +542,7 @@
     
     <span class="nd">@property</span>    
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The dictionary used by the widget to fill in each instance of the template.</span>
 <span class="sd">        This property will be overwritten if the user changes the dataSource</span>
 <span class="sd">        property.</span>
@@ -551,7 +551,7 @@
     
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the dictionary used by the widget to fill in each instance of </span>
 <span class="sd">        the template.  This property will be overwritten if the user changes</span>
 <span class="sd">        the dataSource property.  After setting this property, `rebuild` </span>

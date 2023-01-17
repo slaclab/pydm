@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.checkbox &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.checkbox &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -112,7 +112,7 @@
 
 
 <div class="viewcode-block" id="PyDMCheckbox"><a class="viewcode-back" href="../../../widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox">[docs]</a><span class="k">class</span> <span class="nc">PyDMCheckbox</span><span class="p">(</span><span class="n">QCheckBox</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QCheckbox with support for Channels and more from PyDM</span>
 
 <span class="sd">    Parameters</span>
@@ -129,7 +129,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMCheckbox.value_changed"><a class="viewcode-back" href="../../../widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
 <span class="sd">        Sets the checkbox checked or not based on the new value.</span>
 
@@ -147,7 +147,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMCheckbox.send_value"><a class="viewcode-back" href="../../../widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox.send_value">[docs]</a>    <span class="k">def</span> <span class="nf">send_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method that emit the signal to notify the Channel that a new</span>
 <span class="sd">        value was written at the widget.</span>
 

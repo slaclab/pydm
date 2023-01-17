@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -118,7 +118,7 @@
 
 
 <div class="viewcode-block" id="PyDMEnumComboBox"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox">[docs]</a><span class="k">class</span> <span class="nc">PyDMEnumComboBox</span><span class="p">(</span><span class="n">QComboBox</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QComboBox with support for Channels and more from PyDM</span>
 
 <span class="sd">    Parameters</span>
@@ -159,7 +159,7 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.addItem"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.addItem">[docs]</a>    <span class="k">def</span> <span class="nf">addItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">userData</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds an item to the combobox.</span>
 <span class="sd">        The item is appended to the list of existing items.</span>
 
@@ -174,7 +174,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_new_item_added</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.setItemText"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.setItemText">[docs]</a>    <span class="k">def</span> <span class="nf">setItemText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the text for the item on the given index in the combobox.</span>
 
 <span class="sd">        Parameters</span>
@@ -194,7 +194,7 @@
                 
     <span class="c1"># Internal methods</span>
 <div class="viewcode-block" id="PyDMEnumComboBox.set_items"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.set_items">[docs]</a>    <span class="k">def</span> <span class="nf">set_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enums</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Internal method to fill the ComboBox items based on a list</span>
 <span class="sd">        of strings.</span>
 
@@ -223,7 +223,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.check_enable_state"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks whether or not the widget should be disable.</span>
 <span class="sd">        This method also disables the widget and add a Tool Tip</span>
 <span class="sd">        with the reason why it is disabled.</span>
@@ -248,7 +248,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">status</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.enum_strings_changed"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.enum_strings_changed">[docs]</a>    <span class="k">def</span> <span class="nf">enum_strings_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_enum_strings</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel has new enum values.</span>
 <span class="sd">        This callback also triggers a value_changed call so the</span>
 <span class="sd">        new enum values to be broadcasted</span>
@@ -262,7 +262,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_items</span><span class="p">(</span><span class="n">new_enum_strings</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.value_changed"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
 <span class="sd">        Sets the value of new_value accordingly at the ComboBox.</span>
 
@@ -296,7 +296,7 @@
 
 <div class="viewcode-block" id="PyDMEnumComboBox.internal_combo_box_activated_int"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.internal_combo_box_activated_int">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">internal_combo_box_activated_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Slot for when the user chooses an item in the combobox.</span>
 <span class="sd">        This slot triggers the ```send_value_signal```.</span>
 <span class="sd">        Parameters</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.waveformtable &mdash; PyDM v1.18.1+14.g204bf4fd documentation</title>
+  <title>pydm.widgets.waveformtable &mdash; PyDM v1.18.1+26.g42862a21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="../../../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.1+14.g204bf4fd
+                v1.18.1+26.g42862a21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -115,7 +115,7 @@
 
 
 <div class="viewcode-block" id="PyDMWaveformTable"><a class="viewcode-back" href="../../../widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable">[docs]</a><span class="k">class</span> <span class="nc">PyDMWaveformTable</span><span class="p">(</span><span class="n">QTableWidget</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QTableWidget with support for Channels and more from PyDM.</span>
 
 <span class="sd">    Values of the array are displayed in the selected number of columns.</span>
@@ -144,7 +144,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cellChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_waveform</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMWaveformTable.value_changed"><a class="viewcode-back" href="../../../widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
 
 <span class="sd">        Parameters</span>
@@ -171,7 +171,7 @@
 
 <div class="viewcode-block" id="PyDMWaveformTable.send_waveform"><a class="viewcode-back" href="../../../widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">send_waveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update Channel value when cell value is changed.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update Channel value when cell value is changed.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -190,7 +190,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMWaveformTable.check_enable_state"><a class="viewcode-back" href="../../../widgets/waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For PyDMWaveformTable, we want to make the individual cells</span>
 <span class="sd">        editable when we have write access.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -218,7 +218,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">columnHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the list of labels for the columns of the Table.</span>
 
 <span class="sd">        Returns</span>
@@ -229,7 +229,7 @@
 
     <span class="nd">@columnHeaderLabels</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">columnHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the list of labels for the columns of the Table.</span>
 
 <span class="sd">        If new_labels is empty the column numbers will be used.</span>
@@ -245,7 +245,7 @@
 
     <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">rowHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the list of labels for the rows of the Table.</span>
 
 <span class="sd">        Returns</span>
@@ -256,7 +256,7 @@
 
     <span class="nd">@rowHeaderLabels</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">rowHeaderLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the list of labels for the rows of the Table.</span>
 
 <span class="sd">        If new_labels is empty the row numbers will be used.</span>
