@@ -874,6 +874,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
     @Slot(str)
     @Slot(bool)
     @Slot(np.ndarray)
+    @Slot(dict)
     def channelValueChanged(self, new_val):
         """
         PyQT Slot for changes on the Value of the Channel
@@ -1348,10 +1349,10 @@ class PyDMWritableWidget(PyDMWidget):
         Emitted when the user changes the value
     """
 
-    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray])")
+    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray], [dict])")
 
     # Emitted when the user changes the value.
-    send_value_signal = Signal([int], [float], [str], [bool], [np.ndarray])
+    send_value_signal = Signal([int], [float], [str], [bool], [np.ndarray], [dict])
 
     def __init__(self, init_channel=None):
         self._write_access = False

@@ -3,12 +3,14 @@ import numpy as np
 
 from p4p.client.thread import Context, Disconnected
 from p4p.wrapper import Value
+from p4p.nt import NTTable
 from .pva_codec import decompress
 from pydm.data_plugins import is_read_only
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from pydm.widgets.channel import PyDMChannel
 from qtpy.QtCore import QObject, Qt
 from typing import Optional
+import pdb
 
 logger = logging.getLogger(__name__)
 
@@ -78,10 +80,23 @@ class Connection(PyDMConnection):
                 # Note that there is no way to get the actual write access value from p4p, so defaulting to True for now
                 self.write_access_signal.emit(True)
 
+            if 'NTTable' in value.getID():
+                changedSet = set()
+                for changed_value in value.changedSet():
+                    if 'value' in changed_value:
+                        changedSet.add('value')
+                    else:
+                        changedSet.add(changed_value)
+            else:
+                changedSet = value.changedSet()
+
             self._value = value
-            for changed_value in value.changedSet():
+            for changed_value in changedSet:
                 if changed_value == 'value':
-                    new_value = value.value
+                    if 'NTTable' in value.getID():
+                        new_value = NTTable.unwrap(value)[0]
+                    else:
+                        new_value = value.value
                     if new_value is not None:
                         if isinstance(new_value, np.ndarray):
                             if 'NTNDArray' in value.getID():
@@ -95,6 +110,8 @@ class Connection(PyDMConnection):
                             self.new_value_signal[int].emit(new_value)
                         elif isinstance(new_value, str):
                             self.new_value_signal[str].emit(new_value)
+                        elif isinstance(new_value, dict):
+                            self.new_value_signal[dict].emit(new_value)
                         else:
                             raise ValueError(f'No matching signal for value: {new_value} with type: {type(new_value)}')
                 # Sometimes unchanged control variables appear to be returned with value changes, so checking against
@@ -181,6 +198,10 @@ class Connection(PyDMConnection):
                 pass
             try:
                 channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+            try:
+                channel.value_signal[dict].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
 
