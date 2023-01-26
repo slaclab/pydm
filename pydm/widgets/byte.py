@@ -1,6 +1,7 @@
 from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QStyleOption
-from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QBrush
+from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QPaintEvent, QBrush
 from qtpy.QtCore import Property, Qt, QSize, QPoint
+from typing import List, Optional
 from .base import PyDMWidget
 
 
@@ -14,14 +15,14 @@ class PyDMBitIndicator(QWidget):
         The parent widget for the Label
 
     """
-    def __init__(self, parent=None, circle=False):
+    def __init__(self, parent: Optional[QWidget] = None, circle: bool = False):
         super(PyDMBitIndicator, self).__init__(parent)
         self.circle = circle
         self._painter = QPainter()
         self._brush = QBrush(Qt.SolidPattern)
         self._pen = QPen(Qt.SolidLine)
 
-    def paintEvent(self, event):
+    def paintEvent(self, event: QPaintEvent) -> None:
         """
         Paint events are sent to widgets that need to update themselves,
         for instance when part of a widget is exposed because a covering
@@ -48,7 +49,7 @@ class PyDMBitIndicator(QWidget):
             self._painter.drawRect(self.rect())
         self._painter.end()
 
-    def setColor(self, color):
+    def setColor(self, color: QColor) -> None:
         """
         Property for the color to be used when drawing
 
@@ -59,7 +60,7 @@ class PyDMBitIndicator(QWidget):
         self._brush.setColor(color)
         self.update()
 
-    def minimumSizeHint(self):
+    def minimumSizeHint(self) -> QSize:
         fm = QFontMetrics(self.font())
         return QSize(fm.height(), fm.height())
 
@@ -76,7 +77,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
-    def __init__(self, parent=None, init_channel=None):
+    def __init__(self, parent: Optional[QWidget] = None, init_channel=None):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.value = 0
@@ -111,7 +112,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         # _labels and _indicators setting numBits there also performs
         # the first rebuild_layout.
 
-    def init_for_designer(self):
+    def init_for_designer(self) -> None:
         """
         Method called after the constructor to tweak configurations for
         when using the widget with the Qt Designer
@@ -120,7 +121,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.value = 5
         self.update_indicators()
 
-    def connection_changed(self, connected):
+    def connection_changed(self, connected: bool) -> None:
         """
         Callback invoked when the connection state of the Channel is changed.
         This callback acts on the connection state to enable/disable the widget
@@ -128,13 +129,13 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
 
         Parameters
         ----------
-        connected : int
-            When this value is 0 the channel is disconnected, 1 otherwise.
+        connected : bool
+            When this value is False the channel is disconnected, True otherwise.
         """
         super(PyDMByteIndicator, self).connection_changed(connected)
         self.update_indicators()
 
-    def rebuild_layout(self):
+    def rebuild_layout(self) -> None:
         """
         Method to reorganize the top-level widget and its contents
         according to the layout property values.
@@ -177,7 +178,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
                     # we don't reset label visibility here.
         self.update_indicators()
 
-    def clear(self):
+    def clear(self) -> None:
         """
         Remove all inner widgets from the layout
         """
@@ -189,7 +190,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
                     if w is not None:
                         self.layout().removeWidget(w)
 
-    def update_indicators(self):
+    def update_indicators(self) -> None:
         """
         Update the inner bit indicators accordingly with the new value.
         """
@@ -213,7 +214,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             indicator.setColor(c)
 
     @Property(QColor)
-    def onColor(self):
+    def onColor(self) -> QColor:
         """
         The color for a bit in the 'on' state.
 
@@ -224,7 +225,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         return self._on_color
 
     @onColor.setter
-    def onColor(self, new_color):
+    def onColor(self, new_color: QColor) -> None:
         """
         The color for a bit in the 'on' state.
 
@@ -237,7 +238,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             self.update_indicators()
 
     @Property(QColor)
-    def offColor(self):
+    def offColor(self) -> QColor:
         """
         The color for a bit in the 'off' state.
 
@@ -248,7 +249,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         return self._off_color
 
     @offColor.setter
-    def offColor(self, new_color):
+    def offColor(self, new_color: QColor) -> None:
         """
         The color for a bit in the 'off' state.
 
@@ -261,7 +262,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             self.update_indicators()
 
     @Property(Qt.Orientation)
-    def orientation(self):
+    def orientation(self) -> Qt.Orientation:
         """
         Whether to lay out the bit indicators vertically or horizontally.
 
@@ -272,7 +273,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         return self._orientation
 
     @orientation.setter
-    def orientation(self, new_orientation):
+    def orientation(self, new_orientation: Qt.Orientation) -> None:
         """
         Whether to lay out the bit indicators vertically or horizontally.
 
@@ -284,7 +285,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.set_spacing()
         self.rebuild_layout()
 
-    def set_spacing(self):
+    def set_spacing(self) -> None:
         """
         Configures the correct spacing given the selected orientation.
         """
@@ -304,7 +305,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             self.layout().setVerticalSpacing(indicator_spacing)
 
     @Property(bool)
-    def showLabels(self):
+    def showLabels(self) -> bool:
         """
         Whether or not to show labels next to each bit indicator.
 
@@ -315,7 +316,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         return self._show_labels
 
     @showLabels.setter
-    def showLabels(self, show):
+    def showLabels(self, show: bool) -> None:
         """
         Whether or not to show labels next to each bit indicator.
 
@@ -329,7 +330,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             label.setVisible(show)
 
     @Property(bool)
-    def bigEndian(self):
+    def bigEndian(self) -> bool:
         """
         Whether the most significant bit is at the start or end of the widget.
 
@@ -340,7 +341,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         return self._big_endian
 
     @bigEndian.setter
-    def bigEndian(self, is_big_endian):
+    def bigEndian(self, is_big_endian: bool) -> None:
         """
         Whether the most significant bit is at the start or end of the widget.
 
@@ -361,7 +362,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.rebuild_layout()
 
     @Property(bool)
-    def circles(self):
+    def circles(self) -> bool:
         """
         Draw indicators as circles, rather than rectangles.
 
@@ -372,7 +373,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         return self._circles
 
     @circles.setter
-    def circles(self, draw_circles):
+    def circles(self, draw_circles: bool) -> None:
         """
         Draw indicators as circles, rather than rectangles.
 
@@ -388,7 +389,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.update_indicators()
 
     @Property(QTabWidget.TabPosition)
-    def labelPosition(self):
+    def labelPosition(self) -> QTabWidget.TabPosition:
         """
         The side of the widget to display labels on.
 
@@ -399,7 +400,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         return self._label_position
 
     @labelPosition.setter
-    def labelPosition(self, new_pos):
+    def labelPosition(self, new_pos: QTabWidget.TabPosition) -> None:
         """
         The side of the widget to display labels on.
 
@@ -411,7 +412,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.rebuild_layout()
 
     @Property(int)
-    def numBits(self):
+    def numBits(self) -> int:
         """
         Number of bits to interpret.
 
@@ -422,7 +423,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         return self._num_bits
 
     @numBits.setter
-    def numBits(self, new_num_bits):
+    def numBits(self, new_num_bits: int) -> None:
         """
         Number of bits to interpret.
 
@@ -446,7 +447,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.labels = new_labels
 
     @Property(int)
-    def shift(self):
+    def shift(self) -> int:
         """
         Bit shift.
 
@@ -457,7 +458,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         return self._shift
 
     @shift.setter
-    def shift(self, new_shift):
+    def shift(self, new_shift: int) -> None:
         """
         Bit shift.
 
@@ -469,7 +470,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.update_indicators()
 
     @Property('QStringList')
-    def labels(self):
+    def labels(self) -> List[str]:
         """
         Labels for each bit.
 
@@ -480,7 +481,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         return [str(l.text()) for l in self._labels]
 
     @labels.setter
-    def labels(self, new_labels):
+    def labels(self, new_labels: List[str]) -> None:
         """
         Labels for each bit.
 
@@ -496,7 +497,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.showLabels = self._show_labels
         self.rebuild_layout()
 
-    def value_changed(self, new_val):
+    def value_changed(self, new_val: int) -> None:
         """
         Callback invoked when the Channel value is changed.
 
@@ -512,7 +513,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         except:
             pass
 
-    def paintEvent(self, _):
+    def paintEvent(self, _) -> None:
         """
         Paint events are sent to widgets that need to update themselves,
         for instance when part of a widget is exposed because a covering
@@ -532,15 +533,15 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
         painter.setRenderHint(QPainter.Antialiasing)
 
-    def alarm_severity_changed(self, new_alarm_severity):
+    def alarm_severity_changed(self, new_alarm_severity: int) -> None:
         """
-                Callback invoked when the Channel alarm severity is changed.
+        Callback invoked when the Channel alarm severity is changed.
 
-                Parameters
-                ----------
-                new_alarm_severity : int
-                    The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
-                    and 3 = INVALID
+        Parameters
+        ----------
+        new_alarm_severity : int
+            The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
+            and 3 = INVALID
         """
 
         if new_alarm_severity == self._alarm_state:
@@ -552,4 +553,3 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             # before the object constructor is complete
             if hasattr(self, '_shift'):
                 self.update_indicators()
-
