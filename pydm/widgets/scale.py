@@ -1,10 +1,9 @@
 from .base import PyDMWidget, TextFormatter
-from qtpy.QtGui import QColor, QPolygon, QPen, QPainter
+from qtpy.QtGui import QColor, QPolygon, QPen, QPainter, QPaintEvent
 from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
 from qtpy.QtCore import Qt, QPoint, Property
 from qtpy.QtWidgets import QWIDGETSIZE_MAX
-from .channel import PyDMChannel
-import sys
+from typing import Optional
 
 
 class QScale(QFrame):
@@ -18,7 +17,7 @@ class QScale(QFrame):
     parent : QWidget
         The parent widget for the Scale
     """
-    def __init__(self, parent=None):
+    def __init__(self, parent: Optional[QWidget] = None) -> None:
         super(QScale, self).__init__(parent)
         self._value = 1
         self._lower_limit = -5
@@ -59,7 +58,7 @@ class QScale(QFrame):
 
         self.set_position()
 
-    def adjust_transformation(self):
+    def adjust_transformation(self) -> None:
         """
         This method sets parameters for the widget transformations (needed to for
         orientation, flipping and appearance inversion).
@@ -95,14 +94,14 @@ class QScale(QFrame):
             self._flip_traslation_y = 0
             self._flip_scale_y = 1
 
-    def set_tick_pen(self):
+    def set_tick_pen(self) -> None:
         """
         Define pen style for drawing scale tick marks.
         """
         self._tick_pen.setColor(self._tick_color)
         self._tick_pen.setWidth(self._tick_width)
 
-    def draw_ticks(self):
+    def draw_ticks(self) -> None:
         """
         Draw tick marks on the scale.
         """
@@ -112,12 +111,12 @@ class QScale(QFrame):
         self._painter.setPen(self._tick_pen)
         division_size = self._widget_width / self._num_divisions
         tick_y0 = self._widget_height
-        tick_yf = (1 - self._tick_size_rate)*self._widget_height
+        tick_yf = int((1 - self._tick_size_rate)*self._widget_height)
         for i in range(self._num_divisions+1):
-            x = i*division_size
-            self._painter.drawLine(x, tick_y0, x, tick_yf) # x1, y1, x2, y2
+            x = int(i*division_size)
+            self._painter.drawLine(x, tick_y0, x, tick_yf)  # x1, y1, x2, y2
 
-    def draw_bar(self):
+    def draw_bar(self) -> None:
         """
         Draw a bar as indicator of current value.
         """
@@ -129,10 +128,10 @@ class QScale(QFrame):
         self._painter.setPen(Qt.transparent)
         self._painter.setBrush(self._indicator_color)
         bar_width = self.position - self._origin_position
-        bar_height = self._bg_size_rate * self._widget_height
+        bar_height = int(self._bg_size_rate * self._widget_height)
         self._painter.drawRect(self._origin_position, 0, bar_width, bar_height)
 
-    def draw_pointer(self):
+    def draw_pointer(self) -> None:
         """
         Draw a pointer as indicator of current value.
         """
@@ -141,17 +140,17 @@ class QScale(QFrame):
             return
         self._painter.setPen(Qt.transparent)
         self._painter.setBrush(self._indicator_color)
-        pointer_width = self._pointer_width_rate * self._widget_width
-        pointer_height = self._bg_size_rate * self._widget_height
+        pointer_width = int(self._pointer_width_rate * self._widget_width)
+        pointer_height = int(self._bg_size_rate * self._widget_height)
         points = [
             QPoint(self.position, 0),
-            QPoint(self.position + 0.5*pointer_width, 0.5*pointer_height),
+            QPoint(self.position + pointer_width // 2, pointer_height // 2),
             QPoint(self.position, pointer_height),
-            QPoint(self.position - 0.5*pointer_width, 0.5*pointer_height)
+            QPoint(self.position - pointer_width // 2, pointer_height // 2)
         ]
         self._painter.drawPolygon(QPolygon(points))
 
-    def draw_indicator(self):
+    def draw_indicator(self) -> None:
         """
         Draw the selected indicator for current value.
         """
@@ -160,17 +159,17 @@ class QScale(QFrame):
         else:
             self.draw_pointer()
 
-    def draw_background(self):
+    def draw_background(self) -> None:
         """
         Draw the background of the scale.
         """
         self._painter.setPen(Qt.transparent)
         self._painter.setBrush(self._bg_color)
-        bg_width = self._widget_width
-        bg_height = self._bg_size_rate * self._widget_height
+        bg_width = int(self._widget_width)
+        bg_height = int(self._bg_size_rate * self._widget_height)
         self._painter.drawRect(0, 0, bg_width, bg_height)
 
-    def paintEvent(self, event):
+    def paintEvent(self, event: QPaintEvent) -> None:
         """
         Paint events are sent to widgets that need to update themselves,
         for instance when part of a widget is exposed because a covering
@@ -182,12 +181,12 @@ class QScale(QFrame):
         """
         self.adjust_transformation()
         self._painter.begin(self)
-        self._painter.translate(0, self._painter_translation_y) # Draw vertically if needed
+        self._painter.translate(0, self._painter_translation_y)  # Draw vertically if needed
         self._painter.rotate(self._painter_rotation)
-        self._painter.translate(self._painter_translation_x, 0) # Invert appearance if needed
+        self._painter.translate(self._painter_translation_x, 0)  # Invert appearance if needed
         self._painter.scale(self._painter_scale_x, 1)
 
-        self._painter.translate(0, self._flip_traslation_y)     # Invert scale if needed
+        self._painter.translate(0, self._flip_traslation_y)      # Invert scale if needed
         self._painter.scale(1, self._flip_scale_y)
 
         self._painter.setRenderHint(QPainter.Antialiasing)
@@ -198,20 +197,20 @@ class QScale(QFrame):
 
         self._painter.end()
 
-    def calculate_position_for_value(self, value):
+    def calculate_position_for_value(self, value: float) -> int:
         """
         Calculate the position (pixel) in which the pointer should be drawn for a given value.
         """
         if value is None or value < self._lower_limit or value > self._upper_limit or \
            self._upper_limit - self._lower_limit == 0:
-            proportion = -1 # Invalid
+            proportion = -1  # Invalid
         else:
             proportion = (value - self._lower_limit) / (self._upper_limit - self._lower_limit)
 
         position = int(proportion * self._widget_width)
         return position
 
-    def set_origin(self):
+    def set_origin(self) -> None:
         """
         Set the position (pixel) in which the origin should be drawn.
         """
@@ -220,27 +219,27 @@ class QScale(QFrame):
         else:
             self._origin_position = 0
 
-    def set_position(self):
+    def set_position(self) -> None:
         """
         Set the position (pixel) in which the pointer should be drawn.
         """
         self.position = self.calculate_position_for_value(self._value)
 
-    def update_indicator(self):
+    def update_indicator(self) -> None:
         """
         Update the position and the drawing of indicator.
         """
         self.set_position()
         self.repaint()
 
-    def set_value(self, value):
+    def set_value(self, value: float) -> None:
         """
         Set a new current value for the indicator.
         """
         self._value = value
         self.update_indicator()
 
-    def set_upper_limit(self, new_limit):
+    def set_upper_limit(self, new_limit: float) -> None:
         """
         Set the scale upper limit.
 
@@ -251,7 +250,7 @@ class QScale(QFrame):
         """
         self._upper_limit = new_limit
 
-    def set_lower_limit(self, new_limit):
+    def set_lower_limit(self, new_limit: float) -> None:
         """
         Set the scale lower limit.
 
@@ -262,103 +261,103 @@ class QScale(QFrame):
         """
         self._lower_limit = new_limit
 
-    def get_show_ticks(self):
+    def get_show_ticks(self) -> bool:
         return self._show_ticks
 
-    def set_show_ticks(self, checked):
+    def set_show_ticks(self, checked: bool) -> None:
         if self._show_ticks != bool(checked):
             self._show_ticks = checked
             self.repaint()
 
-    def get_orientation(self):
+    def get_orientation(self) -> Qt.Orientation:
         return self._orientation
 
-    def set_orientation(self, orientation):
+    def set_orientation(self, orientation: Qt.Orientation) -> None:
         self._orientation = orientation
         self.adjust_transformation()
         self.repaint()
 
-    def get_flip_scale(self):
+    def get_flip_scale(self) -> bool:
         return self._flip_scale
 
-    def set_flip_scale(self, checked):
+    def set_flip_scale(self, checked: bool) -> None:
         self._flip_scale = bool(checked)
         self.adjust_transformation()
         self.repaint()
 
-    def get_inverted_appearance(self):
+    def get_inverted_appearance(self) -> bool:
         return self._inverted_appearance
 
-    def set_inverted_appearance(self, inverted):
+    def set_inverted_appearance(self, inverted: bool) -> None:
         self._inverted_appearance = inverted
         self.adjust_transformation()
         self.repaint()
 
-    def get_bar_indicator(self):
+    def get_bar_indicator(self) -> bool:
         return self._barIndicator
 
-    def set_bar_indicator(self, checked):
+    def set_bar_indicator(self, checked: bool) -> None:
         if self._barIndicator != bool(checked):
             self._barIndicator = checked
             self.repaint()
 
-    def get_background_color(self):
+    def get_background_color(self) -> QColor:
         return self._bg_color
 
-    def set_background_color(self, color):
+    def set_background_color(self, color: QColor) -> None:
         self._bg_color = color
         self.repaint()
 
-    def get_indicator_color(self):
+    def get_indicator_color(self) -> QColor:
         return self._indicator_color
 
-    def set_indicator_color(self, color):
+    def set_indicator_color(self, color: QColor) -> None:
         self._indicator_color = color
         self.repaint()
 
-    def get_tick_color(self):
+    def get_tick_color(self) -> QColor:
         return self._tick_color
 
-    def set_tick_color(self, color):
+    def set_tick_color(self, color: QColor) -> None:
         self._tick_color = color
         self.repaint()
 
-    def get_background_size_rate(self):
+    def get_background_size_rate(self) -> float:
         return self._bg_size_rate
 
-    def set_background_size_rate(self, rate):
-        if rate >= 0 and rate <=1 and self._bg_size_rate != rate:
+    def set_background_size_rate(self, rate: float) -> None:
+        if rate >= 0 and rate <= 1 and self._bg_size_rate != rate:
             self._bg_size_rate = rate
             self.repaint()
 
-    def get_tick_size_rate(self):
+    def get_tick_size_rate(self) -> float:
         return self._tick_size_rate
 
-    def set_tick_size_rate(self, rate):
-        if rate >= 0 and rate <=1 and self._tick_size_rate != rate:
+    def set_tick_size_rate(self, rate: float) -> None:
+        if rate >= 0 and rate <= 1 and self._tick_size_rate != rate:
             self._tick_size_rate = rate
             self.repaint()
 
-    def get_num_divisions(self):
+    def get_num_divisions(self) -> int:
         return self._num_divisions
 
-    def set_num_divisions(self, divisions):
+    def set_num_divisions(self, divisions: int) -> None:
         if isinstance(divisions, int) and divisions > 0 and self._num_divisions != divisions:
             self._num_divisions = divisions
             self.repaint()
 
-    def get_scale_height(self):
+    def get_scale_height(self) -> int:
         return self._scale_height
 
-    def set_scale_height(self, value):
+    def set_scale_height(self, value: int) -> None:
         self._scale_height = int(value)
         self.adjust_transformation()
         self.repaint()
 
-    def get_origin_at_zero(self):
+    def get_origin_at_zero(self) -> bool:
         return self._origin_at_zero
 
-    def set_origin_at_zero(self, checked):
+    def set_origin_at_zero(self, checked: bool) -> None:
         if self._origin_at_zero != bool(checked):
             self._origin_at_zero = checked
             self.repaint()
@@ -379,7 +378,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         The channel to be used by the widget.
     """
 
-    def __init__(self, parent=None, init_channel=None):
+    def __init__(self, parent: Optional[QWidget] = None, init_channel: Optional[str] = None) -> None:
         QFrame.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self._show_value = True
@@ -402,7 +401,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.value_label.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.setup_widgets_for_orientation(Qt.Horizontal, False, False, self._value_position)
 
-    def update_labels(self):
+    def update_labels(self) -> None:
         """
         Update the limits and value labels with the correct values.
         """
@@ -410,20 +409,20 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.upper_label.setText(str(self.scale_indicator._upper_limit))
         self.value_label.setText(self.format_string.format(self.scale_indicator._value))
 
-    def value_changed(self, new_value):
+    def value_changed(self, new_value: float) -> None:
         """
         Callback invoked when the Channel value is changed.
 
         Parameters
         ----------
-        new_val : int or float
+        new_value : int or float
             The new value from the channel.
         """
         super(PyDMScaleIndicator, self).value_changed(new_value)
         self.scale_indicator.set_value(new_value)
         self.update_labels()
 
-    def upperCtrlLimitChanged(self, new_limit):
+    def upperCtrlLimitChanged(self, new_limit: float) -> None:
         """
         PyQT Slot for changes on the upper control limit value of the Channel
         This slot sends the new limit value to the
@@ -438,7 +437,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             self.scale_indicator.set_upper_limit(new_limit)
             self.update_labels()
 
-    def lowerCtrlLimitChanged(self, new_limit):
+    def lowerCtrlLimitChanged(self, new_limit: float) -> None:
         """
         PyQT Slot for changes on the lower control limit value of the Channel
         This slot sends the new limit value to the
@@ -453,8 +452,8 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             self.scale_indicator.set_lower_limit(new_limit)
             self.update_labels()
 
-    def setup_widgets_for_orientation(self, new_orientation, flipped, inverted,
-                                      value_position):
+    def setup_widgets_for_orientation(self, new_orientation: Qt.Orientation, flipped: bool, inverted: bool,
+                                      value_position: Qt.Edge) -> None:
         """
         Reconstruct the widget given the orientation.
 
@@ -530,8 +529,8 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
 
         elif new_orientation == Qt.Vertical:
             self.limits_layout = QVBoxLayout()
-            if (value_position == Qt.RightEdge and flipped == False) or \
-                   (value_position == Qt.LeftEdge and flipped == True):
+            if (value_position == Qt.RightEdge and not flipped) or \
+               (value_position == Qt.LeftEdge and flipped):
                 add_value_between_limits = True
             else:
                 add_value_between_limits = False
@@ -607,7 +606,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.setLayout(self.widget_layout)
 
     @Property(bool)
-    def showValue(self):
+    def showValue(self) -> bool:
         """
         Whether or not the current value should be displayed on the scale.
 
@@ -618,7 +617,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self._show_value
 
     @showValue.setter
-    def showValue(self, checked):
+    def showValue(self, checked: bool) -> None:
         """
         Whether or not the current value should be displayed on the scale.
 
@@ -634,7 +633,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             self.value_label.hide()
 
     @Property(bool)
-    def showLimits(self):
+    def showLimits(self) -> bool:
         """
         Whether or not the high and low limits should be displayed on the scale.
 
@@ -645,7 +644,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self._show_limits
 
     @showLimits.setter
-    def showLimits(self, checked):
+    def showLimits(self, checked: bool) -> None:
         """
         Whether or not the high and low limits should be displayed on the scale.
 
@@ -663,7 +662,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             self.upper_label.hide()
 
     @Property(bool)
-    def showTicks(self):
+    def showTicks(self) -> bool:
         """
         Whether or not the tick marks should be displayed on the scale.
 
@@ -674,7 +673,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_show_ticks()
 
     @showTicks.setter
-    def showTicks(self, checked):
+    def showTicks(self, checked: bool) -> None:
         """
         Whether or not the tick marks should be displayed on the scale.
 
@@ -685,7 +684,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_show_ticks(checked)
 
     @Property(Qt.Orientation)
-    def orientation(self):
+    def orientation(self) -> Qt.Orientation:
         """
         The scale orientation (Horizontal or Vertical)
 
@@ -697,7 +696,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_orientation()
 
     @orientation.setter
-    def orientation(self, orientation):
+    def orientation(self, orientation: Qt.Orientation) -> None:
         """
         The scale orientation (Horizontal or Vertical)
 
@@ -710,7 +709,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.setup_widgets_for_orientation(orientation, self.flipScale, self.invertedAppearance, self._value_position)
 
     @Property(bool)
-    def flipScale(self):
+    def flipScale(self) -> bool:
         """
         Whether or not the scale should be flipped.
 
@@ -721,7 +720,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_flip_scale()
 
     @flipScale.setter
-    def flipScale(self, checked):
+    def flipScale(self, checked: bool) -> None:
         """
         Whether or not the scale should be flipped.
 
@@ -733,7 +732,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.setup_widgets_for_orientation(self.orientation, checked, self.invertedAppearance, self._value_position)
 
     @Property(bool)
-    def invertedAppearance(self):
+    def invertedAppearance(self) -> bool:
         """
         Whether or not the scale appearence should be inverted.
 
@@ -744,7 +743,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_inverted_appearance()
 
     @invertedAppearance.setter
-    def invertedAppearance(self, inverted):
+    def invertedAppearance(self, inverted: bool) -> None:
         """
         Whether or not the scale appearence should be inverted.
 
@@ -756,7 +755,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, inverted, self._value_position)
 
     @Property(bool)
-    def barIndicator(self):
+    def barIndicator(self) -> bool:
         """
         Whether or not the scale indicator should be a bar instead of a pointer.
 
@@ -767,7 +766,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_bar_indicator()
 
     @barIndicator.setter
-    def barIndicator(self, checked):
+    def barIndicator(self, checked: bool) -> None:
         """
         Whether or not the scale indicator should be a bar instead of a pointer.
 
@@ -778,7 +777,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_bar_indicator(checked)
 
     @Property(QColor)
-    def backgroundColor(self):
+    def backgroundColor(self) -> QColor:
         """
         The color of the scale background.
 
@@ -789,7 +788,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_background_color()
 
     @backgroundColor.setter
-    def backgroundColor(self, color):
+    def backgroundColor(self, color: QColor) -> None:
         """
         The color of the scale background.
 
@@ -800,7 +799,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_background_color(color)
 
     @Property(QColor)
-    def indicatorColor(self):
+    def indicatorColor(self) -> QColor:
         """
         The color of the scale indicator.
 
@@ -811,7 +810,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_indicator_color()
 
     @indicatorColor.setter
-    def indicatorColor(self, color):
+    def indicatorColor(self, color: QColor) -> None:
         """
         The color of the scale indicator.
 
@@ -822,7 +821,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_indicator_color(color)
 
     @Property(QColor)
-    def tickColor(self):
+    def tickColor(self) -> QColor:
         """
         The color of the scale tick marks.
 
@@ -833,7 +832,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_tick_color()
 
     @tickColor.setter
-    def tickColor(self, color):
+    def tickColor(self, color: QColor) -> None:
         """
         The color of the scale tick marks.
 
@@ -844,7 +843,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_tick_color(color)
 
     @Property(float)
-    def backgroundSizeRate(self):
+    def backgroundSizeRate(self) -> float:
         """
         The rate of background height size (from top to bottom).
 
@@ -855,7 +854,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_background_size_rate()
 
     @backgroundSizeRate.setter
-    def backgroundSizeRate(self, rate):
+    def backgroundSizeRate(self, rate: float) -> None:
         """
         The rate of background height size (from top to bottom).
 
@@ -867,7 +866,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_background_size_rate(rate)
 
     @Property(float)
-    def tickSizeRate(self):
+    def tickSizeRate(self) -> float:
         """
         The rate of tick marks height size (from bottom to top).
 
@@ -878,7 +877,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_tick_size_rate()
 
     @tickSizeRate.setter
-    def tickSizeRate(self, rate):
+    def tickSizeRate(self, rate: float) -> None:
         """
         The rate of tick marks height size (from bottom to top).
 
@@ -890,7 +889,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_tick_size_rate(rate)
 
     @Property(int)
-    def numDivisions(self):
+    def numDivisions(self) -> int:
         """
         The number in which the scale is divided.
 
@@ -901,7 +900,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_num_divisions()
 
     @numDivisions.setter
-    def numDivisions(self, divisions):
+    def numDivisions(self, divisions: int) -> None:
         """
         The number in which the scale is divided.
 
@@ -913,7 +912,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_num_divisions(divisions)
 
     @Property(int)
-    def scaleHeight(self):
+    def scaleHeight(self) -> int:
         """
         The scale height, fixed so it do not wiggle when value label resizes.
 
@@ -924,7 +923,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_scale_height()
 
     @scaleHeight.setter
-    def scaleHeight(self, value):
+    def scaleHeight(self, value: int) -> None:
         """
         The scale height, fixed so it do not wiggle when value label resizes.
 
@@ -936,7 +935,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_scale_height(value)
 
     @Property(Qt.Edge)
-    def valuePosition(self):
+    def valuePosition(self) -> Qt.Edge:
         """
         The position of the value label (Top, Bottom, Left or Right).
 
@@ -948,7 +947,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self._value_position
 
     @valuePosition.setter
-    def valuePosition(self, position):
+    def valuePosition(self, position: Qt.Edge) -> None:
         """
        The position of the value label (Top, Bottom, Left or Right).
 
@@ -961,7 +960,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, self.invertedAppearance, position)
 
     @Property(bool)
-    def originAtZero(self):
+    def originAtZero(self) -> bool:
         """
         Whether or not the scale indicator should start at zero value.
         Applies only for bar indicator.
@@ -973,7 +972,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self.scale_indicator.get_origin_at_zero()
 
     @originAtZero.setter
-    def originAtZero(self, checked):
+    def originAtZero(self, checked: bool) -> None:
         """
         Whether or not the scale indicator should start at zero value.
         Applies only for bar indicator.
@@ -985,7 +984,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_origin_at_zero(checked)
 
     @Property(bool)
-    def limitsFromChannel(self):
+    def limitsFromChannel(self) -> bool:
         """
         Whether or not the scale indicator should use the limits information
         from the channel.
@@ -997,7 +996,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self._limits_from_channel
 
     @limitsFromChannel.setter
-    def limitsFromChannel(self, checked):
+    def limitsFromChannel(self, checked: bool) -> None:
         """
         Whether or not the scale indicator should use the limits information
         from the channel.
@@ -1021,7 +1020,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             self.update_labels()
 
     @Property(float)
-    def userLowerLimit(self):
+    def userLowerLimit(self) -> float:
         """
         The user-defined lower limit for the scale.
 
@@ -1032,7 +1031,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self._user_lower_limit
 
     @userLowerLimit.setter
-    def userLowerLimit(self, value):
+    def userLowerLimit(self, value: float) -> None:
         """
         The user-defined lower limit for the scale.
 
@@ -1048,7 +1047,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.update_labels()
 
     @Property(float)
-    def userUpperLimit(self):
+    def userUpperLimit(self) -> float:
         """
         The user-defined upper limit for the scale.
 
@@ -1059,7 +1058,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         return self._user_upper_limit
 
     @userUpperLimit.setter
-    def userUpperLimit(self, value):
+    def userUpperLimit(self, value: float) -> None:
         """
         The user-defined upper limit for the scale.
 
