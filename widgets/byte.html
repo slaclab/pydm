@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMByteIndicator &mdash; PyDM v1.18.2 documentation</title>
+  <title>PyDMByteIndicator &mdash; PyDM v1.18.2+3.gb5c792a5 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.2
+                v1.18.2+3.gb5c792a5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -135,7 +135,7 @@
 <h1>PyDMByteIndicator<a class="headerlink" href="#pydmbyteindicator" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.byte.</span></span><span class="sig-name descname"><span class="pre">PyDMByteIndicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.byte.</span></span><span class="sig-name descname"><span class="pre">PyDMByteIndicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code>, <a class="reference internal" href="PyDMWidget.html#pydm.widgets.base.PyDMWidget" title="pydm.widgets.base.PyDMWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMWidget</span></code></a></p>
 <p>Widget for graphical representation of bits from an integer number
 with support for Channels and more from PyDM</p>
@@ -456,7 +456,7 @@ This slot sends the severity value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.alarm_severity_changed">
-<span class="sig-name descname"><span class="pre">alarm_severity_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_alarm_severity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.alarm_severity_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.alarm_severity_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">alarm_severity_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_alarm_severity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.alarm_severity_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.alarm_severity_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the Channel alarm severity is changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -605,7 +605,7 @@ with the reason why it is disabled.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.clear" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.clear" title="Permalink to this definition"></a></dt>
 <dd><p>Remove all inner widgets from the layout</p>
 </dd></dl>
 
@@ -654,13 +654,13 @@ callback.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.connection_changed">
-<span class="sig-name descname"><span class="pre">connection_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connected</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.connection_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.connection_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">connection_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.connection_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.connection_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the connection state of the Channel is changed.
 This callback acts on the connection state to enable/disable the widget
 and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>connected</strong> (<em>int</em>) – When this value is 0 the channel is disconnected, 1 otherwise.</p>
+<dd class="field-odd"><p><strong>connected</strong> (<em>bool</em>) – When this value is False the channel is disconnected, True otherwise.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1103,7 +1103,7 @@ this method (after calling superclass implementation) to add the menu.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.init_for_designer">
-<span class="sig-name descname"><span class="pre">init_for_designer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.init_for_designer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.init_for_designer" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">init_for_designer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.init_for_designer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.init_for_designer" title="Permalink to this definition"></a></dt>
 <dd><p>Method called after the constructor to tweak configurations for
 when using the widget with the Qt Designer</p>
 </dd></dl>
@@ -1580,7 +1580,7 @@ where 0 means transparent.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.paintEvent">
-<span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.paintEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.paintEvent" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.paintEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.paintEvent" title="Permalink to this definition"></a></dt>
 <dd><p>Paint events are sent to widgets that need to update themselves,
 for instance when part of a widget is exposed because a covering
 widget was moved.</p>
@@ -1673,7 +1673,7 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.rebuild_layout">
-<span class="sig-name descname"><span class="pre">rebuild_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.rebuild_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.rebuild_layout" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rebuild_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.rebuild_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.rebuild_layout" title="Permalink to this definition"></a></dt>
 <dd><p>Method to reorganize the top-level widget and its contents
 according to the layout property values.</p>
 </dd></dl>
@@ -2180,7 +2180,7 @@ where 0 means transparent.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.set_spacing">
-<span class="sig-name descname"><span class="pre">set_spacing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.set_spacing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.set_spacing" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_spacing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.set_spacing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.set_spacing" title="Permalink to this definition"></a></dt>
 <dd><p>Configures the correct spacing given the selected orientation.</p>
 </dd></dl>
 
@@ -2394,7 +2394,7 @@ displayed</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.update_indicators">
-<span class="sig-name descname"><span class="pre">update_indicators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.update_indicators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.update_indicators" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update_indicators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.update_indicators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.update_indicators" title="Permalink to this definition"></a></dt>
 <dd><p>Update the inner bit indicators accordingly with the new value.</p>
 </dd></dl>
 
@@ -2440,7 +2440,7 @@ This slot sends the new limit value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.value_changed">
-<span class="sig-name descname"><span class="pre">value_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.value_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.value_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">value_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.value_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.value_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
