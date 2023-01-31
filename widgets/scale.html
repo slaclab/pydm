@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMScaleIndicator &mdash; PyDM v1.18.2+3.gb5c792a5 documentation</title>
+  <title>PyDMScaleIndicator &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="../index.html" class="icon icon-home"> PyDM
           </a>
               <div class="version">
-                v1.18.2+3.gb5c792a5
+                v1.18.2+5.gae508170
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -135,7 +135,7 @@
 <h1>PyDMScaleIndicator<a class="headerlink" href="#pydmscaleindicator" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.scale.PyDMScaleIndicator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.scale.</span></span><span class="sig-name descname"><span class="pre">PyDMScaleIndicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.scale.</span></span><span class="sig-name descname"><span class="pre">PyDMScaleIndicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QFrame</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TextFormatter</span></code>, <a class="reference internal" href="PyDMWidget.html#pydm.widgets.base.PyDMWidget" title="pydm.widgets.base.PyDMWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMWidget</span></code></a></p>
 <p>A bar-shaped indicator for scalar value with support for Channels and
 more from PyDM.
@@ -1653,7 +1653,7 @@ from the channel.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.scale.PyDMScaleIndicator.lowerCtrlLimitChanged">
-<span class="sig-name descname"><span class="pre">lowerCtrlLimitChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.lowerCtrlLimitChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.lowerCtrlLimitChanged" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lowerCtrlLimitChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.lowerCtrlLimitChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.lowerCtrlLimitChanged" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Slot for changes on the lower control limit value of the Channel
 This slot sends the new limit value to the
 <code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
@@ -2611,7 +2611,7 @@ where 0 means transparent.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation">
-<span class="sig-name descname"><span class="pre">setup_widgets_for_orientation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_orientation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipped</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverted</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.setup_widgets_for_orientation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">setup_widgets_for_orientation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_orientation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Orientation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipped</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Edge</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.setup_widgets_for_orientation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation" title="Permalink to this definition"></a></dt>
 <dd><p>Reconstruct the widget given the orientation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2927,7 +2927,7 @@ and unit</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.scale.PyDMScaleIndicator.update_labels">
-<span class="sig-name descname"><span class="pre">update_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.update_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.update_labels" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.update_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.update_labels" title="Permalink to this definition"></a></dt>
 <dd><p>Update the limits and value labels with the correct values.</p>
 </dd></dl>
 
@@ -2938,7 +2938,7 @@ and unit</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.scale.PyDMScaleIndicator.upperCtrlLimitChanged">
-<span class="sig-name descname"><span class="pre">upperCtrlLimitChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.upperCtrlLimitChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.upperCtrlLimitChanged" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">upperCtrlLimitChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.upperCtrlLimitChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.upperCtrlLimitChanged" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT Slot for changes on the upper control limit value of the Channel
 This slot sends the new limit value to the
 <code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
@@ -3009,11 +3009,11 @@ This slot sends the new limit value to the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.scale.PyDMScaleIndicator.value_changed">
-<span class="sig-name descname"><span class="pre">value_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.value_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.value_changed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">value_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.value_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.value_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>new_val</strong> (<em>int</em><em> or </em><em>float</em>) – The new value from the channel.</p>
+<dd class="field-odd"><p><strong>new_value</strong> (<em>int</em><em> or </em><em>float</em>) – The new value from the channel.</p>
 </dd>
 </dl>
 </dd></dl>
