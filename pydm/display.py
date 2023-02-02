@@ -86,7 +86,23 @@ def _compile_ui_file(uifile: str) -> str:
     return code_string.getvalue()
 
 
-def _load_ui_into_display(code_string: str, display):
+def _load_ui_into_display(uifile, display):
+    klass, _ = uic.loadUiType(uifile)
+
+    # Python 2.7 compatibility. More info at the following links:
+    # https://github.com/universe-proton/universe-topology/issues/3
+    # https://stackoverflow.com/questions/3296993/python-how-to-call-unbound-method-with-other-type-parameter
+    retranslateUi = six.get_unbound_function(klass.retranslateUi)
+    setupUi = six.get_unbound_function(klass.setupUi)
+    # Add retranslateUi to Display class
+    display.retranslateUi = functools.partial(retranslateUi, display)
+    setupUi(display, display)
+
+    display.ui = display
+
+
+
+def _load_compiled_ui_into_display(code_string: str, display):
     ui_globals = {}
     exec(code_string, ui_globals)
 
@@ -131,7 +147,7 @@ def load_ui_file(uifile, macros=None, args=None):
     code_string = _compile_ui_file(uifile)
     if macros:
         code_string = macro.replace_macros_in_template(Template(code_string), macros).getvalue()
-    _load_ui_into_display(code_string, d)
+    _load_compiled_ui_into_display(code_string, d)
     return d
 
 
@@ -318,11 +334,10 @@ class Display(QWidget):
             return self.ui
         if self.ui_filepath() is not None and self.ui_filepath() != "":
             self._loaded_file = self.ui_filepath()
+            code_string = _compile_ui_file(self.ui_filepath())
             if macros is not None:
-                f = macro.substitute_in_file(self.ui_filepath(), macros)
-            else:
-                f = self.ui_filepath()
-            _load_ui_into_display(f, self)
+                code_string = macro.replace_macros_in_template(Template(code_string), macros).getvalue()
+            _load_compiled_ui_into_display(code_string, self)
 
     def setStyleSheet(self, new_stylesheet):
         # Handle the case where the widget's styleSheet property contains a filename, rather than a stylesheet.
