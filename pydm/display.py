@@ -124,8 +124,6 @@ def _load_compiled_ui_into_display(code_string: str, class_name: str, display) -
     # Create and grab the class described by the compiled ui file
     ui_globals = {}
     exec(code_string, ui_globals)
-
-    class_name = re.search(r'class\s*(\S*)\(', code_string).group(1)
     klass = ui_globals[class_name]
 
     # Add retranslateUi to Display class
