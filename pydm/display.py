@@ -4,9 +4,12 @@ import logging
 import os
 import sys
 import warnings
+from functools import lru_cache
+from io import StringIO
 from os import path
 from string import Template
 
+import re
 import six
 from qtpy import uic
 from qtpy.QtWidgets import QApplication, QWidget
@@ -67,8 +70,28 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     return w
 
 
-def _load_ui_into_display(uifile, display):
-    klass, _ = uic.loadUiType(uifile)
+@lru_cache
+def _compile_ui_file(uifile: str) -> str:
+    """
+    Compile the ui file using uic and return the result as a string. Caches the result to improve
+    performance when the same ui file is re-used many times within a display.
+
+    Parameters
+    ----------
+    uifile : str
+        The path to a .ui file to compile
+    """
+    code_string = StringIO()
+    uic.compileUi(uifile, code_string, from_imports=False, resource_suffix='_rc', import_from='.')
+    return code_string.getvalue()
+
+
+def _load_ui_into_display(code_string: str, display):
+    ui_globals = {}
+    exec(code_string, ui_globals)
+
+    class_name = re.search(r'class\s*(\S*)\(', code_string).group(1)
+    klass = ui_globals[class_name]
 
     # Python 2.7 compatibility. More info at the following links:
     # https://github.com/universe-proton/universe-topology/issues/3
@@ -104,13 +127,11 @@ def load_ui_file(uifile, macros=None, args=None):
     """
 
     d = Display(macros=macros)
-    if macros:
-        f = macro.substitute_in_file(uifile, macros)
-    else:
-        f = uifile
-
     d._loaded_file = uifile
-    _load_ui_into_display(f, d)
+    code_string = _compile_ui_file(uifile)
+    if macros:
+        code_string = macro.replace_macros_in_template(Template(code_string), macros).getvalue()
+    _load_ui_into_display(code_string, d)
     return d
 
 
