@@ -8,6 +8,7 @@ from functools import lru_cache
 from io import StringIO
 from os import path
 from string import Template
+from typing import Tuple
 
 import re
 import six
@@ -71,19 +72,25 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
 
 
 @lru_cache
-def _compile_ui_file(uifile: str) -> str:
+def _compile_ui_file(uifile: str) -> Tuple[str, str]:
     """
-    Compile the ui file using uic and return the result as a string. Caches the result to improve
-    performance when the same ui file is re-used many times within a display.
+    Compile the ui file using uic and return the result as a string along with the associated class name.
+    Caches the result to improve performance when the same ui file is re-used many times within a display.
 
     Parameters
     ----------
     uifile : str
         The path to a .ui file to compile
+
+    Returns
+    -------
+    Tuple[str, str] - The first element is the compiled ui file, the second is the name of the class (e.g. Ui_Form)
     """
     code_string = StringIO()
-    uic.compileUi(uifile, code_string, from_imports=False, resource_suffix='_rc', import_from='.')
-    return code_string.getvalue()
+    uic.compileUi(uifile, code_string)
+    # Grabs non-whitespace characters between class and the opening parenthesis
+    class_name = re.search(r'class\s*(\S*)\(', code_string.getvalue()).group(1)
+    return code_string.getvalue(), class_name
 
 
 def _load_ui_into_display(uifile, display):
@@ -101,22 +108,29 @@ def _load_ui_into_display(uifile, display):
     display.ui = display
 
 
+def _load_compiled_ui_into_display(code_string: str, class_name: str, display) -> None:
+    """
+    Takes a ui file which has already been compiled by uic and loads it into the input display
 
-def _load_compiled_ui_into_display(code_string: str, display):
+    Parameters
+    ----------
+    code_string : str
+        The pre-compiled ui file to load
+    class_name : str
+        The name of the class that methods will be executed on
+    display : Display
+        The display which the ui file is being loaded into
+    """
+    # Create and grab the class described by the compiled ui file
     ui_globals = {}
     exec(code_string, ui_globals)
 
     class_name = re.search(r'class\s*(\S*)\(', code_string).group(1)
     klass = ui_globals[class_name]
 
-    # Python 2.7 compatibility. More info at the following links:
-    # https://github.com/universe-proton/universe-topology/issues/3
-    # https://stackoverflow.com/questions/3296993/python-how-to-call-unbound-method-with-other-type-parameter
-    retranslateUi = six.get_unbound_function(klass.retranslateUi)
-    setupUi = six.get_unbound_function(klass.setupUi)
     # Add retranslateUi to Display class
-    display.retranslateUi = functools.partial(retranslateUi, display)
-    setupUi(display, display)
+    display.retranslateUi = functools.partial(klass.retranslateUi, display)
+    klass.setupUi(display, display)
 
     display.ui = display
 
@@ -144,10 +158,10 @@ def load_ui_file(uifile, macros=None, args=None):
 
     d = Display(macros=macros)
     d._loaded_file = uifile
-    code_string = _compile_ui_file(uifile)
+    code_string, class_name = _compile_ui_file(uifile)
     if macros:
         code_string = macro.replace_macros_in_template(Template(code_string), macros).getvalue()
-    _load_compiled_ui_into_display(code_string, d)
+    _load_compiled_ui_into_display(code_string, class_name, d)
     return d
 
 
@@ -334,10 +348,10 @@ class Display(QWidget):
             return self.ui
         if self.ui_filepath() is not None and self.ui_filepath() != "":
             self._loaded_file = self.ui_filepath()
-            code_string = _compile_ui_file(self.ui_filepath())
+            code_string, class_name = _compile_ui_file(self.ui_filepath())
             if macros is not None:
                 code_string = macro.replace_macros_in_template(Template(code_string), macros).getvalue()
-            _load_compiled_ui_into_display(code_string, self)
+            _load_compiled_ui_into_display(code_string, class_name, self)
 
     def setStyleSheet(self, new_stylesheet):
         # Handle the case where the widget's styleSheet property contains a filename, rather than a stylesheet.
