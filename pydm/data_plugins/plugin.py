@@ -1,6 +1,7 @@
 import functools
 import weakref
 import threading
+import re
 
 from numpy import ndarray
 from typing import Optional, Callable
@@ -9,10 +10,11 @@ from ..utilities.remove_protocol import protocol_and_address
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 from .. import config
+from collections import OrderedDict
 
 
 class PyDMConnection(QObject):
-    new_value_signal = Signal([float], [int], [str], [ndarray], [bool], [dict])
+    new_value_signal = Signal([float], [int], [str], [ndarray], [bool], [OrderedDict])
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
     write_access_signal = Signal(bool)
@@ -63,7 +65,7 @@ class PyDMConnection(QObject):
             except TypeError:
                 pass
             try:
-                self.new_value_signal[dict].connect(channel.value_slot, Qt.QueuedConnection)
+                self.new_value_signal[OrderedDict].connect(channel.value_slot, Qt.QueuedConnection)
             except TypeError:
                 pass
 
@@ -146,7 +148,7 @@ class PyDMConnection(QObject):
             except TypeError:
                 pass
             try:
-                self.new_value_signal[dict].disconnect(channel.value_slot)
+                self.new_value_signal[OrderedDict].disconnect(channel.value_slot)
             except TypeError:
                 pass
 
@@ -260,11 +262,33 @@ class PyDMPlugin(object):
 
     @staticmethod
     def get_address(channel):
-        return protocol_and_address(channel.address)[1]
+        channel_use = PyDMPlugin.parse_channel(channel.address)
+        return protocol_and_address(channel_use)[1]
 
     @staticmethod
     def get_connection_id(channel):
         return PyDMPlugin.get_address(channel)
+
+    @staticmethod
+    def parse_channel(init_channel):
+        # determine if there is a row or col in the channel name
+        # this method is not robust to PVs that have a . index to some attribute
+        if init_channel is None:
+            channel = None
+        else:
+            row = re.findall('\[.*?\]', init_channel)
+            col_parts = re.split('\.', init_channel)
+            if len(col_parts) == 1:
+                if len(row) == 0:
+                    channel = init_channel
+                elif len(row):
+                    channel = row_parts[0]
+            elif len(col_parts) == 2:
+                channel = col_parts[0]
+            else:
+                print('sadness')
+                # raise error
+        return channel
 
     def add_connection(self, channel):
         from pydm.utilities import is_qt_designer

@@ -5,7 +5,8 @@ from .display_format import DisplayFormat, parse_value_for_display
 from pydm.utilities import is_pydm_app, is_qt_designer
 from pydm import config
 from pydm.widgets.base import only_if_channel_set
-
+import pdb
+import numpy as np
 _labelRuleProperties = {'Text': ['value_changed', str]}
 
 class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties=_labelRuleProperties):
@@ -62,6 +63,20 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
         new_value : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
+        channel_type = type(new_value)
+        # unpack dict from np.array if necessary
+        if channel_type == np.ndarray:
+            if new_value.ndim == 0:
+                new_value = new_value.item()
+                # index into value if necessary
+                if self._col is not None:
+                    if self._row is not None:
+                        new_value = new_value[self._col][self._row]
+                    else:
+                        new_value = new_value[self._col]
+                elif self._row is not None:
+                    new_value = new_value[self._row]
+
         super(PyDMLabel, self).value_changed(new_value)
         new_value = parse_value_for_display(value=new_value, precision=self.precision,
                                             display_format_type=self._display_format_type,

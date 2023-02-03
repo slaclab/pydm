@@ -47,6 +47,7 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     -------
     pydm.Display
     """
+    print('things are even better')
     if not is_pydm_app() and target == ScreenTarget.NEW_PROCESS:
         logger.warning('New Process is only valid with PyDM Application. ' +
                        'Falling back to ScreenTarget.DIALOG.')

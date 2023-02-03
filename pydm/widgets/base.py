@@ -18,6 +18,8 @@ from ..utilities import is_qt_designer, remove_protocol
 from ..display import Display
 from .rules import RulesDispatcher
 from datetime import datetime
+from collections import OrderedDict
+import pdb
 
 try:
     from json.decoder import JSONDecodeError
@@ -579,6 +581,7 @@ class TextFormatter(object):
         new_val : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
+
         super(TextFormatter, self).value_changed(new_val)
         self.update_format_string()
 
@@ -612,6 +615,8 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         self._connected = True
         self._channel = None
+        self._row = None
+        self._col = None
         self._channels = list()
         self._show_units = False
         self._alarm_sensitive_content = False
@@ -653,6 +658,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         # the disconnected state.
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.contextMenuEvent = self.open_context_menu
+        self.parse_channel(init_channel)
         self.channel = init_channel
         if not is_qt_designer():
             self._connected = False
@@ -662,6 +668,34 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.destroyed.connect(
             functools.partial(widget_destroyed, self.channels, weakref.ref(self))
         )
+
+
+    def parse_channel(self, init_channel):
+        # determine if there is a row or col in the channel name
+        # this method is not robust to PVs that have a . index to some attribute
+        if init_channel is None:
+            channel = None
+        else:
+            row = re.findall('\[.*?\]', init_channel)
+            col_parts = re.split('\.', init_channel)
+            if len(col_parts) == 1:
+                if len(row) == 0:
+                    channel = init_channel
+                elif len(row):
+                    self._row = row[1][1:-1]
+                    row_parts = re.split('\[', init_channel)
+                    channel = row_parts[0]
+            elif len(col_parts) == 2:
+                channel = col_parts[0]
+                if len(row) == 0:
+                    self._col = str(col_parts[1])
+                elif len(row) == 1:
+                    self._col = str(re.split('\[',col_parts[1])[0])
+            else:
+                print('sadness')
+                # raise error
+        #return channel
+
 
     def widget_ctx_menu(self):
         """
@@ -738,6 +772,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         new_val : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
+        
         self.value = new_val
         self.channeltype = type(self.value)
         if self.channeltype == np.ndarray:
@@ -874,7 +909,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
     @Slot(str)
     @Slot(bool)
     @Slot(np.ndarray)
-    @Slot(dict)
+    @Slot(OrderedDict)
     def channelValueChanged(self, new_val):
         """
         PyQT Slot for changes on the Value of the Channel
@@ -1199,6 +1234,8 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         value : str
             Channel address
         """
+        if self._channel is None:
+            self.parse_channel(value)
         if self._channel != value:
             # Remove old connections
             for channel in [c for c in self._channels if
@@ -1206,7 +1243,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                 channel.disconnect()
                 self._channels.remove(channel)
             # Load new channel
-            self._channel = str(value)
+            self._channel = value
             if not self._channel:
                 logger.debug('Channel was set to an empty string.')
                 return
@@ -1349,10 +1386,10 @@ class PyDMWritableWidget(PyDMWidget):
         Emitted when the user changes the value
     """
 
-    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray], [dict])")
+    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray], [OrderedDict])")
 
     # Emitted when the user changes the value.
-    send_value_signal = Signal([int], [float], [str], [bool], [np.ndarray], [dict])
+    send_value_signal = Signal([int], [float], [str], [bool], [np.ndarray], [OrderedDict])
 
     def __init__(self, init_channel=None):
         self._write_access = False

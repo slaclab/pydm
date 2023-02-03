@@ -11,6 +11,7 @@ from pydm.widgets.channel import PyDMChannel
 from qtpy.QtCore import QObject, Qt
 from typing import Optional
 import pdb
+from collections import OrderedDict
 
 logger = logging.getLogger(__name__)
 
@@ -110,8 +111,8 @@ class Connection(PyDMConnection):
                             self.new_value_signal[int].emit(new_value)
                         elif isinstance(new_value, str):
                             self.new_value_signal[str].emit(new_value)
-                        elif isinstance(new_value, dict):
-                            self.new_value_signal[dict].emit(new_value)
+                        elif isinstance(new_value, OrderedDict):
+                            self.new_value_signal[OrderedDict].emit(np.array(new_value))
                         else:
                             raise ValueError(f'No matching signal for value: {new_value} with type: {type(new_value)}')
                 # Sometimes unchanged control variables appear to be returned with value changes, so checking against
@@ -201,7 +202,7 @@ class Connection(PyDMConnection):
             except KeyError:
                 pass
             try:
-                channel.value_signal[dict].connect(self.put_value, Qt.QueuedConnection)
+                channel.value_signal[OrderedDict].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
 
