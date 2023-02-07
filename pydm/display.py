@@ -12,7 +12,6 @@ from qtpy import uic
 from qtpy.QtWidgets import QApplication, QWidget
 
 from .utilities import import_module_by_filename, is_pydm_app, macro
-#this is a test
 
 class ScreenTarget:
     NEW_PROCESS = 0
@@ -64,6 +63,7 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     w = loader(file, args=args, macros=macros)
     if target == ScreenTarget.DIALOG:
         w.show()
+    
     return w
 
 
@@ -224,7 +224,6 @@ _extension_to_loader = {
     ".adl": load_adl_file,
 }
 
-
 class Display(QWidget):
     def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
         super(Display, self).__init__(parent=parent)
@@ -257,6 +256,18 @@ class Display(QWidget):
     @next_display.setter
     def next_display(self, display):
         self._next_display = display
+
+    def menu_items(self):
+        return {}
+
+    def save_action(self):
+        return None
+    
+    def save_as_action(self):
+        return None
+
+    def load_action(self):
+        return None
 
     def navigate_back(self):
         pass
@@ -327,3 +338,9 @@ class Display(QWidget):
                 self._local_style = f.read()
         logger.debug("Setting stylesheet to: %s", self._local_style)
         super(Display, self).setStyleSheet(self._local_style)
+
+    
+
+    
+
+    

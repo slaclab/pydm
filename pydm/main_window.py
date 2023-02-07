@@ -4,6 +4,7 @@ from os import path
 from qtpy.QtWidgets import (QApplication, QMainWindow, QFileDialog,
                             QAction, QMessageBox, QMenu)
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
+from qtpy.QtGui import QKeySequence
 from .utilities import (IconFont, find_file, establish_widget_connections,
                         close_widget_connections)
 from .pydm_ui import Ui_MainWindow
@@ -77,6 +78,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
         self.showMacros.triggered.connect(self.show_macro_window)
         self.ui.actionQuit.triggered.connect(self.quit_main_window)
+        
 
         if hide_nav_bar:
             self.toggle_nav_bar(False)
@@ -121,6 +123,7 @@ class PyDMMainWindow(QMainWindow):
         self.setCentralWidget(self._display_widget)
         self.enable_disable_navigation()
         self.update_window_title()
+        self.add_menu_items()
         # Resizing to the new widget's dimensions needs to be
         # done on the event loop for some reason - you can't
         # just do it here.
@@ -498,3 +501,59 @@ class PyDMMainWindow(QMainWindow):
     def show_macro_window(self):
         macro_window = MacroWindow(self)
         macro_window.show()
+
+    def add_menu_items(self):
+        # create the custom menu with user given items 
+        items = self.display_widget().menu_items()
+        if len(items) == 0:
+            self.ui.menuCustomActions.setEnabled(False)
+        else:
+            self.ui.menuCustomActions.setEnabled(True)
+            self.create_menu(self.ui.menuCustomActions, items)
+        
+        # connect custom save, save as, and load functions
+        file_menu_items = self.display_widget().file_menu_items()
+        if len(file_menu_items) != 0:
+            valid_keys = ('save', 'save_as', 'load')
+            ui_actions = (self.ui.actionSave, self.ui.actionSave_As, self.ui.actionLoad)
+            action_dict = dict(zip(valid_keys, ui_actions))
+            # iterate through user given keys, which need to match the possible keys
+            for key in file_menu_items.keys():
+                fileAction = file_menu_items[key]
+                if key.lower() in valid_keys:
+                    ui_action = action_dict[key.lower()]
+                    ui_action.setEnabled(True)
+                    fileAction = file_menu_items[key]
+                    if isinstance(fileAction, tuple):
+                        shortcut = fileAction[1]
+                        fileAction = fileAction[0]
+                        PyDMMainWindow().add_shortcut(ui_action, shortcut)
+                        ui_action.triggered.connect(fileAction)
+                else:
+                    print(f"File menu key not recognized, {key} action not added to file menu.")
+
+    @staticmethod
+    def create_menu(menu, items):
+        # iterate through the items list and add to the menu
+        for key in items.keys():
+            val = items[key]
+            # if there is a dictionary nested in the primary dictionary, create a new submenu, and call create_menu with that submenu as the parent menu
+            if isinstance(val, dict):
+                new_menu = menu.addMenu(key)
+                create_menu(new_menu, val)
+            # otherwise, add the key and it's relevant function to the menu
+            else:
+                action = menu.addAction(key)
+                if isinstance(val, tuple):
+                    shortcut = val[1]
+                    val = val[0]
+                    PyDMMainWindow().add_shortcut(action, shortcut)
+                action.triggered.connect(val)
+
+    @staticmethod
+    def add_shortcut(action, shortcut):
+        # set the shortcut to the given action
+        action.setShortcutContext(Qt.ApplicationShortcut)
+        action.setShortcut(QKeySequence(shortcut))
+
+    

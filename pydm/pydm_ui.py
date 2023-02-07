@@ -32,6 +32,14 @@ class Ui_MainWindow(object):
         self.menuHistory.setObjectName("menuHistory")
         self.menuTools = QtWidgets.QMenu(self.menubar)
         self.menuTools.setObjectName("menuTools")
+
+        ###
+        self.menuCustomActions = QtWidgets.QMenu(self.menubar)
+        self.menuCustomActions.setObjectName("menuCustomActions")
+        self.menuCustomActions.setTitle('Actions')
+        ###
+
+
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -99,12 +107,32 @@ class Ui_MainWindow(object):
         self.actionDefault_Font_Size.setObjectName("actionDefault_Font_Size")
         self.actionQuit = QtWidgets.QAction(MainWindow)
         self.actionQuit.setObjectName("actionQuit")
+
+        ###
+        self.actionSave = QtWidgets.QAction(MainWindow)
+        self.actionSave.setObjectName('actionSave')
+        self.actionSave.setEnabled(False)
+        self.actionSave_As = QtWidgets.QAction(MainWindow)
+        self.actionSave_As.setObjectName('actionSave_As')
+        self.actionSave_As.setEnabled(False)
+        self.actionLoad = QtWidgets.QAction(MainWindow)
+        self.actionLoad.setObjectName('actionLoad')
+        self.actionLoad.setEnabled(False)
+        ###
+
         self.menuFile.addAction(self.actionOpen_File)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEdit_in_Designer)
         self.menuFile.addAction(self.actionReload_Display)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionAbout_PyDM)
+
+        ###
+        self.menuFile.addAction(self.actionSave)
+        self.menuFile.addAction(self.actionSave_As)
+        self.menuFile.addAction(self.actionLoad)
+        ###
+
         self.menuFile.addAction(self.actionQuit)
         self.menuView.addAction(self.actionEnter_Fullscreen)
         self.menuView.addAction(self.actionIncrease_Font_Size)
@@ -121,10 +149,16 @@ class Ui_MainWindow(object):
         self.menuHistory.addAction(self.actionHome)
         self.menuTools.addAction(self.actionLoadTool)
         self.menuTools.addSeparator()
+
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
         self.menubar.addAction(self.menuHistory.menuAction())
         self.menubar.addAction(self.menuTools.menuAction())
+
+        ###
+        self.menubar.addAction(self.menuCustomActions.menuAction())
+        ###
+
         self.navbar.addAction(self.actionBack)
         self.navbar.addAction(self.actionForward)
         self.navbar.addSeparator()
@@ -140,6 +174,14 @@ class Ui_MainWindow(object):
         self.menuView.setTitle(_translate("MainWindow", "View"))
         self.menuHistory.setTitle(_translate("MainWindow", "History"))
         self.menuTools.setTitle(_translate("MainWindow", "Tools"))
+
+        ###
+        self.menuCustomActions.setTitle(_translate("MainWindow", "Actions"))
+        self.actionSave.setText(_translate("MainWindow", "Save"))
+        self.actionSave_As.setText(_translate("MainWindow", "Save As"))
+        self.actionLoad.setText(_translate("MainWindow", "Load"))
+        ###
+
         self.navbar.setWindowTitle(_translate("MainWindow", "toolBar"))
         self.actionEdit_in_Designer.setText(_translate("MainWindow", "Edit in Designer"))
         self.actionAbout_PyDM.setText(_translate("MainWindow", "About PyDM"))
