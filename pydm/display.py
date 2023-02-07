@@ -260,14 +260,8 @@ class Display(QWidget):
     def menu_items(self):
         return {}
 
-    def save_action(self):
-        return None
-    
-    def save_as_action(self):
-        return None
-
-    def load_action(self):
-        return None
+    def file_menu_items(self):
+        return {}
 
     def navigate_back(self):
         pass
