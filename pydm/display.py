@@ -1,3 +1,4 @@
+from __future__ import annotations
 import functools
 import inspect
 import logging
@@ -108,7 +109,7 @@ def _load_ui_into_display(uifile, display):
     display.ui = display
 
 
-def _load_compiled_ui_into_display(code_string: str, class_name: str, display) -> None:
+def _load_compiled_ui_into_display(code_string: str, class_name: str, display: Display) -> None:
     """
     Takes a ui file which has already been compiled by uic and loads it into the input display
 
