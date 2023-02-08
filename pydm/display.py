@@ -9,7 +9,7 @@ from functools import lru_cache
 from io import StringIO
 from os import path
 from string import Template
-from typing import Tuple
+from typing import Dict, Optional, Tuple
 
 import re
 import six
@@ -109,9 +109,14 @@ def _load_ui_into_display(uifile, display):
     display.ui = display
 
 
-def _load_compiled_ui_into_display(code_string: str, class_name: str, display: Display) -> None:
+def _load_compiled_ui_into_display(code_string: str,
+                                   class_name: str,
+                                   display: Display,
+                                   macros: Optional[Dict[str, str]] = None) -> None:
     """
-    Takes a ui file which has already been compiled by uic and loads it into the input display
+    Takes a ui file which has already been compiled by uic and loads it into the input display.
+    Performs macro substitution within the input code_string if any macros supplied are
+    found withing the code string.
 
     Parameters
     ----------
@@ -121,7 +126,11 @@ def _load_compiled_ui_into_display(code_string: str, class_name: str, display: D
         The name of the class that methods will be executed on
     display : Display
         The display which the ui file is being loaded into
+    macros : Optional[Dict[str, str]]
+        Macros to be substituted
     """
+    if macros:
+        code_string = macro.replace_macros_in_template(Template(code_string), macros).getvalue()
     # Create and grab the class described by the compiled ui file
     ui_globals = {}
     exec(code_string, ui_globals)
@@ -158,9 +167,7 @@ def load_ui_file(uifile, macros=None, args=None):
     d = Display(macros=macros)
     d._loaded_file = uifile
     code_string, class_name = _compile_ui_file(uifile)
-    if macros:
-        code_string = macro.replace_macros_in_template(Template(code_string), macros).getvalue()
-    _load_compiled_ui_into_display(code_string, class_name, d)
+    _load_compiled_ui_into_display(code_string, class_name, d, macros)
     return d
 
 
@@ -348,9 +355,7 @@ class Display(QWidget):
         if self.ui_filepath() is not None and self.ui_filepath() != "":
             self._loaded_file = self.ui_filepath()
             code_string, class_name = _compile_ui_file(self.ui_filepath())
-            if macros is not None:
-                code_string = macro.replace_macros_in_template(Template(code_string), macros).getvalue()
-            _load_compiled_ui_into_display(code_string, class_name, self)
+            _load_compiled_ui_into_display(code_string, class_name, self, macros)
 
     def setStyleSheet(self, new_stylesheet):
         # Handle the case where the widget's styleSheet property contains a filename, rather than a stylesheet.
