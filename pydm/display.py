@@ -90,7 +90,7 @@ def _compile_ui_file(uifile: str) -> Tuple[str, str]:
     code_string = StringIO()
     uic.compileUi(uifile, code_string)
     # Grabs non-whitespace characters between class and the opening parenthesis
-    class_name = re.search(r'class\s*(\S*)\(', code_string.getvalue()).group(1)
+    class_name = re.search(r'^class\s*(\S*)\(', code_string.getvalue()).group(1)
     return code_string.getvalue(), class_name
 
 
