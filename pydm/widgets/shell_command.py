@@ -400,7 +400,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
                 logger.debug("Launching process: %s", repr(args))
                 stdout = subprocess.PIPE
 
-                if self.env_var is not None:
+                if self.env_var:
                     env_var = literal_eval(self.env_var)
                 else:
                     env_var = None
