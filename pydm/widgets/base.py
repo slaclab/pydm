@@ -682,7 +682,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                 if len(row) == 0:
                     channel = init_channel
                 elif len(row):
-                    self._row = row[1][1:-1]
+                    self._row = row[0][1:-1]
                     row_parts = re.split('\[', init_channel)
                     channel = row_parts[0]
             elif len(col_parts) == 2:
@@ -690,6 +690,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                 if len(row) == 0:
                     self._col = str(col_parts[1])
                 elif len(row) == 1:
+                    self._row = int(row[0][1:-1])
                     self._col = str(re.split('\[',col_parts[1])[0])
             else:
                 print('sadness')
@@ -772,11 +773,19 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         new_val : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
-        
         self.value = new_val
         self.channeltype = type(self.value)
         if self.channeltype == np.ndarray:
-            self.subtype = self.value.dtype.type
+            if isinstance(self.value[0], dict):
+                if self._col is not None and self._row is not None:
+                    self.value = self.value[self._row][self._col]
+                elif self._col is not None:
+                    self.value = [val[self._col] for val in self.value]
+                elif self._row is not None:
+                    self.value = self.value[self._row]
+                self.channeltype = type(self.value)
+            else:
+                self.subtype = self.value.dtype.type
         else:
             try:
                 if self.channeltype == unicode:
