@@ -72,7 +72,7 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     return w
 
 
-@lru_cache
+@lru_cache()
 def _compile_ui_file(uifile: str) -> Tuple[str, str]:
     """
     Compile the ui file using uic and return the result as a string along with the associated class name.
