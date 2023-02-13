@@ -85,7 +85,9 @@ def test_change_display_format_type(qtbot, display_format):
 
 @pytest.mark.parametrize("value, display_format, precision, scale, unit, show_unit, expected_display", [
     (123, DisplayFormat.Default, 3, 1, "s", True, "123.000 s"),
-    (123.47, DisplayFormat.Decimal, 3, 2, "seconds", False, "246.94"),
+    (123.47, DisplayFormat.Decimal, 3, 2, "seconds", False, "246.940"),
+    (123.4567, DisplayFormat.String, 2, 1, "", False, "123.46"),
+    (123.4567, DisplayFormat.Decimal, 1, 1, "", False, "123.5"),
     (1e2, DisplayFormat.Exponential, 2, 2, "light years", True, "2.00e+02 light years"),
     (0x1FF, DisplayFormat.Hex, 0, 1, "Me", True, "0x1ff Me"),
     (0b100, DisplayFormat.Binary, 0, 1, "KB", True, "0b100 KB"),
