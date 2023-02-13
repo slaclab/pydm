@@ -2,7 +2,7 @@ import os
 from os import path
 
 from qtpy.QtWidgets import (QApplication, QMainWindow, QFileDialog,
-                            QAction, QMessageBox, QMenu)
+                            QAction, QMessageBox)
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
 from qtpy.QtGui import QKeySequence
 from .utilities import (IconFont, find_file, establish_widget_connections,
@@ -78,7 +78,6 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
         self.showMacros.triggered.connect(self.show_macro_window)
         self.ui.actionQuit.triggered.connect(self.quit_main_window)
-        
 
         if hide_nav_bar:
             self.toggle_nav_bar(False)
@@ -90,7 +89,7 @@ class PyDMMainWindow(QMainWindow):
         if hide_status_bar:
             self.toggle_status_bar(False)
             self.ui.actionShow_Status_Bar.setChecked(False)
-        #Try to find the designer binary.
+        # Try to find the designer binary.
         self.ui.actionEdit_in_Designer.setEnabled(False)
 
         possible_designer_bin_paths = (QLibraryInfo.location(QLibraryInfo.BinariesPath), QLibraryInfo.location(QLibraryInfo.LibraryExecutablesPath))
@@ -503,14 +502,16 @@ class PyDMMainWindow(QMainWindow):
         macro_window.show()
 
     def add_menu_items(self):
-        # create the custom menu with user given items 
+        # create the custom menu with user given items
+        if not isinstance(self.display_widget(), Display):
+            return
         items = self.display_widget().menu_items()
-        if len(items) == 0:
-            self.ui.menuCustomActions.setEnabled(False)
-        else:
-            self.ui.menuCustomActions.setEnabled(True)
+        if len(items) != 0:
+        #    self.ui.menuCustomActions.setVisible(False)
+        #else:
+            #self.ui.menuCustomActions.setVisible(True)
             self.create_menu(self.ui.menuCustomActions, items)
-        
+
         # connect custom save, save as, and load functions
         file_menu_items = self.display_widget().file_menu_items()
         if len(file_menu_items) != 0:
@@ -522,15 +523,23 @@ class PyDMMainWindow(QMainWindow):
                 fileAction = file_menu_items[key]
                 if key.lower() in valid_keys:
                     ui_action = action_dict[key.lower()]
-                    ui_action.setEnabled(True)
                     fileAction = file_menu_items[key]
-                    if isinstance(fileAction, tuple):
+                    # track shortcut status for callability verification below
+                    has_shortcut = isinstance(fileAction, tuple)
+                    if has_shortcut:
                         shortcut = fileAction[1]
                         fileAction = fileAction[0]
-                        PyDMMainWindow().add_shortcut(ui_action, shortcut)
+                        # track whether the action is callable after if statement
+                        shortcut_action_callable = callable(fileAction)
+                        if shortcut_action_callable:
+                            PyDMMainWindow().add_shortcut(ui_action, shortcut)
+                    if (has_shortcut and shortcut_action_callable) or callable(fileAction):
+                        ui_action.setVisible(True)
                         ui_action.triggered.connect(fileAction)
+                    else:
+                        logger.error("Cannot add non callable object to menu.")
                 else:
-                    print(f"File menu key not recognized, {key} action not added to file menu.")
+                    logger.error(f"File menu key not recognized, {key} action not added to file menu.")
 
     @staticmethod
     def create_menu(menu, items):
@@ -540,7 +549,7 @@ class PyDMMainWindow(QMainWindow):
             # if there is a dictionary nested in the primary dictionary, create a new submenu, and call create_menu with that submenu as the parent menu
             if isinstance(val, dict):
                 new_menu = menu.addMenu(key)
-                create_menu(new_menu, val)
+                PyDMMainWindow().create_menu(new_menu, val)
             # otherwise, add the key and it's relevant function to the menu
             else:
                 action = menu.addAction(key)
@@ -548,12 +557,14 @@ class PyDMMainWindow(QMainWindow):
                     shortcut = val[1]
                     val = val[0]
                     PyDMMainWindow().add_shortcut(action, shortcut)
-                action.triggered.connect(val)
+                if callable(val):
+                    action.triggered.connect(val)
+                else:
+                    menu.removeAction(key)
+                    logger.error("Cannot add non callable object to menu.")
 
     @staticmethod
     def add_shortcut(action, shortcut):
         # set the shortcut to the given action
         action.setShortcutContext(Qt.ApplicationShortcut)
         action.setShortcut(QKeySequence(shortcut))
-
-    
