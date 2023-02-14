@@ -507,9 +507,6 @@ class PyDMMainWindow(QMainWindow):
             return
         items = self.display_widget().menu_items()
         if len(items) != 0:
-        #    self.ui.menuCustomActions.setVisible(False)
-        #else:
-            #self.ui.menuCustomActions.setVisible(True)
             self.create_menu(self.ui.menuCustomActions, items)
 
         # connect custom save, save as, and load functions
