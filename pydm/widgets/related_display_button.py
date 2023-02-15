@@ -7,12 +7,10 @@ import hashlib
 from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit
 from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
-
 from .base import PyDMWidget, only_if_channel_set
-from ..utilities import IconFont, find_file, is_pydm_app, is_qt_designer
+from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
 from ..display import (load_file, ScreenTarget)
-
 
 logger = logging.getLogger(__name__)
 

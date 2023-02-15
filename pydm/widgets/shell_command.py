@@ -11,7 +11,7 @@ from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineE
 from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from .base import PyDMWidget, only_if_channel_set
-from ..utilities import IconFont, is_qt_designer
+from ..utilities import IconFont
 
 logger = logging.getLogger(__name__)
 
