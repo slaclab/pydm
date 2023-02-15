@@ -56,42 +56,6 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     @Property(str)
     def channel(self):
         """
-        Avoid calling this method and use the alarm_channel method instead to set the channel on the widget.
-        if both channel and alarm_channel are set, which ever is called last with overwrite the first called, which may
-        lead to unintended behavior.
-        The channel address in use for this widget.
-
-        Returns
-        -------
-        channel : str
-            Channel address
-        """
-        warnings.warn("'PyDMShellCommand.channel' is not recommended for getting/setting the channel property "
-                      "for the shell command, use 'PyDMShellCommand.alarm_channel' instead.")
-
-        return PyDMWidget.channel()
-
-    @channel.setter
-    def channel(self, value):
-        """
-        Avoid calling this method and use the alarm_channel method instead to set the channel on the widget.
-        if both channel and alarm_channel are set, which ever is called last with overwrite the first called, which may
-        lead to unintended behavior.
-        The channel address in use for this widget.
-
-        Parameters
-        ----------
-        value : str
-            Channel address
-        """
-        warnings.warn("'PyDMShellCommand.channel' is not recommended for getting/setting the channel property "
-                      "for the shell command, use 'PyDMShellCommand.alarm_channel' instead.")
-
-        PyDMWidget.channel(value)
-
-    @Property(str)
-    def alarmChannel(self):
-        """
         The channel address in use for this widget. This channel is only for attaching an alarm
         to the shell command button.
 
@@ -102,8 +66,8 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return PyDMWidget.channel()
 
-    @alarmChannel.setter
-    def alarmChannel(self, value):
+    @channel.setter
+    def channel(self, value):
         """
         The channel address in use for this widget. This channel is only for attaching an alarm
         to the shell command button.
@@ -494,5 +458,3 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         else:
             logger.error("Command '%s' already active.", command)
 
-    # if is_qt_designer hide the channel property:
-    channel = Property(str, PyDMWidget.channel.fget, PyDMWidget.channel.fset, designable=False)

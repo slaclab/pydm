@@ -75,10 +75,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @Property(str)
     def channel(self):
         """
-        Avoid calling this method and use the alarm_channel method instead to set the channel on the widget.
-        if both channel and alarm_channel are set, which ever is called last with overwrite the first called, which may
-        lead to unintended behavior.
-        The channel address in use for this widget.
+        The channel address in use for this widget. This channel is only for attaching an alarm
+        to the related display button.
 
         Returns
         -------
@@ -93,10 +91,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @channel.setter
     def channel(self, value):
         """
-        Avoid calling this method and use the alarm_channel method instead to set the channel on the widget.
-        if both channel and alarm_channel are set, which ever is called last with overwrite the first called, which may
-        lead to unintended behavior.
-        The channel address in use for this widget.
+        The channel address in use for this widget. This channel is only for attaching an alarm
+        to the related display button.
 
         Parameters
         ----------
@@ -106,32 +102,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         warnings.warn("'PyDMRelatedDisplayButton.channel' is not recommended for getting/setting the channel property "
                       "for the related display button, use 'PyDMRelatedDisplayButton.alarm_channel' instead.")
 
-        PyDMWidget.channel(value)
-
-    @Property(str)
-    def alarmChannel(self):
-        """
-        The channel address in use for this widget. This channel is only for attaching an alarm
-        to the related display button.
-
-        Returns
-        -------
-        channel : str
-            Channel address
-        """
-        return PyDMWidget.channel()
-
-    @alarmChannel.setter
-    def alarmChannel(self, value):
-        """
-        The channel address in use for this widget. This channel is only for attaching an alarm
-        to the related display button.
-
-        Parameters
-        ----------
-        value : str
-            Channel address
-        """
         PyDMWidget.channel(value)
 
     @only_if_channel_set
@@ -562,5 +532,3 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         menu = self.context_menu()
         menu.exec_(self.mapToGlobal(pos))
 
-    # if is_qt_designer hide the channel property:
-    channel = Property(str, PyDMWidget.channel.fget, PyDMWidget.channel.fset, designable=False)
