@@ -81,9 +81,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         channel : str
             Channel address
         """
-        warnings.warn("'PyDMRelatedDisplayButton.channel' is not recommended for getting/setting the channel property "
-                      "for the related display button, use 'PyDMRelatedDisplayButton.alarm_channel' instead.")
-
+        PyDMWidget.channel().comment = "test"
         return PyDMWidget.channel()
 
     @channel.setter
@@ -97,9 +95,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         value : str
             Channel address
         """
-        warnings.warn("'PyDMRelatedDisplayButton.channel' is not recommended for getting/setting the channel property "
-                      "for the related display button, use 'PyDMRelatedDisplayButton.alarm_channel' instead.")
-
         PyDMWidget.channel(value)
 
     @only_if_channel_set
