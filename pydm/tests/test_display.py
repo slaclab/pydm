@@ -1,7 +1,7 @@
 import os
 import pytest
 from pydm import Display
-from pydm.display import load_py_file
+from pydm.display import load_py_file, _compile_ui_file
 from qtpy.QtWidgets import QWidget
 import pydm.utilities.stylesheet
 
@@ -103,3 +103,14 @@ def test_stylesheet_property_without_path(qtbot):
     css = "PyDMLabel { font-weight: bold; }"
     my_display.setStyleSheet(css)
     assert my_display.styleSheet() == css
+
+
+def test_compile_ui_file():
+    """
+    Does a compile of our test ui file with uic and verifies the correct class is created,
+    and the expected methods are added
+    """
+    code_string, class_name = _compile_ui_file(test_ui_path)
+    assert class_name == 'Ui_Form'
+    assert 'setupUi(self' in code_string
+    assert 'retranslateUi(self' in code_string
