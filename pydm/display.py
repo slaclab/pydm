@@ -69,6 +69,7 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     w = loader(file, args=args, macros=macros)
     if target == ScreenTarget.DIALOG:
         w.show()
+
     return w
 
 
@@ -283,6 +284,7 @@ _extension_to_loader = {
 
 
 class Display(QWidget):
+
     def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
         super(Display, self).__init__(parent=parent)
         self.ui = None
@@ -314,6 +316,46 @@ class Display(QWidget):
     @next_display.setter
     def next_display(self, display):
         self._next_display = display
+
+    def menu_items(self):
+        """ Returns a dictionary where the keys are the names of the menu entries,
+        and the values are callables, where the callable is the action performed
+        when the menu item is selected.
+
+        Submenus are supported by using a similarly structued dictionary as the value.
+
+        Shortcuts are supported by using a tuple of type (callable, shortcut_string) as the value.
+
+        Users will want to overload this function in their Display subclass to return
+        their custom menu.
+
+        Example:
+
+        return {"Action 1": self.action1, "Submenu": {"Action 2" self.action2},
+        "Action 3": (self.action3, "Ctrl+A")}
+
+        """
+        return {}
+
+    def file_menu_items(self):
+        """ Returns a dictionary accepting a protected set of keys corresponding to one or more
+        possible default actions in the "File" menu, with the values as callables, where the callable
+        is the action performed when the menu item is selected.
+
+        Allowed keys are: ("save", "save_as", "load")
+
+        Shortcuts are supported by using a tuple of type (callable, shortcut_string) as the value.
+
+        Users will want to overload this function in their Display subclass to return
+        custom file menu actions.
+
+        Example:
+
+        return {"save": self.save_function, "save_as": self.save_as_function,
+        "load": (self.load_function, "Ctrl+L")}
+
+        """
+        return {}
 
     def navigate_back(self):
         pass
