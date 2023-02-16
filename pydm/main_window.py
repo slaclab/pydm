@@ -506,7 +506,9 @@ class PyDMMainWindow(QMainWindow):
         if not isinstance(self.display_widget(), Display):
             return
         items = self.display_widget().menu_items()
-        if len(items) != 0:
+        if len(items) == 0:
+            self.ui.menuCustomActions.menuAction().setVisible(False)
+        else:
             self.create_menu(self.ui.menuCustomActions, items)
 
         # connect custom save, save as, and load functions
@@ -517,7 +519,6 @@ class PyDMMainWindow(QMainWindow):
             action_dict = dict(zip(valid_keys, ui_actions))
             # iterate through user given keys, which need to match the possible keys
             for key in file_menu_items.keys():
-                fileAction = file_menu_items[key]
                 if key.lower() in valid_keys:
                     ui_action = action_dict[key.lower()]
                     fileAction = file_menu_items[key]

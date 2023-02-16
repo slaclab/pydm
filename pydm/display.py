@@ -12,7 +12,7 @@ from qtpy import uic
 from qtpy.QtWidgets import QApplication, QWidget
 
 from .utilities import import_module_by_filename, is_pydm_app, macro
-#this is a test
+
 
 class ScreenTarget:
     NEW_PROCESS = 0
