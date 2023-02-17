@@ -36,8 +36,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     def __init__(self, 
                  parent: Optional[QWidget] = None, 
                  command: Optional[Union[str, List[str]]] = None, 
-                 title: Optional[Union[str, List[str]]] = None, 
-                 relative: bool = False) -> None:
+                 title: Optional[Union[str, List[str]]] = None) -> None:
         QPushButton.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
         self.iconFont = IconFont()
@@ -71,7 +70,6 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self.env_var = None
 
         self._show_confirm_dialog = False
-        self._relative = relative
         self._confirm_message = PyDMShellCommand.DEFAULT_CONFIRM_MESSAGE
     
     def confirmDialog(self) -> bool:
