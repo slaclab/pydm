@@ -535,6 +535,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if not self.validate_password():
             return None
 
+        if not self.confirmDialog():
+            return None
+
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             cmd = os.path.expanduser(os.path.expandvars(command))
             args = shlex.split(cmd, posix='win' not in sys.platform)
