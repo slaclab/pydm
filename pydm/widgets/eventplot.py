@@ -105,6 +105,11 @@ class EventPlotCurveItem(BasePlotCurveItem):
             return
         if self.x_idx is None or self.y_idx is None:
             return
+        if not isinstance(self.x_idx, int) or not isinstance(self.y_idx, int):
+            """ The x_idx and y_idx typing is made this late so that macros can
+            can be used alongside regular indexing. """
+            self.x_idx = int(self.x_idx)
+            self.y_idx = int(self.y_idx)
         if len(new_data) <= self.x_idx or len(new_data) <= self.y_idx:
             return
         self.data_buffer = np.roll(self.data_buffer, -1)
@@ -191,8 +196,8 @@ class EventPlotCurveItem(BasePlotCurveItem):
         Called by the curve's parent plot whenever the curve needs to be
         re-drawn with new data.
         """
-        self.setData(x=self.data_buffer[0, -self.points_accumulated:].astype(np.float),
-                     y=self.data_buffer[1, -self.points_accumulated:].astype(np.float))
+        self.setData(x=self.data_buffer[0, -self.points_accumulated:].astype(float),
+                     y=self.data_buffer[1, -self.points_accumulated:].astype(float))
 
     def limits(self):
         """
@@ -288,7 +293,7 @@ class PyDMEventPlot(BasePlot):
 
     def addChannel(self, channel=None, y_idx=None, x_idx=None, name=None,
                    color=None, lineStyle=None, lineWidth=None,
-                   symbol=None, symbolSize=None, buffer_size=None,
+                   symbol='o', symbolSize=5, buffer_size=None,
                    yAxisName=None, bufferSizeChannelAddress=None):
         """
         Add a new curve to the plot.  In addition to the arguments below,

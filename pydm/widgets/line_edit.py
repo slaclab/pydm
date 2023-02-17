@@ -41,6 +41,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         self.create_unit_options()
         self._display_format_type = self.DisplayFormat.Default
         self._string_encoding = "utf_8"
+        self._user_set_read_only = False  # Are we *really* read only?
         if utilities.is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
 
@@ -126,17 +127,22 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                 self.send_value_signal[str].emit(send_value)
         except ValueError:
             logger.exception("Error trying to set data '{0}' with type '{1}' and format '{2}' at widget '{3}'."
-                         .format(self.text(), self.channeltype, self._display_format_type, self.objectName()))
+                             .format(self.text(), self.channeltype, self._display_format_type, self.objectName()))
 
         self.clearFocus()
         self.set_display()
+
+    def setReadOnly(self, readOnly):
+        self._user_set_read_only = readOnly
+        super(PyDMLineEdit, self).setReadOnly(True if self._user_set_read_only else not self._write_access)
 
     def write_access_changed(self, new_write_access):
         """
         Change the PyDMLineEdit to read only if write access is denied
         """
         super(PyDMLineEdit, self).write_access_changed(new_write_access)
-        self.setReadOnly(not new_write_access)
+        if not self._user_set_read_only:
+            super(PyDMLineEdit, self).setReadOnly(not new_write_access)
 
     def unit_changed(self, new_unit):
         """
@@ -254,11 +260,10 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         else:
             self._display = str(new_value)
 
-        if self._display_format_type == DisplayFormat.Default:
-            if isinstance(new_value, (int, float)):
-                self._display = str(self.format_string.format(new_value))
-                self.setText(self._display)
-                return
+        if isinstance(new_value, (int, float)):
+            self._display = str(self.format_string.format(new_value))
+            self.setText(self._display)
+            return
 
         if self._show_units:
             self._display = "{} {}".format(self._display, self._unit)
@@ -286,4 +291,3 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
             return 0
         else:
             raise ValueError("invalid boolean input")
-

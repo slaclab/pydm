@@ -59,6 +59,7 @@ def apply_stylesheet(stylesheet_file_path=None, widget=None):
 
     widget.setStyleSheet(style)
 
+
 def _get_style_data(stylesheet_file_path=None):
     """
     Read the global stylesheet file and provide the style data as a str.
@@ -115,6 +116,7 @@ def _get_style_data(stylesheet_file_path=None):
                     GLOBAL_STYLESHEET,
                     str(ex)))
     return __style_data
+
 
 def global_style():
     return _get_style_data()

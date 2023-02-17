@@ -22,6 +22,9 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         self._alarm_sensitive_border = False
         self._show_step_exponent = True
         self._write_on_press = False
+        self._user_defined_limits = False
+        self._user_minimum = 0
+        self._user_maximum = 0
         self.step_exponent = 0
         self.setDecimals(0)
         self.app = QApplication.instance()
@@ -31,7 +34,6 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         # in order to catch the click events
         child = self.findChild(QLineEdit)
         child.installEventFilter(self)
-
 
     def stepBy(self, step):
         """
@@ -45,7 +47,6 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         super(PyDMSpinbox, self).stepBy(step)
         if self._write_on_press:
             self.send_value()
-
 
     def keyPressEvent(self, ev):
         """
@@ -74,7 +75,6 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
     
         else:
             super(PyDMSpinbox, self).keyPressEvent(ev)
-            
 
     def widget_ctx_menu(self):
         """
@@ -156,6 +156,95 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         if not self.valueBeingSet:
             self.send_value_signal[float].emit(value)
 
+    @Property(bool)
+    def userDefinedLimits(self) -> bool:
+        """
+        True if the range of the spinbox should be set based on user-defined limits, False if
+        it should be set based on the limits received from the channel
+
+        Returns
+        -------
+        bool
+        """
+        return self._user_defined_limits
+
+    @userDefinedLimits.setter
+    def userDefinedLimits(self, user_defined_limits: bool) -> None:
+        """
+        Whether or not to set the range of the spinbox based on user-defined limits. Will also reset
+        the range of the spinbox in case this is called while the application is running to ensure it matches
+        what the user requested.
+
+        Parameters
+        ----------
+        user_defined_limits : bool
+        """
+        self._user_defined_limits = user_defined_limits
+        self.reset_limits()
+
+    @Property(float)
+    def userMinimum(self) -> float:
+        """
+        Lower user-defined limit value
+
+        Returns
+        -------
+        float
+        """
+        return self._user_minimum
+
+    @userMinimum.setter
+    def userMinimum(self, new_min: float) -> None:
+        """
+        Set the Lower user-defined limit value, updates the range of the spinbox if needed
+
+        Parameters
+        ----------
+        new_min : float
+        """
+        self._user_minimum = new_min
+        self.reset_limits()
+
+    @Property(float)
+    def userMaximum(self) -> float:
+        """
+        Upper user-defined limit value
+
+        Returns
+        -------
+        float
+        """
+        return self._user_maximum
+
+    @userMaximum.setter
+    def userMaximum(self, new_max: float) -> None:
+        """
+        Set the upper user-defined limit value, updates the range of the spinbox if needed
+
+        Parameters
+        ----------
+        new_max : float
+        """
+        self._user_maximum = new_max
+        self.reset_limits()
+
+    def reset_limits(self) -> None:
+        """
+        Will reset the lower and upper limits to either the ones set by the user, or the ones from the
+        channel depending on the current state of userDefinedLimits(). If a None value would be set,
+        do not attempt the update.
+        """
+        if self.userDefinedLimits:
+            if self.userMinimum is None or self.userMaximum is None:
+                return
+            self.setMinimum(self.userMinimum)
+            self.setMaximum(self.userMaximum)
+        else:
+            if self._lower_ctrl_limit is None or self._upper_ctrl_limit is None:
+                return
+            self.setMinimum(self._lower_ctrl_limit)
+            self.setMaximum(self._upper_ctrl_limit)
+
     def ctrl_limit_changed(self, which, new_limit):
         """
         Callback invoked when the Channel receives new control limit
@@ -169,10 +258,11 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
             New value for the control limit
         """
         super(PyDMSpinbox, self).ctrl_limit_changed(which, new_limit)
-        if which == "UPPER":
-            self.setMaximum(new_limit)
-        else:
-            self.setMinimum(new_limit)
+        if not self.userDefinedLimits:
+            if which == "UPPER":
+                self.setMaximum(new_limit)
+            else:
+                self.setMinimum(new_limit)
 
     def precision_changed(self, new_precision):
         """

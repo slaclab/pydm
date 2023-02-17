@@ -258,9 +258,9 @@ class WaveformCurveItem(BasePlotCurveItem):
     def _setCurveData(self):
         """ Sets the most recently received waveform data for display as a line graph. """
         if self.x_waveform is None:
-            self.setData(y=self.y_waveform.astype(np.float))
+            self.setData(y=self.y_waveform.astype(float))
             return
-        self.setData(x=self.x_waveform.astype(np.float), y=self.y_waveform.astype(np.float))
+        self.setData(x=self.x_waveform.astype(float), y=self.y_waveform.astype(float))
 
     def _setBarGraphItem(self):
         """ Sets the most recently received waveform data for display as a bar graph. """

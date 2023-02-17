@@ -289,11 +289,13 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, precision):
     assert pydm_spinbox.value == user_typed_value
 
 
-@pytest.mark.parametrize("which_limit, new_limit", [
-    ("UPPER", 123.456),
-    ("LOWER", 12.345)
+@pytest.mark.parametrize("which_limit, new_limit, user_defined_limits", [
+    ("UPPER", 123.456, False),
+    ("LOWER", 12.345, False),
+    ("UPPER", 987.654, True),
+    ("LOWER", 9.321, True)
 ])
-def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
+def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined_limits):
     """
     Test the upper and lower limit settings.
 
@@ -310,20 +312,72 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
         "UPPER" if the new value is intended for the upper limit, "LOWER" for the lower limit
     new_limit : float
         The new limit value
+    user_defined_limits : bool
+        True if the spinbox should set its range based on user defined values, False if it should take its
+        range from the PV itself
     """
     pydm_spinbox = PyDMSpinbox()
     qtbot.addWidget(pydm_spinbox)
+    pydm_spinbox.userDefinedLimits = user_defined_limits
+    pydm_spinbox.userMinimum = -10.5
+    pydm_spinbox.userMaximum = 10.5
+    pydm_spinbox.precisionFromPV = False
+    pydm_spinbox.precision = 3
 
     if which_limit == "UPPER":
         signals.upper_ctrl_limit_signal[type(new_limit)].connect(pydm_spinbox.upperCtrlLimitChanged)
         signals.upper_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_spinbox.get_ctrl_limits()[1] == new_limit
+        if not user_defined_limits:
+            # Not user_defined_limits means the range of the spinbox should stay in sync with the PV
+            assert pydm_spinbox.maximum() == new_limit
+        else:
+            # Otherwise while we still store the limits on the base widget, the spinbox remains at the user-set values
+            assert pydm_spinbox.maximum() == 10.5
     elif which_limit == "LOWER":
         signals.lower_ctrl_limit_signal[type(new_limit)].connect(pydm_spinbox.lowerCtrlLimitChanged)
         signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_spinbox.get_ctrl_limits()[0] == new_limit
+        if not user_defined_limits:
+            assert pydm_spinbox.minimum() == new_limit
+        else:
+            assert pydm_spinbox.minimum() == -10.5
+
+
+def test_reset_limits(qtbot):
+    """
+    Test that when reset_limits() is called, the range of the spinbox is set as expected
+    """
+    # Set up a spinbox with some initial user set limits
+    pydm_spinbox = PyDMSpinbox()
+    qtbot.addWidget(pydm_spinbox)
+    pydm_spinbox.userDefinedLimits = True
+    pydm_spinbox.userMinimum = -10.5
+    pydm_spinbox.userMaximum = 10.5
+    pydm_spinbox.precisionFromPV = False
+    pydm_spinbox.precision = 1
+
+    # Also set a couple limits based on info we could have gotten back from the channel
+    pydm_spinbox._lower_ctrl_limit = -5
+    pydm_spinbox._upper_ctrl_limit = 5
+
+    # This first call to reset_limits should essentially do nothing as nothing has happened
+    # that would cause the range of the spinbox to change
+    pydm_spinbox.reset_limits()
+    assert pydm_spinbox.minimum() == -10.5
+    assert pydm_spinbox.maximum() == 10.5
+
+    # Turning off user defined limits should now cause the range to be set by the values received from the channel
+    pydm_spinbox.userDefinedLimits = False
+    assert pydm_spinbox.minimum() == -5
+    assert pydm_spinbox.maximum() == 5
+
+    # Finally flip it back to ensure it switches back to the user-defined range as expected
+    pydm_spinbox.userDefinedLimits = True
+    assert pydm_spinbox.minimum() == -10.5
+    assert pydm_spinbox.maximum() == 10.5
 
 
 @pytest.mark.parametrize("key_pressed, initial_spinbox_value, expected_result, write_on_press", [

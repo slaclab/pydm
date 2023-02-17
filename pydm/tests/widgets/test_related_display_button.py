@@ -2,11 +2,15 @@ import os
 import pytest
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QApplication, QVBoxLayout
+from ...utilities.stylesheet import global_style
 from ...widgets.related_display_button import PyDMRelatedDisplayButton
 
 test_ui_path = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     "../test_data", "test.ui")
+test_ui_path_with_stylesheet = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)),
+    "../test_data", "test_emb_style.ui")
 
 def test_old_display_filename_property(qtbot):
     # This test is mostly only checking that the related display button
@@ -112,3 +116,41 @@ def test_menu_goes_away_when_files_all_blank(qtbot):
     qtbot.addWidget(button)
     button._rebuild_menu()
     assert button.menu() is None
+
+def test_no_pydm_app_stylesheet(monkeypatch, qtbot):
+    local_is_pydm_app = True
+
+    def is_pydm_app():
+        return local_is_pydm_app
+
+    monkeypatch.setattr(
+        "pydm.widgets.related_display_button.is_pydm_app",
+        is_pydm_app,
+    )
+
+    QApplication.instance().make_main_window()
+    main_window = QApplication.instance().main_window
+    main_window.setWindowTitle("Related Display Button Test")
+    qtbot.addWidget(main_window)
+    button = PyDMRelatedDisplayButton(parent=main_window)
+    qtbot.addWidget(button)
+
+    # In a pydm application, the stylesheet is set on PyDMApplication
+    local_is_pydm_app = True
+    display1 = button.open_display(test_ui_path)
+    assert not display1.styleSheet()
+
+    # In non-pydm applications, we add a stylesheet to the display
+    local_is_pydm_app = False
+    display2 = button.open_display(test_ui_path)
+    assert global_style() in display2.styleSheet()
+
+    # If there was already a stylesheet we need to maintain the original text
+    local_is_pydm_app = True
+    display3 = button.open_display(test_ui_path_with_stylesheet)
+    original_style = display3.styleSheet()
+    local_is_pydm_app = False
+    display4 = button.open_display(test_ui_path_with_stylesheet)
+    assert original_style in display4.styleSheet()
+    # And we need to add the global stylesheet too
+    assert global_style() in display4.styleSheet()
