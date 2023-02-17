@@ -483,7 +483,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
 
         Parameters
         ----------
-        command : List[str], str or None 
+        command : str 
             Shell command
         """
         if not command:
