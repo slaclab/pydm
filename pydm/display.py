@@ -1,12 +1,17 @@
+from __future__ import annotations
 import functools
 import inspect
 import logging
 import os
 import sys
 import warnings
+from functools import lru_cache
+from io import StringIO
 from os import path
 from string import Template
+from typing import Dict, Optional, Tuple
 
+import re
 import six
 from qtpy import uic
 from qtpy.QtWidgets import QApplication, QWidget
@@ -64,7 +69,30 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     w = loader(file, args=args, macros=macros)
     if target == ScreenTarget.DIALOG:
         w.show()
+
     return w
+
+
+@lru_cache()
+def _compile_ui_file(uifile: str) -> Tuple[str, str]:
+    """
+    Compile the ui file using uic and return the result as a string along with the associated class name.
+    Caches the result to improve performance when the same ui file is re-used many times within a display.
+
+    Parameters
+    ----------
+    uifile : str
+        The path to a .ui file to compile
+
+    Returns
+    -------
+    Tuple[str, str] - The first element is the compiled ui file, the second is the name of the class (e.g. Ui_Form)
+    """
+    code_string = StringIO()
+    uic.compileUi(uifile, code_string)
+    # Grabs non-whitespace characters between class and the opening parenthesis
+    class_name = re.search(r'^class\s*(\S*)\(', code_string.getvalue(), re.MULTILINE).group(1)
+    return code_string.getvalue(), class_name
 
 
 def _load_ui_into_display(uifile, display):
@@ -78,6 +106,40 @@ def _load_ui_into_display(uifile, display):
     # Add retranslateUi to Display class
     display.retranslateUi = functools.partial(retranslateUi, display)
     setupUi(display, display)
+
+    display.ui = display
+
+
+def _load_compiled_ui_into_display(code_string: str,
+                                   class_name: str,
+                                   display: Display,
+                                   macros: Optional[Dict[str, str]] = None) -> None:
+    """
+    Takes a ui file which has already been compiled by uic and loads it into the input display.
+    Performs macro substitution within the input code_string if any macros supplied are
+    found withing the code string.
+
+    Parameters
+    ----------
+    code_string : str
+        The pre-compiled ui file to load
+    class_name : str
+        The name of the class that methods will be executed on
+    display : Display
+        The display which the ui file is being loaded into
+    macros : Optional[Dict[str, str]]
+        Macros to be substituted
+    """
+    if macros:
+        code_string = macro.replace_macros_in_template(Template(code_string), macros).getvalue()
+    # Create and grab the class described by the compiled ui file
+    ui_globals = {}
+    exec(code_string, ui_globals)
+    klass = ui_globals[class_name]
+
+    # Add retranslateUi to Display class
+    display.retranslateUi = functools.partial(klass.retranslateUi, display)
+    klass.setupUi(display, display)
 
     display.ui = display
 
@@ -104,13 +166,9 @@ def load_ui_file(uifile, macros=None, args=None):
     """
 
     d = Display(macros=macros)
-    if macros:
-        f = macro.substitute_in_file(uifile, macros)
-    else:
-        f = uifile
-
     d._loaded_file = uifile
-    _load_ui_into_display(f, d)
+    code_string, class_name = _compile_ui_file(uifile)
+    _load_compiled_ui_into_display(code_string, class_name, d, macros)
     return d
 
 
@@ -226,6 +284,7 @@ _extension_to_loader = {
 
 
 class Display(QWidget):
+
     def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
         super(Display, self).__init__(parent=parent)
         self.ui = None
@@ -257,6 +316,46 @@ class Display(QWidget):
     @next_display.setter
     def next_display(self, display):
         self._next_display = display
+
+    def menu_items(self):
+        """ Returns a dictionary where the keys are the names of the menu entries,
+        and the values are callables, where the callable is the action performed
+        when the menu item is selected.
+
+        Submenus are supported by using a similarly structued dictionary as the value.
+
+        Shortcuts are supported by using a tuple of type (callable, shortcut_string) as the value.
+
+        Users will want to overload this function in their Display subclass to return
+        their custom menu.
+
+        Example:
+
+        return {"Action 1": self.action1, "Submenu": {"Action 2" self.action2},
+        "Action 3": (self.action3, "Ctrl+A")}
+
+        """
+        return {}
+
+    def file_menu_items(self):
+        """ Returns a dictionary accepting a protected set of keys corresponding to one or more
+        possible default actions in the "File" menu, with the values as callables, where the callable
+        is the action performed when the menu item is selected.
+
+        Allowed keys are: ("save", "save_as", "load")
+
+        Shortcuts are supported by using a tuple of type (callable, shortcut_string) as the value.
+
+        Users will want to overload this function in their Display subclass to return
+        custom file menu actions.
+
+        Example:
+
+        return {"save": self.save_function, "save_as": self.save_as_function,
+        "load": (self.load_function, "Ctrl+L")}
+
+        """
+        return {}
 
     def navigate_back(self):
         pass
@@ -297,11 +396,8 @@ class Display(QWidget):
             return self.ui
         if self.ui_filepath() is not None and self.ui_filepath() != "":
             self._loaded_file = self.ui_filepath()
-            if macros is not None:
-                f = macro.substitute_in_file(self.ui_filepath(), macros)
-            else:
-                f = self.ui_filepath()
-            _load_ui_into_display(f, self)
+            code_string, class_name = _compile_ui_file(self.ui_filepath())
+            _load_compiled_ui_into_display(code_string, class_name, self, macros)
 
     def setStyleSheet(self, new_stylesheet):
         # Handle the case where the widget's styleSheet property contains a filename, rather than a stylesheet.

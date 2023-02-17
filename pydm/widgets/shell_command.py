@@ -16,14 +16,28 @@ from typing import Optional, Union, List
 
 logger = logging.getLogger(__name__)
 
+
 class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     """
     A QPushButton capable of execute shell commands.
+
+    Parameters
+    ----------
+    parent : QWidget, optional
+        The parent widget for the shell command
+    command : str or list, optional
+        A string for a single command to run, or a list of strings for multiple commands
+    title : str or list, optional
+        Title of the command to run, shown in the display. If a list, number of elements must match that of command
     """
 
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
-    def __init__(self, parent: Optional[QWidget] = None, command: Optional[Union[List[str], str]] = None, title: Optional[Union[List[str], str]] = None, relative: bool = False) -> None:
+    def __init__(self, 
+                 parent: Optional[QWidget] = None, 
+                 command: Optional[Union[str, List[str]]] = None, 
+                 title: Optional[Union[str, List[str]]] = None, 
+                 relative: bool = False) -> None:
         QPushButton.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
         self.iconFont = IconFont()
@@ -237,20 +251,20 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             self._allow_multiple = value
 
     @Property('QStringList')
-    def titles(self) -> Optional[Union[List[str], str]]:
+    def titles(self) -> List[str]:
         return self._titles
 
     @titles.setter
-    def titles(self, val: Optional[Union[List[str], str]]) -> None:
+    def titles(self, val: List[str]) -> None:
         self._titles = val
         self._menu_needs_rebuild = True
 
     @Property('QStringList')
-    def commands(self) -> Optional[Union[List[str], str]]:
+    def commands(self) -> List[str]:
         return self._commands
 
     @commands.setter
-    def commands(self, val: Optional[Union[List[str], str]]) -> None:
+    def commands(self, val: List[str]) -> None:
         if not val:
             self._commands = []
         else:
@@ -293,7 +307,6 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             else:
                 self.commands = []
 
-
     @Property(bool)
     def passwordProtected(self) -> bool:
         """
@@ -319,28 +332,28 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     @Property(str)
     def password(self) -> str:
         """
-    	Password to be encrypted using SHA256.
+        Password to be encrypted using SHA256.
 
-    	.. warning::
-    		To avoid issues exposing the password this method
-    		always returns an empty string.
+        .. warning::
+            To avoid issues exposing the password this method
+            always returns an empty string.
 
-    	Returns
-    	-------
-    	str
-    	"""
+        Returns
+        -------
+        str
+        """
         return ""
 
     @password.setter
     def password(self, value: str) -> None:
         """
-    	Password to be encrypted using SHA256.
+        Password to be encrypted using SHA256.
 
-    	Parameters
-    	----------
-    	value : str
-    		The password to be encrypted
-    	"""
+        Parameters
+        ----------
+        value : str
+            The password to be encrypted
+        """
         if value is not None and value != "":
             sha = hashlib.sha256()
             sha.update(value.encode())
@@ -351,26 +364,25 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     @Property(str)
     def protectedPassword(self) -> str:
         """
-    	The encrypted password.
+        The encrypted password.
 
-    	Returns
-    	-------
-    	str
-    	"""
+        Returns
+        -------
+        str
+        """
         return self._protected_password
 
     @protectedPassword.setter
     def protectedPassword(self, value: str) -> None:
         """
-    	Setter for the encrypted password.
+    	  Setter for the encrypted password.
 
-    	Parameters 
-    	-------
-    	value: str
-    	"""
+    	  Parameters 
+    	  -------
+    	  value: str
+    	  """
         if self._protected_password != value:
             self._protected_password = value
-
 
     def _rebuild_menu(self) -> None:
         if not any(self._commands):
@@ -467,7 +479,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
             return False
         return True
 
-    def execute_command(self, command: Optional[Union[List[str], str]]) -> None:
+    def execute_command(self, command: str) -> None:
         """
         Execute the shell command given by ```command```.
         The process is available through the ```process``` member.
@@ -494,7 +506,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
                 logger.debug("Launching process: %s", repr(args))
                 stdout = subprocess.PIPE
 
-                if self.env_var is not None:
+                if self.env_var:
                     env_var = literal_eval(self.env_var)
                 else:
                     env_var = None

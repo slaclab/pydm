@@ -95,6 +95,17 @@ def test_no_crash_with_none_command(qtbot):
      pydm_shell_command.command = None
      qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
 
+
+def test_no_error_without_env_variable(qtbot, caplog):
+    """ Verify that the shell command works when the environment variable property is saved as an empty string """
+    pydm_shell_command = PyDMShellCommand()
+    qtbot.addWidget(pydm_shell_command)
+    pydm_shell_command.command = "echo hello"
+    pydm_shell_command.environmentVariables = ""
+    qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
+    assert 'error' not in caplog.text.lower()
+
+
 @pytest.mark.parametrize("cmd, retcode, stdout", [
     (["choice /c yn /d n /t 0"] if platform.system() == "Windows" else ["sleep 0"],
         [2] if platform.system() == "Windows" else [0], ["[Y,N]?N"] if platform.system() == "Windows" else [""]),
