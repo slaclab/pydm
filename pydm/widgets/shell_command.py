@@ -33,8 +33,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
 
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
-    def __init__(self, 
-                 parent: Optional[QWidget] = None, 
+    def __init__(self, parent: Optional[QWidget] = None, 
                  command: Optional[Union[str, List[str]]] = None, 
                  title: Optional[Union[str, List[str]]] = None) -> None:
         QPushButton.__init__(self, parent)
@@ -373,12 +372,12 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
     @protectedPassword.setter
     def protectedPassword(self, value: str) -> None:
         """
-    	  Setter for the encrypted password.
+        Setter for the encrypted password.
 
-    	  Parameters 
-    	  -------
-    	  value: str
-    	  """
+    	Parameters 
+    	-------
+    	value: str
+    	"""
         if self._protected_password != value:
             self._protected_password = value
 
