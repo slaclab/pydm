@@ -2,8 +2,9 @@ import os
 from os import path
 
 from qtpy.QtWidgets import (QApplication, QMainWindow, QFileDialog,
-                            QAction, QMessageBox, QMenu)
+                            QAction, QMessageBox)
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
+from qtpy.QtGui import QKeySequence
 from .utilities import (IconFont, find_file, establish_widget_connections,
                         close_widget_connections)
 from .pydm_ui import Ui_MainWindow
@@ -88,7 +89,7 @@ class PyDMMainWindow(QMainWindow):
         if hide_status_bar:
             self.toggle_status_bar(False)
             self.ui.actionShow_Status_Bar.setChecked(False)
-        #Try to find the designer binary.
+        # Try to find the designer binary.
         self.ui.actionEdit_in_Designer.setEnabled(False)
 
         possible_designer_bin_paths = (QLibraryInfo.location(QLibraryInfo.BinariesPath), QLibraryInfo.location(QLibraryInfo.LibraryExecutablesPath))
@@ -121,6 +122,7 @@ class PyDMMainWindow(QMainWindow):
         self.setCentralWidget(self._display_widget)
         self.enable_disable_navigation()
         self.update_window_title()
+        self.add_menu_items()
         # Resizing to the new widget's dimensions needs to be
         # done on the event loop for some reason - you can't
         # just do it here.
@@ -498,3 +500,69 @@ class PyDMMainWindow(QMainWindow):
     def show_macro_window(self):
         macro_window = MacroWindow(self)
         macro_window.show()
+
+    def add_menu_items(self):
+        # create the custom menu with user given items
+        if not isinstance(self.display_widget(), Display):
+            return
+        items = self.display_widget().menu_items()
+        if len(items) == 0:
+            self.ui.menuCustomActions.menuAction().setVisible(False)
+        else:
+            self.create_menu(self.ui.menuCustomActions, items)
+
+        # connect custom save, save as, and load functions
+        file_menu_items = self.display_widget().file_menu_items()
+        if len(file_menu_items) != 0:
+            valid_keys = ('save', 'save_as', 'load')
+            ui_actions = (self.ui.actionSave, self.ui.actionSave_As, self.ui.actionLoad)
+            action_dict = dict(zip(valid_keys, ui_actions))
+            # iterate through user given keys, which need to match the possible keys
+            for key in file_menu_items.keys():
+                if key.lower() in valid_keys:
+                    ui_action = action_dict[key.lower()]
+                    fileAction = file_menu_items[key]
+                    # track shortcut status for callability verification below
+                    has_shortcut = isinstance(fileAction, tuple)
+                    if has_shortcut:
+                        shortcut = fileAction[1]
+                        fileAction = fileAction[0]
+                        # track whether the action is callable after if statement
+                        shortcut_action_callable = callable(fileAction)
+                        if shortcut_action_callable:
+                            PyDMMainWindow().add_shortcut(ui_action, shortcut)
+                    if (has_shortcut and shortcut_action_callable) or callable(fileAction):
+                        ui_action.setVisible(True)
+                        ui_action.triggered.connect(fileAction)
+                    else:
+                        logger.error("Cannot add non callable object to menu.")
+                else:
+                    logger.error(f"File menu key not recognized, {key} action not added to file menu.")
+
+    @staticmethod
+    def create_menu(menu, items):
+        # iterate through the items list and add to the menu
+        for key in items.keys():
+            val = items[key]
+            # if there is a dictionary nested in the primary dictionary, create a new submenu, and call create_menu with that submenu as the parent menu
+            if isinstance(val, dict):
+                new_menu = menu.addMenu(key)
+                PyDMMainWindow().create_menu(new_menu, val)
+            # otherwise, add the key and it's relevant function to the menu
+            else:
+                action = menu.addAction(key)
+                if isinstance(val, tuple):
+                    shortcut = val[1]
+                    val = val[0]
+                    PyDMMainWindow().add_shortcut(action, shortcut)
+                if callable(val):
+                    action.triggered.connect(val)
+                else:
+                    menu.removeAction(key)
+                    logger.error("Cannot add non callable object to menu.")
+
+    @staticmethod
+    def add_shortcut(action, shortcut):
+        # set the shortcut to the given action
+        action.setShortcutContext(Qt.ApplicationShortcut)
+        action.setShortcut(QKeySequence(shortcut))
