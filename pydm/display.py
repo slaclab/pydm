@@ -9,13 +9,14 @@ from functools import lru_cache
 from io import StringIO
 from os import path
 from string import Template
-from typing import Dict, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import re
 import six
 from qtpy import uic
 from qtpy.QtWidgets import QApplication, QWidget
 
+from . import data_plugins
 from .utilities import import_module_by_filename, is_pydm_app, macro
 
 
@@ -28,7 +29,11 @@ class ScreenTarget:
 logger = logging.getLogger(__file__)
 
 
-def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
+def load_file(file: str,
+              macros: Optional[Dict[str, str]] = None,
+              args: Optional[List[str]] = None,
+              target: ScreenTarget = ScreenTarget.NEW_PROCESS,
+              defer_connections: bool = False):
     """
     Load .ui, .py, or .adl screen file, perform macro substitution, then return
     the resulting QWidget.
@@ -47,6 +52,11 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     target : int
         One of the ScreenTarget targets. PROCESS is only available when used
         with PyDM Application for now.
+    defer_connections : bool
+        If set to true, the loading of channel connections will be deferred until the
+        connection queue is flushed via a data_plugins.establish_queued_connections() call. This
+        results in the display being responsive to the user faster as it does not wait on
+        establishing connections during initial display creation.
 
     Returns
     -------
@@ -66,7 +76,8 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     _, extension = os.path.splitext(file)
     loader = _extension_to_loader.get(extension, load_py_file)
     logger.debug("Loading %s file by way of %s...", file, loader.__name__)
-    w = loader(file, args=args, macros=macros)
+    with data_plugins.connection_queue(defer_connections=defer_connections):
+        w = loader(file, args=args, macros=macros)
     if target == ScreenTarget.DIALOG:
         w.show()
 

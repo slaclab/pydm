@@ -395,26 +395,20 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             self.setLayout(l)
             self.layout().setSpacing(self._temp_layout_spacing)
         try:
-            with pydm.data_plugins.connection_queue(defer_connections=True):
-                for i, variables in enumerate(self.data):
-                    if is_qt_designer() and i > self.countShownInDesigner - 1:
-                        break
-                    w = self.open_template_file(variables)
-                    if w is None:
-                        w = QLabel()
-                        w.setText("No Template Loaded.  Data: {}".format(variables))
-                    w.setParent(self)
-                    self.layout().addWidget(w)
+            for i, variables in enumerate(self.data):
+                if is_qt_designer() and i > self.countShownInDesigner - 1:
+                    break
+                w = self.open_template_file(variables)
+                if w is None:
+                    w = QLabel()
+                    w.setText("No Template Loaded.  Data: {}".format(variables))
+                w.setParent(self)
+                self.layout().addWidget(w)
         except:
             logger.exception('Template repeater failed to rebuild.')
         finally:
-            # If issues happen during the rebuild we should still enable
-            # updates and establish connection for the widgets added.
-            # Moreover, if we dont call establish_queued_connections
-            # the queue will never be emptied and new connections will be
-            # staled.
+            # If issues happen during the rebuild we should still enable updates for the widgets added.
             self.setUpdatesEnabled(True)
-            pydm.data_plugins.establish_queued_connections()
     
     def clear(self):
         """ Clear out any existing instances of the template inside

@@ -17,6 +17,7 @@ from . import tools
 from .widgets.rules import register_widget_rules, unregister_widget_rules
 from . import config
 import subprocess
+import threading
 import platform
 import logging
 
@@ -352,7 +353,8 @@ class PyDMMainWindow(QMainWindow):
         new_widget = load_file(filename,
                                macros=macros,
                                args=args,
-                               target=target)
+                               target=target,
+                               defer_connections=True)
         if new_widget:
             if self.home_widget is None:
                 self.home_widget = new_widget
@@ -370,6 +372,10 @@ class PyDMMainWindow(QMainWindow):
             self.ui.actionEdit_in_Designer.setText(edit_in_text)
             if (self.designer_path and ui_file) or (py_file and not ui_file):
                 self.ui.actionEdit_in_Designer.setEnabled(True)
+
+        # Create and run the thread for establishing the channel connections which have been queued above
+        establish_connections_thread = threading.Thread(target=data_plugins.establish_queued_connections, daemon=True)
+        establish_connections_thread.start()
         return new_widget
 
     def load_tool(self, checked):
