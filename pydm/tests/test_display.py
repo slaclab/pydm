@@ -2,8 +2,6 @@ import os
 import pytest
 from pydm import Display, data_plugins
 from pydm.display import load_file, load_py_file, _compile_ui_file, ScreenTarget
-from qtpy.QtWidgets import QWidget
-import pydm.utilities.stylesheet
 
 # The path to the .ui file used in these tests
 test_ui_path = os.path.join(

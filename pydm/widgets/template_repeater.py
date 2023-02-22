@@ -3,13 +3,13 @@ import json
 import copy
 import logging
 from qtpy.QtWidgets import (QFrame, QApplication, QLabel, QVBoxLayout,
-                           QHBoxLayout, QWidget, QStyle, QSizePolicy,
-                           QLayout)
+                            QHBoxLayout, QWidget, QStyle, QSizePolicy,
+                            QLayout)
 from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint, Q_ENUMS
 from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer
 import pydm.data_plugins
-from ..utilities import macro, find_file
+from ..utilities import find_file
 from ..display import load_file
 logger = logging.getLogger(__name__)
 
@@ -21,53 +21,53 @@ class FlowLayout(QLayout):
         self.m_h_space = h_spacing
         self.m_v_space = v_spacing
         self.item_list = []
-    
+
     def addItem(self, item):
         self.item_list.append(item)
-    
+
     def horizontalSpacing(self):
         if self.m_h_space >= 0:
             return self.m_h_space
         else:
             return self.smart_spacing(QStyle.PM_LayoutHorizontalSpacing)
-    
+
     def verticalSpacing(self):
         if self.m_v_space >= 0:
             return self.m_v_space
         else:
             return self.smart_spacing(QStyle.PM_LayoutVerticalSpacing)
-    
+
     def count(self):
         return len(self.item_list)
-    
+
     def itemAt(self, index):
         if index >= 0 and index < len(self.item_list):
             return self.item_list[index]
         else:
             return None
-    
+
     def takeAt(self, index):
         if index >= 0 and index < len(self.item_list):
             return self.item_list.pop(index)
         else:
             return None
-    
+
     def expandingDirections(self):
         return Qt.Orientations(0)
-    
+
     def hasHeightForWidth(self):
         return True
-    
+
     def heightForWidth(self, width):
-        return self.do_layout(QRect(0,0, width, 0), True)
-    
+        return self.do_layout(QRect(0, 0, width, 0), True)
+
     def setGeometry(self, rect):
         super(FlowLayout, self).setGeometry(rect)
         self.do_layout(rect, False)
-    
+
     def sizeHint(self):
         return self.minimumSize()
-    
+
     def minimumSize(self):
         size = QSize()
         for item in self.item_list:
@@ -75,7 +75,7 @@ class FlowLayout(QLayout):
         #size += QSize(2*self.margin(), 2*self.margin())
         size += QSize(2*8, 2*8)
         return size
-    
+
     def do_layout(self, rect, test_only):
         (left, top, right, bottom) = self.getContentsMargins()
         effective_rect = rect.adjusted(left, top, -right, -bottom)
@@ -101,7 +101,7 @@ class FlowLayout(QLayout):
             x = next_x
             line_height = max(line_height, item.sizeHint().height())
         return y + line_height - rect.y() + bottom
-    
+
     def smart_spacing(self, pm):
         parent = self.parent()
         if not parent:
@@ -157,7 +157,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         self._temp_layout_spacing = 4
         self.app = QApplication.instance()
         self.rebuild()
-    
+
     @Property(LayoutType)
     def layoutType(self):
         """
@@ -191,31 +191,31 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         if self.layout():
             return self.layout().spacing()
         return self._temp_layout_spacing
-    
+
     @layoutSpacing.setter
     def layoutSpacing(self, new_spacing):
         self._temp_layout_spacing = new_spacing
         if self.layout():
             self.layout().setSpacing(new_spacing)
-    
+
     @Property(int)
     def countShownInDesigner(self):
         """
         The number of instances to show in Qt Designer.  This property has no
         effect outside of Designer.
-        
+
         Returns
         -------
         int
         """
         return self._count_shown_in_designer
-    
+
     @countShownInDesigner.setter
     def countShownInDesigner(self, new_count):
         """
         The number of instances to show in Qt Designer.  This property has no
         effect outside of Designer.
-        
+
         Parameters
         ----------
         new_count : int
@@ -231,23 +231,23 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         if new_count != self._count_shown_in_designer:
             self._count_shown_in_designer = new_count
             self.rebuild()
-    
+
     @Property(str)
     def templateFilename(self):
         """
         The path to the .ui file to use as a template.
-        
+
         Returns
         -------
         str
         """
         return self._template_filename
-    
+
     @templateFilename.setter
     def templateFilename(self, new_filename):
         """
         The path to the .ui file to use as a template.
-        
+
         Parameters
         ----------
         new_filename : str
@@ -286,25 +286,25 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         """
         The path to the JSON file or a valid JSON string to fill in each
         instance of the template.
-        
+
         Returns
         -------
         str
         """
         return self._data_source
-    
+
     @dataSource.setter
     def dataSource(self, data_source):
         """
         Sets the path to the JSON file or a valid JSON string to fill in each
         instance of the template.
-        
+
         For example, if you build a template that contains two macro variables,
         ${NAME} and ${UNIT}, your JSON file should be a list of dictionaries,
         each with keys for NAME and UNIT, like this:
-        
+
         [{"NAME": "First Device", "UNIT": 1}, {"NAME": "Second Device", "UNIT": 2}]
-        
+
         Parameters
         -------
         data_source : str
@@ -345,7 +345,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     def open_template_file(self, variables=None):
         """
         Opens the widget specified in the templateFilename property.
-        
+
         Parameters
         ----------
         variables : dict
@@ -385,7 +385,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         if (not self.templateFilename) or (not self.data):
             return
         self.setUpdatesEnabled(False)
-        
+
         layout_class = layout_class_for_type[self.layoutType]
         if type(self.layout()) != layout_class:
             if self.layout() is not None:
@@ -409,7 +409,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         finally:
             # If issues happen during the rebuild we should still enable updates for the widgets added.
             self.setUpdatesEnabled(True)
-    
+
     def clear(self):
         """ Clear out any existing instances of the template inside
         the widget."""
@@ -419,13 +419,13 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             item = self.layout().takeAt(0)
             item.widget().deleteLater()
             del item
-    
+
     def count(self):
         if not self.layout():
             return 0
         return self.layout().count()
-    
-    @property    
+
+    @property
     def data(self):
         """
         The dictionary used by the widget to fill in each instance of the template.
@@ -433,13 +433,13 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         property.
         """
         return self._data
-    
+
     @data.setter
     def data(self, new_data):
         """
-        Sets the dictionary used by the widget to fill in each instance of 
+        Sets the dictionary used by the widget to fill in each instance of
         the template.  This property will be overwritten if the user changes
-        the dataSource property.  After setting this property, `rebuild` 
+        the dataSource property.  After setting this property, `rebuild`
         is automatically called to refresh the widget.
         """
         self._data = new_data
