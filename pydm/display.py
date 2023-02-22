@@ -33,7 +33,7 @@ def load_file(file: str,
               macros: Optional[Dict[str, str]] = None,
               args: Optional[List[str]] = None,
               target: ScreenTarget = ScreenTarget.NEW_PROCESS,
-              defer_connections: bool = False) -> None:
+              defer_connections: bool = False):
     """
     Load .ui, .py, or .adl screen file, perform macro substitution, then return
     the resulting QWidget.
