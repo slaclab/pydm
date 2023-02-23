@@ -30,9 +30,11 @@ After having the dependency installed run the command:
 ./testing_ioc/pydm-testing-ioc
 ```
 
-On 2/9/23, we needed a different procedure to run the testing ioc:
-* use "env | grep EPICS_CA" to identify the EPICA_CA_SERVER_PORT
-* enter "export EPICS_CA_ADDR_LIST="${EPICS_CA_ADDR_LIST} (your local host):(EPICS_CA_SERVER_PORT)""
-* run "./testing_ioc/pydm-testing-ioc" in the background
-* enter "caput MTEST:Run 1"
-* do your tests!
+You may need to check the EPICS address and server port to ensure your local system can find the simulated PVs. Use the following procedure from the command line to identify the EPICS_CA_SERVER_PORT and add to your EPICS_CA_ADDR_LIST:
+
+```sh
+env | grep EPICS_CA
+export EPICS_CA_ADDR_LIST="${EPICS_CA_ADDR_LIST} (your local host):(EPICS_CA_SERVER_PORT)"
+```
+
+Then run the testing_ioc as above.
