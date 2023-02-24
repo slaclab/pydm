@@ -7,12 +7,12 @@ import logging
 import warnings
 import hashlib
 from ast import literal_eval
-from typing import Optional, Union, List
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from .base import PyDMPrimitiveWidget
 from ..utilities import IconFont
+from typing import Optional, Union, List
 
 logger = logging.getLogger(__name__)
 
@@ -31,9 +31,10 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         Title of the command to run, shown in the display. If a list, number of elements must match that of command
     """
 
-    def __init__(self,
-                 parent: Optional[QWidget] = None,
-                 command: Optional[Union[str, List[str]]] = None,
+    DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
+
+    def __init__(self, parent: Optional[QWidget] = None, 
+                 command: Optional[Union[str, List[str]]] = None, 
                  title: Optional[Union[str, List[str]]] = None) -> None:
         QPushButton.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
@@ -66,6 +67,81 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self._protected_password = ""
 
         self.env_var = None
+
+        self._show_confirm_dialog = False
+        self._confirm_message = PyDMShellCommand.DEFAULT_CONFIRM_MESSAGE
+    
+    def confirmDialog(self) -> bool:
+        """
+        Show the confirmation dialog with the proper message in case
+        ```showConfirmMessage``` is True.
+
+        Returns
+        -------
+        bool
+            True if the message was confirmed or if ```showCofirmMessage```
+            is False.
+        """
+        if self._show_confirm_dialog:
+            if self._confirm_message == "":
+                self._confirm_message = PyDMShellCommand.DEFAULT_CONFIRM_MESSAGE
+            
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Question)
+            msg.setText(self._confirm_message)
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            ret = msg.exec_()
+
+            if ret == QMessageBox.No:
+                return False
+
+        return True
+
+    @Property(bool)
+    def showConfirmDialog(self) -> bool:
+        """
+        Wether or not to display a confirmation dialog.
+
+        Returns
+        -------
+        bool
+        """
+        return self._show_confirm_dialog
+
+    @showConfirmDialog.setter
+    def showConfirmDialog(self, value: bool) -> None:
+        """
+        Wether or not to display a confirmation dialog.
+
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._show_confirm_dialog != value:
+            self._show_confirm_dialog = value
+
+    @Property(str)
+    def confirmMessage(self) -> str:
+        """
+        Message to be displayed at the Confirmation dialog.
+
+        Returns
+        -------
+        str
+        """
+        return self._confirm_message
+
+    @confirmMessage.setter
+    def confirmMessage(self, value: str) -> None:
+        """
+        Message to be displayed at the Confirmation dialog.
+
+        Parameters
+        ----------
+        value : str
+        """
+        if self._confirm_message != value:
+            self._confirm_message = value
 
     @Property(str)
     def environmentVariables(self) -> str:
@@ -295,6 +371,13 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
 
     @protectedPassword.setter
     def protectedPassword(self, value: str) -> None:
+        """
+        Setter for the encrypted password.
+
+    	Parameters 
+    	-------
+    	value: str
+    	"""
         if self._protected_password != value:
             self._protected_password = value
 
@@ -358,7 +441,7 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         else:
             self.setIcon(QIcon())
 
-    def validate_password(self) -> None:
+    def validate_password(self) -> bool:
         """
         If the widget is ```passwordProtected```, this method will propmt
         the user for the correct password.
@@ -397,12 +480,20 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         """
         Execute the shell command given by ```command```.
         The process is available through the ```process``` member.
+
+        Parameters
+        ----------
+        command : str 
+            Shell command
         """
         if not command:
             logger.info("The command is not set, so no command was executed.")
             return
 
         if not self.validate_password():
+            return None
+
+        if not self.confirmDialog():
             return None
 
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
