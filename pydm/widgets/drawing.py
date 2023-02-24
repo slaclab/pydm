@@ -464,6 +464,8 @@ class PyDMDrawingLine(PyDMDrawing):
         super(PyDMDrawingLine, self).__init__(parent, init_channel)
         self._arrow_end_point_selection = False
         self._arrow_start_point_selection = False
+        self._arrow_mid_point_selection = False
+        self._mid_point_arrow_direction = False
         self.rotation = 0
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
@@ -538,6 +540,7 @@ class PyDMDrawingLine(PyDMDrawing):
         midpoint = x + w/2
         start_point = QPointF(midpoint - length/2, 0)
         end_point = QPointF(midpoint + length/2, 0)
+        mid_point = QPointF(midpoint, 0)
 
         # Draw the line
         painter.drawLine(start_point, end_point)
@@ -549,6 +552,13 @@ class PyDMDrawingLine(PyDMDrawing):
 
         if self._arrow_start_point_selection:
             points = self._arrow_points(end_point, start_point, 6, 6)
+            painter.drawPolygon(points)
+
+        if self._arrow_mid_point_selection:
+            if self._mid_point_arrow_direction:
+                points = self._arrow_points(start_point, mid_point, 6, 6)
+            else:
+                points = self._arrow_points(end_point, mid_point, 6, 6)
             painter.drawPolygon(points)
 
     @Property(bool)
@@ -597,6 +607,50 @@ class PyDMDrawingLine(PyDMDrawing):
         """
         if self._arrow_start_point_selection != new_selection:
             self._arrow_start_point_selection = new_selection
+            self.update()
+
+    @Property(bool)
+    def arrowMidPoint(self):
+        """
+        If True, an arrow will be drawn at the midpoiint of the line.
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_mid_point_selection
+
+    @arrowMidPoint.setter
+    def arrowMidPoint(self, new_selection):
+        """
+        If True, an arrow will be drawn at the midpoiint of the line.
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_mid_point_selection != new_selection:
+            self._arrow_mid_point_selection = new_selection
+            self.update()
+
+    @Property(bool)
+    def arrowMidPointDirection(self):
+        """
+        If True, an arrow will be drawn at the midpoiint of the line.
+        Returns
+        -------
+        bool
+        """
+        return self._mid_point_arrow_direction
+
+    @arrowMidPointDirection.setter
+    def arrowMidPointDirection(self, new_selection):
+        """
+        If True, an arrow will be drawn at the midpoiint of the line.
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._mid_point_arrow_direction != new_selection:
+            self._mid_point_arrow_direction = new_selection
             self.update()
 
 class PyDMDrawingImage(PyDMDrawing):
