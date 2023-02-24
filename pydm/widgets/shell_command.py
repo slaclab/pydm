@@ -142,32 +142,6 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self._confirm_message != value:
             self._confirm_message = value
 
-    @Property(str)
-    def channel(self) -> str:
-        """
-        The channel address in use for this widget. This channel is only for attaching an alarm
-        to the shell command button.
-
-        Returns
-        -------
-        channel : str
-            Channel address
-        """
-        return PyDMWidget.channel()
-
-    @channel.setter
-    def channel(self, value: str) -> None:
-        """
-        The channel address in use for this widget. This channel is only for attaching an alarm
-        to the shell command button.
-
-        Parameters
-        ----------
-        value : str
-            Channel address
-        """
-        PyDMWidget.channel(value)
-
     @only_if_channel_set
     def check_enable_state(self) -> None:
         """
