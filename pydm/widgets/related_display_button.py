@@ -80,7 +80,6 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         channel : str
             Channel address
         """
-        PyDMWidget.channel().comment = "test"
         return PyDMWidget.channel()
 
     @channel.setter
