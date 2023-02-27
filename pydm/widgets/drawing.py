@@ -465,7 +465,7 @@ class PyDMDrawingLine(PyDMDrawing):
         self._arrow_end_point_selection = False
         self._arrow_start_point_selection = False
         self._arrow_mid_point_selection = False
-        self._mid_point_arrow_direction = False
+        self._mid_point_arrow_flipped = False
         self.rotation = 0
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
@@ -555,7 +555,7 @@ class PyDMDrawingLine(PyDMDrawing):
             painter.drawPolygon(points)
 
         if self._arrow_mid_point_selection:
-            if self._mid_point_arrow_direction:
+            if self._mid_point_arrow_flipped:
                 points = self._arrow_points(start_point, mid_point, 6, 6)
             else:
                 points = self._arrow_points(end_point, mid_point, 6, 6)
@@ -612,7 +612,7 @@ class PyDMDrawingLine(PyDMDrawing):
     @Property(bool)
     def arrowMidPoint(self):
         """
-        If True, an arrow will be drawn at the midpoiint of the line.
+        If True, an arrow will be drawn at the midpoint of the line.
         Returns
         -------
         bool
@@ -622,7 +622,7 @@ class PyDMDrawingLine(PyDMDrawing):
     @arrowMidPoint.setter
     def arrowMidPoint(self, new_selection):
         """
-        If True, an arrow will be drawn at the midpoiint of the line.
+        If True, an arrow will be drawn at the midpoint of the line.
         Parameters
         -------
         new_selection : bool
@@ -632,25 +632,27 @@ class PyDMDrawingLine(PyDMDrawing):
             self.update()
 
     @Property(bool)
-    def arrowMidPointDirection(self):
+    def flipMidPointArrow(self):
         """
-        If True, an arrow will be drawn at the midpoiint of the line.
+        Flips the direction of the midpoint arrow.
+
         Returns
         -------
         bool
         """
-        return self._mid_point_arrow_direction
+        return self._mid_point_arrow_flipped
 
-    @arrowMidPointDirection.setter
-    def arrowMidPointDirection(self, new_selection):
+    @flipMidPointArrow.setter
+    def flipMidPointArrow(self, new_selection):
         """
-        If True, an arrow will be drawn at the midpoiint of the line.
+        Flips the direction of the midpoint arrow.
+        
         Parameters
         -------
         new_selection : bool
         """
-        if self._mid_point_arrow_direction != new_selection:
-            self._mid_point_arrow_direction = new_selection
+        if self._mid_point_arrow_flipped != new_selection:
+            self._mid_point_arrow_flipped = new_selection
             self.update()
 
 class PyDMDrawingImage(PyDMDrawing):
