@@ -35,9 +35,10 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
     def __init__(self, parent: Optional[QWidget] = None, 
                  command: Optional[Union[str, List[str]]] = None, 
-                 title: Optional[Union[str, List[str]]] = None) -> None:
+                 title: Optional[Union[str, List[str]]] = None,
+                 init_channel: Optional[str] = None) -> None:
         QPushButton.__init__(self, parent)
-        PyDMWidget.__init__(self)
+        PyDMWidget.__init__(self, init_channel=init_channel)
         self.iconFont = IconFont()
         self._icon = self.iconFont.icon("cog")
         self._warning_icon = self.iconFont.icon('exclamation-circle')

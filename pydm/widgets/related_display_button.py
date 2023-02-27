@@ -36,9 +36,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     EXISTING_WINDOW = 0
     NEW_WINDOW = 1
 
-    def __init__(self,parent: Optional[QWidget] = None, filename: str = None) -> None:
+    def __init__(self,parent: Optional[QWidget] = None, filename: str = None, init_channel: Optional[str] = None) -> None:
         QPushButton.__init__(self, parent)
-        PyDMWidget.__init__(self)
+        PyDMWidget.__init__(self, init_channel=init_channel)
 
         self.mouseReleaseEvent = self.push_button_release_event
         self.setContextMenuPolicy(Qt.CustomContextMenu)
