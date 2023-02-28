@@ -29,8 +29,12 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
 
     Parameters
     ----------
+    parent : QWidget, optional
+        The parent widget for the related display button
     filename : str, optional
         The file to be opened
+    init_channel : str, optional
+        The channel to be used by the widget
     """
     # Constants for determining where to open the display.
     EXISTING_WINDOW = 0

@@ -29,6 +29,8 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         A string for a single command to run, or a list of strings for multiple commands
     title : str or list, optional
         Title of the command to run, shown in the display. If a list, number of elements must match that of command
+    init_channel : str, optional
+        The channel to be used by the widget
     """
 
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
