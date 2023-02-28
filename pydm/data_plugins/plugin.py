@@ -11,6 +11,7 @@ from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 from .. import config
 from collections import OrderedDict
+import pdb
 
 
 class PyDMConnection(QObject):
@@ -275,9 +276,25 @@ class PyDMPlugin(object):
         # this method is not robust to PVs that have a . index to some attribute
         if init_channel is None:
             channel = None
+
         else:
-            row = re.findall('\[.*?\]', init_channel)
-            col_parts = re.split('\.', init_channel)
+
+            index_args = re.findall('\(.*?\)', init_channel)
+            if len(index_args) == 0:
+                return init_channel
+
+            channel = re.split('\(', init_channel)[0]
+            index_args = re.split('\,', index_args[0][1:-1])
+
+            for arg in index_args:
+                arg_parts = re.split('=', arg.strip())
+                if len(arg_parts) == 0:
+                    row = arg
+                elif arg_parts[0] == 'label':
+                    col = arg_parts[1]
+                else:
+                    row = arg_parts
+            '''
             if len(col_parts) == 1:
                 if len(row) == 0:
                     channel = init_channel
@@ -288,6 +305,7 @@ class PyDMPlugin(object):
             else:
                 print('sadness')
                 # raise error
+            '''
         return channel
 
     def add_connection(self, channel):

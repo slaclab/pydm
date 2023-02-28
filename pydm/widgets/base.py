@@ -581,7 +581,6 @@ class TextFormatter(object):
         new_val : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
-
         super(TextFormatter, self).value_changed(new_val)
         self.update_format_string()
 
@@ -676,6 +675,29 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         if init_channel is None:
             channel = None
         else:
+            index_args = re.findall('\(.*?\)', init_channel)
+
+            if len(index_args) == 0:
+                return
+
+            channel = re.split('\(', init_channel)[0]
+            index_args = re.split('\,', index_args[0][1:-1])
+
+            for arg in index_args:
+                arg_parts = re.split('=', arg.strip())
+                if len(arg_parts) == 0:
+                    self._row = arg
+                elif arg_parts[0] == 'label':
+                    self._col = arg_parts[1]
+                else:
+                    self._row = arg_parts
+
+
+        '''
+        #return channel
+
+
+
             row = re.findall('\[.*?\]', init_channel)
             col_parts = re.split('\.', init_channel)
             if len(col_parts) == 1:
@@ -696,7 +718,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                 print('sadness')
                 # raise error
         #return channel
-
+        '''
 
     def widget_ctx_menu(self):
         """
@@ -776,13 +798,23 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.value = new_val
         self.channeltype = type(self.value)
         if self.channeltype == np.ndarray:
-            if isinstance(self.value[0], dict):
-                if self._col is not None and self._row is not None:
-                    self.value = self.value[self._row][self._col]
-                elif self._col is not None:
-                    self.value = [val[self._col] for val in self.value]
-                elif self._row is not None:
-                    self.value = self.value[self._row]
+            if isinstance(self.value.item(), dict):
+                self.value = self.value.item()
+                val_set = False
+                if self._row is not None:
+                    if len(self._row) == 1:
+                        row_idx = self._row
+                    else:
+                        table_col = self.value[self._row[0]]
+                        row_idx = [idx for idx in range(len(table_col)) if table_col[idx] == self._row[1]][0]
+                    if self._col is not None:
+                        self.value = self.value[self._col][row_idx]
+                        val_set = True
+                    else:
+                        self.value = self.value[row_idx]
+                        val_set = True
+                if self._col is not None and not val_set:
+                    self.value = self.value[self._col]
                 self.channeltype = type(self.value)
             else:
                 self.subtype = self.value.dtype.type

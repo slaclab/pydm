@@ -199,7 +199,6 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             value = int(self.value) >> self._shift
         if value < 0:
             value = 0
-
         bits = [(value >> i) & 1
                 for i in range(self._num_bits)]
         for bit, indicator in zip(bits, self._indicators):
@@ -507,7 +506,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         super(PyDMByteIndicator, self).value_changed(new_val)
         try:
-            int(new_val)
+            int(self.value)
             self.update_indicators()
         except:
             pass

@@ -95,7 +95,7 @@ class Connection(PyDMConnection):
             for changed_value in changedSet:
                 if changed_value == 'value':
                     if 'NTTable' in value.getID():
-                        new_value = NTTable.unwrap(value)
+                        new_value = value.value.todict()
                     else:
                         new_value = value.value
                     if new_value is not None:
@@ -111,7 +111,7 @@ class Connection(PyDMConnection):
                             self.new_value_signal[int].emit(new_value)
                         elif isinstance(new_value, str):
                             self.new_value_signal[str].emit(new_value)
-                        elif isinstance(new_value, OrderedDict):
+                        elif isinstance(new_value, dict):
                             # for some reason, pyqt struggles to emit on a dict type signal, and wants this to be a list
                             self.new_value_signal[OrderedDict].emit(np.array(new_value))
                         else:
