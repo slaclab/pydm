@@ -746,9 +746,10 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.value = new_val
         self.channeltype = type(self.value)
         if self.channeltype == np.ndarray:
-            if isinstance(new_val.item(), dict):
-                self.value, self.channeltype = self.extract_NTTable_value(new_val.item())
-            else:
+            try:
+                if isinstance(new_val.item(), dict):
+                    self.value, self.channeltype = self.extract_NTTable_value(new_val.item())
+            except:
                 self.subtype = self.value.dtype.type
         else:
             try:

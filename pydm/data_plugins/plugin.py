@@ -275,8 +275,10 @@ class PyDMPlugin(object):
         col = None
 
         if init_channel is not None:
+            if init_channel.startswith('calc'):
+                channel = init_channel
             index_args = re.findall('\(.*?\)', init_channel)
-            if len(index_args) == 0:
+            if len(index_args) == 0 or init_channel.startswith('calc'):
                 channel = init_channel
             else:
                 channel = re.split('\(', init_channel)[0]

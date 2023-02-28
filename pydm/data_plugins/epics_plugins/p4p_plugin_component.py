@@ -9,7 +9,7 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from pydm.widgets.channel import PyDMChannel
 from qtpy.QtCore import QObject, Qt
 from typing import Optional
-
+import time
 logger = logging.getLogger(__name__)
 
 
