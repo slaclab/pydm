@@ -3,15 +3,12 @@ import numpy as np
 
 from p4p.client.thread import Context, Disconnected
 from p4p.wrapper import Value
-from p4p.nt import NTTable
 from .pva_codec import decompress
 from pydm.data_plugins import is_read_only
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from pydm.widgets.channel import PyDMChannel
 from qtpy.QtCore import QObject, Qt
 from typing import Optional
-import pdb
-from collections import OrderedDict
 
 logger = logging.getLogger(__name__)
 
@@ -81,19 +78,14 @@ class Connection(PyDMConnection):
                 # Note that there is no way to get the actual write access value from p4p, so defaulting to True for now
                 self.write_access_signal.emit(True)
 
-            if 'NTTable' in value.getID():
-                changedSet = set()
-                for changed_value in value.changedSet():
-                    if 'value' in changed_value:
-                        changedSet.add('value')
-                    else:
-                        changedSet.add(changed_value)
-            else:
-                changedSet = value.changedSet()
-
             self._value = value
-            for changed_value in changedSet:
-                if changed_value == 'value':
+            has_value_changed_yet = False
+            for changed_value in value.changedSet():
+                if 'value' in changed_value and not has_value_changed_yet:
+                    # NTTable has a changedSet item for each column that has changed
+                    # Since we want to send an update on any table change, let's track
+                    # if the value item has been updated yet
+                    has_value_changed_yet = True
                     if 'NTTable' in value.getID():
                         new_value = value.value.todict()
                     else:
@@ -113,7 +105,7 @@ class Connection(PyDMConnection):
                             self.new_value_signal[str].emit(new_value)
                         elif isinstance(new_value, dict):
                             # for some reason, pyqt struggles to emit on a dict type signal, and wants this to be a list
-                            self.new_value_signal[OrderedDict].emit(np.array(new_value))
+                            self.new_value_signal[dict].emit(np.array(new_value))
                         else:
                             raise ValueError(f'No matching signal for value: {new_value} with type: {type(new_value)}')
                 # Sometimes unchanged control variables appear to be returned with value changes, so checking against
@@ -203,7 +195,7 @@ class Connection(PyDMConnection):
             except KeyError:
                 pass
             try:
-                channel.value_signal[OrderedDict].connect(self.put_value, Qt.QueuedConnection)
+                channel.value_signal[dict].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
 

@@ -14,12 +14,11 @@ from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins, tools, config
+from ..data_plugins.plugin import PyDMPlugin
 from ..utilities import is_qt_designer, remove_protocol
 from ..display import Display
 from .rules import RulesDispatcher
 from datetime import datetime
-from collections import OrderedDict
-import pdb
 
 try:
     from json.decoder import JSONDecodeError
@@ -131,6 +130,7 @@ def refresh_style(widget):
         except Exception as ex:
             # Widget was probably destroyed
             logger.debug('Error while refreshing stylesheet. %s ', ex)
+
 
 class PyDMPrimitiveWidget(object):
     """
@@ -483,7 +483,6 @@ class TextFormatter(object):
             if self.value is not None:
                 self.value_changed(self.value)
 
-
     @Property(bool)
     def showUnits(self):
         """
@@ -590,6 +589,7 @@ _positionRuleProperties = {
     'Position - Y': ['setY', int]
     }
 
+
 class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
     """
     PyDM base class for Read-Only widgets.
@@ -657,7 +657,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         # the disconnected state.
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.contextMenuEvent = self.open_context_menu
-        self.parse_channel(init_channel)
+        _, self._row, self._col = PyDMPlugin.parse_channel(init_channel)
         self.channel = init_channel
         if not is_qt_designer():
             self._connected = False
@@ -667,58 +667,6 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.destroyed.connect(
             functools.partial(widget_destroyed, self.channels, weakref.ref(self))
         )
-
-
-    def parse_channel(self, init_channel):
-        # determine if there is a row or col in the channel name
-        # this method is not robust to PVs that have a . index to some attribute
-        if init_channel is None:
-            channel = None
-        else:
-            index_args = re.findall('\(.*?\)', init_channel)
-
-            if len(index_args) == 0:
-                return
-
-            channel = re.split('\(', init_channel)[0]
-            index_args = re.split('\,', index_args[0][1:-1])
-
-            for arg in index_args:
-                arg_parts = re.split('=', arg.strip())
-                if len(arg_parts) == 0:
-                    self._row = arg
-                elif arg_parts[0] == 'label':
-                    self._col = arg_parts[1]
-                else:
-                    self._row = arg_parts
-
-
-        '''
-        #return channel
-
-
-
-            row = re.findall('\[.*?\]', init_channel)
-            col_parts = re.split('\.', init_channel)
-            if len(col_parts) == 1:
-                if len(row) == 0:
-                    channel = init_channel
-                elif len(row):
-                    self._row = row[0][1:-1]
-                    row_parts = re.split('\[', init_channel)
-                    channel = row_parts[0]
-            elif len(col_parts) == 2:
-                channel = col_parts[0]
-                if len(row) == 0:
-                    self._col = str(col_parts[1])
-                elif len(row) == 1:
-                    self._row = int(row[0][1:-1])
-                    self._col = str(re.split('\[',col_parts[1])[0])
-            else:
-                print('sadness')
-                # raise error
-        #return channel
-        '''
 
     def widget_ctx_menu(self):
         """
@@ -798,24 +746,8 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.value = new_val
         self.channeltype = type(self.value)
         if self.channeltype == np.ndarray:
-            if isinstance(self.value.item(), dict):
-                self.value = self.value.item()
-                val_set = False
-                if self._row is not None:
-                    if len(self._row) == 1:
-                        row_idx = self._row
-                    else:
-                        table_col = self.value[self._row[0]]
-                        row_idx = [idx for idx in range(len(table_col)) if table_col[idx] == self._row[1]][0]
-                    if self._col is not None:
-                        self.value = self.value[self._col][row_idx]
-                        val_set = True
-                    else:
-                        self.value = self.value[row_idx]
-                        val_set = True
-                if self._col is not None and not val_set:
-                    self.value = self.value[self._col]
-                self.channeltype = type(self.value)
+            if isinstance(new_val.item(), dict):
+                self.value, self.channeltype = self.extract_NTTable_value(new_val.item())
             else:
                 self.subtype = self.value.dtype.type
         else:
@@ -825,6 +757,25 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                     self.channeltype = str
             except NameError:
                 pass
+
+    def extract_NTTable_value(self, table):
+        if self._col is None and self._row is None:
+            return table, None
+        if self._col is not None and self._row is None:
+            value = table[self._col]
+            self.subtype = type(value[0])
+        else:
+            if isinstance(self._row, int):
+                row_idx = self._row
+            else:
+                table_col = table[self._row[0]]
+                row_idx = [idx for idx in range(len(table_col)) if table_col[idx] == self._row[1]][0]
+            if self._col is not None:
+                value = table[self._col][row_idx]
+            else:
+                value = table[row_idx]
+
+        return value, type(value)
 
     @Property(int, designable=False)
     def alarmSeverity(self):
@@ -950,7 +901,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
     @Slot(str)
     @Slot(bool)
     @Slot(np.ndarray)
-    @Slot(OrderedDict)
+    @Slot(object)
     def channelValueChanged(self, new_val):
         """
         PyQT Slot for changes on the Value of the Channel
@@ -1276,7 +1227,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             Channel address
         """
         if self._channel is None:
-            self.parse_channel(value)
+            _, self._row, self._col = PyDMPlugin.parse_channel(value)
         if self._channel != value:
             # Remove old connections
             for channel in [c for c in self._channels if
@@ -1284,7 +1235,8 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
                 channel.disconnect()
                 self._channels.remove(channel)
             # Load new channel
-            self._channel = value
+            _, self._row, self._col = PyDMPlugin.parse_channel(value)
+            self._channel = str(value)
             if not self._channel:
                 logger.debug('Channel was set to an empty string.')
                 return
@@ -1427,10 +1379,10 @@ class PyDMWritableWidget(PyDMWidget):
         Emitted when the user changes the value
     """
 
-    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray], [OrderedDict])")
+    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray], [dict])")
 
     # Emitted when the user changes the value.
-    send_value_signal = Signal([int], [float], [str], [bool], [np.ndarray], [OrderedDict])
+    send_value_signal = Signal([int], [float], [str], [bool], [np.ndarray], [dict])
 
     def __init__(self, init_channel=None):
         self._write_access = False

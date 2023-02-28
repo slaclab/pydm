@@ -551,4 +551,3 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             # before the object constructor is complete
             if hasattr(self, '_shift'):
                 self.update_indicators()
-
