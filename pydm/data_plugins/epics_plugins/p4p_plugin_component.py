@@ -9,7 +9,7 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from pydm.widgets.channel import PyDMChannel
 from qtpy.QtCore import QObject, Qt
 from typing import Optional
-import time
+
 logger = logging.getLogger(__name__)
 
 
@@ -81,11 +81,14 @@ class Connection(PyDMConnection):
             self._value = value
             has_value_changed_yet = False
             for changed_value in value.changedSet():
-                if 'value' in changed_value and not has_value_changed_yet:
+                if changed_value == 'value' or changed_value.split('.')[0] == 'value':
                     # NTTable has a changedSet item for each column that has changed
                     # Since we want to send an update on any table change, let's track
                     # if the value item has been updated yet
-                    has_value_changed_yet = True
+                    if has_value_changed_yet:
+                        continue
+                    else:
+                        has_value_changed_yet = True
                     if 'NTTable' in value.getID():
                         new_value = value.value.todict()
                     else:
