@@ -270,13 +270,17 @@ class PyDMPlugin(object):
 
     @staticmethod
     def parse_channel(init_channel):
+    '''
+    Identify if channel has a column or row index for an NTTable
+    Column and row indices are entered in parantheses next to the PV name
+    Column index is noted with the keyword "label"
+    Row index is identified using a column name in which to match an element
+    '''
         channel = None
         row = None
         col = None
 
         if init_channel is not None:
-            if init_channel.startswith('calc'):
-                channel = init_channel
             index_args = re.findall('\(.*?\)', init_channel)
             if len(index_args) == 0 or init_channel.startswith('calc'):
                 channel = init_channel
