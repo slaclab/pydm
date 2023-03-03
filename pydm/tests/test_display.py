@@ -123,5 +123,5 @@ def test_defer_connections(qtbot):
 
     # The test file loaded has one connection to TST:Val1. Since defer_connections is True, verify
     # that this address has been placed in the queue.
-    assert 'TST:Val1' == data_plugins.__CONNECTION_QUEUE__[0].address
+    assert 'TST:Val1' == data_plugins.__CONNECTION_QUEUE__.get().address
     data_plugins.__CONNECTION_QUEUE__ = None
