@@ -80,7 +80,8 @@ def load_file(file: str,
         w = loader(file, args=args, macros=macros)
     if target == ScreenTarget.DIALOG:
         w.show()
-
+    if defer_connections:
+        data_plugins.establish_queued_connections()
     return w
 
 
