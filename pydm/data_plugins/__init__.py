@@ -6,8 +6,8 @@ classes that inherits from the pydm.data_plugins.PyDMPlugin class.
 import inspect
 import logging
 import os
-from collections import deque
 from contextlib import contextmanager
+from queue import Queue
 from typing import Any, Dict, Generator, List, Optional, Type
 
 import entrypoints
@@ -45,7 +45,7 @@ def connection_queue(defer_connections: bool = False) -> None:
     global __CONNECTION_QUEUE__
     global __DEFER_CONNECTIONS__
     if __CONNECTION_QUEUE__ is None:
-        __CONNECTION_QUEUE__ = deque()
+        __CONNECTION_QUEUE__ = Queue()
         __DEFER_CONNECTIONS__ = defer_connections
     yield
     if __DEFER_CONNECTIONS__:
@@ -64,8 +64,8 @@ def establish_queued_connections() -> None:
         return
     try:
         while (__CONNECTION_QUEUE__ is not None and
-               len(__CONNECTION_QUEUE__) > 0):
-            channel = __CONNECTION_QUEUE__.popleft()
+               not __CONNECTION_QUEUE__.empty()):
+            channel = __CONNECTION_QUEUE__.get()
             establish_connection_immediately(channel)
             QApplication.instance().processEvents()
     except IndexError:
@@ -78,7 +78,7 @@ def establish_queued_connections() -> None:
 def establish_connection(channel):
     global __CONNECTION_QUEUE__
     if __CONNECTION_QUEUE__ is not None:
-        __CONNECTION_QUEUE__.append(channel)
+        __CONNECTION_QUEUE__.put(channel)
     else:
         establish_connection_immediately(channel)
 
