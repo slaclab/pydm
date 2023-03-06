@@ -2,7 +2,7 @@
 jobs:
 - job: 'Build'
   pool:
-    vmImage: 'Ubuntu 22.04'
+    vmImage: 'ubuntu-22.04'
   variables:
     PYTHON: 3.7.3
     BUILD_DOCS: 1
