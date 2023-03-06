@@ -1090,8 +1090,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             show a percentage of the data (for example, 0.75 = 75% of data will be visible)
         """
         self._auto_range_x = value
-        if self._auto_range_x:
-            self.plotItem.updateXAutoRange(self._auto_range_x)
+        self.plotItem.updateXAutoRange(self._auto_range_x)
 
     def resetAutoRangeX(self) -> None:
         self.setAutoRangeX(True)
@@ -1114,8 +1113,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             show a percentage of the data (for example, 0.75 = 75% of data will be visible)
         """
         self._auto_range_y = value
-        if self._auto_range_y:
-            self.plotItem.updateYAutoRange(self._auto_range_y)
+        self.plotItem.updateYAutoRange(self._auto_range_y)
 
     def resetAutoRangeY(self) -> None:
         self.setAutoRangeY(True)
