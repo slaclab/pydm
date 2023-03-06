@@ -1016,7 +1016,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def setAutoRangeX(self, value):
         self._auto_range_x = value
         if self._auto_range_x:
-            self.plotItem.enableAutoRange(ViewBox.XAxis, enable=self._auto_range_x)
+            self.plotItem.updateXAutoRange(self._auto_range_x)
 
     def resetAutoRangeX(self):
         self.setAutoRangeX(True)
@@ -1027,7 +1027,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def setAutoRangeY(self, value):
         self._auto_range_y = value
         if self._auto_range_y:
-            self.plotItem.enableAutoRange(ViewBox.YAxis, enable=self._auto_range_y)
+            self.plotItem.updateYAutoRange(self._auto_range_y)
 
     def resetAutoRangeY(self):
         self.setAutoRangeY(True)
