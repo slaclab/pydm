@@ -400,7 +400,7 @@ class BasePlotAxisItem(AxisItem):
                  minRange: Optional[float] = -1.0,
                  maxRange: Optional[float] = 1.0,
                  autoRange: Optional[bool] = True,
-                 logMode:Optional[bool] = False,
+                 logMode: Optional[bool] = False,
                  **kws) -> None:
         super(BasePlotAxisItem, self).__init__(orientation, **kws)
 
@@ -578,7 +578,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     """
     BasePlot is the parent class for all specific types of PyDM plots. It is built on top of the
     pyqtgraph plotting library.
-    
+
     Parameters
     ----------
     parent : QWidget, optional
@@ -673,7 +673,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                  curve_color: Optional[QColor] = None,
                  y_axis_name: Optional[str] = None):
         """
-        Adds a curve to this plot. 
+        Adds a curve to this plot.
 
         If the y axis parameters are specified, either link this curve to an
         existing axis if that axis is already part of this plot, or create a
