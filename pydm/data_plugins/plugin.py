@@ -9,10 +9,10 @@ from ..utilities.remove_protocol import protocol_and_address
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 from .. import config
-
+import re
 
 class PyDMConnection(QObject):
-    new_value_signal = Signal([float], [int], [str], [ndarray], [bool])
+    new_value_signal = Signal([float], [int], [str], [object], [bool])
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
     write_access_signal = Signal(bool)
@@ -62,7 +62,11 @@ class PyDMConnection(QObject):
                 self.new_value_signal[bool].connect(channel.value_slot, Qt.QueuedConnection)
             except TypeError:
                 pass
-
+            try:
+                self.new_value_signal[dict].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
+        
         if channel.severity_slot is not None:
             self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
 
@@ -141,7 +145,11 @@ class PyDMConnection(QObject):
                 self.new_value_signal[bool].disconnect(channel.value_slot)
             except TypeError:
                 pass
-
+            try:
+                self.new_value_signal[dict].disconnect(channel.value_slot)
+            except TypeError:
+                pass
+        
         if self._should_disconnect(channel.severity_slot, destroying):
             try:
                 self.new_severity_signal.disconnect(channel.severity_slot)

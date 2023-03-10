@@ -1,3 +1,4 @@
+
 import logging
 import numpy as np
 
@@ -19,7 +20,6 @@ class Connection(PyDMConnection):
                  protocol: Optional[str] = None, parent: Optional[QObject] = None):
         """
         Manages the connection to a channel using the P4P library. A given channel can have multiple listeners.
-
         Parameters
         ----------
         channel : PyDMChannel
@@ -79,9 +79,20 @@ class Connection(PyDMConnection):
                 self.write_access_signal.emit(True)
 
             self._value = value
+            has_value_changed_yet = False
             for changed_value in value.changedSet():
-                if changed_value == 'value':
-                    new_value = value.value
+                if changed_value == 'value' or changed_value.split('.')[0] == 'value':
+                    # NTTable has a changedSet item for each column that has changed
+                    # Since we want to send an update on any table change, let's track
+                    # if the value item has been updated yet
+                    if has_value_changed_yet:
+                        continue
+                    else:
+                        has_value_changed_yet = True
+                    if 'NTTable' in value.getID():
+                        new_value = value.value.todict()
+                    else:
+                        new_value = value.value
                     if new_value is not None:
                         if isinstance(new_value, np.ndarray):
                             if 'NTNDArray' in value.getID():
@@ -95,6 +106,9 @@ class Connection(PyDMConnection):
                             self.new_value_signal[int].emit(new_value)
                         elif isinstance(new_value, str):
                             self.new_value_signal[str].emit(new_value)
+                        elif isinstance(new_value, dict):
+                            # for some reason, pyqt struggles to emit on a dict type signal, and wants this to be a list
+                            self.new_value_signal[dict].emit(np.array(new_value))
                         else:
                             raise ValueError(f'No matching signal for value: {new_value} with type: {type(new_value)}')
                 # Sometimes unchanged control variables appear to be returned with value changes, so checking against
@@ -149,7 +163,6 @@ class Connection(PyDMConnection):
     def add_listener(self, channel: PyDMChannel):
         """
         Adds a listener to this connection, connecting the appropriate signals/slots to the input PyDMChannel.
-
         Parameters
         ----------
         channel : PyDMChannel
@@ -181,6 +194,10 @@ class Connection(PyDMConnection):
                 pass
             try:
                 channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
+            except KeyError:
+                pass
+            try:
+                channel.value_signal[dict].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
 

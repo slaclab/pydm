@@ -168,6 +168,7 @@ class PythonTableModel(QtCore.QAbstractTableModel):
 class PyDMNTTable(QtWidgets.QWidget, PyDMWidget):
     def __init__(self, parent=None, init_channel=None):
         super(PyDMNTTable, self).__init__(parent=parent, init_channel=init_channel)
+        PyDMWidget.__init__(self, init_channel=init_channel)
         self.setLayout(QtWidgets.QVBoxLayout())
         self._table = QtWidgets.QTableView(self)
         self.layout().addWidget(self._table)
@@ -175,24 +176,27 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWidget):
         self._table_labels = None
         self._table_values = []
 
-    def _receive_data(self, data=None, introspection=None, *args, **kwargs):
-        super(PyDMNTTable, self)._receive_data(data, introspection, *args,
-                                           **kwargs)
+    def value_changed(self, data=None):
         if data is None:
             return
-        labels = data.get('labels', None)
-        values = data.get('value', {})
-
+        print(data, type(data), "test")        
+        super(PyDMNTTable, self).value_changed(data)
+        
+        labels = data.dtype.names
+        values = data.tolist()
+        
+        print(values, type(values), "test")
+        
         if labels is None or len(labels) == 0:
             labels = values.keys()
-
+       
         try:
             values = list(zip(*[v for k, v in values.items()]))
         except TypeError:
             logger.exception("NTTable value items must be iterables.")
 
         self._table_values = values
-
+      
         if labels != self._table_labels:
             self._table_labels = labels
             self._model = PythonTableModel(labels, initial_list=values)
