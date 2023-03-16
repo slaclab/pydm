@@ -741,7 +741,6 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.value = new_val
         self.channeltype = type(self.value)
         if self.channeltype == np.ndarray:
-            print("cold")
             self.subtype = self.value.dtype.type
         else:
             try:
@@ -874,7 +873,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
     @Slot(float)
     @Slot(str)
     @Slot(bool)
-    #@Slot(np.ndarray)
+    @Slot(np.ndarray)
     @Slot(object)
     def channelValueChanged(self, new_val):
         """
@@ -1350,11 +1349,11 @@ class PyDMWritableWidget(PyDMWidget):
         Emitted when the user changes the value
     """
 
-    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [object])")
+    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [np.ndarray])")
 
     # Emitted when the user changes the value.
 
-    send_value_signal = Signal([int], [float], [str], [bool], [object])
+    send_value_signal = Signal([int], [float], [str], [bool], [np.ndarray])
 
     def __init__(self, init_channel=None):
         self._write_access = False
