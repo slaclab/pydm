@@ -1,4 +1,3 @@
-
 import logging
 import numpy as np
 
@@ -192,7 +191,7 @@ class Connection(PyDMConnection):
             except KeyError:
                 pass
             try:
-                channel.value_signal[object].connect(self.put_value, Qt.QueuedConnection)
+                channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
             try:
