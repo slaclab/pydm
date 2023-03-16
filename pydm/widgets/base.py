@@ -741,6 +741,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.value = new_val
         self.channeltype = type(self.value)
         if self.channeltype == np.ndarray:
+            print("cold")
             self.subtype = self.value.dtype.type
         else:
             try:

@@ -12,7 +12,7 @@ from .. import config
 import re
 
 class PyDMConnection(QObject):
-    new_value_signal = Signal([float], [int], [str], [object], [bool])
+    new_value_signal = Signal([float], [int], [str], [bool], [object])
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
     write_access_signal = Signal(bool)
@@ -55,15 +55,11 @@ class PyDMConnection(QObject):
             except TypeError:
                 pass
             try:
-                self.new_value_signal[ndarray].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
                 self.new_value_signal[bool].connect(channel.value_slot, Qt.QueuedConnection)
             except TypeError:
                 pass
             try:
-                self.new_value_signal[dict].connect(channel.value_slot, Qt.QueuedConnection)
+                self.new_value_signal[object].connect(channel.value_slot, Qt.QueuedConnection)
             except TypeError:
                 pass
         
@@ -138,15 +134,11 @@ class PyDMConnection(QObject):
             except TypeError:
                 pass
             try:
-                self.new_value_signal[ndarray].disconnect(channel.value_slot)
-            except TypeError:
-                pass
-            try:
                 self.new_value_signal[bool].disconnect(channel.value_slot)
             except TypeError:
                 pass
             try:
-                self.new_value_signal[dict].disconnect(channel.value_slot)
+                self.new_value_signal[object].disconnect(channel.value_slot)
             except TypeError:
                 pass
         

@@ -107,8 +107,7 @@ class Connection(PyDMConnection):
                         elif isinstance(new_value, str):
                             self.new_value_signal[str].emit(new_value)
                         elif isinstance(new_value, dict):
-                            # for some reason, pyqt struggles to emit on a dict type signal, and wants this to be a list
-                            self.new_value_signal[dict].emit(np.array(new_value))
+                            self.new_value_signal[dict].emit(new_value)
                         else:
                             raise ValueError(f'No matching signal for value: {new_value} with type: {type(new_value)}')
                 # Sometimes unchanged control variables appear to be returned with value changes, so checking against
@@ -193,7 +192,7 @@ class Connection(PyDMConnection):
             except KeyError:
                 pass
             try:
-                channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
+                channel.value_signal[object].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
             try:
