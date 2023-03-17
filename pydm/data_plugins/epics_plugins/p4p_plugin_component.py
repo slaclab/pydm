@@ -32,7 +32,7 @@ class Connection(PyDMConnection):
         """
         super().__init__(channel, address, protocol, parent)
         self._connected = False
-        self.monitor = P4PPlugin.context.monitor(name=address,
+        self.monitor = P4PPlugin.context.monitor(name=self.address,
                                                  cb=self.send_new_value,
                                                  notify_disconnect=True)
         self.add_listener(channel)
@@ -49,6 +49,8 @@ class Connection(PyDMConnection):
         self._lower_warning_limit = None
         self._timestamp = None
 
+        self.nttable_data_location = PyDMPlugin.get_subfield(channel)
+
     def clear_cache(self) -> None:
         """ Clear out all the stored values of this connection. """
         self._value = None
@@ -63,6 +65,8 @@ class Connection(PyDMConnection):
         self._upper_warning_limit = None
         self._lower_warning_limit = None
         self._timestamp = None
+
+        self.nttable_data_location = None 
 
     def send_new_value(self, value: Value) -> None:
         """ Callback invoked whenever a new value is received by our monitor. Emits signals based on values changed. """
@@ -88,10 +92,20 @@ class Connection(PyDMConnection):
                         continue
                     else:
                         has_value_changed_yet = True
+                    
                     if 'NTTable' in value.getID():
                         new_value = value.value.todict()
                     else:
                         new_value = value.value
+                    
+                    #temp code for testing 
+                    if self.nttable_data_location:
+                        for value in self.nttable_data_location:
+                            try:
+                                new_value = new_value[value] 
+                            except IndexError:
+                                new_value = new_value[int(value)] 
+                    
                     if new_value is not None:
                         if isinstance(new_value, np.ndarray):
                             if 'NTNDArray' in value.getID():

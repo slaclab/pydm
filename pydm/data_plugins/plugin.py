@@ -253,6 +253,10 @@ class PyDMPlugin(object):
     @staticmethod
     def get_address(channel):
         return protocol_and_address(channel.address)[1]
+    
+    @staticmethod
+    def get_subfield(channel):
+        return protocol_and_address(channel.address)[2]
 
     @staticmethod
     def get_connection_id(channel):

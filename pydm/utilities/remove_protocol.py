@@ -37,8 +37,19 @@ def protocol_and_address(address):
     match = re.match('.*?://', address)
     protocol = None
     addr = address
+    subfield = None 
+
     if match:
         protocol = match.group(0)[:-3]
         addr = address.replace(match.group(0), '')
+        resulting_string = addr.split('/', 1)
+        
+        if len(resulting_string) < 2:
+            resulting_string.append(None)
+        
+        addr, subfield = resulting_string
 
-    return protocol, addr
+        if subfield:
+            subfield = subfield.split('/')
+
+    return protocol, addr, subfield
