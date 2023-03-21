@@ -267,6 +267,7 @@ class PyDMPlugin(object):
         with self.lock:
             connection_id = self.get_connection_id(channel)
             address = self.get_address(channel)
+
             # If this channel is already connected to this plugin lets ignore
             if channel in self.channels:
                 return
@@ -276,7 +277,7 @@ class PyDMPlugin(object):
                 return
 
             self.channels.add(channel)
-            if connection_id in self.connections:
+            if connection_id in self.connections and not PyDMPlugin.get_subfield(channel):
                 self.connections[connection_id].add_listener(channel)
             else:
                 self.connections[connection_id] = self.connection_class(
