@@ -45,8 +45,9 @@ def protocol_and_address(address):
         protocol = parsed_address.scheme 
         addr = parsed_address.netloc
         subfield = parsed_address.path 
+        full_addr = parsed_address.netloc + parsed_address.path
 
         if subfield != '':
             subfield = subfield[1:].split('/')
     
-    return protocol, addr, subfield
+    return protocol, addr, subfield, full_addr

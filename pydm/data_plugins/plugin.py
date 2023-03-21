@@ -251,6 +251,10 @@ class PyDMPlugin(object):
         self.lock = threading.Lock()
 
     @staticmethod
+    def get_full_address(channel):
+        return protocol_and_address(channel.address)[3]
+
+    @staticmethod
     def get_address(channel):
         return protocol_and_address(channel.address)[1]
     
@@ -260,7 +264,7 @@ class PyDMPlugin(object):
 
     @staticmethod
     def get_connection_id(channel):
-        return PyDMPlugin.get_address(channel)
+        return PyDMPlugin.get_full_address(channel)
 
     def add_connection(self, channel):
         from pydm.utilities import is_qt_designer
@@ -277,7 +281,7 @@ class PyDMPlugin(object):
                 return
 
             self.channels.add(channel)
-            if connection_id in self.connections and not PyDMPlugin.get_subfield(channel):
+            if connection_id in self.connections:
                 self.connections[connection_id].add_listener(channel)
             else:
                 self.connections[connection_id] = self.connection_class(

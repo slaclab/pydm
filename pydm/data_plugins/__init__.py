@@ -77,7 +77,7 @@ def plugin_for_address(address: str) -> Optional[PyDMPlugin]:
     Find the correct PyDMPlugin for a channel
     """
     # Check for a configured protocol
-    protocol, addr, subfield = protocol_and_address(address)
+    protocol, addr, subfield, full_addr = protocol_and_address(address)
     # Use default protocol
     if protocol is None and config.DEFAULT_PROTOCOL is not None:
         logger.debug("Using default protocol %s for %s",
