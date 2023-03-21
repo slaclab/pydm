@@ -1,6 +1,6 @@
 import logging
 import numpy as np
-
+import collections
 from p4p.client.thread import Context, Disconnected
 from p4p.wrapper import Value
 from .pva_codec import decompress
@@ -48,7 +48,6 @@ class Connection(PyDMConnection):
         self._upper_warning_limit = None
         self._lower_warning_limit = None
         self._timestamp = None
-
         self.nttable_data_location = PyDMPlugin.get_subfield(channel)
 
     def clear_cache(self) -> None:
@@ -98,14 +97,31 @@ class Connection(PyDMConnection):
                     else:
                         new_value = value.value
                     
-                    #temp code for testing 
                     if self.nttable_data_location:
                         for value in self.nttable_data_location:
-                            try:
-                                new_value = new_value[value] 
-                            except IndexError:
-                                new_value = new_value[int(value)] 
-                    
+                            if isinstance(new_value, collections.Container) and type(new_value) != str:
+                                if type(value) == str:
+                                    try:
+                                        new_value = new_value[value] 
+                                        continue
+                                    except TypeError:
+                                        logger.debug('Type Error when attempting to use the given key, code will next attempt to convert the key to an int')
+                                    except KeyError:
+                                        msg = "Invalid channel address path for NTTable given. %s"
+                                        logger.exception(msg, self.nttable_data_location, exc_info=True)
+                                        raise KeyError("error in channel address")
+                                    
+                                    try:
+                                        new_value = new_value[int(value)] 
+                                    except ValueError:
+                                        msg = "Invalid channel address path for NTTable given. %s"
+                                        logger.exception(msg, self.nttable_data_location, exc_info=True)
+                                        raise ValueError("error in channel address")
+                            else:
+                                msg = "Invalid channel address path for NTTable given. %s"
+                                logger.exception(msg, self.nttable_data_location, exc_info=True)
+                                raise ValueError("error in channel address")
+
                     if new_value is not None:
                         if isinstance(new_value, np.ndarray):
                             if 'NTNDArray' in value.getID():

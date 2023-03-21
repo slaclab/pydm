@@ -1,5 +1,5 @@
 import re
-
+import urllib
 
 def remove_protocol(addr):
     """
@@ -20,7 +20,7 @@ def remove_protocol(addr):
 
 def protocol_and_address(address):
     """
-    Returns the Protocol and Address pieces of a Channel Address
+    Returns the Protocol, Address and optional subfield pieces of a Channel Address
 
     Parameters
     ----------
@@ -33,23 +33,20 @@ def protocol_and_address(address):
         The protocol used. None in case the protocol is not specified.
     addr : str
         The piece of the address without the protocol.
+    subfield : list, str
     """
     match = re.match('.*?://', address)
-    protocol = None
+    protocol = None 
     addr = address
     subfield = None 
 
     if match:
-        protocol = match.group(0)[:-3]
-        addr = address.replace(match.group(0), '')
-        resulting_string = addr.split('/', 1)
-        
-        if len(resulting_string) < 2:
-            resulting_string.append(None)
-        
-        addr, subfield = resulting_string
+        parsed_address = urllib.parse.urlparse(address)
+        protocol = parsed_address.scheme 
+        addr = parsed_address.netloc
+        subfield = parsed_address.path 
 
-        if subfield:
-            subfield = subfield.split('/')
-
+        if subfield != '':
+            subfield = subfield[1:].split('/')
+    
     return protocol, addr, subfield
