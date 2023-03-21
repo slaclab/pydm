@@ -14,7 +14,7 @@ def remove_protocol(addr):
     -------
     str
     """
-    _, addr = protocol_and_address(addr)
+    _, addr,  *_ = protocol_and_address(addr)
     return addr
 
 
