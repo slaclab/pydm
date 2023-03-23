@@ -252,7 +252,14 @@ class PyDMPlugin(object):
 
     @staticmethod
     def get_full_address(channel):
-        return protocol_and_address(channel.address)[3]
+        parsed_address = protocol_and_address(channel.address)[2]
+
+        if parsed_address:
+            full_addr = parsed_address.netloc + parsed_address.path
+        else: 
+            full_addr = None
+
+        return full_addr
 
     @staticmethod
     def get_address(channel):
@@ -260,7 +267,18 @@ class PyDMPlugin(object):
     
     @staticmethod
     def get_subfield(channel):
-        return protocol_and_address(channel.address)[2]
+        
+        parsed_address = protocol_and_address(channel.address)[2]
+
+        if parsed_address:
+            subfield = parsed_address.path
+
+            if subfield != '':
+                subfield = subfield[1:].split('/')
+        else:
+            subfield = None
+        
+        return subfield
 
     @staticmethod
     def get_connection_id(channel):

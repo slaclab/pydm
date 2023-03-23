@@ -14,13 +14,13 @@ def remove_protocol(addr):
     -------
     str
     """
-    _, addr,  *_ = protocol_and_address(addr)
+    _, addr, _ = protocol_and_address(addr)
     return addr
 
 
 def protocol_and_address(address):
     """
-    Returns the Protocol, Address and optional subfield pieces of a Channel Address
+    Returns the protocol, address and parsed address 
 
     Parameters
     ----------
@@ -38,17 +38,10 @@ def protocol_and_address(address):
     match = re.match('.*?://', address)
     protocol = None 
     addr = address
-    subfield = None 
-    full_addr = None 
-    
+    parsed_address = None
     if match:
         parsed_address = urllib.parse.urlparse(address)
         protocol = parsed_address.scheme 
         addr = parsed_address.netloc
-        subfield = parsed_address.path 
-        full_addr = parsed_address.netloc + parsed_address.path
-
-        if subfield != '':
-            subfield = subfield[1:].split('/')
     
-    return protocol, addr, subfield, full_addr
+    return protocol, addr, parsed_address
