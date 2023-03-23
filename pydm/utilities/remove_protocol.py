@@ -39,7 +39,8 @@ def protocol_and_address(address):
     protocol = None 
     addr = address
     subfield = None 
-
+    full_addr = None 
+    
     if match:
         parsed_address = urllib.parse.urlparse(address)
         protocol = parsed_address.scheme 
