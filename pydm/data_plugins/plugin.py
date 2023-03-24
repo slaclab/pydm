@@ -5,7 +5,7 @@ import threading
 from numpy import ndarray
 from typing import Optional, Callable
 
-from ..utilities.remove_protocol import protocol_and_address
+from ..utilities.remove_protocol import protocol_and_address, parsed_address
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 from .. import config
@@ -252,10 +252,10 @@ class PyDMPlugin(object):
 
     @staticmethod
     def get_full_address(channel):
-        parsed_address = protocol_and_address(channel.address)[2]
+        parsed_addr = parsed_address(channel.address)
 
-        if parsed_address:
-            full_addr = parsed_address.netloc + parsed_address.path
+        if parsed_addr:
+            full_addr = parsed_addr.netloc + parsed_addr.path
         else: 
             full_addr = None
 
@@ -263,15 +263,22 @@ class PyDMPlugin(object):
 
     @staticmethod
     def get_address(channel):
-        return protocol_and_address(channel.address)[1]
+        parsed_addr = parsed_address(channel.address)
+        addr = parsed_addr.netloc
+        protocol = parsed_addr.scheme
+
+        if protocol == 'calc' or protocol == 'loc':
+            addr = parsed_addr.netloc + '?' + parsed_addr.query
+        
+        return addr
     
     @staticmethod
     def get_subfield(channel):
         
-        parsed_address = protocol_and_address(channel.address)[2]
+        parsed_addr = parsed_address(channel.address)
 
-        if parsed_address:
-            subfield = parsed_address.path
+        if parsed_addr:
+            subfield = parsed_addr.path
 
             if subfield != '':
                 subfield = subfield[1:].split('/')

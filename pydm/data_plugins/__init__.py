@@ -14,8 +14,7 @@ import entrypoints
 from qtpy.QtWidgets import QApplication
 
 from .. import config
-from ..utilities import (import_module_by_filename, log_failures,
-                         protocol_and_address)
+from ..utilities import (import_module_by_filename, log_failures, parsed_address)
 from .plugin import PyDMPlugin
 
 logger = logging.getLogger(__name__)
@@ -77,7 +76,7 @@ def plugin_for_address(address: str) -> Optional[PyDMPlugin]:
     Find the correct PyDMPlugin for a channel
     """
     # Check for a configured protocol
-    protocol, *_ = protocol_and_address(address)
+    protocol = parsed_address(address).scheme 
     # Use default protocol
     if protocol is None and config.DEFAULT_PROTOCOL is not None:
         logger.debug("Using default protocol %s for %s",

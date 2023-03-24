@@ -14,13 +14,36 @@ def remove_protocol(addr):
     -------
     str
     """
-    _, addr, _ = protocol_and_address(addr)
+    _, addr = protocol_and_address(addr)
     return addr
 
 
 def protocol_and_address(address):
     """
-    Returns the protocol, address and parsed address 
+    Returns the Protocol and Address pieces of a Channel Address
+    Parameters
+    ----------
+    address : str
+        The address from which to remove the address prefix.
+    Returns
+    -------
+    protocol : str
+        The protocol used. None in case the protocol is not specified.
+    addr : str
+        The piece of the address without the protocol.
+    """
+    match = re.match('.*?://', address)
+    protocol = None
+    addr = address
+    if match:
+        protocol = match.group(0)[:-3]
+        addr = address.replace(match.group(0), '')
+
+    return protocol, addr
+
+def parsed_address(address):
+    """
+    Returns the given address parsed into a 6-tuple. The parsing is done by urllib.parse.urlparse
 
     Parameters
     ----------
@@ -29,25 +52,12 @@ def protocol_and_address(address):
 
     Returns
     -------
-    protocol : str
-        The protocol used. None in case the protocol is not specified.
-    addr : str
-        The piece of the address without the protocol.
-    subfield : list, str
+    parsed_address : tuple 
     """
     match = re.match('.*?://', address)
-    protocol = None 
-    addr = address
     parsed_address = None
     
     if match:
         parsed_address = urllib.parse.urlparse(address)
-        protocol = parsed_address.scheme 
-        
-        if protocol == 'calc' or protocol == 'loc':
-            addr = parsed_address.netloc + '?' + parsed_address.query
-        else:
-            addr = parsed_address.netloc
 
-    
-    return protocol, addr, parsed_address
+    return parsed_address
