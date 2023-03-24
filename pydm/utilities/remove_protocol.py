@@ -39,9 +39,15 @@ def protocol_and_address(address):
     protocol = None 
     addr = address
     parsed_address = None
+    
     if match:
         parsed_address = urllib.parse.urlparse(address)
         protocol = parsed_address.scheme 
-        addr = parsed_address.netloc
+        
+        if protocol == 'calc' or protocol == 'loc':
+            addr = parsed_address.netloc + parsed_address.query
+        else:
+            addr = parsed_address.netloc
+
     
     return protocol, addr, parsed_address
