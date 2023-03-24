@@ -21,10 +21,12 @@ def remove_protocol(addr):
 def protocol_and_address(address):
     """
     Returns the Protocol and Address pieces of a Channel Address
+
     Parameters
     ----------
     address : str
         The address from which to remove the address prefix.
+
     Returns
     -------
     protocol : str
@@ -54,6 +56,9 @@ def parsed_address(address):
     -------
     parsed_address : tuple 
     """
+    if type(address) != str:
+        return None
+
     match = re.match('.*?://', address)
     parsed_address = None
     
