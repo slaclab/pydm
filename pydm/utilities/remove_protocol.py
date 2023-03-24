@@ -45,7 +45,7 @@ def protocol_and_address(address):
         protocol = parsed_address.scheme 
         
         if protocol == 'calc' or protocol == 'loc':
-            addr = parsed_address.netloc + parsed_address.query
+            addr = parsed_address.netloc + '?' + parsed_address.query
         else:
             addr = parsed_address.netloc
 
