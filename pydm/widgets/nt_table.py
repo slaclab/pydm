@@ -1,7 +1,5 @@
 import logging
-
 from operator import itemgetter
-
 from pydm.widgets.base import PyDMWidget
 from qtpy import QtCore, QtWidgets
 
@@ -167,7 +165,22 @@ class PythonTableModel(QtCore.QAbstractTableModel):
 
 class PyDMNTTable(QtWidgets.QWidget, PyDMWidget):
     """
-    PyDMNTTable 
+    The PyDMNTTable is a table widget used to display PVA NTTable data. 
+
+    The PyDMNTTable has two ways of filling the table from the data. 
+    If the incoming data dictionary has a 'labels' and/or a 'value' key. 
+    Then the list of labels will be set with the data from the 'labels' key. 
+    While the data from the 'value' key will be used to set the values in the table. 
+    if neither 'labels' or 'value' key are present in the incoming 'data' dictionary,
+    then the keys of the data dictionary are set as the labels 
+    and all the values stored by the keys will make up the values of the table. 
+    
+    Parameters
+        ----------
+        parent : QWidget, optional
+            The parent widget for the PyDMNTTable
+        init_channel : str, optional
+            The channel to be used by the widget. 
     """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMNTTable, self).__init__(parent=parent, init_channel=init_channel)

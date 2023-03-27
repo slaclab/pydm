@@ -5,7 +5,7 @@ import threading
 from numpy import ndarray
 from typing import Optional, Callable
 
-from ..utilities.remove_protocol import protocol_and_address, parsed_address
+from ..utilities.remove_protocol import parsed_address
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 from .. import config
@@ -274,7 +274,6 @@ class PyDMPlugin(object):
     
     @staticmethod
     def get_subfield(channel):
-        
         parsed_addr = parsed_address(channel.address)
 
         if parsed_addr:

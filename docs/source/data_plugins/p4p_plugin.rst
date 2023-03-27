@@ -28,7 +28,7 @@ P4P is the only option (and will be chosen automatically if this variable is not
 in the future.
 
 Supported Types
----------------
+===============
 
 Currently this data plugin supports all `normative types`_. The values and control variables are pulled out of
 the data received and sent through the existing PyDM signals to be read by widgets via the channels they are
@@ -38,6 +38,25 @@ In order to support compatibility with all existing signals and widgets, full st
 currently possible in this version of the plugin. For example, defining a group PV using Q:Group will not
 result in the named fields being sent to the widgets. Full support for structured data is planned to be supported
 as part of a future release.
+
+NTTables
+--------
+
+The plugin accepts NTTables. It will convert NTTables in python dictionaries which are then passed to the pydm widgets. 
+Not all widgets will accept a dictionary (or the whole NTTable) as an input. 
+A specified section of the NTTable can be passed to a those pydm widgets which do not accept dictionaries.
+If the PV is passing an NTTable and the user wants to pass only a specific subfield of the NTTable. 
+This can be achieved via appending a ``/`` followed by the key or name of the column header of the subfield of the NTTable.
+For example::
+
+    pva://MTEST/subfield
+
+multiple layers of subfields also works::
+
+    pva://MTEST/sub-field/subfield_of_a_subfield
+
+Image decompression
+-------------------
 
 Image decompression is performed when image data is specified using an ``NTNDArray`` with the ``codec`` field set.
 The decompression algorithm to apply will be determined by what the ``codec`` field is set to. In order
