@@ -1,14 +1,13 @@
 import functools
 import json
 import warnings
-from typing import Optional
-from qtpy.QtGui import QColor, QBrush
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QRect
-from qtpy.QtWidgets import QToolTip
+from qtpy.QtGui import QColor, QBrush, QMouseEvent
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect
+from qtpy.QtWidgets import QToolTip, QWidget
 from .. import utilities
 from pyqtgraph import AxisItem, PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy
 from collections import OrderedDict
-from typing import Optional
+from typing import Dict, List, Optional, Union
 from .base import PyDMPrimitiveWidget, widget_destroyed
 from .multi_axis_plot import MultiAxisPlot
 
@@ -67,7 +66,12 @@ class BasePlotCurveItem(PlotDataItem):
 
     data_changed = Signal()
 
-    def __init__(self, color=None, lineStyle=None, lineWidth=None, yAxisName=None, **kws):
+    def __init__(self,
+                 color: Optional[QColor] = None,
+                 lineStyle: Optional[Qt.PenStyle] = None,
+                 lineWidth: Optional[int] = None,
+                 yAxisName: Optional[str] = None,
+                 **kws) -> None:
         self._color = QColor('white')
         self._thresholdColor = QColor('white')
         self._pen = mkPen(self._color)
@@ -98,7 +102,7 @@ class BasePlotCurveItem(PlotDataItem):
                                                      self.channels))
 
     @property
-    def color_string(self):
+    def color_string(self) -> str:
         """
         A string representation of the color used for the curve.  This string
         will be a hex color code, like #FF00FF, or an SVG spec color name, if
@@ -112,7 +116,7 @@ class BasePlotCurveItem(PlotDataItem):
                                                        hex_on_fail=True))
 
     @color_string.setter
-    def color_string(self, new_color_string):
+    def color_string(self, new_color_string: str) -> None:
         """
         A string representation of the color used for the curve.  This string
         will be a hex color code, like #FF00FF, or an SVG spec color name, if
@@ -120,13 +124,13 @@ class BasePlotCurveItem(PlotDataItem):
 
         Parameters
         -------
-        new_color_string: int
+        new_color_string: str
             The new string to use for the curve color.
         """
         self.color = QColor(str(new_color_string))
 
     @property
-    def color(self):
+    def color(self) -> QColor:
         """
         The color used for the curve.
 
@@ -137,7 +141,7 @@ class BasePlotCurveItem(PlotDataItem):
         return self._color
 
     @color.setter
-    def color(self, new_color):
+    def color(self, new_color: Union[QColor, str]) -> None:
         """
         The color used for the curve.
 
@@ -192,7 +196,7 @@ class BasePlotCurveItem(PlotDataItem):
         self._thresholdColor = new_color
 
     @property
-    def y_axis_name(self):
+    def y_axis_name(self) -> str:
         """
         Return the name of the y-axis that this curve should be associated with. This allows us to have plots that
         contain multiple y-axes, with each curve assigned to either a unique or shared axis as needed.
@@ -203,7 +207,7 @@ class BasePlotCurveItem(PlotDataItem):
         return self._y_axis_name
 
     @y_axis_name.setter
-    def y_axis_name(self, axis_name):
+    def y_axis_name(self, axis_name: str) -> None:
         """
         Set the name of the y-axis that should be associated with this curve.
         Parameters
@@ -213,7 +217,7 @@ class BasePlotCurveItem(PlotDataItem):
         self._y_axis_name = axis_name
 
     @property
-    def lineStyle(self):
+    def lineStyle(self) -> Qt.PenStyle:
         """
         Return the style of the line connecting the data points.
         Must be a value from the Qt::PenStyle enum
@@ -221,12 +225,12 @@ class BasePlotCurveItem(PlotDataItem):
 
         Returns
         -------
-        int
+        Qt.PenStyle
         """
         return self._pen.style()
 
     @lineStyle.setter
-    def lineStyle(self, new_style):
+    def lineStyle(self, new_style: Qt.PenStyle) -> None:
         """
         Set the style of the line connecting the data points.
         Must be a value from the Qt::PenStyle enum
@@ -234,14 +238,14 @@ class BasePlotCurveItem(PlotDataItem):
 
         Parameters
         -------
-        new_style: int
+        new_style: Qt.PenStyle
         """
         if new_style in self.lines.values():
             self._pen.setStyle(new_style)
             self.setPen(self._pen)
 
     @property
-    def lineWidth(self):
+    def lineWidth(self) -> int:
         """
         Return the width of the line connecting the data points.
 
@@ -252,7 +256,7 @@ class BasePlotCurveItem(PlotDataItem):
         return self._pen.width()
 
     @lineWidth.setter
-    def lineWidth(self, new_width):
+    def lineWidth(self, new_width: int) -> None:
         """
         Set the width of the line connecting the data points.
 
@@ -264,7 +268,7 @@ class BasePlotCurveItem(PlotDataItem):
         self.setPen(self._pen)
 
     @property
-    def symbol(self):
+    def symbol(self) -> Union[str, None]:
         """
         The single-character code for the symbol drawn at each datapoint.
 
@@ -277,7 +281,7 @@ class BasePlotCurveItem(PlotDataItem):
         return self.opts['symbol']
 
     @symbol.setter
-    def symbol(self, new_symbol):
+    def symbol(self, new_symbol: Union[str, None]) -> None:
         """
         The single-character code for the symbol drawn at each datapoint.
 
@@ -292,7 +296,7 @@ class BasePlotCurveItem(PlotDataItem):
             self.setSymbolPen(self._color)
 
     @property
-    def symbolSize(self):
+    def symbolSize(self) -> int:
         """
         Return the size of the symbol to represent the data.
 
@@ -303,7 +307,7 @@ class BasePlotCurveItem(PlotDataItem):
         return self.opts['symbolSize']
 
     @symbolSize.setter
-    def symbolSize(self, new_size):
+    def symbolSize(self, new_size: int) -> None:
         """
         Set the size of the symbol to represent the data.
 
@@ -336,7 +340,7 @@ class BasePlotCurveItem(PlotDataItem):
         self.lower_threshold = lower_threshold
         self.threshold_color = color
 
-    def to_dict(self):
+    def to_dict(self) -> OrderedDict:
         """
         Returns an OrderedDict representation with values for all properties
         needed to recreate this curve.
@@ -357,7 +361,7 @@ class BasePlotCurveItem(PlotDataItem):
                             ("lowerThreshold", self.lower_threshold),
                             ("thresholdColor", self.threshold_color_string)])
 
-    def close(self):
+    def close(self) -> None:
         pass
 
 
@@ -389,8 +393,15 @@ class BasePlotAxisItem(AxisItem):
     axis_orientations = OrderedDict([('Left', 'left'),
                                      ('Right', 'right')])
 
-    def __init__(self, name, orientation='left', label=None, minRange=-1.0,
-                 maxRange=1.0, autoRange=True, logMode=False, **kws):
+    def __init__(self,
+                 name: str,
+                 orientation: Optional[str] = 'left',
+                 label: Optional[str] = None,
+                 minRange: Optional[float] = -1.0,
+                 maxRange: Optional[float] = 1.0,
+                 autoRange: Optional[bool] = True,
+                 logMode: Optional[bool] = False,
+                 **kws) -> None:
         super(BasePlotAxisItem, self).__init__(orientation, **kws)
 
         self._name = name
@@ -402,7 +413,7 @@ class BasePlotAxisItem(AxisItem):
         self._log_mode = logMode
 
     @property
-    def name(self):
+    def name(self) -> str:
         """
         Return the name of the axis
 
@@ -413,7 +424,7 @@ class BasePlotAxisItem(AxisItem):
         return self._name
 
     @name.setter
-    def name(self, name):
+    def name(self, name: str) -> None:
         """
         Set the name of the axis
 
@@ -424,7 +435,7 @@ class BasePlotAxisItem(AxisItem):
         self._name = name
 
     @property
-    def orientation(self):
+    def orientation(self) -> str:
         """
         Return the orientation of the y-axis this curve is associated with. Will be 'left', 'right', 'bottom', or 'top'
         See: https://pyqtgraph.readthedocs.io/en/latest/graphicsItems/axisitem.html
@@ -436,7 +447,7 @@ class BasePlotAxisItem(AxisItem):
         return self._orientation
 
     @orientation.setter
-    def orientation(self, orientation):
+    def orientation(self, orientation: str) -> None:
         """
         Set the orientation of the y-axis this curve is associated with. Must be 'left', 'right', 'bottom', or 'top'
 
@@ -457,7 +468,7 @@ class BasePlotAxisItem(AxisItem):
         self._label = label
 
     @property
-    def min_range(self):
+    def min_range(self) -> float:
         """
         Return the minimum range displayed on this axis
 
@@ -468,7 +479,7 @@ class BasePlotAxisItem(AxisItem):
         return self._min_range
 
     @min_range.setter
-    def min_range(self, min_range):
+    def min_range(self, min_range: float) -> None:
         """
         Set the minimum range for this axis
 
@@ -479,7 +490,7 @@ class BasePlotAxisItem(AxisItem):
         self._min_range = min_range
 
     @property
-    def max_range(self):
+    def max_range(self) -> float:
         """
         Return the maximum range displayed on this axis
 
@@ -490,7 +501,7 @@ class BasePlotAxisItem(AxisItem):
         return self._max_range
 
     @max_range.setter
-    def max_range(self, max_range):
+    def max_range(self, max_range: float) -> None:
         """
         Set the maximum range for this axis
 
@@ -501,7 +512,7 @@ class BasePlotAxisItem(AxisItem):
         self._max_range = max_range
 
     @property
-    def auto_range(self):
+    def auto_range(self) -> bool:
         """
         Return whether or not this axis should automatically update its range when receiving new data
 
@@ -512,7 +523,7 @@ class BasePlotAxisItem(AxisItem):
         return self._auto_range
 
     @auto_range.setter
-    def auto_range(self, auto_range):
+    def auto_range(self, auto_range: bool) -> None:
         """
         Set whether or not this axis should automatically update its range when receiving new data
 
@@ -523,7 +534,7 @@ class BasePlotAxisItem(AxisItem):
         self._auto_range = auto_range
 
     @property
-    def log_mode(self):
+    def log_mode(self) -> bool:
         """
         Return whether or not this axis is using logarithmic mode
 
@@ -534,7 +545,7 @@ class BasePlotAxisItem(AxisItem):
         return self._log_mode
 
     @log_mode.setter
-    def log_mode(self, log_mode):
+    def log_mode(self, log_mode: bool) -> None:
         """
         Set whether or not this axis is using logarithmic mode
 
@@ -544,7 +555,7 @@ class BasePlotAxisItem(AxisItem):
         """
         self._log_mode = log_mode
 
-    def to_dict(self):
+    def to_dict(self) -> OrderedDict:
         """
         Returns an OrderedDict representation with values for all properties
         needed to recreate this axis.
@@ -564,8 +575,25 @@ class BasePlotAxisItem(AxisItem):
 
 class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     crosshair_position_updated = Signal(float, float)
+    """
+    BasePlot is the parent class for all specific types of PyDM plots. It is built on top of the
+    pyqtgraph plotting library.
 
-    def __init__(self, parent=None, background='default', axisItems=None):
+    Parameters
+    ----------
+    parent : QWidget, optional
+        The parent of this widget.
+    background: str, optional
+        The background color for the plot.  Accepts any arguments that pyqtgraph.mkColor will accept.
+    axisItems: dict, optional
+        A mapping from axis name (str) to pyqtgraph AxisItem for each axis to be added to the plot. If
+        not specified, the default pyqtgraph axis items (top, bottom, left, right) will be used
+    """
+
+    def __init__(self,
+                 parent: Optional[QWidget] = None,
+                 background: Optional[str] = 'default',
+                 axisItems: Optional[Dict[str, AxisItem]] = None) -> None:
         # First create a custom MultiAxisPlot to pass to the base PlotWidget class to support multiple y axes. Note
         # that this plot will still function just fine in the case the user doesn't need additional y axes.
         plotItem = MultiAxisPlot(axisItems=axisItems)
@@ -622,7 +650,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if utilities.is_qt_designer():
             self.installEventFilter(self)
 
-    def eventFilter(self, obj, event):
+    def eventFilter(self, obj: QObject, event: QEvent) -> bool:
+        """ Display a tool tip upon mousing over the plot in Qt designer explaining how to edit curves on it """
         ret = super(BasePlot, self).eventFilter(obj, event)
         if utilities.is_qt_designer():
             if event.type() == QEvent.Enter:
@@ -639,9 +668,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
         return ret
 
-    def addCurve(self, plot_data_item, curve_color=None, y_axis_name=None):
+    def addCurve(self,
+                 plot_data_item: BasePlotCurveItem,
+                 curve_color: Optional[QColor] = None,
+                 y_axis_name: Optional[str] = None):
         """
-        Adds a curve to this plot. 
+        Adds a curve to this plot.
 
         If the y axis parameters are specified, either link this curve to an
         existing axis if that axis is already part of this plot, or create a
@@ -737,7 +769,15 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                               enableAutoRangeX=self.getAutoRangeX(), enableAutoRangeY=enable_auto_range,
                               minRange=min_range, maxRange=max_range)
 
-    def removeCurve(self, plot_item):
+    def removeCurve(self, plot_item: BasePlotCurveItem) -> None:
+        """
+        Remove the given curve from the plot, disconnecting it from any channels it was connected to
+
+        Parameters
+        ----------
+        plot_item : BasePlotCurveItem
+            The cureve to be removed from this plot
+        """
         if plot_item.y_axis_name in self.plotItem.axes:
             self.plotItem.unlinkDataFromAxis(plot_item.y_axis_name)
 
@@ -750,40 +790,41 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             if chan:
                 chan.disconnect()
 
-    def removeAxisAtIndex(self, axis_index):
+    def removeAxisAtIndex(self, axis_index: int) -> None:
         axis = self._axes[axis_index]
         self.plotItem.removeAxis(axis.name)
         self._axes.remove(axis)
 
-    def removeCurveWithName(self, name):
+    def removeCurveWithName(self, name: str) -> None:
         for curve in self._curves:
             if curve.name() == name:
                 self.removeCurve(curve)
 
-    def removeCurveAtIndex(self, index):
+    def removeCurveAtIndex(self, index: int) -> None:
         curve_to_remove = self._curves[index]
         self.removeCurve(curve_to_remove)
 
-    def setCurveAtIndex(self, index, new_curve):
+    def setCurveAtIndex(self, index: int, new_curve: BasePlotCurveItem) -> None:
         old_curve = self._curves[index]
         self._curves[index] = new_curve
         # self._legend.addItem(new_curve, new_curve.name())
         self.removeCurve(old_curve)
 
-    def curveAtIndex(self, index):
+    def curveAtIndex(self, index: int) -> BasePlotCurveItem:
         return self._curves[index]
 
-    def curves(self):
+    def curves(self) -> List[BasePlotCurveItem]:
         return self._curves
 
-    def clear(self):
+    def clear(self) -> None:
+        """ Remove all curves from the plot, as well as all items from the main view box """
         legend_items = [label.text for (sample, label) in self._legend.items]
         for item in legend_items:
             self._legend.removeItem(item)
         self.plotItem.clear()
         self._curves = []
 
-    def clearAxes(self):
+    def clearAxes(self) -> None:
         """ Clear out any added axes on this plot """
         for axis in self._axes:
             axis.deleteLater()
@@ -791,52 +832,73 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._axes = []
 
     @Slot()
-    def redrawPlot(self):
+    def redrawPlot(self) -> None:
         pass
 
-    def getShowXGrid(self):
+    def getShowXGrid(self) -> bool:
+        """ True if showing x grid lines on the plot, False otherwise """
         return self._show_x_grid
 
-    def setShowXGrid(self, value, alpha=None):
+    def setShowXGrid(self, value: bool, alpha: Optional[float] = None) -> None:
+        """
+        Set the x grid lines on the plot
+
+        Parameters
+        ----------
+        value : bool
+            True if we should show x grid lines, False to hide them
+        alpha : float, optional
+            The opacity of the grid lines, from 0.0 to 1.0 (strongest), defaults to 0.5
+        """
         self._show_x_grid = value
         self.showGrid(x=self._show_x_grid, alpha=alpha)
 
-    def resetShowXGrid(self):
+    def resetShowXGrid(self) -> None:
         self.setShowXGrid(False)
 
     showXGrid = Property("bool", getShowXGrid, setShowXGrid, resetShowXGrid)
 
-    def getShowYGrid(self):
+    def getShowYGrid(self) -> bool:
         return self._show_y_grid
 
-    def setShowYGrid(self, value, alpha=None):
+    def setShowYGrid(self, value: bool, alpha: Optional[float] = None) -> None:
+        """
+        Set the y grid lines on the plot
+
+        Parameters
+        ----------
+        value : bool
+            True if we should show y grid lines, False to hide them
+        alpha : float, optional
+            The opacity of the grid lines, from 0.0 to 1.0 (strongest), defaults to 0.5
+        """
         self._show_y_grid = value
         self.showGrid(y=self._show_y_grid, alpha=alpha)
 
-    def resetShowYGrid(self):
+    def resetShowYGrid(self) -> None:
         self.setShowYGrid(False)
 
     showYGrid = Property("bool", getShowYGrid, setShowYGrid, resetShowYGrid)
 
-    def getBackgroundColor(self):
+    def getBackgroundColor(self) -> QColor:
         return self.backgroundBrush().color()
 
-    def setBackgroundColor(self, color):
+    def setBackgroundColor(self, color: QColor) -> None:
         if self.backgroundBrush().color() != color:
             self.setBackgroundBrush(QBrush(color))
 
     backgroundColor = Property(QColor, getBackgroundColor, setBackgroundColor)
 
-    def getAxisColor(self):
+    def getAxisColor(self) -> QColor:
         return self.getAxis('bottom')._pen.color()
 
-    def setAxisColor(self, color):
+    def setAxisColor(self, color: QColor) -> None:
         for axis in self.plotItem.axes.values():
             axis['item'].setPen(color)
 
     axisColor = Property(QColor, getAxisColor, setAxisColor)
 
-    def getYAxes(self):
+    def getYAxes(self) -> List[str]:
         """
         Dump the current list of axes and each axis's settings into a list
         of JSON-formatted strings.
@@ -849,7 +911,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return [json.dumps(axis.to_dict()) for axis in self._axes]
 
-    def setYAxes(self, new_list):
+    def setYAxes(self, new_list: List[str]) -> None:
         """
         Add a list of axes into the graph.
 
@@ -877,10 +939,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     yAxes = Property("QStringList", getYAxes, setYAxes, designable=False)
 
-    def getBottomAxisLabel(self):
+    def getBottomAxisLabel(self) -> str:
         return self.getAxis('bottom').labelText
 
-    def getShowRightAxis(self):
+    def getShowRightAxis(self) -> bool:
         """
         Provide whether the right y-axis is being shown.
 
@@ -891,7 +953,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self._show_right_axis
 
-    def setShowRightAxis(self, show):
+    def setShowRightAxis(self, show: bool) -> None:
         """
         Set whether the graph should show the right y-axis.
 
@@ -908,27 +970,27 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     showRightAxis = Property("bool", getShowRightAxis, setShowRightAxis)
 
-    def getPlotTitle(self):
+    def getPlotTitle(self) -> str:
         if self._title is None:
             return ""
         return str(self._title)
 
-    def setPlotTitle(self, value):
+    def setPlotTitle(self, value: str) -> None:
         self._title = str(value)
         if len(self._title) < 1:
             self._title = None
         self.setTitle(self._title)
 
-    def resetPlotTitle(self):
+    def resetPlotTitle(self) -> None:
         self._title = None
         self.setTitle(self._title)
 
     title = Property(str, getPlotTitle, setPlotTitle, resetPlotTitle)
 
-    def getXLabels(self):
+    def getXLabels(self) -> List[str]:
         return self._x_labels
 
-    def setXLabels(self, labels):
+    def setXLabels(self, labels: List[str]) -> None:
         if self._x_labels != labels:
             self._x_labels = labels
             label = ""
@@ -937,7 +999,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                 label = self._x_labels[0]
             self.setLabel("bottom", text=label)
 
-    def resetXLabels(self):
+    def resetXLabels(self) -> None:
         self._x_labels = []
         self.setLabel("bottom", text="")
 
@@ -972,7 +1034,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._y_labels = []
         self.setLabel("left", text="")
 
-    def getShowLegend(self):
+    def getShowLegend(self) -> bool:
         """
         Check if the legend is being shown.
 
@@ -983,7 +1045,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self._show_legend
 
-    def setShowLegend(self, value):
+    def setShowLegend(self, value: bool) -> None:
         """
         Set to display the legend on the graph.
 
@@ -1002,7 +1064,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             if self._legend is not None:
                 self._legend.hide()
 
-    def resetShowLegend(self):
+    def resetShowLegend(self) -> None:
         """
         Reset the legend display status to hidden.
         """
@@ -1010,29 +1072,53 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     showLegend = Property(bool, getShowLegend, setShowLegend, resetShowLegend)
 
-    def getAutoRangeX(self):
+    def getAutoRangeX(self) -> Union[bool, float]:
+        """
+        A return type of bool is a simple yes/no if the x-axis has auto range set. A float
+        from 0.0 - 1.0 also means True, but only showing a percentage of the data corresponding to the value.
+        """
         return self._auto_range_x
 
-    def setAutoRangeX(self, value):
-        self._auto_range_x = value
-        if self._auto_range_x:
-            self.plotItem.enableAutoRange(ViewBox.XAxis, enable=self._auto_range_x)
+    def setAutoRangeX(self, value: Union[bool, float]) -> None:
+        """
+        Set the auto range property for the x-axis.
 
-    def resetAutoRangeX(self):
+        Parameters
+        ----------
+        value : bool or float
+            False means no autorange, True means show all data. A float between 0.0 and 1.0 means only
+            show a percentage of the data (for example, 0.75 = 75% of data will be visible)
+        """
+        self._auto_range_x = value
+        self.plotItem.updateXAutoRange(self._auto_range_x)
+
+    def resetAutoRangeX(self) -> None:
         self.setAutoRangeX(True)
 
-    def getAutoRangeY(self):
+    def getAutoRangeY(self) -> Union[bool, float]:
+        """
+        A return type of bool is a simple yes/no if the y-axis has auto range set. A float
+        from 0.0 - 1.0 also means True, but only showing a percentage of the data corresponding to the value.
+        """
         return self._auto_range_y
 
-    def setAutoRangeY(self, value):
-        self._auto_range_y = value
-        if self._auto_range_y:
-            self.plotItem.enableAutoRange(ViewBox.YAxis, enable=self._auto_range_y)
+    def setAutoRangeY(self, value: Union[bool, float]) -> None:
+        """
+        Set the auto range property for the y-axis.
 
-    def resetAutoRangeY(self):
+        Parameters
+        ----------
+        value : bool or float
+            False means no autorange, True means show all data. A float between 0.0 and 1.0 means only
+            show a percentage of the data (for example, 0.75 = 75% of data will be visible)
+        """
+        self._auto_range_y = value
+        self.plotItem.updateYAutoRange(self._auto_range_y)
+
+    def resetAutoRangeY(self) -> None:
         self.setAutoRangeY(True)
 
-    def getMinXRange(self):
+    def getMinXRange(self) -> float:
         """
         Minimum X-axis value visible on the plot.
 
@@ -1042,7 +1128,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self.plotItem.viewRange()[0][0]
 
-    def setMinXRange(self, new_min_x_range):
+    def setMinXRange(self, new_min_x_range: float) -> None:
         """
         Set the minimum X-axis value visible on the plot.
 
@@ -1055,7 +1141,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._min_x = new_min_x_range
         self.plotItem.setXRange(self._min_x, self._max_x, padding=0)
 
-    def getMaxXRange(self):
+    def getMaxXRange(self) -> float:
         """
         Maximum X-axis value visible on the plot.
 
@@ -1065,7 +1151,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self.plotItem.viewRange()[0][1]
 
-    def setMaxXRange(self, new_max_x_range):
+    def setMaxXRange(self, new_max_x_range: float) -> None:
         """
         Set the Maximum X-axis value visible on the plot.
 
@@ -1079,7 +1165,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._max_x = new_max_x_range
         self.plotItem.setXRange(self._min_x, self._max_x, padding=0)
 
-    def getMinYRange(self):
+    def getMinYRange(self) -> float:
         """
         Minimum Y-axis value visible on the plot.
 
@@ -1089,7 +1175,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self.plotItem.viewRange()[1][0]
 
-    def setMinYRange(self, new_min_y_range):
+    def setMinYRange(self, new_min_y_range: float) -> None:
         """
         Set the minimum Y-axis value visible on the plot.
 
@@ -1103,7 +1189,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._min_y = new_min_y_range
         self.plotItem.setYRange(self._min_y, self._max_y, padding=0)
 
-    def getMaxYRange(self):
+    def getMaxYRange(self) -> float:
         """
         Maximum Y-axis value visible on the plot.
 
@@ -1113,7 +1199,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self.plotItem.viewRange()[1][1]
 
-    def setMaxYRange(self, new_max_y_range):
+    def setMaxYRange(self, new_max_y_range: float) -> None:
         """
         Set the maximum Y-axis value visible on the plot.
 
@@ -1128,7 +1214,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.plotItem.setYRange(self._min_y, self._max_y, padding=0)
 
     @Property(bool)
-    def mouseEnabledX(self):
+    def mouseEnabledX(self) -> bool:
         """
         Whether or not mouse interactions are enabled for the X-axis.
 
@@ -1139,7 +1225,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         return self.plotItem.getViewBox().state['mouseEnabled'][0]
 
     @mouseEnabledX.setter
-    def mouseEnabledX(self, x_enabled):
+    def mouseEnabledX(self, x_enabled: bool) -> None:
         """
         Whether or not mouse interactions are enabled for the X-axis.
 
@@ -1150,7 +1236,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.plotItem.setMouseEnabled(x=x_enabled)
 
     @Property(bool)
-    def mouseEnabledY(self):
+    def mouseEnabledY(self) -> bool:
         """
         Whether or not mouse interactions are enabled for the Y-axis.
 
@@ -1161,7 +1247,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         return self.plotItem.getViewBox().state['mouseEnabled'][1]
 
     @mouseEnabledY.setter
-    def mouseEnabledY(self, y_enabled):
+    def mouseEnabledY(self, y_enabled: bool) -> None:
         """
         Whether or not mouse interactions are enabled for the Y-axis.
 
@@ -1172,7 +1258,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.plotItem.setMouseEnabled(y=y_enabled)
 
     @Property(int)
-    def maxRedrawRate(self):
+    def maxRedrawRate(self) -> int:
         """
         The maximum rate (in Hz) at which the plot will be redrawn.
         The plot will not be redrawn if there is not new data to draw.
@@ -1184,7 +1270,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         return self._redraw_rate
 
     @maxRedrawRate.setter
-    def maxRedrawRate(self, redraw_rate):
+    def maxRedrawRate(self, redraw_rate: int) -> None:
         """
         The maximum rate (in Hz) at which the plot will be redrawn.
         The plot will not be redrawn if there is not new data to draw.
@@ -1196,11 +1282,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._redraw_rate = redraw_rate
         self.redraw_timer.setInterval(int((1.0/self._redraw_rate)*1000))
 
-    def pausePlotting(self):
+    def pausePlotting(self) -> bool:
         self.redraw_timer.stop() if self.redraw_timer.isActive() else self.redraw_timer.start()
         return self.redraw_timer.isActive()
 
-    def mouseMoved(self, evt):
+    def mouseMoved(self, evt: QMouseEvent) -> None:
         """
         A handler for the crosshair feature. Every time the mouse move, the mouse coordinates are updated, and the
         horizontal and vertical hairlines will be redrawn at the new coordinate. If a PyDMDisplay object is available,
@@ -1219,8 +1305,14 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
             self.crosshair_position_updated.emit(mouse_point.x(), mouse_point.y())
 
-    def enableCrosshair(self, is_enabled, starting_x_pos, starting_y_pos,  vertical_angle=90, horizontal_angle=0,
-                        vertical_movable=False, horizontal_movable=False):
+    def enableCrosshair(self,
+                        is_enabled: bool,
+                        starting_x_pos: float,
+                        starting_y_pos: float,
+                        vertical_angle: Optional[float] = 90,
+                        horizontal_angle: Optional[float] = 0,
+                        vertical_movable: Optional[bool] = False,
+                        horizontal_movable: Optional[bool] = False) -> None:
         """
         Enable the crosshair to be drawn on the ViewBox.
 

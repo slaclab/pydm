@@ -2,7 +2,7 @@ import pytest
 import logging
 
 from pydm.widgets.timeplot import PyDMTimePlot
-from pydm.widgets.waveformplot import WaveformCurveItem
+from pydm.widgets.waveformplot import PyDMWaveformPlot, WaveformCurveItem
 from qtpy.QtGui import QColor
 from qtpy.QtCore import QTimer, Qt
 
@@ -261,3 +261,20 @@ def test_multiaxis_plot_no_designer_flow(qtbot):
     assert 'left' in plot.plotItem.axes
     assert 'right' in plot.plotItem.axes
     assert 'top' in plot.plotItem.axes
+
+
+def test_reset_autorange(qtbot):
+    """ Verify that resetting the autorange properties of the plot works as expected """
+    plot = PyDMWaveformPlot()
+    plot.setAutoRangeX(False)
+    plot.setAutoRangeY(False)
+
+    # Quick check to ensure autorange was turned off
+    for view in plot.getPlotItem().stackedViews:
+        assert not any(view.state['autoRange'])
+
+    plot.resetAutoRangeX()
+    plot.resetAutoRangeY()
+
+    for view in plot.getPlotItem().stackedViews:
+        assert all(view.state['autoRange'])
