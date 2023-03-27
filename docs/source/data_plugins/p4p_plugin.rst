@@ -45,8 +45,8 @@ NTTables
 The plugin accepts NTTables. It will convert NTTables in python dictionaries which are then passed to the pydm widgets. 
 Not all widgets will accept a dictionary (or the whole NTTable) as an input. 
 A specified section of the NTTable can be passed to a those pydm widgets which do not accept dictionaries.
-If the PV is passing an NTTable and the user wants to pass only a specific subfield of the NTTable. 
-This can be achieved via appending a ``/`` followed by the key or name of the column header of the subfield of the NTTable.
+If the PV is passing an NTTable and the user wants to pass only a specific subfield of the NTTable this can be achieved via appending a ``/`` 
+followed by the key or name of the column header of the subfield of the NTTable.
 For example::
 
     pva://MTEST/subfield
