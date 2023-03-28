@@ -10,14 +10,14 @@ from ast import literal_eval
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent
 from qtpy.QtCore import Property, QSize, Qt, QTimer
-from .base import PyDMPrimitiveWidget
+from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont
 from typing import Optional, Union, List
 
 logger = logging.getLogger(__name__)
 
 
-class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
+class PyDMShellCommand(QPushButton, PyDMWidget):
     """
     A QPushButton capable of execute shell commands.
 
@@ -29,15 +29,18 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         A string for a single command to run, or a list of strings for multiple commands
     title : str or list, optional
         Title of the command to run, shown in the display. If a list, number of elements must match that of command
+    init_channel : str, optional
+        The channel to be used by the widget
     """
 
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
     def __init__(self, parent: Optional[QWidget] = None, 
                  command: Optional[Union[str, List[str]]] = None, 
-                 title: Optional[Union[str, List[str]]] = None) -> None:
+                 title: Optional[Union[str, List[str]]] = None,
+                 init_channel: Optional[str] = None) -> None:
         QPushButton.__init__(self, parent)
-        PyDMPrimitiveWidget.__init__(self)
+        PyDMWidget.__init__(self, init_channel=init_channel)
         self.iconFont = IconFont()
         self._icon = self.iconFont.icon("cog")
         self._warning_icon = self.iconFont.icon('exclamation-circle')
@@ -65,7 +68,6 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         self._password_protected = False
         self._password = ""
         self._protected_password = ""
-
         self.env_var = None
 
         self._show_confirm_dialog = False
@@ -143,6 +145,23 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
         if self._confirm_message != value:
             self._confirm_message = value
 
+    @only_if_channel_set
+    def check_enable_state(self) -> None:
+        """
+        override parent method, so this widget does not get disabled when the pv disconnects.
+        This method adds a Tool Tip with the reason why it is disabled.
+        """
+        status = self._connected
+        tooltip = self.restore_original_tooltip()
+        if not status:
+            if tooltip != '':
+                tooltip += '\n'
+            tooltip += "Alarm PV is disconnected."
+            tooltip += '\n'
+            tooltip += self.get_address()
+
+        self.setToolTip(tooltip)
+        
     @Property(str)
     def environmentVariables(self) -> str:
         """
@@ -517,3 +536,4 @@ class PyDMShellCommand(QPushButton, PyDMPrimitiveWidget):
                 logger.error("Error in shell command: %s", exc)
         else:
             logger.error("Command '%s' already active.", command)
+

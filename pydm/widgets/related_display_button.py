@@ -4,16 +4,15 @@ import logging
 import warnings
 from functools import partial
 import hashlib
-from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit
-from qtpy.QtGui import QCursor, QIcon
+from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit, QWidget
+from qtpy.QtGui import QCursor, QIcon, QMouseEvent
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
-
-from .base import PyDMPrimitiveWidget
+from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
 from ..utilities.stylesheet import merge_widget_stylesheet
 from ..display import (load_file, ScreenTarget)
-
+from typing import Optional, List
 
 logger = logging.getLogger(__name__)
 
@@ -22,26 +21,28 @@ _relatedDisplayRuleProperties = {
     'Filenames': ['filenames', list]
     }
 
-class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=_relatedDisplayRuleProperties):
+
+class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedDisplayRuleProperties):
     """
     A QPushButton capable of opening a new Display at the same of at a
     new window.
 
     Parameters
     ----------
-    init_channel : str, optional
-        The channel to be used by the widget.
-
+    parent : QWidget, optional
+        The parent widget for the related display button
     filename : str, optional
         The file to be opened
+    init_channel : str, optional
+        The channel to be used by the widget
     """
     # Constants for determining where to open the display.
     EXISTING_WINDOW = 0
     NEW_WINDOW = 1
 
-    def __init__(self, parent=None, filename=None):
+    def __init__(self,parent: Optional[QWidget] = None, filename: str = None, init_channel: Optional[str] = None) -> None:
         QPushButton.__init__(self, parent)
-        PyDMPrimitiveWidget.__init__(self)
+        PyDMWidget.__init__(self, init_channel=init_channel)
 
         self.mouseReleaseEvent = self.push_button_release_event
         self.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -72,21 +73,38 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         self._password = ""
         self._protected_password = ""
 
+    @only_if_channel_set
+    def check_enable_state(self) -> None:
+        """
+        override parent method, so this widget does not get disabled when the pv disconnects.
+        This method adds a Tool Tip with the reason why it is disabled.
+        """
+        status = self._connected
+        tooltip = self.restore_original_tooltip()
+        if not status:
+            if tooltip != '':
+                tooltip += '\n'
+            tooltip += "Alarm PV is disconnected."
+            tooltip += '\n'
+            tooltip += self.get_address()
+
+        self.setToolTip(tooltip)
+
     @Property('QStringList')
-    def filenames(self):
+    def filenames(self) -> List[str]:
         return self._filenames
     
     @filenames.setter
-    def filenames(self, val):
+    def filenames(self, val : List[str]) -> None:
         self._filenames = val
         self._menu_needs_rebuild = True
         
     @Property('QStringList')
-    def titles(self):
+    def titles(self) -> List[str]:
         return self._titles
     
     @titles.setter
-    def titles(self, val):
+    def titles(self, val : List[str]) -> None:
         self._titles = val
         self._menu_needs_rebuild = True
 
@@ -115,7 +133,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
                 item['macros'] = ""
             yield item
 
-    def _rebuild_menu(self):
+    def _rebuild_menu(self) -> None:
         if not any(self._filenames):
             self._filenames = []
         if not any(self._titles):
@@ -132,7 +150,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         self._menu_needs_rebuild = False
 
     @Property(bool)
-    def showIcon(self):
+    def showIcon(self) -> bool:
         """
         Whether or not we should show the selected Icon.
 
@@ -143,7 +161,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         return self._show_icon
 
     @showIcon.setter
-    def showIcon(self, value):
+    def showIcon(self, value: bool) -> None:
         """
         Whether or not we should show the selected Icon.
 
@@ -161,7 +179,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
                 self.setIcon(QIcon())
 
     @Property(str, designable=False)
-    def displayFilename(self):
+    def displayFilename(self) -> str:
         """
         DEPRECATED: use the 'filenames' property.
         This property simply returns the first filename from the 'filenames'
@@ -177,7 +195,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         return self.filenames[0]
 
     @displayFilename.setter
-    def displayFilename(self, value):
+    def displayFilename(self, value: str) -> None:
         """
         DEPRECATED: use the 'filenames' property.
         Any value set to this property is appended to the 'filenames'
@@ -197,7 +215,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         self._display_filename = ""
             
     @Property('QStringList')
-    def macros(self):
+    def macros(self) -> List[str]:
         """
         The macro substitutions to use when launching the display, in JSON object format.
 
@@ -208,7 +226,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         return self._macros
 
     @macros.setter
-    def macros(self, new_macros):
+    def macros(self, new_macros: List[str]) -> None:
         """
         The macro substitutions to use when launching the display, in JSON object format.
 
@@ -222,7 +240,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         self._macros = new_macros
 
     @Property(bool)
-    def openInNewWindow(self):
+    def openInNewWindow(self) -> bool:
         """
         If true, the button will open the display in a new window, rather than in the existing window.
 
@@ -233,7 +251,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         return self._open_in_new_window
 
     @openInNewWindow.setter
-    def openInNewWindow(self, open_in_new):
+    def openInNewWindow(self, open_in_new: bool) -> None:
         """
         If true, the button will open the display in a new window, rather than in the existing window.
 
@@ -244,7 +262,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         self._open_in_new_window = open_in_new
 
     @Property(bool)
-    def passwordProtected(self):
+    def passwordProtected(self) -> bool:
         """
         Whether or not this button is password protected.
         Returns
@@ -255,7 +273,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         return self._password_protected
 
     @passwordProtected.setter
-    def passwordProtected(self, value):
+    def passwordProtected(self, value: bool) -> None:
         """
         Whether or not this button is password protected.
         Parameters
@@ -266,30 +284,30 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
             self._password_protected = value
 
     @Property(str)
-    def password(self):
+    def password(self) -> str:
         """
-		Password to be encrypted using SHA256.
+        Password to be encrypted using SHA256.
 
-		.. warning::
-			To avoid issues exposing the password this method
-			always returns an empty string.
+        .. warning::
+        To avoid issues exposing the password this method
+        always returns an empty string.
 
-		Returns
-		-------
-		str
-		"""
+        Returns
+        -------
+        str
+        """
         return ""
 
     @password.setter
-    def password(self, value):
+    def password(self, value: str) -> None:
         """
-		Password to be encrypted using SHA256.
+        Password to be encrypted using SHA256.
 
-		Parameters
-		----------
-		value : str
-			The password to be encrypted
-		"""
+        Parameters
+        ----------
+        value : str
+        The password to be encrypted
+        """
         if value is not None and value != "":
             sha = hashlib.sha256()
             sha.update(value.encode())
@@ -298,22 +316,22 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
             self.protectedPassword = sha.hexdigest()
 
     @Property(str)
-    def protectedPassword(self):
+    def protectedPassword(self) -> str:
         """
-		The encrypted password.
+        The encrypted password.
 
-		Returns
-		-------
-		str
-		"""
+        Returns
+        -------
+        str
+        """
         return self._protected_password
 
     @protectedPassword.setter
-    def protectedPassword(self, value):
+    def protectedPassword(self, value: str) -> None:
         if self._protected_password != value:
             self._protected_password = value
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QMouseEvent) -> None:
         if self._menu_needs_rebuild:
             self._rebuild_menu()
         if event.button() == Qt.LeftButton and event.modifiers() == Qt.ShiftModifier:
@@ -322,7 +340,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
             self._shift_key_was_down = False
         super(PyDMRelatedDisplayButton, self).mousePressEvent(event)
 
-    def push_button_release_event(self, mouse_event):
+    def push_button_release_event(self, mouse_event: QMouseEvent) -> None:
         """
         Opens the related display given by `filename`.
         If the Shift Key is hold it will open in a new window.
@@ -353,7 +371,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
             super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(
                 mouse_event)
 
-    def validate_password(self):
+    def validate_password(self) -> bool:
         """
         If the widget is ```passwordProtected```, this method will propmt
         the user for the correct password.
@@ -388,9 +406,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
             return False
         return True
 
-
     @Slot()
-    def handle_open_new_window_action(self):
+    def handle_open_new_window_action(self) -> None:
         """
         Handle the "Open in New Window" action.
 
@@ -488,7 +505,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
         return menu
 
     @Slot(QPoint)
-    def show_context_menu(self, pos):
+    def show_context_menu(self, pos: QPoint) -> None:
         menu = self.context_menu()
         menu.exec_(self.mapToGlobal(pos))
-	
+
