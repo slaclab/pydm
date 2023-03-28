@@ -108,7 +108,7 @@ class Connection(PyDMConnection):
                                         logger.debug('Type Error when attempting to use the given key, code will next attempt to convert the key to an int')
                                     except KeyError:
                                         msg = "Invalid channel address path for NTTable given. %s"
-                                        logger.exception(msg, self.nttable_data_location, exc_info=True)
+                                        logger.exception(msg, self.nttable_data_location)
                                         raise KeyError("error in channel address")
                                     
                                     try:
