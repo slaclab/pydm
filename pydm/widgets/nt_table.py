@@ -183,7 +183,7 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWidget):
             The channel to be used by the widget. 
     """
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMNTTable, self).__init__(parent=parent, init_channel=init_channel)
+        super().__init__(parent=parent, init_channel=init_channel)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.setLayout(QtWidgets.QVBoxLayout())
         self._table = QtWidgets.QTableView(self)
