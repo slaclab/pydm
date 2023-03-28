@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class PythonTableModel(QtCore.QAbstractTableModel):
     def __init__(self, column_names, initial_list=[], parent=None,
                  edit_method=None, can_edit_method=None):
-        super(PythonTableModel, self).__init__(parent=parent)
+        super().__init__(parent=parent)
         self._list = []
         self._column_names = column_names
         self.edit_method = edit_method
