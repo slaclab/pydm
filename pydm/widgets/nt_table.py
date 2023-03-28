@@ -23,7 +23,7 @@ class PythonTableModel(QtCore.QAbstractTableModel):
     @list.setter
     def list(self, new_list):
         self.beginResetModel()
-        self._list = new_list
+        self._list = list(new_list)
         self.endResetModel()
 
     # QAbstractItemModel Implementation
