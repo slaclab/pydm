@@ -98,8 +98,11 @@ class Connection(PyDMConnection):
                         new_value = value.value
                     
                     if self.nttable_data_location:
+                        msg = f"Invalid channel... {self.nttable_data_location}"
+
                         for value in self.nttable_data_location:
-                            if isinstance(new_value, collections.Container) and type(new_value) != str:
+                            if isinstance(new_value, collections.Container) and not isinstance(new_value, str):
+                                
                                 if type(value) == str:
                                     try:
                                         new_value = new_value[value] 
@@ -107,20 +110,15 @@ class Connection(PyDMConnection):
                                     except TypeError:
                                         logger.debug('Type Error when attempting to use the given key, code will next attempt to convert the key to an int')
                                     except KeyError:
-                                        msg = "Invalid channel address path for NTTable given. %s"
-                                        logger.exception(msg, self.nttable_data_location)
-                                        raise KeyError("error in channel address")
+                                        logger.exception(msg)
                                     
                                     try:
                                         new_value = new_value[int(value)] 
                                     except ValueError:
-                                        msg = "Invalid channel address path for NTTable given. %s"
-                                        logger.exception(msg, self.nttable_data_location, exc_info=True)
-                                        raise ValueError("error in channel address")
+                                        logger.exception(msg, exc_info=True)
                             else:
-                                msg = "Invalid channel address path for NTTable given. %s"
-                                logger.exception(msg, self.nttable_data_location, exc_info=True)
-                                raise ValueError("error in channel address")
+                                logger.exception(msg, exc_info=True)
+                                raise ValueError(msg)
 
                     if new_value is not None:
                         if isinstance(new_value, np.ndarray):
