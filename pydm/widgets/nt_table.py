@@ -1,4 +1,5 @@
 import logging
+import numpy as np
 from operator import itemgetter
 from pydm.widgets.base import PyDMWidget, PyDMWritableWidget
 from qtpy import QtCore, QtWidgets
@@ -199,11 +200,11 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         self.edit_method = None
 
     @QtCore.Property(bool)
-    def set_edit(self):
+    def readOnly(self):
         return self._can_edit
 
-    @set_edit.setter
-    def set_edit(self, value):
+    @readOnly.setter
+    def readOnly(self, value):
         if self._can_edit != value:
             self._can_edit = value
 
@@ -240,7 +241,7 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
 
         if labels != self._table_labels:
             
-            if self.set_edit:
+            if self.readOnly:
                 self.edit_method = PyDMNTTable.send_table
             else:
                 self.edit_method = None
@@ -267,6 +268,10 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         value : str
             new value of cell
         """
+        if isinstance(self.value[self._table_labels[column]], np.ndarray):
+            self.value[self._table_labels[column]] = self.value[self._table_labels[column]].copy()
+            self.value[self._table_labels[column]].setflags(write=True)
+        
         self.value[self._table_labels[column]][row] = value
         
         # dictionary needs to be wrapped in another dictionary with a key 'value'
