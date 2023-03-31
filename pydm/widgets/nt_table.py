@@ -278,5 +278,5 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         # to be passed back to the p4p plugin. 
         emit_dict = {'value': self.value}  
         
-        self.send_value_signal[object].emit(emit_dict)
+        self.send_value_signal[dict].emit(emit_dict)
         return True
