@@ -1,6 +1,6 @@
 import logging
 from operator import itemgetter
-from pydm.widgets.base import PyDMWidget
+from pydm.widgets.base import PyDMWidget, PyDMWritableWidget
 from qtpy import QtCore, QtWidgets
 
 logger = logging.getLogger(__name__)
@@ -10,6 +10,7 @@ class PythonTableModel(QtCore.QAbstractTableModel):
     def __init__(self, column_names, initial_list=None, parent=None,
                  edit_method=None, can_edit_method=None):
         super().__init__(parent=parent)
+        self.parent = parent
         self._list = None
         self._column_names = column_names
         self.edit_method = edit_method
@@ -78,8 +79,9 @@ class PythonTableModel(QtCore.QAbstractTableModel):
             return False
         if index.column() >= self.columnCount():
             return False
-        success = self.edit_method(self._list[index.row()][index.column()],
-                                   value.toPyObject())
+
+        success = self.edit_method(self.parent, index.row(), index.column(), value)
+        
         if success:
             self.dataChanged.emit(index, index)
         return success
@@ -165,7 +167,7 @@ class PythonTableModel(QtCore.QAbstractTableModel):
         self.layoutChanged.emit()
 
 
-class PyDMNTTable(QtWidgets.QWidget, PyDMWidget):
+class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
     """
     The PyDMNTTable is a table widget used to display PVA NTTable data. 
 
@@ -193,6 +195,17 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWidget):
         self._model = None
         self._table_labels = None
         self._table_values = []
+        self._can_edit = False 
+        self.edit_method = None
+
+    @QtCore.Property(bool)
+    def set_edit(self):
+        return self._can_edit
+
+    @set_edit.setter
+    def set_edit(self, value):
+        if self._can_edit != value:
+            self._can_edit = value
 
     def value_changed(self, data=None):
         """
@@ -207,7 +220,7 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWidget):
             return
         
         super(PyDMNTTable, self).value_changed(data)
-        
+    
         labels = data.get('labels', None)
         values = data.get('value', {})
 
@@ -226,8 +239,39 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWidget):
         self._table_values = values
 
         if labels != self._table_labels:
+            
+            if self.set_edit:
+                self.edit_method = PyDMNTTable.send_table
+            else:
+                self.edit_method = None
+
             self._table_labels = labels
-            self._model = PythonTableModel(labels, initial_list=values)
+            self._model = PythonTableModel(labels, 
+                                           initial_list=values, 
+                                           parent=self,
+                                           edit_method=self.edit_method)
             self._table.setModel(self._model)
         else:
             self._model.list = values
+
+    def send_table(self, row, column, value):
+        """
+        Update Channel value when cell value is changed.
+        
+        Parameters
+        ----------
+        row : int 
+            index of row
+        column : int 
+            index of column 
+        value : str
+            new value of cell
+        """
+        self.value[self._table_labels[column]][row] = value
+        
+        # dictionary needs to be wrapped in another dictionary with a key 'value'
+        # to be passed back to the p4p plugin. 
+        emit_dict = {'value': self.value}  
+        
+        self.send_value_signal[object].emit(emit_dict)
+        return True
