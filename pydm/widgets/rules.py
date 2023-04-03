@@ -362,10 +362,10 @@ class RulesEngine(QThread):
                          for k, v in math.__dict__.items()
                          if k[0] != '_'})
 
+        expression = rule['rule']['expression']
+        name = rule['rule']['name']
+        prop = rule['rule']['property']
         try:
-            expression = rule['rule']['expression']
-            name = rule['rule']['name']
-            prop = rule['rule']['property']
             val = eval(expression, eval_env)
             self.emit_value(widget_ref, name, prop, val)
         except Exception as e:
