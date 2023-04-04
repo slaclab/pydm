@@ -188,6 +188,8 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
             The channel to be used by the widget. 
     """
     def __init__(self, parent=None, init_channel=None):
+        self._read_only = True 
+
         super().__init__(parent=parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.setLayout(QtWidgets.QVBoxLayout())
@@ -196,7 +198,6 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         self._model = None
         self._table_labels = None
         self._table_values = []
-        self._read_only = True 
         self.edit_method = None
 
     @QtCore.Property(bool)
@@ -215,6 +216,14 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         """
         PyDMWritableWidget.check_enable_state(self)
         self.setEnabled(True)
+        tooltip = self.toolTip()
+
+        if self.readOnly: 
+            if tooltip != '':
+                tooltip += '\n'
+            tooltip += "Running PyDMNTTable on Read-Only mode."
+        
+        self.setToolTip(tooltip)
 
     def value_changed(self, data=None):
         """
@@ -278,7 +287,7 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         """
         if isinstance(self.value[self._table_labels[column]], np.ndarray):
             self.value[self._table_labels[column]] = self.value[self._table_labels[column]].copy()
-        
+
         self.value[self._table_labels[column]][row] = value
         
         # dictionary needs to be wrapped in another dictionary with a key 'value'
