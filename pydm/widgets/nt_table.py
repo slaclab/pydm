@@ -196,17 +196,25 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         self._model = None
         self._table_labels = None
         self._table_values = []
-        self._can_edit = False 
+        self._read_only = True 
         self.edit_method = None
 
     @QtCore.Property(bool)
     def readOnly(self):
-        return self._can_edit
+        return self._read_only
 
     @readOnly.setter
     def readOnly(self, value):
-        if self._can_edit != value:
-            self._can_edit = value
+        if self._read_only != value:
+            self._read_only = value
+        
+    def check_enable_state(self):
+        """
+        Checks whether or not the widget should be disable.
+
+        """
+        PyDMWritableWidget.check_enable_state(self)
+        self.setEnabled(True)
 
     def value_changed(self, data=None):
         """
@@ -241,7 +249,7 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
 
         if labels != self._table_labels:
             
-            if self.readOnly:
+            if not self.readOnly:
                 self.edit_method = PyDMNTTable.send_table
             else:
                 self.edit_method = None
@@ -270,7 +278,6 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         """
         if isinstance(self.value[self._table_labels[column]], np.ndarray):
             self.value[self._table_labels[column]] = self.value[self._table_labels[column]].copy()
-            self.value[self._table_labels[column]].setflags(write=True)
         
         self.value[self._table_labels[column]][row] = value
         
