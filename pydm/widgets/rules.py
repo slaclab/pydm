@@ -362,14 +362,15 @@ class RulesEngine(QThread):
                          for k, v in math.__dict__.items()
                          if k[0] != '_'})
 
+        expression = rule['rule']['expression']
+        name = rule['rule']['name']
+        prop = rule['rule']['property']
         try:
-            expression = rule['rule']['expression']
-            name = rule['rule']['name']
-            prop = rule['rule']['property']
             val = eval(expression, eval_env)
             self.emit_value(widget_ref, name, prop, val)
         except Exception as e:
-            logger.exception("Error while evaluating Rule.")
+            logger.exception(f"Error while evaluating Rule with name: {name} and type: {prop} "
+                             f"and expression: {expression}")
 
     def emit_value(self, widget_ref, name, prop, val):
         """
