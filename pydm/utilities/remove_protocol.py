@@ -1,5 +1,6 @@
 import re
-
+import urllib
+from .. import config 
 
 def remove_protocol(addr):
     """
@@ -42,3 +43,29 @@ def protocol_and_address(address):
         addr = address.replace(match.group(0), '')
 
     return protocol, addr
+
+def parsed_address(address):
+    """
+    Returns the given address parsed into a 6-tuple. The parsing is done by urllib.parse.urlparse
+
+    Parameters
+    ----------
+    address : str
+        The address from which to remove the address prefix.
+
+    Returns
+    -------
+    parsed_address : tuple 
+    """
+    if type(address) != str:
+        return None
+
+    match = re.match('.*?://', address)
+    parsed_address = None
+
+    if match:
+        parsed_address = urllib.parse.urlparse(address)
+    elif config.DEFAULT_PROTOCOL:
+        parsed_address = urllib.parse.urlparse(config.DEFAULT_PROTOCOL + '://' + address)
+
+    return parsed_address

@@ -50,6 +50,7 @@ from .terminator import PyDMTerminator
 from .timeplot import PyDMTimePlot
 from .waveformplot import PyDMWaveformPlot
 from .waveformtable import PyDMWaveformTable
+from .nt_table import PyDMNTTable
 
 logger = logging.getLogger(__name__)
 
@@ -272,6 +273,11 @@ PyDMWaveformTablePlugin = qtplugin_factory(PyDMWaveformTable,
                                            group=WidgetCategory.INPUT,
                                            extensions=BASE_EXTENSIONS,
                                            icon=ifont.icon("table"))
+# NTTable plugin 
+PyDMNTTable = qtplugin_factory(PyDMNTTable,
+                               group=WidgetCategory.INPUT,
+                               extensions=BASE_EXTENSIONS,
+                               icon=ifont.icon("table"))
 
 # Tab Widget plugin
 PyDMTabWidgetPlugin = TabWidgetPlugin(extensions=BASE_EXTENSIONS)

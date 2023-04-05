@@ -5,14 +5,14 @@ import threading
 from numpy import ndarray
 from typing import Optional, Callable
 
-from ..utilities.remove_protocol import protocol_and_address
+from ..utilities.remove_protocol import parsed_address
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 from .. import config
-
+import re
 
 class PyDMConnection(QObject):
-    new_value_signal = Signal([float], [int], [str], [ndarray], [bool])
+    new_value_signal = Signal([float], [int], [str], [bool], [object])
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
     write_access_signal = Signal(bool)
@@ -55,14 +55,14 @@ class PyDMConnection(QObject):
             except TypeError:
                 pass
             try:
-                self.new_value_signal[ndarray].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
                 self.new_value_signal[bool].connect(channel.value_slot, Qt.QueuedConnection)
             except TypeError:
                 pass
-
+            try:
+                self.new_value_signal[object].connect(channel.value_slot, Qt.QueuedConnection)
+            except TypeError:
+                pass
+        
         if channel.severity_slot is not None:
             self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
 
@@ -134,14 +134,14 @@ class PyDMConnection(QObject):
             except TypeError:
                 pass
             try:
-                self.new_value_signal[ndarray].disconnect(channel.value_slot)
-            except TypeError:
-                pass
-            try:
                 self.new_value_signal[bool].disconnect(channel.value_slot)
             except TypeError:
                 pass
-
+            try:
+                self.new_value_signal[object].disconnect(channel.value_slot)
+            except TypeError:
+                pass
+        
         if self._should_disconnect(channel.severity_slot, destroying):
             try:
                 self.new_severity_signal.disconnect(channel.severity_slot)
@@ -251,18 +251,51 @@ class PyDMPlugin(object):
         self.lock = threading.Lock()
 
     @staticmethod
+    def get_full_address(channel):
+        parsed_addr = parsed_address(channel.address)
+
+        if parsed_addr:
+            full_addr = parsed_addr.netloc + parsed_addr.path
+        else: 
+            full_addr = None
+
+        return full_addr
+
+    @staticmethod
     def get_address(channel):
-        return protocol_and_address(channel.address)[1]
+        parsed_addr = parsed_address(channel.address)
+        addr = parsed_addr.netloc
+        protocol = parsed_addr.scheme
+
+        if protocol == 'calc' or protocol == 'loc':
+            addr = parsed_addr.netloc + '?' + parsed_addr.query
+        
+        return addr
+    
+    @staticmethod
+    def get_subfield(channel):
+        parsed_addr = parsed_address(channel.address)
+
+        if parsed_addr:
+            subfield = parsed_addr.path
+
+            if subfield != '':
+                subfield = subfield[1:].split('/')
+        else:
+            subfield = None
+        
+        return subfield
 
     @staticmethod
     def get_connection_id(channel):
-        return PyDMPlugin.get_address(channel)
+        return PyDMPlugin.get_full_address(channel)
 
     def add_connection(self, channel):
         from pydm.utilities import is_qt_designer
         with self.lock:
             connection_id = self.get_connection_id(channel)
             address = self.get_address(channel)
+
             # If this channel is already connected to this plugin lets ignore
             if channel in self.channels:
                 return
