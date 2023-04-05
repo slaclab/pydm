@@ -24,7 +24,7 @@ def test_parsed_address():
     assert (out == None)
 
     out = parsed_address('foo:/bar')
-    assert (out == ('foo', '/bar', '', '', '', ''))
+    assert (out == None)
 
     out = parsed_address('foo://bar')
     assert (out == ('foo', 'bar', '', '', '', ''))
