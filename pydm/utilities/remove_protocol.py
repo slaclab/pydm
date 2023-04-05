@@ -62,11 +62,10 @@ def parsed_address(address):
 
     match = re.match('.*?://', address)
     parsed_address = None
-    
+
     if match:
         parsed_address = urllib.parse.urlparse(address)
-    else:
+    elif config.DEFAULT_PROTOCOL:
         parsed_address = urllib.parse.urlparse(config.DEFAULT_PROTOCOL + '://' + address)
-    
 
     return parsed_address
