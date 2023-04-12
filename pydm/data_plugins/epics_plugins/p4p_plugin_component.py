@@ -94,6 +94,9 @@ class Connection(PyDMConnection):
                     
                     if 'NTTable' in value.getID():
                         new_value = value.value.todict()
+                        if hasattr(value, 'labels') and 'labels' not in new_value:
+                            # Labels are the column headers for the table
+                            new_value['labels'] = value.labels
                     else:
                         new_value = value.value
                     
