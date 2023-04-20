@@ -75,10 +75,10 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
 
 def _replace_macro_format(match: re.Match, macro_keys: FrozenSet[str]):
     """ Takes in a match of form '${MACRO_KEY}' and returns double quoted "${MACRO_KEY}" if it is a valid macro key """
-    group = match.group(1)
-    macro_key = re.search(r'\$\{([^}]+)}', group).group(1)
+    matched_text = match.group(1)
+    macro_key = re.search(r'\$\{([^}]+)}', matched_text).group(1)
     if macro_key in macro_keys:
-        return '"' + group + '"'
+        return '"' + matched_text + '"'
     else:
         return match.group(0)  # If not found then just leave it as is
 
