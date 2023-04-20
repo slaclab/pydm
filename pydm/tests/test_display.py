@@ -1,14 +1,19 @@
 import os
 import pytest
+import re
 from pydm import Display
-from pydm.display import load_py_file, _compile_ui_file
-from qtpy.QtWidgets import QWidget
-import pydm.utilities.stylesheet
+from pydm.display import load_py_file, _compile_ui_file, _load_compiled_ui_into_display, _replace_macro_format
+from qtpy.QtWidgets import QLabel
 
 # The path to the .ui file used in these tests
 test_ui_path = os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     "test_data", "test.ui")
+
+test_ui_with_macros_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)),
+    "test_data", "macro_test.ui"
+)
 
 # The path to the .py files used in these tests
 no_display_test_py_path = os.path.join(
@@ -114,3 +119,52 @@ def test_compile_ui_file():
     assert class_name == 'Ui_Form'
     assert 'setupUi(self' in code_string
     assert 'retranslateUi(self' in code_string
+
+
+def test_load_file_with_macros(qtbot):
+    """
+    Compiles and loads a ui file containing macros to verify there are no problems. Tests both an individual string
+    and a list of strings.
+    """
+    try:
+        # Rather than messing around with adding custom qt widgets just for one test, pretend like a QLabel
+        # has a function that sets a value from a string list to verify its correctness
+        commands_from_macro = []
+
+        def setCommands(self, commands):
+            """ Store what the commands were after macro parsing """
+            nonlocal commands_from_macro
+            commands_from_macro = commands
+        QLabel.setCommands = setCommands
+
+        # Compile the ui file into python code
+        macros = {"test_label": "magnet_list",
+                  "test_command": "grep -i 'string with spaces'",
+                  "test_command_2": "echo hello"}
+        code_string, class_name = _compile_ui_file(test_ui_with_macros_path, frozenset(macros.keys()))
+        assert class_name == 'Ui_Form'
+
+        # Parse and replace macros, then load into the display
+        test_display = Display(macros=macros)
+        _load_compiled_ui_into_display(code_string, class_name, test_display, macros)
+
+        # Verify that the macros were replaced correctly
+        assert test_display.ui.myLabel.text() == "magnet_list"
+        assert commands_from_macro == ["grep -i 'string with spaces'", "echo hello"]
+
+    finally:
+        del QLabel.setCommands
+
+
+@pytest.mark.parametrize("test_string, expected_result",
+                         [("A test string with '${test macro}' in it", '"${test macro}"'),
+                          ("A test string with '${not_a_real_macro}' in it", "'${not_a_real_macro}'")])
+def test_replace_macro_format(test_string, expected_result):
+    """
+    Tests the replace macro format function to verify it works as expected. The first test case is a valid macro and
+    is replaced, the second one isn't and is left alone
+    """
+    match = re.search(r"'(\$\{[^\n}]+\})'", test_string)
+
+    macro_keys = {'test macro', 'test macro 2'}
+    assert _replace_macro_format(match, macro_keys) == expected_result
