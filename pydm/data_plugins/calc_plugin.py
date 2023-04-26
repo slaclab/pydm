@@ -264,7 +264,7 @@ class CalculationPlugin(PyDMPlugin):
 class UrlToPython:
     def __init__(self, channel):
         self.channel = channel
-        self.address = "calc://" + PyDMPlugin.get_address(self.channel)
+        self.parsed_address = PyDMPlugin.get_parsed_address(self.channel)
         self.name = None
         self.config = None
         self.get_info()
@@ -279,8 +279,8 @@ class UrlToPython:
         """
 
         try:
-            self.config = parse.parse_qs(parse.urlsplit(self.address).query.replace("+", "%2B"))
-            self.name = parse.urlsplit(self.address).netloc
+            self.config = parse.parse_qs(self.parsed_address.query.replace("+", "%2B"))
+            self.name = self.parsed_address.netloc
 
             if not self.name or not self.config:
                 raise
@@ -288,11 +288,11 @@ class UrlToPython:
             try:
                 if not self.name:
                     raise
-                logger.debug('Calc Plugin  connection %s got new listener.', self.address)
-                return None, self.name, self.address
+                logger.debug('Calc Plugin  connection %s got new listener.', self.parsed_address)
+                return None, self.name, self.parsed_address
             except Exception:
                 msg = "Invalid configuration for Calc Plugin  connection. %s"
-                logger.exception(msg, self.address, exc_info=True)
+                logger.exception(msg, self.parsed_address, exc_info=True)
                 raise ValueError("error in Calc Plugin plugin input")
 
         return True

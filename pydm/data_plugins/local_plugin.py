@@ -451,14 +451,13 @@ class UrlToPython:
         -------
         A tuple: (<list>, <str>)
         """
-        address = PyDMPlugin.get_address(self.channel)
-        address = "loc://" + address
+        address = PyDMPlugin.get_parsed_address(self.channel)
         name = None
         config = None
 
         try:
-            config = parse.parse_qs(parse.urlsplit(address).query)
-            name = parse.urlsplit(address).netloc
+            config = parse.parse_qs(address.query)
+            name = address.netloc
 
             if not name or not config:
                 raise

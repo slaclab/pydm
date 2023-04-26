@@ -251,6 +251,11 @@ class PyDMPlugin(object):
         self.lock = threading.Lock()
 
     @staticmethod
+    def get_parsed_address(channel):
+        parsed_addr = parsed_address(channel.address)
+        return parsed_addr
+
+    @staticmethod
     def get_full_address(channel):
         parsed_addr = parsed_address(channel.address)
 
@@ -265,10 +270,6 @@ class PyDMPlugin(object):
     def get_address(channel):
         parsed_addr = parsed_address(channel.address)
         addr = parsed_addr.netloc
-        protocol = parsed_addr.scheme
-
-        if protocol == 'calc' or protocol == 'loc':
-            addr = parsed_addr.netloc + '?' + parsed_addr.query
         
         return addr
     
