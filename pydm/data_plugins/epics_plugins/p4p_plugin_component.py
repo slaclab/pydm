@@ -9,6 +9,7 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from pydm.widgets.channel import PyDMChannel
 from qtpy.QtCore import QObject, Qt
 from typing import Optional
+import p4p
 
 logger = logging.getLogger(__name__)
 
@@ -107,7 +108,7 @@ class Connection(PyDMConnection):
                                     try:
                                         new_value = new_value[value] 
                                         continue
-                                    except TypeError:
+                                    except (TypeError, IndexError):
                                         logger.debug('Type Error when attempting to use the given key, code will next attempt to convert the key to an int')
                                     except KeyError:
                                         logger.exception(msg)
@@ -125,6 +126,8 @@ class Connection(PyDMConnection):
                             if 'NTNDArray' in value.getID():
                                 new_value = decompress(value)
                             self.new_value_signal[np.ndarray].emit(new_value)
+                        elif isinstance(new_value, np.bool_):
+                            self.new_value_signal[np.bool_].emit(new_value)
                         elif isinstance(new_value, list):
                             self.new_value_signal[np.ndarray].emit(np.array(new_value))
                         elif isinstance(new_value, float):
@@ -175,8 +178,42 @@ class Connection(PyDMConnection):
                     self._timestamp = value.timeStamp.secondsPastEpoch
                     self.timestamp_signal.emit(value.timeStamp.secondsPastEpoch)
 
+    @staticmethod
+    def convert_epics_nttable(epics_struct):
+        result = {}
+        for field in epics_struct.keys():
+            value = epics_struct[field]
+            if isinstance(value, np.ndarray):
+                value = value.tolist()
+            elif isinstance(value, p4p.wrapper.Value):
+                value = Connection.convert_epics_nttable(value)
+            result[field] = value
+        return result
+
+    @staticmethod
+    def set_value_by_keys(table, keys, new_value):
+        if len(keys) == 1:
+            key = keys[0]
+            try: 
+                table[key] = new_value
+            except TypeError:
+                table[int(key)] = new_value
+        else:
+            key = keys[0]
+            if key not in table:
+                raise KeyError 
+
+            Connection.set_value_by_keys(table[key], keys[1:], new_value)
+
     def put_value(self, value):
         """ Write a value to the PV """
+
+        if self.nttable_data_location:
+            nttable = Connection.convert_epics_nttable(self._value)
+            nttable = nttable["value"]
+            Connection.set_value_by_keys(nttable, self.nttable_data_location, value)
+            value = {'value': nttable}  
+
         if is_read_only():
             logger.warning(f'PyDM read-only mode is enabled, could not write value: {value} to {self.address}')
             return

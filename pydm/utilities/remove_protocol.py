@@ -1,5 +1,6 @@
 import re
 import urllib
+from .. import config 
 
 def remove_protocol(addr):
     """
@@ -64,5 +65,8 @@ def parsed_address(address):
     
     if match:
         parsed_address = urllib.parse.urlparse(address)
+    else:
+        parsed_address = urllib.parse.urlparse(config.DEFAULT_PROTOCOL + '://' + address)
+    
 
     return parsed_address
