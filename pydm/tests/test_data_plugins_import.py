@@ -39,13 +39,13 @@ def test_plugin_directory_loading(qapp, caplog):
         os.remove(os.path.join(cur_dir, 'plugin_foo.py'))
 
 
-def test_plugin_for_address(test_plugin):
+def test_plugin_for_address(test_plugin, monkeypatch):
     # Get by protocol
     assert isinstance(plugin_for_address('tst://tst:this'),
                       test_plugin)
     assert plugin_for_address('tst:this') is None
     # Default protocol
-    config.DEFAULT_PROTOCOL = 'tst'
+    monkeypatch.setattr(config, 'DEFAULT_PROTOCOL', 'tst')
     assert isinstance(plugin_for_address('tst:this'),
                       test_plugin)
 
