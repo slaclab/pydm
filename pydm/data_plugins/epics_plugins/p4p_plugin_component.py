@@ -99,7 +99,6 @@ class Connection(PyDMConnection):
                     
                     if self.nttable_data_location:
                         msg = f"Invalid channel... {self.nttable_data_location}"
-
                         for value in self.nttable_data_location:
                             if isinstance(new_value, collections.Container) and not isinstance(new_value, str):
                                 
@@ -107,7 +106,7 @@ class Connection(PyDMConnection):
                                     try:
                                         new_value = new_value[value] 
                                         continue
-                                    except TypeError:
+                                    except (TypeError, IndexError):
                                         logger.debug('Type Error when attempting to use the given key, code will next attempt to convert the key to an int')
                                     except KeyError:
                                         logger.exception(msg)
@@ -125,6 +124,8 @@ class Connection(PyDMConnection):
                             if 'NTNDArray' in value.getID():
                                 new_value = decompress(value)
                             self.new_value_signal[np.ndarray].emit(new_value)
+                        elif isinstance(new_value, np.bool_):
+                            self.new_value_signal[np.bool_].emit(new_value)
                         elif isinstance(new_value, list):
                             self.new_value_signal[np.ndarray].emit(np.array(new_value))
                         elif isinstance(new_value, float):
