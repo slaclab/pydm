@@ -96,3 +96,17 @@ def test_send_new_value(monkeypatch: MonkeyPatch, signals: ConnectionSignals,
         assert received_values['value'] == 9
         assert received_values['severity'] == 1
         assert signals_received == 11
+
+
+def test_set_value_by_keys():
+    table = {"a": {"b": {"c": 1}}}
+    Connection.set_value_by_keys(table, ["a", "b", "c"], 2)
+    assert table["a"]["b"]["c"] == 2
+
+    table = {"1": {"2": {"3": 4}}}
+    Connection.set_value_by_keys(table, ["1", "2", "3"], 5)
+    assert table["1"]["2"]["3"] == 5
+
+    table = {"a": {"b": {"c": 1}}}
+    with pytest.raises(KeyError):
+        Connection.set_value_by_keys(table, ["a", "x", "y"], 2)
