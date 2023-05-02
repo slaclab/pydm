@@ -6,8 +6,8 @@ classes that inherits from the pydm.data_plugins.PyDMPlugin class.
 import inspect
 import logging
 import os
-from collections import deque
 from contextlib import contextmanager
+from queue import Queue
 from typing import Any, Dict, Generator, List, Optional, Type
 
 import entrypoints
@@ -28,11 +28,23 @@ __plugins_initialized = False
 
 
 @contextmanager
-def connection_queue(defer_connections=False):
+def connection_queue(defer_connections: bool = False) -> None:
+    """
+    Creates a queue for holding channel connections and potentially processing them at a later time. When
+    defer_connections is set to True, the exit from the context manager will not result in any connections being made.
+    This allows for a more responsive end user experience on displays with many connections as it will load without
+    needing to establish all connections first.
+    Parameters
+    ----------
+    defer_connections : bool
+        Whether or not to defer making the actual connections to channels at a later time. Note that if this
+        is set to true, a call to establish_queued_connections() must be made at some point later as the queue
+        will not be automatically be processed by the context manager in this case.
+    """
     global __CONNECTION_QUEUE__
     global __DEFER_CONNECTIONS__
     if __CONNECTION_QUEUE__ is None:
-        __CONNECTION_QUEUE__ = deque()
+        __CONNECTION_QUEUE__ = Queue()
         __DEFER_CONNECTIONS__ = defer_connections
     yield
     if __DEFER_CONNECTIONS__:
@@ -40,15 +52,19 @@ def connection_queue(defer_connections=False):
     establish_queued_connections()
 
 
-def establish_queued_connections():
+def establish_queued_connections() -> None:
+    """
+    Processes all channels in the deferred connection queue establishing the actual connection for each. Upon
+    completion, will reset the global connection queue to None.
+    """
     global __DEFER_CONNECTIONS__
     global __CONNECTION_QUEUE__
     if __CONNECTION_QUEUE__ is None:
         return
     try:
         while (__CONNECTION_QUEUE__ is not None and
-               len(__CONNECTION_QUEUE__) > 0):
-            channel = __CONNECTION_QUEUE__.popleft()
+               not __CONNECTION_QUEUE__.empty()):
+            channel = __CONNECTION_QUEUE__.get()
             establish_connection_immediately(channel)
             QApplication.instance().processEvents()
     except IndexError:
@@ -61,7 +77,7 @@ def establish_queued_connections():
 def establish_connection(channel):
     global __CONNECTION_QUEUE__
     if __CONNECTION_QUEUE__ is not None:
-        __CONNECTION_QUEUE__.append(channel)
+        __CONNECTION_QUEUE__.put(channel)
     else:
         establish_connection_immediately(channel)
 

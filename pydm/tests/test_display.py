@@ -1,9 +1,7 @@
 import os
 import pytest
-from pydm import Display
-from pydm.display import load_py_file, _compile_ui_file
-from qtpy.QtWidgets import QWidget
-import pydm.utilities.stylesheet
+from pydm import Display, data_plugins
+from pydm.display import load_file, load_py_file, _compile_ui_file, ScreenTarget
 
 # The path to the .ui file used in these tests
 test_ui_path = os.path.join(
@@ -114,3 +112,16 @@ def test_compile_ui_file():
     assert class_name == 'Ui_Form'
     assert 'setupUi(self' in code_string
     assert 'retranslateUi(self' in code_string
+
+
+def test_defer_connections(qtbot):
+    """
+    Verify that when the defer_connections parameter is set to true, connections are held up in a queue
+    until it is time to process them
+    """
+    load_file(valid_display_test_py_path, target=ScreenTarget.HOME, defer_connections=True)
+
+    # The test file loaded has one connection to TST:Val1. Since defer_connections is True, verify
+    # that this address has been placed in the queue.
+    assert 'TST:Val1' == data_plugins.__CONNECTION_QUEUE__.get().address
+    data_plugins.__CONNECTION_QUEUE__ = None
