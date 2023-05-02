@@ -1,12 +1,13 @@
 import functools
 import numpy as np
 import pytest
-from p4p.nt import NTScalar
+from p4p.nt import NTScalar 
 from pydm.data_plugins.epics_plugins.p4p_plugin_component import Connection, P4PPlugin
 from pydm.tests.conftest import ConnectionSignals
 from pydm.widgets.channel import PyDMChannel
 from pytest import MonkeyPatch
-
+from p4p.wrapper import Value 
+from p4p import Type
 
 class MockContext:
     """ A do-nothing mock of a p4p context object """
@@ -110,3 +111,24 @@ def test_set_value_by_keys():
     table = {"a": {"b": {"c": 1}}}
     with pytest.raises(KeyError):
         Connection.set_value_by_keys(table, ["a", "x", "y"], 2)
+
+
+
+def test_convert_epics_nttable():
+    my_type = Type([
+        ("secondsPastEpoch", 'l'), 
+        ("nanoseconds", 'i'), 
+        ("userTag", 'i'),
+        ])
+    
+    epics_struct = Value(my_type, {"secondsPastEpoch": 0,
+                          "nanoseconds": 0,
+                          "userTag": 0
+                          })
+    
+    solution = {'secondsPastEpoch': 0, 'nanoseconds': 0, 'userTag': 0}
+
+    result = Connection.convert_epics_nttable(epics_struct)
+    assert result == solution 
+
+   
