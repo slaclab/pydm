@@ -59,8 +59,13 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
 
     if target == ScreenTarget.NEW_PROCESS:
         # Invoke PyDM to open a new process here.
-        app = QApplication.instance()
-        app.new_pydm_process(file, macros=macros, command_line_args=args)
+
+        try: 
+            app = QApplication.instance()
+            app.new_pydm_process(file, macros=macros, command_line_args=args)
+        except TypeError:
+            logger.error("pydm: can't open file %s: No such file or directory", file)
+ 
         return None
 
     _, extension = os.path.splitext(file)
