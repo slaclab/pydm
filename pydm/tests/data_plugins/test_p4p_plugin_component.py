@@ -1,7 +1,7 @@
 import functools
 import numpy as np
 import pytest
-from p4p.nt import NTScalar 
+from p4p.nt import NTScalar
 from pydm.data_plugins.epics_plugins.p4p_plugin_component import Connection, P4PPlugin
 from pydm.tests.conftest import ConnectionSignals
 from pydm.widgets.channel import PyDMChannel
@@ -113,7 +113,6 @@ def test_set_value_by_keys():
         Connection.set_value_by_keys(table, ["a", "x", "y"], 2)
 
 
-
 def test_convert_epics_nttable():
     my_type = Type([
         ("secondsPastEpoch", 'l'), 
@@ -130,5 +129,3 @@ def test_convert_epics_nttable():
 
     result = Connection.convert_epics_nttable(epics_struct)
     assert result == solution 
-
-   

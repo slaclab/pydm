@@ -55,9 +55,8 @@ multiple layers of subfields also works::
 
     pva://MTEST/sub-field/subfield_of_a_subfield
 
-Note: currenty subfields can only be used to read a subset of data from an NTTables 
-and can't be used to write to the subfield. A follow up release will add an ability to 
-write to the subfield.    
+Note: subfields can be used to read and write to a subset of data from a NTTable 
+so long as the type of the subset of data is accepted by the widget in question. 
 
 Image decompression
 -------------------
