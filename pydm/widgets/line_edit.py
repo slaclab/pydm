@@ -4,8 +4,8 @@ import ast
 import logging
 from functools import partial
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
-from qtpy.QtCore import Property, Q_ENUMS, Qt, QEvent
-from qtpy.QtGui import QFocusEvent, QKeyEvent
+from qtpy.QtCore import Property, Q_ENUMS, Qt
+from qtpy.QtGui import QFocusEvent
 from .. import utilities
 from .base import PyDMWritableWidget, TextFormatter, str_types
 from .display_format import DisplayFormat, parse_value_for_display
@@ -45,7 +45,6 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         self._user_set_read_only = False  # Are we *really* read only?
         if utilities.is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
-
 
     @Property(DisplayFormat)
     def displayFormat(self):
