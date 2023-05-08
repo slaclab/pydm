@@ -4,7 +4,8 @@ import ast
 import logging
 from functools import partial
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
-from qtpy.QtCore import Property, Q_ENUMS
+from qtpy.QtCore import Property, Q_ENUMS, Qt, QEvent
+from qtpy.QtGui import QFocusEvent, QKeyEvent
 from .. import utilities
 from .base import PyDMWritableWidget, TextFormatter, str_types
 from .display_format import DisplayFormat, parse_value_for_display
@@ -44,6 +45,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         self._user_set_read_only = False  # Are we *really* read only?
         if utilities.is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
+
 
     @Property(DisplayFormat)
     def displayFormat(self):
@@ -269,6 +271,19 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
             self._display = "{} {}".format(self._display, self._unit)
 
         self.setText(self._display)
+
+    def focusInEvent(self, event: QFocusEvent) -> None:
+        """
+        Checks to see if the line edit has actually connected before assigning active window or tab focus to it. PyQt
+        will automatically give tab focus to the first tab-enabled widget it can on display load. But for this widget,
+        this behavior can lead to a race condition where if the widget is given focus before the PV connects, then
+        the widget never loads the initial text from the PV.
+        """
+        if not self._connected and (event.reason() == Qt.ActiveWindowFocusReason or event.reason() == Qt.TabFocusReason):
+            # Clearing focus ensures that the widget will display the value for the PV
+            self.clearFocus()
+            return
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         """
