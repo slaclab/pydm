@@ -2,9 +2,12 @@
 
 import pytest
 
+import functools
 import numpy as np
 from logging import ERROR
 
+from qtpy.QtCore import QEvent, Qt
+from qtpy.QtGui import QFocusEvent
 from qtpy.QtWidgets import QMenu
 from ...widgets.line_edit import PyDMLineEdit
 from ...data_plugins import set_read_only, is_read_only
@@ -564,6 +567,48 @@ def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format
             expected_display += " {}".format(unit)
 
         assert pydm_lineedit._display == expected_display
+
+
+@pytest.mark.parametrize("connected, focus_reason, expected_focus", [
+    (True, Qt.TabFocusReason, True),
+    (True, Qt.ActiveWindowFocusReason, True),
+    (False, Qt.TabFocusReason, False),
+    (False, Qt.ActiveWindowFocusReason, False),
+    (False, Qt.MouseFocusReason, True)])
+def test_focus_in_event(qtbot, qapp, connected, focus_reason, expected_focus):
+    """
+    Ensure that the line edit's focusInEvent() override works as expected. When the widget is connected, it should
+    accept each FocusInEvent it receives. When it is not connected, it should specifically reject tab focus and active
+    window focus events.
+    """
+    # Create a PyDMLineEdit and show it
+    pydm_lineedit = PyDMLineEdit()
+    qtbot.addWidget(pydm_lineedit)
+    pydm_lineedit._connected = connected
+    with qtbot.waitExposed(pydm_lineedit):
+        pydm_lineedit.show()
+
+    def wait_focus(focus_state):
+        """ Verify the current focus state of the line edit """
+        qapp.processEvents()
+        return pydm_lineedit.hasFocus() == focus_state
+
+    # First set the current focus status opposite of that which we expect, to ensure we are actually
+    # measuring the correct end state
+    if expected_focus:
+        pydm_lineedit.clearFocus()
+        qtbot.waitUntil(functools.partial(wait_focus, False), timeout=5000)
+    else:
+        pydm_lineedit.setFocus(Qt.OtherFocusReason)
+        qtbot.waitUntil(functools.partial(wait_focus, True), timeout=5000)
+
+    # Set the focus, verify the result is what we are expecting
+    if expected_focus:
+        pydm_lineedit.setFocus(focus_reason)
+    else:
+        event_to_send = QFocusEvent(QEvent.FocusIn, reason=focus_reason)
+        pydm_lineedit.focusInEvent(event_to_send)
+    qtbot.waitUntil(functools.partial(wait_focus, expected_focus), timeout=5000)
 
 
 @pytest.mark.parametrize("display_value", [
