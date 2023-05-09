@@ -9,6 +9,7 @@ import shlex
 import sys
 import types
 import uuid
+import errno
 
 from typing import List, Optional
 
@@ -178,7 +179,7 @@ def _screen_file_extensions(preferred_extension):
     return extensions
 
 
-def find_file(fname, base_path=None, mode=None, extra_path=None):
+def find_file(fname, base_path=None, mode=None, extra_path=None, accept_bad_data = True):
     """
     Look for files at the search paths common to PyDM.
 
@@ -246,6 +247,10 @@ def find_file(fname, base_path=None, mode=None, extra_path=None):
         file_path = which(str(root) + str(e), mode=mode, pathext=e, extra_path=x_path)
         if file_path is not None:
             break  # pick the first screen file found
+    
+    if not accept_bad_data:
+        if not file_path:
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), fname)
 
     return file_path
 

@@ -217,7 +217,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
             if parent_display:
                 base_path = os.path.dirname(parent_display.loaded_file())
 
-            fname = find_file(self.filename, base_path=base_path)
+            fname = find_file(self.filename, base_path=base_path, accept_bad_data=False)
             w = load_file(fname, macros=self.parsed_macros(), target=None)
             self._needs_load = False
             self.clear_error_text()
