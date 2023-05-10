@@ -35,6 +35,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self.app = QApplication.instance()
         self._display = None
+        self._has_displayed_value_yet = False
         self._scale = 1
 
         self.returnPressed.connect(self.send_value)
@@ -256,6 +257,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                                             string_encoding=self._string_encoding,
                                             widget=self)
 
+        self._has_displayed_value_yet = True
         if type(new_value) in str_types:
             self._display = new_value
         else:
@@ -278,7 +280,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         this behavior can lead to a race condition where if the widget is given focus before the PV connects, then
         the widget never loads the initial text from the PV.
         """
-        if not self._connected and (event.reason() == Qt.ActiveWindowFocusReason or event.reason() == Qt.TabFocusReason):
+        if self._has_displayed_value_yet and (event.reason() == Qt.ActiveWindowFocusReason or event.reason() == Qt.TabFocusReason):
             # Clearing focus ensures that the widget will display the value for the PV
             self.clearFocus()
             return
