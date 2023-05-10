@@ -207,11 +207,11 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, accept_bad_data
     accept_bad_data : bool 
         Flag which if False will add a check that raises a FileNotFoundError 
         instead of returning None when the file is not found. 
-        
+
     Returns
     -------
     file_path : str
-        Returns the file path or None in case the file was not found 
+        Returns the file path or None in case the file was not found
     """
     fname = os.path.expanduser(os.path.expandvars(fname))
 

@@ -63,7 +63,7 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
         app.new_pydm_process(file, macros=macros, command_line_args=args)
         return None
 
-    _, extension = os.path.splitext(file)    
+    _, extension = os.path.splitext(file)
     loader = _extension_to_loader.get(extension, load_py_file)
     logger.debug("Loading %s file by way of %s...", file, loader.__name__)
     w = loader(file, args=args, macros=macros)
