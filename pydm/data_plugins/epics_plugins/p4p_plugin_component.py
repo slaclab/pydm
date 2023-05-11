@@ -33,6 +33,7 @@ class Connection(PyDMConnection):
         """
         super().__init__(channel, address, protocol, parent)
         self._connected = False
+        self.nttable_data_location = PyDMPlugin.get_subfield(channel)
         self.monitor = P4PPlugin.context.monitor(name=self.address,
                                                  cb=self.send_new_value,
                                                  notify_disconnect=True)
@@ -49,7 +50,6 @@ class Connection(PyDMConnection):
         self._upper_warning_limit = None
         self._lower_warning_limit = None
         self._timestamp = None
-        self.nttable_data_location = PyDMPlugin.get_subfield(channel)
 
     def clear_cache(self) -> None:
         """ Clear out all the stored values of this connection. """
@@ -65,8 +65,6 @@ class Connection(PyDMConnection):
         self._upper_warning_limit = None
         self._lower_warning_limit = None
         self._timestamp = None
-
-        self.nttable_data_location = None 
 
     def send_new_value(self, value: Value) -> None:
         """ Callback invoked whenever a new value is received by our monitor. Emits signals based on values changed. """
@@ -100,12 +98,11 @@ class Connection(PyDMConnection):
                     
                     if self.nttable_data_location:
                         msg = f"Invalid channel... {self.nttable_data_location}"
-                        for value in self.nttable_data_location:
-                            if isinstance(new_value, collections.Container) and not isinstance(new_value, str):
-                                
-                                if type(value) == str:
+                        for subfield in self.nttable_data_location:
+                            if isinstance(new_value, collections.Container) and not isinstance(new_value, str):     
+                                if type(subfield) == str:
                                     try:
-                                        new_value = new_value[value] 
+                                        new_value = new_value[subfield] 
                                         continue
                                     except (TypeError, IndexError):
                                         logger.debug('Type Error when attempting to use the given key, code will next attempt to convert the key to an int')
@@ -113,7 +110,7 @@ class Connection(PyDMConnection):
                                         logger.exception(msg)
                                     
                                     try:
-                                        new_value = new_value[int(value)] 
+                                        new_value = new_value[int(subfield)] 
                                     except ValueError:
                                         logger.exception(msg, exc_info=True)
                             else:
