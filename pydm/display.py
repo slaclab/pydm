@@ -9,7 +9,7 @@ from functools import lru_cache
 from io import StringIO
 from os import path
 from string import Template
-from typing import Dict, FrozenSet, Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 import re
 import six

@@ -1,6 +1,5 @@
 import os
 import pytest
-import re
 from pydm import Display
 from pydm.display import load_py_file, _compile_ui_file, _load_compiled_ui_into_display
 from qtpy.QtWidgets import QLabel
