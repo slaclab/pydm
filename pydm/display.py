@@ -165,11 +165,9 @@ def load_ui_file(uifile, macros=None, args=None):
     QWidget
     """
 
-    d = Display(macros=macros)
-    d._loaded_file = uifile
-    code_string, class_name = _compile_ui_file(uifile)
-    _load_compiled_ui_into_display(code_string, class_name, d, macros)
-    return d
+    display = Display(macros=macros)
+    display.load_ui_from_file(uifile, macros)
+    return display
 
 
 def load_adl_file(filename, macros=None, args=None):
@@ -395,9 +393,13 @@ class Display(QWidget):
         if self.ui:
             return self.ui
         if self.ui_filepath() is not None and self.ui_filepath() != "":
-            self._loaded_file = self.ui_filepath()
-            code_string, class_name = _compile_ui_file(self.ui_filepath())
-            _load_compiled_ui_into_display(code_string, class_name, self, macros)
+            self.load_ui_from_file(self.ui_filepath(), macros)
+
+    def load_ui_from_file(self, ui_file_path: str, macros: Optional[Dict[str, str]] = None):
+        """ Load the ui file from the input path, and make the file's widgets available in self.ui """
+        self._loaded_file = ui_file_path
+        code_string, class_name = _compile_ui_file(ui_file_path)
+        _load_compiled_ui_into_display(code_string, class_name, self, macros)
 
     def setStyleSheet(self, new_stylesheet):
         # Handle the case where the widget's styleSheet property contains a filename, rather than a stylesheet.
