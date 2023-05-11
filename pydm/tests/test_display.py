@@ -2,7 +2,7 @@ import os
 import pytest
 import re
 from pydm import Display
-from pydm.display import load_py_file, _compile_ui_file, _load_compiled_ui_into_display, _replace_macro_format
+from pydm.display import load_py_file, _compile_ui_file, _load_compiled_ui_into_display
 from qtpy.QtWidgets import QLabel
 
 # The path to the .ui file used in these tests
@@ -141,7 +141,7 @@ def test_load_file_with_macros(qtbot):
         macros = {"test_label": "magnet_list",
                   "test_command": "grep -i 'string with spaces'",
                   "test_command_2": "echo hello"}
-        code_string, class_name = _compile_ui_file(test_ui_with_macros_path, frozenset(macros.keys()))
+        code_string, class_name = _compile_ui_file(test_ui_with_macros_path)
         assert class_name == 'Ui_Form'
 
         # Parse and replace macros, then load into the display
@@ -154,17 +154,3 @@ def test_load_file_with_macros(qtbot):
 
     finally:
         del QLabel.setCommands
-
-
-@pytest.mark.parametrize("test_string, expected_result",
-                         [("A test string with '${test macro}' in it", '"${test macro}"'),
-                          ("A test string with '${not_a_real_macro}' in it", "'${not_a_real_macro}'")])
-def test_replace_macro_format(test_string, expected_result):
-    """
-    Tests the replace macro format function to verify it works as expected. The first test case is a valid macro and
-    is replaced, the second one isn't and is left alone
-    """
-    match = re.search(r"'(\$\{[^\n}]+\})'", test_string)
-
-    macro_keys = {'test macro', 'test macro 2'}
-    assert _replace_macro_format(match, macro_keys) == expected_result

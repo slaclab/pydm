@@ -73,18 +73,8 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     return w
 
 
-def _replace_macro_format(match: re.Match, macro_keys: FrozenSet[str]):
-    """ Takes in a match of form '${MACRO_KEY}' and returns double quoted "${MACRO_KEY}" if it is a valid macro key """
-    matched_text = match.group(1)
-    macro_key = re.search(r'\$\{([^}]+)}', matched_text).group(1)
-    if macro_key in macro_keys:
-        return '"' + matched_text + '"'
-    else:
-        return match.group(0)  # If not found then just leave it as is
-
-
 @lru_cache()
-def _compile_ui_file(uifile: str, macro_keys: Optional[FrozenSet[str]] = None) -> Tuple[str, str]:
+def _compile_ui_file(uifile: str) -> Tuple[str, str]:
     """
     Compile the ui file using uic and return the result as a string along with the associated class name.
     Caches the result to improve performance when the same ui file is re-used many times within a display.
@@ -93,8 +83,6 @@ def _compile_ui_file(uifile: str, macro_keys: Optional[FrozenSet[str]] = None) -
     ----------
     uifile : str
         The path to a .ui file to compile
-    macro_keys : FrozenSet, optional
-        Only the keys of any macros associated with the display. FrozenSet so that it hashes for the lru_cache
 
     Returns
     -------
@@ -102,15 +90,9 @@ def _compile_ui_file(uifile: str, macro_keys: Optional[FrozenSet[str]] = None) -
     """
     code_string = StringIO()
     uic.compileUi(uifile, code_string)
-    compiled_code = code_string.getvalue()
-    if macro_keys is not None and len(macro_keys) > 0:
-        # Replaces any single quoted macro definitions with double quoted ones
-        compiled_code = re.sub(r"'(\$\{[^\n}]+\})'",
-                               lambda match: _replace_macro_format(match, macro_keys),
-                               compiled_code)
     # Grabs non-whitespace characters between class and the opening parenthesis
-    class_name = re.search(r'^class\s*(\S*)\(', compiled_code, re.MULTILINE).group(1)
-    return compiled_code, class_name
+    class_name = re.search(r'^class\s*(\S*)\(', code_string.getvalue(), re.MULTILINE).group(1)
+    return code_string.getvalue(), class_name
 
 
 def _load_ui_into_display(uifile, display):
@@ -416,8 +398,7 @@ class Display(QWidget):
     def load_ui_from_file(self, ui_file_path: str, macros: Optional[Dict[str, str]] = None):
         """ Load the ui file from the input path, and make the file's widgets available in self.ui """
         self._loaded_file = ui_file_path
-        macro_keys = frozenset(macros.keys()) if macros else None
-        code_string, class_name = _compile_ui_file(ui_file_path, macro_keys)
+        code_string, class_name = _compile_ui_file(ui_file_path)
         _load_compiled_ui_into_display(code_string, class_name, self, macros)
 
     def setStyleSheet(self, new_stylesheet):
