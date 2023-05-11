@@ -1,5 +1,5 @@
 from p4p.client.thread import Context
-from p4p.nt import NTNDArray, NTScalar
+from p4p.nt import NTNDArray, NTScalar, NTTable
 from p4p.server import Server, ServerOperation
 from p4p.server.thread import SharedPV
 import numpy as np
@@ -55,6 +55,14 @@ class PVServer(object):
         # An NTNDArray that will be used to hold image data
         self.image_pv = SharedPV(handler=handler, nt=NTNDArray(), initial=np.zeros(1))
 
+        # An NTTable that can be displayed via the PyDMNTTable widget
+        table_structure = NTTable([('names', 's'), ('floats', 'd'), ('booleans', '?')])
+        table_strings = ['This', 'Is', 'A', 'PyDM', 'Table']
+        table_rows = []
+        for i in range(5):
+            table_rows.append({'names': table_strings[i], 'floats': 0.35 * i, 'booleans': i % 2 == 0})
+        self.nt_table_pv = SharedPV(handler=handler, nt=table_structure, initial=table_structure.wrap(table_rows))
+
     def run_server(self) -> None:
         """ Run the server that will provide the PVs until keyboard interrupt """
         Server.forever(providers=[{'PyDM:PVA:IntValue': self.int_value,
@@ -69,7 +77,8 @@ class PVServer(object):
                                    'PyDM:PVA:Waveform': self.wave_form,
                                    'PyDM:PVA:BoolArray': self.bool_array,
                                    'PyDM:PVA:StringArray': self.string_array,
-                                   'PyDM:PVA:Image': self.image_pv}])
+                                   'PyDM:PVA:Image': self.image_pv,
+                                   'PyDM:PVA:Table': self.nt_table_pv}])
 
     def gaussian_2d(self, x: float, y: float, x0: float, y0: float, xsig: float, ysig: float) -> np.ndarray:
         return np.exp(-0.5 * (((x - x0) / xsig) ** 2 + ((y - y0) / ysig) ** 2))
