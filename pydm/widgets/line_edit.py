@@ -275,12 +275,12 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
     def focusInEvent(self, event: QFocusEvent) -> None:
         """
-        Checks to see if the line edit has actually connected before assigning active window or tab focus to it. PyQt
-        will automatically give tab focus to the first tab-enabled widget it can on display load. But for this widget,
-        this behavior can lead to a race condition where if the widget is given focus before the PV connects, then
-        the widget never loads the initial text from the PV.
+        Checks to see if the line edit has actually received a value before assigning active window or tab focus to it.
+        PyQt will automatically give tab focus to the first tab-enabled widget it can on display load. But for this
+        widget this behavior can lead to a race condition where if the widget is given focus before the PV has been
+        connected long enough to receive a value, then the widget never loads the initial text from the PV.
         """
-        if self._has_displayed_value_yet and (event.reason() == Qt.ActiveWindowFocusReason or event.reason() == Qt.TabFocusReason):
+        if not self._has_displayed_value_yet and (event.reason() == Qt.ActiveWindowFocusReason or event.reason() == Qt.TabFocusReason):
             # Clearing focus ensures that the widget will display the value for the PV
             self.clearFocus()
             return

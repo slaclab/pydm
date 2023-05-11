@@ -569,22 +569,21 @@ def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format
         assert pydm_lineedit._display == expected_display
 
 
-@pytest.mark.parametrize("connected, focus_reason, expected_focus", [
+@pytest.mark.parametrize("displayed_value, focus_reason, expected_focus", [
     (True, Qt.TabFocusReason, True),
     (True, Qt.ActiveWindowFocusReason, True),
     (False, Qt.TabFocusReason, False),
     (False, Qt.ActiveWindowFocusReason, False),
     (False, Qt.MouseFocusReason, True)])
-def test_focus_in_event(qtbot, qapp, connected, focus_reason, expected_focus):
+def test_focus_in_event(qtbot, qapp, displayed_value, focus_reason, expected_focus):
     """
-    Ensure that the line edit's focusInEvent() override works as expected. When the widget is connected, it should
-    accept each FocusInEvent it receives. When it is not connected, it should specifically reject tab focus and active
-    window focus events.
+    Ensure that the line edit's focusInEvent() override works as expected. When the widget has not yet been connected
+    long enough to have received a value, it should specifically reject tab focus and active window focus events.
     """
     # Create a PyDMLineEdit and show it
     pydm_lineedit = PyDMLineEdit()
     qtbot.addWidget(pydm_lineedit)
-    pydm_lineedit._connected = connected
+    pydm_lineedit._has_displayed_value_yet = displayed_value
     with qtbot.waitExposed(pydm_lineedit):
         pydm_lineedit.show()
 
