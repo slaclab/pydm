@@ -443,7 +443,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMPrimitiveWidget, new_properties=
             base_path = os.path.dirname(parent_display.loaded_file())
             macros = copy.copy(parent_display.macros())
 
-        fname = find_file(filename, base_path=base_path, accept_bad_data=False)
+        fname = find_file(filename, base_path=base_path, raise_if_not_found=True)
         widget_macros = parse_macro_string(macro_string)
         macros.update(widget_macros)
 

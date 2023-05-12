@@ -324,7 +324,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                         if parent_display:
                             base_path = os.path.dirname(
                                 parent_display.loaded_file())
-                        fname = find_file(self._data_source, base_path=base_path, accept_bad_data=False)
+                        fname = find_file(self._data_source, base_path=base_path, raise_if_not_found=True)
 
                         if not fname:
                             if not is_qt_designer():
@@ -363,7 +363,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         if parent_display:
             base_path = os.path.dirname(
                 parent_display.loaded_file())
-        fname = find_file(self.templateFilename, base_path=base_path, accept_bad_data=False)
+        fname = find_file(self.templateFilename, base_path=base_path, raise_if_not_found=True)
 
         if self._parent_macros is None:
             self._parent_macros = {}

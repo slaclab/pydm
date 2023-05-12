@@ -179,7 +179,7 @@ def _screen_file_extensions(preferred_extension):
     return extensions
 
 
-def find_file(fname, base_path=None, mode=None, extra_path=None, accept_bad_data = True):
+def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_found=False):
     """
     Look for files at the search paths common to PyDM.
 
@@ -204,7 +204,7 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, accept_bad_data
         Which ensure that the file exists and we can read it.
     extra_path : list
         Additional paths to look for file.
-    accept_bad_data : bool 
+    raise_if_not_found : bool 
         Flag which if False will add a check that raises a FileNotFoundError 
         instead of returning None when the file is not found. 
 
@@ -251,7 +251,7 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, accept_bad_data
         if file_path is not None:
             break  # pick the first screen file found
     
-    if not accept_bad_data:
+    if raise_if_not_found:
         if not file_path:
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), fname)
 
