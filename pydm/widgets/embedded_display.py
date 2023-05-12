@@ -217,7 +217,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
             if parent_display:
                 base_path = os.path.dirname(parent_display.loaded_file())
 
-            fname = find_file(self.filename, base_path=base_path)
+            fname = find_file(self.filename, base_path=base_path, raise_if_not_found=True)
             w = load_file(fname, macros=self.parsed_macros(), target=None)
             self._needs_load = False
             self.clear_error_text()
@@ -381,7 +381,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         """ Open the embedded display in a new window """
         if not self.filename:
             return
-        file_path = find_file(self.filename, base_path='')
+        file_path = find_file(self.filename, base_path='', raise_if_not_found=True)
         macros = self.parsed_macros()
 
         if is_pydm_app():
