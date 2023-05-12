@@ -4,7 +4,8 @@ import ast
 import logging
 from functools import partial
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
-from qtpy.QtCore import Property, Q_ENUMS
+from qtpy.QtCore import Property, Q_ENUMS, Qt
+from qtpy.QtGui import QFocusEvent
 from .. import utilities
 from .base import PyDMWritableWidget, TextFormatter, str_types
 from .display_format import DisplayFormat, parse_value_for_display
@@ -34,6 +35,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self.app = QApplication.instance()
         self._display = None
+        self._has_displayed_value_yet = False
         self._scale = 1
 
         self.returnPressed.connect(self.send_value)
@@ -255,6 +257,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                                             string_encoding=self._string_encoding,
                                             widget=self)
 
+        self._has_displayed_value_yet = True
         if type(new_value) in str_types:
             self._display = new_value
         else:
@@ -269,6 +272,19 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
             self._display = "{} {}".format(self._display, self._unit)
 
         self.setText(self._display)
+
+    def focusInEvent(self, event: QFocusEvent) -> None:
+        """
+        Checks to see if the line edit has actually received a value before assigning active window or tab focus to it.
+        PyQt will automatically give tab focus to the first tab-enabled widget it can on display load. But for this
+        widget this behavior can lead to a race condition where if the widget is given focus before the PV has been
+        connected long enough to receive a value, then the widget never loads the initial text from the PV.
+        """
+        if not self._has_displayed_value_yet and (event.reason() == Qt.ActiveWindowFocusReason or event.reason() == Qt.TabFocusReason):
+            # Clearing focus ensures that the widget will display the value for the PV
+            self.clearFocus()
+            return
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         """
