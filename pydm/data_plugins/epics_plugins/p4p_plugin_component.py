@@ -176,6 +176,17 @@ class Connection(PyDMConnection):
 
     @staticmethod
     def convert_epics_nttable(epics_struct):
+        """ 
+        Converts an epics nttable (passed as a class object p4p.wrapper.Value) to a python dictionary.  
+        
+        Parameters
+        ----------
+        epics_struct: 'p4p.wrapper.Value'
+
+        Return
+        ------
+        result: dict 
+        """
         result = {}
         for field in epics_struct.keys():
             value = epics_struct[field]
@@ -188,6 +199,16 @@ class Connection(PyDMConnection):
 
     @staticmethod
     def set_value_by_keys(table, keys, new_value):
+        """ 
+        Saves the passed new_value into the appropriate spot in the given table 
+        using the given keys.
+
+        Parameters
+        ----------
+        table: dict
+        keys: list
+        new_value: str
+        """
         if len(keys) == 1:
             key = keys[0]
             try: 
@@ -196,8 +217,6 @@ class Connection(PyDMConnection):
                 table[int(key)] = new_value
         else:
             key = keys[0]
-            if key not in table:
-                raise KeyError 
 
             Connection.set_value_by_keys(table[key], keys[1:], new_value)
 
