@@ -9,6 +9,7 @@ from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from pydm.widgets.channel import PyDMChannel
 from qtpy.QtCore import QObject, Qt
 from typing import Optional
+import p4p
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +33,7 @@ class Connection(PyDMConnection):
         """
         super().__init__(channel, address, protocol, parent)
         self._connected = False
+        self.nttable_data_location = PyDMPlugin.get_subfield(channel)
         self.monitor = P4PPlugin.context.monitor(name=self.address,
                                                  cb=self.send_new_value,
                                                  notify_disconnect=True)
@@ -48,7 +50,6 @@ class Connection(PyDMConnection):
         self._upper_warning_limit = None
         self._lower_warning_limit = None
         self._timestamp = None
-        self.nttable_data_location = PyDMPlugin.get_subfield(channel)
 
     def clear_cache(self) -> None:
         """ Clear out all the stored values of this connection. """
@@ -64,8 +65,6 @@ class Connection(PyDMConnection):
         self._upper_warning_limit = None
         self._lower_warning_limit = None
         self._timestamp = None
-
-        self.nttable_data_location = None 
 
     def send_new_value(self, value: Value) -> None:
         """ Callback invoked whenever a new value is received by our monitor. Emits signals based on values changed. """
@@ -102,21 +101,19 @@ class Connection(PyDMConnection):
                     
                     if self.nttable_data_location:
                         msg = f"Invalid channel... {self.nttable_data_location}"
-
-                        for value in self.nttable_data_location:
-                            if isinstance(new_value, collections.Container) and not isinstance(new_value, str):
-                                
-                                if type(value) == str:
+                        for subfield in self.nttable_data_location:
+                            if isinstance(new_value, collections.Container) and not isinstance(new_value, str):     
+                                if type(subfield) == str:
                                     try:
-                                        new_value = new_value[value] 
+                                        new_value = new_value[subfield] 
                                         continue
-                                    except TypeError:
+                                    except (TypeError, IndexError):
                                         logger.debug('Type Error when attempting to use the given key, code will next attempt to convert the key to an int')
                                     except KeyError:
                                         logger.exception(msg)
                                     
                                     try:
-                                        new_value = new_value[int(value)] 
+                                        new_value = new_value[int(subfield)] 
                                     except ValueError:
                                         logger.exception(msg, exc_info=True)
                             else:
@@ -128,6 +125,8 @@ class Connection(PyDMConnection):
                             if 'NTNDArray' in value.getID():
                                 new_value = decompress(value)
                             self.new_value_signal[np.ndarray].emit(new_value)
+                        elif isinstance(new_value, np.bool_):
+                            self.new_value_signal[np.bool_].emit(new_value)
                         elif isinstance(new_value, list):
                             self.new_value_signal[np.ndarray].emit(np.array(new_value))
                         elif isinstance(new_value, float):
@@ -178,8 +177,61 @@ class Connection(PyDMConnection):
                     self._timestamp = value.timeStamp.secondsPastEpoch
                     self.timestamp_signal.emit(value.timeStamp.secondsPastEpoch)
 
+    @staticmethod
+    def convert_epics_nttable(epics_struct):
+        """ 
+        Converts an epics nttable (passed as a class object p4p.wrapper.Value) to a python dictionary.  
+        
+        Parameters
+        ----------
+        epics_struct: 'p4p.wrapper.Value'
+
+        Return
+        ------
+        result: dict 
+        """
+        result = {}
+        for field in epics_struct.keys():
+            value = epics_struct[field]
+            if isinstance(value, np.ndarray):
+                value = value.tolist()
+            elif isinstance(value, p4p.wrapper.Value):
+                value = Connection.convert_epics_nttable(value)
+            result[field] = value
+        return result
+
+    @staticmethod
+    def set_value_by_keys(table, keys, new_value):
+        """ 
+        Saves the passed new_value into the appropriate spot in the given table 
+        using the given keys.
+
+        Parameters
+        ----------
+        table: dict
+        keys: list
+        new_value: str
+        """
+        if len(keys) == 1:
+            key = keys[0]
+            try: 
+                table[key] = new_value
+            except TypeError:
+                table[int(key)] = new_value
+        else:
+            key = keys[0]
+
+            Connection.set_value_by_keys(table[key], keys[1:], new_value)
+
     def put_value(self, value):
         """ Write a value to the PV """
+
+        if self.nttable_data_location:
+            nttable = Connection.convert_epics_nttable(self._value)
+            nttable = nttable["value"]
+            Connection.set_value_by_keys(nttable, self.nttable_data_location, value)
+            value = {'value': nttable}  
+
         if is_read_only():
             logger.warning(f'PyDM read-only mode is enabled, could not write value: {value} to {self.address}')
             return
