@@ -250,7 +250,7 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
             labels = list(labels)
         
         try:
-            values = list(zip(*[v for k, v in data.items()]))
+            values = list(zip(*[v for k, v in data.items() if k != 'labels']))
         except TypeError:
             logger.exception("NTTable value items must be iterables.")
 
@@ -296,9 +296,12 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         else:
             self.value[self._table_labels[column]][row] = value
 
+        self.value[self._table_labels[column]][row] = value
+        value_to_send = {k: v for k, v in self.value.items() if k != 'labels'}
+
         # dictionary needs to be wrapped in another dictionary with a key 'value'
         # to be passed back to the p4p plugin. 
-        emit_dict = {'value': self.value}  
+        emit_dict = {'value': value_to_send}
         
         self.send_value_signal[dict].emit(emit_dict)
         return True
