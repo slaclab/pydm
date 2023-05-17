@@ -1,6 +1,7 @@
 import locale
 import numpy as np
 import ast
+import shlex
 import logging
 from functools import partial
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
@@ -113,7 +114,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                     self.send_value_signal[str].emit(send_value)
                 else:
                     arr_value = list(
-                        filter(None, ast.literal_eval(str(send_value.replace("[", "").replace("]", "").split()))))
+                        filter(None, ast.literal_eval(str(shlex.split(send_value.replace("[", "").replace("]", ""))))))
                     arr_value = np.array(arr_value, dtype=self.subtype)
                     self.send_value_signal[np.ndarray].emit(arr_value)
             elif self.channeltype == bool:
