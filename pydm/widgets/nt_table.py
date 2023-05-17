@@ -288,8 +288,14 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         if isinstance(self.value[self._table_labels[column]], np.ndarray):
             self.value[self._table_labels[column]] = self.value[self._table_labels[column]].copy()
 
-        self.value[self._table_labels[column]][row] = value
-        
+        if isinstance(self.value[self._table_labels[column]][row], np.bool_):
+            if value == "True":
+                self.value[self._table_labels[column]][row] = True
+            elif value == "False":
+                self.value[self._table_labels[column]][row] = False
+        else:
+            self.value[self._table_labels[column]][row] = value
+
         # dictionary needs to be wrapped in another dictionary with a key 'value'
         # to be passed back to the p4p plugin. 
         emit_dict = {'value': self.value}  
