@@ -296,7 +296,6 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         else:
             self.value[self._table_labels[column]][row] = value
 
-        self.value[self._table_labels[column]][row] = value
         value_to_send = {k: v for k, v in self.value.items() if k != 'labels'}
 
         # dictionary needs to be wrapped in another dictionary with a key 'value'
