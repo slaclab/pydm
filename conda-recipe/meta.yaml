@@ -17,7 +17,7 @@ requirements:
     - python
     - pip
     - setuptools
-    - pyqt >=5,<5.15
+    - pyqt >=5,<6
     - qtpy
   run:
     - python
