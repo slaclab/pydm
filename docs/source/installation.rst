@@ -15,7 +15,7 @@ Installing PyDM and Prerequisites with Anaconda
 After installing Anaconda (see https://www.anaconda.com/download/), create a new
 environment for PyDM::
   
-  $ conda create -n pydm-environment python=3.8 "pyqt >=5,<5.15" pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
+  $ conda create -n pydm-environment python=3.8 "pyqt >=5,<6" pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
   $ source activate pydm-environment
   
 Once you've installed and activated the environment, you should be able to run 'pydm' to launch PyDM, or run 'designer' to launch Qt Designer.  If you are on Windows, run these commands from the Anaconda Prompt.
