@@ -150,6 +150,7 @@ def test_value_change(qtbot, signals, value, display_format, precision, scale, u
     (np.array(["A", "B"]), "[C D]", DisplayFormat.String, 0, 10, "ms", True, "[C D]", "[C D] ms"),
     (np.array(["A", "B"]), np.array(["C", "D"]), DisplayFormat.String, 0, 10, "ms", True, "C   D    ", "C   D    ms"),
     (np.array(["A", "B"]), np.array(["C", "D"]), DisplayFormat.Default, 0, 10, "ms", True, "['C' 'D']", "['C' 'D'] ms"),
+    (0, 10, DisplayFormat.Default, 0, 1.0, "V", True, 10, "10 V"),
 ])
 def test_send_value(qtbot, signals, init_value, user_typed_value, display_format, precision, scale, unit,
                     show_units, expected_received_value, expected_display_value):
