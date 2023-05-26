@@ -106,7 +106,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                 elif self._display_format_type in [DisplayFormat.Exponential, DisplayFormat.Decimal]:
                     num_value = locale.atof(send_value)
 
-                num_value = num_value / scale
+                num_value = self.channeltype(num_value / scale)
                 self.send_value_signal[self.channeltype].emit(num_value)
             elif self.channeltype == np.ndarray:
                 # Arrays will be in the [1.2 3.4 22.214] format
