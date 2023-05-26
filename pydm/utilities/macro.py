@@ -34,8 +34,10 @@ def replace_macros_in_template(template, macros):
     curr_template = template
     prev_template = Template("")
     expanded_text = ""
-    # Escape any single quotes to ensure macros such result in valid python code when replaced (e.g. xterm -e 'echo hi')
-    macros = {key: re.sub(r"(?<!\\)'", "\\'", value) if isinstance(value, str) else value for key, value in macros.items()}
+    # Escape any single or double quotes to ensure macro substitution results in valid python code
+    # when replaced (e.g. xterm -e 'echo hi')
+    macros = {key: re.sub(r'(?<!\\)"', '\\"', re.sub(r"(?<!\\)'", "\\'", value)) if isinstance(value, str) else value
+              for key, value in macros.items()}
 
     for i in range(100):
         expanded_text = curr_template.safe_substitute(macros)
