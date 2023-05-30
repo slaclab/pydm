@@ -64,11 +64,11 @@ jobs:
         succeeded()
       )
 
-  - task: PublishPipelineArtifact@0
+  - task: PublishBuildArtifacts@1
     displayName: 'Publish - Documentation'
     inputs:
-      targetPath: 'docs/build/html/'
-      artifactName: 'docs_html'
+      PathtoPublish: 'docs/build/html/'
+      ArtifactName: 'docs_html'
     condition: |
       and(
         and(
