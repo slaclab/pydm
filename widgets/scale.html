@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMScaleIndicator &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>PyDMScaleIndicator &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,14 +29,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -119,7 +123,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Widgets</a></li>
       <li class="breadcrumb-item active">PyDMScaleIndicator</li>
       <li class="wy-breadcrumbs-aside">
@@ -142,7 +146,7 @@ more from PyDM.
 Configurable features include indicator type (bar/pointer), scale tick
 marks and orientation (horizontal/vertical).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Scale</p></li>
 <li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
@@ -244,10 +248,10 @@ is raised.</p>
 <span class="sig-name descname"><span class="pre">PyDMToolTip</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.PyDMToolTip" title="Permalink to this definition"></a></dt>
 <dd><p>The tooltip for this widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>toolTip</strong> – tooltip info</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
@@ -673,11 +677,11 @@ is raised.</p>
 <span class="sig-name descname"><span class="pre">alarmSensitiveBorder</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.alarmSensitiveBorder" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not the border color changes when alarm severity changes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True means that the border color will be changed in case of
 alarm severity changes.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -689,11 +693,11 @@ alarm severity changes.</p>
 <dd><p>Whether or not the content color changes when alarm severity
 changes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True means that the content color will be changed in case of
 alarm severity changes.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -706,7 +710,7 @@ alarm severity changes.</p>
 This slot sends the severity value to the
 <code class="docutils literal notranslate"><span class="pre">`alarm_severity_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – </p>
 </dd>
 </dl>
@@ -717,7 +721,7 @@ This slot sends the severity value to the
 <span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which</strong> (<em>AlarmLimit</em>) – Which alarm limit was changed. “HIHI”, “HIGH”, “LOW”, “LOLO”</p></li>
 <li><p><strong>new_limit</strong> (<em>float</em>) – New value for the alarm limit</p></li>
@@ -737,7 +741,7 @@ applied and the call
 to update to redraw the widget with the needed changes for the
 new state.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
 and 3 = INVALID</p>
 </dd>
@@ -754,7 +758,7 @@ and 3 = INVALID</p>
 <span class="sig-name descname"><span class="pre">backgroundColor</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.backgroundColor" title="Permalink to this definition"></a></dt>
 <dd><p>The color of the scale background.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
@@ -770,7 +774,7 @@ and 3 = INVALID</p>
 <span class="sig-name descname"><span class="pre">backgroundSizeRate</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.backgroundSizeRate" title="Permalink to this definition"></a></dt>
 <dd><p>The rate of background height size (from top to bottom).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -781,7 +785,7 @@ and 3 = INVALID</p>
 <span class="sig-name descname"><span class="pre">barIndicator</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.barIndicator" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not the scale indicator should be a bar instead of a pointer.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -807,10 +811,10 @@ and 3 = INVALID</p>
 <span class="sig-name descname"><span class="pre">channel</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.channel" title="Permalink to this definition"></a></dt>
 <dd><p>The channel address in use for this widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>channel</strong> – Channel address</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
@@ -822,7 +826,7 @@ and 3 = INVALID</p>
 <dd><p>PyQT Slot for changes on the Value of the Channel
 This slot sends the value to the <code class="docutils literal notranslate"><span class="pre">`value_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_val</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>str</em><em>, </em><em>bool</em><em> or </em><em>np.ndarray</em>) – </p>
 </dd>
 </dl>
@@ -833,10 +837,10 @@ This slot sends the value to the <code class="docutils literal notranslate"><spa
 <span class="sig-name descname"><span class="pre">channels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.channels" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the channels being used for this Widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>channels</strong> – List of PyDMChannel objects</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list</p>
 </dd>
 </dl>
@@ -851,7 +855,7 @@ self.channels(), but some widgets will want to re-implement
 this, especially if they have multiple channels, but only
 one real ‘signal’ channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -929,7 +933,7 @@ with the reason why it is disabled.</p>
 This slot sends the connection state to the <code class="docutils literal notranslate"><span class="pre">`connection_changed`</span></code>
 callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>connected</strong> (<em>bool</em>) – </p>
 </dd>
 </dl>
@@ -942,7 +946,7 @@ callback.</p>
 This callback acts on the connection state to enable/disable the widget
 and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>connected</strong> (<em>int</em>) – When this value is 0 the channel is disconnected, 1 otherwise.</p>
 </dd>
 </dl>
@@ -984,7 +988,7 @@ and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
 <dd><p>Callback invoked when the Channel receives new control limit
 values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which</strong> (<em>str</em>) – Which control limit was changed. “UPPER” or “LOWER”</p></li>
 <li><p><strong>new_limit</strong> (<em>float</em>) – New value for the control limit</p></li>
@@ -1122,7 +1126,7 @@ values.</p>
 This slot sends the new strings to the
 <code class="docutils literal notranslate"><span class="pre">`enum_strings_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_enum_strings</strong> (<em>tuple</em>) – </p>
 </dd>
 </dl>
@@ -1135,7 +1139,7 @@ This slot sends the new strings to the
 This callback also triggers a value_changed call so the
 new enum values to be broadcasted</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_enum_strings</strong> (<em>tuple</em>) – The new list of values</p>
 </dd>
 </dl>
@@ -1183,7 +1187,7 @@ new enum values to be broadcasted</p>
 <span class="sig-name descname"><span class="pre">flipScale</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.flipScale" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not the scale should be flipped.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -1297,7 +1301,7 @@ new enum values to be broadcasted</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
@@ -1318,10 +1322,10 @@ this method (after calling superclass implementation) to add the menu.</p>
 <span class="sig-name descname"><span class="pre">get_ctrl_limits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.get_ctrl_limits" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a tuple with the control limits for the channel</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>(lower, upper)</strong> – Lower and Upper control limits</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple</p>
 </dd>
 </dl>
@@ -1420,7 +1424,7 @@ this method (after calling superclass implementation) to add the menu.</p>
 <span class="sig-name descname"><span class="pre">indicatorColor</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.indicatorColor" title="Permalink to this definition"></a></dt>
 <dd><p>The color of the scale indicator.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
@@ -1483,7 +1487,7 @@ when using the widget with the Qt Designer</p>
 <span class="sig-name descname"><span class="pre">invertedAppearance</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.invertedAppearance" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not the scale appearence should be inverted.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -1620,7 +1624,7 @@ when using the widget with the Qt Designer</p>
 <dd><p>Whether or not the scale indicator should use the limits information
 from the channel.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -1658,7 +1662,7 @@ from the channel.</p>
 This slot sends the new limit value to the
 <code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
 </dd>
 </dl>
@@ -1669,7 +1673,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">lower_alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.lower_alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT slot for changes to the LOLO alarm limit of a PV</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the LOLO limit</p>
 </dd>
 </dl>
@@ -1680,7 +1684,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">lower_warning_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.lower_warning_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT slot for changes to the LOW alarm limit of a PV</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the LOW limit</p>
 </dd>
 </dl>
@@ -1838,7 +1842,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">numDivisions</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.numDivisions" title="Permalink to this definition"></a></dt>
 <dd><p>The number in which the scale is divided.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -1861,10 +1865,10 @@ This slot sends the new limit value to the
 <dd><p>Float value between 0 and 1 representing the opacity of the widget
 where 0 means transparent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>opacity</strong></p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -1875,7 +1879,7 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">open_context_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.open_context_menu" title="Permalink to this definition"></a></dt>
 <dd><p>Handler for when the Default Context Menu is requested.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ev</strong> (<em>QEvent</em>) – </p>
 </dd>
 </dl>
@@ -1886,10 +1890,10 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">orientation</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.orientation" title="Permalink to this definition"></a></dt>
 <dd><p>The scale orientation (Horizontal or Vertical)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Qt.Horizontal or Qt.Vertical</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -1901,7 +1905,7 @@ where 0 means transparent.</p>
 <dd><p>Whether or not the scale indicator should start at zero value.
 Applies only for bar indicator.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -1952,13 +1956,13 @@ Applies only for bar indicator.</p>
 <span class="sig-name descname"><span class="pre">parseTip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_tip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.parseTip" title="Permalink to this definition"></a></dt>
 <dd><p>Fetch the object attribute data for the tooltip.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_tip</strong> (<em>str</em>) – given tooltip string</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>tip_with_attribute_info</strong> – ToolTip string which has had the attribute names replaced with the attribute values.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -1984,10 +1988,10 @@ Applies only for bar indicator.</p>
 <span class="sig-name descname"><span class="pre">precision</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.precision" title="Permalink to this definition"></a></dt>
 <dd><p>The precision to be used when formatting the output of the PV</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>prec</strong> – The current precision value</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -2000,7 +2004,7 @@ Applies only for bar indicator.</p>
 This slot sends the new precision value to the
 <code class="docutils literal notranslate"><span class="pre">`precision_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_prec</strong> (<em>int</em><em> or </em><em>float</em>) – </p>
 </dd>
 </dl>
@@ -2020,11 +2024,11 @@ value corresponds to the PV’s PREC field.</p>
 is a String, the choice of True or False will have no affect on
 the display.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>precison_from_pv</strong> – True means that the widget will use the precision information
 from the Channel if available.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -2037,7 +2041,7 @@ from the Channel if available.</p>
 This callback also triggers an update_format_string call so the
 new precision value is considered.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_precison</strong> (<em>int</em><em> or </em><em>float</em>) – The new precision value</p>
 </dd>
 </dl>
@@ -2143,11 +2147,11 @@ callable.</p>
 <span class="sig-name descname"><span class="pre">rule_evaluated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.rule_evaluated" title="Permalink to this definition"></a></dt>
 <dd><p>Callback called when a rule has a new value for a property.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -2158,7 +2162,7 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -2174,7 +2178,7 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">scaleHeight</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.scaleHeight" title="Permalink to this definition"></a></dt>
 <dd><p>The scale height, fixed so it do not wiggle when value label resizes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -2574,10 +2578,10 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">setX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.setX" title="Permalink to this definition"></a></dt>
 <dd><p>Set the X position of the Widget on the screen.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -2588,10 +2592,10 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">setY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.setY" title="Permalink to this definition"></a></dt>
 <dd><p>Set the Y position of the Widget on the screen.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -2603,7 +2607,7 @@ new value.</p>
 <dd><p>Float value between 0 and 1 representing the opacity of the widget
 where 0 means transparent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>val</strong> (<em>float</em>) – The new value for the opacity</p>
 </dd>
 </dl>
@@ -2614,7 +2618,7 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">setup_widgets_for_orientation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_orientation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Orientation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipped</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Edge</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.setup_widgets_for_orientation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation" title="Permalink to this definition"></a></dt>
 <dd><p>Reconstruct the widget given the orientation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>new_orientation</strong> (<em>int</em>) – Qt.Horizontal or Qt.Vertical</p></li>
 <li><p><strong>flipped</strong> (<em>bool</em>) – Indicates if scale tick marks are flipped to the other side</p></li>
@@ -2649,7 +2653,7 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">showLimits</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.showLimits" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not the high and low limits should be displayed on the scale.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -2675,7 +2679,7 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">showTicks</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.showTicks" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not the tick marks should be displayed on the scale.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -2689,11 +2693,11 @@ where 0 means transparent.</p>
 with the value. If using an EPICS channel, this will automatically
 be linked to the EGU field of the PV.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>show_units</strong> – True means that the unit will be appended to the output value
 format string</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -2704,7 +2708,7 @@ format string</p>
 <span class="sig-name descname"><span class="pre">showValue</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.showValue" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not the current value should be displayed on the scale.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -2789,7 +2793,7 @@ displayed</p>
 <span class="sig-name descname"><span class="pre">tickColor</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.tickColor" title="Permalink to this definition"></a></dt>
 <dd><p>The color of the scale tick marks.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
@@ -2800,7 +2804,7 @@ displayed</p>
 <span class="sig-name descname"><span class="pre">tickSizeRate</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.tickSizeRate" title="Permalink to this definition"></a></dt>
 <dd><p>The rate of tick marks height size (from bottom to top).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -2816,7 +2820,7 @@ displayed</p>
 <span class="sig-name descname"><span class="pre">timestamp_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_timestamp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.timestamp_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the Channel has new timestamp values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_timestamp</strong> (<em>float</em>) – The new timestamp value</p>
 </dd>
 </dl>
@@ -2854,7 +2858,7 @@ displayed</p>
 This slot sends the new unit string to the
 <code class="docutils literal notranslate"><span class="pre">`unit_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_unit</strong> (<em>str</em>) – </p>
 </dd>
 </dl>
@@ -2867,7 +2871,7 @@ This slot sends the new unit string to the
 This callback also triggers an update_format_string call so the
 new unit value is considered if <code class="docutils literal notranslate"><span class="pre">`showUnits`</span></code> is set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_unit</strong> (<em>str</em>) – The new unit</p>
 </dd>
 </dl>
@@ -2915,11 +2919,11 @@ new unit value is considered if <code class="docutils literal notranslate"><span
 <dd><p>Reconstruct the format string to be used when representing the
 output value.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>format_string</strong> – The format string to be used including or not the precision
 and unit</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
@@ -2943,7 +2947,7 @@ and unit</p>
 This slot sends the new limit value to the
 <code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
 </dd>
 </dl>
@@ -2954,7 +2958,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">upper_alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.upper_alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT slot for changes to the HIHI alarm limit of a PV</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the HIHI limit</p>
 </dd>
 </dl>
@@ -2965,7 +2969,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">upper_warning_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.upper_warning_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT slot for changes to the HIGH alarm limit of a PV</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the HIGH limit</p>
 </dd>
 </dl>
@@ -2976,7 +2980,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">userLowerLimit</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.userLowerLimit" title="Permalink to this definition"></a></dt>
 <dd><p>The user-defined lower limit for the scale.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -2987,7 +2991,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">userUpperLimit</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.userUpperLimit" title="Permalink to this definition"></a></dt>
 <dd><p>The user-defined upper limit for the scale.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -2998,10 +3002,10 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">valuePosition</span></span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.valuePosition" title="Permalink to this definition"></a></dt>
 <dd><p>The position of the value label (Top, Bottom, Left or Right).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -3012,7 +3016,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">value_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/scale.html#PyDMScaleIndicator.value_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.value_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_value</strong> (<em>int</em><em> or </em><em>float</em>) – The new value from the channel.</p>
 </dd>
 </dl>
@@ -3038,10 +3042,10 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">widget_ctx_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.scale.PyDMScaleIndicator.widget_ctx_menu" title="Permalink to this definition"></a></dt>
 <dd><p>Fetch the Widget specific context menu which will be populated with additional tools by <cite>assemble_tools_menu</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>If the return of this method is None a new QMenu will be created by <cite>assemble_tools_menu</cite>.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>QMenu or None</p>
 </dd>
 </dl>

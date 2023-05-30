@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pydm.widgets.nt_table &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyDM
+          </a>
+              <div class="version">
+                v1.19.1+12.g4f9fc2e6
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_plugins/local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_plugins/p4p_plugin.html">P4P Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_plugins/external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/designer_widgets.html">Designer Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pydm.widgets.nt_table</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pydm.widgets.nt_table</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
+<span class="kn">from</span> <span class="nn">pydm.widgets.base</span> <span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtWidgets</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PythonTableModel"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PythonTableModel">[docs]</a><span class="k">class</span> <span class="nc">PythonTableModel</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QAbstractTableModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_names</span><span class="p">,</span> <span class="n">initial_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">edit_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">can_edit_method</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span> <span class="o">=</span> <span class="n">column_names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edit_method</span> <span class="o">=</span> <span class="n">edit_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">can_edit_method</span> <span class="o">=</span> <span class="n">can_edit_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list</span> <span class="o">=</span> <span class="n">initial_list</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span>
+
+    <span class="nd">@list</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beginResetModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">new_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endResetModel</span><span class="p">()</span>
+
+    <span class="c1"># QAbstractItemModel Implementation</span>
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="PythonTableModel.flags"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PythonTableModel.flags">[docs]</a>    <span class="k">def</span> <span class="nf">flags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">editable</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_edit_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">editable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_edit_method</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()][</span><span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()])</span>
+            <span class="k">if</span> <span class="n">editable</span><span class="p">:</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">f</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEditable</span>
+        <span class="k">return</span> <span class="n">f</span></div>
+
+<div class="viewcode-block" id="PythonTableModel.rowCount"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PythonTableModel.rowCount">[docs]</a>    <span class="k">def</span> <span class="nf">rowCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">parent</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PythonTableModel.columnCount"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PythonTableModel.columnCount">[docs]</a>    <span class="k">def</span> <span class="nf">columnCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PythonTableModel.data"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PythonTableModel.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QVariant</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowCount</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QVariant</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QVariant</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()][</span><span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()])</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">item</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">QVariant</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PythonTableModel.setData"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PythonTableModel.setData">[docs]</a>    <span class="k">def</span> <span class="nf">setData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">EditRole</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="o">!=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">EditRole</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowCount</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">success</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">(),</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">(),</span> <span class="n">value</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">success</span></div>
+
+<div class="viewcode-block" id="PythonTableModel.headerData"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PythonTableModel.headerData">[docs]</a>    <span class="k">def</span> <span class="nf">headerData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="o">!=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PythonTableModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">headerData</span><span class="p">(</span><span class="n">section</span><span class="p">,</span>
+                                                            <span class="n">orientation</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span> \
+                <span class="ow">and</span> <span class="n">section</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">():</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="p">[</span><span class="n">section</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span> <span class="ow">and</span> <span class="n">section</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowCount</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">section</span></div>
+
+<div class="viewcode-block" id="PythonTableModel.sort"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PythonTableModel.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AscendingOrder</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layoutAboutToBeChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+        <span class="n">sort_reversed</span> <span class="o">=</span> <span class="p">(</span><span class="n">order</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AscendingOrder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="n">col</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="n">sort_reversed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layoutChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+    <span class="c1"># End QAbstractItemModel implementation.</span>
+
+    <span class="c1"># Python collection implementation.</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">():</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Items must have the same length as the column count (</span><span class="si">{}</span><span class="s2">)&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;list assignment index out of range&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beginRemoveRows</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QModelIndex</span><span class="p">(),</span> <span class="n">index</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endRemoveRows</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beginInsertRows</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QModelIndex</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">),</span>
+                             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endInsertRows</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beginInsertRows</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QModelIndex</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">),</span>
+                             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endInsertRows</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;list.remove(x): x not in list&quot;</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;pop from empty list&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layoutAboutToBeChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layoutChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PyDMNTTable"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PyDMNTTable">[docs]</a><span class="k">class</span> <span class="nc">PyDMNTTable</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The PyDMNTTable is a table widget used to display PVA NTTable data. </span>
+
+<span class="sd">    The PyDMNTTable has two ways of filling the table from the data. </span>
+<span class="sd">    If the incoming data dictionary has a &#39;labels&#39; and/or a &#39;value&#39; key. </span>
+<span class="sd">    Then the list of labels will be set with the data from the &#39;labels&#39; key. </span>
+<span class="sd">    While the data from the &#39;value&#39; key will be used to set the values in the table. </span>
+<span class="sd">    if neither &#39;labels&#39; or &#39;value&#39; key are present in the incoming &#39;data&#39; dictionary,</span>
+<span class="sd">    then the keys of the data dictionary are set as the labels </span>
+<span class="sd">    and all the values stored by the keys will make up the values of the table. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent : QWidget, optional</span>
+<span class="sd">            The parent widget for the PyDMNTTable</span>
+<span class="sd">        init_channel : str, optional</span>
+<span class="sd">            The channel to be used by the widget. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span> <span class="o">=</span> <span class="kc">True</span> 
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">QtWidgets</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">QtWidgets</span><span class="o">.</span><span class="n">QTableView</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_labels</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edit_method</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@QtCore</span><span class="o">.</span><span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">readOnly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span>
+
+    <span class="nd">@readOnly</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">readOnly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span> <span class="o">=</span> <span class="n">value</span>
+        
+<div class="viewcode-block" id="PyDMNTTable.check_enable_state"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PyDMNTTable.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks whether or not the widget should be disable.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">tooltip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">toolTip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readOnly</span><span class="p">:</span> 
+            <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Running PyDMNTTable on Read-Only mode.&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMNTTable.value_changed"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PyDMNTTable.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback invoked when the Channel value is changed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : dict</span>
+<span class="sd">            The new value from the channel. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMNTTable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span> 
+            <span class="n">values</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;labels&#39;</span><span class="p">]))</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;NTTable value items must be iterables.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_values</span> <span class="o">=</span> <span class="n">values</span>
+
+        <span class="k">if</span> <span class="n">labels</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_labels</span><span class="p">:</span>
+            
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">readOnly</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edit_method</span> <span class="o">=</span> <span class="n">PyDMNTTable</span><span class="o">.</span><span class="n">send_table</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edit_method</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table_labels</span> <span class="o">=</span> <span class="n">labels</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">PythonTableModel</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> 
+                                           <span class="n">initial_list</span><span class="o">=</span><span class="n">values</span><span class="p">,</span> 
+                                           <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                                           <span class="n">edit_method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">edit_method</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">list</span> <span class="o">=</span> <span class="n">values</span></div>
+
+<div class="viewcode-block" id="PyDMNTTable.send_table"><a class="viewcode-back" href="../../../widgets/nt_table.html#pydm.widgets.nt_table.PyDMNTTable.send_table">[docs]</a>    <span class="k">def</span> <span class="nf">send_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update Channel value when cell value is changed.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        row : int </span>
+<span class="sd">            index of row</span>
+<span class="sd">        column : int </span>
+<span class="sd">            index of column </span>
+<span class="sd">        value : str</span>
+<span class="sd">            new value of cell</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_table_labels</span><span class="p">[</span><span class="n">column</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_table_labels</span><span class="p">[</span><span class="n">column</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_table_labels</span><span class="p">[</span><span class="n">column</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_table_labels</span><span class="p">[</span><span class="n">column</span><span class="p">]][</span><span class="n">row</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_table_labels</span><span class="p">[</span><span class="n">column</span><span class="p">]][</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;False&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_table_labels</span><span class="p">[</span><span class="n">column</span><span class="p">]][</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_table_labels</span><span class="p">[</span><span class="n">column</span><span class="p">]][</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="n">value_to_send</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;labels&#39;</span><span class="p">}</span>
+
+        <span class="c1"># dictionary needs to be wrapped in another dictionary with a key &#39;value&#39;</span>
+        <span class="c1"># to be passed back to the p4p plugin. </span>
+        <span class="n">emit_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value_to_send</span><span class="p">}</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">emit_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

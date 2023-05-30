@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>External Data Plugins &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>External Data Plugins &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,14 +29,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -150,7 +154,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">External Data Plugins</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/data_plugins/external_plugins.rst.txt" rel="nofollow"> View page source</a>
@@ -364,7 +368,7 @@ callable.</p>
 <dd><p>Removes a listener from this PyDMConnection. If there are no more listeners remaining after
 removal, then the PyDMConnection will be closed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>channel</strong> (<a class="reference internal" href="../channel.html#channel.PyDMChannel" title="channel.PyDMChannel"><em>PyDMChannel</em></a>) – The PyDMChannel containing the signals/slots that were being used to listen to the connected address.</p></li>
 <li><p><strong>destroying</strong> (<em>bool</em><em>, </em><em>optional</em>) – Should be set to True if this method is being invoked from a flow in which the PyDMWidget using this

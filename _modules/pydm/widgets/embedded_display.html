@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -26,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -95,7 +99,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
       <li class="breadcrumb-item active">pydm.widgets.embedded_display</li>
       <li class="wy-breadcrumbs-aside">
@@ -326,7 +330,7 @@
             <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
                 <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">())</span>
 
-            <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">)</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">,</span> <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">(),</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clear_error_text</span><span class="p">()</span>
@@ -490,7 +494,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Open the embedded display in a new window &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">file_path</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">macros</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>

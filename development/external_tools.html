@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>External Tools &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>External Tools &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,14 +29,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -109,7 +113,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">External Tools</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/development/external_tools.rst.txt" rel="nofollow"> View page source</a>
@@ -134,7 +138,7 @@ Code available at PyDMApplication will automatically install
 the tool if available somewhere under PYDM_TOOLS_PATH or if
 explicitly installed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>icon</strong> (<em>QIcon</em>) – The icon to be used when rendering the menu. Use None for no Icon.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – The tool name. This must be unique across the combination group+name.</p></li>
@@ -155,7 +159,7 @@ widget Custom Context Menu.</p></li>
 <span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/tools/tools.html#ExternalTool.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.tools.ExternalTool.call" title="Permalink to this definition"></a></dt>
 <dd><p>This method is invoked when the tool is selected at the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>channels</strong> (<em>list</em>) – The list of channels in use at the widget.</p></li>
 <li><p><strong>sender</strong> (<a class="reference internal" href="../widgets/PyDMWidget.html#pydm.widgets.base.PyDMWidget" title="pydm.widgets.base.PyDMWidget"><em>PyDMWidget</em></a>) – The PyDMWidget or Main Window that triggered the action.</p></li>
@@ -169,7 +173,7 @@ widget Custom Context Menu.</p></li>
 <span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/tools/tools.html#ExternalTool.from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.tools.ExternalTool.from_json" title="Permalink to this definition"></a></dt>
 <dd><p>Recreate the tool based on the serialized information sent as parameter.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>content</strong> (<em>str</em>) – </p>
 </dd>
 </dl>
@@ -181,11 +185,11 @@ widget Custom Context Menu.</p></li>
 <dd><p>Retrieve basic information about the External Tool in a format
 that is parsed and used at the About screen.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Dictionary containing at least <cite>author</cite>, <cite>file</cite>, <cite>group</cite> and
 <cite>name</cite> of the External Tool.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
 </dd>
 </dl>
@@ -196,14 +200,14 @@ that is parsed and used at the About screen.</p>
 <span class="sig-name descname"><span class="pre">is_compatible_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/tools/tools.html#ExternalTool.is_compatible_with"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.tools.ExternalTool.is_compatible_with" title="Permalink to this definition"></a></dt>
 <dd><p>Verify if the ExternalTool is compatible with the given widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>widget</strong> (<em>QWidget</em>) – The widget for which the ExternalTool is being assembled.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if this ExternalTool is compatible with the widget, False
 otherwise.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -215,7 +219,7 @@ otherwise.</p>
 <dd><p>Serialize the information at this tool in order to make it possible
 to be added to another PyDM Application without user interference.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>

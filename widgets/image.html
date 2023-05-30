@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMImageView &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>PyDMImageView &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,14 +29,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -119,7 +123,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Widgets</a></li>
       <li class="breadcrumb-item active">PyDMImageView</li>
       <li class="wy-breadcrumbs-aside">
@@ -146,7 +150,7 @@ the minimum and maximum values of the image.</p>
 <p>Use the <code class="xref py py-attr docutils literal notranslate"><span class="pre">newImageSignal</span></code> to hook up to a signal that is emitted when a new
 image is rendered in the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
 <li><p><strong>image_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget for the image data.</p></li>
@@ -250,10 +254,10 @@ is raised.</p>
 <span class="sig-name descname"><span class="pre">PyDMToolTip</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.PyDMToolTip" title="Permalink to this definition"></a></dt>
 <dd><p>The tooltip for this widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>toolTip</strong> – tooltip info</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
@@ -416,11 +420,11 @@ is raised.</p>
 <span class="sig-name descname"><span class="pre">alarmSensitiveBorder</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.alarmSensitiveBorder" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not the border color changes when alarm severity changes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True means that the border color will be changed in case of
 alarm severity changes.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -432,11 +436,11 @@ alarm severity changes.</p>
 <dd><p>Whether or not the content color changes when alarm severity
 changes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True means that the content color will be changed in case of
 alarm severity changes.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -449,7 +453,7 @@ alarm severity changes.</p>
 This slot sends the severity value to the
 <code class="docutils literal notranslate"><span class="pre">`alarm_severity_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – </p>
 </dd>
 </dl>
@@ -460,7 +464,7 @@ This slot sends the severity value to the
 <span class="sig-name descname"><span class="pre">alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlarmLimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the channel receives new alarm limit values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which</strong> (<em>AlarmLimit</em>) – Which alarm limit was changed. “HIHI”, “HIGH”, “LOW”, “LOLO”</p></li>
 <li><p><strong>new_limit</strong> (<em>float</em>) – New value for the alarm limit</p></li>
@@ -480,7 +484,7 @@ applied and the call
 to update to redraw the widget with the needed changes for the
 new state.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em>) – The new severity where 0 = NO_ALARM, 1 = MINOR, 2 = MAJOR
 and 3 = INVALID</p>
 </dd>
@@ -493,7 +497,7 @@ and 3 = INVALID</p>
 <dd><p>Return if we should or not apply the
 autoDownsample option to PyQtGraph.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -547,7 +551,7 @@ autoDownsample option to PyQtGraph.</p>
 <dd><p>PyQT Slot for changes on the Value of the Channel
 This slot sends the value to the <code class="docutils literal notranslate"><span class="pre">`value_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_val</strong> (<em>int</em><em>, </em><em>float</em><em>, </em><em>str</em><em>, </em><em>bool</em><em> or </em><em>np.ndarray</em>) – </p>
 </dd>
 </dl>
@@ -558,10 +562,10 @@ This slot sends the value to the <code class="docutils literal notranslate"><spa
 <span class="sig-name descname"><span class="pre">channels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.channels" title="Permalink to this definition"></a></dt>
 <dd><p>Return the channels being used for this Widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>channels</strong> – List of PyDMChannel objects</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list</p>
 </dd>
 </dl>
@@ -639,7 +643,7 @@ with the reason why it is disabled.</p>
 <span class="sig-name descname"><span class="pre">colorMap</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMap" title="Permalink to this definition"></a></dt>
 <dd><p>Return the color map used by the ImageView.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>PyDMColorMap</p>
 </dd>
 </dl>
@@ -650,7 +654,7 @@ with the reason why it is disabled.</p>
 <span class="sig-name descname"><span class="pre">colorMapMax</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMapMax" title="Permalink to this definition"></a></dt>
 <dd><p>Maximum value for the colormap.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -661,7 +665,7 @@ with the reason why it is disabled.</p>
 <span class="sig-name descname"><span class="pre">colorMapMin</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMapMin" title="Permalink to this definition"></a></dt>
 <dd><p>Minimum value for the colormap.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -679,7 +683,7 @@ with the reason why it is disabled.</p>
 This slot sends the connection state to the <code class="docutils literal notranslate"><span class="pre">`connection_changed`</span></code>
 callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>connected</strong> (<em>bool</em>) – </p>
 </dd>
 </dl>
@@ -692,7 +696,7 @@ callback.</p>
 This callback acts on the connection state to enable/disable the widget
 and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>connected</strong> (<em>int</em>) – When this value is 0 the channel is disconnected, 1 otherwise.</p>
 </dd>
 </dl>
@@ -734,7 +738,7 @@ and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
 <dd><p>Callback invoked when the Channel receives new control limit
 values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which</strong> (<em>str</em>) – Which control limit was changed. “UPPER” or “LOWER”</p></li>
 <li><p><strong>new_limit</strong> (<em>float</em>) – New value for the control limit</p></li>
@@ -867,7 +871,7 @@ values.</p>
 This slot sends the new strings to the
 <code class="docutils literal notranslate"><span class="pre">`enum_strings_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_enum_strings</strong> (<em>tuple</em>) – </p>
 </dd>
 </dl>
@@ -880,7 +884,7 @@ This slot sends the new strings to the
 This callback also triggers a value_changed call so the
 new enum values to be broadcasted</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_enum_strings</strong> (<em>tuple</em>) – The new list of values</p>
 </dd>
 </dl>
@@ -1015,7 +1019,7 @@ onscreen, with levels and lookup table applied.</p>
 tools that have been loaded.  PyDMWidget subclasses should override
 this method (after calling superclass implementation) to add the menu.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
@@ -1066,10 +1070,10 @@ this method (after calling superclass implementation) to add the menu.</p>
 <span class="sig-name descname"><span class="pre">get_ctrl_limits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.get_ctrl_limits" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a tuple with the control limits for the channel</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>(lower, upper)</strong> – Lower and Upper control limits</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple</p>
 </dd>
 </dl>
@@ -1168,10 +1172,10 @@ this method (after calling superclass implementation) to add the menu.</p>
 <span class="sig-name descname"><span class="pre">imageChannel</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.imageChannel" title="Permalink to this definition"></a></dt>
 <dd><p>The channel address in use for the image data .</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Channel address</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
@@ -1182,7 +1186,7 @@ this method (after calling superclass implementation) to add the menu.</p>
 <span class="sig-name descname"><span class="pre">imageWidth</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.imageWidth" title="Permalink to this definition"></a></dt>
 <dd><p>Return the width of the image.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -1193,7 +1197,7 @@ this method (after calling superclass implementation) to add the menu.</p>
 <span class="sig-name descname"><span class="pre">image_connection_state_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.image_connection_state_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.image_connection_state_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the Image Channel connection state is changed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>conn</strong> (<em>bool</em>) – The new connection state.</p>
 </dd>
 </dl>
@@ -1208,7 +1212,7 @@ gets called every time the image channel updates, which might
 be extremely often.  Basically just store the data, and set
 a flag requesting that the image be redrawn.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_image</strong> (<em>np.ndarray</em>) – The new image data.  This can be a flat 1D array, or a 2D array.</p>
 </dd>
 </dl>
@@ -1219,7 +1223,7 @@ a flag requesting that the image be redrawn.</p>
 <span class="sig-name descname"><span class="pre">image_width_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_width</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.image_width_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.image_width_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the Image Width Channel value is changed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_width</strong> (<em>int</em>) – The new image width</p>
 </dd>
 </dl>
@@ -1431,7 +1435,7 @@ when using the widget with the Qt Designer</p>
 This slot sends the new limit value to the
 <code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
 </dd>
 </dl>
@@ -1442,7 +1446,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">lower_alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.lower_alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT slot for changes to the LOLO alarm limit of a PV</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the LOLO limit</p>
 </dd>
 </dl>
@@ -1453,7 +1457,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">lower_warning_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.lower_warning_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT slot for changes to the LOW alarm limit of a PV</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the LOW limit</p>
 </dd>
 </dl>
@@ -1500,7 +1504,7 @@ This slot sends the new limit value to the
 <dd><p>The maximum rate (in Hz) at which the plot will be redrawn.</p>
 <p>The plot will not be redrawn if there is not new data to draw.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -1626,7 +1630,7 @@ control panel.</p>
 <span class="sig-name descname"><span class="pre">normalizeData</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.normalizeData" title="Permalink to this definition"></a></dt>
 <dd><p>Return True if the colors are relative to data maximum and minimum.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -1649,10 +1653,10 @@ control panel.</p>
 <dd><p>Float value between 0 and 1 representing the opacity of the widget
 where 0 means transparent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>opacity</strong></p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -1663,7 +1667,7 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">open_context_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.open_context_menu" title="Permalink to this definition"></a></dt>
 <dd><p>Handler for when the Default Context Menu is requested.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ev</strong> (<em>QEvent</em>) – </p>
 </dd>
 </dl>
@@ -1714,13 +1718,13 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">parseTip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_tip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.parseTip" title="Permalink to this definition"></a></dt>
 <dd><p>Fetch the object attribute data for the tooltip.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_tip</strong> (<em>str</em>) – given tooltip string</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>tip_with_attribute_info</strong> – ToolTip string which has had the attribute names replaced with the attribute values.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -1765,13 +1769,13 @@ displayed at the widget.</p>
 to QWidgets.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>image</strong> (<em>np.ndarray</em>) – The Image Data as a 2D numpy array</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Image Data as a 2D numpy array after processing.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
 </dd>
 </dl>
@@ -1809,7 +1813,7 @@ Returns [(min, max), …] with one item per channel</p>
 <span class="sig-name descname"><span class="pre">readingOrder</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.readingOrder" title="Permalink to this definition"></a></dt>
 <dd><p>Return the reading order of the <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.imageChannel" title="pydm.widgets.image.PyDMImageView.imageChannel"><code class="xref py py-attr docutils literal notranslate"><span class="pre">imageChannel</span></code></a> array.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#pydm.widgets.image.PyDMImageView.ReadingOrder" title="pydm.widgets.image.PyDMImageView.ReadingOrder">ReadingOrder</a></p>
 </dd>
 </dl>
@@ -1897,11 +1901,11 @@ Returns [(min, max), …] with one item per channel</p>
 <span class="sig-name descname"><span class="pre">rule_evaluated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.rule_evaluated" title="Permalink to this definition"></a></dt>
 <dd><p>Callback called when a rule has a new value for a property.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -1912,7 +1916,7 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -1998,7 +2002,7 @@ yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</p>
 <span class="sig-name descname"><span class="pre">setColorMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMap" title="Permalink to this definition"></a></dt>
 <dd><p>Update the image colormap.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>cmap</strong> (<em>ColorMap</em>) – </p>
 </dd>
 </dl>
@@ -2009,7 +2013,7 @@ yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</p>
 <span class="sig-name descname"><span class="pre">setColorMapLimits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.setColorMapLimits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setColorMapLimits" title="Permalink to this definition"></a></dt>
 <dd><p>Set the limit values for the colormap.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mn</strong> (<em>int</em>) – The lower limit</p></li>
 <li><p><strong>mx</strong> (<em>int</em>) – The upper limit</p></li>
@@ -2117,10 +2121,6 @@ yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</p>
 <span class="sig-name descname"><span class="pre">setImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoRange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoLevels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xvals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoHistogramRange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levelMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setImage" title="Permalink to this definition"></a></dt>
 <dd><p>Set the image to be displayed in the widget.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 19%" />
-<col style="width: 81%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>Arguments:</strong></p></td>
 <td></td>
@@ -2421,10 +2421,10 @@ Currently available gradients are:
 <span class="sig-name descname"><span class="pre">setX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setX" title="Permalink to this definition"></a></dt>
 <dd><p>Set the X position of the Widget on the screen.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_x</strong> (<em>int</em>) – The new X position</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -2435,10 +2435,10 @@ Currently available gradients are:
 <span class="sig-name descname"><span class="pre">setY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.setY" title="Permalink to this definition"></a></dt>
 <dd><p>Set the Y position of the Widget on the screen.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_y</strong> (<em>int</em>) – The new Y position</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -2450,7 +2450,7 @@ Currently available gradients are:
 <dd><p>Float value between 0 and 1 representing the opacity of the widget
 where 0 means transparent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>val</strong> (<em>float</em>) – The new value for the opacity</p>
 </dd>
 </dl>
@@ -2581,7 +2581,7 @@ displayed</p>
 <span class="sig-name descname"><span class="pre">timestamp_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_timestamp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.timestamp_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the Channel has new timestamp values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_timestamp</strong> (<em>float</em>) – The new timestamp value</p>
 </dd>
 </dl>
@@ -2660,7 +2660,7 @@ displayed</p>
 This slot sends the new limit value to the
 <code class="docutils literal notranslate"><span class="pre">`ctrl_limit_changed`</span></code> callback.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – </p>
 </dd>
 </dl>
@@ -2671,7 +2671,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">upper_alarm_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.upper_alarm_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT slot for changes to the HIHI alarm limit of a PV</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the HIHI limit</p>
 </dd>
 </dl>
@@ -2682,7 +2682,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">upper_warning_limit_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.upper_warning_limit_changed" title="Permalink to this definition"></a></dt>
 <dd><p>PyQT slot for changes to the HIGH alarm limit of a PV</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_limit</strong> (<em>float</em>) – The new value for the HIGH limit</p>
 </dd>
 </dl>
@@ -2693,7 +2693,7 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">value_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.value_changed" title="Permalink to this definition"></a></dt>
 <dd><p>Callback invoked when the Channel value is changed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_val</strong> (<em>str</em><em>, </em><em>int</em><em>, </em><em>float</em><em>, </em><em>bool</em><em> or </em><em>np.ndarray</em>) – The new value from the channel. The type depends on the channel.</p>
 </dd>
 </dl>
@@ -2720,11 +2720,11 @@ This slot sends the new limit value to the
 <dd><p>Fetch the Widget specific context menu.</p>
 <p>It will be populated with additional tools by <cite>assemble_tools_menu</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>If the return of this method is None a new QMenu will be created by
 <cite>assemble_tools_menu</cite>.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>QMenu or None</p>
 </dd>
 </dl>
@@ -2740,10 +2740,10 @@ This slot sends the new limit value to the
 <span class="sig-name descname"><span class="pre">widthChannel</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.widthChannel" title="Permalink to this definition"></a></dt>
 <dd><p>The channel address in use for the image width .</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Channel address</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>

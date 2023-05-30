@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.line_edit &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>pydm.widgets.line_edit &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -26,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -95,7 +99,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
       <li class="breadcrumb-item active">pydm.widgets.line_edit</li>
       <li class="wy-breadcrumbs-aside">
@@ -110,10 +114,12 @@
 <span></span><span class="kn">import</span> <span class="nn">locale</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">shlex</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QApplication</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QFocusEvent</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">utilities</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">str_types</span>
 <span class="kn">from</span> <span class="nn">.display_format</span> <span class="kn">import</span> <span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">parse_value_for_display</span>
@@ -143,6 +149,7 @@
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_displayed_value_yet</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">)</span>
@@ -212,7 +219,7 @@
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Exponential</span><span class="p">,</span> <span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Decimal</span><span class="p">]:</span>
                     <span class="n">num_value</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">atof</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
 
-                <span class="n">num_value</span> <span class="o">=</span> <span class="n">num_value</span> <span class="o">/</span> <span class="n">scale</span>
+                <span class="n">num_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">(</span><span class="n">num_value</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">num_value</span><span class="p">)</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
                 <span class="c1"># Arrays will be in the [1.2 3.4 22.214] format</span>
@@ -220,7 +227,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">send_value</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">arr_value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-                        <span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">send_value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()))))</span>
+                        <span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">send_value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))))))</span>
                     <span class="n">arr_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr_value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subtype</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">arr_value</span><span class="p">)</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">channeltype</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
@@ -364,6 +371,7 @@
                                             <span class="n">string_encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span><span class="p">,</span>
                                             <span class="n">widget</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_displayed_value_yet</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">str_types</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="n">new_value</span>
         <span class="k">else</span><span class="p">:</span>
@@ -378,6 +386,19 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMLineEdit.focusInEvent"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.focusInEvent">[docs]</a>    <span class="k">def</span> <span class="nf">focusInEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">QFocusEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks to see if the line edit has actually received a value before assigning active window or tab focus to it.</span>
+<span class="sd">        PyQt will automatically give tab focus to the first tab-enabled widget it can on display load. But for this</span>
+<span class="sd">        widget this behavior can lead to a race condition where if the widget is given focus before the PV has been</span>
+<span class="sd">        connected long enough to receive a value, then the widget never loads the initial text from the PV.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_displayed_value_yet</span> <span class="ow">and</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">reason</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ActiveWindowFocusReason</span> <span class="ow">or</span> <span class="n">event</span><span class="o">.</span><span class="n">reason</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">TabFocusReason</span><span class="p">):</span>
+            <span class="c1"># Clearing focus ensures that the widget will display the value for the PV</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clearFocus</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">focusInEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMLineEdit.focusOutEvent"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.focusOutEvent">[docs]</a>    <span class="k">def</span> <span class="nf">focusOutEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

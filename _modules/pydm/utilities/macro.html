@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.utilities.macro &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>pydm.utilities.macro &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -26,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -95,7 +99,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
           <li class="breadcrumb-item"><a href="../utilities.html">pydm.utilities</a></li>
       <li class="breadcrumb-item active">pydm.utilities.macro</li>
@@ -109,6 +113,7 @@
              
   <h1>Source code for pydm.utilities.macro</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">Template</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -143,6 +148,11 @@
     <span class="n">curr_template</span> <span class="o">=</span> <span class="n">template</span>
     <span class="n">prev_template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">expanded_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="c1"># Escape any single or double quotes to ensure macro substitution results in valid python code</span>
+    <span class="c1"># when replaced (e.g. xterm -e &#39;echo hi&#39;)</span>
+    <span class="n">macros</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?&lt;!</span><span class="se">\\</span><span class="s1">)&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&quot;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?&lt;!</span><span class="se">\\</span><span class="s2">)&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
+              <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">macros</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
         <span class="n">expanded_text</span> <span class="o">=</span> <span class="n">curr_template</span><span class="o">.</span><span class="n">safe_substitute</span><span class="p">(</span><span class="n">macros</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">curr_template</span><span class="o">.</span><span class="n">template</span> <span class="o">==</span> <span class="n">prev_template</span><span class="o">.</span><span class="n">template</span><span class="p">:</span>

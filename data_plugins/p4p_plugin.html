@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>P4P Plugin &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>P4P Plugin &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,14 +29,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -69,8 +73,12 @@
 <li class="toctree-l1"><a class="reference internal" href="local_plugin.html">Local Plugin</a></li>
 <li class="toctree-l1"><a class="reference internal" href="calc_plugin.html">Calc Plugin</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">P4P Plugin</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#supported-types">Supported Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#supported-types">Supported Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#nttables">NTTables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#image-decompression">Image decompression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
@@ -103,7 +111,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">P4P Plugin</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/data_plugins/p4p_plugin.rst.txt" rel="nofollow"> View page source</a>
@@ -135,9 +143,8 @@ on conda-forge and PyPI are both supported, so feel free to choose whichever is 
 <p>The choice of plugin to use can be controlled with the <code class="docutils literal notranslate"><span class="pre">PYDM_PVA_LIB</span></code> environment variable. As of now
 P4P is the only option (and will be chosen automatically if this variable is not set) but more may be added
 in the future.</p>
-</section>
 <section id="supported-types">
-<h2>Supported Types<a class="headerlink" href="#supported-types" title="Permalink to this heading"></a></h2>
+<h3>Supported Types<a class="headerlink" href="#supported-types" title="Permalink to this heading"></a></h3>
 <p>Currently this data plugin supports all <a class="reference external" href="https://github.com/epics-base/normativeTypesCPP/wiki/Normative+Types+Specification">normative types</a>. The values and control variables are pulled out of
 the data received and sent through the existing PyDM signals to be read by widgets via the channels they are
 connected to.</p>
@@ -145,6 +152,28 @@ connected to.</p>
 currently possible in this version of the plugin. For example, defining a group PV using Q:Group will not
 result in the named fields being sent to the widgets. Full support for structured data is planned to be supported
 as part of a future release.</p>
+</section>
+</section>
+<section id="nttables">
+<h2>NTTables<a class="headerlink" href="#nttables" title="Permalink to this heading"></a></h2>
+<p>The plugin accepts NTTables. It will convert NTTables in python dictionaries which are then passed to the pydm widgets.
+Not all widgets will accept a dictionary (or the whole NTTable) as an input.
+A specified section of the NTTable can be passed to a those pydm widgets which do not accept dictionaries.
+If the PV is passing an NTTable and the user wants to pass only a specific subfield of the NTTable this can be achieved via appending a <code class="docutils literal notranslate"><span class="pre">/</span></code>
+followed by the key or name of the column header of the subfield of the NTTable.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pva</span><span class="p">:</span><span class="o">//</span><span class="n">MTEST</span><span class="o">/</span><span class="n">subfield</span>
+</pre></div>
+</div>
+<p>multiple layers of subfields also works:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pva</span><span class="p">:</span><span class="o">//</span><span class="n">MTEST</span><span class="o">/</span><span class="n">sub</span><span class="o">-</span><span class="n">field</span><span class="o">/</span><span class="n">subfield_of_a_subfield</span>
+</pre></div>
+</div>
+<p>Note: subfields can be used to read and write to a subset of data from a NTTable
+so long as the type of the subset of data is accepted by the widget in question.</p>
+</section>
+<section id="image-decompression">
+<h2>Image decompression<a class="headerlink" href="#image-decompression" title="Permalink to this heading"></a></h2>
 <p>Image decompression is performed when image data is specified using an <code class="docutils literal notranslate"><span class="pre">NTNDArray</span></code> with the <code class="docutils literal notranslate"><span class="pre">codec</span></code> field set.
 The decompression algorithm to apply will be determined by what the <code class="docutils literal notranslate"><span class="pre">codec</span></code> field is set to. In order
 for decompression to happen, the python package for the associated codec must be installed in the environment

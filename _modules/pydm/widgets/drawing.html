@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.drawing &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -26,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -95,7 +99,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
       <li class="breadcrumb-item active">pydm.widgets.drawing</li>
       <li class="wy-breadcrumbs-aside">
@@ -573,6 +577,8 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_end_point_selection</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_start_point_selection</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_mid_point_selection</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mid_point_arrow_flipped</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">penStyle</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">penWidth</span> <span class="o">=</span> <span class="mi">1</span>
@@ -647,6 +653,7 @@
         <span class="n">midpoint</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span>
         <span class="n">start_point</span> <span class="o">=</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">midpoint</span> <span class="o">-</span> <span class="n">length</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">end_point</span> <span class="o">=</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">midpoint</span> <span class="o">+</span> <span class="n">length</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">mid_point</span> <span class="o">=</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># Draw the line</span>
         <span class="n">painter</span><span class="o">.</span><span class="n">drawLine</span><span class="p">(</span><span class="n">start_point</span><span class="p">,</span> <span class="n">end_point</span><span class="p">)</span>
@@ -658,6 +665,13 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_start_point_selection</span><span class="p">:</span>
             <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_points</span><span class="p">(</span><span class="n">end_point</span><span class="p">,</span> <span class="n">start_point</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+            <span class="n">painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_mid_point_selection</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mid_point_arrow_flipped</span><span class="p">:</span>
+                <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_points</span><span class="p">(</span><span class="n">start_point</span><span class="p">,</span> <span class="n">mid_point</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_points</span><span class="p">(</span><span class="n">end_point</span><span class="p">,</span> <span class="n">mid_point</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
             <span class="n">painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
@@ -706,6 +720,52 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_start_point_selection</span> <span class="o">!=</span> <span class="n">new_selection</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_start_point_selection</span> <span class="o">=</span> <span class="n">new_selection</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">arrowMidPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, an arrow will be drawn at the midpoint of the line.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_mid_point_selection</span>
+
+    <span class="nd">@arrowMidPoint</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">arrowMidPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, an arrow will be drawn at the midpoint of the line.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_selection : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_mid_point_selection</span> <span class="o">!=</span> <span class="n">new_selection</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_mid_point_selection</span> <span class="o">=</span> <span class="n">new_selection</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">flipMidPointArrow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Flips the direction of the midpoint arrow.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mid_point_arrow_flipped</span>
+
+    <span class="nd">@flipMidPointArrow</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">flipMidPointArrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Flips the direction of the midpoint arrow.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_selection : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mid_point_arrow_flipped</span> <span class="o">!=</span> <span class="n">new_selection</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mid_point_arrow_flipped</span> <span class="o">=</span> <span class="n">new_selection</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMDrawingImage"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingImage</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>

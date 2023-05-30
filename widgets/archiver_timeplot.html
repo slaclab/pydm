@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Archiver Appliance Enabled Time Plots &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>Archiver Appliance Enabled Time Plots &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,14 +29,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -124,7 +128,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Widgets</a></li>
       <li class="breadcrumb-item active">Archiver Appliance Enabled Time Plots</li>
       <li class="wy-breadcrumbs-aside">
@@ -187,7 +191,7 @@ of 365, a request for a year of data for a PV that updates every second would re
 <p>PyDMArchiverTimePlot is a PyDMTimePlot with support for receiving data from
 the archiver appliance.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> (<em>QObject</em><em>, </em><em>optional</em>) – The parent of this widget.</p></li>
 <li><p><strong>init_y_channels</strong> (<em>list</em>) – A list of scalar channels to plot vs time.</p></li>
@@ -1263,7 +1267,7 @@ is raised.</p>
 <dd><p>Create an AxisItem with the input name and orientation, and add it to
 this plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>plot_data_item</strong> (<em>BasePlotCurveItem</em>) – The curve that will be linked with this new axis</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – The name that will be assigned to this axis</p></li>
@@ -1276,7 +1280,7 @@ when data goes out of range if this is set to True</p></li>
 <li><p><strong>log_mode</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not this axis should start out in logarithmic mode.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Exception</strong> – Raised by PyQtGraph if the orientation is not in ‘left’ or ‘right’</p>
 </dd>
 </dl>
@@ -1284,13 +1288,13 @@ when data goes out of range if this is set to True</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addCurve">
-<span class="sig-name descname"><span class="pre">addCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_data_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_axis_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addCurve" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">addCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_data_item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BasePlotCurveItem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QColor</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_axis_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addCurve" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a curve to this plot.</p>
 <p>If the y axis parameters are specified, either link this curve to an
 existing axis if that axis is already part of this plot, or create a
 new one and link the curve to it.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>plot_data_item</strong> (<em>BasePlotCurveItem</em>) – The curve to add to this plot</p></li>
 <li><p><strong>curve_color</strong> (<em>QColor</em><em>, </em><em>optional</em>) – The color to draw the curve and axis label in</p></li>
@@ -1306,7 +1310,7 @@ time seeing this name, then a new axis will be created for it.</p></li>
 <span class="sig-name descname"><span class="pre">addLegendItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pv_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_show_legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addLegendItem" title="Permalink to this definition"></a></dt>
 <dd><p>Add an item into the graph’s legend.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>item</strong> (<a class="reference internal" href="timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem"><em>TimePlotCurveItem</em></a>) – A curve being plotted in the graph</p></li>
 <li><p><strong>pv_name</strong> (<em>str</em>) – The PV channel</p></li>
@@ -1327,7 +1331,7 @@ item, but do not display the legend.</p></li>
 <span class="sig-name descname"><span class="pre">addYChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineStyle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineWidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barWidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upperThreshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowerThreshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdColor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yAxisName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useArchiveData</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addYChannel" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a new curve to the current plot</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>y_channel</strong> (<em>str</em>) – The PV address</p></li>
 <li><p><strong>plot_style</strong> (<em>str</em><em>, </em><em>optional</em>) – The style in which to render the data, either ‘Line’ or ‘Bar’</p></li>
@@ -1346,10 +1350,10 @@ triangle, star, etc.</p></li>
 doesn’t yet exist</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>new_curve</strong> – The newly created curve.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem">TimePlotCurveItem</a></p>
 </dd>
 </dl>
@@ -1408,10 +1412,10 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 <span class="sig-name descname"><span class="pre">bufferSize</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.bufferSize" title="Permalink to this definition"></a></dt>
 <dd><p>Get the size of the data buffer for the entire chart.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>size</strong> – The chart’s data buffer size.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -1464,8 +1468,14 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.clear" title="Permalink to this definition"></a></dt>
+<dd><p>Remove all curves from the plot, as well as all items from the main view box</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.clearAxes">
-<span class="sig-name descname"><span class="pre">clearAxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.clearAxes" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">clearAxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.clearAxes" title="Permalink to this definition"></a></dt>
 <dd><p>Clear out any added axes on this plot</p>
 </dd></dl>
 
@@ -1545,6 +1555,23 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.createWindowContainer">
 <span class="sig-name descname"><span class="pre">createWindowContainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">QWindow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QWidget</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Qt.WindowFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Qt.WindowType</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QWidget</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.createWindowContainer" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.crosshair_position_updated">
+<span class="sig-name descname"><span class="pre">crosshair_position_updated</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.crosshair_position_updated" title="Permalink to this definition"></a></dt>
+<dd><p>BasePlot is the parent class for all specific types of PyDM plots. It is built on top of the
+pyqtgraph plotting library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – The parent of this widget.</p></li>
+<li><p><strong>background</strong> (<em>str</em><em>, </em><em>optional</em>) – The background color for the plot.  Accepts any arguments that pyqtgraph.mkColor will accept.</p></li>
+<li><p><strong>axisItems</strong> (<em>dict</em><em>, </em><em>optional</em>) – A mapping from axis name (str) to pyqtgraph AxisItem for each axis to be added to the plot. If
+not specified, the default pyqtgraph axis items (top, bottom, left, right) will be used</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.cursor">
@@ -1685,7 +1712,7 @@ of JSON-formatted strings.</p>
 <span class="sig-name descname"><span class="pre">enableCrosshair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_x_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">starting_y_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizontal_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical_movable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">horizontal_movable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.enableCrosshair" title="Permalink to this definition"></a></dt>
 <dd><p>Display a crosshair on the graph.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>is_enabled</strong> (<em>bool</em>) – True is to display the crosshair; False is to hide it.</p></li>
 <li><p><strong>starting_x_pos</strong> (<em>float</em>) – The x position where the vertical line will cross</p></li>
@@ -1725,8 +1752,9 @@ of JSON-formatted strings.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.eventFilter">
-<span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.eventFilter" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QObject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.eventFilter" title="Permalink to this definition"></a></dt>
+<dd><p>Display a tool tip upon mousing over the plot in Qt designer explaining how to edit curves on it</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.find">
@@ -1760,13 +1788,13 @@ of JSON-formatted strings.</p>
 <span class="sig-name descname"><span class="pre">findCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pv_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.findCurve" title="Permalink to this definition"></a></dt>
 <dd><p>Find a curve from a graph’s curve list.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>pv_name</strong> (<em>str</em>) – The curve’s PV address.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>curve</strong> – The found curve, or None.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem">TimePlotCurveItem</a></p>
 </dd>
 </dl>
@@ -1893,14 +1921,28 @@ of JSON-formatted strings.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getAutoRangeX">
+<span class="sig-name descname"><span class="pre">getAutoRangeX</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getAutoRangeX" title="Permalink to this definition"></a></dt>
+<dd><p>A return type of bool is a simple yes/no if the x-axis has auto range set. A float
+from 0.0 - 1.0 also means True, but only showing a percentage of the data corresponding to the value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getAutoRangeY">
+<span class="sig-name descname"><span class="pre">getAutoRangeY</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getAutoRangeY" title="Permalink to this definition"></a></dt>
+<dd><p>A return type of bool is a simple yes/no if the y-axis has auto range set. A float
+from 0.0 - 1.0 also means True, but only showing a percentage of the data corresponding to the value.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getBufferSize">
 <span class="sig-name descname"><span class="pre">getBufferSize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getBufferSize" title="Permalink to this definition"></a></dt>
 <dd><p>Get the size of the data buffer for the entire chart.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>size</strong> – The chart’s data buffer size.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -1920,10 +1962,10 @@ of JSON-formatted strings.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMaxXRange">
-<span class="sig-name descname"><span class="pre">getMaxXRange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMaxXRange" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">getMaxXRange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMaxXRange" title="Permalink to this definition"></a></dt>
 <dd><p>Maximum X-axis value visible on the plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -1931,10 +1973,10 @@ of JSON-formatted strings.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMaxYRange">
-<span class="sig-name descname"><span class="pre">getMaxYRange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMaxYRange" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">getMaxYRange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMaxYRange" title="Permalink to this definition"></a></dt>
 <dd><p>Maximum Y-axis value visible on the plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -1942,10 +1984,10 @@ of JSON-formatted strings.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMinXRange">
-<span class="sig-name descname"><span class="pre">getMinXRange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMinXRange" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">getMinXRange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMinXRange" title="Permalink to this definition"></a></dt>
 <dd><p>Minimum X-axis value visible on the plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -1953,10 +1995,10 @@ of JSON-formatted strings.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMinYRange">
-<span class="sig-name descname"><span class="pre">getMinYRange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMinYRange" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">getMinYRange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getMinYRange" title="Permalink to this definition"></a></dt>
 <dd><p>Minimum Y-axis value visible on the plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -1970,13 +2012,13 @@ of JSON-formatted strings.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getShowLegend">
-<span class="sig-name descname"><span class="pre">getShowLegend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getShowLegend" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">getShowLegend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getShowLegend" title="Permalink to this definition"></a></dt>
 <dd><p>Check if the legend is being shown.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True if the legend is displayed on the graph; False if not.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -1984,16 +2026,22 @@ of JSON-formatted strings.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getShowRightAxis">
-<span class="sig-name descname"><span class="pre">getShowRightAxis</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getShowRightAxis" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">getShowRightAxis</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getShowRightAxis" title="Permalink to this definition"></a></dt>
 <dd><p>Provide whether the right y-axis is being shown.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True if the graph shows the right y-axis. False if not.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getShowXGrid">
+<span class="sig-name descname"><span class="pre">getShowXGrid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getShowXGrid" title="Permalink to this definition"></a></dt>
+<dd><p>True if showing x grid lines on the plot, False otherwise</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2003,10 +2051,10 @@ of JSON-formatted strings.</p>
 how long a data point stays on the plot before falling off the left
 edge.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>time_span</strong> – The extent of the x-axis of the chart, in seconds.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -2017,10 +2065,10 @@ edge.</p>
 <span class="sig-name descname"><span class="pre">getUpdateInterval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getUpdateInterval" title="Permalink to this definition"></a></dt>
 <dd><p>Get the update interval for the chart.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>interval</strong> – The update interval of the chart.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -2028,15 +2076,15 @@ edge.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getYAxes">
-<span class="sig-name descname"><span class="pre">getYAxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getYAxes" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">getYAxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getYAxes" title="Permalink to this definition"></a></dt>
 <dd><p>Dump the current list of axes and each axis’s settings into a list
 of JSON-formatted strings.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>settings</strong> – A list of JSON-formatted strings, each containing a curve’s
 settings</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list</p>
 </dd>
 </dl>
@@ -2445,7 +2493,7 @@ settings</p>
 <dd><p>The maximum rate (in Hz) at which the plot will be redrawn.
 The plot will not be redrawn if there is not new data to draw.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -2528,7 +2576,7 @@ The plot will not be redrawn if there is not new data to draw.</p>
 <span class="sig-name descname"><span class="pre">mouseEnabledX</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.mouseEnabledX" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not mouse interactions are enabled for the X-axis.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -2539,7 +2587,7 @@ The plot will not be redrawn if there is not new data to draw.</p>
 <span class="sig-name descname"><span class="pre">mouseEnabledY</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.mouseEnabledY" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not mouse interactions are enabled for the Y-axis.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -2557,12 +2605,12 @@ The plot will not be redrawn if there is not new data to draw.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.mouseMoved">
-<span class="sig-name descname"><span class="pre">mouseMoved</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.mouseMoved" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">mouseMoved</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.mouseMoved" title="Permalink to this definition"></a></dt>
 <dd><p>A handler for the crosshair feature. Every time the mouse move, the mouse coordinates are updated, and the
 horizontal and vertical hairlines will be redrawn at the new coordinate. If a PyDMDisplay object is available,
 that display will also have the x- and y- values to update on the UI.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>evt</strong> (<em>MouseEvent</em>) – The mouse event type, from which the mouse coordinates are obtained.</p>
 </dd>
 </dl>
@@ -2632,10 +2680,10 @@ that display will also have the x- and y- values to update on the UI.</p>
 <dd><p>Float value between 0 and 1 representing the opacity of the widget
 where 0 means transparent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>opacity</strong></p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -2755,7 +2803,7 @@ callable.</p>
 that curve, which could have been updated with a new symbol, line
 style, line width, etc.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>curve</strong> (<a class="reference internal" href="timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem"><em>TimePlotCurveItem</em></a>) – The curve to be re-added.</p>
 </dd>
 </dl>
@@ -2782,6 +2830,17 @@ style, line width, etc.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.removeCurve">
+<span class="sig-name descname"><span class="pre">removeCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BasePlotCurveItem</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.removeCurve" title="Permalink to this definition"></a></dt>
+<dd><p>Remove the given curve from the plot, disconnecting it from any channels it was connected to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>plot_item</strong> (<em>BasePlotCurveItem</em>) – The cureve to be removed from this plot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.removeEventFilter">
 <span class="sig-name descname"><span class="pre">removeEventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QObject</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.removeEventFilter" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -2791,7 +2850,7 @@ style, line width, etc.</p>
 <span class="sig-name descname"><span class="pre">removeLegendItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pv_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.removeLegendItem" title="Permalink to this definition"></a></dt>
 <dd><p>Remove an item from the legend.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>pv_name</strong> (<em>str</em>) – The PV channel, used to search for the legend item to remove.</p>
 </dd>
 </dl>
@@ -2803,7 +2862,7 @@ style, line width, etc.</p>
 <dd><p>Remove a curve from the graph. This also stops update the timer
 associated with the curve.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>curve</strong> (<a class="reference internal" href="timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem"><em>TimePlotCurveItem</em></a>) – The curve to be removed.</p>
 </dd>
 </dl>
@@ -2815,7 +2874,7 @@ associated with the curve.</p>
 <dd><p>Remove a curve from the graph, given its index in the graph’s curve
 list.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – The curve’s index from the graph’s curve list.</p>
 </dd>
 </dl>
@@ -2847,7 +2906,7 @@ list.</p>
 <span class="sig-name descname"><span class="pre">requestDataFromArchiver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#PyDMArchiverTimePlot.requestDataFromArchiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.requestDataFromArchiver" title="Permalink to this definition"></a></dt>
 <dd><p>Make the request to the archiver appliance data plugin for archived data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>min_x</strong> (<em>float</em><em>, </em><em>optional</em>) – Timestamp representing the start of the time period to fetch archive data from. Defaults
 to the minimum value visible on the plot when omitted.</p></li>
@@ -2873,7 +2932,7 @@ curve’s data buffer, to the minimum</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.resetShowLegend">
-<span class="sig-name descname"><span class="pre">resetShowLegend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.resetShowLegend" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">resetShowLegend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.resetShowLegend" title="Permalink to this definition"></a></dt>
 <dd><p>Reset the legend display status to hidden.</p>
 </dd></dl>
 
@@ -2942,11 +3001,11 @@ curve’s data buffer, to the minimum</p>
 <span class="sig-name descname"><span class="pre">rule_evaluated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.rule_evaluated" title="Permalink to this definition"></a></dt>
 <dd><p>Callback called when a rule has a new value for a property.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
 new value.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -2957,7 +3016,7 @@ new value.</p>
 <span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.rules" title="Permalink to this definition"></a></dt>
 <dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -3054,6 +3113,30 @@ Note that this will only affect items that do not specify their own antialiasing
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setAutoRangeX">
+<span class="sig-name descname"><span class="pre">setAutoRangeX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setAutoRangeX" title="Permalink to this definition"></a></dt>
+<dd><p>Set the auto range property for the x-axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em><em> or </em><em>float</em>) – False means no autorange, True means show all data. A float between 0.0 and 1.0 means only
+show a percentage of the data (for example, 0.75 = 75% of data will be visible)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setAutoRangeY">
+<span class="sig-name descname"><span class="pre">setAutoRangeY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setAutoRangeY" title="Permalink to this definition"></a></dt>
+<dd><p>Set the auto range property for the y-axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em><em> or </em><em>float</em>) – False means no autorange, True means show all data. A float between 0.0 and 1.0 means only
+show a percentage of the data (for example, 0.75 = 75% of data will be visible)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setBackground">
 <span class="sig-name descname"><span class="pre">setBackground</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">background</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setBackground" title="Permalink to this definition"></a></dt>
 <dd><p>Set the background color of the GraphicsView.
@@ -3085,7 +3168,7 @@ To make the background transparent, use background=None.</p>
 update the same value for each of the data buffer of each chart’s
 curve.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>value</strong> (<em>int</em>) – The new buffer size for the chart.</p>
 </dd>
 </dl>
@@ -3130,7 +3213,7 @@ resize whenever the GraphicsView is resized).</p>
 <span class="sig-name descname"><span class="pre">setCurves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#PyDMArchiverTimePlot.setCurves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setCurves" title="Permalink to this definition"></a></dt>
 <dd><p>Add a list of curves into the graph.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_list</strong> (<em>list</em>) – A list of JSON-formatted strings, each contains a curve and its
 settings</p>
 </dd>
@@ -3287,10 +3370,10 @@ settings</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMaxXRange">
-<span class="sig-name descname"><span class="pre">setMaxXRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_max_x_range</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMaxXRange" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">setMaxXRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_max_x_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMaxXRange" title="Permalink to this definition"></a></dt>
 <dd><p>Set the Maximum X-axis value visible on the plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_max_x_range</strong> (<em>float</em>) – </p>
 </dd>
 </dl>
@@ -3298,10 +3381,10 @@ settings</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMaxYRange">
-<span class="sig-name descname"><span class="pre">setMaxYRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_max_y_range</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMaxYRange" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">setMaxYRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_max_y_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMaxYRange" title="Permalink to this definition"></a></dt>
 <dd><p>Set the maximum Y-axis value visible on the plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_max_y_range</strong> (<em>float</em>) – </p>
 </dd>
 </dl>
@@ -3331,10 +3414,10 @@ settings</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMinXRange">
-<span class="sig-name descname"><span class="pre">setMinXRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_min_x_range</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMinXRange" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">setMinXRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_min_x_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMinXRange" title="Permalink to this definition"></a></dt>
 <dd><p>Set the minimum X-axis value visible on the plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_min_x_range</strong> (<em>float</em>) – </p>
 </dd>
 </dl>
@@ -3342,10 +3425,10 @@ settings</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMinYRange">
-<span class="sig-name descname"><span class="pre">setMinYRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_min_y_range</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMinYRange" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">setMinYRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_min_y_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setMinYRange" title="Permalink to this definition"></a></dt>
 <dd><p>Set the minimum Y-axis value visible on the plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_min_y_range</strong> (<em>float</em>) – </p>
 </dd>
 </dl>
@@ -3449,10 +3532,10 @@ settings</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setShowLegend">
-<span class="sig-name descname"><span class="pre">setShowLegend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setShowLegend" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">setShowLegend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setShowLegend" title="Permalink to this definition"></a></dt>
 <dd><p>Set to display the legend on the graph.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – True to display the legend; False is not.</p>
 </dd>
 </dl>
@@ -3460,11 +3543,39 @@ settings</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setShowRightAxis">
-<span class="sig-name descname"><span class="pre">setShowRightAxis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setShowRightAxis" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">setShowRightAxis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setShowRightAxis" title="Permalink to this definition"></a></dt>
 <dd><p>Set whether the graph should show the right y-axis.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>show</strong> (<em>bool</em>) – True for showing the right axis; False is for not showing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setShowXGrid">
+<span class="sig-name descname"><span class="pre">setShowXGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setShowXGrid" title="Permalink to this definition"></a></dt>
+<dd><p>Set the x grid lines on the plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>bool</em>) – True if we should show x grid lines, False to hide them</p></li>
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – The opacity of the grid lines, from 0.0 to 1.0 (strongest), defaults to 0.5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setShowYGrid">
+<span class="sig-name descname"><span class="pre">setShowYGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setShowYGrid" title="Permalink to this definition"></a></dt>
+<dd><p>Set the y grid lines on the plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>bool</em>) – True if we should show y grid lines, False to hide them</p></li>
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – The opacity of the grid lines, from 0.0 to 1.0 (strongest), defaults to 0.5</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -3544,7 +3655,7 @@ settings</p>
 <span class="sig-name descname"><span class="pre">setUpdateInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setUpdateInterval" title="Permalink to this definition"></a></dt>
 <dd><p>Set a new update interval for the chart and update its data buffer size.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>value</strong> (<em>float</em>) – The new update interval value.</p>
 </dd>
 </dl>
@@ -3649,10 +3760,10 @@ settings</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setYAxes">
-<span class="sig-name descname"><span class="pre">setYAxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setYAxes" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">setYAxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setYAxes" title="Permalink to this definition"></a></dt>
 <dd><p>Add a list of axes into the graph.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_list</strong> (<em>list</em>) – A list of JSON-formatted strings, each contains an axis and its
 settings</p>
 </dd>
@@ -3665,7 +3776,7 @@ settings</p>
 <dd><p>Float value between 0 and 1 representing the opacity of the widget
 where 0 means transparent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>val</strong> (<em>float</em>) – The new value for the opacity</p>
 </dd>
 </dl>
@@ -3706,10 +3817,10 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">showLegend</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.showLegend" title="Permalink to this definition"></a></dt>
 <dd><p>Check if the legend is being shown.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True if the legend is displayed on the graph; False if not.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -3735,13 +3846,19 @@ where 0 means transparent.</p>
 <span class="sig-name descname"><span class="pre">showRightAxis</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.showRightAxis" title="Permalink to this definition"></a></dt>
 <dd><p>Provide whether the right y-axis is being shown.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True if the graph shows the right y-axis. False if not.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.showXGrid">
+<span class="sig-name descname"><span class="pre">showXGrid</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.showXGrid" title="Permalink to this definition"></a></dt>
+<dd><p>True if showing x grid lines on the plot, False otherwise</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3858,10 +3975,10 @@ other methods, use <code class="xref py py-func docutils literal notranslate"><s
 how long a data point stays on the plot before falling off the left
 edge.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>time_span</strong> – The extent of the x-axis of the chart, in seconds.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -3948,10 +4065,10 @@ edge.</p>
 <span class="sig-name descname"><span class="pre">updateInterval</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.updateInterval" title="Permalink to this definition"></a></dt>
 <dd><p>Get the update interval for the chart.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>interval</strong> – The update interval of the chart.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -3967,7 +4084,7 @@ edge.</p>
 <span class="sig-name descname"><span class="pre">updateMode</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.updateMode" title="Permalink to this definition"></a></dt>
 <dd><p>The updateMode to be used as property to set plot update mode.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>updateMode</p>
 </dd>
 </dl>
@@ -4165,11 +4282,11 @@ a request will be made for backfill data</p>
 <dd><p>Dump the current list of axes and each axis’s settings into a list
 of JSON-formatted strings.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>settings</strong> – A list of JSON-formatted strings, each containing a curve’s
 settings</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list</p>
 </dd>
 </dl>
@@ -4187,7 +4304,7 @@ settings</p>
 <p>ArchivePlotCurveItem is a TimePlotCurveItem with support for receiving data from
 the archiver appliance.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>channel_address</strong> (<em>str</em>) – The address to of the scalar data to plot. Will also be used to retrieve data
 from archiver appliance if requested.</p></li>
@@ -4690,10 +4807,10 @@ the accumulated point counter.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.color">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">color</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.color" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">QColor</span></em><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.color" title="Permalink to this definition"></a></dt>
 <dd><p>The color used for the curve.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
@@ -4701,12 +4818,12 @@ the accumulated point counter.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.color_string">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">color_string</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.color_string" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">color_string</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.color_string" title="Permalink to this definition"></a></dt>
 <dd><p>A string representation of the color used for the curve.  This string
 will be a hex color code, like #FF00FF, or an SVG spec color name, if
 a name exists for the color.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -4753,10 +4870,6 @@ a name exists for the color.</p>
 <dd><p>Returns the range occupied by the data (along a specific axis) in this item.
 This method is called by ViewBox when auto-scaling.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>Arguments:</strong></p></td>
 <td></td>
@@ -5062,7 +5175,7 @@ This is used by ViewBox to react if auto-range is enabled.</p>
 <p>An example use case would be zooming into optimized mean-value data and
 replacing it with the raw data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data</strong> (<em>np.ndarray</em>) – A numpy array of shape (2, length_of_data). Index 0 contains
 timestamps and index 1 contains the data observations.</p>
 </dd>
@@ -5193,23 +5306,23 @@ timestamps and index 1 contains the data observations.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.lineStyle">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lineStyle</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.lineStyle" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lineStyle</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PenStyle</span></em><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.lineStyle" title="Permalink to this definition"></a></dt>
 <dd><p>Return the style of the line connecting the data points.
 Must be a value from the Qt::PenStyle enum
 (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Qt.PenStyle</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.lineWidth">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lineWidth</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.lineWidth" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lineWidth</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.lineWidth" title="Permalink to this definition"></a></dt>
 <dd><p>Return the width of the line connecting the data points.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -5381,10 +5494,10 @@ If there is no device mapping available, return None.</p>
 <dd><p>Get the maximum y-value so far in the same plot. This is useful to
 scale the y-axis for a selected curve.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The maximum y-value collected so far for this current curve.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -5396,10 +5509,10 @@ scale the y-axis for a selected curve.</p>
 <dd><p>Provide the the most recent timestamp accumulated from the data buffer.
 This is useful for scaling the x-axis.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The timestamp of the most recent data point recorded into the data buffer.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -5416,10 +5529,10 @@ This is useful for scaling the x-axis.</p>
 <dd><p>Get the minimum y-value so far in the same plot. This is useful to
 scale the y-axis for a selected curve.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The minimum y-value collected so far for this current curve.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -5430,10 +5543,10 @@ scale the y-axis for a selected curve.</p>
 <span class="sig-name descname"><span class="pre">min_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.min_x" title="Permalink to this definition"></a></dt>
 <dd><p>Provide the the oldest valid timestamp from the data buffer.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The timestamp of the most recent data point recorded into the data buffer.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
@@ -5595,7 +5708,7 @@ callable.</p>
 <dd><p>Receive data from archiver appliance and place it into the archive data buffer.
 Will overwrite any previously existing data at the indices written to.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data</strong> (<em>np.ndarray</em>) – A numpy array of varying shape consisting of archived data for display.
 At a minimum, index 0 will contain the timestamps and index 1 the actual data observations.
 Additional indices may be used as well based on the type of request made to the archiver appliance.
@@ -5616,7 +5729,7 @@ is called.</p>
 <p>This method is usually called by a PyDMChannel when it updates.  You
 can call it yourself to inject data into the curve.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_value</strong> (<em>float</em>) – The new y-value.</p>
 </dd>
 </dl>
@@ -5760,7 +5873,7 @@ can call it yourself to inject data into the curve.</p>
 if the plot is to be rendered as a bar graph. And any or all of them may be omitted even if it
 is a bar graph. Omitting color parameters will result in the plot displaying a uniform color.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bar_width</strong> (<em>float</em><em>, </em><em>optional</em>) – The width of all bars displayed on the plot</p></li>
 <li><p><strong>upper_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Any bar above this value will be drawn in the threshold color</p></li>
@@ -5799,10 +5912,6 @@ See <code class="xref py py-func docutils literal notranslate"><span class="pre"
 <dd><p>Set the downsampling mode of this item. Downsampling reduces the number
 of samples drawn to increase performance.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 82%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>Arguments:</strong></p></td>
 <td></td>
@@ -5832,10 +5941,6 @@ visual representation of the data but is slower.</p></td>
 <dd><p>Limit the off-screen positions of data points at large magnification
 This avoids errors with plots not displaying because their visibility is incorrectly determined. The default setting repositions far-off points to be within +-1E+06 times the viewport height.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 19%" />
-<col style="width: 81%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>Arguments:</strong></p></td>
 <td></td>
@@ -6051,11 +6156,11 @@ and should generally be assigned greater width than the primary pen.</div>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.symbol">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">symbol</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.symbol" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.symbol" title="Permalink to this definition"></a></dt>
 <dd><p>The single-character code for the symbol drawn at each datapoint.</p>
 <p>See the documentation for pyqtgraph.PlotDataItem for possible values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str or None</p>
 </dd>
 </dl>
@@ -6063,10 +6168,10 @@ and should generally be assigned greater width than the primary pen.</div>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.symbolSize">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">symbolSize</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.symbolSize" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">symbolSize</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.symbolSize" title="Permalink to this definition"></a></dt>
 <dd><p>Return the size of the symbol to represent the data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -6082,7 +6187,7 @@ and should generally be assigned greater width than the primary pen.</div>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">threshold_color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">QColor</span></em><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.threshold_color" title="Permalink to this definition"></a></dt>
 <dd><p>The color used for bars exceeding either the upper or lower thresholds.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>QColor</p>
 </dd>
 </dl>
@@ -6095,7 +6200,7 @@ and should generally be assigned greater width than the primary pen.</div>
 will be a hex color code, like #FF00FF, or an SVG spec color name, if
 a name exists for the color.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -6202,7 +6307,7 @@ If relativeItem is given, then the angle is determined relative to that item.</p
 <dd><p>Update the min and max y-value as a new value is available. This is
 useful for auto-scaling to a specific curve.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_value</strong> (<em>float</em>) – The new y-value just available.</p>
 </dd>
 </dl>
@@ -6284,7 +6389,7 @@ Invalidates the viewRect cache.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.y_axis_name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_axis_name</span></span><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.y_axis_name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_axis_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.y_axis_name" title="Permalink to this definition"></a></dt>
 <dd><p>Return the name of the y-axis that this curve should be associated with. This allows us to have plots that
 contain multiple y-axes, with each curve assigned to either a unique or shared axis as needed.
 :rtype: str</p>

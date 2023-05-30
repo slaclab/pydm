@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.data_plugins &mdash; PyDM v1.18.2+5.gae508170 documentation</title>
+  <title>pydm.data_plugins &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -26,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> PyDM
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyDM
           </a>
               <div class="version">
-                v1.18.2+5.gae508170
+                v1.19.1+12.g4f9fc2e6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -95,7 +99,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
       <li class="breadcrumb-item active">pydm.data_plugins</li>
       <li class="wy-breadcrumbs-aside">
@@ -123,8 +127,7 @@
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
 
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">config</span>
-<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="p">(</span><span class="n">import_module_by_filename</span><span class="p">,</span> <span class="n">log_failures</span><span class="p">,</span>
-                         <span class="n">protocol_and_address</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="p">(</span><span class="n">import_module_by_filename</span><span class="p">,</span> <span class="n">log_failures</span><span class="p">,</span> <span class="n">parsed_address</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.plugin</span> <span class="kn">import</span> <span class="n">PyDMPlugin</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -186,7 +189,11 @@
 <span class="sd">    Find the correct PyDMPlugin for a channel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check for a configured protocol</span>
-    <span class="n">protocol</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">protocol_and_address</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">protocol</span> <span class="o">=</span> <span class="n">parsed_address</span><span class="p">(</span><span class="n">address</span><span class="p">)</span><span class="o">.</span><span class="n">scheme</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">protocol</span> <span class="o">=</span> <span class="kc">None</span> 
+    
     <span class="c1"># Use default protocol</span>
     <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Using default protocol </span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -194,7 +201,8 @@
         <span class="c1"># If no protocol was specified, and the default protocol</span>
         <span class="c1"># environment variable is specified, try to use that instead.</span>
         <span class="n">protocol</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span>
-    <span class="c1"># Load proper plugin module</span>
+
+    <span class="c1"># Load proper plugin module    </span>
     <span class="k">if</span> <span class="n">protocol</span><span class="p">:</span>
         <span class="n">initialize_plugins_if_needed</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
@@ -207,6 +215,7 @@
                  <span class="s2">&quot;will receive no data. To specify a default protocol, &quot;</span>
                  <span class="s2">&quot;set the PYDM_DEFAULT_PROTOCOL environment variable.&quot;</span>
                  <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="o">=</span><span class="n">address</span><span class="p">))</span>
+    
     <span class="k">return</span> <span class="kc">None</span>
 
 
