@@ -139,7 +139,8 @@ def test_load_file_with_macros(qtbot):
         # Compile the ui file into python code
         macros = {"test_label": "magnet_list",
                   "test_command": "grep -i 'string with spaces'",
-                  "test_command_2": "echo hello"}
+                  "test_command_2": "echo hello",
+                  "channel_with_dec_option": '.{"dec":{"n": 25}}'}
         code_string, class_name = _compile_ui_file(test_ui_with_macros_path)
         assert class_name == 'Ui_Form'
 
@@ -149,6 +150,7 @@ def test_load_file_with_macros(qtbot):
 
         # Verify that the macros were replaced correctly
         assert test_display.ui.myLabel.text() == "magnet_list"
+        assert test_display.ui.doubleQuotedLabel.text() == '.{"dec":{"n": 25}}'
         assert commands_from_macro == ["grep -i 'string with spaces'", "echo hello"]
 
     finally:
