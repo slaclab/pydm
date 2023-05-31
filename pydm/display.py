@@ -14,9 +14,9 @@ from typing import Dict, Optional, Tuple
 import re
 import six
 from qtpy import uic
-from qtpy.QtWidgets import QApplication, QWidget
+from qtpy.QtWidgets import QApplication, QWidget, QTextBrowser
 
-from .utilities import import_module_by_filename, is_pydm_app, macro
+from .utilities import find_file, import_module_by_filename, is_pydm_app, macro
 
 
 class ScreenTarget:
@@ -52,25 +52,33 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     -------
     pydm.Display
     """
+    print(f'loading: {file}')
     if not is_pydm_app() and target == ScreenTarget.NEW_PROCESS:
         logger.warning('New Process is only valid with PyDM Application. ' +
                        'Falling back to ScreenTarget.DIALOG.')
         target = ScreenTarget.DIALOG
 
     if target == ScreenTarget.NEW_PROCESS:
+        print('target was new process')
         # Invoke PyDM to open a new process here.
         app = QApplication.instance()
         app.new_pydm_process(file, macros=macros, command_line_args=args)
         return None
 
-    _, extension = os.path.splitext(file)
+    base, extension = os.path.splitext(file)
     loader = _extension_to_loader.get(extension, load_py_file)
     logger.debug("Loading %s file by way of %s...", file, loader.__name__)
-    w = loader(file, args=args, macros=macros)
-    if target == ScreenTarget.DIALOG:
-        w.show()
+    loaded_display = loader(file, args=args, macros=macros)
 
-    return w
+    if os.path.exists(base + '.txt'):
+        loaded_display.load_help_file(base + '.txt', is_html=False)
+    elif os.path.exists(base + '.html'):
+        loaded_display.load_help_file(base + '.html', is_html=True)
+
+    if target == ScreenTarget.DIALOG:
+        loaded_display.show()
+
+    return loaded_display
 
 
 @lru_cache()
@@ -284,8 +292,10 @@ _extension_to_loader = {
 class Display(QWidget):
 
     def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
+        print('creating a new display')
         super(Display, self).__init__(parent=parent)
         self.ui = None
+        self.help_display = None
         self._ui_filename = ui_filename
         self._loaded_file = None
         self._args = args
@@ -400,6 +410,15 @@ class Display(QWidget):
         self._loaded_file = ui_file_path
         code_string, class_name = _compile_ui_file(ui_file_path)
         _load_compiled_ui_into_display(code_string, class_name, self, macros)
+
+    def load_help_file(self, file_path, is_html=False) -> None:
+        """ Loads the input file into a QTextBrowser for display """
+        self.help_display = QTextBrowser()
+        with open(file_path) as file:
+            if is_html:
+                self.help_display.setHtml(file.read())
+            else:
+                self.help_display.setText(file.read())
 
     def setStyleSheet(self, new_stylesheet):
         # Handle the case where the widget's styleSheet property contains a filename, rather than a stylesheet.

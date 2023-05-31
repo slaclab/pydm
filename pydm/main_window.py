@@ -73,6 +73,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionShow_Menu_Bar.triggered.connect(self.toggle_menu_bar)
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
         self.ui.actionShow_Connections.triggered.connect(self.show_connections)
+        self.ui.actionShow_Help.triggered.connect(self.show_help)
         self.ui.actionAbout_PyDM.triggered.connect(self.show_about_window)
         self.ui.actionLoadTool.triggered.connect(self.load_tool)
         self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
@@ -460,6 +461,10 @@ class PyDMMainWindow(QMainWindow):
     def show_connections(self, checked):
         c = ConnectionInspector(self)
         c.show()
+
+    def show_help(self):
+        if self.display_widget() is not None and self.display_widget().help_display is not None:
+            self.display_widget().help_display.show()
 
     @Slot(bool)
     def show_about_window(self, checked):
