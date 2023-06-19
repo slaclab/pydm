@@ -463,8 +463,9 @@ class PyDMMainWindow(QMainWindow):
         c.show()
 
     def show_help(self):
-        if self.display_widget() is not None and self.display_widget().help_display is not None:
-            self.display_widget().help_display.show()
+        """ Show the associated help file for this window """
+        if self.display_widget() is not None:
+            self.display_widget().show_help()
 
     @Slot(bool)
     def show_about_window(self, checked):
@@ -510,6 +511,11 @@ class PyDMMainWindow(QMainWindow):
         # create the custom menu with user given items
         if not isinstance(self.display_widget(), Display):
             return
+
+        # Only provide the view help menu option if an associated help file has been loaded
+        if self.display_widget().help_display is None:
+            self.ui.actionShow_Help.setVisible(False)
+
         items = self.display_widget().menu_items()
         if len(items) == 0:
             self.ui.menuCustomActions.menuAction().setVisible(False)
