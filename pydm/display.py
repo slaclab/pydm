@@ -16,7 +16,7 @@ import six
 from qtpy import uic
 from qtpy.QtWidgets import QApplication, QWidget, QTextBrowser
 
-from .utilities import find_file, import_module_by_filename, is_pydm_app, macro
+from .utilities import import_module_by_filename, is_pydm_app, macro
 
 
 class ScreenTarget:
@@ -52,14 +52,12 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     -------
     pydm.Display
     """
-    print(f'loading: {file}')
     if not is_pydm_app() and target == ScreenTarget.NEW_PROCESS:
         logger.warning('New Process is only valid with PyDM Application. ' +
                        'Falling back to ScreenTarget.DIALOG.')
         target = ScreenTarget.DIALOG
 
     if target == ScreenTarget.NEW_PROCESS:
-        print('target was new process')
         # Invoke PyDM to open a new process here.
         app = QApplication.instance()
         app.new_pydm_process(file, macros=macros, command_line_args=args)
@@ -292,7 +290,6 @@ _extension_to_loader = {
 class Display(QWidget):
 
     def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
-        print('creating a new display')
         super(Display, self).__init__(parent=parent)
         self.ui = None
         self.help_display = None
@@ -364,6 +361,11 @@ class Display(QWidget):
 
         """
         return {}
+
+    def show_help(self) -> None:
+        """ Show the associated help file for this display """
+        if self.help_display is not None:
+            self.help_display.show()
 
     def navigate_back(self):
         pass
