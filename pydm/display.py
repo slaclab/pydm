@@ -414,7 +414,7 @@ class Display(QWidget):
         code_string, class_name = _compile_ui_file(ui_file_path)
         _load_compiled_ui_into_display(code_string, class_name, self, macros)
 
-    def load_help_file(self, file_path) -> None:
+    def load_help_file(self, file_path: str) -> None:
         """ Loads the input help file into a window for display """
         self.help_window = HelpWindow(file_path)
 

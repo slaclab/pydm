@@ -1,6 +1,7 @@
 from pathlib import Path
 from qtpy.QtWidgets import QTextBrowser, QVBoxLayout, QWidget
 from qtpy.QtCore import Qt
+from typing import Optional
 
 
 class HelpWindow(QWidget):
@@ -12,7 +13,7 @@ class HelpWindow(QWidget):
     help_file_path : str
         The path to the help file to be displayed
     """
-    def __init__(self, help_file_path: str, parent=None):
+    def __init__(self, help_file_path: str, parent: Optional[QWidget] = None):
         super().__init__(parent, Qt.Window)
         self.resize(500, 400)
 
