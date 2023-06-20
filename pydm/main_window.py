@@ -513,7 +513,7 @@ class PyDMMainWindow(QMainWindow):
             return
 
         # Only provide the view help menu option if an associated help file has been loaded
-        if self.display_widget().help_display is None:
+        if self.display_widget().help_window is None:
             self.ui.actionShow_Help.setVisible(False)
 
         items = self.display_widget().menu_items()

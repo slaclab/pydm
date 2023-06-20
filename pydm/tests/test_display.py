@@ -164,5 +164,5 @@ def test_load_file_with_help_display(qtbot):
     being present in the same location as the file at test_ui_path.
     """
     test_display = load_file(test_ui_path, target=ScreenTarget.HOME)
-    assert test_display.help_display is not None
-    assert test_display.help_display.toPlainText() == 'This is a test help file for the test.ui display\n'
+    assert test_display.help_window is not None
+    assert test_display.help_window.display_content.toPlainText() == 'This is a test help file for the test.ui display\n'

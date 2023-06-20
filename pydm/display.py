@@ -14,8 +14,9 @@ from typing import Dict, Optional, Tuple
 import re
 import six
 from qtpy import uic
-from qtpy.QtWidgets import QApplication, QWidget, QTextBrowser
+from qtpy.QtWidgets import QApplication, QWidget
 
+from .help_files import HelpWindow
 from .utilities import import_module_by_filename, is_pydm_app, macro
 
 
@@ -69,9 +70,9 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     loaded_display = loader(file, args=args, macros=macros)
 
     if os.path.exists(base + '.txt'):
-        loaded_display.load_help_file(base + '.txt', is_html=False)
+        loaded_display.load_help_file(base + '.txt')
     elif os.path.exists(base + '.html'):
-        loaded_display.load_help_file(base + '.html', is_html=True)
+        loaded_display.load_help_file(base + '.html')
 
     if target == ScreenTarget.DIALOG:
         loaded_display.show()
@@ -292,7 +293,7 @@ class Display(QWidget):
     def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
         super(Display, self).__init__(parent=parent)
         self.ui = None
-        self.help_display = None
+        self.help_window = None
         self._ui_filename = ui_filename
         self._loaded_file = None
         self._args = args
@@ -364,8 +365,8 @@ class Display(QWidget):
 
     def show_help(self) -> None:
         """ Show the associated help file for this display """
-        if self.help_display is not None:
-            self.help_display.show()
+        if self.help_window is not None:
+            self.help_window.show()
 
     def navigate_back(self):
         pass
@@ -413,14 +414,9 @@ class Display(QWidget):
         code_string, class_name = _compile_ui_file(ui_file_path)
         _load_compiled_ui_into_display(code_string, class_name, self, macros)
 
-    def load_help_file(self, file_path, is_html=False) -> None:
-        """ Loads the input file into a QTextBrowser for display """
-        self.help_display = QTextBrowser()
-        with open(file_path) as file:
-            if is_html:
-                self.help_display.setHtml(file.read())
-            else:
-                self.help_display.setText(file.read())
+    def load_help_file(self, file_path) -> None:
+        """ Loads the input help file into a window for display """
+        self.help_window = HelpWindow(file_path)
 
     def setStyleSheet(self, new_stylesheet):
         # Handle the case where the widget's styleSheet property contains a filename, rather than a stylesheet.
