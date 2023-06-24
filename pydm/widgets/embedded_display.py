@@ -40,6 +40,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         self._needs_load = True
         self._load_error_timer = None
         self._load_error = None
+        self._follow_symlinks = False
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_context_menu)
         self.open_in_new_window_action = QAction('Open in New Window', self)
@@ -215,7 +216,10 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
             parent_display = self.find_parent_display()
             base_path = ""
             if parent_display:
-                base_path = os.path.dirname(parent_display.loaded_file())
+                parent_file_path = parent_display.loaded_file()
+                if self._follow_symlinks:
+                    parent_file_path = os.path.realpath(parent_file_path)
+                base_path = os.path.dirname(parent_file_path)
 
             fname = find_file(self.filename, base_path=base_path, raise_if_not_found=True)
             w = load_file(fname, macros=self.parsed_macros(), target=None)
@@ -344,6 +348,30 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         disconnect_when_hidden : bool
         """
         self._disconnect_when_hidden = disconnect_when_hidden
+
+    @Property(bool)
+    def followSymlinks(self) -> bool:
+        """
+        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it
+        will always use the canonical path. If False (default), the file will be searched without canonicalizing the path beforehand.
+
+        Returns
+        -------
+        bool
+        """
+        return self._follow_symlinks
+
+    @followSymlinks.setter
+    def followSymlinks(self, follow_symlinks: bool) -> None:
+        """
+        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it
+        will always use the canonical path. If False (default), the file will be searched using the non-canonical path.
+
+        Parameters
+        ----------
+        follow_symlinks : bool
+        """
+        self._follow_symlinks = follow_symlinks
 
     def showEvent(self, e):
         """
