@@ -1,5 +1,6 @@
 import os
 import pytest
+import sys
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QApplication, QVBoxLayout
 from ...utilities.stylesheet import global_style
@@ -134,6 +135,7 @@ def test_press_with_relative_filename(qtbot):
         assert "Child" in QApplication.instance().main_window.windowTitle()
     qtbot.waitUntil(check_title)
 
+@pytest.mark.skipif(sys.platform == "win32" and sys.version_info < (3, 8), reason="os.path.realpath on Python 3.7 and prior does not resolve symlinks on Windows")
 def test_press_with_relative_filename_and_symlink(qtbot, tmp_path):
     symlinked_ui_file = tmp_path / "test_ui_with_relative_path.ui"
     try:

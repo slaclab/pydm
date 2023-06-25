@@ -1,5 +1,6 @@
 import os
 import pytest
+import sys
 from qtpy.QtWidgets import QApplication
 
 test_ui_path_with_relative_path = os.path.join(
@@ -19,6 +20,7 @@ def test_show_with_relative_filename(qtbot):
         assert display.embedded_widget is not None
     qtbot.waitUntil(check_embed)
 
+@pytest.mark.skipif(sys.platform == "win32" and sys.version_info < (3, 8), reason="os.path.realpath on Python 3.7 and prior does not resolve symlinks on Windows")
 def test_show_with_relative_filename_and_symlink(qtbot, tmp_path):
     symlinked_ui_file = tmp_path / "test_ui_with_relative_path.ui"
     try:
