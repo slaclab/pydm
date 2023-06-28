@@ -73,6 +73,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         self._password = ""
         self._protected_password = ""
 
+        self._follow_symlinks = False
+
     @only_if_channel_set
     def check_enable_state(self) -> None:
         """
@@ -331,6 +333,34 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         if self._protected_password != value:
             self._protected_password = value
 
+    @Property(bool)
+    def followSymlinks(self) -> bool:
+        """
+        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it
+        will always use the canonical path. If False (default), the file will be searched without canonicalizing the path beforehand.
+
+        Note that it will not work on Windows if you're using a Python version prior to 3.8.
+
+        Returns
+        -------
+        bool
+        """
+        return self._follow_symlinks
+
+    @followSymlinks.setter
+    def followSymlinks(self, follow_symlinks: bool) -> None:
+        """
+        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it
+        will always use the canonical path. If False (default), the file will be searched using the non-canonical path.
+
+        Note that it will not work on Windows if you're using a Python version prior to 3.8.
+
+        Parameters
+        ----------
+        follow_symlinks : bool
+        """
+        self._follow_symlinks = follow_symlinks
+
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if self._menu_needs_rebuild:
             self._rebuild_menu()
@@ -457,7 +487,10 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         base_path = ""
         macros = {}
         if parent_display:
-            base_path = os.path.dirname(parent_display.loaded_file())
+            parent_file_path = parent_display.loaded_file()
+            if self._follow_symlinks:
+                parent_file_path = os.path.realpath(parent_file_path)
+            base_path = os.path.dirname(parent_file_path)
             macros = copy.copy(parent_display.macros())
 
         fname = find_file(filename, base_path=base_path, raise_if_not_found=True)
