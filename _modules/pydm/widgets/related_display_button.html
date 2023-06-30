@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.related_display_button &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
+  <title>pydm.widgets.related_display_button &mdash; PyDM v1.19.1+21.g3639ebee documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                v1.19.1+12.g4f9fc2e6
+                v1.19.1+21.g3639ebee
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -185,6 +185,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_password</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="PyDMRelatedDisplayButton.check_enable_state"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.check_enable_state">[docs]</a>    <span class="nd">@only_if_channel_set</span>
     <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -444,6 +446,34 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="n">value</span>
 
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">followSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it</span>
+<span class="sd">        will always use the canonical path. If False (default), the file will be searched without canonicalizing the path beforehand.</span>
+
+<span class="sd">        Note that it will not work on Windows if you&#39;re using a Python version prior to 3.8.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span>
+
+    <span class="nd">@followSymlinks</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">followSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_symlinks</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it</span>
+<span class="sd">        will always use the canonical path. If False (default), the file will be searched using the non-canonical path.</span>
+
+<span class="sd">        Note that it will not work on Windows if you&#39;re using a Python version prior to 3.8.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        follow_symlinks : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span> <span class="o">=</span> <span class="n">follow_symlinks</span>
+
 <div class="viewcode-block" id="PyDMRelatedDisplayButton.mousePressEvent"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">QMouseEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rebuild_menu</span><span class="p">()</span>
@@ -570,7 +600,10 @@
         <span class="n">base_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">macros</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
-            <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">())</span>
+            <span class="n">parent_file_path</span> <span class="o">=</span> <span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span><span class="p">:</span>
+                <span class="n">parent_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">parent_file_path</span><span class="p">)</span>
+            <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_file_path</span><span class="p">)</span>
             <span class="n">macros</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">parent_display</span><span class="o">.</span><span class="n">macros</span><span class="p">())</span>
 
         <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">,</span> <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

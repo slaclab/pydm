@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
+  <title>Installation &mdash; PyDM v1.19.1+21.g3639ebee documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                v1.19.1+12.g4f9fc2e6
+                v1.19.1+21.g3639ebee
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -143,6 +143,13 @@ environment for PyDM:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create -n pydm-environment python=3.8 pyqt=5 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
 $ source activate pydm-environment
 </pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>There is currently no PyQt 5.15+ build available on conda or PyPI that has
+designer support for python plugins.</p>
+<p>In order to use PyDM widgets in designer, please make sure to pin the PyQt version to 5.12.3 or lower
+until this is resolved.</p>
 </div>
 <p>Once you’ve installed and activated the environment, you should be able to run ‘pydm’ to launch PyDM, or run ‘designer’ to launch Qt Designer.  If you are on Windows, run these commands from the Anaconda Prompt.</p>
 <p>On MacOS, launching Qt Designer is a little more annoying:

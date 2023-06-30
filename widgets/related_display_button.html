@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMRelatedDisplayButton &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
+  <title>PyDMRelatedDisplayButton &mdash; PyDM v1.19.1+21.g3639ebee documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                v1.19.1+12.g4f9fc2e6
+                v1.19.1+21.g3639ebee
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -974,6 +974,19 @@ new enum values to be broadcasted</p>
 <dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.focusWidget">
 <span class="sig-name descname"><span class="pre">focusWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QWidget</span></span></span><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.focusWidget" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.followSymlinks">
+<span class="sig-name descname"><span class="pre">followSymlinks</span></span><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.followSymlinks" title="Permalink to this definition"></a></dt>
+<dd><p>If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it
+will always use the canonical path. If False (default), the file will be searched without canonicalizing the path beforehand.</p>
+<p>Note that it will not work on Windows if you’re using a Python version prior to 3.8.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.font">

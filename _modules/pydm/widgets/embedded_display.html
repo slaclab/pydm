@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.embedded_display &mdash; PyDM v1.19.1+12.g4f9fc2e6 documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM v1.19.1+21.g3639ebee documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                v1.19.1+12.g4f9fc2e6
+                v1.19.1+21.g3639ebee
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -153,6 +153,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_load_error</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_context_menu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">open_in_new_window_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Open in New Window&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
@@ -328,7 +329,10 @@
             <span class="n">parent_display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_parent_display</span><span class="p">()</span>
             <span class="n">base_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
-                <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">())</span>
+                <span class="n">parent_file_path</span> <span class="o">=</span> <span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span><span class="p">:</span>
+                    <span class="n">parent_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">parent_file_path</span><span class="p">)</span>
+                <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_file_path</span><span class="p">)</span>
 
             <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">,</span> <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">(),</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -457,6 +461,34 @@
 <span class="sd">        disconnect_when_hidden : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_when_hidden</span> <span class="o">=</span> <span class="n">disconnect_when_hidden</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">followSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it</span>
+<span class="sd">        will always use the canonical path. If False (default), the file will be searched without canonicalizing the path beforehand.</span>
+
+<span class="sd">        Note that it will not work on Windows if you&#39;re using a Python version prior to 3.8.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span>
+
+    <span class="nd">@followSymlinks</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">followSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_symlinks</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it</span>
+<span class="sd">        will always use the canonical path. If False (default), the file will be searched using the non-canonical path.</span>
+
+<span class="sd">        Note that it will not work on Windows if you&#39;re using a Python version prior to 3.8.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        follow_symlinks : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span> <span class="o">=</span> <span class="n">follow_symlinks</span>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.showEvent"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showEvent">[docs]</a>    <span class="k">def</span> <span class="nf">showEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

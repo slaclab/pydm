@@ -17,7 +17,14 @@ environment for PyDM::
   
   $ conda create -n pydm-environment python=3.8 pyqt=5 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
   $ source activate pydm-environment
-  
+
+.. warning::
+    There is currently no PyQt 5.15+ build available on conda or PyPI that has
+    designer support for python plugins.
+
+    In order to use PyDM widgets in designer, please make sure to pin the PyQt version to 5.12.3 or lower
+    until this is resolved.
+
 Once you've installed and activated the environment, you should be able to run 'pydm' to launch PyDM, or run 'designer' to launch Qt Designer.  If you are on Windows, run these commands from the Anaconda Prompt.
 
 On MacOS, launching Qt Designer is a little more annoying:
