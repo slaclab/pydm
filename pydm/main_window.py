@@ -20,6 +20,8 @@ import subprocess
 import platform
 import logging
 
+from .utilities.stylesheet import apply_stylesheet, _get_style_data
+
 logger = logging.getLogger(__name__)
 
 
@@ -33,6 +35,10 @@ class PyDMMainWindow(QMainWindow):
         self.iconFont = IconFont()
         self._display_widget = None
         self._showing_file_path_in_title_bar = False
+
+        # style sheet change flag
+        self.isSS_Changed = False
+        self.ss_path = None
 
         self._saved_menu_geometry = None
         self._saved_menu_height = None
@@ -63,6 +69,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionForward.setIcon(self.iconFont.icon("angle-right"))
         self.ui.actionEdit_in_Designer.triggered.connect(self.edit_in_designer)
         self.ui.actionOpen_File.triggered.connect(self.open_file_action)
+        self.ui.actionChange_Stylesheet.triggered.connect(self.change_stylesheet_action)
         self.ui.actionReload_Display.triggered.connect(self.reload_display)
         self.ui.actionIncrease_Font_Size.triggered.connect(self.increase_font_size)
         self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
@@ -341,6 +348,24 @@ class PyDMMainWindow(QMainWindow):
 
             except (IOError, OSError, ValueError, ImportError) as e:
                 self.handle_open_file_error(filename, e)
+
+    @Slot(bool)
+    def change_stylesheet_action(self, checked):
+        try:
+            curr_file = self.current_file()
+            folder = os.path.dirname(curr_file)
+        except Exception:
+            folder = os.getcwd()
+
+        ss_filename = QFileDialog.getOpenFileName(self, 'Change Stylesheet...',
+                folder, 'PyDM Stylesheets (*.qss *.css)')
+        
+        if ss_filename:
+            ss_filename = str(ss_filename)
+            self.ss_path = ss_filename.split("'")
+            style= open(self.ss_path[1],"r")
+            style= style.read()
+            self.setStyleSheet(style)
 
     def open(self, filename, macros=None, args=None, target=None):
         if not os.path.isabs(filename):
