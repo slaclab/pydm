@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/slaclab/pydm/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/slaclab/pydm/actions/workflows/run-tests.yml)
+[![Build Status](https://github.com/slaclab/pydm/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/slaclab/pydm/actions/workflows/run-tests.yml)
 
 <p align="center">
   <h1 align="center">PyDM: Python Display Manager</h1>
