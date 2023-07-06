@@ -644,9 +644,8 @@ def test_focus_out_event(qtbot, qapp, display_value):
     pydm_lineedit.check_enable_state()
 
     pydm_lineedit._display = display_value
-    pydm_lineedit.setFocus()
-    qapp.processEvents()
     def wait_focus():
+        pydm_lineedit.setFocus()
         qapp.processEvents()
         return pydm_lineedit.hasFocus()
 
