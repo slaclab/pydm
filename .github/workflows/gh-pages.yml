@@ -1,0 +1,37 @@
+# This workflow will publish a new version of the documentation to the gh-pages branch
+
+name: Publish Documentation
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+    if: ${{ github.repository == 'slaclab/pydm' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: 3.9
+          mamba-version: "*"
+          channels: conda-forge
+          activate-environment: pydm-docs
+
+      - name: Install python packages
+        shell: bash -el {0}
+        run: |
+          mamba install pydm $(cat docs-requirements.txt)
+      - name: Build Docs
+        shell: bash -l {0}
+        run: |
+          pushd docs
+          make html
+          popd
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build/html
