@@ -535,8 +535,9 @@ def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format
     pydm_lineedit.check_enable_state()
 
     if has_focus:
-        pydm_lineedit.setFocus()
         def wait_focus():
+            pydm_lineedit.setFocus()
+            qapp.processEvents()
             return pydm_lineedit.hasFocus()
 
         qtbot.waitUntil(wait_focus, timeout=5000)
@@ -590,6 +591,8 @@ def test_focus_in_event(qtbot, qapp, displayed_value, focus_reason, expected_foc
 
     def wait_focus(focus_state):
         """ Verify the current focus state of the line edit """
+        if focus_state:
+            pydm_lineedit.setFocus(Qt.OtherFocusReason)
         qapp.processEvents()
         return pydm_lineedit.hasFocus() == focus_state
 
