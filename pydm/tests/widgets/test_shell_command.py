@@ -228,16 +228,13 @@ def test_env_var(qtbot):
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
 
-    cmd = "echo Test: $PATH"
+    os.environ["PYDM_TEST_ENV_VAR"] = "this is a pydm test"
+    cmd = "echo Test: $PYDM_TEST_ENV_VAR"
     if platform.system() == 'Windows':
-        cmd = "echo Test: %PATH%"
+        cmd = "echo Test: %PYDM_TEST_ENV_VAR%"
 
     pydm_shell_command.commands = [cmd]
     qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
     stdout, stderr = pydm_shell_command.process.communicate()
     assert pydm_shell_command.process.returncode == 0
-    if platform.system() == 'Windows':
-        # Windows changes C:\\ to C:\\\\
-        assert os.getenv("PATH") in str(stdout).replace('\\\\', '\\')
-    else:
-        assert "Test: {}".format(os.getenv("PATH")) in str(stdout)
+    assert stdout.decode('utf-8') == "Test: this is a pydm test\n"

@@ -1,5 +1,4 @@
-[![Build Status](https://dev.azure.com/pydm/pydm/_apis/build/status/slaclab.pydm?branchName=master)](https://dev.azure.com/pydm/pydm/_build/latest?definitionId=1&branchName=master)
-[![codecov](https://codecov.io/gh/slaclab/pydm/branch/master/graph/badge.svg)](https://codecov.io/gh/slaclab/pydm)
+[![Build Status](https://github.com/slaclab/pydm/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/slaclab/pydm/actions/workflows/run-tests.yml)
 
 <p align="center">
   <h1 align="center">PyDM: Python Display Manager</h1>
@@ -31,7 +30,7 @@ as the abstraction layer for the Qt Python wrappers (PyQt5/PyQt4/PySide2/PySide)
 **All tests are performed with PyQt5**.
 
 # Prerequisites
-* Python 3.6+
+* Python 3.7+
 * Qt 5.6 or higher
 * qtpy
 * PyQt5 >= 5.7 or any other Qt Python wrapper.

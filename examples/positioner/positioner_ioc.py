@@ -65,6 +65,6 @@ if __name__ == '__main__':
 	server = SimpleServer()
 	server.createPV(prefix, pvdb)
 	driver = myDriver()
-	print "Server is running... (ctrl+c to close)"
+	print("Server is running... (ctrl+c to close)")
 	while True:
 		server.process(0.1)
