@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.base &mdash; PyDM 0+untagged.1.gc0d70ed documentation</title>
+  <title>pydm.widgets.base &mdash; PyDM 0+untagged.1.g30ce4be documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                0+untagged.1.gc0d70ed
+                0+untagged.1.g30ce4be
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -58,6 +58,7 @@
 <p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../help_files.html">Adding Help Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../widgets/widget_rules/index.html">Widget Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../add_data_plugins.html">Including Data Plugins</a></li>
@@ -803,6 +804,14 @@
 
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;channels&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels_for_tools</span><span class="p">(),</span> <span class="s1">&#39;sender&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">}</span>
         <span class="n">tools</span><span class="o">.</span><span class="n">assemble_tools_menu</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">widget_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Add a view help action if the parent display has an associated help file</span>
+        <span class="n">parent_display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_parent_display</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">parent_display</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">parent_display</span><span class="o">.</span><span class="n">help_window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">actions</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+            <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s1">&#39;View Help for this Display&#39;</span><span class="p">,</span> <span class="n">parent_display</span><span class="o">.</span><span class="n">show_help</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">menu</span></div>
 
 <div class="viewcode-block" id="PyDMWidget.open_context_menu"><a class="viewcode-back" href="../../../widgets/PyDMWidget.html#pydm.widgets.base.PyDMWidget.open_context_menu">[docs]</a>    <span class="k">def</span> <span class="nf">open_context_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">):</span>
