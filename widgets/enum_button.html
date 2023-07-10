@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMEnumButton &mdash; PyDM v1.19.1+21.g3639ebee documentation</title>
+  <title>PyDMEnumButton &mdash; PyDM 0+untagged.1.g9ad9cd8 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                v1.19.1+21.g3639ebee
+                0+untagged.1.g9ad9cd8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -162,90 +162,6 @@ For now, two types of buttons can be rendered:
 <dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PaintDeviceMetric</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id1"><span class="problematic" id="id2">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.PaintDeviceMetric.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id3"><span class="problematic" id="id4">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py attribute">
@@ -266,90 +182,6 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.RenderFlag">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlag</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.RenderFlag" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id5"><span class="problematic" id="id6">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.RenderFlag.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id7"><span class="problematic" id="id8">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -399,7 +231,7 @@ is raised.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.addActions">
-<span class="sig-name descname"><span class="pre">addActions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.addActions" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">addActions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self,</span> <span class="pre">Iterable[QAction]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.addActions" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -596,7 +428,7 @@ with the reason why it is disabled.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.children">
-<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.children" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QObject</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.children" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -761,7 +593,12 @@ values.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.destroyed">
 <span class="sig-name descname"><span class="pre">destroyed</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.destroyed" title="Permalink to this definition"></a></dt>
-<dd><p>destroyed(self, QObject = None) [signal]</p>
+<dd><p>QObject = None) [signal]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>destroyed(self, object</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -826,7 +663,7 @@ values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.dynamicPropertyNames">
-<span class="sig-name descname"><span class="pre">dynamicPropertyNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.dynamicPropertyNames" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">dynamicPropertyNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QByteArray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.dynamicPropertyNames" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1780,9 +1617,9 @@ list of fake strings so we can see something at Designer.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlags" title="PyQt5.QtWidgets.QWidget.RenderFlags"><span class="pre">QWidget.RenderFlags</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlags" title="PyQt5.QtWidgets.QWidget.RenderFlags"><span class="pre">QWidget.RenderFlags</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="waveformtable.html#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">

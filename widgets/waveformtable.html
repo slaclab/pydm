@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMWaveformTable &mdash; PyDM v1.19.1+21.g3639ebee documentation</title>
+  <title>PyDMWaveformTable &mdash; PyDM 0+untagged.1.g9ad9cd8 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                v1.19.1+21.g3639ebee
+                0+untagged.1.g9ad9cd8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -159,360 +159,24 @@ It is possible to define the labels of each row and column.</p>
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CursorAction</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id1"><span class="problematic" id="id2">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.CursorAction.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id3"><span class="problematic" id="id4">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DragDropMode</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id5"><span class="problematic" id="id6">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DragDropMode.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id7"><span class="problematic" id="id8">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DropIndicatorPosition</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id9"><span class="problematic" id="id10">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.DropIndicatorPosition.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id11"><span class="problematic" id="id12">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EditTrigger</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id13"><span class="problematic" id="id14">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.EditTrigger.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id15"><span class="problematic" id="id16">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -529,90 +193,6 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PaintDeviceMetric</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id17"><span class="problematic" id="id18">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.PaintDeviceMetric.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id19"><span class="problematic" id="id20">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py attribute">
@@ -633,90 +213,6 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id21"><span class="problematic" id="id22">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id23"><span class="problematic" id="id24">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -733,810 +229,54 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ScrollHint</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id25"><span class="problematic" id="id26">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollHint.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id27"><span class="problematic" id="id28">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ScrollMode</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id29"><span class="problematic" id="id30">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.ScrollMode.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id31"><span class="problematic" id="id32">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SelectionBehavior</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id33"><span class="problematic" id="id34">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionBehavior.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id35"><span class="problematic" id="id36">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SelectionMode</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id37"><span class="problematic" id="id38">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SelectionMode.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id39"><span class="problematic" id="id40">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shadow">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Shadow</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shadow" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id41"><span class="problematic" id="id42">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shadow.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id43"><span class="problematic" id="id44">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shape">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Shape</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shape" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shape.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shape.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shape.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shape.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shape.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shape.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shape.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shape.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id45"><span class="problematic" id="id46">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shape.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shape.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shape.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shape.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shape.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shape.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.Shape.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.Shape.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id47"><span class="problematic" id="id48">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SizeAdjustPolicy</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id49"><span class="problematic" id="id50">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.SizeAdjustPolicy.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id51"><span class="problematic" id="id52">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.State">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">State</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.State" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.State.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.State.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.State.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.State.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.State.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.State.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.State.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.State.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id53"><span class="problematic" id="id54">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.State.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.State.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.State.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.State.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.State.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.State.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.State.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.State.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id55"><span class="problematic" id="id56">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StyleMask</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id57"><span class="problematic" id="id58">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.StyleMask.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id59"><span class="problematic" id="id60">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">
@@ -1582,7 +322,7 @@ is raised.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.addActions">
-<span class="sig-name descname"><span class="pre">addActions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.addActions" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">addActions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self,</span> <span class="pre">Iterable[QAction]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.addActions" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1823,7 +563,7 @@ editable when we have write access.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.children">
-<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.children" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QObject</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.children" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2120,7 +860,12 @@ values.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.destroyed">
 <span class="sig-name descname"><span class="pre">destroyed</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.destroyed" title="Permalink to this definition"></a></dt>
-<dd><p>destroyed(self, QObject = None) [signal]</p>
+<dd><p>QObject = None) [signal]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>destroyed(self, object</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2226,7 +971,7 @@ values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.dynamicPropertyNames">
-<span class="sig-name descname"><span class="pre">dynamicPropertyNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.dynamicPropertyNames" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">dynamicPropertyNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QByteArray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.dynamicPropertyNames" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2243,7 +988,7 @@ values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.editTriggers">
-<span class="sig-name descname"><span class="pre">editTriggers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QAbstractItemView.EditTriggers</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.editTriggers" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">editTriggers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pydm.widgets.waveformtable.PyDMWaveformTable.EditTriggers" title="PyQt5.QtWidgets.QAbstractItemView.EditTriggers"><span class="pre">QAbstractItemView.EditTriggers</span></a></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.editTriggers" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2782,6 +1527,11 @@ when using the widget with the Qt Designer</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.isModal">
 <span class="sig-name descname"><span class="pre">isModal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.isModal" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.isPersistentEditorOpen">
+<span class="sig-name descname"><span class="pre">isPersistentEditorOpen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QTableWidgetItem</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.isPersistentEditorOpen" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -3389,9 +2139,9 @@ callable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.render" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintDevice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlags" title="PyQt5.QtWidgets.QWidget.RenderFlags"><span class="pre">QWidget.RenderFlags</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.render" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget.RenderFlags</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetOffset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPoint</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QPoint()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceRegion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegion</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QRegion()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlags" title="PyQt5.QtWidgets.QWidget.RenderFlags"><span class="pre">QWidget.RenderFlags</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#pydm.widgets.waveformtable.PyDMWaveformTable.RenderFlag" title="PyQt5.QtWidgets.QWidget.RenderFlag"><span class="pre">QWidget.RenderFlag</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QWidget.RenderFlags(QWidget.DrawWindowBackground</span> <span class="pre">|</span> <span class="pre">QWidget.DrawChildren)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -3573,7 +2323,7 @@ new value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.scrollBarWidgets">
-<span class="sig-name descname"><span class="pre">scrollBarWidgets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self,</span> <span class="pre">Union[Qt.Alignment,</span> <span class="pre">Qt.AlignmentFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.scrollBarWidgets" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">scrollBarWidgets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self,</span> <span class="pre">Union[Qt.Alignment,</span> <span class="pre">Qt.AlignmentFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.scrollBarWidgets" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -3623,17 +2373,17 @@ new value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.selectedIndexes">
-<span class="sig-name descname"><span class="pre">selectedIndexes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.selectedIndexes" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">selectedIndexes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QModelIndex</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.selectedIndexes" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.selectedItems">
-<span class="sig-name descname"><span class="pre">selectedItems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.selectedItems" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">selectedItems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QTableWidgetItem</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.selectedItems" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.selectedRanges">
-<span class="sig-name descname"><span class="pre">selectedRanges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.selectedRanges" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">selectedRanges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QTableWidgetSelectionRange</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.selectedRanges" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

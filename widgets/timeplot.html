@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMTimePlot &mdash; PyDM v1.19.1+21.g3639ebee documentation</title>
+  <title>PyDMTimePlot &mdash; PyDM 0+untagged.1.g9ad9cd8 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                v1.19.1+21.g3639ebee
+                0+untagged.1.g9ad9cd8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -178,270 +178,18 @@ to either a TimeAxisItem if plot_by_timestamps is true, or a regular AxisItem ot
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CacheModeFlag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id1"><span class="problematic" id="id2">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.CacheModeFlag.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id3"><span class="problematic" id="id4">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.DragMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DragMode</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.DragMode" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.DragMode.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.DragMode.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.DragMode.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.DragMode.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.DragMode.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.DragMode.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.DragMode.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.DragMode.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id5"><span class="problematic" id="id6">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.DragMode.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.DragMode.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.DragMode.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.DragMode.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.DragMode.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.DragMode.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.DragMode.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.DragMode.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id7"><span class="problematic" id="id8">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OptimizationFlag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id9"><span class="problematic" id="id10">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.OptimizationFlag.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id11"><span class="problematic" id="id12">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -458,180 +206,12 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PaintDeviceMetric</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id13"><span class="problematic" id="id14">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.PaintDeviceMetric.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id15"><span class="problematic" id="id16">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.RenderFlag">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenderFlag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.RenderFlag" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id17"><span class="problematic" id="id18">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.RenderFlag.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id19"><span class="problematic" id="id20">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -648,540 +228,36 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shadow">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Shadow</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shadow" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shadow.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shadow.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shadow.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shadow.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shadow.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shadow.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shadow.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shadow.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id21"><span class="problematic" id="id22">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shadow.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shadow.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shadow.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shadow.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shadow.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shadow.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shadow.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shadow.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id23"><span class="problematic" id="id24">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shape">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Shape</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shape" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shape.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shape.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shape.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shape.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shape.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shape.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shape.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shape.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id25"><span class="problematic" id="id26">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shape.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shape.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shape.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shape.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shape.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shape.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.Shape.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.Shape.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id27"><span class="problematic" id="id28">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SizeAdjustPolicy</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id29"><span class="problematic" id="id30">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.SizeAdjustPolicy.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id31"><span class="problematic" id="id32">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.StyleMask">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StyleMask</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.StyleMask" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.StyleMask.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.StyleMask.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.StyleMask.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.StyleMask.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.StyleMask.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.StyleMask.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.StyleMask.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.StyleMask.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id33"><span class="problematic" id="id34">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.StyleMask.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.StyleMask.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.StyleMask.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.StyleMask.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.StyleMask.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.StyleMask.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.StyleMask.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.StyleMask.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id35"><span class="problematic" id="id36">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ViewportAnchor</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id37"><span class="problematic" id="id38">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportAnchor.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id39"><span class="problematic" id="id40">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ViewportUpdateMode</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id41"><span class="problematic" id="id42">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.ViewportUpdateMode.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id43"><span class="problematic" id="id44">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">
@@ -1221,7 +297,7 @@ is raised.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.addActions">
-<span class="sig-name descname"><span class="pre">addActions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.addActions" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">addActions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self,</span> <span class="pre">Iterable[QAction]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.addActions" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1380,7 +456,7 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.cacheMode">
-<span class="sig-name descname"><span class="pre">cacheMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QGraphicsView.CacheMode</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.cacheMode" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">cacheMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.CacheMode" title="PyQt5.QtWidgets.QGraphicsView.CacheMode"><span class="pre">QGraphicsView.CacheMode</span></a></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.cacheMode" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1411,7 +487,7 @@ If true, the values in minYRange and maxYRange are ignored.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.children">
-<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.children" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QObject</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.children" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1574,7 +650,12 @@ settings</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.destroyed">
 <span class="sig-name descname"><span class="pre">destroyed</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.destroyed" title="Permalink to this definition"></a></dt>
-<dd><p>destroyed(self, QObject = None) [signal]</p>
+<dd><p>QObject = None) [signal]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>destroyed(self, object</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1659,7 +740,7 @@ settings</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.dynamicPropertyNames">
-<span class="sig-name descname"><span class="pre">dynamicPropertyNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.dynamicPropertyNames" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">dynamicPropertyNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QByteArray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.dynamicPropertyNames" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2654,7 +1735,7 @@ where 0 means transparent.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.optimizationFlags">
-<span class="sig-name descname"><span class="pre">optimizationFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QGraphicsView.OptimizationFlags</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.optimizationFlags" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">optimizationFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.OptimizationFlags" title="PyQt5.QtWidgets.QGraphicsView.OptimizationFlags"><span class="pre">QGraphicsView.OptimizationFlags</span></a></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.optimizationFlags" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -3003,7 +2084,7 @@ new value.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.scrollBarWidgets">
-<span class="sig-name descname"><span class="pre">scrollBarWidgets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self,</span> <span class="pre">Union[Qt.Alignment,</span> <span class="pre">Qt.AlignmentFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.scrollBarWidgets" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">scrollBarWidgets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self,</span> <span class="pre">Union[Qt.Alignment,</span> <span class="pre">Qt.AlignmentFlag]</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.scrollBarWidgets" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -4288,270 +3369,18 @@ like ‘symbol’ and ‘symbolSize’.</p></li>
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.CacheMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CacheMode</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.CacheMode" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id45"><span class="problematic" id="id46">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.CacheMode.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id47"><span class="problematic" id="id48">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsItemChange</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id49"><span class="problematic" id="id50">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemChange.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id51"><span class="problematic" id="id52">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsItemFlag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id53"><span class="problematic" id="id54">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.GraphicsItemFlag.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id55"><span class="problematic" id="id56">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -4568,90 +3397,6 @@ is raised.</p>
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.PanelModality">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PanelModality</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.PanelModality" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.bit_length">
-<span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.bit_length" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits necessary to represent self in binary.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bin</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span>
-<span class="go">&#39;0b100101&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">37</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">()</span>
-<span class="go">6</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.conjugate">
-<span class="sig-name descname"><span class="pre">conjugate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.conjugate" title="Permalink to this definition"></a></dt>
-<dd><p>Returns self, the complex conjugate of any int.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.denominator">
-<span class="sig-name descname"><span class="pre">denominator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.denominator" title="Permalink to this definition"></a></dt>
-<dd><p>the denominator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.from_bytes">
-<span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.from_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return the integer represented by the given array of bytes.</p>
-<dl class="simple">
-<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
-support the buffer protocol or be an iterable object producing bytes.
-Bytes and bytearray are examples of built-in objects that support the
-buffer protocol.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id57"><span class="problematic" id="id58">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.imag" title="Permalink to this definition"></a></dt>
-<dd><p>the imaginary part of a complex number</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.numerator">
-<span class="sig-name descname"><span class="pre">numerator</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.numerator" title="Permalink to this definition"></a></dt>
-<dd><p>the numerator of a rational number in lowest terms</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.real">
-<span class="sig-name descname"><span class="pre">real</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.real" title="Permalink to this definition"></a></dt>
-<dd><p>the real part of a complex number</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.PanelModality.to_bytes" title="Permalink to this definition"></a></dt>
-<dd><p>Return an array of bytes representing an integer.</p>
-<dl class="simple">
-<dt>length</dt><dd><p>Length of bytes object to use.  An OverflowError is raised if the
-integer is not representable with the given number of bytes.</p>
-</dd>
-<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
-the most significant byte is at the beginning of the byte array.  If
-byteorder is ‘little’, the most significant byte is at the end of the
-byte array.  To request the native byte order of the host system, use
-<a href="#id59"><span class="problematic" id="id60">`</span></a>sys.byteorder’ as the byte order value.</p>
-</dd>
-<dt>signed</dt><dd><p>Determines whether two’s complement is used to represent the integer.
-If signed is False and a negative integer is given, an OverflowError
-is raised.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">
@@ -4730,7 +3475,7 @@ the accumulated point counter.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.children">
-<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.children" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QObject</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.children" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -4766,7 +3511,7 @@ the accumulated point counter.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.collidingItems">
-<span class="sig-name descname"><span class="pre">collidingItems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Qt.ItemSelectionMode</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.IntersectsItemShape</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.collidingItems" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">collidingItems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Qt.ItemSelectionMode</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.IntersectsItemShape</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QGraphicsItem</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.collidingItems" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -4819,6 +3564,12 @@ a name exists for the color.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.curveClickable">
+<span class="sig-name descname"><span class="pre">curveClickable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.curveClickable" title="Permalink to this definition"></a></dt>
+<dd><p>Returns <cite>True</cite> if the curve is set to be clickable.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.customEvent">
 <span class="sig-name descname"><span class="pre">customEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QEvent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.customEvent" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -4832,7 +3583,7 @@ a name exists for the color.</p>
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.dataBounds">
 <span class="sig-name descname"><span class="pre">dataBounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orthoRange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.dataBounds" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the range occupied by the data (along a specific axis) in this item.
-This method is called by ViewBox when auto-scaling.</p>
+This method is called by <code class="xref py py-class docutils literal notranslate"><span class="pre">ViewBox</span></code> when auto-scaling.</p>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><strong>Arguments:</strong></p></td>
@@ -4844,7 +3595,7 @@ This method is called by ViewBox when auto-scaling.</p>
 <tr class="row-odd"><td><p>frac</p></td>
 <td><p>(float 0.0-1.0) Specifies what fraction of the total data
 range to return. By default, the entire range is returned.
-This allows the ViewBox to ignore large spikes in the data
+This allows the <code class="xref py py-class docutils literal notranslate"><span class="pre">ViewBox</span></code> to ignore large spikes in the data
 when auto-scaling.</p></td>
 </tr>
 <tr class="row-even"><td><p>orthoRange</p></td>
@@ -4861,8 +3612,8 @@ and max)</p></td>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.dataRect">
 <span class="sig-name descname"><span class="pre">dataRect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.dataRect" title="Permalink to this definition"></a></dt>
-<dd><p>Returns a bounding rectangle (as QRectF) for the full set of data.
-Will return None if there is no data or if all values (x or y) are NaN.</p>
+<dd><p>Returns a bounding rectangle (as <code class="xref py py-class docutils literal notranslate"><span class="pre">QtGui.QRectF</span></code>) for the full set of data.
+Will return <cite>None</cite> if there is no data or if all values (x or y) are NaN.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -4873,7 +3624,12 @@ Will return None if there is no data or if all values (x or y) are NaN.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.destroyed">
 <span class="sig-name descname"><span class="pre">destroyed</span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.destroyed" title="Permalink to this definition"></a></dt>
-<dd><p>destroyed(self, QObject = None) [signal]</p>
+<dd><p>QObject = None) [signal]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>destroyed(self, object</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -4925,7 +3681,7 @@ Extends deviceTransform to automatically determine the viewportTransform.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.dynamicPropertyNames">
-<span class="sig-name descname"><span class="pre">dynamicPropertyNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.dynamicPropertyNames" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">dynamicPropertyNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QByteArray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.dynamicPropertyNames" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -4985,7 +3741,7 @@ Extends deviceTransform to automatically determine the viewportTransform.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.flags">
-<span class="sig-name descname"><span class="pre">flags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QGraphicsItem.GraphicsItemFlags</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.flags" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">flags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.GraphicsItemFlags" title="PyQt5.QtWidgets.QGraphicsItem.GraphicsItemFlags"><span class="pre">QGraphicsItem.GraphicsItemFlags</span></a></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.flags" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -5012,6 +3768,20 @@ Extends deviceTransform to automatically determine the viewportTransform.</p>
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.getBoundingParents">
 <span class="sig-name descname"><span class="pre">getBoundingParents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.getBoundingParents" title="Permalink to this definition"></a></dt>
 <dd><p>Return a list of parents to this item that have child clipping enabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.getData">
+<span class="sig-name descname"><span class="pre">getData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.getData" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the displayed data as the tuple (<cite>xData</cite>, <cite>yData</cite>) after mapping and data reduction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.getDisplayDataset">
+<span class="sig-name descname"><span class="pre">getDisplayDataset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.getDisplayDataset" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">PlotDataset</span></code> object that contains data suitable for display
+(after mapping and data reduction) as <code class="docutils literal notranslate"><span class="pre">dataset.x</span></code> and <code class="docutils literal notranslate"><span class="pre">dataset.y</span></code>.
+Intended for internal use.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -5521,6 +4291,12 @@ scale the y-axis for a selected curve.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the name that represents this item in the legend.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.objectName">
 <span class="sig-name descname"><span class="pre">objectName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.objectName" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -5602,8 +4378,8 @@ If ortho=True, then return the length of one pixel orthogonal to the direction i
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.pixelPadding">
 <span class="sig-name descname"><span class="pre">pixelPadding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.pixelPadding" title="Permalink to this definition"></a></dt>
-<dd><p>Return the size in pixels that this item may draw beyond the values returned by dataBounds().
-This method is called by ViewBox when auto-scaling.</p>
+<dd><p>Returns the size in pixels that this item may draw beyond the values returned by dataBounds().
+This method is called by <code class="xref py py-class docutils literal notranslate"><span class="pre">ViewBox</span></code> when auto-scaling.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -5807,14 +4583,33 @@ is a bar graph. Omitting color parameters will result in the plot displaying a u
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setBrush">
+<span class="sig-name descname"><span class="pre">setBrush</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setBrush" title="Permalink to this definition"></a></dt>
+<dd><p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">setFillBrush()</span> <span class="pre">&lt;pyqtgraph.PlotdataItem.setFillBrush()</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setCacheMode">
 <span class="sig-name descname"><span class="pre">setCacheMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QGraphicsItem.CacheMode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logicalCacheSize:</span> <span class="pre">QSize</span> <span class="pre">=</span> <span class="pre">QSize()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setCacheMode" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setClipToView">
+<span class="sig-name descname"><span class="pre">setClipToView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setClipToView" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">state=True</span></code> enables clipping the displayed data set to the
+visible x-axis range.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setCursor">
 <span class="sig-name descname"><span class="pre">setCursor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self,</span> <span class="pre">Union[QCursor,</span> <span class="pre">Qt.CursorShape]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setCursor" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setCurveClickable">
+<span class="sig-name descname"><span class="pre">setCurveClickable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setCurveClickable" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">state=True</span></code> sets the curve to be clickable, with a tolerance margin represented by <cite>width</cite>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setData">
@@ -5824,9 +4619,17 @@ See <code class="xref py py-func docutils literal notranslate"><span class="pre"
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setDerivativeMode">
+<span class="sig-name descname"><span class="pre">setDerivativeMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setDerivativeMode" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">state</span> <span class="pre">=</span> <span class="pre">True</span></code> enables derivative mode, where a mapping according to
+<code class="docutils literal notranslate"><span class="pre">y_mapped</span> <span class="pre">=</span> <span class="pre">dy</span> <span class="pre">/</span> <span class="pre">dx</span></code> is applied, with <cite>dx</cite> and <cite>dy</cite> representing the
+differences between adjacent <cite>x</cite> and <cite>y</cite> values.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setDownsampling">
 <span class="sig-name descname"><span class="pre">setDownsampling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setDownsampling" title="Permalink to this definition"></a></dt>
-<dd><p>Set the downsampling mode of this item. Downsampling reduces the number
+<dd><p>Sets the downsampling mode of this item. Downsampling reduces the number
 of samples drawn to increase performance.</p>
 <table class="docutils align-default">
 <tbody>
@@ -5854,19 +4657,26 @@ visual representation of the data but is slower.</p></td>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setDynamicRangeLimit">
-<span class="sig-name descname"><span class="pre">setDynamicRangeLimit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setDynamicRangeLimit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">setDynamicRangeLimit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hysteresis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setDynamicRangeLimit" title="Permalink to this definition"></a></dt>
 <dd><p>Limit the off-screen positions of data points at large magnification
-This avoids errors with plots not displaying because their visibility is incorrectly determined. The default setting repositions far-off points to be within +-1E+06 times the viewport height.</p>
+This avoids errors with plots not displaying because their visibility is incorrectly determined.
+The default setting repositions far-off points to be within ±10^6 times the viewport height.</p>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><strong>Arguments:</strong></p></td>
 <td></td>
 </tr>
 <tr class="row-even"><td><p>limit</p></td>
-<td><p>(float or None) Maximum allowed vertical distance of plotted
-points in units of viewport height.
+<td><p>(float or None) Any data outside the range of limit * hysteresis
+will be constrained to the limit value limit.
+All values are relative to the viewport height.
 ‘None’ disables the check for a minimal increase in performance.
 Default is 1E+06.</p></td>
+</tr>
+<tr class="row-odd"><td><p>hysteresis</p></td>
+<td><p>(float) Hysteresis factor that controls how much change
+in zoom level (vertical height) is allowed before recalculating
+Default is 3.0</p></td>
 </tr>
 </tbody>
 </table>
@@ -5883,6 +4693,28 @@ Default is 1E+06.</p></td>
 <dd><p>This method is called by exporters to inform items that they are being drawn for export
 with a specific set of options. Items access these via self._exportOptions.
 When exporting is complete, _exportOptions is set to False.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setFftMode">
+<span class="sig-name descname"><span class="pre">setFftMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setFftMode" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">state</span> <span class="pre">=</span> <span class="pre">True</span></code> enables mapping the data by a fast Fourier transform.
+If the <cite>x</cite> values are not equidistant, the data set is resampled at
+equal intervals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setFillBrush">
+<span class="sig-name descname"><span class="pre">setFillBrush</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setFillBrush" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the <code class="xref py py-class docutils literal notranslate"><span class="pre">QtGui.QBrush</span></code> used to fill the area under the curve.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">mkBrush()</span></code>) for arguments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setFillLevel">
+<span class="sig-name descname"><span class="pre">setFillLevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setFillLevel" title="Permalink to this definition"></a></dt>
+<dd><p>Enables filling the area under the curve towards the value specified by
+<cite>level</cite>. <cite>None</cite> disables the filling.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -5926,6 +4758,15 @@ When exporting is complete, _exportOptions is set to False.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setLogMode">
+<span class="sig-name descname"><span class="pre">setLogMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xState</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setLogMode" title="Permalink to this definition"></a></dt>
+<dd><p>When log mode is enabled for the respective axis by setting <code class="docutils literal notranslate"><span class="pre">xState</span></code> or
+<code class="docutils literal notranslate"><span class="pre">yState</span></code> to <cite>True</cite>, a mapping according to <code class="docutils literal notranslate"><span class="pre">mapped</span> <span class="pre">=</span> <span class="pre">np.log10(</span> <span class="pre">value</span> <span class="pre">)</span></code>
+is applied to the data. For negative or zero values, this results in a
+<cite>NaN</cite> value.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setObjectName">
 <span class="sig-name descname"><span class="pre">setObjectName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setObjectName" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -5953,10 +4794,18 @@ When exporting is complete, _exportOptions is set to False.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setPen">
 <span class="sig-name descname"><span class="pre">setPen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setPen" title="Permalink to this definition"></a></dt>
-<dd><div class="line-block">
-<div class="line">Sets the pen used to draw lines between points.</div>
-<div class="line"><em>pen</em> can be a QPen or any argument accepted by <code class="xref py py-func docutils literal notranslate"><span class="pre">pyqtgraph.mkPen()</span></code></div>
-</div>
+<dd><p>Sets the pen used to draw lines between points.
+The argument can be a <code class="xref py py-class docutils literal notranslate"><span class="pre">QtGui.QPen</span></code> or any combination of arguments accepted by
+<code class="xref py py-func docutils literal notranslate"><span class="pre">pyqtgraph.mkPen()</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setPhasemapMode">
+<span class="sig-name descname"><span class="pre">setPhasemapMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setPhasemapMode" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">state</span> <span class="pre">=</span> <span class="pre">True</span></code> enables phase map mode, where a mapping
+according to <code class="docutils literal notranslate"><span class="pre">x_mappped</span> <span class="pre">=</span> <span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">y_mapped</span> <span class="pre">=</span> <span class="pre">dy</span> <span class="pre">/</span> <span class="pre">dx</span></code>
+is applied, plotting the numerical derivative of the data over the
+original <cite>y</cite> values.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -5989,13 +4838,49 @@ When exporting is complete, _exportOptions is set to False.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setShadowPen">
 <span class="sig-name descname"><span class="pre">setShadowPen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setShadowPen" title="Permalink to this definition"></a></dt>
-<dd><div class="line-block">
-<div class="line">Sets the shadow pen used to draw lines between points (this is for enhancing contrast or
-emphacizing data).</div>
-<div class="line">This line is drawn behind the primary pen (see <code class="xref py py-func docutils literal notranslate"><span class="pre">setPen()</span></code>)
-and should generally be assigned greater width than the primary pen.</div>
-<div class="line"><em>pen</em> can be a QPen or any argument accepted by <code class="xref py py-func docutils literal notranslate"><span class="pre">pyqtgraph.mkPen()</span></code></div>
-</div>
+<dd><p>Sets the shadow pen used to draw lines between points (this is for enhancing contrast or
+emphasizing data). This line is drawn behind the primary pen and should generally be assigned
+greater width than the primary pen.
+The argument can be a <code class="xref py py-class docutils literal notranslate"><span class="pre">QtGui.QPen</span></code> or any combination of arguments accepted by
+<code class="xref py py-func docutils literal notranslate"><span class="pre">pyqtgraph.mkPen()</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setSkipFiniteCheck">
+<span class="sig-name descname"><span class="pre">setSkipFiniteCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skipFiniteCheck</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setSkipFiniteCheck" title="Permalink to this definition"></a></dt>
+<dd><p>When it is known that the plot data passed to <code class="docutils literal notranslate"><span class="pre">PlotDataItem</span></code> contains only finite numerical values,
+the <code class="docutils literal notranslate"><span class="pre">skipFiniteCheck</span></code> property can help speed up plotting. If this flag is set and the data contains
+any non-finite values (such as <cite>NaN</cite> or <cite>Inf</cite>), unpredictable behavior will occur. The data might not
+be plotted, or there migth be significant performance impact.</p>
+<p>In the default ‘auto’ connect mode, <code class="docutils literal notranslate"><span class="pre">PlotDataItem</span></code> will apply this setting automatically.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setSymbol">
+<span class="sig-name descname"><span class="pre">setSymbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setSymbol" title="Permalink to this definition"></a></dt>
+<dd><p><cite>symbol</cite> can be any string recognized by
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ScatterPlotItem</span></code> or a list that
+specifies a symbol for each point.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setSymbolBrush">
+<span class="sig-name descname"><span class="pre">setSymbolBrush</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setSymbolBrush" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the <code class="xref py py-class docutils literal notranslate"><span class="pre">QtGui.QBrush</span></code> used to fill symbols.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">mkBrush()</span></code>) for arguments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setSymbolPen">
+<span class="sig-name descname"><span class="pre">setSymbolPen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setSymbolPen" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the <code class="xref py py-class docutils literal notranslate"><span class="pre">QtGui.QPen</span></code> used to draw symbol outlines.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">mkPen()</span></code>) for arguments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setSymbolSize">
+<span class="sig-name descname"><span class="pre">setSymbolSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setSymbolSize" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the symbol size.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -6184,7 +5069,7 @@ If relativeItem is given, then the angle is determined relative to that item.</p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.transformations">
-<span class="sig-name descname"><span class="pre">transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.transformations" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QGraphicsTransform</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.transformations" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -6245,7 +5130,7 @@ useful for auto-scaling to a specific curve.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.viewRangeChanged">
-<span class="sig-name descname"><span class="pre">viewRangeChanged</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.viewRangeChanged" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">viewRangeChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.viewRangeChanged" title="Permalink to this definition"></a></dt>
 <dd><p>Called whenever the view coordinates of the ViewBox containing this item have changed.</p>
 </dd></dl>
 
