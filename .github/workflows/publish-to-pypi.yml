@@ -1,5 +1,5 @@
 # This workflow will run when a new release is published and upload it to PyPI using trusted publishing.
-# Done in two separate build and publish jobs per suggested best practice for limiting token usage.
+# Done in two separate build and publish jobs per suggested best practice for limiting scope of token usage.
 
 name: Publish - PyPI
 
@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    if: ${{ github.repository == 'slaclab/pydm' }}
     name: Build new release
     runs-on: ubuntu-latest
 
@@ -37,6 +38,7 @@ jobs:
         retention-days: 1
 
   publish:
+    if: ${{ github.repository == 'slaclab/pydm' }}
     name: Publish release to PyPI
     runs-on: ubuntu-latest
     permissions:
