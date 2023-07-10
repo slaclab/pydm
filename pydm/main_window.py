@@ -80,6 +80,7 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionShow_Menu_Bar.triggered.connect(self.toggle_menu_bar)
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
         self.ui.actionShow_Connections.triggered.connect(self.show_connections)
+        self.ui.actionShow_Help.triggered.connect(self.show_help)
         self.ui.actionAbout_PyDM.triggered.connect(self.show_about_window)
         self.ui.actionLoadTool.triggered.connect(self.load_tool)
         self.ui.actionLoadTool.setIcon(self.iconFont.icon("rocket"))
@@ -486,6 +487,11 @@ class PyDMMainWindow(QMainWindow):
         c = ConnectionInspector(self)
         c.show()
 
+    def show_help(self):
+        """ Show the associated help file for this window """
+        if self.display_widget() is not None:
+            self.display_widget().show_help()
+
     @Slot(bool)
     def show_about_window(self, checked):
         a = AboutWindow(self)
@@ -530,6 +536,11 @@ class PyDMMainWindow(QMainWindow):
         # create the custom menu with user given items
         if not isinstance(self.display_widget(), Display):
             return
+
+        # Only provide the view help menu option if an associated help file has been loaded
+        if self.display_widget().help_window is None:
+            self.ui.actionShow_Help.setVisible(False)
+
         items = self.display_widget().menu_items()
         if len(items) == 0:
             self.ui.menuCustomActions.menuAction().setVisible(False)

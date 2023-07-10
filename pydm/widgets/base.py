@@ -690,6 +690,14 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         kwargs = {'channels': self.channels_for_tools(), 'sender': self}
         tools.assemble_tools_menu(menu, widget_only=True, widget=self, **kwargs)
+
+        # Add a view help action if the parent display has an associated help file
+        parent_display = self.find_parent_display()
+        if parent_display is not None and parent_display.help_window is not None:
+            if len(menu.actions()) > 0:
+                menu.addSeparator()
+            menu.addAction('View Help for this Display', parent_display.show_help)
+
         return menu
 
     def open_context_menu(self, ev):

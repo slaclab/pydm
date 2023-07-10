@@ -62,6 +62,7 @@
     <addaction name="actionShow_Menu_Bar"/>
     <addaction name="actionShow_Status_Bar"/>
     <addaction name="actionShow_Connections"/>
+    <addaction name="actionShow_Help"/>
    </widget>
    <widget class="QMenu" name="menuHistory">
     <property name="title">

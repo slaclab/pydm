@@ -1,7 +1,7 @@
 import os
 import pytest
 from pydm import Display
-from pydm.display import load_py_file, _compile_ui_file, _load_compiled_ui_into_display
+from pydm.display import load_file, load_py_file, _compile_ui_file, _load_compiled_ui_into_display, ScreenTarget
 from qtpy.QtWidgets import QLabel
 
 # The path to the .ui file used in these tests
@@ -155,3 +155,14 @@ def test_load_file_with_macros(qtbot):
 
     finally:
         del QLabel.setCommands
+
+
+def test_load_file_with_help_display(qtbot):
+    """
+    Ensure that when a file containing help information is placed in the same directory as the display to load,
+    that help display is loaded and available to the user. This test depends on a test.txt or test.html file
+    being present in the same location as the file at test_ui_path.
+    """
+    test_display = load_file(test_ui_path, target=ScreenTarget.HOME)
+    assert test_display.help_window is not None
+    assert test_display.help_window.display_content.toPlainText() == 'This is a test help file for the test.ui display\n'
