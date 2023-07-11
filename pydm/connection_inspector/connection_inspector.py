@@ -41,6 +41,7 @@ class ConnectionInspector(QWidget):
         return [connection
                 for p in plugins.values()
                 for connection in p.connections.values()
+                if not connection.address.endswith('.DISP')
                 ]
 
     @Slot()

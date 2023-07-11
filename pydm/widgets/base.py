@@ -1206,6 +1206,9 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         value : str
             Channel address
         """
+        self.set_channel(value)
+
+    def set_channel(self, value):
         if self._channel != value:
             # Remove old connections
             for channel in [c for c in self._channels if
@@ -1363,6 +1366,8 @@ class PyDMWritableWidget(PyDMWidget):
 
     def __init__(self, init_channel=None):
         self._write_access = False
+        self._disp_channel = None
+        self._disable_put = False
         super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
 
     def init_for_designer(self):
@@ -1403,6 +1408,36 @@ class PyDMWritableWidget(PyDMWidget):
 
         return PyDMWidget.eventFilter(self, obj, event)
 
+    @Property(str)
+    def channel(self):
+        """
+        The channel address in use for this widget.
+
+        Returns
+        -------
+        channel : str
+            Channel address
+        """
+        if self._channel:
+            return str(self._channel)
+        return None
+
+    @channel.setter
+    def channel(self, value):
+        if self._channel != value:
+            self.set_channel(value)
+            if value is not None and self._disp_channel != f'{value}.DISP':
+                if self._disp_channel is not None:
+                    self._disp_channel.disconnect()
+                self._disp_channel = f'{value}.DISP'
+                channel = PyDMChannel(address=self._disp_channel, value_slot=self.disp_value_changed)
+                channel.connect()
+
+
+    def disp_value_changed(self, new_disp_value):
+        self._disable_put = new_disp_value
+        self.check_enable_state()
+
     def write_access_changed(self, new_write_access):
         """
         Callback invoked when the Channel has new write access value.
@@ -1436,7 +1471,7 @@ class PyDMWritableWidget(PyDMWidget):
         This method also disables the widget and add a Tool Tip
         with the reason why it is disabled.
         """
-        status = self._write_access and self._connected
+        status = self._write_access and self._connected and not self._disable_put
         tooltip = self.restore_original_tooltip()
         if not self._connected:
             if tooltip != '':
@@ -1451,5 +1486,10 @@ class PyDMWritableWidget(PyDMWidget):
                 tooltip += "Running PyDM on Read-Only mode."
             else:
                 tooltip += "Access denied by Channel Access Security."
+        elif self._disable_put:
+            if tooltip != '':
+                tooltip += '\n'
+            tooltip += 'Access denied by DISP field'
+
         self.setToolTip(tooltip)
         self.setEnabled(status)
