@@ -41,6 +41,7 @@ class ConnectionInspector(QWidget):
         return [connection
                 for p in plugins.values()
                 for connection in p.connections.values()
+                # DISP field is connected to separately for writable channels, including it on this list is redundant
                 if not connection.address.endswith('.DISP')
                 ]
 
