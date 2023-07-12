@@ -7,7 +7,6 @@ API Documentation
 
 .. autoclass:: pydm.widgets.base.PyDMWidget
    :members:
-   :inherited-members:
    :show-inheritance:
 
 PyDMToolTip Instructions

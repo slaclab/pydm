@@ -42,6 +42,13 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
 
     @Property(DisplayFormat)
     def displayFormat(self):
+        """
+        displayFormat property.
+
+        :getter: Returns the displayFormat
+        :setter: Sets the displayFormat
+        :type: int
+        """
         return self._display_format_type
 
     @displayFormat.setter
