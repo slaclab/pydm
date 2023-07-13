@@ -18,6 +18,7 @@ from ..utilities import is_qt_designer, remove_protocol
 from ..display import Display
 from .rules import RulesDispatcher
 from datetime import datetime
+from typing import Optional
 
 try:
     from json.decoder import JSONDecodeError
@@ -1209,6 +1210,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         self.set_channel(value)
 
     def set_channel(self, value):
+        """ A setter method without a pyqt decorator so subclasses can use this functionality """
         if self._channel != value:
             # Remove old connections
             for channel in [c for c in self._channels if
@@ -1409,7 +1411,7 @@ class PyDMWritableWidget(PyDMWidget):
         return PyDMWidget.eventFilter(self, obj, event)
 
     @Property(str)
-    def channel(self):
+    def channel(self) -> Optional[str]:
         """
         The channel address in use for this widget.
 
@@ -1423,7 +1425,10 @@ class PyDMWritableWidget(PyDMWidget):
         return None
 
     @channel.setter
-    def channel(self, value):
+    def channel(self, value: str) -> None:
+        """
+        The channel address in use for this widget. Also sets up a monitor on the DISP field.
+        """
         if self._channel != value:
             self.set_channel(value)
             if value is not None and self._disp_channel != f'{value}.DISP':
@@ -1433,8 +1438,8 @@ class PyDMWritableWidget(PyDMWidget):
                 channel = PyDMChannel(address=self._disp_channel, value_slot=self.disp_value_changed)
                 channel.connect()
 
-
-    def disp_value_changed(self, new_disp_value):
+    def disp_value_changed(self, new_disp_value: int) -> None:
+        """ Callback function to receive changes to the DISP field of the monitored channel """
         self._disable_put = new_disp_value
         self.check_enable_state()
 
@@ -1465,11 +1470,10 @@ class PyDMWritableWidget(PyDMWidget):
         self.write_access_changed(write_access)
 
     @only_if_channel_set
-    def check_enable_state(self):
+    def check_enable_state(self) -> None:
         """
-        Checks whether or not the widget should be disable.
-        This method also disables the widget and add a Tool Tip
-        with the reason why it is disabled.
+        Checks whether or not the widget should be disabled.
+        This method also disables the widget and adds a tool tip with the reason why it is disabled.
         """
         status = self._write_access and self._connected and not self._disable_put
         tooltip = self.restore_original_tooltip()
