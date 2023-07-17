@@ -526,8 +526,13 @@ def test_pydmwidget_tooltip(qtbot):
     assert tool_tip == str(pydm_label.value)
 
 
-@pytest.mark.parametrize('channel_address', ['tst://this', 'tst://this.VAL', 'tst://this.[1:2]'])
-def test_pydmwritablewidget_channels(qtbot, channel_address):
+@pytest.mark.parametrize('channel_address, monitor_disp',  [
+                             ('tst://this', True),
+                             ('tst://this.VAL', True),
+                             ('tst://this.[1:2]', True),
+                             ('tst://this', False)
+                        ])
+def test_pydmwritablewidget_channels(qtbot, channel_address, monitor_disp):
     """
     Test the channels population for the widget whose base class PyDMWritableWidget
 
@@ -548,6 +553,7 @@ def test_pydmwritablewidget_channels(qtbot, channel_address):
     assert pydm_lineedit._channel is None
     assert pydm_lineedit.channels() is None
 
+    pydm_lineedit.monitorDisp = monitor_disp
     pydm_lineedit.channel = channel_address
     pydm_channels = pydm_lineedit.channels()[0]
 
@@ -568,7 +574,10 @@ def test_pydmwritablewidget_channels(qtbot, channel_address):
                                         write_access_slot=pydm_lineedit.writeAccessChanged,
                                         timestamp_slot=pydm_lineedit.timestamp_changed)
     assert pydm_channels == default_pydm_channels
-    assert pydm_lineedit._disp_channel == 'tst://this.DISP'
+    if monitor_disp:
+        assert pydm_lineedit._disp_channel == 'tst://this.DISP'
+    else:
+        assert pydm_lineedit._disp_channel is None
 
 @pytest.mark.parametrize(
     "channel_address, connected, write_access, is_app_read_only, disable_put", [

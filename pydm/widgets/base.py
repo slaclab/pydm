@@ -1370,6 +1370,7 @@ class PyDMWritableWidget(PyDMWidget):
         self._write_access = False
         self._disp_channel = None
         self._disable_put = False
+        self._monitor_disp = False
         super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
 
     def init_for_designer(self):
@@ -1410,6 +1411,26 @@ class PyDMWritableWidget(PyDMWidget):
 
         return PyDMWidget.eventFilter(self, obj, event)
 
+    @Property(bool)
+    def monitorDisp(self) -> bool:
+        """
+        Whether to monitor the DISP field for this widget's channel
+        """
+        return self._monitor_disp
+
+    @monitorDisp.setter
+    def monitorDisp(self, monitor_disp: bool) -> None:
+        """
+        Whether to monitor the DISP field for this widget's channel
+        """
+        if self._monitor_disp != monitor_disp:
+            self._monitor_disp = monitor_disp
+            if self._disp_channel is not None:
+                if monitor_disp:
+                    self._disp_channel.connect()
+                else:
+                    self._disp_channel.disconnect()
+
     @Property(str)
     def channel(self) -> Optional[str]:
         """
@@ -1431,7 +1452,7 @@ class PyDMWritableWidget(PyDMWidget):
         """
         if self._channel != value:
             self.set_channel(value)
-            if self._channel is None:
+            if not self._monitor_disp or self._channel is None:
                 return
 
             base_channel = self._channel.split(".", 1)[0] if "." in self._channel else self._channel
