@@ -526,7 +526,8 @@ def test_pydmwidget_tooltip(qtbot):
     assert tool_tip == str(pydm_label.value)
 
 
-def test_pydmwritablewidget_channels(qtbot):
+@pytest.mark.parametrize('channel_address', ['tst://this', 'tst://this.VAL', 'tst://this.[1:2]'])
+def test_pydmwritablewidget_channels(qtbot, channel_address):
     """
     Test the channels population for the widget whose base class PyDMWritableWidget
 
@@ -547,7 +548,7 @@ def test_pydmwritablewidget_channels(qtbot):
     assert pydm_lineedit._channel is None
     assert pydm_lineedit.channels() is None
 
-    pydm_lineedit.channel = 'tst://this'
+    pydm_lineedit.channel = channel_address
     pydm_channels = pydm_lineedit.channels()[0]
 
     default_pydm_channels = PyDMChannel(address=pydm_lineedit.channel,

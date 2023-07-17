@@ -1431,10 +1431,14 @@ class PyDMWritableWidget(PyDMWidget):
         """
         if self._channel != value:
             self.set_channel(value)
-            if value is not None and self._disp_channel != f'{value}.DISP':
+            if self._channel is None:
+                return
+
+            base_channel = self._channel.split(".", 1)[0] if "." in self._channel else self._channel
+            if self._disp_channel != f'{base_channel}.DISP':
                 if self._disp_channel is not None:
                     self._disp_channel.disconnect()
-                self._disp_channel = f'{value}.DISP'
+                self._disp_channel = f'{base_channel}.DISP'
                 channel = PyDMChannel(address=self._disp_channel, value_slot=self.disp_value_changed)
                 channel.connect()
 
