@@ -1456,12 +1456,11 @@ class PyDMWritableWidget(PyDMWidget):
                 return
 
             base_channel = self._channel.split(".", 1)[0] if "." in self._channel else self._channel
-            if self._disp_channel != f'{base_channel}.DISP':
+            if self._disp_channel is None or self._disp_channel.address != f'{base_channel}.DISP':
                 if self._disp_channel is not None:
                     self._disp_channel.disconnect()
-                self._disp_channel = f'{base_channel}.DISP'
-                channel = PyDMChannel(address=self._disp_channel, value_slot=self.disp_value_changed)
-                channel.connect()
+                self._disp_channel = PyDMChannel(address=f'{base_channel}.DISP', value_slot=self.disp_value_changed)
+                self._disp_channel.connect()
 
     def disp_value_changed(self, new_disp_value: int) -> None:
         """ Callback function to receive changes to the DISP field of the monitored channel """

@@ -575,7 +575,7 @@ def test_pydmwritablewidget_channels(qtbot, channel_address, monitor_disp):
                                         timestamp_slot=pydm_lineedit.timestamp_changed)
     assert pydm_channels == default_pydm_channels
     if monitor_disp:
-        assert pydm_lineedit._disp_channel == 'tst://this.DISP'
+        assert pydm_lineedit._disp_channel.address == 'tst://this.DISP'
     else:
         assert pydm_lineedit._disp_channel is None
 
