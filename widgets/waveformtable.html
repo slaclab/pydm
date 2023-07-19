@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMWaveformTable &mdash; PyDM 0+untagged.1.g30ce4be documentation</title>
+  <title>PyDMWaveformTable &mdash; PyDM 0+untagged.1.g29d6b5c documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                0+untagged.1.g30ce4be
+                0+untagged.1.g29d6b5c
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -903,6 +903,12 @@ values.</p>
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.disconnectNotify">
 <span class="sig-name descname"><span class="pre">disconnectNotify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QMetaMethod</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.disconnectNotify" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.disp_value_changed">
+<span class="sig-name descname"><span class="pre">disp_value_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_disp_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.disp_value_changed" title="Permalink to this definition"></a></dt>
+<dd><p>Callback function to receive changes to the DISP field of the monitored channel</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.doubleClicked">
@@ -1875,6 +1881,12 @@ This slot sends the new limit value to the
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.model">
 <span class="sig-name descname"><span class="pre">model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QAbstractItemModel</span></span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.model" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.monitorDisp">
+<span class="sig-name descname"><span class="pre">monitorDisp</span></span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.monitorDisp" title="Permalink to this definition"></a></dt>
+<dd><p>Whether to monitor the DISP field for this widget’s channel</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.mouseDoubleClickEvent">
@@ -3135,6 +3147,12 @@ new value.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.set_channel">
+<span class="sig-name descname"><span class="pre">set_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.set_channel" title="Permalink to this definition"></a></dt>
+<dd><p>A setter method without a pyqt decorator so subclasses can use this functionality</p>
 </dd></dl>
 
 <dl class="py method">

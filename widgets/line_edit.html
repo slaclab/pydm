@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMLineEdit &mdash; PyDM 0+untagged.1.g30ce4be documentation</title>
+  <title>PyDMLineEdit &mdash; PyDM 0+untagged.1.g29d6b5c documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                0+untagged.1.g30ce4be
+                0+untagged.1.g29d6b5c
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -502,10 +502,9 @@ one real ‘signal’ channel.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.check_enable_state">
-<span class="sig-name descname"><span class="pre">check_enable_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.check_enable_state" title="Permalink to this definition"></a></dt>
-<dd><p>Checks whether or not the widget should be disable.
-This method also disables the widget and add a Tool Tip
-with the reason why it is disabled.</p>
+<span class="sig-name descname"><span class="pre">check_enable_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.check_enable_state" title="Permalink to this definition"></a></dt>
+<dd><p>Checks whether or not the widget should be disabled.
+This method also disables the widget and adds a tool tip with the reason why it is disabled.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -799,6 +798,12 @@ values.</p>
 <dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.disconnectNotify">
 <span class="sig-name descname"><span class="pre">disconnectNotify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QMetaMethod</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.disconnectNotify" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.disp_value_changed">
+<span class="sig-name descname"><span class="pre">disp_value_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_disp_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.disp_value_changed" title="Permalink to this definition"></a></dt>
+<dd><p>Callback function to receive changes to the DISP field of the monitored channel</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.displayText">
@@ -1531,6 +1536,12 @@ This slot sends the new limit value to the
 <dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.minimumWidth">
 <span class="sig-name descname"><span class="pre">minimumWidth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.minimumWidth" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.monitorDisp">
+<span class="sig-name descname"><span class="pre">monitorDisp</span></span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.monitorDisp" title="Permalink to this definition"></a></dt>
+<dd><p>Whether to monitor the DISP field for this widget’s channel</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.mouseDoubleClickEvent">
@@ -2426,6 +2437,12 @@ ReturnPressed signal of the PyDMLineEdit</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.set_channel">
+<span class="sig-name descname"><span class="pre">set_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.set_channel" title="Permalink to this definition"></a></dt>
+<dd><p>A setter method without a pyqt decorator so subclasses can use this functionality</p>
 </dd></dl>
 
 <dl class="py method">
