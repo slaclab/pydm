@@ -18,6 +18,7 @@ from ..utilities import is_qt_designer, remove_protocol
 from ..display import Display
 from .rules import RulesDispatcher
 from datetime import datetime
+from typing import Optional
 
 try:
     from json.decoder import JSONDecodeError
@@ -1206,6 +1207,10 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         value : str
             Channel address
         """
+        self.set_channel(value)
+
+    def set_channel(self, value):
+        """ A setter method without a pyqt decorator so subclasses can use this functionality """
         if self._channel != value:
             # Remove old connections
             for channel in [c for c in self._channels if
@@ -1363,6 +1368,9 @@ class PyDMWritableWidget(PyDMWidget):
 
     def __init__(self, init_channel=None):
         self._write_access = False
+        self._disp_channel = None
+        self._disable_put = False
+        self._monitor_disp = False
         super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
 
     def init_for_designer(self):
@@ -1403,6 +1411,62 @@ class PyDMWritableWidget(PyDMWidget):
 
         return PyDMWidget.eventFilter(self, obj, event)
 
+    @Property(bool)
+    def monitorDisp(self) -> bool:
+        """
+        Whether to monitor the DISP field for this widget's channel
+        """
+        return self._monitor_disp
+
+    @monitorDisp.setter
+    def monitorDisp(self, monitor_disp: bool) -> None:
+        """
+        Whether to monitor the DISP field for this widget's channel
+        """
+        if self._monitor_disp != monitor_disp:
+            self._monitor_disp = monitor_disp
+            if self._disp_channel is not None:
+                if monitor_disp:
+                    self._disp_channel.connect()
+                else:
+                    self._disp_channel.disconnect()
+
+    @Property(str)
+    def channel(self) -> Optional[str]:
+        """
+        The channel address in use for this widget.
+
+        Returns
+        -------
+        channel : str
+            Channel address
+        """
+        if self._channel:
+            return str(self._channel)
+        return None
+
+    @channel.setter
+    def channel(self, value: str) -> None:
+        """
+        The channel address in use for this widget. Also sets up a monitor on the DISP field.
+        """
+        if self._channel != value:
+            self.set_channel(value)
+            if not self._monitor_disp or self._channel is None:
+                return
+
+            base_channel = self._channel.split(".", 1)[0] if "." in self._channel else self._channel
+            if self._disp_channel is None or self._disp_channel.address != f'{base_channel}.DISP':
+                if self._disp_channel is not None:
+                    self._disp_channel.disconnect()
+                self._disp_channel = PyDMChannel(address=f'{base_channel}.DISP', value_slot=self.disp_value_changed)
+                self._disp_channel.connect()
+
+    def disp_value_changed(self, new_disp_value: int) -> None:
+        """ Callback function to receive changes to the DISP field of the monitored channel """
+        self._disable_put = new_disp_value
+        self.check_enable_state()
+
     def write_access_changed(self, new_write_access):
         """
         Callback invoked when the Channel has new write access value.
@@ -1430,13 +1494,12 @@ class PyDMWritableWidget(PyDMWidget):
         self.write_access_changed(write_access)
 
     @only_if_channel_set
-    def check_enable_state(self):
+    def check_enable_state(self) -> None:
         """
-        Checks whether or not the widget should be disable.
-        This method also disables the widget and add a Tool Tip
-        with the reason why it is disabled.
+        Checks whether or not the widget should be disabled.
+        This method also disables the widget and adds a tool tip with the reason why it is disabled.
         """
-        status = self._write_access and self._connected
+        status = self._write_access and self._connected and not self._disable_put
         tooltip = self.restore_original_tooltip()
         if not self._connected:
             if tooltip != '':
@@ -1451,5 +1514,10 @@ class PyDMWritableWidget(PyDMWidget):
                 tooltip += "Running PyDM on Read-Only mode."
             else:
                 tooltip += "Access denied by Channel Access Security."
+        elif self._disable_put:
+            if tooltip != '':
+                tooltip += '\n'
+            tooltip += 'Access denied by DISP field'
+
         self.setToolTip(tooltip)
         self.setEnabled(status)

@@ -526,7 +526,13 @@ def test_pydmwidget_tooltip(qtbot):
     assert tool_tip == str(pydm_label.value)
 
 
-def test_pydmwritablewidget_channels(qtbot):
+@pytest.mark.parametrize('channel_address, monitor_disp',  [
+                             ('tst://this', True),
+                             ('tst://this.VAL', True),
+                             ('tst://this.[1:2]', True),
+                             ('tst://this', False)
+                        ])
+def test_pydmwritablewidget_channels(qtbot, channel_address, monitor_disp):
     """
     Test the channels population for the widget whose base class PyDMWritableWidget
 
@@ -547,7 +553,8 @@ def test_pydmwritablewidget_channels(qtbot):
     assert pydm_lineedit._channel is None
     assert pydm_lineedit.channels() is None
 
-    pydm_lineedit.channel = 'tst://this'
+    pydm_lineedit.monitorDisp = monitor_disp
+    pydm_lineedit.channel = channel_address
     pydm_channels = pydm_lineedit.channels()[0]
 
     default_pydm_channels = PyDMChannel(address=pydm_lineedit.channel,
@@ -567,34 +574,41 @@ def test_pydmwritablewidget_channels(qtbot):
                                         write_access_slot=pydm_lineedit.writeAccessChanged,
                                         timestamp_slot=pydm_lineedit.timestamp_changed)
     assert pydm_channels == default_pydm_channels
-
+    if monitor_disp:
+        assert pydm_lineedit._disp_channel.address == 'tst://this.DISP'
+    else:
+        assert pydm_lineedit._disp_channel is None
 
 @pytest.mark.parametrize(
-    "channel_address, connected, write_access, is_app_read_only", [
-        ("CA://MA_TEST", True, True, True),
-        ("CA://MA_TEST", True, False, True),
-        ("CA://MA_TEST", True, True, False),
-        ("CA://MA_TEST", True, False, False),
-        ("CA://MA_TEST", False, True, True),
-        ("CA://MA_TEST", False, False, True),
-        ("CA://MA_TEST", False, True, False),
-        ("CA://MA_TEST", False, False, False),
-        ("", False, False, False),
-        (None, False, False, False),
+    "channel_address, connected, write_access, is_app_read_only, disable_put", [
+        ("CA://MA_TEST", True, True, True, 0),
+        ("CA://MA_TEST", True, False, True, 0),
+        ("CA://MA_TEST", True, True, False, 0),
+        ("CA://MA_TEST", True, False, False, 0),
+        ("CA://MA_TEST", False, True, True, 0),
+        ("CA://MA_TEST", False, False, True, 0),
+        ("CA://MA_TEST", False, True, False, 0),
+        ("CA://MA_TEST", False, False, False, 0),
+        ("CA://MA_TEST", False, False, False, 1),
+        ("CA://MA_TEST", True, False, False, 1),
+        ("CA://MA_TEST", True, True, False, 1),
+        ("", False, False, False, 0),
+        (None, False, False, False, 0),
     ])
 def test_pydmwritable_check_enable_state(qtbot, channel_address,
                                          connected, write_access,
-                                         is_app_read_only):
+                                         is_app_read_only, disable_put):
     """
-    Test the tooltip generated depending on the channel address validation, connection, write access, and whether the
-    app is read-only. This test is for a widget whose base class is PyDMWritableWidget.
+    Test the tooltip generated depending on the channel address validation, connection, write access,
+    DISP field, and whether the app is read-only. This test is for a widget whose base class is PyDMWritableWidget.
 
     Expectations:
     1. The widget's tooltip will update only if the channel address is valid.
     2. If the data channel is disconnected, the widget's tooltip will  "PV is disconnected"
     3. If the data channel is connected, but it has no write access:
         a. If the app is read-only, the tooltip will read  "Running PyDM on Read-Only mode."
-        b. If the app is not read-only, the tooltip will read "Access denied by Channel Access Security."
+        b. If the app is not read-only, the tooltip will read "Access denied by Channel Access Security." or
+           "Access denied by DISP field" depending on which is preventing it. Access Security takes precedence.
 
     Parameters
     ----------
@@ -608,6 +622,8 @@ def test_pydmwritable_check_enable_state(qtbot, channel_address,
         True if the widget has write access to the channel; False otherwise
     is_app_read_only : bool
         True if the PyDM app is read-only; False otherwise
+    disable_put : int
+        1 if puts should be disabled based on the DISP field, 0 otherwise
     """
     pydm_lineedit = PyDMLineEdit()
     qtbot.addWidget(pydm_lineedit)
@@ -615,6 +631,7 @@ def test_pydmwritable_check_enable_state(qtbot, channel_address,
     pydm_lineedit.channel = channel_address
     pydm_lineedit._connected = connected
     pydm_lineedit._write_access = write_access
+    pydm_lineedit._disable_put = disable_put
 
     data_plugins.set_read_only(is_app_read_only)
 
@@ -626,11 +643,13 @@ def test_pydmwritable_check_enable_state(qtbot, channel_address,
     if is_channel_valid(channel_address):
         if not pydm_lineedit._connected:
             assert "PV is disconnected." in actual_tooltip
-        elif not write_access:
+        elif not write_access or disable_put:
             if data_plugins.is_read_only():
                 assert "Running PyDM on Read-Only mode." in actual_tooltip
-            else:
+            elif not pydm_lineedit._write_access:
                 assert "Access denied by Channel Access Security." in actual_tooltip
+            else:
+                assert "Access denied by DISP field" in actual_tooltip
     else:
         assert actual_tooltip == original_tooltip
 
