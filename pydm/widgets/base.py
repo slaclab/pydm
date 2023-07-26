@@ -749,6 +749,12 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         """
         self.value = new_val
         self.channeltype = type(self.value)
+        for base_type in [int, float, str, np.ndarray]:
+            if self.channeltype != base_type and issubclass(self.channeltype, base_type):
+                # Leave bool and int separate, we're concerned about user-defined subclasses, not native Python ones
+                if self.channeltype != bool:
+                    self.channeltype = base_type
+                break
         if self.channeltype == np.ndarray:
             self.subtype = self.value.dtype.type
         else:
