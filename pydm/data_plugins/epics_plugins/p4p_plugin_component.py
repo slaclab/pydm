@@ -96,6 +96,9 @@ class Connection(PyDMConnection):
                         if hasattr(value, 'labels') and 'labels' not in new_value:
                             # Labels are the column headers for the table
                             new_value['labels'] = value.labels
+                    elif 'NTEnum' in value.getID():
+                        new_value = value.value.index
+                        self.enum_strings_signal.emit(tuple(value.value.choices))
                     else:
                         new_value = value.value
                     
