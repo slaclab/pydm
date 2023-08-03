@@ -16,7 +16,7 @@ test_stylesheet_path = os.path.join(
 def save_and_restore_pydm_stylesheet():
     """
     A fixture for ensuring that modifications to the PYDM_STYLESHEET environment variable are restored
-    even if the test fails to prevent any impact to future tests in the run.
+    even if the test fails. This will prevent any impact to the user's environment, as wel as future tests in the run.
     """
     # Back up the stylesheet related variables so they can be restored after the test
     env_backup = os.getenv("PYDM_STYLESHEET", None)
