@@ -37,7 +37,7 @@ def unregister_widget_rules(widget):
 def register_widget_rules(widget):
     """
     Given a widget to start from, traverse the tree of child widgets,
-    and try to unregister rules to any widgets.
+    and try to register rules to any widgets.
 
     Parameters
     ----------
