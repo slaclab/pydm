@@ -1188,6 +1188,10 @@ class PyDMDrawingPolyline(PyDMDrawing):
     """
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingPolyline, self).__init__(parent, init_channel)
+        self._arrow_end_point_selection = False
+        self._arrow_start_point_selection = False
+        self._arrow_mid_point_selection = False
+        self._mid_point_arrow_flipped = False
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
         self._points = []
@@ -1215,6 +1219,27 @@ class PyDMDrawingPolyline(PyDMDrawing):
         if len(self._points) > 1:
             for i, p1 in enumerate(self._points[:-1]):
                 painter.drawLine(p2d(p1), p2d(self._points[i+1]))
+                if self._arrow_mid_point_selection:
+                    point1 = p2d(p1)
+                    point2 = p2d(self._points[i+1])
+                    if self._mid_point_arrow_flipped:
+                        point1, point2 = point2, point1 #swap values
+
+                    #arrow points at midpoint of line
+                    midpoint_x = (point1.x() + point2.x()) / 2
+                    midpoint_y = (point1.y() + point2.y()) / 2
+                    midpoint = QPointF(midpoint_x, midpoint_y)
+                    points = PyDMDrawingLine._arrow_points(point1, midpoint, 6, 6) #6 = arbitrary arrow size
+                    painter.drawPolygon(points)
+
+        # Draw the arrows
+        if self._arrow_end_point_selection:
+            points = PyDMDrawingLine._arrow_points(p2d(self._points[1]), p2d(self._points[0]), 6, 6)
+            painter.drawPolygon(points)
+
+        if self._arrow_start_point_selection:
+            points = PyDMDrawingLine._arrow_points(p2d(self._points[len(self._points)-2]), p2d(self._points[len(self._points)-1]), 6, 6)
+            painter.drawPolygon(points)
 
     def getPoints(self):
         """Convert internal points representation for use as QStringList."""
@@ -1290,6 +1315,100 @@ class PyDMDrawingPolyline(PyDMDrawing):
     def resetPoints(self):
         self._points = []
         self.update()
+
+    @Property(bool)
+    def arrowEndPoint(self):
+        """
+        If True, an arrow will be drawn at the end of the line.
+
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_end_point_selection
+
+    @arrowEndPoint.setter
+    def arrowEndPoint(self, new_selection):
+        """
+        If True, an arrow will be drawn at the end of the line.
+
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_end_point_selection != new_selection:
+            self._arrow_end_point_selection = new_selection
+            self.update()
+
+    @Property(bool)
+    def arrowStartPoint(self):
+        """
+        If True, an arrow will be drawn at the start of the line.
+
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_start_point_selection
+
+    @arrowStartPoint.setter
+    def arrowStartPoint(self, new_selection):
+        """
+        If True, an arrow will be drawn at the start of the line.
+
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_start_point_selection != new_selection:
+            self._arrow_start_point_selection = new_selection
+            self.update()
+
+    @Property(bool)
+    def arrowMidPoint(self):
+        """
+        If True, an arrow will be drawn at the midpoint of the line.
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_mid_point_selection
+
+    @arrowMidPoint.setter
+    def arrowMidPoint(self, new_selection):
+        """
+        If True, an arrow will be drawn at the midpoint of the line.
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_mid_point_selection != new_selection:
+            self._arrow_mid_point_selection = new_selection
+            self.update()
+
+    @Property(bool)
+    def flipMidPointArrow(self):
+        """
+        Flips the direction of the midpoint arrow.
+
+        Returns
+        -------
+        bool
+        """
+        return self._mid_point_arrow_flipped
+
+    @flipMidPointArrow.setter
+    def flipMidPointArrow(self, new_selection):
+        """
+        Flips the direction of the midpoint arrow.
+        
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._mid_point_arrow_flipped != new_selection:
+            self._mid_point_arrow_flipped = new_selection
+            self.update()
 
     points = Property("QStringList", getPoints, setPoints, resetPoints)
 
