@@ -516,6 +516,41 @@
     <number>5</number>
    </property>
   </widget>
+  <widget class="PyDMDrawingPolyline" name="PyDMDrawingPolyline">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>530</y>
+     <width>101</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="points">
+    <stringlist>
+     <string>60.0, 5.0</string>
+     <string>5.0, 50.0</string>
+     <string>25.0, 50.0</string>
+     <string>25.0, 100.0</string>
+     <string>50.0, 100.0</string>
+    </stringlist>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>510</y>
+     <width>151</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PyDMDrawingPolyline</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -565,6 +600,11 @@
   </customwidget>
   <customwidget>
    <class>PyDMDrawingPolygon</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingPolyline</class>
    <extends>QWidget</extends>
    <header>pydm.widgets.drawing</header>
   </customwidget>
