@@ -25,7 +25,6 @@ requirements:
     - numpy
     - scipy
     - pyepics
-    - requests
     - pyqt =5
     - pyqtgraph
     - qtpy
