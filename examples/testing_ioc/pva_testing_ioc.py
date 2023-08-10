@@ -1,5 +1,5 @@
 from p4p.client.thread import Context
-from p4p.nt import NTNDArray, NTScalar, NTTable
+from p4p.nt import NTEnum, NTNDArray, NTScalar, NTTable
 from p4p.server import Server, ServerOperation
 from p4p.server.thread import SharedPV
 import numpy as np
@@ -55,6 +55,9 @@ class PVServer(object):
         # An NTNDArray that will be used to hold image data
         self.image_pv = SharedPV(handler=handler, nt=NTNDArray(), initial=np.zeros(1))
 
+        # An NTEnum that supports read/write from PyDM widgets
+        self.enum_pv = SharedPV(handler=handler, nt=NTEnum(), initial={'index': 0, 'choices': ['YES', 'NO', 'MAYBE']})
+
         # An NTTable that can be displayed via the PyDMNTTable widget
         table_structure = NTTable([('names', 's'), ('floats', 'd'), ('booleans', '?')])
         table_strings = ['This', 'Is', 'A', 'PyDM', 'Table']
@@ -78,6 +81,7 @@ class PVServer(object):
                                    'PyDM:PVA:BoolArray': self.bool_array,
                                    'PyDM:PVA:StringArray': self.string_array,
                                    'PyDM:PVA:Image': self.image_pv,
+                                   'PyDM:PVA:Enum': self.enum_pv,
                                    'PyDM:PVA:Table': self.nt_table_pv}])
 
     def gaussian_2d(self, x: float, y: float, x0: float, y0: float, xsig: float, ysig: float) -> np.ndarray:
