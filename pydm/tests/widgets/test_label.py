@@ -11,6 +11,7 @@ from ...widgets.base import PyDMWidget
 from ...widgets.display_format import parse_value_for_display, DisplayFormat
 
 from qtpy.QtWidgets import QApplication, QStyleOption
+from qtpy.QtCore import Qt
 
 # --------------------
 # POSITIVE TEST CASES
@@ -37,6 +38,25 @@ def test_construct(qtbot):
     assert display_format_type == pydm_label.DisplayFormat.Default
     assert pydm_label._string_encoding == pydm_label.app.get_string_encoding() if is_pydm_app() else "utf_8"
 
+def test_enable_rich_text(qtbot):
+    """
+    Test the widget's option for enabling rich text.
+
+    Expectations:
+    1. The label has plain text as default text format
+    2. The label allows rich text to be enabled using its "enableRichText" setters
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    """
+    pydm_label = PyDMLabel()
+    assert pydm_label.textFormat() == Qt.PlainText
+
+    pydm_label.enableRichText = True #invoke setter
+    qtbot.addWidget(pydm_label)
+    assert pydm_label.textFormat() == Qt.RichText
 
 @pytest.mark.parametrize("value, display_format", [
     ("abc", DisplayFormat.Default),

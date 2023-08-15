@@ -18,8 +18,8 @@
     <rect>
      <x>60</x>
      <y>80</y>
-     <width>69</width>
-     <height>16</height>
+     <width>71</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="focusPolicy">
@@ -36,6 +36,58 @@
    </property>
    <property name="channel" stdset="0">
     <string>ca://MTEST:Float</string>
+   </property>
+   <property name="displayFormat" stdset="0">
+    <enum>PyDMLabel::String</enum>
+   </property>
+  </widget>
+  <widget class="PyDMLabel" name="PyDMLabel_2">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>80</y>
+     <width>71</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::StrongFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>&lt;b&gt;Rich&lt;b&gt; &lt;i&gt;text!&lt;i&gt;</string>
+   </property>
+   <property name="rules" stdset="0">
+    <string>[]</string>
+   </property>
+   <property name="precision" stdset="0">
+    <number>0</number>
+   </property>
+   <property name="showUnits" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="precisionFromPV" stdset="0">
+    <bool>true</bool>
+   </property>
+   <property name="alarmSensitiveContent" stdset="0">
+    <bool>true</bool>
+   </property>
+   <property name="alarmSensitiveBorder" stdset="0">
+    <bool>true</bool>
+   </property>
+   <property name="PyDMToolTip" stdset="0">
+    <string/>
+   </property>
+   <property name="channel" stdset="0">
+    <string/>
+   </property>
+   <property name="enableRichText" stdset="0">
+    <bool>true</bool>
    </property>
    <property name="displayFormat" stdset="0">
     <enum>PyDMLabel::String</enum>

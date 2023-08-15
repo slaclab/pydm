@@ -36,8 +36,24 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
         self.setText("######")
         self._display_format_type = self.DisplayFormat.Default
         self._string_encoding = "utf_8"
+        self._enable_rich_text = False
         if is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
+
+    @Property(bool)
+    def enableRichText(self):
+        return self._enable_rich_text
+
+    @enableRichText.setter
+    def enableRichText(self, new_value):
+        if self._enable_rich_text == new_value:
+            return
+        self._enable_rich_text = new_value
+
+        if self._enable_rich_text:
+            self.setTextFormat(Qt.RichText)
+        else:
+            self.setTextFormat(Qt.PlainText)
 
     @Property(DisplayFormat)
     def displayFormat(self):
