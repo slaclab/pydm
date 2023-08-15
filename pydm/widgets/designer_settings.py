@@ -110,17 +110,18 @@ class StringListTable(QtWidgets.QTableWidget):
         self.customContextMenuRequested.connect(self._context_menu)
         self.values
 
-        #we let user swap points by dragging one on-top of the other
+        # we let user swap points by dragging one on-top of the other
         self.setDragEnabled(True)
         self.setAcceptDrops(True)
         self.drag_source_row = None
     
     def startDrag(self, event):
         self.drag_source_row = self.currentRow()
-        #call super() since we use the default dragging functionality
+        # call super() since we use the default dragging functionality
         super().startDrag(event)
 
     def dropEvent(self, event):
+        # don't call super() here, functionality messes with our swapping!
         source_row = self.drag_source_row
         target_row = self.indexAt(event.pos()).row()
         if target_row >= 0 and source_row != target_row:
