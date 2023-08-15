@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.label &mdash; PyDM 0+untagged.1.gfc1830a documentation</title>
+  <title>pydm.widgets.label &mdash; PyDM 0+untagged.1.gede5b21 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                0+untagged.1.gfc1830a
+                0+untagged.1.gede5b21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -150,8 +150,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;######&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Default</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span> <span class="o">=</span> <span class="s2">&quot;utf_8&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_enable_rich_text</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_string_encoding</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">enableRichText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enable_rich_text</span>
+
+    <span class="nd">@enableRichText</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">enableRichText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enable_rich_text</span> <span class="o">==</span> <span class="n">new_value</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_enable_rich_text</span> <span class="o">=</span> <span class="n">new_value</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enable_rich_text</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setTextFormat</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">RichText</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setTextFormat</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PlainText</span><span class="p">)</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">displayFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
