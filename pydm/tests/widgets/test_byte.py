@@ -6,15 +6,23 @@ from ...widgets.byte import PyDMByteIndicator
 @pytest.mark.parametrize("shift, value, expected", [
     (0, 0, (False, False, False)),
     (0, 5, (True, False, True)),
-    (0, -5, (False, False, False)),
+    (0, -5, (True, False, True)),
 
+    # Helpful to note:
+    # -Positive shift values execute ">> shift" and negative values execute "<< abs(shift)" on the indicator's value.
+    #
+    # -Bit shifting in python is defined as follows (https://wiki.python.org/moin/BitwiseOperators):
+    #   x << y is same as x * (2**y) and x >> y is same as x / (2**y)
+    # 
+    # So if you wish to work out example shifting on paper: can do so in big-endian (ex: 4 = 000100, 4 >> 1 = 000010),
+    # and write expected out in little-endian order (ex: 4 >> 1 = 010000)
     (1, 0, (False, False, False)),
     (1, 4, (False, True, False)),
-    (1, -5, (False, False, False)),
+    (1, -5, (False, True, False)),
 
     (-1, 0, (False, False, False)),
     (-1, 1, (False, True, False)),
-    (-1, -5, (False, False, False)),
+    (-1, -5, (False, True, False, True)),
 ])
 def test_value_shift(qtbot, signals, shift, value, expected):
     """
@@ -30,10 +38,10 @@ def test_value_shift(qtbot, signals, shift, value, expected):
         pytest-qt window for widget testing
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
-    value : int
-        The value to be displayed by the widget
     shift : int
         The value's bit shift
+    value : int
+        The value to be displayed by the widget
     expected : int
         Expected resulting value
     """

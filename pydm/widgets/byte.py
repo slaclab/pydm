@@ -194,12 +194,11 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         Update the inner bit indicators accordingly with the new value.
         """
+        value = abs(self.value) if self.value < 0 else self.value
         if self._shift < 0:
-            value = int(self.value) << abs(self._shift)
+            value = int(value) << abs(self._shift)
         else:
-            value = int(self.value) >> self._shift
-        if value < 0:
-            value = 0
+            value = int(value) >> self._shift
 
         bits = [(value >> i) & 1
                 for i in range(self._num_bits)]
