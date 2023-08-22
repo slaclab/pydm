@@ -1,22 +1,46 @@
-Matt Gibbs (@mattgibbs, mgibbs@slac.stanford.edu)
-Hugo Slepicka (@hhslepicka, slepicka@slac.stanford.edu)
-@ZLLentz
+Maintenance Team 
+Jesse Bellister (@jbellister-slac, jesseb@slac.stanford.edu)
+Nolan Stelter (@nstelter-slac, nstelter@slac.stanford.edu)
+Yekta Yazar (@YektaY, yazar@slac.stanford.edu)
+
+Contributors 
+@mattgibbs
 @teddyrendahl
-@gabrielfedel
-@fernandohds564
-@laispc
-@ninenein
-@xresende
-@tcope
-@gu1lermelp
-@scalverson
+@hhslepicka
 @hmbui
+@ZLLentz
 @klauer
-@anacso17
-@tacaswell
-@prjemian
-@KurtJacobson
-@ivany4
 @cristinasewell
+@fernandohds564
+@Ryan-McClanahan
+@laispc
+@mcb64
+@prjemian
+@tacaswell
+@colbychang
 @jacquelinegarrahan
-@YektaY
+@tcope
+@anacso17
+@flowln
+@ninenein
+@lvhuihui1988
+@herodotus77
+@gabrielfedel
+@justincslac
+@c-tsoi
+@anleslac
+@kleleux
+@vespos
+@ivany4
+@scalverson
+@KurtJacobson
+@xresende
+@vosarah
+@tangkong
+@ronpandolfi
+@gu1lermelp
+
+
+
+
+
