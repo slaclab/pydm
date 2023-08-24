@@ -1,3 +1,5 @@
+from .absolute_geometry import PyDMAbsoluteGeometry
+
 from .channel import PyDMChannel
 from .byte import PyDMByteIndicator
 

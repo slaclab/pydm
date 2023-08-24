@@ -50,6 +50,7 @@ Container Widgets
 .. toctree::
    :maxdepth: 1
 
+   absolute_geometry.rst
    embedded_display.rst
    frame.rst
    tab_widget.rst

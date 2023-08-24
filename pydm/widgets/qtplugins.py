@@ -1,6 +1,18 @@
 import logging
 import os
 
+from .qtplugin_base import qtplugin_factory, WidgetCategory
+from .qtplugin_extensions import (
+    ArchiveTimeCurveEditorExtension,
+    BasicSettingsExtension,
+    RulesExtension,
+    ScatterCurveEditorExtension,
+    SymbolExtension,
+    TimeCurveEditorExtension,
+    WaveformCurveEditorExtension,
+)
+from .tab_bar_qtplugin import TabWidgetPlugin
+from .absolute_geometry import PyDMAbsoluteGeometry
 from ..utilities.iconfont import IconFont
 from .archiver_time_plot import PyDMArchiverTimePlot
 from .byte import PyDMByteIndicator
@@ -292,6 +304,12 @@ PyDMTemplateRepeaterPlugin = qtplugin_factory(PyDMTemplateRepeater,
 PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator,
                                         group=WidgetCategory.MISC,
                                         extensions=BASE_EXTENSIONS)
+
+# Absolute Geometry widget plugin
+PyDMAbsoluteGeometryPlugin = qtplugin_factory(PyDMAbsoluteGeometry,
+                                              group=WidgetCategory.CONTAINER,
+                                              is_container=True,
+                                              extensions=BASE_EXTENSIONS)
 
 # **********************************************
 # NOTE: Add in new PyDM widgets above this line.
