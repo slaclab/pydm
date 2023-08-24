@@ -34,3 +34,7 @@ API Documentation
 .. autoclass:: pydm.widgets.tab_bar.PyDMTabWidget
    :members:
    :show-inheritance:
+
+
+.. note::
+   See `QTabWidget Documentation <https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QTabWidget.html>`_ for all inherited properties and methods.
