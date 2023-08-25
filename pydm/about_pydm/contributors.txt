@@ -1,10 +1,10 @@
-Maintenance Team 
+Development Team 
 Jesse Bellister (@jbellister-slac, jesseb@slac.stanford.edu)
 Nolan Stelter (@nstelter-slac, nstelter@slac.stanford.edu)
 Yekta Yazar (@YektaY, yazar@slac.stanford.edu)
+Matt Gibbs (@mattgibbs, mgibbs@slac.stanford.edu)
 
 Contributors 
-@mattgibbs
 @teddyrendahl
 @hhslepicka
 @hmbui
