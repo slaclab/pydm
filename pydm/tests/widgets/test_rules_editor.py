@@ -274,3 +274,49 @@ def test_rules_editor_open_help(qtbot, monkeypatch):
                         lambda *args, **kwargs: '')
     re.open_help()
     re.cancelChanges()
+
+
+def test_rules_editor_add_notes(qtbot, monkeypatch):
+    """
+    Test adding notes for a widget's rules
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
+    monkeypatch : fixture
+        To override dialog behaviors
+    """
+    # Create the base widget
+    widget = DummyWidget()
+
+
+    # Create the rules data for the widget
+    rules_list = [{'name': 'Rule #1', 'property': 'Enable',
+                   'initial_value': 'False',
+                   'expression': 'ch[0] > 1',
+                   'channels': [
+                       {'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+    # Add the rules to the widget
+    widget.rules = json.dumps(rules_list)
+
+    # Create a new Editor Window
+    re = RulesEditor(widget)
+    qtbot.addWidget(re)
+    re.show()
+
+    qtbot.waitExposed(re, timeout=5000)
+
+    re.lst_rules.setCurrentRow(0)
+
+    # make sure notes are saved and loaded correctly
+    # in the scope of the current rules-editor window
+    testing_text = "Testing adding note!"
+    re.open_notes_window()
+    re.notes_edit.setPlainText(testing_text)
+    re.save_notes()
+    re.open_notes_window()
+    loaded_text_from_curr_editor_instance = re.notes_edit.toPlainText()
+    assert loaded_text_from_curr_editor_instance == testing_text
+
+    re.cancelChanges()

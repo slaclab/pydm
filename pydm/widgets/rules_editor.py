@@ -4,6 +4,7 @@ import functools
 import webbrowser
 
 from qtpy import QtWidgets, QtCore, QtDesigner
+from qtpy.QtCore import Qt
 from ..utilities.iconfont import IconFont
 
 
@@ -190,23 +191,71 @@ class RulesEditor(QtWidgets.QDialog):
         expression_layout.addRow(lbl_initial, self.txt_initial_value)
 
         lbl_expression = QtWidgets.QLabel("Expression:")
-        expr_help_layout = QtWidgets.QHBoxLayout()
+        expr_layout = QtWidgets.QHBoxLayout()
         self.txt_expression = QtWidgets.QLineEdit()
         self.txt_expression.editingFinished.connect(self.expression_changed)
-        expr_help_layout.addWidget(self.txt_expression)
+        expr_layout.addWidget(self.txt_expression)
+        expression_layout.addRow(lbl_expression, expr_layout)
+
+        notes_help_layout = QtWidgets.QHBoxLayout()
         self.btn_help = QtWidgets.QPushButton()
         self.btn_help.setAutoDefault(False)
         self.btn_help.setDefault(False)
         self.btn_help.setText("Help")
         self.btn_help.setStyleSheet("background-color: rgb(176, 227, 255);")
         self.btn_help.clicked.connect(functools.partial(self.open_help, open=True))
-        expr_help_layout.addWidget(self.btn_help)
-        expression_layout.addRow(lbl_expression, expr_help_layout)
+        self.btn_open_notes = QtWidgets.QPushButton("Notes")
+        notes_help_layout.addWidget(self.btn_open_notes)
+        self.btn_open_notes.clicked.connect(self.open_notes_window)
+        notes_help_layout.addWidget(self.btn_help)
+        expression_layout.addRow(notes_help_layout)
 
         self.cmb_property.currentIndexChanged.connect(self.property_changed)
         self.cmb_property.setCurrentText(self.default_property)
 
         frm_edit_layout.addLayout(expression_layout)
+
+    def open_notes_window(self):
+        """ Window for reading and adding to a rule's notes"""
+        self.notes_window = QtWidgets.QDialog(self)
+        self.notes_window.setWindowTitle("Notes")
+        
+        # Allow window to be resized and maximized
+        self.notes_window.setWindowFlag(Qt.WindowMinMaxButtonsHint)
+        notes_layout = QtWidgets.QVBoxLayout()
+
+        self.notes_title_label = QtWidgets.QLabel("Notes:")
+        notes_layout.addWidget(self.notes_title_label)
+
+        self.notes_edit = QtWidgets.QPlainTextEdit(self)
+
+        # Load notes saved in current instance of rules editor
+        item = self.lst_rules.currentItem()
+        idx = self.lst_rules.indexFromItem(item).row()
+        data = self.rules[idx]
+        curr_notes = data.get('notes', '')
+        self.notes_edit.setPlainText(curr_notes)
+        notes_layout.addWidget(self.notes_edit)
+        
+        buttons_layout = QtWidgets.QHBoxLayout()
+        self.save_button = QtWidgets.QPushButton("Save")
+        self.save_button.clicked.connect(self.save_notes)
+        self.cancel_button = QtWidgets.QPushButton("Cancel")
+        self.cancel_button.clicked.connect(self.notes_window.close)
+        buttons_layout.addStretch()
+        buttons_layout.addWidget(self.cancel_button)
+        buttons_layout.addWidget(self.save_button)
+
+        notes_layout.addLayout(buttons_layout)
+        self.notes_window.setLayout(notes_layout)
+        self.notes_window.show()
+
+    def save_notes(self):
+        """ Save notes text and close the notes window """
+        item = self.lst_rules.currentItem()
+        idx = self.lst_rules.indexFromItem(item).row()
+        self.rules[idx]['notes'] = self.notes_edit.toPlainText()
+        self.notes_window.close()
 
     def clear_form(self):
         """Clear the form and reset the fields."""
@@ -271,7 +320,8 @@ class RulesEditor(QtWidgets.QDialog):
                 "property": self.default_property,
                 "initial_value": "",
                 "expression": "",
-                "channels": []
+                "channels": [],
+                "notes": ""
                 }
         self.rules.append(data)
         self.lst_rule_item = QtWidgets.QListWidgetItem()
