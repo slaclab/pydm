@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMDrawing Widgets &mdash; PyDM 0+untagged.1.gac354b7 documentation</title>
+  <title>PyDMDrawing Widgets &mdash; PyDM 0+untagged.1.g827fc7f documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                0+untagged.1.gac354b7
+                0+untagged.1.g827fc7f
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -24247,6 +24247,35 @@ and 3 = INVALID</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.arrowEndPoint">
+<span class="sig-name descname"><span class="pre">arrowEndPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.arrowEndPoint" title="Permalink to this definition"></a></dt>
+<dd><p>If True, an arrow will be drawn at the start of the last polyline segment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.arrowMidPoint">
+<span class="sig-name descname"><span class="pre">arrowMidPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.arrowMidPoint" title="Permalink to this definition"></a></dt>
+<dd><p>If True, an arrows will be drawn at the midpoints of the segments of the polyline.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.arrowStartPoint">
+<span class="sig-name descname"><span class="pre">arrowStartPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.arrowStartPoint" title="Permalink to this definition"></a></dt>
+<dd><p>If True, an arrow will be drawn at the start of the first polyline segment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.autoFillBackground">
 <span class="sig-name descname"><span class="pre">autoFillBackground</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.autoFillBackground" title="Permalink to this definition"></a></dt>
@@ -24673,6 +24702,17 @@ new enum values to be broadcasted</p>
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">findChildren</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">re</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegularExpression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Qt.FindChildOptions</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Qt.FindChildOption</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.FindChildrenRecursively</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QObject</span><span class="p"><span class="pre">]</span></span></span></span></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.flipMidPointArrow">
+<span class="sig-name descname"><span class="pre">flipMidPointArrow</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.flipMidPointArrow" title="Permalink to this definition"></a></dt>
+<dd><p>Flips the direction of the midpoint arrows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.focusInEvent">
@@ -26634,6 +26674,35 @@ and 3 = INVALID</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingIrregularPolygon.arrowEndPoint">
+<span class="sig-name descname"><span class="pre">arrowEndPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.arrowEndPoint" title="Permalink to this definition"></a></dt>
+<dd><p>If True, an arrow will be drawn at the start of the last polyline segment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingIrregularPolygon.arrowMidPoint">
+<span class="sig-name descname"><span class="pre">arrowMidPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.arrowMidPoint" title="Permalink to this definition"></a></dt>
+<dd><p>If True, an arrows will be drawn at the midpoints of the segments of the polyline.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingIrregularPolygon.arrowStartPoint">
+<span class="sig-name descname"><span class="pre">arrowStartPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.arrowStartPoint" title="Permalink to this definition"></a></dt>
+<dd><p>If True, an arrow will be drawn at the start of the first polyline segment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingIrregularPolygon.autoFillBackground">
 <span class="sig-name descname"><span class="pre">autoFillBackground</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.autoFillBackground" title="Permalink to this definition"></a></dt>
@@ -27060,6 +27129,17 @@ new enum values to be broadcasted</p>
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">findChildren</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">re</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QRegularExpression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Qt.FindChildOptions</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Qt.FindChildOption</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.FindChildrenRecursively</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">QObject</span><span class="p"><span class="pre">]</span></span></span></span></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingIrregularPolygon.flipMidPointArrow">
+<span class="sig-name descname"><span class="pre">flipMidPointArrow</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.flipMidPointArrow" title="Permalink to this definition"></a></dt>
+<dd><p>Flips the direction of the midpoint arrows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingIrregularPolygon.focusInEvent">
