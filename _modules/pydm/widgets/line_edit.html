@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.line_edit &mdash; PyDM 0+untagged.1.g827fc7f documentation</title>
+  <title>pydm.widgets.line_edit &mdash; PyDM 0+untagged.1.gbb77393 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                0+untagged.1.g827fc7f
+                0+untagged.1.gbb77393
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -154,8 +154,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">returnPressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="s1">&#39;Convert Units&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_unit_options</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DisplayFormat</span><span class="o">.</span><span class="n">Default</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_string_encoding</span> <span class="o">=</span> <span class="s2">&quot;utf_8&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_set_read_only</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Are we *really* read only?</span>
@@ -270,8 +269,7 @@
 <span class="sd">        reset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMLineEdit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">unit_changed</span><span class="p">(</span><span class="n">new_unit</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_unit_options</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="mi">1</span></div>
 
 <div class="viewcode-block" id="PyDMLineEdit.create_unit_options"><a class="viewcode-back" href="../../../widgets/line_edit.html#pydm.widgets.line_edit.PyDMLineEdit.create_unit_options">[docs]</a>    <span class="k">def</span> <span class="nf">create_unit_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -283,7 +281,11 @@
 <span class="sd">        :attr:`.showUnits` attribute is set to False, the menu will tell</span>
 <span class="sd">        the user that there are no available conversions</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="s1">&#39;Convert Units&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
         <span class="n">units</span> <span class="o">=</span> <span class="n">utilities</span><span class="o">.</span><span class="n">find_unit_options</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">units</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_units</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">units</span><span class="p">:</span>
@@ -333,6 +335,8 @@
 <span class="sd">        QMenu or None</span>
 <span class="sd">            If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_unit_options</span><span class="p">()</span>
+
         <span class="n">menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createStandardContextMenu</span><span class="p">()</span>
         <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
         <span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unitMenu</span><span class="p">)</span>
