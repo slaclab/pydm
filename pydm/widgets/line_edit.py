@@ -40,8 +40,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         self._scale = 1
 
         self.returnPressed.connect(self.send_value)
-        self.unitMenu = QMenu('Convert Units', self)
-        self.create_unit_options()
+        self.unitMenu = None
         self._display_format_type = self.DisplayFormat.Default
         self._string_encoding = "utf_8"
         self._user_set_read_only = False  # Are we *really* read only?
@@ -157,7 +156,6 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         """
         super(PyDMLineEdit, self).unit_changed(new_unit)
         self._scale = 1
-        self.create_unit_options()
 
     def create_unit_options(self):
         """
@@ -169,7 +167,11 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         :attr:`.showUnits` attribute is set to False, the menu will tell
         the user that there are no available conversions
         """
-        self.unitMenu.clear()
+        if self.unitMenu is None:
+            self.unitMenu = QMenu('Convert Units', self)
+        else:
+            self.unitMenu.clear()
+
         units = utilities.find_unit_options(self._unit)
         if units and self._show_units:
             for choice in units:
@@ -219,6 +221,8 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         QMenu or None
             If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
         """
+        self.create_unit_options()
+
         menu = self.createStandardContextMenu()
         menu.addSeparator()
         menu.addMenu(self.unitMenu)

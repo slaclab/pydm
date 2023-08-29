@@ -49,6 +49,10 @@ def test_construct(qtbot, init_channel):
     assert pydm_lineedit._scale == 1
     assert pydm_lineedit._prec == 0
     assert pydm_lineedit.showUnits == False
+
+    assert pydm_lineedit.unitMenu is None
+    pydm_lineedit.widget_ctx_menu()
+
     assert isinstance(pydm_lineedit.unitMenu, QMenu) and pydm_lineedit.unitMenu.title() == "Convert Units"
     assert pydm_lineedit.displayFormat == pydm_lineedit.DisplayFormat.Default
     assert (pydm_lineedit._string_encoding == pydm_lineedit.app.get_string_encoding()
