@@ -110,6 +110,29 @@ class StringListTable(QtWidgets.QTableWidget):
         self.customContextMenuRequested.connect(self._context_menu)
         self.values
 
+        # we let user swap points by dragging one on-top of the other
+        self.setDragEnabled(True)
+        self.setAcceptDrops(True)
+        self.drag_source_row = None
+    
+    def startDrag(self, event):
+        self.drag_source_row = self.currentRow()
+        # call super() since we use the default dragging functionality
+        super().startDrag(event)
+
+    def dropEvent(self, event):
+        # don't call super() here, functionality messes with our swapping!
+        source_row = self.drag_source_row
+        target_row = self.indexAt(event.pos()).row()
+        if target_row >= 0 and source_row != target_row:
+            self.swap_rows(source_row, target_row)
+        
+    def swap_rows(self, row1, row2):
+        item1 = self.takeItem(row1, 0)
+        item2 = self.takeItem(row2, 0)
+        self.setItem(row1, 0, item2)
+        self.setItem(row2, 0, item1)
+
     def _context_menu(self, pos):
         self.menu = QtWidgets.QMenu(self)
         item = self.itemAt(pos)
@@ -354,15 +377,18 @@ class BasicSettingsEditor(QtWidgets.QDialog):
             self.property_widgets.append(helper_widget)
 
         buttons_layout = QtWidgets.QHBoxLayout()
-        save_btn = QtWidgets.QPushButton("&Save", parent=self)
-        save_btn.setAutoDefault(True)
-        save_btn.setDefault(True)
-        save_btn.clicked.connect(self.save_changes)
+        self.save_btn = QtWidgets.QPushButton("&Save", parent=self)
+        self.save_btn.setAutoDefault(True)
+        self.save_btn.setDefault(True)
+        self.save_btn.clicked.connect(self.save_changes)
+        self.update_btn = QtWidgets.QPushButton("&Update", parent=self)
+        self.update_btn.clicked.connect(self.save_changes)
         cancel_btn = QtWidgets.QPushButton("&Cancel", parent=self)
         cancel_btn.clicked.connect(self.cancel_changes)
         buttons_layout.addStretch()
         buttons_layout.addWidget(cancel_btn)
-        buttons_layout.addWidget(save_btn)
+        buttons_layout.addWidget(self.update_btn)
+        buttons_layout.addWidget(self.save_btn)
 
         vlayout.addLayout(buttons_layout)
 
@@ -405,7 +431,8 @@ class BasicSettingsEditor(QtWidgets.QDialog):
                     helper.saved_value
                 )
 
-        self.accept()
+        if self.sender() == self.save_btn:
+            self.accept()
 
     @QtCore.Slot()
     def cancel_changes(self):

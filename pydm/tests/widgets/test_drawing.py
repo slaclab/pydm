@@ -1201,6 +1201,41 @@ def test_pydmdrawingpolyline_setpoints(qapp, qtbot, monkeypatch, width, height, 
 
     drawing.show()
 
+@pytest.mark.parametrize("points, num_points", [
+    ([[-1, 18], [-1, -1], [97, -1]], 3),
+    ([[-1, 18], [-1, -1]], 2)
+])
+def test_pydmdrawingpolyline_arrows(qapp, qtbot, points, num_points):
+    """
+    Test the rendering of a PyDMDrawingPolyline widget with arrow options enabled.
+
+    Expectations:
+    The drawing of the widget takes place without any problems.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
+    points : [(float, float)]
+        Requested vertices of the polygon.
+    num_points :int
+        The actual number of vertices of the polygon.
+    """
+    drawing = PyDMDrawingPolyline()
+    qtbot.addWidget(drawing)
+
+    # make sure points seutp correctly before drawing arrows
+    drawing.setPoints(points)
+    assert len(drawing.getPoints()) == num_points
+
+    # enable all arrow options
+    drawing._arrow_end_point_selection = True
+    drawing._arrow_start_point_selection = True
+    drawing._arrow_mid_point_selection = True
+    drawing._arrow_mid_point_flipped = True
+    drawing.draw_item(drawing._painter)
+    
+    drawing.show()
 
 # # ---------------------------
 # # PyDMDrawingIrregularPolygon
