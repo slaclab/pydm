@@ -231,7 +231,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
         # Get the level from the incoming string specification
         try:
             level = getattr(logging, level.upper())
-        except AttributeError as exc:
+        except AttributeError:
             logger.exception("Invalid logging level specified %s", level.upper())
         else:
             # Set the existing handler and logger to this level

@@ -129,9 +129,9 @@ class RulesDispatcher(object):
                 self.rules_engine.unregister(widget_ref)
             else:
                 widget.rule_evaluated(payload)
-        except RuntimeError as ex:
+        except RuntimeError:
             logger.debug("Widget reference was gone but not yet for Python.")
-        except Exception as ex:
+        except Exception:
             logger.exception("Error at RulesDispatcher.")
 
 
@@ -364,7 +364,7 @@ class RulesEngine(QThread):
         try:
             val = eval(expression, eval_env)
             self.emit_value(widget_ref, name, prop, val)
-        except Exception as e:
+        except Exception:
             logger.exception(
                 f"Error while evaluating Rule with name: {name} and type: {prop} " f"and expression: {expression}"
             )

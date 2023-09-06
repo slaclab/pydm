@@ -162,7 +162,7 @@ class PyDMChannel(object):
             if not plugin:
                 return
             plugin.remove_connection(self, destroying=destroying)
-        except Exception as exc:
+        except Exception:
             logger.exception("Unable to remove connection " "for %r", self)
 
     def __eq__(self, other):

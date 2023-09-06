@@ -6,7 +6,7 @@ import pytest
 
 from qtpy.QtGui import QColor, QBrush, QPixmap
 from qtpy.QtWidgets import QApplication
-from qtpy.QtCore import Property, Qt, QPoint, QSize
+from qtpy.QtCore import Qt, QSize
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 
 from ...widgets.base import PyDMWidget
@@ -28,7 +28,6 @@ from ...widgets.drawing import (
     PyDMDrawingIrregularPolygon,
 )
 
-from ...utilities.stylesheet import apply_stylesheet
 
 
 # --------------------

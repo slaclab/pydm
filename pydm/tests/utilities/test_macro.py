@@ -1,7 +1,6 @@
 import os
 import tempfile
 import pytest
-import json
 
 from ...utilities.macro import substitute_in_file, parse_macro_string
 

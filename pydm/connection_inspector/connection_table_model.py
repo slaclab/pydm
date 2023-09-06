@@ -1,5 +1,4 @@
-from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant, QTimer, Slot
-from qtpy.QtGui import QBrush
+from qtpy.QtCore import QAbstractTableModel, Qt, QVariant, QTimer, Slot
 from operator import attrgetter
 
 

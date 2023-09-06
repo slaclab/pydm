@@ -1,7 +1,6 @@
-import os
 import hashlib
 
-from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit, QDialogButtonBox
+from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit
 from qtpy.QtCore import Slot, Property
 from .base import PyDMWritableWidget
 
@@ -311,12 +310,8 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Question)
 
-            relative = "Yes" if self._relative else "No"
-            val = self._pressValue
-            op = "Press"
             if is_release:
-                val = self._releaseValue
-                op = "Release"
+                pass
 
             msg.setText(self._confirm_message)
 

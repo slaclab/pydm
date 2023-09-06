@@ -170,7 +170,7 @@ class CalcThread(QThread):
             ret = eval(self._expression, env)
             self._value = ret
             self._send_update(self.connected, ret)
-        except Exception as e:
+        except Exception:
             logger.exception("Error while evaluating CalcPlugin connection %s", self.objectName())
 
 

@@ -3,7 +3,7 @@ import time
 import numpy as np
 from collections import OrderedDict
 from typing import List, Optional, Union
-from pyqtgraph import DateAxisItem, ErrorBarItem, ViewBox
+from pyqtgraph import DateAxisItem, ErrorBarItem
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot

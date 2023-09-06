@@ -2,7 +2,7 @@
 import os
 import logging
 
-from qtpy.QtWidgets import QApplication, QWidget
+from qtpy.QtWidgets import QApplication
 
 from ..config import STYLESHEET, STYLESHEET_INCLUDE_DEFAULT
 

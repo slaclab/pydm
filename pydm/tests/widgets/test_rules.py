@@ -1,6 +1,5 @@
 import logging
 import pytest
-import time
 import weakref
 
 from ...widgets.rules import RulesDispatcher

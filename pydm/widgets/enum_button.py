@@ -140,7 +140,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     def customOrder(self, value):
         if value != self._custom_order:
             try:
-                v = [int(v) for v in value]
+                [int(v) for v in value]
             except ValueError:
                 logger.error("customOrder values can only be integers.")
                 return

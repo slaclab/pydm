@@ -343,7 +343,7 @@ class PyDMPrimitiveWidget(object):
                 rules_list = json.loads(self._rules)
                 if rules_list:
                     RulesDispatcher().register(self, rules_list)
-            except JSONDecodeError as ex:
+            except JSONDecodeError:
                 logger.exception("Invalid format for Rules")
 
     def find_parent_display(self):
@@ -710,7 +710,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         ev : QEvent
         """
         menu = self.generate_context_menu()
-        action = menu.exec_(self.mapToGlobal(ev.pos()))
+        menu.exec_(self.mapToGlobal(ev.pos()))
         del menu
 
     def init_for_designer(self):

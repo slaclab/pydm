@@ -2,14 +2,12 @@ import functools
 import weakref
 import threading
 
-from numpy import ndarray
 from typing import Optional, Callable
 
 from ..utilities.remove_protocol import parsed_address
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 from .. import config
-import re
 
 
 class PyDMConnection(QObject):

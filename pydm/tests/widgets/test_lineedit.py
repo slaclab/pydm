@@ -10,7 +10,7 @@ from qtpy.QtCore import QEvent, Qt
 from qtpy.QtGui import QFocusEvent
 from qtpy.QtWidgets import QMenu
 from ...widgets.line_edit import PyDMLineEdit
-from ...data_plugins import set_read_only, is_read_only
+from ...data_plugins import set_read_only
 from ...utilities import is_pydm_app, find_unit_options
 from ...widgets.display_format import DisplayFormat, parse_value_for_display
 
@@ -52,7 +52,7 @@ def test_construct(qtbot, init_channel):
     assert pydm_lineedit._display is None
     assert pydm_lineedit._scale == 1
     assert pydm_lineedit._prec == 0
-    assert pydm_lineedit.showUnits == False
+    assert pydm_lineedit.showUnits is False
 
     assert pydm_lineedit.unitMenu is None
     pydm_lineedit.widget_ctx_menu()

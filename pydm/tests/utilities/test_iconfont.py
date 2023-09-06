@@ -39,13 +39,13 @@ def test_icon_font_font(qtbot):
 
 def test_icon_font_icon(qtbot):
     icon_f = iconfont.IconFont()
-    ico = icon_f.icon("cogs", color=None)
-    ico1 = icon_f.icon("cogs", color=QtGui.QColor(255, 0, 0))
+    icon_f.icon("cogs", color=None)
+    icon_f.icon("cogs", color=QtGui.QColor(255, 0, 0))
     with pytest.raises(ValueError):
-        ico_invalid = icon_f.icon("foo", color=None)
+        icon_f.icon("foo", color=None)
 
 
 def test_char_icon_engine(qtbot):
     engine = iconfont.CharIconEngine(iconfont.IconFont(), "cogs", color=None)
-    pm = engine.pixmap(QtCore.QSize(32, 32), mode=QtGui.QIcon.Normal, state=QtGui.QIcon.On)
-    pm = engine.pixmap(QtCore.QSize(32, 32), mode=QtGui.QIcon.Disabled, state=QtGui.QIcon.On)
+    engine.pixmap(QtCore.QSize(32, 32), mode=QtGui.QIcon.Normal, state=QtGui.QIcon.On)
+    engine.pixmap(QtCore.QSize(32, 32), mode=QtGui.QIcon.Disabled, state=QtGui.QIcon.On)

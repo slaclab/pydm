@@ -39,14 +39,14 @@ def test_reimplemented_ui_filename(qtbot):
 
 def test_nonexistant_ui_file_raises(qtbot):
     with pytest.raises(IOError):
-        my_display = Display(parent=None, ui_filename="this_doesnt_exist.ui")
+        Display(parent=None, ui_filename="this_doesnt_exist.ui")
 
     class TestDisplay(Display):
         def ui_filename(self):
             return "this_doesnt_exist.ui"
 
     with pytest.raises(IOError):
-        my_display = TestDisplay(parent=None)
+        TestDisplay(parent=None)
 
 
 def test_nonexistent_py_file_raises():

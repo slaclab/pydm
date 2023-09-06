@@ -24,10 +24,10 @@ def test_protocol_and_address():
 
 def test_parsed_address():
     out = parsed_address(1)
-    assert out == None
+    assert out is None
 
     out = parsed_address("foo:/bar")
-    assert out == None
+    assert out is None
 
     out = parsed_address("foo://bar")
     assert out == ("foo", "bar", "", "", "", "")

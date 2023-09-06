@@ -12,7 +12,7 @@ import logging
 import warnings
 
 from qtpy.QtCore import Qt, QTimer, Slot
-from qtpy.QtWidgets import QApplication, QWidget
+from qtpy.QtWidgets import QApplication
 from .main_window import PyDMMainWindow
 
 from .utilities import which, path_info

@@ -2,12 +2,11 @@ import os
 import json
 
 from qtpy import QtWidgets, QtCore, QtDesigner
-from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
+from qtpy.QtWidgets import QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
-from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
+from qtpy.QtCore import Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
-from ..utilities import is_pydm_app, is_qt_designer, find_file
-from .base import PyDMWidget
+from ..utilities import is_qt_designer, find_file
 
 
 class SymbolEditor(QtWidgets.QDialog):

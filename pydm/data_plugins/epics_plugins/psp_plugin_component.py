@@ -111,7 +111,8 @@ def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mo
     pv = Pv(pvname, use_numpy=True, control=control)
 
     if signal is None:
-        default_mon_cb = lambda e: None
+        def default_mon_cb(e):
+            return None
     else:
         default_mon_cb = generic_mon_cb(pv, signal)
 

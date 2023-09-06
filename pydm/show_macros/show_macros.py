@@ -4,7 +4,6 @@ from qtpy.QtWidgets import (
     QPlainTextEdit,
     QVBoxLayout,
     QHBoxLayout,
-    QGridLayout,
     QPushButton,
     QApplication,
     QLabel,

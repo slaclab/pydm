@@ -117,7 +117,7 @@ def parse_macro_string(macro_string):
                     state = PRE_NAME
                 else:
                     continue
-            if not (None in (name_start, name_end, val_start, val_end)):
+            if None not in (name_start, name_end, val_start, val_end):
                 key = macro_string[name_start:name_end].strip().replace("\\", "")
                 val = macro_string[val_start:val_end].strip("\"'").replace("\\", "")
                 macros[key] = val

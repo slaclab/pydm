@@ -462,7 +462,7 @@ class RulesEditor(QtWidgets.QDialog):
         try:
             prop = self.cmb_property.currentData()
             self.lbl_expected_type.setText(prop[1].__name__)
-            idx = self.get_current_index()
+            self.get_current_index()
             self.change_entry("property", self.cmb_property.currentText())
         except:
             self.lbl_expected_type.setText("")

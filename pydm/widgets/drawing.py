@@ -4,7 +4,7 @@ import os
 import logging
 
 from qtpy.QtWidgets import QWidget, QStyle, QStyleOption
-from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygon, QPolygonF, QPixmap, QMovie
+from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygonF, QPixmap, QMovie
 from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
@@ -1173,7 +1173,7 @@ class PyDMDrawingPolygon(PyDMDrawing):
         ```PyDMDrawing.draw_item```.
         """
         super(PyDMDrawingPolygon, self).draw_item(painter)
-        maxsize = not self.is_square()
+        not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=not self.is_square())
         poly = self._calculate_drawing_points(x, y, w, h)
         painter.drawPolygon(QPolygonF(poly))

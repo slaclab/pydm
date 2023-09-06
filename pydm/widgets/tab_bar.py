@@ -1,4 +1,4 @@
-from qtpy.QtWidgets import QTabBar, QTabWidget, QWidget
+from qtpy.QtWidgets import QTabBar, QTabWidget
 from qtpy.QtGui import QIcon, QColor
 from qtpy.QtCore import QByteArray
 from .base import PyDMWidget

@@ -1,5 +1,4 @@
-from qtpy import uic
-from qtpy.QtWidgets import QWidget, QApplication, QTableWidgetItem
+from qtpy.QtWidgets import QWidget, QTableWidgetItem
 from qtpy.QtCore import Qt, PYQT_VERSION_STR, qVersion
 from .about_ui import Ui_Form
 from numpy import __version__ as numpyver

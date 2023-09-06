@@ -1,5 +1,5 @@
 from qtpy.QtWidgets import QDoubleSpinBox, QApplication, QLineEdit
-from qtpy.QtCore import Property, QEvent, Qt
+from qtpy.QtCore import Property, Qt
 from .base import PyDMWritableWidget, TextFormatter
 
 

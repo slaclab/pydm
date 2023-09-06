@@ -165,7 +165,7 @@ def install(use_default_handler=True):
     if dispatcher.isRunning():
         return
     if use_default_handler:
-        handler = DefaultExceptionNotifier()
+        DefaultExceptionNotifier()
     dispatcher.start()
     sys.excepthook = excepthook
 

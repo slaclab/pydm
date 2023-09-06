@@ -1,9 +1,5 @@
-import os
-import pytest
-import logging
 import json
 import copy
-import webbrowser
 
 from qtpy import QtCore
 from qtpy.QtWidgets import QMessageBox, QTableWidgetSelectionRange

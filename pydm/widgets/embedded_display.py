@@ -1,5 +1,5 @@
 from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
-from qtpy.QtWidgets import QAction, QFrame, QApplication, QLabel, QMenu, QVBoxLayout, QWidget
+from qtpy.QtWidgets import QAction, QFrame, QApplication, QLabel, QMenu, QVBoxLayout
 from qtpy.QtCore import QPoint, Qt, QSize, Property, QTimer
 
 import copy
@@ -272,7 +272,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         ----------
         new_widget : QWidget
         """
-        should_reconnect = False
         if new_widget is self._embedded_widget:
             return
         if self._embedded_widget is not None:
@@ -422,7 +421,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         if is_pydm_app():
             load_file(file_path, macros=macros)
         else:
-            w = load_file(file_path, macros=macros, target=ScreenTarget.DIALOG)
+            load_file(file_path, macros=macros, target=ScreenTarget.DIALOG)
 
     def create_context_menu(self, pos: QPoint) -> QMenu:
         """Create the right-click context menu for this embedded widget based on the location of the mouse click"""

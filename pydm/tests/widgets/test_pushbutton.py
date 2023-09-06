@@ -10,7 +10,6 @@ import logging
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QInputDialog, QMessageBox
-from ...widgets.base import PyDMWidget
 from ...widgets.pushbutton import PyDMPushButton
 from ...utilities.iconfont import IconFont
 
@@ -103,9 +102,9 @@ def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_
         button_icon_pixmap = pydm_pushbutton.icon().pixmap(size)
         assert icon_pixmap.toImage() == button_icon_pixmap.toImage()
 
-    assert pydm_pushbutton.showConfirmDialog == False
+    assert pydm_pushbutton.showConfirmDialog is False
     assert pydm_pushbutton.confirmMessage == PyDMPushButton.DEFAULT_CONFIRM_MESSAGE
-    assert pydm_pushbutton.passwordProtected == False
+    assert pydm_pushbutton.passwordProtected is False
     assert pydm_pushbutton.password == ""
     assert pydm_pushbutton.protectedPassword == ""
 

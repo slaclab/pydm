@@ -44,7 +44,7 @@ def test_mismatched_shapes(qtbot):
     """Test that the logic around waveforms with differing lengths works as expected"""
 
     # Create a waveform plot and add data whose waveform components do not share the same length
-    waveform_plot = PyDMWaveformPlot()
+    PyDMWaveformPlot()
     data_item_1 = WaveformCurveItem()
 
     # Start with the basic case, both waveforms share the same length

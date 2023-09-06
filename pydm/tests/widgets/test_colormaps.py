@@ -1,19 +1,11 @@
 # Unit Tests for the Color Map
 
 
-import pytest
 
 import numpy as np
 
 from ...widgets.colormaps import (
     PyDMColorMap,
-    _magma_data,
-    _inferno_data,
-    _plasma_data,
-    _viridis_data,
-    _jet_data,
-    _monochrome_data,
-    _hot_data,
     cmaps,
     magma,
     inferno,

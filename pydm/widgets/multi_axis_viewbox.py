@@ -1,4 +1,4 @@
-from pyqtgraph import GraphicsWidget, ViewBox
+from pyqtgraph import ViewBox
 from qtpy.QtCore import Qt, Signal
 
 

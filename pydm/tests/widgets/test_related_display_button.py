@@ -2,7 +2,7 @@ import os
 import pytest
 import sys
 from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QApplication, QVBoxLayout
+from qtpy.QtWidgets import QApplication
 from ...utilities.stylesheet import global_style
 from ...widgets.related_display_button import PyDMRelatedDisplayButton
 
