@@ -6,7 +6,6 @@ from .timeplot import PyDMTimePlot
 
 
 class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
-
     def __init__(self, plot, parent=None):
         super(PyDMTimePlotCurvesModel, self).__init__(plot, parent=parent)
         self._column_names = ("Channel", "Style") + self._column_names
@@ -18,8 +17,7 @@ class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
             return str(curve.address)
         elif column_name == "Style":
             return curve.plot_style
-        return super(PyDMTimePlotCurvesModel, self).get_data(column_name,
-                                                             curve)
+        return super(PyDMTimePlotCurvesModel, self).get_data(column_name, curve)
 
     def set_data(self, column_name, curve, value):
         if column_name == "Channel":
@@ -27,13 +25,11 @@ class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
         elif column_name == "Style":
             curve.plot_style = str(value)
         else:
-            return super(PyDMTimePlotCurvesModel, self).set_data(
-                column_name=column_name, curve=curve, value=value)
+            return super(PyDMTimePlotCurvesModel, self).set_data(column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, address=None, name=None, color=None):
-        self.beginInsertRows(QModelIndex(), len(self._plot._curves),
-                             len(self._plot._curves))
+        self.beginInsertRows(QModelIndex(), len(self._plot._curves), len(self._plot._curves))
         self._plot.addYChannel(address, name, color)
         self.endInsertRows()
 
@@ -51,14 +47,16 @@ class TimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
 
     This thing is mostly just a wrapper for a table view, with a couple
     buttons to add and remove curves, and a button to save the changes."""
+
     TABLE_MODEL_CLASS = PyDMTimePlotCurvesModel
 
     def __init__(self, plot: PyDMTimePlot, parent: Optional[QObject] = None):
         super().__init__(plot, parent)
 
         threshold_color_delegate = ColorColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex('Limit Color'),
-                                                 threshold_color_delegate)
+        self.table_view.setItemDelegateForColumn(
+            self.table_model.getColumnIndex("Limit Color"), threshold_color_delegate
+        )
 
         plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
         self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Style"), plot_style_delegate)

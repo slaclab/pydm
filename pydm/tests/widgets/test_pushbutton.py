@@ -19,37 +19,37 @@ from ...utilities.iconfont import IconFont
 # POSITIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("label, press_value, relative, init_channel, icon_font_name, icon_color", [
-    # Testing different types of press value
-    ("Test Button", "Test Button PressValue", True, "CA://MTEST", "cogs", QColor(255, 255, 255)),
-    ("Test Button", 42, True, "CA://MTEST", "cogs", QColor(255, 255, 255)),
-    ("Test Button", 42.42, True, "CA://MTEST", "cogs", QColor(255, 255, 255)),
 
-    # Testing combinations of parameters
-    ("Test Button", "Test Button PressValue", True, "CA://MTEST", None, None),
-    ("Test Button", "Test Button PressValue", True, "CA://MTEST", "", None),
-    ("Test Button", "Test Button PressValue", True, "CA://MTEST", None, ""),
-    ("Test Button", "Test Button PressValue", True, "CA://MTEST", "cog", QColor(255, 0, 0)),
-    ("Test Button", "Test Button PressValue", True, "CA://MTEST", "cogs", QColor(255, 255, 255)),
-
-    ("", "Test Button PressValue", True, "", "fast-forward", QColor(0, 0, 0)),
-    ("Test Button", "", True, None, "fast-forward", QColor(0, 0, 255)),
-    ("", "", True, "CA://MTEST", "fast-forward", QColor(0, 255, 0)),
-    ("", None, True, "CA://MTEST", "fast-forward", QColor(255, 0, 0)),
-
-    ("Test Button", "Test Button PressValue", False, "CA://MTEST", None, None),
-    ("Test Button", "Test Button PressValue", False, "CA://MTEST", "check", QColor(10, 20, 30)),
-    ("", "Test Button PressValue", False, "", "check", QColor(10, 20, 30)),
-    ("Test Button", "", False, None, "check", QColor(10, 20, 30)),
-    ("", "", False, "CA://MTEST", "check", QColor(10, 20, 30)),
-    ("", None, False, "CA://MTEST", "check", QColor(10, 20, 30)),
-
-    # Testing variations of empty parameters
-    (None, "", True, "", None, None),
-    (None, None, True, None, None, None),
-    (None, "", False, "", None, None),
-    (None, None, False, None, None, None),
-])
+@pytest.mark.parametrize(
+    "label, press_value, relative, init_channel, icon_font_name, icon_color",
+    [
+        # Testing different types of press value
+        ("Test Button", "Test Button PressValue", True, "CA://MTEST", "cogs", QColor(255, 255, 255)),
+        ("Test Button", 42, True, "CA://MTEST", "cogs", QColor(255, 255, 255)),
+        ("Test Button", 42.42, True, "CA://MTEST", "cogs", QColor(255, 255, 255)),
+        # Testing combinations of parameters
+        ("Test Button", "Test Button PressValue", True, "CA://MTEST", None, None),
+        ("Test Button", "Test Button PressValue", True, "CA://MTEST", "", None),
+        ("Test Button", "Test Button PressValue", True, "CA://MTEST", None, ""),
+        ("Test Button", "Test Button PressValue", True, "CA://MTEST", "cog", QColor(255, 0, 0)),
+        ("Test Button", "Test Button PressValue", True, "CA://MTEST", "cogs", QColor(255, 255, 255)),
+        ("", "Test Button PressValue", True, "", "fast-forward", QColor(0, 0, 0)),
+        ("Test Button", "", True, None, "fast-forward", QColor(0, 0, 255)),
+        ("", "", True, "CA://MTEST", "fast-forward", QColor(0, 255, 0)),
+        ("", None, True, "CA://MTEST", "fast-forward", QColor(255, 0, 0)),
+        ("Test Button", "Test Button PressValue", False, "CA://MTEST", None, None),
+        ("Test Button", "Test Button PressValue", False, "CA://MTEST", "check", QColor(10, 20, 30)),
+        ("", "Test Button PressValue", False, "", "check", QColor(10, 20, 30)),
+        ("Test Button", "", False, None, "check", QColor(10, 20, 30)),
+        ("", "", False, "CA://MTEST", "check", QColor(10, 20, 30)),
+        ("", None, False, "CA://MTEST", "check", QColor(10, 20, 30)),
+        # Testing variations of empty parameters
+        (None, "", True, "", None, None),
+        (None, None, True, None, None, None),
+        (None, "", False, "", None, None),
+        (None, None, False, None, None, None),
+    ],
+)
 def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_name, icon_color):
     """
     Test the basic instantiation of the widget.
@@ -79,8 +79,9 @@ def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_
     if icon_font_name:
         icon = IconFont().icon(icon_font_name, icon_color)
 
-    pydm_pushbutton = PyDMPushButton(label=label, pressValue=press_value, relative=relative,
-                                     init_channel=init_channel, icon=icon)
+    pydm_pushbutton = PyDMPushButton(
+        label=label, pressValue=press_value, relative=relative, init_channel=init_channel, icon=icon
+    )
     qtbot.addWidget(pydm_pushbutton)
 
     assert pydm_pushbutton.text() == label if label else pydm_pushbutton.text() == ""
@@ -109,10 +110,13 @@ def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_
     assert pydm_pushbutton.protectedPassword == ""
 
 
-@pytest.mark.parametrize("password_is_protected", [
-    (True),
-    (False),
-])
+@pytest.mark.parametrize(
+    "password_is_protected",
+    [
+        (True),
+        (False),
+    ],
+)
 def test_password_protected(qtbot, password_is_protected):
     """
     Test that the password protected property is properly set. The password protected is flag that, if set to True,
@@ -136,10 +140,13 @@ def test_password_protected(qtbot, password_is_protected):
     assert pydm_pushbutton._password_protected == password_is_protected
 
 
-@pytest.mark.parametrize("relative_choice", [
-    (True),
-    (False),
-])
+@pytest.mark.parametrize(
+    "relative_choice",
+    [
+        (True),
+        (False),
+    ],
+)
 def test_relative_change(qtbot, relative_choice):
     """
     Test that the relative attribute of the button.
@@ -161,14 +168,10 @@ def test_relative_change(qtbot, relative_choice):
     assert pydm_pushbutton.relativeChange == relative_choice
 
 
-@pytest.mark.parametrize("password_protected, plain_text_password", [
-    (True, "$L4C_p4$$wd"),
-    (True, ""),
-    (True, None),
-    (False, "$L4C_p4$$wd"),
-    (False, ""),
-    (False, None)
-])
+@pytest.mark.parametrize(
+    "password_protected, plain_text_password",
+    [(True, "$L4C_p4$$wd"), (True, ""), (True, None), (False, "$L4C_p4$$wd"), (False, ""), (False, None)],
+)
 def test_set_password(qtbot, password_protected, plain_text_password):
     """
     Test the widget's password encryption mechanism.
@@ -212,25 +215,30 @@ def test_set_password(qtbot, password_protected, plain_text_password):
     assert pydm_pushbutton._password_protected == password_protected
     assert encrypted_password == expected_encrypted_password
 
-@pytest.mark.parametrize("is_widget_protected_with_password, plain_text_password, input_dialog_status,"
-                         "expected_validation_status", [
-    (True, "$L4C_p4$$wd", True, True),
-    (False, "$L4C_p4$$wd", True, True),
 
-    (True, "", True, False),
-    (False, "", True, True),
-
-    (True, "$L4C_p4$$wd", False, False),
-    (False, "$L4C_p4$$wd", False, True),
-
-    (True, "Wrong_Password", True, False),
-    (False, "Wrong_Password", True, False),
-
-    (True, "Wrong_Password", False, False),
-    (False, "Wrong_Password", False, False),
-])
-def test_validate_password(qtbot, monkeypatch, is_widget_protected_with_password, plain_text_password,
-                           input_dialog_status, expected_validation_status):
+@pytest.mark.parametrize(
+    "is_widget_protected_with_password, plain_text_password, input_dialog_status," "expected_validation_status",
+    [
+        (True, "$L4C_p4$$wd", True, True),
+        (False, "$L4C_p4$$wd", True, True),
+        (True, "", True, False),
+        (False, "", True, True),
+        (True, "$L4C_p4$$wd", False, False),
+        (False, "$L4C_p4$$wd", False, True),
+        (True, "Wrong_Password", True, False),
+        (False, "Wrong_Password", True, False),
+        (True, "Wrong_Password", False, False),
+        (False, "Wrong_Password", False, False),
+    ],
+)
+def test_validate_password(
+    qtbot,
+    monkeypatch,
+    is_widget_protected_with_password,
+    plain_text_password,
+    input_dialog_status,
+    expected_validation_status,
+):
     """
     Test password validation.
 
@@ -266,45 +274,55 @@ def test_validate_password(qtbot, monkeypatch, is_widget_protected_with_password
         # Then, we mock different scenarios with the input dialog's returning False (the user clicking on Cancel),
         # or the user-entered password is not matching
         pydm_pushbutton.password = "$L4C_p4$$wd"
-        monkeypatch.setattr(QInputDialog, 'getText', lambda *args: (plain_text_password, input_dialog_status))
+        monkeypatch.setattr(QInputDialog, "getText", lambda *args: (plain_text_password, input_dialog_status))
         if not expected_validation_status:
             # Turn off the "Invalid password" dialog so that it won't interfere with the test
-            monkeypatch.setattr(QMessageBox, 'exec_', lambda *args: (False,))
+            monkeypatch.setattr(QMessageBox, "exec_", lambda *args: (False,))
 
         validation_status = pydm_pushbutton.validate_password()
         assert validation_status == expected_validation_status
 
 
-@pytest.mark.parametrize("initial_value, press_value, is_password_protected, show_confirm_dialog,"
-                         "confirm_message, confirm_dialog_response, is_password_validated, is_value_relative,", [
-    (0, 1, True, True, "Continue?", QMessageBox.Yes, True, False),
-    (123, 345, True, True, "Continue?", QMessageBox.Yes, True, True),
-    (123, "345", True, True, "", QMessageBox.Yes, True, True),
-    (123.345, 345.678, True, True, "", QMessageBox.Yes, True, True),
-    (123.345, "345.678", True, True, "", QMessageBox.Yes, True, True),
-
-    ("123", 345, False, True, "", QMessageBox.Yes, True, True),
-    ("123", 345.678, True, False, "", QMessageBox.Yes, True, True),
-    ("123.345", 345.678, False, False, "", QMessageBox.Yes, True, True),
-    ("123.345", "345.678", False, False, "", QMessageBox.Yes, True, True),
-
-    ("123", 345, True, True, "", QMessageBox.No, True, True),
-    ("123", 345, False, True, "", QMessageBox.No, True, True),
-
-    ("123", 345, True, True, "Continue?", QMessageBox.Yes, True, False),
-    ("123", 345, True, True, "", QMessageBox.Yes, True, False),
-    ("123.345", 345.678, True, True, "", QMessageBox.Yes, True, False),
-    ("123.345", "345.678", True, True, "", QMessageBox.Yes, True, False),
-
-    ("123", 345, True, True, "Continue?", QMessageBox.Yes, False, True),
-    ("123", 345, True, True, "", QMessageBox.Yes, False, False),
-    ("abc", "def", True, True, "", QMessageBox.Yes, False, False),
-    ("abc", None, True, True, "", QMessageBox.Yes, False, False),
-    (None, "def", True, True, "", QMessageBox.Yes, False, False),
-    (None, None, True, True, "", QMessageBox.Yes, False, False),
-])
-def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_password_protected, show_confirm_dialog,
-                    confirm_message, confirm_dialog_response, is_password_validated, is_value_relative):
+@pytest.mark.parametrize(
+    "initial_value, press_value, is_password_protected, show_confirm_dialog,"
+    "confirm_message, confirm_dialog_response, is_password_validated, is_value_relative,",
+    [
+        (0, 1, True, True, "Continue?", QMessageBox.Yes, True, False),
+        (123, 345, True, True, "Continue?", QMessageBox.Yes, True, True),
+        (123, "345", True, True, "", QMessageBox.Yes, True, True),
+        (123.345, 345.678, True, True, "", QMessageBox.Yes, True, True),
+        (123.345, "345.678", True, True, "", QMessageBox.Yes, True, True),
+        ("123", 345, False, True, "", QMessageBox.Yes, True, True),
+        ("123", 345.678, True, False, "", QMessageBox.Yes, True, True),
+        ("123.345", 345.678, False, False, "", QMessageBox.Yes, True, True),
+        ("123.345", "345.678", False, False, "", QMessageBox.Yes, True, True),
+        ("123", 345, True, True, "", QMessageBox.No, True, True),
+        ("123", 345, False, True, "", QMessageBox.No, True, True),
+        ("123", 345, True, True, "Continue?", QMessageBox.Yes, True, False),
+        ("123", 345, True, True, "", QMessageBox.Yes, True, False),
+        ("123.345", 345.678, True, True, "", QMessageBox.Yes, True, False),
+        ("123.345", "345.678", True, True, "", QMessageBox.Yes, True, False),
+        ("123", 345, True, True, "Continue?", QMessageBox.Yes, False, True),
+        ("123", 345, True, True, "", QMessageBox.Yes, False, False),
+        ("abc", "def", True, True, "", QMessageBox.Yes, False, False),
+        ("abc", None, True, True, "", QMessageBox.Yes, False, False),
+        (None, "def", True, True, "", QMessageBox.Yes, False, False),
+        (None, None, True, True, "", QMessageBox.Yes, False, False),
+    ],
+)
+def test_send_value(
+    qtbot,
+    monkeypatch,
+    signals,
+    initial_value,
+    press_value,
+    is_password_protected,
+    show_confirm_dialog,
+    confirm_message,
+    confirm_dialog_response,
+    is_password_validated,
+    is_value_relative,
+):
     """
     Test sending a new value to the channel.
 
@@ -368,7 +386,7 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
 
     if show_confirm_dialog:
         # Monkeypatch the confirm dialog call if popping up the dialog is enabled for testing
-        monkeypatch.setattr(QMessageBox, 'exec_', lambda *args: confirm_dialog_response)
+        monkeypatch.setattr(QMessageBox, "exec_", lambda *args: confirm_dialog_response)
 
     pydm_pushbutton.passwordProtected = is_password_protected
     if is_password_protected:
@@ -376,7 +394,7 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
         # We assume the QInputDialog returns success. Further testing scenarios are performed at test_validate_password
         plain_text_password = "$L4C_p4$$wd"
         pydm_pushbutton.password = plain_text_password
-        monkeypatch.setattr(QInputDialog, 'getText', lambda *args: (plain_text_password, is_password_validated))
+        monkeypatch.setattr(QInputDialog, "getText", lambda *args: (plain_text_password, is_password_validated))
 
     send_value = pydm_pushbutton.sendValue()
     if not pydm_pushbutton.pressValue or not initial_value:
@@ -398,25 +416,25 @@ def test_send_value(qtbot, monkeypatch, signals, initial_value, press_value, is_
                 assert signals.value == pydm_pushbutton.value + pydm_pushbutton.channeltype(pydm_pushbutton.pressValue)
 
 
-@pytest.mark.parametrize("current_channel_value, updated_value", [
-    # Current channel value type is array, getting a new int value
-    (np.array([123, 456]), 10),
-
-    # Test if the current channel value type is int, and the widget is getting new int, float, or string value
-    (10, 20),
-    (10, 20.20),
-    (10, "100"),
-
-    # Test if the current channel value type is float, and the widget getting new int, float, or string value
-    (10.10, 20.20),
-    (10.10, 42),
-    (10.10, "100.5"),
-
-    # Test if the current channel value type is string, and the widget is getting new int, float, or string value
-    ("Old str value", "New str value"),
-    ("Old str value", 42),
-    ("Old str value", 10.10),
-])
+@pytest.mark.parametrize(
+    "current_channel_value, updated_value",
+    [
+        # Current channel value type is array, getting a new int value
+        (np.array([123, 456]), 10),
+        # Test if the current channel value type is int, and the widget is getting new int, float, or string value
+        (10, 20),
+        (10, 20.20),
+        (10, "100"),
+        # Test if the current channel value type is float, and the widget getting new int, float, or string value
+        (10.10, 20.20),
+        (10.10, 42),
+        (10.10, "100.5"),
+        # Test if the current channel value type is string, and the widget is getting new int, float, or string value
+        ("Old str value", "New str value"),
+        ("Old str value", 42),
+        ("Old str value", 10.10),
+    ],
+)
 def test_update_press_value(qtbot, signals, current_channel_value, updated_value):
     """
     Test the conversion of a new press value given the existing channel type.
@@ -450,19 +468,24 @@ def test_update_press_value(qtbot, signals, current_channel_value, updated_value
     # Verify the new value is assigned to be the new pressValue as a str
     assert pydm_pushbutton.pressValue == str(type(current_channel_value)(updated_value))
 
+
 # --------------------
 # NEGATIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("current_channel_value, updated_value, expected_log_error", [
-    (np.array([123.123, 456.456]), 10.10, "'10.1' is not a valid pressValue"),
-    (np.array(["abc", "string in an array"]), "New str value", "'New str value' is not a valid pressValue"),
 
-    (10, "New str value", "not a valid"),
-    (10.10, "New str value", "not a valid"),
-])
-def test_update_press_value_incompatible_update_value(qtbot, signals, caplog, current_channel_value, updated_value,
-                                                      expected_log_error):
+@pytest.mark.parametrize(
+    "current_channel_value, updated_value, expected_log_error",
+    [
+        (np.array([123.123, 456.456]), 10.10, "'10.1' is not a valid pressValue"),
+        (np.array(["abc", "string in an array"]), "New str value", "'New str value' is not a valid pressValue"),
+        (10, "New str value", "not a valid"),
+        (10.10, "New str value", "not a valid"),
+    ],
+)
+def test_update_press_value_incompatible_update_value(
+    qtbot, signals, caplog, current_channel_value, updated_value, expected_log_error
+):
     """
     Test if the widget will log the correct error message if the update value's type is incompatible with the current
     data type established by the current data associated with the widget.
@@ -499,17 +522,23 @@ def test_update_press_value_incompatible_update_value(qtbot, signals, caplog, cu
     assert expected_log_error in caplog.text
 
 
-
-@pytest.mark.parametrize("initial_value, press_value, release_value,", [
-    (0, 1, -2),
-    (123, 345, -3,),
-])
+@pytest.mark.parametrize(
+    "initial_value, press_value, release_value,",
+    [
+        (0, 1, -2),
+        (
+            123,
+            345,
+            -3,
+        ),
+    ],
+)
 def test_send_on_release_value(qtbot, monkeypatch, signals, initial_value, press_value, release_value):
     """
     Test send on release
 
     Expectations:
-    1. If writeOnRelease is True, a value will be written on release 
+    1. If writeOnRelease is True, a value will be written on release
     2. If writeOnRelease is Fale, no value will be written on the release
 
     Parameters

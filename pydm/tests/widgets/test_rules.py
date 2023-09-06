@@ -44,9 +44,14 @@ def test_unregister(qtbot):
     widget = PyDMLabel()
     qtbot.addWidget(widget)
 
-    rules = [{'name': 'Rule #1', 'property': 'Visible',
-              'expression': 'ch[0] < 1',
-              'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+    rules = [
+        {
+            "name": "Rule #1",
+            "property": "Visible",
+            "expression": "ch[0] < 1",
+            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+        }
+    ]
 
     dispatcher = RulesDispatcher()
     dispatcher.register(widget, rules)
@@ -72,9 +77,14 @@ def test_rules_not_connected(qtbot, caplog):
     widget.show()
     assert widget.isVisible()
 
-    rules = [{'name': 'Rule #1', 'property': 'Visible',
-                'expression': 'ch[0] < 1',
-                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+    rules = [
+        {
+            "name": "Rule #1",
+            "property": "Visible",
+            "expression": "ch[0] < 1",
+            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+        }
+    ]
 
     dispatcher = RulesDispatcher()
     dispatcher.register(widget, rules)
@@ -82,7 +92,7 @@ def test_rules_not_connected(qtbot, caplog):
     re = dispatcher.rules_engine
     assert weakref.ref(widget) in re.widget_map
     assert len(re.widget_map[weakref.ref(widget)]) == 1
-    assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
+    assert re.widget_map[weakref.ref(widget)][0]["rule"] == rules[0]
 
     with caplog.at_level(logging.DEBUG):
         re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=1)
@@ -107,9 +117,14 @@ def test_rules_ok(qtbot, caplog):
     widget.show()
     assert widget.isVisible()
 
-    rules = [{'name': 'Rule #1', 'property': 'Visible',
-                'expression': 'ch[0] < 1',
-                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+    rules = [
+        {
+            "name": "Rule #1",
+            "property": "Visible",
+            "expression": "ch[0] < 1",
+            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+        }
+    ]
 
     dispatcher = RulesDispatcher()
     dispatcher.register(widget, rules)
@@ -117,27 +132,20 @@ def test_rules_ok(qtbot, caplog):
     re = dispatcher.rules_engine
     assert weakref.ref(widget) in re.widget_map
     assert len(re.widget_map[weakref.ref(widget)]) == 1
-    assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
+    assert re.widget_map[weakref.ref(widget)][0]["rule"] == rules[0]
 
     blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
 
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=5)
-    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is True
+    assert re.widget_map[weakref.ref(widget)][0]["calculate"] is True
 
     blocker.wait()
-    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
+    assert re.widget_map[weakref.ref(widget)][0]["calculate"] is False
     assert not widget.isVisible()
 
 
-@pytest.mark.parametrize(
-    "use_enum, visible",
-    [
-        (None, True),
-        (True, True),
-        (False, False)
-    ]
-)
+@pytest.mark.parametrize("use_enum, visible", [(None, True), (True, True), (False, False)])
 def test_rules_enums(use_enum, visible, qtbot, caplog):
     """
     Test the rules mechanism with enums.
@@ -154,9 +162,14 @@ def test_rules_enums(use_enum, visible, qtbot, caplog):
     widget.show()
     assert widget.isVisible()
 
-    rules = [{'name': 'Rule #1', 'property': 'Visible',
-                'expression': 'ch[0] == "RUN"',
-                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+    rules = [
+        {
+            "name": "Rule #1",
+            "property": "Visible",
+            "expression": 'ch[0] == "RUN"',
+            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+        }
+    ]
     if use_enum is not None:
         rules[0]["channels"][0]["use_enum"] = use_enum
 
@@ -166,17 +179,17 @@ def test_rules_enums(use_enum, visible, qtbot, caplog):
     re = dispatcher.rules_engine
     assert weakref.ref(widget) in re.widget_map
     assert len(re.widget_map[weakref.ref(widget)]) == 1
-    assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
+    assert re.widget_map[weakref.ref(widget)][0]["rule"] == rules[0]
 
     # First we test that we receive a value but we don't have enums yet
     blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
 
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=1)
-    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is True
+    assert re.widget_map[weakref.ref(widget)][0]["calculate"] is True
 
     blocker.wait()
-    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
+    assert re.widget_map[weakref.ref(widget)][0]["calculate"] is False
     assert not widget.isVisible()
 
     blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
@@ -185,10 +198,10 @@ def test_rules_enums(use_enum, visible, qtbot, caplog):
     # value was sent making the widget visible on condition of use_enum
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
     re.callback_enum(weakref.ref(widget), 0, 0, enums=["STOP", "RUN"])
-    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is True
+    assert re.widget_map[weakref.ref(widget)][0]["calculate"] is True
 
     blocker.wait()
-    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
+    assert re.widget_map[weakref.ref(widget)][0]["calculate"] is False
     assert widget.isVisible() == visible
 
 
@@ -208,9 +221,14 @@ def test_rules_invalid_expr(qtbot, caplog):
     widget.show()
     assert widget.isVisible()
 
-    rules = [{'name': 'Rule #1', 'property': 'Visible',
-                'expression': 'ch[0] < 1',
-                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+    rules = [
+        {
+            "name": "Rule #1",
+            "property": "Visible",
+            "expression": "ch[0] < 1",
+            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+        }
+    ]
 
     dispatcher = RulesDispatcher()
     dispatcher.register(widget, rules)
@@ -218,15 +236,15 @@ def test_rules_invalid_expr(qtbot, caplog):
     re = dispatcher.rules_engine
     assert weakref.ref(widget) in re.widget_map
     assert len(re.widget_map[weakref.ref(widget)]) == 1
-    assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
+    assert re.widget_map[weakref.ref(widget)][0]["rule"] == rules[0]
 
     caplog.clear()
 
-    rules[0]['expression'] = 'foo'
+    rules[0]["expression"] = "foo"
     dispatcher.register(widget, rules)
     assert len(re.widget_map[weakref.ref(widget)]) == 1
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
-    re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value='a')
+    re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value="a")
 
     # Wait for rule to execute but keep app responsive
     qtbot.wait(1000)
@@ -255,10 +273,15 @@ def test_rules_initial_value(qtbot, caplog):
     qtbot.addWidget(widget)
     widget.show()
 
-    rules = [{'name': 'Rule #1', 'property': 'Text',
-                'expression': 'str(ch[0])',
-                'initial_value': 'Initial Value Test',
-                'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+    rules = [
+        {
+            "name": "Rule #1",
+            "property": "Text",
+            "expression": "str(ch[0])",
+            "initial_value": "Initial Value Test",
+            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+        }
+    ]
 
     dispatcher = RulesDispatcher()
     dispatcher.register(widget, rules)
@@ -266,14 +289,14 @@ def test_rules_initial_value(qtbot, caplog):
     re = dispatcher.rules_engine
     assert weakref.ref(widget) in re.widget_map
     assert len(re.widget_map[weakref.ref(widget)]) == 1
-    assert re.widget_map[weakref.ref(widget)][0]['rule'] == rules[0]
-    assert widget.text() == 'Initial Value Test'
+    assert re.widget_map[weakref.ref(widget)][0]["rule"] == rules[0]
+    assert widget.text() == "Initial Value Test"
     blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
 
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=5)
-    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is True
+    assert re.widget_map[weakref.ref(widget)][0]["calculate"] is True
 
     blocker.wait()
-    assert re.widget_map[weakref.ref(widget)][0]['calculate'] is False
+    assert re.widget_map[weakref.ref(widget)][0]["calculate"] is False
     assert widget.text() == str(5)

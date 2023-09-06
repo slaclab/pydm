@@ -7,8 +7,9 @@ from ...widgets.channel import PyDMChannel
 from pydm.data_plugins import plugin_for_address
 
 
-class A():
+class A:
     pass
+
 
 def test_construct(qtbot):
     """
@@ -27,46 +28,50 @@ def test_construct(qtbot):
     """
     pydm_channel = PyDMChannel()
 
-    assert pydm_channel.address is None and \
-        pydm_channel.connection_slot is None and \
-        pydm_channel.value_slot is None and \
-        pydm_channel.severity_slot is None and \
-        pydm_channel.enum_strings_slot is None and \
-        pydm_channel.unit_slot is None and \
-        pydm_channel.prec_slot is None and \
-        pydm_channel.upper_ctrl_limit_slot is None and \
-        pydm_channel.lower_ctrl_limit_slot is None and \
-        pydm_channel.upper_alarm_limit_slot is None and \
-        pydm_channel.lower_alarm_limit_slot is None and \
-        pydm_channel.upper_warning_limit_slot is None and \
-        pydm_channel.lower_warning_limit_slot is None and \
-        pydm_channel.write_access_slot is None and \
-        pydm_channel.value_signal is None and \
-        pydm_channel.timestamp_slot is None
+    assert (
+        pydm_channel.address is None
+        and pydm_channel.connection_slot is None
+        and pydm_channel.value_slot is None
+        and pydm_channel.severity_slot is None
+        and pydm_channel.enum_strings_slot is None
+        and pydm_channel.unit_slot is None
+        and pydm_channel.prec_slot is None
+        and pydm_channel.upper_ctrl_limit_slot is None
+        and pydm_channel.lower_ctrl_limit_slot is None
+        and pydm_channel.upper_alarm_limit_slot is None
+        and pydm_channel.lower_alarm_limit_slot is None
+        and pydm_channel.upper_warning_limit_slot is None
+        and pydm_channel.lower_warning_limit_slot is None
+        and pydm_channel.write_access_slot is None
+        and pydm_channel.value_signal is None
+        and pydm_channel.timestamp_slot is None
+    )
 
-    pydm_label = PyDMLabel(init_channel='tst://this')
+    pydm_label = PyDMLabel(init_channel="tst://this")
     qtbot.addWidget(pydm_label)
 
     pydm_label_channels = pydm_label.channels()[0]
-    default_pydm_label_channels = PyDMChannel(address=pydm_label.channel,
-                                              connection_slot=pydm_label.connectionStateChanged,
-                                              value_slot=pydm_label.channelValueChanged,
-                                              severity_slot=pydm_label.alarmSeverityChanged,
-                                              enum_strings_slot=pydm_label.enumStringsChanged,
-                                              unit_slot=pydm_label.unitChanged,
-                                              prec_slot=pydm_label.precisionChanged,
-                                              upper_ctrl_limit_slot=pydm_label.upperCtrlLimitChanged,
-                                              lower_ctrl_limit_slot=pydm_label.lowerCtrlLimitChanged,
-                                              upper_alarm_limit_slot=pydm_label.upper_alarm_limit_changed,
-                                              lower_alarm_limit_slot=pydm_label.lower_alarm_limit_changed,
-                                              upper_warning_limit_slot=pydm_label.upper_warning_limit_changed,
-                                              lower_warning_limit_slot=pydm_label.lower_warning_limit_changed,
-                                              value_signal=None,
-                                              write_access_slot=None,
-                                              timestamp_slot=pydm_label.timestamp_changed)
+    default_pydm_label_channels = PyDMChannel(
+        address=pydm_label.channel,
+        connection_slot=pydm_label.connectionStateChanged,
+        value_slot=pydm_label.channelValueChanged,
+        severity_slot=pydm_label.alarmSeverityChanged,
+        enum_strings_slot=pydm_label.enumStringsChanged,
+        unit_slot=pydm_label.unitChanged,
+        prec_slot=pydm_label.precisionChanged,
+        upper_ctrl_limit_slot=pydm_label.upperCtrlLimitChanged,
+        lower_ctrl_limit_slot=pydm_label.lowerCtrlLimitChanged,
+        upper_alarm_limit_slot=pydm_label.upper_alarm_limit_changed,
+        lower_alarm_limit_slot=pydm_label.lower_alarm_limit_changed,
+        upper_warning_limit_slot=pydm_label.upper_warning_limit_changed,
+        lower_warning_limit_slot=pydm_label.lower_warning_limit_changed,
+        value_signal=None,
+        write_access_slot=None,
+        timestamp_slot=pydm_label.timestamp_changed,
+    )
     assert pydm_label_channels == default_pydm_label_channels
 
-    pydm_lineedit = PyDMLineEdit(init_channel='tst://this2')
+    pydm_lineedit = PyDMLineEdit(init_channel="tst://this2")
     qtbot.addWidget(pydm_lineedit)
 
     # Test equal and not equal comparisons
@@ -81,20 +86,20 @@ def test_construct(qtbot):
 
 def test_pydm_connection(test_plugin):
     # Plugin, Channel and Registry
-    chan = PyDMChannel('tst://Tst:this3')
+    chan = PyDMChannel("tst://Tst:this3")
     plugin = plugin_for_address(chan.address)
     plugin_no = len(plugin.connections)
 
-    print('Connections Before:')
+    print("Connections Before:")
     for k, v in plugin.connections.items():
-        print('\t', k, ' - ', v)
+        print("\t", k, " - ", v)
 
     # Make a connection
     chan.connect()
 
-    print('Connections After:')
+    print("Connections After:")
     for k, v in plugin.connections.items():
-        print('\t', k, ' - ', v)
+        print("\t", k, " - ", v)
 
     assert len(plugin.connections) == plugin_no + 1
     # Remove connections
@@ -102,9 +107,9 @@ def test_pydm_connection(test_plugin):
     assert len(plugin.connections) == plugin_no
 
 
-
 @pytest.mark.parametrize(
-    "ch, ch_expected", [
+    "ch, ch_expected",
+    [
         ("ca://MTEST:Float", "ca://MTEST:Float"),
         (" foo://bar", "foo://bar"),
         (" foo://bar ", "foo://bar"),
@@ -113,7 +118,8 @@ def test_pydm_connection(test_plugin):
         ("\tfoo://bar", "foo://bar"),
         ("", ""),
         (None, None),
-    ])
+    ],
+)
 def test_channel_address(ch, ch_expected):
     channel = PyDMChannel()
     channel.address = ch

@@ -11,15 +11,12 @@ from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
 from ..utilities.stylesheet import merge_widget_stylesheet
-from ..display import (load_file, ScreenTarget)
+from ..display import load_file, ScreenTarget
 from typing import Optional, List
 
 logger = logging.getLogger(__name__)
 
-_relatedDisplayRuleProperties = {
-    'Text': ['setText', str],
-    'Filenames': ['filenames', list]
-    }
+_relatedDisplayRuleProperties = {"Text": ["setText", str], "Filenames": ["filenames", list]}
 
 
 class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedDisplayRuleProperties):
@@ -36,11 +33,14 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     init_channel : str, optional
         The channel to be used by the widget
     """
+
     # Constants for determining where to open the display.
     EXISTING_WINDOW = 0
     NEW_WINDOW = 1
 
-    def __init__(self,parent: Optional[QWidget] = None, filename: str = None, init_channel: Optional[str] = None) -> None:
+    def __init__(
+        self, parent: Optional[QWidget] = None, filename: str = None, init_channel: Optional[str] = None
+    ) -> None:
         QPushButton.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
 
@@ -64,8 +64,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         self._macro_string = None
         self._open_in_new_window = False
         self.open_in_new_window_action = QAction("Open in New Window", self)
-        self.open_in_new_window_action.triggered.connect(
-            self.handle_open_new_window_action)
+        self.open_in_new_window_action.triggered.connect(self.handle_open_new_window_action)
         self._show_icon = True
         self._menu_needs_rebuild = True
 
@@ -84,29 +83,29 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         status = self._connected
         tooltip = self.restore_original_tooltip()
         if not status:
-            if tooltip != '':
-                tooltip += '\n'
+            if tooltip != "":
+                tooltip += "\n"
             tooltip += "Alarm PV is disconnected."
-            tooltip += '\n'
+            tooltip += "\n"
             tooltip += self.get_address()
 
         self.setToolTip(tooltip)
 
-    @Property('QStringList')
+    @Property("QStringList")
     def filenames(self) -> List[str]:
         return self._filenames
-    
+
     @filenames.setter
-    def filenames(self, val : List[str]) -> None:
+    def filenames(self, val: List[str]) -> None:
         self._filenames = val
         self._menu_needs_rebuild = True
-        
-    @Property('QStringList')
+
+    @Property("QStringList")
     def titles(self) -> List[str]:
         return self._titles
-    
+
     @titles.setter
-    def titles(self, val : List[str]) -> None:
+    def titles(self, val: List[str]) -> None:
         self._titles = val
         self._menu_needs_rebuild = True
 
@@ -124,15 +123,15 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         for i, filename in enumerate(self.filenames):
             if not filename:
                 continue
-            item = {'filename': filename}
+            item = {"filename": filename}
             if i >= len(self.titles):
-                item['title'] = filename
+                item["title"] = filename
             else:
-                item['title'] = self.titles[i]
+                item["title"] = self.titles[i]
             if i < len(self.macros):
-                item['macros'] = self.macros[i]
+                item["macros"] = self.macros[i]
             else:
-                item['macros'] = ""
+                item["macros"] = ""
             yield item
 
     def _rebuild_menu(self) -> None:
@@ -207,16 +206,18 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         ----------
         value : str
         """
-        warnings.warn("'PyDMRelatedDisplayButton.displayFilename' is deprecated, "
-                      "use 'PyDMRelatedDisplayButton.filenames' instead.")
+        warnings.warn(
+            "'PyDMRelatedDisplayButton.displayFilename' is deprecated, "
+            "use 'PyDMRelatedDisplayButton.filenames' instead."
+        )
         if value:
             if value in self.filenames:
                 return
             file_list = [value]
             self.filenames = self.filenames + file_list
         self._display_filename = ""
-            
-    @Property('QStringList')
+
+    @Property("QStringList")
     def macros(self) -> List[str]:
         """
         The macro substitutions to use when launching the display, in JSON object format.
@@ -236,7 +237,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         ----------
         new_macros : list of str
         """
-        #Handle the deprecated form of macros where it was a single string.
+        # Handle the deprecated form of macros where it was a single string.
         if isinstance(new_macros, str):
             new_macros = [new_macros]
         self._macros = new_macros
@@ -392,14 +393,12 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
             return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
         try:
             for item in self._get_items():
-                self.open_display(item['filename'], item['macros'],
-                                  target=None)
+                self.open_display(item["filename"], item["macros"], target=None)
                 break
         except Exception:
             logger.exception("Failed to open display.")
         finally:
-            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(
-                mouse_event)
+            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
 
     def validate_password(self) -> bool:
         """
@@ -415,8 +414,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         if not self._password_protected:
             return True
 
-        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:",
-                                         QLineEdit.Password, "")
+        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:", QLineEdit.Password, "")
         pwd = str(pwd)
         if not ok or pwd == "":
             return False
@@ -448,18 +446,15 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         """
         for item in self._get_items():
             try:
-                self.open_display(item['filename'], item['macros'],
-                                  target=self.NEW_WINDOW)
+                self.open_display(item["filename"], item["macros"], target=self.NEW_WINDOW)
             except Exception:
                 logger.exception("Failed to open display.")
 
     def _assemble_menu(self, menu, target=None):
         for item in self._get_items():
             try:
-                action = menu.addAction(item['title'])
-                action.triggered.connect(
-                    partial(self.open_display, item['filename'],
-                            item['macros'], target=target))
+                action = menu.addAction(item["title"])
+                action.triggered.connect(partial(self.open_display, item["filename"], item["macros"], target=target))
             except Exception:
                 logger.exception("Failed to open display.")
 
@@ -541,4 +536,3 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def show_context_menu(self, pos: QPoint) -> None:
         menu = self.context_menu()
         menu.exec_(self.mapToGlobal(pos))
-

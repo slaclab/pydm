@@ -17,6 +17,7 @@ class QScale(QFrame):
     parent : QWidget
         The parent widget for the Scale
     """
+
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super(QScale, self).__init__(parent)
         self._value = 1
@@ -24,17 +25,17 @@ class QScale(QFrame):
         self._upper_limit = 5
         self.position = None  # unit: pixel
 
-        self._bg_color = QColor('darkgray')
-        self._bg_size_rate = 0.8    # from 0 to 1
+        self._bg_color = QColor("darkgray")
+        self._bg_size_rate = 0.8  # from 0 to 1
 
-        self._indicator_color = QColor('black')
+        self._indicator_color = QColor("black")
         self._pointer_width_rate = 0.05
         self._barIndicator = False
 
         self._num_divisions = 10
         self._show_ticks = True
         self._tick_pen = QPen()
-        self._tick_color = QColor('black')
+        self._tick_color = QColor("black")
         self._tick_width = 0
         self._tick_size_rate = 0.1  # from 0 to 1
         self._painter = QPainter()
@@ -111,9 +112,9 @@ class QScale(QFrame):
         self._painter.setPen(self._tick_pen)
         division_size = self._widget_width / self._num_divisions
         tick_y0 = self._widget_height
-        tick_yf = int((1 - self._tick_size_rate)*self._widget_height)
-        for i in range(self._num_divisions+1):
-            x = int(i*division_size)
+        tick_yf = int((1 - self._tick_size_rate) * self._widget_height)
+        for i in range(self._num_divisions + 1):
+            x = int(i * division_size)
             self._painter.drawLine(x, tick_y0, x, tick_yf)  # x1, y1, x2, y2
 
     def draw_bar(self) -> None:
@@ -146,7 +147,7 @@ class QScale(QFrame):
             QPoint(self.position, 0),
             QPoint(self.position + pointer_width // 2, pointer_height // 2),
             QPoint(self.position, pointer_height),
-            QPoint(self.position - pointer_width // 2, pointer_height // 2)
+            QPoint(self.position - pointer_width // 2, pointer_height // 2),
         ]
         self._painter.drawPolygon(QPolygon(points))
 
@@ -186,7 +187,7 @@ class QScale(QFrame):
         self._painter.translate(self._painter_translation_x, 0)  # Invert appearance if needed
         self._painter.scale(self._painter_scale_x, 1)
 
-        self._painter.translate(0, self._flip_traslation_y)      # Invert scale if needed
+        self._painter.translate(0, self._flip_traslation_y)  # Invert scale if needed
         self._painter.scale(1, self._flip_scale_y)
 
         self._painter.setRenderHint(QPainter.Antialiasing)
@@ -201,8 +202,12 @@ class QScale(QFrame):
         """
         Calculate the position (pixel) in which the pointer should be drawn for a given value.
         """
-        if value is None or value < self._lower_limit or value > self._upper_limit or \
-           self._upper_limit - self._lower_limit == 0:
+        if (
+            value is None
+            or value < self._lower_limit
+            or value > self._upper_limit
+            or self._upper_limit - self._lower_limit == 0
+        ):
             proportion = -1  # Invalid
         else:
             proportion = (value - self._lower_limit) / (self._upper_limit - self._lower_limit)
@@ -389,9 +394,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.lower_label = QLabel()
         self.upper_label = QLabel()
 
-        self.value_label.setText('<val>')
-        self.lower_label.setText('<min>')
-        self.upper_label.setText('<max>')
+        self.value_label.setText("<val>")
+        self.lower_label.setText("<min>")
+        self.upper_label.setText("<max>")
 
         self._value_position = Qt.TopEdge
         self._limits_from_channel = True
@@ -452,8 +457,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             self.scale_indicator.set_lower_limit(new_limit)
             self.update_labels()
 
-    def setup_widgets_for_orientation(self, new_orientation: Qt.Orientation, flipped: bool, inverted: bool,
-                                      value_position: Qt.Edge) -> None:
+    def setup_widgets_for_orientation(
+        self, new_orientation: Qt.Orientation, flipped: bool, inverted: bool, value_position: Qt.Edge
+    ) -> None:
         """
         Reconstruct the widget given the orientation.
 
@@ -529,8 +535,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
 
         elif new_orientation == Qt.Vertical:
             self.limits_layout = QVBoxLayout()
-            if (value_position == Qt.RightEdge and not flipped) or \
-               (value_position == Qt.LeftEdge and flipped):
+            if (value_position == Qt.RightEdge and not flipped) or (value_position == Qt.LeftEdge and flipped):
                 add_value_between_limits = True
             else:
                 add_value_between_limits = False
@@ -949,12 +954,12 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
     @valuePosition.setter
     def valuePosition(self, position: Qt.Edge) -> None:
         """
-       The position of the value label (Top, Bottom, Left or Right).
+        The position of the value label (Top, Bottom, Left or Right).
 
-        Parameters
-        ----------
-        position : int
-            Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge
+         Parameters
+         ----------
+         position : int
+             Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge
         """
         self._value_position = position
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, self.invertedAppearance, position)

@@ -3,9 +3,8 @@ import math
 import os
 import logging
 
-from qtpy.QtWidgets import (QWidget, QStyle, QStyleOption)
-from qtpy.QtGui import (QColor, QPainter, QBrush, QPen, QPolygon, QPolygonF, QPixmap,
-                            QMovie)
+from qtpy.QtWidgets import QWidget, QStyle, QStyleOption
+from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygon, QPolygonF, QPixmap, QMovie
 from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
@@ -64,6 +63,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         self._rotation = 0.0
         self._brush = QBrush(Qt.SolidPattern)
@@ -222,7 +222,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             logger.error("Invalid height. The value must be greater than {0}".format(origHeight))
             return
 
-        if (origWidth <= origHeight):
+        if origWidth <= origHeight:
             w0 = origWidth
             h0 = origHeight
         else:
@@ -236,7 +236,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         c = w0 / (h0 * math.sin(ang) + w0 * math.cos(ang))
         w = 0
         h = 0
-        if (origWidth <= origHeight):
+        if origWidth <= origHeight:
             w = w0 * c
             h = h0 * c
         else:
@@ -478,7 +478,7 @@ class PyDMDrawingLine(PyDMDrawing):
         diff_x = startpoint.x() - endpoint.x()
         diff_y = startpoint.y() - endpoint.y()
 
-        length = math.sqrt(diff_x ** 2 + diff_y ** 2)
+        length = math.sqrt(diff_x**2 + diff_y**2)
 
         norm_x = diff_x / length
         norm_y = diff_y / length
@@ -519,7 +519,7 @@ class PyDMDrawingLine(PyDMDrawing):
 
         # Find the angle of the rop right corner of the bounding box
         try:
-            critical_angle = math.atan(h/w)
+            critical_angle = math.atan(h / w)
         except ZeroDivisionError:
             critical_angle = math.pi / 2
 
@@ -537,9 +537,9 @@ class PyDMDrawingLine(PyDMDrawing):
 
         # Define endpoints potentially outside the bounding box
         # Will land on the bounding box after rotation
-        midpoint = x + w/2
-        start_point = QPointF(midpoint - length/2, 0)
-        end_point = QPointF(midpoint + length/2, 0)
+        midpoint = x + w / 2
+        start_point = QPointF(midpoint - length / 2, 0)
+        end_point = QPointF(midpoint + length / 2, 0)
         mid_point = QPointF(midpoint, 0)
 
         # Draw the line
@@ -646,7 +646,7 @@ class PyDMDrawingLine(PyDMDrawing):
     def flipMidPointArrow(self, new_selection):
         """
         Flips the direction of the midpoint arrow.
-        
+
         Parameters
         -------
         new_selection : bool
@@ -654,6 +654,7 @@ class PyDMDrawingLine(PyDMDrawing):
         if self._mid_point_arrow_flipped != new_selection:
             self._mid_point_arrow_flipped = new_selection
             self.update()
+
 
 class PyDMDrawingImage(PyDMDrawing):
     """
@@ -672,6 +673,7 @@ class PyDMDrawingImage(PyDMDrawing):
     null_color : Qt.Color
         QColor to fill the image if the filename is not found.
     """
+
     null_color = Qt.gray
 
     def __init__(self, parent=None, init_channel=None, filename=""):
@@ -822,15 +824,14 @@ class PyDMDrawingImage(PyDMDrawing):
         super(PyDMDrawingImage, self).draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
         if not isinstance(self._pixmap, QMovie):
-            _scaled = self._pixmap.scaled(int(w), int(h), self._aspect_ratio_mode,
-                                          Qt.SmoothTransformation)
+            _scaled = self._pixmap.scaled(int(w), int(h), self._aspect_ratio_mode, Qt.SmoothTransformation)
             # Make sure the image is centered if smaller than the widget itself
             if w > _scaled.width():
                 logger.debug("Centering image horizontally ...")
-                x += (w-_scaled.width())/2
+                x += (w - _scaled.width()) / 2
             if h > _scaled.height():
                 logger.debug("Centering image vertically ...")
-                y += (h - _scaled.height())/2
+                y += (h - _scaled.height()) / 2
             painter.drawPixmap(QPointF(x, y), _scaled)
 
     def movie_frame_changed(self, frame_no):
@@ -879,6 +880,7 @@ class PyDMDrawingRectangle(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingRectangle, self).__init__(parent, init_channel)
 
@@ -904,15 +906,12 @@ class PyDMDrawingTriangle(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingTriangle, self).__init__(parent, init_channel)
 
     def _calculate_drawing_points(self, x, y, w, h):
-        return [
-            QPointF(x, h / 2.0),
-            QPointF(x, y),
-            QPointF(w / 2.0, y)
-        ]
+        return [QPointF(x, h / 2.0), QPointF(x, y), QPointF(w / 2.0, y)]
 
     def draw_item(self, painter):
         """
@@ -938,6 +937,7 @@ class PyDMDrawingEllipse(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingEllipse, self).__init__(parent, init_channel)
 
@@ -964,6 +964,7 @@ class PyDMDrawingCircle(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingCircle, self).__init__(parent, init_channel)
 
@@ -993,6 +994,7 @@ class PyDMDrawingArc(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingArc, self).__init__(parent, init_channel)
         self.penStyle = Qt.SolidLine
@@ -1075,6 +1077,7 @@ class PyDMDrawingPie(PyDMDrawingArc):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingPie, self).__init__(parent, init_channel)
 
@@ -1101,6 +1104,7 @@ class PyDMDrawingChord(PyDMDrawingArc):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingChord, self).__init__(parent, init_channel)
 
@@ -1127,6 +1131,7 @@ class PyDMDrawingPolygon(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingPolygon, self).__init__(parent, init_channel)
         self._num_points = 3
@@ -1150,9 +1155,9 @@ class PyDMDrawingPolygon(PyDMDrawing):
             self.update()
 
     def _calculate_drawing_points(self, x, y, w, h):
-        #(x + r*cos(theta), y + r*sin(theta))
-        r = min(w, h)/2.0
-        deg_step = 360.0/self._num_points
+        # (x + r*cos(theta), y + r*sin(theta))
+        r = min(w, h) / 2.0
+        deg_step = 360.0 / self._num_points
 
         points = []
         for i in range(self._num_points):
@@ -1186,6 +1191,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingPolyline, self).__init__(parent, init_channel)
         self._arrow_end_point_selection = False
@@ -1214,22 +1220,22 @@ class PyDMDrawingPolyline(PyDMDrawing):
                 # adl2pydm tags up to 0.0.2
                 pt = tuple(map(int, pt.split(",")))
             u, v = pt
-            return QPointF(u+x, v+y)
+            return QPointF(u + x, v + y)
 
         if len(self._points) > 1:
             for i, p1 in enumerate(self._points[:-1]):
-                painter.drawLine(p2d(p1), p2d(self._points[i+1]))
+                painter.drawLine(p2d(p1), p2d(self._points[i + 1]))
                 if self._arrow_mid_point_selection:
                     point1 = p2d(p1)
-                    point2 = p2d(self._points[i+1])
+                    point2 = p2d(self._points[i + 1])
                     if self._arrow_mid_point_flipped:
-                        point1, point2 = point2, point1 #swap values
+                        point1, point2 = point2, point1  # swap values
 
                     # arrow points at midpoint of line
                     midpoint_x = (point1.x() + point2.x()) / 2
                     midpoint_y = (point1.y() + point2.y()) / 2
                     midpoint = QPointF(midpoint_x, midpoint_y)
-                    points = PyDMDrawingLine._arrow_points(point1, midpoint, 6, 6) # 6 = arbitrary arrow size
+                    points = PyDMDrawingLine._arrow_points(point1, midpoint, 6, 6)  # 6 = arbitrary arrow size
                     painter.drawPolygon(points)
 
         # Draw the arrows
@@ -1238,15 +1244,14 @@ class PyDMDrawingPolyline(PyDMDrawing):
             painter.drawPolygon(points)
 
         if self._arrow_start_point_selection and (len(self._points[1]) >= 2):
-            points = PyDMDrawingLine._arrow_points(p2d(self._points[len(self._points)-2]), p2d(self._points[len(self._points)-1]), 6, 6)
+            points = PyDMDrawingLine._arrow_points(
+                p2d(self._points[len(self._points) - 2]), p2d(self._points[len(self._points) - 1]), 6, 6
+            )
             painter.drawPolygon(points)
 
     def getPoints(self):
         """Convert internal points representation for use as QStringList."""
-        points = [
-            f"{pt[0]}, {pt[1]}"
-            for pt in self._points
-        ]
+        points = [f"{pt[0]}, {pt[1]}" for pt in self._points]
         return points
 
     def _validator(self, value):
@@ -1266,6 +1271,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
             List of `tuple(number, number)`.
 
         """
+
         def isfloat(value):
             if isinstance(value, str):
                 value = value.strip()
@@ -1401,7 +1407,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
     def flipMidPointArrow(self, new_selection):
         """
         Flips the direction of the midpoint arrows.
-        
+
         Parameters
         -------
         new_selection : bool

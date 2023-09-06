@@ -3,11 +3,18 @@ import functools
 
 from collections import OrderedDict
 
-from qtpy.QtCore import (QObject, Slot, Signal, Property,
-                         Q_ENUMS, QSize)
-from qtpy.QtWidgets import (QWidget, QPlainTextEdit, QComboBox, QLabel,
-                            QPushButton, QHBoxLayout, QVBoxLayout,
-                            QStyleOption, QStyle)
+from qtpy.QtCore import QObject, Slot, Signal, Property, Q_ENUMS, QSize
+from qtpy.QtWidgets import (
+    QWidget,
+    QPlainTextEdit,
+    QComboBox,
+    QLabel,
+    QPushButton,
+    QHBoxLayout,
+    QVBoxLayout,
+    QStyleOption,
+    QStyle,
+)
 from qtpy.QtGui import QPainter
 
 logger = logging.getLogger(__name__)
@@ -56,6 +63,7 @@ class GuiHandler(QObject, logging.Handler):
 
     parent: QObject, optional
     """
+
     message = Signal(str)
 
     def __init__(self, level=logging.NOTSET, parent=None):
@@ -70,7 +78,7 @@ class GuiHandler(QObject, logging.Handler):
         try:
             self.message.emit(self.format(record))
         except RuntimeError:
-            logger.debug('Handler was destroyed at the C++ level.')
+            logger.debug("Handler was destroyed at the C++ level.")
 
 
 class LogLevels(object):
@@ -91,8 +99,11 @@ class LogLevels(object):
         OrderedDict
         """
         # First let's remove the internals
-        entries = [(k, v) for k, v in LogLevels.__dict__.items() if
-                   not k.startswith("__") and not callable(v) and not isinstance(v, staticmethod)]
+        entries = [
+            (k, v)
+            for k, v in LogLevels.__dict__.items()
+            if not k.startswith("__") and not callable(v) and not isinstance(v, staticmethod)
+        ]
 
         return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
 
@@ -117,16 +128,17 @@ class PyDMLogDisplay(QWidget, LogLevels):
         Initial level of log display
 
     """
+
     Q_ENUMS(LogLevels)
     LogLevels = LogLevels
-    terminator = '\n'
-    default_format = '%(asctime)s %(message)s'
+    terminator = "\n"
+    default_format = "%(asctime)s %(message)s"
     default_level = logging.INFO
 
     def __init__(self, parent=None, logname=None, level=logging.NOTSET):
         QWidget.__init__(self, parent=parent)
         # Create Widgets
-        self.label = QLabel('Minimum displayed log level: ', parent=self)
+        self.label = QLabel("Minimum displayed log level: ", parent=self)
         self.combo = QComboBox(parent=self)
         self.text = QPlainTextEdit(parent=self)
         self.text.setReadOnly(True)
@@ -153,7 +165,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
         # Create logger. Either as a root or given logname
         self.log = None
         self.level = None
-        self.logName = logname or ''
+        self.logName = logname or ""
         self.logLevel = level
         self.destroyed.connect(functools.partial(logger_destroyed, self.log))
 
@@ -220,8 +232,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
         try:
             level = getattr(logging, level.upper())
         except AttributeError as exc:
-            logger.exception("Invalid logging level specified %s",
-                             level.upper())
+            logger.exception("Invalid logging level specified %s", level.upper())
         else:
             # Set the existing handler and logger to this level
             self.handler.setLevel(level)

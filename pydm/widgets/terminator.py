@@ -69,12 +69,12 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
     def _setup_activity_hook(self):
         if is_qt_designer():
             return
-        logger.debug('Setup Hook')
+        logger.debug("Setup Hook")
         if self._hook_setup:
-            logger.debug('Setup Hook Already there')
+            logger.debug("Setup Hook Already there")
             return
         self._window = self._find_window()
-        logger.debug('Install event filter at window')
+        logger.debug("Install event filter at window")
 
         # We must install the event filter in the application otherwise
         # it won't stop when typing or moving over other widgets or even
@@ -98,7 +98,7 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
         if is_qt_designer():
             return
         interval = SLOW_TIMER_INTERVAL
-        if self._time_rem_ms < 60*1000:
+        if self._time_rem_ms < 60 * 1000:
             interval = FAST_TIMER_INTERVAL
         self._timer.setInterval(interval)
 
@@ -123,6 +123,7 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
         -------
         str
         """
+
         def time_msg(unit, val):
             return "{} {}{}".format(val, unit, "s" if val > 1 else "")
 
@@ -132,9 +133,9 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
         values = [0, 0, 0, 0]
         rem = value
         for idx, sc in enumerate(scale):
-            val_scaled, rem = int(rem//sc), rem % sc
+            val_scaled, rem = int(rem // sc), rem % sc
             if val_scaled >= 1:
-                val_scaled = math.ceil(val_scaled+(rem/sc))
+                val_scaled = math.ceil(val_scaled + (rem / sc))
                 values[idx] = val_scaled
                 break
             values[idx] = val_scaled
@@ -149,7 +150,7 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
 
     def _update_label(self):
         """Updates the label text with the remaining time."""
-        rem_time_s = self._time_rem_ms/1000.0
+        rem_time_s = self._time_rem_ms / 1000.0
         text = self._get_time_text(rem_time_s)
         self.setText("This screen will close in {}.".format(text))
 
@@ -190,15 +191,11 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
         QApplication.instance().removeEventFilter(self)
 
         if self._window:
-            logger.debug('Time to close the window')
+            logger.debug("Time to close the window")
             self._window.close()
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Warning)
-            msg.setText(
-                "Your window was closed due to inactivity for {}.".format(
-                    self._get_time_text(self.timeout)
-                )
-            )
+            msg.setText("Your window was closed due to inactivity for {}.".format(self._get_time_text(self.timeout)))
             msg.setStandardButtons(QMessageBox.Ok)
             msg.setDefaultButton(QMessageBox.Ok)
             msg.exec_()

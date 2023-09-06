@@ -8,9 +8,10 @@ from qtpy.QtGui import QColor
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
-from .. utilities import remove_protocol
+from ..utilities import remove_protocol
 
 import logging
+
 logger = logging.getLogger(__name__)
 
 MINIMUM_BUFFER_SIZE = 2
@@ -24,7 +25,8 @@ DEFAULT_UPDATE_INTERVAL = 1000  # Plot update rate for fixed rate mode in millis
 
 
 class updateMode(object):
-    """ updateMode as new type for plot update """
+    """updateMode as new type for plot update"""
+
     OnValueChange = 1
     AtFixedRate = 2
 
@@ -60,9 +62,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
         Additional parameters supported by pyqtgraph.PlotDataItem,
         like 'symbol' and 'symbolSize'.
     """
-    _channels = ('channel',)
 
-    def __init__(self, channel_address=None, plot_by_timestamps=True, plot_style='Line', **kws):
+    _channels = ("channel",)
+
+    def __init__(self, channel_address=None, plot_by_timestamps=True, plot_style="Line", **kws):
         """
         Parameters
         ----------
@@ -92,7 +95,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self._min_y_value = None
         self._max_y_value = None
 
-        self.data_buffer = np.zeros((2, self._bufferSize), order='f', dtype=float)
+        self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
         self.connected = False
         self.points_accumulated = 0
         self.latest_value = None
@@ -101,8 +104,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         super(TimePlotCurveItem, self).__init__(**kws)
 
     def to_dict(self):
-        dic_ = OrderedDict([("channel", self.address),
-                            ("plot_style", self.plot_style)])
+        dic_ = OrderedDict([("channel", self.address), ("plot_style", self.plot_style)])
         dic_.update(super(TimePlotCurveItem, self).to_dict())
         return dic_
 
@@ -117,9 +119,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
         if new_address is None or len(str(new_address)) < 1:
             self.channel = None
             return
-        self.channel = PyDMChannel(address=new_address,
-                                   connection_slot=self.connectionStateChanged,
-                                   value_slot=self.receiveNewValue)
+        self.channel = PyDMChannel(
+            address=new_address, connection_slot=self.connectionStateChanged, value_slot=self.receiveNewValue
+        )
 
     @property
     def plotByTimeStamps(self):
@@ -239,8 +241,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
         # If you don't specify dtype=float, you don't have enough
         # resolution for the timestamp data.
-        self.data_buffer = np.zeros((2, self._bufferSize),
-                                    order='f', dtype=float)
+        self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
         self.data_buffer[0].fill(time.time())
 
     def getBufferSize(self):
@@ -275,15 +276,15 @@ class TimePlotCurveItem(BasePlotCurveItem):
             The maximum timestamp to render when plotting as a bar graph.
         """
         try:
-            x = self.data_buffer[0, -self.points_accumulated:].astype(float)
-            y = self.data_buffer[1, -self.points_accumulated:].astype(float)
+            x = self.data_buffer[0, -self.points_accumulated :].astype(float)
+            y = self.data_buffer[1, -self.points_accumulated :].astype(float)
 
             if not self._plot_by_timestamps:
                 x -= time.time()
 
-            if self.plot_style is None or self.plot_style == 'Line':
+            if self.plot_style is None or self.plot_style == "Line":
                 self.setData(y=y, x=x)
-            elif self.plot_style == 'Bar':
+            elif self.plot_style == "Bar":
                 # In cases where the buffer size is large, we don't want to render 10,000+ bars on every update
                 # if only a fraction of those are actually visible. These 2 indices represent the visible range
                 # of the plot, and we will only render bars within that range.
@@ -295,8 +296,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
             pass
 
     def _setBarGraphItem(self, x, y):
-        """ Set the plots points to render as bars. No need to call this directly as it will automatically
-            be handled by redrawCurve() """
+        """Set the plots points to render as bars. No need to call this directly as it will automatically
+        be handled by redrawCurve()"""
         if self.points_accumulated == 0 or len(x) == 0 or len(y) == 0:
             return
 
@@ -314,12 +315,12 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
-        if type(value)==int and value == updateMode.AtFixedRate or type(value)==bool and value is True:
+        if type(value) == int and value == updateMode.AtFixedRate or type(value) == bool and value is True:
             self._update_mode = PyDMTimePlot.AtFixedRate
         else:
             self._update_mode = PyDMTimePlot.OnValueChange
         self.initialize_buffer()
-        
+
     def resetUpdatesAsynchronously(self):
         self._update_mode = PyDMTimePlot.OnValueChange
         self.initialize_buffer()
@@ -351,7 +352,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         return [self.channel]
 
 
-class PyDMTimePlot(BasePlot,updateMode):
+class PyDMTimePlot(BasePlot, updateMode):
     """
     PyDMTimePlot is a widget to plot one or more channels vs. time.
 
@@ -375,6 +376,7 @@ class PyDMTimePlot(BasePlot,updateMode):
         Will set the bottom axis of this plot to the input axis. If not set, will default
         to either a TimeAxisItem if plot_by_timestamps is true, or a regular AxisItem otherwise
     """
+
     OnValueChange = 1
     AtFixedRated = 2
 
@@ -383,7 +385,9 @@ class PyDMTimePlot(BasePlot,updateMode):
 
     plot_redrawn_signal = Signal(TimePlotCurveItem)
 
-    def __init__(self, parent=None, init_y_channels=[], plot_by_timestamps=True, background='default', bottom_axis=None):
+    def __init__(
+        self, parent=None, init_y_channels=[], plot_by_timestamps=True, background="default", bottom_axis=None
+    ):
         """
         Parameters
         ----------
@@ -406,13 +410,14 @@ class PyDMTimePlot(BasePlot,updateMode):
         if bottom_axis is not None:
             self._bottom_axis = bottom_axis
         elif plot_by_timestamps:
-            self._bottom_axis = TimeAxisItem('bottom')
+            self._bottom_axis = TimeAxisItem("bottom")
         else:
             self.starting_epoch_time = time.time()
-            self._bottom_axis = AxisItem('bottom')
+            self._bottom_axis = AxisItem("bottom")
 
-        super(PyDMTimePlot, self).__init__(parent=parent, background=background,
-                                           axisItems={"bottom": self._bottom_axis})
+        super(PyDMTimePlot, self).__init__(
+            parent=parent, background=background, axisItems={"bottom": self._bottom_axis}
+        )
 
         # Removing the downsampling while PR 763 is not merged at pyqtgraph
         # Reference: https://github.com/pyqtgraph/pyqtgraph/pull/763
@@ -435,17 +440,9 @@ class PyDMTimePlot(BasePlot,updateMode):
         self._update_mode = PyDMTimePlot.OnValueChange
         self._needs_redraw = True
 
-        self.labels = {
-            "left": None,
-            "right": None,
-            "bottom": None
-        }
+        self.labels = {"left": None, "right": None, "bottom": None}
 
-        self.units = {
-            "left": None,
-            "right": None,
-            "bottom": None
-        }
+        self.units = {"left": None, "right": None, "bottom": None}
 
         for channel in init_y_channels:
             self.addYChannel(channel)
@@ -455,10 +452,23 @@ class PyDMTimePlot(BasePlot,updateMode):
         # This function gets called by PyDMTimePlot's designer plugin.
         self.redraw_timer.setSingleShot(True)
 
-    def addYChannel(self, y_channel=None, plot_style=None, name=None, color=None,
-                    lineStyle=None, lineWidth=None, symbol=None, symbolSize=None,
-                    barWidth=None, upperThreshold=None, lowerThreshold=None, thresholdColor=None,
-                    yAxisName=None, useArchiveData=False):
+    def addYChannel(
+        self,
+        y_channel=None,
+        plot_style=None,
+        name=None,
+        color=None,
+        lineStyle=None,
+        lineWidth=None,
+        symbol=None,
+        symbolSize=None,
+        barWidth=None,
+        upperThreshold=None,
+        lowerThreshold=None,
+        thresholdColor=None,
+        yAxisName=None,
+        useArchiveData=False,
+    ):
         """
         Adds a new curve to the current plot
 
@@ -499,23 +509,30 @@ class PyDMTimePlot(BasePlot,updateMode):
             The newly created curve.
         """
         plot_opts = dict()
-        plot_opts['symbol'] = symbol
+        plot_opts["symbol"] = symbol
         if symbolSize is not None:
-            plot_opts['symbolSize'] = symbolSize
+            plot_opts["symbolSize"] = symbolSize
         if lineStyle is not None:
-            plot_opts['lineStyle'] = lineStyle
+            plot_opts["lineStyle"] = lineStyle
         if lineWidth is not None:
-            plot_opts['lineWidth'] = lineWidth
+            plot_opts["lineWidth"] = lineWidth
 
         # Add curve
-        new_curve = self.createCurveItem(y_channel=y_channel, plot_by_timestamps=self._plot_by_timestamps,
-                                         plot_style=plot_style, name=name, color=color, yAxisName=yAxisName,
-                                         useArchiveData=useArchiveData, **plot_opts)
+        new_curve = self.createCurveItem(
+            y_channel=y_channel,
+            plot_by_timestamps=self._plot_by_timestamps,
+            plot_style=plot_style,
+            name=name,
+            color=color,
+            yAxisName=yAxisName,
+            useArchiveData=useArchiveData,
+            **plot_opts
+        )
         new_curve.setUpdatesAsynchronously(self.updateMode)
         new_curve.setBufferSize(self._bufferSize)
 
         self.update_timer.timeout.connect(new_curve.asyncUpdate)
-        if plot_style == 'Bar':
+        if plot_style == "Bar":
             if barWidth is None:
                 barWidth = 1.0  # Can't use default since it can be explicitly set to None and avoided
             new_curve.bar_graph_item = BarGraphItem(x=[], height=[], width=barWidth, brush=color)
@@ -530,10 +547,18 @@ class PyDMTimePlot(BasePlot,updateMode):
 
         return new_curve
 
-    def createCurveItem(self, y_channel, plot_by_timestamps, plot_style, name,
-                        color, yAxisName, useArchiveData, **plot_opts):
-        return TimePlotCurveItem(y_channel, plot_by_timestamps=plot_by_timestamps, plot_style=plot_style,
-                                 name=name, color=color, yAxisName=yAxisName, **plot_opts)
+    def createCurveItem(
+        self, y_channel, plot_by_timestamps, plot_style, name, color, yAxisName, useArchiveData, **plot_opts
+    ):
+        return TimePlotCurveItem(
+            y_channel,
+            plot_by_timestamps=plot_by_timestamps,
+            plot_style=plot_style,
+            name=name,
+            color=color,
+            yAxisName=yAxisName,
+            **plot_opts
+        )
 
     def removeYChannel(self, curve):
         """
@@ -577,8 +602,8 @@ class PyDMTimePlot(BasePlot,updateMode):
 
         self.updateXAxis()
         # The minimum and maximum x-axis timestamps visible to the user
-        min_x = self.plotItem.getViewBox().state['viewRange'][0][0]
-        max_x = self.plotItem.getViewBox().state['viewRange'][0][1]
+        min_x = self.plotItem.getViewBox().state["viewRange"][0][0]
+        max_x = self.plotItem.getViewBox().state["viewRange"][0][1]
         for curve in self._curves:
             curve.redrawCurve(min_x=min_x, max_x=max_x)
             self.plot_redrawn_signal.emit(curve)
@@ -603,9 +628,10 @@ class PyDMTimePlot(BasePlot,updateMode):
             else:
                 maxrange = time.time()
             minrange = maxrange - self._time_span
-            current_min_x = self.plotItem.getAxis('bottom').range[0]  # Minimum x value currently displayed on the plot
-            if not self.plotItem.isAnyXAutoRange() or (self.plotItem.isAnyXAutoRange() and
-                                                       maxrange - current_min_x >= self._time_span):
+            current_min_x = self.plotItem.getAxis("bottom").range[0]  # Minimum x value currently displayed on the plot
+            if not self.plotItem.isAnyXAutoRange() or (
+                self.plotItem.isAnyXAutoRange() and maxrange - current_min_x >= self._time_span
+            ):
                 # Keep the rolling window of data moving, unless the user asked for autorange and we've
                 # not yet hit the maximum amount of data to display based on the time span
                 self.plotItem.setXRange(minrange, maxrange, padding=0.0, update=update_immediately)
@@ -651,25 +677,27 @@ class PyDMTimePlot(BasePlot,updateMode):
             return
         self.clearCurves()
         for d in new_list:
-            color = d.get('color')
-            thresholdColor = d.get('thresholdColor')
+            color = d.get("color")
+            thresholdColor = d.get("thresholdColor")
             if color:
                 color = QColor(color)
             if thresholdColor:
                 thresholdColor = QColor(thresholdColor)
-            self.addYChannel(d['channel'],
-                             plot_style=d.get('plot_style'),
-                             name=d.get('name'),
-                             color=color,
-                             lineStyle=d.get('lineStyle'),
-                             lineWidth=d.get('lineWidth'),
-                             symbol=d.get('symbol'),
-                             symbolSize=d.get('symbolSize'),
-                             barWidth=d.get('barWidth'),
-                             upperThreshold=d.get('upperThreshold'),
-                             lowerThreshold=d.get('lowerThreshold'),
-                             thresholdColor=thresholdColor,
-                             yAxisName=d.get('yAxisName'))
+            self.addYChannel(
+                d["channel"],
+                plot_style=d.get("plot_style"),
+                name=d.get("name"),
+                color=color,
+                lineStyle=d.get("lineStyle"),
+                lineWidth=d.get("lineWidth"),
+                symbol=d.get("symbol"),
+                symbolSize=d.get("symbolSize"),
+                barWidth=d.get("barWidth"),
+                upperThreshold=d.get("upperThreshold"),
+                lowerThreshold=d.get("lowerThreshold"),
+                thresholdColor=thresholdColor,
+                yAxisName=d.get("yAxisName"),
+            )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
 
@@ -705,12 +733,21 @@ class PyDMTimePlot(BasePlot,updateMode):
         curve = self.findCurve(curve.channel)
         if curve:
             self.removeYChannel(curve)
-            self.addYChannel(y_channel=curve.address, plot_style=curve.plot_style, color=curve.color,
-                             name=curve.address, lineStyle=curve.lineStyle,
-                             lineWidth=curve.lineWidth, symbol=curve.symbol,
-                             symbolSize=curve.symbolSize, barWidth=curve.bar_width,
-                             upperThreshold=curve.upper_threshold, lowerThreshold=curve.lower_threshold,
-                             thresholdColor=curve.threshold_color, yAxisName=curve.y_axis_name)
+            self.addYChannel(
+                y_channel=curve.address,
+                plot_style=curve.plot_style,
+                color=curve.color,
+                name=curve.address,
+                lineStyle=curve.lineStyle,
+                lineWidth=curve.lineWidth,
+                symbol=curve.symbol,
+                symbolSize=curve.symbolSize,
+                barWidth=curve.bar_width,
+                upperThreshold=curve.upper_threshold,
+                lowerThreshold=curve.lower_threshold,
+                thresholdColor=curve.threshold_color,
+                yAxisName=curve.y_axis_name,
+            )
 
     def addLegendItem(self, item, pv_name, force_show_legend=False):
         """
@@ -786,13 +823,13 @@ class PyDMTimePlot(BasePlot,updateMode):
     def getUpdatesAsynchronously(self):
         return self._update_mode == PyDMTimePlot.AtFixedRated
 
-    def setUpdatesAsynchronously(self, value): 
+    def setUpdatesAsynchronously(self, value):
         for curve in self._curves:
             curve.setUpdatesAsynchronously(value)
         """
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
-        if type(value)==int and value == updateMode.AtFixedRate or type(value)==bool and value is True: 
+        if type(value) == int and value == updateMode.AtFixedRate or type(value) == bool and value is True:
             self._update_mode = PyDMTimePlot.AtFixedRate
             self.update_timer.start()
         else:
@@ -805,10 +842,9 @@ class PyDMTimePlot(BasePlot,updateMode):
         for curve in self._curves:
             curve.resetUpdatesAsynchronously()
 
-    updatesAsynchronously = Property("bool",
-                                     getUpdatesAsynchronously,
-                                     setUpdatesAsynchronously,
-                                     resetUpdatesAsynchronously, designable=False)
+    updatesAsynchronously = Property(
+        "bool", getUpdatesAsynchronously, setUpdatesAsynchronously, resetUpdatesAsynchronously, designable=False
+    )
 
     @Property(updateMode)
     def updateMode(self):
@@ -918,8 +954,7 @@ class PyDMTimePlot(BasePlot,updateMode):
             if self.getUpdatesAsynchronously():
                 self.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
 
-    updateInterval = Property(float, getUpdateInterval,
-                              setUpdateInterval, resetUpdateInterval)
+    updateInterval = Property(float, getUpdateInterval, setUpdateInterval, resetUpdateInterval)
 
     def getAutoRangeX(self):
         if self._plot_by_timestamps:
@@ -939,23 +974,43 @@ class PyDMTimePlot(BasePlot,updateMode):
     # The methods for autoRangeY, minYRange, and maxYRange are
     # all defined in BasePlot, but we don't expose them as properties there, because not all plot
     # subclasses necessarily want them to be user-configurable in Designer.
-    autoRangeY = Property(bool, BasePlot.getAutoRangeY,
-                          BasePlot.setAutoRangeY,
-                          BasePlot.resetAutoRangeY, doc="""
+    autoRangeY = Property(
+        bool,
+        BasePlot.getAutoRangeY,
+        BasePlot.setAutoRangeY,
+        BasePlot.resetAutoRangeY,
+        doc="""
     Whether or not the Y-axis automatically rescales to fit the data.
     If true, the values in minYRange and maxYRange are ignored.
-    """)
+    """,
+    )
 
-    minYRange = Property(float, BasePlot.getMinYRange,
-                         BasePlot.setMinYRange, doc="""
-    Minimum Y-axis value visible on the plot.""")
+    minYRange = Property(
+        float,
+        BasePlot.getMinYRange,
+        BasePlot.setMinYRange,
+        doc="""
+    Minimum Y-axis value visible on the plot.""",
+    )
 
-    maxYRange = Property(float, BasePlot.getMaxYRange,
-                         BasePlot.setMaxYRange, doc="""
-    Maximum Y-axis value visible on the plot.""")
+    maxYRange = Property(
+        float,
+        BasePlot.getMaxYRange,
+        BasePlot.setMaxYRange,
+        doc="""
+    Maximum Y-axis value visible on the plot.""",
+    )
 
-    def enableCrosshair(self, is_enabled, starting_x_pos=DEFAULT_X_MIN, starting_y_pos=DEFAULT_Y_MIN, vertical_angle=90,
-                        horizontal_angle=0, vertical_movable=False, horizontal_movable=False):
+    def enableCrosshair(
+        self,
+        is_enabled,
+        starting_x_pos=DEFAULT_X_MIN,
+        starting_y_pos=DEFAULT_Y_MIN,
+        vertical_angle=90,
+        horizontal_angle=0,
+        vertical_movable=False,
+        horizontal_movable=False,
+    ):
         """
         Display a crosshair on the graph.
 
@@ -976,14 +1031,22 @@ class PyDMTimePlot(BasePlot,updateMode):
         horizontal_movable : bool
             True if the user can move the horizontal line; False if not
         """
-        super(PyDMTimePlot, self).enableCrosshair(is_enabled, starting_x_pos, starting_y_pos, vertical_angle,
-                                                  horizontal_angle, vertical_movable, horizontal_movable)
+        super(PyDMTimePlot, self).enableCrosshair(
+            is_enabled,
+            starting_x_pos,
+            starting_y_pos,
+            vertical_angle,
+            horizontal_angle,
+            vertical_movable,
+            horizontal_movable,
+        )
 
 
 class TimeAxisItem(AxisItem):
     """
     TimeAxisItem formats a unix time axis into a human-readable format.
     """
+
     def __init__(self, *args, **kwargs):
         super(TimeAxisItem, self).__init__(*args, **kwargs)
         self.enableAutoSIPrefix(False)

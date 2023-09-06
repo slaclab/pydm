@@ -1,4 +1,5 @@
 import logging
+
 logger = logging.getLogger(__name__)
 
 import six
@@ -31,6 +32,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         Emitted when an item in the combobox popup list is highlighted
         by the user.
     """
+
     def __init__(self, parent=None, init_channel=None):
         QComboBox.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
@@ -45,7 +47,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         self._new_item_added = False
 
     def wheelEvent(self, e):
-        #To ignore mouse wheel events
+        # To ignore mouse wheel events
         e.ignore()
         return
 
@@ -82,7 +84,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
             super(PyDMEnumComboBox, self).enum_strings_changed(tuple(self.itemText(i) for i in range(self.count())))
             self._has_enums = True
             self.check_enable_state()
-                
+
     # Internal methods
     def set_items(self, enums):
         """
@@ -95,8 +97,9 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
             The new list of values
         """
         if not enums:
-            logger.error("Invalid enum value '{0}'. The value is expected to be a valid list of string values."
-                         .format(enums))
+            logger.error(
+                "Invalid enum value '{0}'. The value is expected to be a valid list of string values.".format(enums)
+            )
             return
 
         self.clear()
@@ -109,7 +112,8 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
                 self.addItem(e_str)
             except TypeError as error:
                 logger.error(
-                    "Invalid enum type '{0}'. The expected type is 'string'. Exception: {1}".format(type(e_str), error))
+                    "Invalid enum type '{0}'. The expected type is 'string'. Exception: {1}".format(type(e_str), error)
+                )
         self._has_enums = True
         self.check_enable_state()
 
@@ -125,7 +129,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         if not self._connected:
             tooltip += "PV is disconnected."
             if self.channel:
-                tooltip += '\n'
+                tooltip += "\n"
                 tooltip += self.get_address()
         elif not self._write_access:
             if data_plugins.is_read_only():
@@ -173,14 +177,11 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
                 # findText return -1 when we can not find the text inside the
                 # QComboBox
                 if idx == -1:
-                    logger.error("Can not change value to %r. "
-                                 "Not an option in PyDMComboBox",
-                                 new_val)
+                    logger.error("Can not change value to %r. " "Not an option in PyDMComboBox", new_val)
                     return
             # Handle bool, float, and ndarray
             else:
-                logger.error("Invalid type for PyDMComboBox %s",
-                             type(new_val))
+                logger.error("Invalid type for PyDMComboBox %s", type(new_val))
                 return
             # Set the index
             self.setCurrentIndex(idx)

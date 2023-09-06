@@ -13,6 +13,7 @@ from ... import data_plugins
 # POSITIVE TEST CASES
 # --------------------
 
+
 def test_construct(qtbot):
     """
     Test the construction of the widget.
@@ -33,11 +34,14 @@ def test_construct(qtbot):
     assert pydm_enumcombobox.contextMenuEvent == pydm_enumcombobox.open_context_menu
 
 
-@pytest.mark.parametrize("enums", [
-    ("spam", "eggs", "ham"),
-    ("spam",),
-    ("",),
-])
+@pytest.mark.parametrize(
+    "enums",
+    [
+        ("spam", "eggs", "ham"),
+        ("spam",),
+        ("",),
+    ],
+)
 def test_set_items(qtbot, enums):
     """
     Test the populating of enum string (choices) to the widget.
@@ -64,31 +68,27 @@ def test_set_items(qtbot, enums):
     assert pydm_enumcombobox._has_enums is True if len(enums) else pydm_enumcombobox._has_enums is False
 
 
-@pytest.mark.parametrize("connected, write_access, has_enum, is_app_read_only", [
-    (True, True, True, True),
-    (True, True, True, False),
-
-    (True, True, False, True),
-    (True, True, False, False),
-
-    (True, False, False, True),
-    (True, False, False, False),
-
-    (True, False, True, True),
-    (True, False, True, False),
-
-    (False, True, True, True),
-    (False, True, True, False),
-
-    (False, False, True, True),
-    (False, False, True, False),
-
-    (False, True, False, True),
-    (False, True, False, False),
-
-    (False, False, False, True),
-    (False, False, False, False),
-])
+@pytest.mark.parametrize(
+    "connected, write_access, has_enum, is_app_read_only",
+    [
+        (True, True, True, True),
+        (True, True, True, False),
+        (True, True, False, True),
+        (True, True, False, False),
+        (True, False, False, True),
+        (True, False, False, False),
+        (True, False, True, True),
+        (True, False, True, False),
+        (False, True, True, True),
+        (False, True, True, False),
+        (False, False, True, True),
+        (False, False, True, False),
+        (False, True, False, True),
+        (False, True, False, False),
+        (False, False, False, True),
+        (False, False, False, False),
+    ],
+)
 def test_check_enable_state(qtbot, signals, connected, write_access, has_enum, is_app_read_only):
     """
     Test the tooltip generated depending on the channel connection, write access, whether the widget has enum strings,
@@ -148,12 +148,15 @@ def test_check_enable_state(qtbot, signals, connected, write_access, has_enum, i
         assert "Enums not available" in actual_tooltip
 
 
-@pytest.mark.parametrize("values, selected_index, expected", [
-    (("RUN", "STOP"), 0, "RUN"),
-    (("RUN", "STOP"), 1, "STOP"),
-    (("RUN", "STOP"), "RUN", "RUN"),
-    (("RUN", "STOP"), "STOP", "STOP"),
-])
+@pytest.mark.parametrize(
+    "values, selected_index, expected",
+    [
+        (("RUN", "STOP"), 0, "RUN"),
+        (("RUN", "STOP"), 1, "STOP"),
+        (("RUN", "STOP"), "RUN", "RUN"),
+        (("RUN", "STOP"), "STOP", "STOP"),
+    ],
+)
 def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     """
     Test the widget's handling of enum strings, which are choices presented to the user, and the widget's ability to
@@ -190,11 +193,14 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     assert pydm_enumcombobox.currentText() == expected
 
 
-@pytest.mark.parametrize("index", [
-    0,
-    1,
-    -1,
-])
+@pytest.mark.parametrize(
+    "index",
+    [
+        0,
+        1,
+        -1,
+    ],
+)
 def test_internal_combo_box_activated_int(qtbot, signals, index):
     """
     Test the the capability of the widget's activated slot in sending out a new enum string index value.
@@ -226,17 +232,21 @@ def test_internal_combo_box_activated_int(qtbot, signals, index):
 # NEGATIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("enums, expected_error_message", [
-    (None, "Invalid enum value '{0}'. The value is expected to be a valid list of string values.".format(None)),
-    ((None, "abc"), "Invalid enum type '{0}'. The expected type is 'string'.".format(type(None))),
-    ((None, 123.456), "Invalid enum type '{0}'. The expected type is 'string'".format(type(None))),
-    ((None, None, None), "Invalid enum type '{0}'. The expected type is 'string'".format(type(None))),
-    ((123,),  "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
-    ((123.45,),  "Invalid enum type '{0}'. The expected type is 'string'".format(type(123.45))),
-    ((123, 456), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
-    ((123.456, None), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123.456))),
-    (("spam", 123, "eggs", "ham"), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
-])
+
+@pytest.mark.parametrize(
+    "enums, expected_error_message",
+    [
+        (None, "Invalid enum value '{0}'. The value is expected to be a valid list of string values.".format(None)),
+        ((None, "abc"), "Invalid enum type '{0}'. The expected type is 'string'.".format(type(None))),
+        ((None, 123.456), "Invalid enum type '{0}'. The expected type is 'string'".format(type(None))),
+        ((None, None, None), "Invalid enum type '{0}'. The expected type is 'string'".format(type(None))),
+        ((123,), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
+        ((123.45,), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123.45))),
+        ((123, 456), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
+        ((123.456, None), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123.456))),
+        (("spam", 123, "eggs", "ham"), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
+    ],
+)
 def test_set_items_neg(qtbot, caplog, enums, expected_error_message):
     """
     Test sending setting the widget with an undefined list of enum strings.
@@ -263,10 +273,13 @@ def test_set_items_neg(qtbot, caplog, enums, expected_error_message):
     assert expected_error_message in caplog.text
 
 
-@pytest.mark.parametrize("values, selected_index, expected", [
-    (("ON", "OFF"), 3, ""),
-    (("ON", "OFF"), -1, ""),
-])
+@pytest.mark.parametrize(
+    "values, selected_index, expected",
+    [
+        (("ON", "OFF"), 3, ""),
+        (("ON", "OFF"), -1, ""),
+    ],
+)
 def test_enum_strings_changed_incorrect_index(qtbot, signals, values, selected_index, expected):
     """
     Test the widget's handling of incorrectly provided enum string index.

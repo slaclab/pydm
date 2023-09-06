@@ -23,7 +23,7 @@ class SymbolEditor(QtWidgets.QDialog):
 
     def __init__(self, widget, parent=None):
         super(SymbolEditor, self).__init__(parent)
-        
+
         self.widget = widget
         self.lst_file_item = None
         self.lst_state_item = None
@@ -223,10 +223,9 @@ class SymbolEditor(QtWidgets.QDialog):
             return
 
         confirm_message = "Delete the selected symbol?"
-        reply = QtWidgets.QMessageBox().question(self, 'Message',
-                                                 confirm_message,
-                                                 QtWidgets.QMessageBox.Yes,
-                                                 QtWidgets.QMessageBox.No)
+        reply = QtWidgets.QMessageBox().question(
+            self, "Message", confirm_message, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No
+        )
 
         if reply == QtWidgets.QMessageBox.Yes:
             row = self.tbl_symbols.currentRow()
@@ -292,7 +291,7 @@ class SymbolEditor(QtWidgets.QDialog):
             sf = min(size.width() / w, size.height() / h)
             scale = (sf, sf)
             _painter.scale(scale[0], scale[1])
-            _painter.drawPixmap(335/sf, 120/sf, image_to_draw)
+            _painter.drawPixmap(335 / sf, 120 / sf, image_to_draw)
         elif isinstance(image_to_draw, QSvgRenderer):
             draw_size = QSizeF(image_to_draw.defaultSize())
             draw_size.scale(QSizeF(size), Qt.KeepAspectRatio)
@@ -331,8 +330,7 @@ class SymbolEditor(QtWidgets.QDialog):
                     parent_display = self.widget.find_parent_display()
                     base_path = None
                     if parent_display:
-                        base_path = os.path.dirname(
-                            parent_display.loaded_file())
+                        base_path = os.path.dirname(parent_display.loaded_file())
                     abs_path = find_file(abs_path, base_path=base_path)
             except Exception as ex:
                 print("Exception: ", ex)
@@ -416,8 +414,7 @@ class SymbolEditor(QtWidgets.QDialog):
                 formWindow.cursor().setProperty("imageFiles", data)
             self.accept()
         else:
-            QtWidgets.QMessageBox.critical(self, "Error Saving", message,
-                                           QtWidgets.QMessageBox.Ok)
+            QtWidgets.QMessageBox.critical(self, "Error Saving", message, QtWidgets.QMessageBox.Ok)
 
     @QtCore.Slot()
     def cancelChanges(self):

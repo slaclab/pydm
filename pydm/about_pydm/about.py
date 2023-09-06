@@ -17,11 +17,11 @@ class AboutWindow(QWidget):
         self.ui.setupUi(self)
         self.ui.pydmVersionLabel.setText(str(self.ui.pydmVersionLabel.text()).format(version=pydm.__version__))
         pyver = ".".join([str(v) for v in sys.version_info[0:3]])
-        self.ui.modulesVersionLabel.setText(str(self.ui.modulesVersionLabel.text()).format(pyver=pyver,
-                                                                                           numpyver=numpyver,
-                                                                                           pyqtgraphver=pyqtgraphver,
-                                                                                           pyqtver=PYQT_VERSION_STR,
-                                                                                           qtver=qVersion()))
+        self.ui.modulesVersionLabel.setText(
+            str(self.ui.modulesVersionLabel.text()).format(
+                pyver=pyver, numpyver=numpyver, pyqtgraphver=pyqtgraphver, pyqtver=PYQT_VERSION_STR, qtver=qVersion()
+            )
+        )
         self.populate_external_tools_list()
         self.populate_plugin_list()
         self.populate_contributor_list()
@@ -35,15 +35,15 @@ class AboutWindow(QWidget):
         self.add_tools_to_list(pydm.tools.ext_tools)
 
     def add_tools_to_list(self, tools):
-        for (name, tool) in tools.items():
+        for name, tool in tools.items():
             if isinstance(tool, dict):
                 self.add_tools_to_list(tool)
             else:
                 tool_info = tool.get_info()
-                name_item = QTableWidgetItem(tool_info.get("name","None"))
-                group_item = QTableWidgetItem(tool_info.get("group","None"))
-                author_item = QTableWidgetItem(tool_info.get("author","None"))
-                file_item = QTableWidgetItem(tool_info.get("file","None"))
+                name_item = QTableWidgetItem(tool_info.get("name", "None"))
+                group_item = QTableWidgetItem(tool_info.get("group", "None"))
+                author_item = QTableWidgetItem(tool_info.get("author", "None"))
+                file_item = QTableWidgetItem(tool_info.get("file", "None"))
                 new_row = self.ui.externalToolsTableWidget.rowCount()
                 self.ui.externalToolsTableWidget.insertRow(new_row)
                 self.ui.externalToolsTableWidget.setItem(new_row, 0, name_item)
@@ -58,7 +58,7 @@ class AboutWindow(QWidget):
         self.ui.dataPluginsTableWidget.horizontalHeader().setStretchLastSection(True)
         self.ui.dataPluginsTableWidget.verticalHeader().setVisible(False)
         pydm.data_plugins.initialize_plugins_if_needed()
-        for (protocol, plugin) in pydm.data_plugins.plugin_modules.items():
+        for protocol, plugin in pydm.data_plugins.plugin_modules.items():
             protocol_item = QTableWidgetItem(protocol)
             file_item = QTableWidgetItem(inspect.getfile(plugin.__class__))
             new_row = self.ui.dataPluginsTableWidget.rowCount()

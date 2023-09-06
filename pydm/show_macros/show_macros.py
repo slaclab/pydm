@@ -1,12 +1,23 @@
 import json
-from qtpy.QtWidgets import QWidget, QPlainTextEdit, QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QApplication, QLabel
+from qtpy.QtWidgets import (
+    QWidget,
+    QPlainTextEdit,
+    QVBoxLayout,
+    QHBoxLayout,
+    QGridLayout,
+    QPushButton,
+    QApplication,
+    QLabel,
+)
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QFont
+
 
 class MacroWindow(QWidget):
     """
     A replica of EDM's "Show Macros" display
     """
+
     def __init__(self, parent=None):
         super().__init__(parent, Qt.Window)
         self.setWindowTitle("Macros")
@@ -25,7 +36,7 @@ class MacroWindow(QWidget):
         self.populate_macros()
 
         self.label = QLabel()
-        self.label.setText('')
+        self.label.setText("")
         self.label.setMinimumSize(100, 25)
 
         self.copy_button = QPushButton()
@@ -59,4 +70,4 @@ class MacroWindow(QWidget):
 
     def copy_macros(self):
         self.clipboard.setText(json.dumps(self.macros))
-        self.label.setText('Macros copied to clipboard!')
+        self.label.setText("Macros copied to clipboard!")

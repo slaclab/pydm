@@ -15,6 +15,7 @@ from ...widgets.base import PyDMWidget
 # POSITIVE TEST CASES
 # --------------------
 
+
 def test_construct(qtbot):
     """
     Test the construction of the widget.
@@ -48,11 +49,11 @@ def test_construct(qtbot):
     assert pydm_slider.low_lim_label.sizePolicy() == QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
     assert pydm_slider.low_lim_label.alignment() == Qt.Alignment(int(Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter))
 
-
     assert type(pydm_slider.high_lim_label) == QLabel
     assert pydm_slider.high_lim_label.sizePolicy() == QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-    assert pydm_slider.high_lim_label.alignment() == Qt.Alignment(int(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter))
-
+    assert pydm_slider.high_lim_label.alignment() == Qt.Alignment(
+        int(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
+    )
 
     assert type(pydm_slider._slider) == QSlider
     assert pydm_slider._slider.orientation() == Qt.Orientation(Qt.Horizontal)
@@ -106,10 +107,13 @@ def test_actions_triggered(qtbot, signals):
     signals.internal_slider_clicked.emit()
 
 
-@pytest.mark.parametrize("new_value, mute_change", [
-    (100.50, False),
-    (-100, True),
-])
+@pytest.mark.parametrize(
+    "new_value, mute_change",
+    [
+        (100.50, False),
+        (-100, True),
+    ],
+)
 def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
     """
     Test widget's change of its text value if its internal value has changed.
@@ -155,21 +159,20 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
         assert signals.value is None
 
 
-@pytest.mark.parametrize("value, step_size, precision, precision_from_pv", [
-    ('0.5', '1', '5', False),
-    ('1', '0.1', '3', False)
-])
+@pytest.mark.parametrize(
+    "value, step_size, precision, precision_from_pv", [("0.5", "1", "5", False), ("1", "0.1", "3", False)]
+)
 def test_parameters_menu(qtbot, value, step_size, precision, precision_from_pv):
     """
-        Tests the slider widgets parameters menu
+    Tests the slider widgets parameters menu
 
-        Expectations:
-        The values passed from the menu will update the corresponding values of the widget.
+    Expectations:
+    The values passed from the menu will update the corresponding values of the widget.
 
-        Parameters
-        ----------
-        qtbot : fixture
-            pytest-qt window for widget test
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt window for widget test
     """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)
@@ -194,14 +197,18 @@ def test_parameters_menu(qtbot, value, step_size, precision, precision_from_pv):
     assert pydm_slider.step_size == float(step_size)
     assert pydm_slider.precision == float(precision)
 
-@pytest.mark.parametrize("show_labels, tick_position", [
-    (True, 0),
-    (True, -10),
-    (True, 10),
-    (False, 0),
-    (False, -10),
-    (False, 10),
-])
+
+@pytest.mark.parametrize(
+    "show_labels, tick_position",
+    [
+        (True, 0),
+        (True, -10),
+        (True, 10),
+        (False, 0),
+        (False, -10),
+        (False, 10),
+    ],
+)
 def test_properties_and_setters(qtbot, show_labels, tick_position):
     """
     Test the widget's various properties and setters.
@@ -246,10 +253,7 @@ def test_properties_and_setters(qtbot, show_labels, tick_position):
         assert not pydm_slider.value_label.isVisibleTo(pydm_slider)
 
 
-@pytest.mark.parametrize("new_orientation", [
-    Qt.Horizontal,
-    Qt.Vertical
-])
+@pytest.mark.parametrize("new_orientation", [Qt.Horizontal, Qt.Vertical])
 def test_setup_widgets_for_orientation(qtbot, new_orientation):
     """
     Test setting up the slider's orientation.
@@ -295,12 +299,15 @@ def test_setup_widgets_for_orientation(qtbot, new_orientation):
         assert pydm_slider._slider.orientation() == new_orientation
 
 
-@pytest.mark.parametrize("minimum, maximum", [
-    (10, 20.5),
-    (10, 1),
-    (10, 20),
-    (-10, 20.5),
-])
+@pytest.mark.parametrize(
+    "minimum, maximum",
+    [
+        (10, 20.5),
+        (10, 1),
+        (10, 20),
+        (-10, 20.5),
+    ],
+)
 def test_update_labels(qtbot, signals, minimum, maximum):
     """
     Test that changes in the user minimum and user maximum update the limit labels.
@@ -319,6 +326,7 @@ def test_update_labels(qtbot, signals, minimum, maximum):
     maximum : int
         The slider's maximum value as set by the user
     """
+
     def validate(value, widget):
         if value is None:
             assert widget.text() == ""
@@ -338,18 +346,21 @@ def test_update_labels(qtbot, signals, minimum, maximum):
     validate(maximum, pydm_slider.high_lim_label)
 
 
-@pytest.mark.parametrize("minimum, maximum, write_access, connected", [
-    (None, None, True, True),
-    (None, 10, True, True),
-    (10, None, True, True),
-    (10, 20, True, True),
-    (20, 20, True, True),
-    (20, 30, True, True),
-    (-10, 20, True, True),
-    (10, 20, True, False),
-    (10, 20, False, True),
-    (10, 20, False, False),
-])
+@pytest.mark.parametrize(
+    "minimum, maximum, write_access, connected",
+    [
+        (None, None, True, True),
+        (None, 10, True, True),
+        (10, None, True, True),
+        (10, 20, True, True),
+        (20, 20, True, True),
+        (20, 30, True, True),
+        (-10, 20, True, True),
+        (10, 20, True, False),
+        (10, 20, False, True),
+        (10, 20, False, False),
+    ],
+)
 def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, connected):
     """
     Test the updating of the limits when the silder is reset.
@@ -397,21 +408,27 @@ def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, con
         assert pydm_slider._slider.maximum() == pydm_slider.num_steps - 1
         assert pydm_slider._slider.singleStep() == 1
         assert pydm_slider._slider.pageStep() == 10
-        assert np.array_equal(pydm_slider._slider_position_to_value_map,
-                              np.linspace(pydm_slider.minimum, pydm_slider.maximum, num=pydm_slider._num_steps))
-        assert pydm_slider.isEnabled() == (pydm_slider._write_access and pydm_slider._connected and not \
-            pydm_slider._needs_limit_info)
+        assert np.array_equal(
+            pydm_slider._slider_position_to_value_map,
+            np.linspace(pydm_slider.minimum, pydm_slider.maximum, num=pydm_slider._num_steps),
+        )
+        assert pydm_slider.isEnabled() == (
+            pydm_slider._write_access and pydm_slider._connected and not pydm_slider._needs_limit_info
+        )
 
 
-@pytest.mark.parametrize("new_value, minimum, maximum", [
-    (10, -10, 20),
-    (-10, -10, 20),
-    (20, -10, 20),
-    (-200, -10, 20),
-    (200, -10, 20),
-    (0, 0, 0),
-    (10, 10, 10),
-])
+@pytest.mark.parametrize(
+    "new_value, minimum, maximum",
+    [
+        (10, -10, 20),
+        (-10, -10, 20),
+        (20, -10, 20),
+        (-200, -10, 20),
+        (200, -10, 20),
+        (0, 0, 0),
+        (10, 10, 10),
+    ],
+)
 def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
     """
     Test the calculation of the slider's value. Also test set_slider_to_closest_value().
@@ -449,10 +466,13 @@ def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
         assert pydm_slider._slider.value() == expected_slider_value
 
 
-@pytest.mark.parametrize("new_channel_value, is_slider_down", [
-    (15, False),
-    (15, True),
-])
+@pytest.mark.parametrize(
+    "new_channel_value, is_slider_down",
+    [
+        (15, False),
+        (15, True),
+    ],
+)
 def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider_down):
     """
     Test the updating of the widget's slider component value when the channel value has changed.
@@ -497,49 +517,46 @@ def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider
         assert pydm_slider._slider.value() == 0
 
 
-@pytest.mark.parametrize("channel, alarm_sensitive_content, alarm_sensitive_border, new_alarm_severity", [
-    (None, False, False, PyDMWidget.ALARM_NONE),
-    (None, False, True, PyDMWidget.ALARM_NONE),
-    (None, True, False, PyDMWidget.ALARM_NONE),
-    (None, True, True, PyDMWidget.ALARM_NONE),
-
-    (None, False, False, PyDMWidget.ALARM_MAJOR),
-    (None, False, True, PyDMWidget.ALARM_MAJOR),
-    (None, True, False, PyDMWidget.ALARM_MAJOR),
-    (None, True, True, PyDMWidget.ALARM_MAJOR),
-
-    ("", False, False, PyDMWidget.ALARM_NONE),
-    ("", False, True, PyDMWidget.ALARM_NONE),
-    ("", True, False, PyDMWidget.ALARM_NONE),
-    ("", True, True, PyDMWidget.ALARM_NONE),
-
-    ("", False, False, PyDMWidget.ALARM_MAJOR),
-    ("", False, True, PyDMWidget.ALARM_MAJOR),
-    ("", True, False, PyDMWidget.ALARM_MAJOR),
-    ("", True, True, PyDMWidget.ALARM_MAJOR),
-
-    ("CA://MTEST", False, False, PyDMWidget.ALARM_NONE),
-    ("CA://MTEST", False, True, PyDMWidget.ALARM_NONE),
-    ("CA://MTEST", True, False, PyDMWidget.ALARM_NONE),
-    ("CA://MTEST", True, True, PyDMWidget.ALARM_NONE),
-
-    ("CA://MTEST", False, False, PyDMWidget.ALARM_MINOR),
-    ("CA://MTEST", False, True, PyDMWidget.ALARM_MINOR),
-    ("CA://MTEST", True, False, PyDMWidget.ALARM_MINOR),
-    ("CA://MTEST", True, True, PyDMWidget.ALARM_MINOR),
-
-    ("CA://MTEST", False, False, PyDMWidget.ALARM_MAJOR),
-    ("CA://MTEST", False, True, PyDMWidget.ALARM_MAJOR),
-    ("CA://MTEST", True, False, PyDMWidget.ALARM_MAJOR),
-    ("CA://MTEST", True, True, PyDMWidget.ALARM_MAJOR),
-
-    ("CA://MTEST", False, False, PyDMWidget.ALARM_DISCONNECTED),
-    ("CA://MTEST", False, True, PyDMWidget.ALARM_DISCONNECTED),
-    ("CA://MTEST", True, False, PyDMWidget.ALARM_DISCONNECTED),
-    ("CA://MTEST", True, True, PyDMWidget.ALARM_DISCONNECTED),
-])
-def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content, alarm_sensitive_border,
-                               new_alarm_severity):
+@pytest.mark.parametrize(
+    "channel, alarm_sensitive_content, alarm_sensitive_border, new_alarm_severity",
+    [
+        (None, False, False, PyDMWidget.ALARM_NONE),
+        (None, False, True, PyDMWidget.ALARM_NONE),
+        (None, True, False, PyDMWidget.ALARM_NONE),
+        (None, True, True, PyDMWidget.ALARM_NONE),
+        (None, False, False, PyDMWidget.ALARM_MAJOR),
+        (None, False, True, PyDMWidget.ALARM_MAJOR),
+        (None, True, False, PyDMWidget.ALARM_MAJOR),
+        (None, True, True, PyDMWidget.ALARM_MAJOR),
+        ("", False, False, PyDMWidget.ALARM_NONE),
+        ("", False, True, PyDMWidget.ALARM_NONE),
+        ("", True, False, PyDMWidget.ALARM_NONE),
+        ("", True, True, PyDMWidget.ALARM_NONE),
+        ("", False, False, PyDMWidget.ALARM_MAJOR),
+        ("", False, True, PyDMWidget.ALARM_MAJOR),
+        ("", True, False, PyDMWidget.ALARM_MAJOR),
+        ("", True, True, PyDMWidget.ALARM_MAJOR),
+        ("CA://MTEST", False, False, PyDMWidget.ALARM_NONE),
+        ("CA://MTEST", False, True, PyDMWidget.ALARM_NONE),
+        ("CA://MTEST", True, False, PyDMWidget.ALARM_NONE),
+        ("CA://MTEST", True, True, PyDMWidget.ALARM_NONE),
+        ("CA://MTEST", False, False, PyDMWidget.ALARM_MINOR),
+        ("CA://MTEST", False, True, PyDMWidget.ALARM_MINOR),
+        ("CA://MTEST", True, False, PyDMWidget.ALARM_MINOR),
+        ("CA://MTEST", True, True, PyDMWidget.ALARM_MINOR),
+        ("CA://MTEST", False, False, PyDMWidget.ALARM_MAJOR),
+        ("CA://MTEST", False, True, PyDMWidget.ALARM_MAJOR),
+        ("CA://MTEST", True, False, PyDMWidget.ALARM_MAJOR),
+        ("CA://MTEST", True, True, PyDMWidget.ALARM_MAJOR),
+        ("CA://MTEST", False, False, PyDMWidget.ALARM_DISCONNECTED),
+        ("CA://MTEST", False, True, PyDMWidget.ALARM_DISCONNECTED),
+        ("CA://MTEST", True, False, PyDMWidget.ALARM_DISCONNECTED),
+        ("CA://MTEST", True, True, PyDMWidget.ALARM_DISCONNECTED),
+    ],
+)
+def test_alarm_severity_change(
+    qtbot, signals, channel, alarm_sensitive_content, alarm_sensitive_border, new_alarm_severity
+):
     """
     Test the style of the widget changing according to alarm sensitivity settings and alarm severity changes.
 
@@ -573,12 +590,15 @@ def test_alarm_severity_change(qtbot, signals, channel, alarm_sensitive_content,
     signals.new_severity_signal.emit(new_alarm_severity)
 
 
-@pytest.mark.parametrize("which_limit, new_limit, user_defined_limits", [
-    ("UPPER", 10.5, True),
-    ("UPPER", 10.123, False),
-    ("LOWER", -10.5, True),
-    ("LOWER", -10.123, False),
-])
+@pytest.mark.parametrize(
+    "which_limit, new_limit, user_defined_limits",
+    [
+        ("UPPER", 10.5, True),
+        ("UPPER", 10.123, False),
+        ("LOWER", -10.5, True),
+        ("LOWER", -10.123, False),
+    ],
+)
 def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined_limits):
     """
     Test the widget's handling of the upper and lower limit changes.
@@ -616,10 +636,13 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined
         assert pydm_slider.get_ctrl_limits()[0] == new_limit
 
 
-@pytest.mark.parametrize("value, precision, unit, show_unit, expected_format_string", [
-    (123, 0, "s", True, "{:.0f} s"),
-    (123.456, 3, "mV", True, "{:.3f} mV"),
-])
+@pytest.mark.parametrize(
+    "value, precision, unit, show_unit, expected_format_string",
+    [
+        (123, 0, "s", True, "{:.0f} s"),
+        (123.456, 3, "mV", True, "{:.3f} mV"),
+    ],
+)
 def test_update_format_string(qtbot, value, precision, unit, show_unit, expected_format_string):
     """
     Test the unit conversion by examining the resulted format string.
@@ -660,11 +683,15 @@ def test_update_format_string(qtbot, value, precision, unit, show_unit, expected
 # NEGATIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("new_orientation", [
-    -1,
-    1000,
-    None,
-])
+
+@pytest.mark.parametrize(
+    "new_orientation",
+    [
+        -1,
+        1000,
+        None,
+    ],
+)
 def test_setup_widgets_for_orientation_neg(qtbot, caplog, new_orientation):
     """
     Test the widget's handling of invalid orientation values.

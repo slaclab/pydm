@@ -2,8 +2,19 @@ import logging
 import numpy as np
 from decimal import Decimal
 from qtpy.QtCore import Qt, Signal, Slot, Property
-from qtpy.QtWidgets import QFrame, QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy, \
-    QWidget, QLineEdit, QPushButton, QCheckBox, QComboBox
+from qtpy.QtWidgets import (
+    QFrame,
+    QLabel,
+    QSlider,
+    QVBoxLayout,
+    QHBoxLayout,
+    QSizePolicy,
+    QWidget,
+    QLineEdit,
+    QPushButton,
+    QCheckBox,
+    QComboBox,
+)
 from pydm.widgets import PyDMLabel
 from .base import PyDMWritableWidget, TextFormatter, is_channel_valid
 from .channel import PyDMChannel
@@ -23,6 +34,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     actionTriggered = Signal(int)
     rangeChanged = Signal(float, float)
     sliderMoved = Signal(float)
@@ -132,11 +144,20 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.slider_parameters_menu_buttons = []
         self.menu_layout = []
 
-        text_info = ['Value', 'Increment', 'Increment scale', 'Precision', 'Precision from PV', 'Number Format',
-                     'OK', 'Apply', 'Cancel']
+        text_info = [
+            "Value",
+            "Increment",
+            "Increment scale",
+            "Precision",
+            "Precision from PV",
+            "Number Format",
+            "OK",
+            "Apply",
+            "Cancel",
+        ]
 
-        combo_box_table_scale = ['1e0', '1e1', '1e2', '1e3', '1e4', '1e5']
-        combo_box_table_format = ['Float', 'Exp']
+        combo_box_table_scale = ["1e0", "1e1", "1e2", "1e3", "1e4", "1e5"]
+        combo_box_table_format = ["Float", "Exp"]
 
         for key in range(0, 6):
             self.slider_parameters_menu_input_widgets.append(key)
@@ -176,7 +197,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         for key in range(0, 3):
             self.slider_parameters_menu_buttons.append(key)
             self.slider_parameters_menu_buttons[key] = QPushButton(self.slider_parameters_menu_widget)
-            self.slider_parameters_menu_buttons[key].setText(text_info[key+6])
+            self.slider_parameters_menu_buttons[key].setText(text_info[key + 6])
             self.menu_layout[3].addWidget(self.slider_parameters_menu_buttons[key])
 
         main_layout.addLayout(self.menu_layout[3])
@@ -198,7 +219,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         try:
             new_step_size = float(self.slider_parameters_menu_input_widgets[1].text())
-            new_step_size_scaled = new_step_size*float(self.slider_parameters_menu_input_widgets[2].currentText())
+            new_step_size_scaled = new_step_size * float(self.slider_parameters_menu_input_widgets[2].currentText())
             if new_step_size_scaled > 0:
                 self.step_size = new_step_size_scaled
 
@@ -238,7 +259,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         format_type = self.slider_parameters_menu_input_widgets[5].currentText()
 
-        if format_type == 'Float':
+        if format_type == "Float":
             self.update_labels()
         else:
             self.update_labels(True)
@@ -323,6 +344,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         Update the limits and value labels with the correct values.
         """
+
         def set_label(value, label_widget, exp_format):
             if value is None:
                 label_widget.setText("")
@@ -330,7 +352,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
                 if not exp_format:
                     label_widget.setText(self.format_string.format(value))
                 else:
-                    text = '%.' + str(self.precision) + 'E'
+                    text = "%." + str(self.precision) + "E"
                     text = text % Decimal(str(value))
                     if self._show_units and self._unit != "":
                         text += " {}".format(self._unit)
@@ -381,10 +403,11 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         -------
         new_indexes : list of floats
         """
-        scale = 10 ** (len(str(self.step_size)) - str(self.step_size).find('.') - 1)
-        new_indexes_scaled = list(range(int(self.minimum * scale), int((self.maximum + self.step_size) * scale),
-                                        int(self.step_size * scale)))
-        new_indexes = [(index/scale) for index in new_indexes_scaled]
+        scale = 10 ** (len(str(self.step_size)) - str(self.step_size).find(".") - 1)
+        new_indexes_scaled = list(
+            range(int(self.minimum * scale), int((self.maximum + self.step_size) * scale), int(self.step_size * scale))
+        )
+        new_indexes = [(index / scale) for index in new_indexes_scaled]
         return new_indexes
 
     def find_closest_slider_position_to_value(self, val):
@@ -580,18 +603,18 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         timespan.
         """
         return self._slider.hasTracking()
-        
+
     @tracking.setter
     def tracking(self, checked):
         self._slider.setTracking(checked)
-    
+
     def hasTracking(self):
         """
         An alternative function to get the tracking property, to match what
         Qt provides for QSlider.
         """
         return self.tracking
-    
+
     def setTracking(self, checked):
         """
         An alternative function to set the tracking property, to match what
@@ -607,7 +630,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         don't want to accidentally change the slider as you are scrolling.
         """
         return self._ignore_mouse_wheel
-    
+
     @ignoreMouseWheel.setter
     def ignoreMouseWheel(self, checked):
         self._ignore_mouse_wheel = checked

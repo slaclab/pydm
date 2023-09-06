@@ -27,7 +27,7 @@ def epics_string(value: np.ndarray, string_encoding: str = "utf-8") -> str:
     # Assume the ndarray is one-dimensional
     value = value.tobytes()
     try:
-        value = value[:value.index(0)]
+        value = value[: value.index(0)]
     except (IndexError, ValueError):
         pass
     return value.decode(string_encoding, "replace")  # <-- ignore decoding errors, just in case
@@ -48,13 +48,9 @@ def epics_unsigned(value: int, bits: int = 32) -> int:
 
 
 class CalcThread(QThread):
-    eval_env = {'math': math,
-                'np': np,
-                'numpy': np,
-                'epics_string': epics_string,
-                'epics_unsigned': epics_unsigned}
+    eval_env = {"math": math, "np": np, "numpy": np, "epics_string": epics_string, "epics_unsigned": epics_unsigned}
 
-    eval_env.update({k: v for k, v in math.__dict__.items() if k[0] != '_'})
+    eval_env.update({k: v for k, v in math.__dict__.items() if k[0] != "_"})
     new_data_signal = Signal(dict)
     RESERVED_FIELD = ["update", "expr", "name"]
 
@@ -72,24 +68,23 @@ class CalcThread(QThread):
         self._value = None
         self._values = collections.defaultdict(lambda: None)
         self._connections = collections.defaultdict(lambda: False)
-        self._expression = self.config.get('expr', '')[0]
+        self._expression = self.config.get("expr", "")[0]
 
         channels = {}
         for key, channel in self.config.items():
             if key not in CalcThread.RESERVED_FIELD:
                 channels[key] = channel[0]
 
-        update = self.config.get('update', None)
+        update = self.config.get("update", None)
 
         if update is not None:
-            self.listen_for_update = update[0].split(',')
+            self.listen_for_update = update[0].split(",")
             self.listen_for_update = list(map(str.strip, self.listen_for_update))
 
         for name, channel in channels.items():
             conn_cb = functools.partial(self.callback_conn, name)
             value_cb = functools.partial(self.callback_value, name)
-            c = pydm.PyDMChannel(channel, connection_slot=conn_cb,
-                                 value_slot=value_cb)
+            c = pydm.PyDMChannel(channel, connection_slot=conn_cb, value_slot=value_cb)
             self._channels.append(c)
             self._names.append(name)
 
@@ -106,8 +101,7 @@ class CalcThread(QThread):
             ch.disconnect()
 
     def _send_update(self, conn, value):
-        self.new_data_signal.emit({"connection": conn,
-                                   "value": value})
+        self.new_data_signal.emit({"connection": conn, "value": value})
 
     def run(self):
         self._connect()
@@ -137,9 +131,7 @@ class CalcThread(QThread):
         """
         self._values[name] = value
         if not self.connected:
-            logger.debug(
-                "Calculation '%s': Not all channels are connected, skipping execution.",
-                self.objectName())
+            logger.debug("Calculation '%s': Not all channels are connected, skipping execution.", self.objectName())
             return
 
         if self.listen_for_update is None or name in self.listen_for_update:
@@ -167,20 +159,19 @@ class CalcThread(QThread):
         """
         vals = self._values.copy()
         if any([vals.get(n) is None for n in self._names]):
-            logger.debug('Skipping execution as not all values are set.')
+            logger.debug("Skipping execution as not all values are set.")
             return
 
         env = dict(CalcThread.eval_env)
         env.update(**vals)
-        env.update({'prev_res': self._value})
+        env.update({"prev_res": self._value})
 
         try:
             ret = eval(self._expression, env)
             self._value = ret
             self._send_update(self.connected, ret)
         except Exception as e:
-            logger.exception("Error while evaluating CalcPlugin connection %s",
-                             self.objectName())
+            logger.exception("Error while evaluating CalcPlugin connection %s", self.objectName())
 
 
 class Connection(PyDMConnection):
@@ -209,23 +200,22 @@ class Connection(PyDMConnection):
 
     def _setup_calc(self, channel):
         if not self._waiting_config:
-            logger.debug('CalcPlugin connection already configured.')
+            logger.debug("CalcPlugin connection already configured.")
             return
 
         try:
             url_data = UrlToPython(channel)
         except ValueError("Not enough information"):
-            logger.debug('Invalid configuration for Calc Plugin connection', exc_info=True)
+            logger.debug("Invalid configuration for Calc Plugin connection", exc_info=True)
             return
 
-        self._configuration['name'] = url_data.name
+        self._configuration["name"] = url_data.name
         self._configuration.update(url_data.config)
         self._waiting_config = False
 
         self._calc_thread = CalcThread(self._configuration)
         self._calc_thread.setObjectName("calc_{}".format(url_data.name))
-        self._calc_thread.new_data_signal.connect(self.receive_new_data,
-                                                  Qt.QueuedConnection)
+        self._calc_thread.new_data_signal.connect(self.receive_new_data, Qt.QueuedConnection)
         self._calc_thread.start()
         return True
 
@@ -234,18 +224,18 @@ class Connection(PyDMConnection):
         if not data:
             return
         try:
-            conn = data.get('connection')
+            conn = data.get("connection")
             self.connected = conn
             self.connection_state_signal.emit(conn)
         except KeyError:
-            logger.debug('Connection was not available yet for calc.')
+            logger.debug("Connection was not available yet for calc.")
         try:
-            val = data.get('value')
+            val = data.get("value")
             self.value = val
             if val is not None:
                 self.new_value_signal[type(val)].emit(val)
         except KeyError:
-            logger.debug('Value was not available yet for calc.')
+            logger.debug("Value was not available yet for calc.")
 
     def close(self):
         self._calc_thread.requestInterruption()
@@ -288,7 +278,7 @@ class UrlToPython:
             try:
                 if not self.name:
                     raise
-                logger.debug('Calc Plugin  connection %s got new listener.', self.parsed_address)
+                logger.debug("Calc Plugin  connection %s got new listener.", self.parsed_address)
                 return None, self.name, self.parsed_address
             except Exception:
                 msg = "Invalid configuration for Calc Plugin  connection. %s"

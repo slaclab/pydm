@@ -4,9 +4,9 @@ import logging
 from pydm.widgets.logdisplay import PyDMLogDisplay
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def log():
-    log = logging.getLogger('log_test.pydm')
+    log = logging.getLogger("log_test.pydm")
     return log
 
 
@@ -17,26 +17,26 @@ def test_write(qtbot, log):
     assert logd.logLevel == logging.INFO
     assert logd.logName == log.name
     # Watch our error message show up in the log
-    err_msg = 'This is a test of the emergency broadcast system'
+    err_msg = "This is a test of the emergency broadcast system"
     log.error(err_msg)
     assert err_msg in logd.text.toPlainText()
     # Debug shouldn't show up
-    debug_msg = 'Pay no attention to the man behind the curtain'
+    debug_msg = "Pay no attention to the man behind the curtain"
     log.debug(debug_msg)
     assert debug_msg not in logd.text.toPlainText()
     # Change the level so debug does show up
-    logd.setLevel('DEBUG')
+    logd.setLevel("DEBUG")
     assert logd.handler.level == logging.DEBUG
     assert logd.log.level <= logging.DEBUG
     log.debug(debug_msg)
     assert debug_msg in logd.text.toPlainText()
     # Change the name and make sure we still see what we need
-    logd.logname = 'log_test'
-    info_msg = 'The more things change the more they stay the same'
+    logd.logname = "log_test"
+    info_msg = "The more things change the more they stay the same"
     log.info(info_msg)
     assert info_msg in logd.text.toPlainText()
     logd.clear()
-    assert logd.text.toPlainText() == ''
+    assert logd.text.toPlainText() == ""
 
 
 def test_handler_cleanup(qtbot, log):

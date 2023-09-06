@@ -4,15 +4,15 @@ from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDel
 
 
 class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
-    """ This is the data model used by the waveform plot curve editor.
+    """This is the data model used by the waveform plot curve editor.
     It basically acts as a go-between for the curves in a plot, and
     QTableView items.
     """
 
     def __init__(self, plot, parent=None):
         super(PyDMScatterPlotCurvesModel, self).__init__(plot, parent=parent)
-        self._column_names = ('Y Channel', 'X Channel') + self._column_names
-        self._column_names += ('Redraw Mode', 'Buffer Size', 'Buffer Size Channel')
+        self._column_names = ("Y Channel", "X Channel") + self._column_names
+        self._column_names += ("Redraw Mode", "Buffer Size", "Buffer Size Channel")
 
     def get_data(self, column_name, curve):
         if column_name == "Y Channel":
@@ -29,8 +29,7 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
             return curve.getBufferSize()
         elif column_name == "Buffer Size Channel":
             return curve.bufferSizeChannelAddress or ""
-        return super(PyDMScatterPlotCurvesModel, self).get_data(
-            column_name, curve)
+        return super(PyDMScatterPlotCurvesModel, self).get_data(column_name, curve)
 
     def set_data(self, column_name, curve, value):
         if column_name == "Y Channel":
@@ -46,13 +45,11 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
                 value = None
             curve.bufferSizeChannelAddress = str(value)
         else:
-            return super(PyDMScatterPlotCurvesModel, self).set_data(
-                column_name=column_name, curve=curve, value=value)
+            return super(PyDMScatterPlotCurvesModel, self).set_data(column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, y_address=None, x_address=None, name=None, color=None):
-        self.beginInsertRows(QModelIndex(), len(self._plot._curves),
-                             len(self._plot._curves))
+        self.beginInsertRows(QModelIndex(), len(self._plot._curves), len(self._plot._curves))
         self._plot.addChannel(y_address, x_address, name, color)
         self.endInsertRows()
 
@@ -70,6 +67,7 @@ class ScatterPlotCurveEditorDialog(BasePlotCurveEditorDialog):
 
     This thing is mostly just a wrapper for a table view, with a couple
     buttons to add and remove curves, and a button to save the changes."""
+
     TABLE_MODEL_CLASS = PyDMScatterPlotCurvesModel
 
     def __init__(self, plot, parent=None):

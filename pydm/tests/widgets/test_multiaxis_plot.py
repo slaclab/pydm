@@ -7,35 +7,35 @@ from ...widgets.multi_axis_plot import MultiAxisPlot
 
 @pytest.fixture
 def sample_plot(qtbot, monkeypatch):
-    """ Set up a plot with a couple of test axis items for use in test cases below """
+    """Set up a plot with a couple of test axis items for use in test cases below"""
     plot = MultiAxisPlot()
     scene = QGraphicsScene()
-    monkeypatch.setattr(plot, 'scene', lambda: scene)  # Have the plot return a dummy scene when needed
+    monkeypatch.setattr(plot, "scene", lambda: scene)  # Have the plot return a dummy scene when needed
 
     # Create two axes, one with a fixed range and one that should auto-range (adjust to always display all data)
-    fixed_range_axis = AxisItem('left')
-    plot.addAxis(fixed_range_axis, 'Fixed Range Axis', enableAutoRangeY=False, minRange=-5.0, maxRange=7.5)
-    auto_range_axis = AxisItem('left')
-    plot.addAxis(auto_range_axis, 'Auto Range Axis', enableAutoRangeY=True)
+    fixed_range_axis = AxisItem("left")
+    plot.addAxis(fixed_range_axis, "Fixed Range Axis", enableAutoRangeY=False, minRange=-5.0, maxRange=7.5)
+    auto_range_axis = AxisItem("left")
+    plot.addAxis(auto_range_axis, "Auto Range Axis", enableAutoRangeY=True)
 
     return plot
 
 
 def test_original_ranges_set_correctly(sample_plot):
-    """ Check that the original ranges of x and y axes are preserved when adding them into the plot """
+    """Check that the original ranges of x and y axes are preserved when adding them into the plot"""
 
     # The axis with a set range should have that preserved
-    assert sample_plot.axesOriginalRanges['Fixed Range Axis'][0] == -5.0
-    assert sample_plot.axesOriginalRanges['Fixed Range Axis'][1] == 7.5
+    assert sample_plot.axesOriginalRanges["Fixed Range Axis"][0] == -5.0
+    assert sample_plot.axesOriginalRanges["Fixed Range Axis"][1] == 7.5
 
     # And the axis set to auto-range should be set to None indicating there is no fixed range to preserve
-    assert sample_plot.axesOriginalRanges['Auto Range Axis'][0] is None
-    assert sample_plot.axesOriginalRanges['Auto Range Axis'][1] is None
+    assert sample_plot.axesOriginalRanges["Auto Range Axis"][0] is None
+    assert sample_plot.axesOriginalRanges["Auto Range Axis"][1] is None
 
 
-@mock.patch('pyqtgraph.ViewBox.enableAutoRange')
-@mock.patch('pyqtgraph.PlotItem.setXRange')
-@mock.patch('pyqtgraph.ViewBox.setYRange')
+@mock.patch("pyqtgraph.ViewBox.enableAutoRange")
+@mock.patch("pyqtgraph.PlotItem.setXRange")
+@mock.patch("pyqtgraph.ViewBox.setYRange")
 def test_restore_axis_ranges(mocked_y_range, mocked_x_range, mocked_auto_range, sample_plot):
     """
     Verify that when axis ranges have been changed from their defaults, calling restore will set them back to
@@ -43,7 +43,7 @@ def test_restore_axis_ranges(mocked_y_range, mocked_x_range, mocked_auto_range, 
     """
 
     # First let's set a starting range on the bottom axis as well as those set in the fixture
-    sample_plot.axesOriginalRanges['bottom'] = (0.0, 10.0)
+    sample_plot.axesOriginalRanges["bottom"] = (0.0, 10.0)
 
     sample_plot.restoreAxisRanges()
 
@@ -55,80 +55,80 @@ def test_restore_axis_ranges(mocked_y_range, mocked_x_range, mocked_auto_range, 
 
 
 def test_link_data_to_logarithmic_axis(qtbot, monkeypatch, sample_plot):
-    """ Verify that when a curve is added to an axis with log mode on, that curve is set to log mode as well """
+    """Verify that when a curve is added to an axis with log mode on, that curve is set to log mode as well"""
 
     # Create one linear axis and one logarithmic axis
-    linear_axis = AxisItem('left')
-    log_axis = AxisItem('left')
+    linear_axis = AxisItem("left")
+    log_axis = AxisItem("left")
     log_axis.setLogMode(True)
 
-    sample_plot.addAxis(linear_axis, 'Linear Axis')
-    sample_plot.addAxis(log_axis, 'Log Axis')
+    sample_plot.addAxis(linear_axis, "Linear Axis")
+    sample_plot.addAxis(log_axis, "Log Axis")
 
     # Create a data item to go along with each axis
     linear_data = PlotDataItem()
     log_data = PlotDataItem()
 
     # Upon creation, all data should default to non-log mode
-    assert linear_data.opts['logMode'] == [False, False]
-    assert log_data.opts['logMode'] == [False, False]
+    assert linear_data.opts["logMode"] == [False, False]
+    assert log_data.opts["logMode"] == [False, False]
 
-    sample_plot.linkDataToAxis(linear_data, 'Linear Axis')
-    sample_plot.linkDataToAxis(log_data, 'Log Axis')
+    sample_plot.linkDataToAxis(linear_data, "Linear Axis")
+    sample_plot.linkDataToAxis(log_data, "Log Axis")
 
     # Now that we've linked the data to their associated axes, the log_data should have logMode set to true, while
     # linear data should still have it set to false
-    assert linear_data.opts['logMode'] == [False, False]
-    assert log_data.opts['logMode'] == [False, True]
+    assert linear_data.opts["logMode"] == [False, False]
+    assert log_data.opts["logMode"] == [False, True]
 
 
 def test_update_log_mode(qtbot, sample_plot):
-    """ Verify toggling log mode on and off for the entire plot works as expected """
+    """Verify toggling log mode on and off for the entire plot works as expected"""
     data_item = PlotDataItem()
     sample_plot.addItem(data_item)
 
     # For a brand new plot, log mode defaults to false for everything. Verify this is the case.
-    assert data_item.opts['logMode'] == [False, False]
+    assert data_item.opts["logMode"] == [False, False]
     for axis in sample_plot.getAxes():
         assert not axis.logMode
 
     # Now set log mode on for y-values only. Verify this gets set correctly, and x-values are left alone.
     sample_plot.setLogMode(False, True)
-    assert data_item.opts['logMode'] == [False, True]
+    assert data_item.opts["logMode"] == [False, True]
     for axis in sample_plot.getAxes():
-        if axis.orientation in ('bottom', 'top'):
+        if axis.orientation in ("bottom", "top"):
             assert not axis.logMode
-        elif axis.orientation in ('left', 'right'):
+        elif axis.orientation in ("left", "right"):
             assert axis.logMode
         else:
-            raise ValueError(f'Invalid value for axis orientation: {axis.orientation}')
+            raise ValueError(f"Invalid value for axis orientation: {axis.orientation}")
 
     # Now set log mode on for x-values only. Verify this gets set correctly, and y-values are left alone.
     sample_plot.setLogMode(True, False)
-    assert data_item.opts['logMode'] == [True, False]
+    assert data_item.opts["logMode"] == [True, False]
     for axis in sample_plot.getAxes():
-        if axis.orientation in ('bottom', 'top'):
+        if axis.orientation in ("bottom", "top"):
             assert axis.logMode
-        elif axis.orientation in ('left', 'right'):
+        elif axis.orientation in ("left", "right"):
             assert not axis.logMode
         else:
-            raise ValueError(f'Invalid value for axis orientation: {axis.orientation}')
+            raise ValueError(f"Invalid value for axis orientation: {axis.orientation}")
 
     # Now set log mode on for everything. Verify this is set across all items.
     sample_plot.setLogMode(True, True)
-    assert data_item.opts['logMode'] == [True, True]
+    assert data_item.opts["logMode"] == [True, True]
     for axis in sample_plot.getAxes():
         assert axis.logMode
 
     # And finally return everything back to non-log mode. Verify all items are no longer in log mode for x or y.
     sample_plot.setLogMode(False, False)
-    assert data_item.opts['logMode'] == [False, False]
+    assert data_item.opts["logMode"] == [False, False]
     for axis in sample_plot.getAxes():
         assert not axis.logMode
 
 
 def test_remove_item(qtbot, sample_plot: MultiAxisPlot):
-    """ Verify that removing an item from the plot works as expected """
+    """Verify that removing an item from the plot works as expected"""
 
     # First create a couple of mock data items to plot, and add them to the plot
     data_item_one = PlotDataItem()

@@ -35,6 +35,7 @@ logger = logging.getLogger(__name__)
 
 class WidgetCategory(str, enum.Enum):
     """Categories for PyDM Widgets in the Qt Designer."""
+
     #: Widgets which can contain other widgets.
     CONTAINER = "PyDM Container Widgets"
     #: Widgets which contain displays.
@@ -54,7 +55,7 @@ def qtplugin_factory(
     is_container: bool = False,
     group: str = "PyDM Widgets",
     extensions: Optional[List[Type]] = None,
-    icon: Optional[QtGui.QIcon] = None
+    icon: Optional[QtGui.QIcon] = None,
 ) -> Type["PyDMDesignerPlugin"]:
     """
     Helper function to create a generic PyDMDesignerPlugin class.
@@ -81,8 +82,7 @@ def qtplugin_factory(
         __doc__ = "PyDMDesigner Plugin for {}".format(cls.__name__)
 
         def __init__(self):
-            super(Plugin, self).__init__(cls, is_container, group, extensions,
-                                         icon)
+            super(Plugin, self).__init__(cls, is_container, group, extensions, icon)
 
     return Plugin
 
@@ -146,9 +146,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
             self.manager = core.extensionManager()
             if self.manager:
                 factory = PyDMExtensionFactory(parent=self.manager)
-                self.manager.registerExtensions(
-                    factory,
-                    'org.qt-project.Qt.Designer.TaskMenu')  # Qt5
+                self.manager.registerExtensions(factory, "org.qt-project.Qt.Designer.TaskMenu")  # Qt5
 
     def isInitialized(self):
         """
@@ -216,8 +214,8 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         XML Description of the widget's properties.
         """
         return (
-            "<widget class=\"{0}\" name=\"{0}\">\n"
-            " <property name=\"toolTip\" >\n"
+            '<widget class="{0}" name="{0}">\n'
+            ' <property name="toolTip" >\n'
             "  <string>{1}</string>\n"
             " </property>\n"
             "</widget>\n"
@@ -244,26 +242,17 @@ def create_designer_widget_from_widget(
     what :func:`qtplugin_factory` expects.
     """
     if not inspect.isclass(widget_cls):
-        raise ValueError(
-            f"Expected a class, got a {type(widget_cls).__name__}"
-        )
+        raise ValueError(f"Expected a class, got a {type(widget_cls).__name__}")
     if issubclass(widget_cls, PyDMDesignerPlugin):
         return widget_cls
     if issubclass(widget_cls, QtWidgets.QWidget):
-        designer_kwargs = getattr(
-            widget_cls, "_qt_designer_", None
-        ) or {}
+        designer_kwargs = getattr(widget_cls, "_qt_designer_", None) or {}
         return qtplugin_factory(widget_cls, **designer_kwargs)
 
-    raise ValueError(
-        f"Expected a PyDMDesignerPlugin or a QWidget subclass, "
-        f"got a {type(widget_cls).__name__}"
-    )
+    raise ValueError(f"Expected a PyDMDesignerPlugin or a QWidget subclass, " f"got a {type(widget_cls).__name__}")
 
 
-def get_widgets_from_entrypoints(
-    key: str = config.ENTRYPOINT_WIDGET
-) -> Dict[str, Type[PyDMDesignerPlugin]]:
+def get_widgets_from_entrypoints(key: str = config.ENTRYPOINT_WIDGET) -> Dict[str, Type[PyDMDesignerPlugin]]:
     """
     Get all widgets from entrypoint definitions.
 
@@ -283,22 +272,13 @@ def get_widgets_from_entrypoints(
         try:
             plugin_cls = entry.load()
         except Exception as ex:
-            logger.exception(
-                "Failed to load %s entry %s: %s",
-                key, entry.name, ex
-            )
+            logger.exception("Failed to load %s entry %s: %s", key, entry.name, ex)
             continue
 
         try:
-            designer_widget = create_designer_widget_from_widget(
-                plugin_cls
-            )
+            designer_widget = create_designer_widget_from_widget(plugin_cls)
         except Exception:
-            logger.warning(
-                "Invalid widget class specified in entrypoint "
-                "%s: %s",
-                entry.name, plugin_cls
-            )
+            logger.warning("Invalid widget class specified in entrypoint " "%s: %s", entry.name, plugin_cls)
         else:
             widgets[entry.name] = designer_widget
 

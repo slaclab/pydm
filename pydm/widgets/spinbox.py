@@ -14,6 +14,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         QDoubleSpinBox.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
@@ -72,7 +73,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
 
         elif ev.key() in (Qt.Key_Return, Qt.Key_Enter):
             self.send_value()
-    
+
         else:
             super(PyDMSpinbox, self).keyPressEvent(ev)
 
@@ -85,6 +86,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         QMenu or None
             If the return of this method is None a new QMenu will be created by `assemble_tools_menu`.
         """
+
         def toggle_step():
             self.showStepExponent = not self.showStepExponent
 
@@ -93,10 +95,10 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
 
         menu = self.lineEdit().createStandardContextMenu()
         menu.addSeparator()
-        ac = menu.addAction('Toggle Show Step Size')
+        ac = menu.addAction("Toggle Show Step Size")
         ac.triggered.connect(toggle_step)
 
-        ac_write = menu.addAction('Toggle Write On Press')
+        ac_write = menu.addAction("Toggle Write On Press")
         ac_write.triggered.connect(toggle_write)
 
         return menu
@@ -105,7 +107,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         """
         Update the Single Step size on the QDoubleSpinBox.
         """
-        self.setSingleStep(10 ** self.step_exponent)
+        self.setSingleStep(10**self.step_exponent)
         self.update_format_string()
 
     def update_format_string(self):
@@ -127,7 +129,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
             self.lineEdit().setToolTip("")
         else:
             self.setSuffix(units)
-            self.lineEdit().setToolTip('Step: 1E{0:+d}'.format(self.step_exponent))
+            self.lineEdit().setToolTip("Step: 1E{0:+d}".format(self.step_exponent))
 
     def value_changed(self, new_val):
         """

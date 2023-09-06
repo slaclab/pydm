@@ -4,10 +4,9 @@ from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QApplication
 from ...widgets import PyDMSlider, PyDMTemplateRepeater
 
-test_template_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    "../test_data", "template.ui")
-    
+test_template_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../test_data", "template.ui")
+
+
 def test_template_file(qtbot):
     # Test that loading a template and setting data instantiates an instance
     # of the template.

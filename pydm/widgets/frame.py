@@ -15,6 +15,7 @@ class PyDMFrame(QFrame, PyDMWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         QFrame.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)

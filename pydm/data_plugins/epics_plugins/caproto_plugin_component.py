@@ -9,17 +9,36 @@ from pydm.data_plugins import is_read_only
 
 logger = logging.getLogger(__name__)
 
-int_types = set((epics.ChannelType.INT, epics.ChannelType.CTRL_INT, epics.ChannelType.TIME_INT,
-                 epics.ChannelType.ENUM, epics.ChannelType.CTRL_ENUM, epics.ChannelType.TIME_ENUM,
-                 epics.ChannelType.TIME_LONG, epics.ChannelType.LONG, epics.ChannelType.CTRL_LONG,
-                 epics.ChannelType.CHAR, epics.ChannelType.TIME_CHAR, epics.ChannelType.CTRL_CHAR))
+int_types = set(
+    (
+        epics.ChannelType.INT,
+        epics.ChannelType.CTRL_INT,
+        epics.ChannelType.TIME_INT,
+        epics.ChannelType.ENUM,
+        epics.ChannelType.CTRL_ENUM,
+        epics.ChannelType.TIME_ENUM,
+        epics.ChannelType.TIME_LONG,
+        epics.ChannelType.LONG,
+        epics.ChannelType.CTRL_LONG,
+        epics.ChannelType.CHAR,
+        epics.ChannelType.TIME_CHAR,
+        epics.ChannelType.CTRL_CHAR,
+    )
+)
 
-float_types = set((epics.ChannelType.CTRL_FLOAT, epics.ChannelType.FLOAT, epics.ChannelType.TIME_FLOAT,
-                   epics.ChannelType.CTRL_DOUBLE, epics.ChannelType.DOUBLE, epics.ChannelType.TIME_DOUBLE))
+float_types = set(
+    (
+        epics.ChannelType.CTRL_FLOAT,
+        epics.ChannelType.FLOAT,
+        epics.ChannelType.TIME_FLOAT,
+        epics.ChannelType.CTRL_DOUBLE,
+        epics.ChannelType.DOUBLE,
+        epics.ChannelType.TIME_DOUBLE,
+    )
+)
 
 
 class Connection(PyDMConnection):
-
     def __init__(self, channel, pv, protocol=None, parent=None):
         super(Connection, self).__init__(channel, pv, protocol, parent)
         self.app = QApplication.instance()
@@ -37,8 +56,13 @@ class Connection(PyDMConnection):
         self._timestamp = None
 
         monitor_mask = SubscriptionType.DBE_VALUE | SubscriptionType.DBE_ALARM | SubscriptionType.DBE_PROPERTY
-        self.pv = epics.get_pv(pv, connection_callback=self.send_connection_state, form='ctrl',
-                               auto_monitor=monitor_mask, access_callback=self.send_access_state)
+        self.pv = epics.get_pv(
+            pv,
+            connection_callback=self.send_connection_state,
+            form="ctrl",
+            auto_monitor=monitor_mask,
+            access_callback=self.send_access_state,
+        )
         self.pv.add_callback(self.send_new_value, with_ctrlvars=True)
         self.add_listener(channel)
 
@@ -77,9 +101,22 @@ class Connection(PyDMConnection):
                 else:
                     self.new_value_signal[str].emit(char_value)
 
-    def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None,
-                         upper_alarm_limit=None, lower_alarm_limit=None, upper_warning_limit=None,
-                         lower_warning_limit=None, precision=None, timestamp=None, *args, **kws):
+    def update_ctrl_vars(
+        self,
+        units=None,
+        enum_strs=None,
+        severity=None,
+        upper_ctrl_limit=None,
+        lower_ctrl_limit=None,
+        upper_alarm_limit=None,
+        lower_alarm_limit=None,
+        upper_warning_limit=None,
+        lower_warning_limit=None,
+        precision=None,
+        timestamp=None,
+        *args,
+        **kws
+    ):
         if severity is not None and self._severity != severity:
             self._severity = severity
             self.new_severity_signal.emit(int(severity))
@@ -89,7 +126,7 @@ class Connection(PyDMConnection):
         if enum_strs is not None and self._enum_strs != enum_strs:
             self._enum_strs = enum_strs
             try:
-                enum_strs = tuple(b.decode(encoding='ascii') for b in enum_strs)
+                enum_strs = tuple(b.decode(encoding="ascii") for b in enum_strs)
             except AttributeError:
                 pass
             self.enum_strings_signal.emit(enum_strs)
@@ -138,7 +175,7 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(conn)
         if conn:
             self.clear_cache()
-            if hasattr(self, 'pv'):
+            if hasattr(self, "pv"):
                 self.reload_access_state()
                 self.pv.run_callbacks()
 
@@ -154,8 +191,7 @@ class Connection(PyDMConnection):
             try:
                 self.pv.put(new_val)
             except Exception as e:
-                logger.exception("Unable to put %s to %s.  Exception: %s",
-                                 new_val, self.pv.pvname, str(e))
+                logger.exception("Unable to put %s to %s.  Exception: %s", new_val, self.pv.pvname, str(e))
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)

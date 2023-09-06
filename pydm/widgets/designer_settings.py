@@ -37,6 +37,7 @@ class DictionaryTable(QtWidgets.QTableWidget):
         self.menu = QtWidgets.QMenu(self)
         item = self.itemAt(pos)
         if item is not None:
+
             def copy(*_):
                 copy_to_clipboard(item.text())
 
@@ -48,9 +49,7 @@ class DictionaryTable(QtWidgets.QTableWidget):
             def paste(*_):
                 item.setText(clipboard_text)
 
-            paste_action = self.menu.addAction(
-                f"&Paste: {clipboard_text[:100]}"
-            )
+            paste_action = self.menu.addAction(f"&Paste: {clipboard_text[:100]}")
             paste_action.triggered.connect(paste)
 
             def delete_row(*_):
@@ -73,18 +72,9 @@ class DictionaryTable(QtWidgets.QTableWidget):
 
     @property
     def dictionary(self) -> dict:
-        items = [
-            (self.item(row, 0), self.item(row, 1))
-            for row in range(self.rowCount())
-        ]
-        key_value_pairs = [
-            (key.text() if key else "", value.text() if value else "")
-            for key, value in items
-        ]
-        return {
-            key.strip(): value
-            for key, value in key_value_pairs
-        }
+        items = [(self.item(row, 0), self.item(row, 1)) for row in range(self.rowCount())]
+        key_value_pairs = [(key.text() if key else "", value.text() if value else "") for key, value in items]
+        return {key.strip(): value for key, value in key_value_pairs}
 
     @dictionary.setter
     def dictionary(self, dct):
@@ -114,7 +104,7 @@ class StringListTable(QtWidgets.QTableWidget):
         self.setDragEnabled(True)
         self.setAcceptDrops(True)
         self.drag_source_row = None
-    
+
     def startDrag(self, event):
         self.drag_source_row = self.currentRow()
         # call super() since we use the default dragging functionality
@@ -126,7 +116,7 @@ class StringListTable(QtWidgets.QTableWidget):
         target_row = self.indexAt(event.pos()).row()
         if target_row >= 0 and source_row != target_row:
             self.swap_rows(source_row, target_row)
-        
+
     def swap_rows(self, row1, row2):
         item1 = self.takeItem(row1, 0)
         item2 = self.takeItem(row2, 0)
@@ -137,6 +127,7 @@ class StringListTable(QtWidgets.QTableWidget):
         self.menu = QtWidgets.QMenu(self)
         item = self.itemAt(pos)
         if item is not None:
+
             def copy(*_):
                 copy_to_clipboard(item.text())
 
@@ -171,11 +162,7 @@ class StringListTable(QtWidgets.QTableWidget):
     @property
     def values(self) -> list:
         items = [self.item(row, 0) for row in range(self.rowCount())]
-        return [
-            item.text().strip()
-            for item in items
-            if item is not None
-        ]
+        return [item.text().strip() for item in items if item is not None]
 
     @values.setter
     def values(self, values):
@@ -225,11 +212,7 @@ class _PropertyHelper:
     def save_settings(self):
         value = self.saved_value
         if value is not None:
-            update_property_for_widget(
-                self._property_widget,
-                self._property_name,
-                value
-            )
+            update_property_for_widget(self._property_widget, self._property_name, value)
 
 
 class PropertyRuleEditor(_PropertyHelper, QtWidgets.QPushButton):
@@ -242,6 +225,7 @@ class PropertyRuleEditor(_PropertyHelper, QtWidgets.QPushButton):
 
     def _open_rules_editor(self):
         from .rules_editor import RulesEditor
+
         self._rules_editor = RulesEditor(self._property_widget, parent=self)
         self._rules_editor.exec_()
 
@@ -404,10 +388,7 @@ class BasicSettingsEditor(QtWidgets.QDialog):
                 continue
 
             prop_type = getattr(prop, "type", None)
-            helper_widget_cls = self._common_attributes_.get(
-                attr,
-                self._type_to_widget_.get(prop_type, None)
-            )
+            helper_widget_cls = self._common_attributes_.get(attr, self._type_to_widget_.get(prop_type, None))
             if helper_widget_cls is not None:
                 helper_widget = helper_widget_cls(
                     property_widget=self.widget,
@@ -428,7 +409,7 @@ class BasicSettingsEditor(QtWidgets.QDialog):
                     "Failed to save settings for %s.%s = %r",
                     self.widget.objectName(),
                     helper._property_name,
-                    helper.saved_value
+                    helper.saved_value,
                 )
 
         if self.sender() == self.save_btn:

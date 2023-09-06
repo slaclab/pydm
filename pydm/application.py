@@ -69,16 +69,29 @@ class PyDMApplication(QApplication):
     homefile : str, optional
         The path to a PyDM file to return to whenever the home button is clicked in the navigation bar.
     """
+
     # Instantiate our plugins.
     plugins = data_plugins.plugin_modules
 
-    def __init__(self, ui_file=None, command_line_args=[], display_args=[],
-                 perfmon=False, hide_nav_bar=False, hide_menu_bar=False,
-                 hide_status_bar=False, read_only=False, macros=None,
-                 use_main_window=True, stylesheet_path=None, fullscreen=False, home_file=None):
+    def __init__(
+        self,
+        ui_file=None,
+        command_line_args=[],
+        display_args=[],
+        perfmon=False,
+        hide_nav_bar=False,
+        hide_menu_bar=False,
+        hide_status_bar=False,
+        read_only=False,
+        macros=None,
+        use_main_window=True,
+        stylesheet_path=None,
+        fullscreen=False,
+        home_file=None,
+    ):
         super(PyDMApplication, self).__init__(command_line_args)
         # Enable High DPI display, if available.
-        if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+        if hasattr(Qt, "AA_UseHighDpiPixmaps"):
             self.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
         data_plugins.set_read_only(read_only)
@@ -100,12 +113,20 @@ class PyDMApplication(QApplication):
 
         # Open a window if required.
         if ui_file is not None:
-            self.make_main_window(stylesheet_path=stylesheet_path, home_file=self.home_file,
-                                  macros=macros, command_line_args=command_line_args)
+            self.make_main_window(
+                stylesheet_path=stylesheet_path,
+                home_file=self.home_file,
+                macros=macros,
+                command_line_args=command_line_args,
+            )
             self.main_window.open(ui_file, macros, command_line_args)
         elif use_main_window:
-            self.make_main_window(stylesheet_path=stylesheet_path, home_file=self.home_file,
-                                  macros=macros, command_line_args=command_line_args)
+            self.make_main_window(
+                stylesheet_path=stylesheet_path,
+                home_file=self.home_file,
+                macros=macros,
+                command_line_args=command_line_args,
+            )
 
         self.had_file = ui_file is not None
         # Re-enable sigint (usually blocked by pyqt)
@@ -114,6 +135,7 @@ class PyDMApplication(QApplication):
         # Performance monitoring
         if perfmon:
             import psutil
+
             self.perf = psutil.Process()
             self.perf_timer = QTimer()
             self.perf_timer.setInterval(2000)
@@ -130,8 +152,7 @@ class PyDMApplication(QApplication):
         return super(PyDMApplication, self).exec_()
 
     def is_read_only(self):
-        warnings.warn("'PyDMApplication.is_read_only' is deprecated, "
-                      "use 'pydm.data_plugins.is_read_only' instead.")
+        warnings.warn("'PyDMApplication.is_read_only' is deprecated, " "use 'pydm.data_plugins.is_read_only' instead.")
         return data_plugins.is_read_only()
 
     @Slot()
@@ -178,7 +199,9 @@ class PyDMApplication(QApplication):
             else:
                 # Not in the PATH and no ENV VAR pointing to it...
                 # Let's try the script folder...
-                pydm_display_app_path = os.path.join(os.path.split(os.path.realpath(__file__))[0], "..", "pydm_launcher", "main.py")
+                pydm_display_app_path = os.path.join(
+                    os.path.split(os.path.realpath(__file__))[0], "..", "pydm_launcher", "main.py"
+                )
 
         args = [pydm_display_app_path]
         if self.hide_nav_bar:
@@ -214,12 +237,14 @@ class PyDMApplication(QApplication):
         of starting up a new process, because PyDMApplications only have
         one window per process.
         """
-        main_window = PyDMMainWindow(hide_nav_bar=self.hide_nav_bar,
-                                     hide_menu_bar=self.hide_menu_bar,
-                                     hide_status_bar=self.hide_status_bar,
-                                     home_file=home_file,
-                                     macros=macros,
-                                     command_line_args=command_line_args)
+        main_window = PyDMMainWindow(
+            hide_nav_bar=self.hide_nav_bar,
+            hide_menu_bar=self.hide_menu_bar,
+            hide_status_bar=self.hide_status_bar,
+            home_file=home_file,
+            macros=macros,
+            command_line_args=command_line_args,
+        )
 
         self.main_window = main_window
         apply_stylesheet(stylesheet_path, widget=self.main_window)
@@ -242,8 +267,9 @@ class PyDMApplication(QApplication):
         -------
         PyDMPlugin
         """
-        warnings.warn("'PyDMApplication.plugin_for_channel' is deprecated, "
-                      "use 'pydm.data_plugins.plugin_for_address' instead.")
+        warnings.warn(
+            "'PyDMApplication.plugin_for_channel' is deprecated, " "use 'pydm.data_plugins.plugin_for_address' instead."
+        )
         if channel.address is None or channel.address == "":
             return None
         return data_plugins.plugin_for_address(channel.address)
@@ -256,8 +282,7 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        warnings.warn("'PyDMApplication.add_connection' is deprecated, "
-                      "use PyDMConnection.connect()")
+        warnings.warn("'PyDMApplication.add_connection' is deprecated, " "use PyDMConnection.connect()")
         channel.connect()
 
     def remove_connection(self, channel):
@@ -268,18 +293,17 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        warnings.warn("'PyDMApplication.remove_connection' is deprecated, "
-                      "use PyDMConnection.disconnect()")
+        warnings.warn("'PyDMApplication.remove_connection' is deprecated, " "use PyDMConnection.disconnect()")
         channel.disconnect()
 
     def eventFilter(self, obj, event):
-        warnings.warn("'PyDMApplication.eventFilter' is deprecated, "
-                      " this function is now found on PyDMWidget")
+        warnings.warn("'PyDMApplication.eventFilter' is deprecated, " " this function is now found on PyDMWidget")
         obj.eventFilter(obj, event)
 
     def show_address_tooltip(self, obj, event):
-        warnings.warn("'PyDMApplication.show_address_tooltip' is deprecated, "
-                      " this function is now found on PyDMWidget")
+        warnings.warn(
+            "'PyDMApplication.show_address_tooltip' is deprecated, " " this function is now found on PyDMWidget"
+        )
         obj.show_address_tooltip(event)
 
     def establish_widget_connections(self, widget):
@@ -294,8 +318,10 @@ class PyDMApplication(QApplication):
         ----------
         widget : QWidget
         """
-        warnings.warn("'PyDMApplication.establish_widget_connections' is deprecated, "
-                      "this function is now found on `utilities.establish_widget_connections`.")
+        warnings.warn(
+            "'PyDMApplication.establish_widget_connections' is deprecated, "
+            "this function is now found on `utilities.establish_widget_connections`."
+        )
         connection.establish_widget_connections(widget)
 
     def close_widget_connections(self, widget):
@@ -309,5 +335,6 @@ class PyDMApplication(QApplication):
         """
         warnings.warn(
             "'PyDMApplication.close_widget_connections' is deprecated, "
-            "this function is now found on `utilities.close_widget_connections`.")
+            "this function is now found on `utilities.close_widget_connections`."
+        )
         connection.close_widget_connections(widget)

@@ -33,7 +33,7 @@ def is_ssh_session():
     bool
         True if it is a ssh session, False otherwise.
     """
-    return os.getenv('SSH_CONNECTION') is not None
+    return os.getenv("SSH_CONNECTION") is not None
 
 
 def setup_renderer():
@@ -42,7 +42,7 @@ def setup_renderer():
     running in a SSH session.
     """
     if is_ssh_session():
-        logger.info('Using PyDM via SSH. Reverting to Software Rendering.')
+        logger.info("Using PyDM via SSH. Reverting to Software Rendering.")
         from qtpy.QtCore import QCoreApplication, Qt
         from qtpy.QtQuick import QQuickWindow, QSGRendererInterface
 
@@ -67,6 +67,7 @@ def is_pydm_app(app=None):
     from qtpy.QtWidgets import QApplication
 
     from ..application import PyDMApplication
+
     if app is None:
         app = QApplication.instance()
     if isinstance(app, PyDMApplication):
@@ -85,6 +86,7 @@ def is_qt_designer():
         True if inside Designer, False otherwise.
     """
     from ..qtdesigner import DesignerHooks
+
     return DesignerHooks().form_editor is not None
 
 
@@ -102,6 +104,7 @@ def get_designer_current_path():
         return None
 
     from ..qtdesigner import DesignerHooks
+
     form_editor = DesignerHooks().form_editor
     win_manager = form_editor.formWindowManager()
     form_window = win_manager.activeFormWindow()
@@ -166,6 +169,7 @@ def _screen_file_extensions(preferred_extension):
     extensions = [".py", ".ui"]  # search for screens with these extensions
     try:
         import adl2pydm  # proceed only if package is importable  # noqa: F401
+
         extensions.append(".adl")
     except ImportError:
         pass
@@ -204,9 +208,9 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_fo
         Which ensure that the file exists and we can read it.
     extra_path : list
         Additional paths to look for file.
-    raise_if_not_found : bool 
-        Flag which if False will add a check that raises a FileNotFoundError 
-        instead of returning None when the file is not found. 
+    raise_if_not_found : bool
+        Flag which if False will add a check that raises a FileNotFoundError
+        instead of returning None when the file is not found.
 
     Returns
     -------
@@ -250,7 +254,7 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_fo
         file_path = which(str(root) + str(e), mode=mode, pathext=e, extra_path=x_path)
         if file_path is not None:
             break  # pick the first screen file found
-    
+
     if raise_if_not_found:
         if not file_path:
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), fname)
@@ -306,8 +310,7 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None, extra_path=None)
     # Additionally check that `file` is not a directory, as on Windows
     # directories pass the os.access check.
     def _access_check(fn, mode):
-        return (os.path.exists(fn) and os.access(fn, mode) and
-                not os.path.isdir(fn))
+        return os.path.exists(fn) and os.access(fn, mode) and not os.path.isdir(fn)
 
     # If we're given a path with a directory part, look it up directly
     # rather than referring to PATH directories. This includes checking
@@ -377,14 +380,13 @@ def only_main_thread(func):
     -------
     wrapper
     """
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         main_t = QtWidgets.QApplication.instance().thread()
         curr_t = QtCore.QThread.currentThread()
         if curr_t != main_t:
-            msg = "{}.{} can only be invoked from the main Qt thread.".format(
-                func.__module__, func.__name__
-            )
+            msg = "{}.{} can only be invoked from the main Qt thread.".format(func.__module__, func.__name__)
             logger.error(msg)
             raise RuntimeError(msg)
         return func(*args, **kwargs)
@@ -419,15 +421,14 @@ def log_failures(
     level : int, optional
         Logging level to use.
     """
+
     def wrapper(func: callable):
         @functools.wraps(func)
         def wrapped(*args, **kwargs):
             try:
                 return func(*args, **kwargs)
             except Exception as ex:
-                msg = explanation.format(
-                    func=func, args=args, kwargs=kwargs, ex=ex
-                )
+                msg = explanation.format(func=func, args=args, kwargs=kwargs, ex=ex)
                 if include_traceback:
                     logger.log(level, msg, exc_info=ex)
                 else:
@@ -439,10 +440,7 @@ def log_failures(
     return wrapper
 
 
-def import_module_by_filename(
-    source_filename: str, *,
-    add_to_modules: bool = True
-) -> types.ModuleType:
+def import_module_by_filename(source_filename: str, *, add_to_modules: bool = True) -> types.ModuleType:
     """
     For a given source filename, import it and search for objects.
 
@@ -471,6 +469,7 @@ def import_module_by_filename(
         sys.modules[module_name] = module
     return module
 
+
 def get_clipboard() -> Optional[QtGui.QClipboard]:
     """Get the clipboard instance. Requires a QApplication."""
     app = QtWidgets.QApplication.instance()
@@ -495,10 +494,7 @@ def get_clipboard_modes() -> List[int]:
 
     if platform.system() == "Linux":
         # Mode selection is only valid for X11.
-        return [
-            QtGui.QClipboard.Selection,
-            QtGui.QClipboard.Clipboard
-        ]
+        return [QtGui.QClipboard.Selection, QtGui.QClipboard.Clipboard]
 
     return [QtGui.QClipboard.Clipboard]
 
@@ -528,13 +524,7 @@ def copy_to_clipboard(text: str, *, quiet: bool = False):
 
     if not quiet:
         logger.warning(
-            (
-                "Copied text to clipboard:\n"
-                "-------------------------\n"
-                "%s\n"
-                "-------------------------\n"
-            ),
-            text
+            ("Copied text to clipboard:\n" "-------------------------\n" "%s\n" "-------------------------\n"), text
         )
 
 

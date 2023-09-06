@@ -45,7 +45,7 @@ class PyDMTaskMenuExtension(QPyDesignerTaskMenuExtension):
         self.widget = widget
         self.__actions = None
         self.__extensions = []
-        extensions = getattr(widget, 'extensions', None)
+        extensions = getattr(widget, "extensions", None)
 
         if extensions is not None:
             for ex in extensions:
@@ -79,17 +79,13 @@ class BasicSettingsExtension(PyDMExtension):
     def __init__(self, widget):
         super(BasicSettingsExtension, self).__init__(widget)
         self.widget = widget
-        self.edit_settings_action = QtWidgets.QAction(
-            "Py&DM basic settings...", self.widget
-        )
+        self.edit_settings_action = QtWidgets.QAction("Py&DM basic settings...", self.widget)
         self.edit_settings_action.triggered.connect(self.open_dialog)
 
         if not hasattr(widget, "channel"):
             self.channel_menu_action = None
         else:
-            self.channel_menu_action = QtWidgets.QAction(
-                "PyDM C&hannel", self.widget
-            )
+            self.channel_menu_action = QtWidgets.QAction("PyDM C&hannel", self.widget)
             # self.channel_menu_action.triggered.connect(self.open_channel_menu)
             self.channel_menu = QtWidgets.QMenu()
             self.copy_channel_action = self.channel_menu.addAction("")
@@ -97,24 +93,16 @@ class BasicSettingsExtension(PyDMExtension):
             self.paste_channel_action = self.channel_menu.addAction("")
             self.paste_channel_action.triggered.connect(self.paste_channel)
             self.channel_menu.aboutToShow.connect(self.update_action_clipboard_text)
-            edit_channel = self.channel_menu.addAction(
-                "&Edit channel..."
-            )
+            edit_channel = self.channel_menu.addAction("&Edit channel...")
             edit_channel.triggered.connect(self.open_dialog)
-            copy_channel_value = self.channel_menu.addAction(
-                "C&opy current value"
-            )
+            copy_channel_value = self.channel_menu.addAction("C&opy current value")
             copy_channel_value.triggered.connect(self.copy_channel_value)
             self.channel_menu_action.setMenu(self.channel_menu)
 
     def update_action_clipboard_text(self):
-        self.copy_channel_action.setText(
-            f"&Copy to clipboard: {self.widget.channel}"
-        )
+        self.copy_channel_action.setText(f"&Copy to clipboard: {self.widget.channel}")
         clipboard_text = get_clipboard_text() or ""
-        self.paste_channel_action.setText(
-            f"&Paste from clipboard: {clipboard_text[:100]}"
-        )
+        self.paste_channel_action.setText(f"&Paste from clipboard: {clipboard_text[:100]}")
 
     def copy_channel(self, _):
         channel = self.widget.channel

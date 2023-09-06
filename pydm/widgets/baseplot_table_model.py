@@ -14,9 +14,19 @@ class BasePlotCurvesModel(QAbstractTableModel):
     def __init__(self, plot, parent=None):
         super(BasePlotCurvesModel, self).__init__(parent=parent)
         self._plot = plot
-        self._column_names = ("Label", "Color", "Y-Axis Name", "Line Style",
-                              "Line Width", "Symbol", "Symbol Size", "Bar Width",
-                              "Upper Limit", "Lower Limit", "Limit Color")
+        self._column_names = (
+            "Label",
+            "Color",
+            "Y-Axis Name",
+            "Line Style",
+            "Line Width",
+            "Symbol",
+            "Symbol Size",
+            "Bar Width",
+            "Upper Limit",
+            "Lower Limit",
+            "Limit Color",
+        )
 
     @property
     def plot(self):
@@ -141,12 +151,12 @@ class BasePlotCurvesModel(QAbstractTableModel):
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
-            return super(BasePlotCurvesModel, self).headerData(
-                section, orientation, role)
+            return super(BasePlotCurvesModel, self).headerData(section, orientation, role)
         if orientation == Qt.Horizontal and section < self.columnCount():
             return str(self._column_names[section])
         elif orientation == Qt.Vertical and section < self.rowCount():
             return section
+
     # End QAbstractItemModel implementation.
 
     def append(self, name=None, color=None):
@@ -156,7 +166,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
         pass
 
     def getColumnIndex(self, column_name):
-        """ Returns the column index of the name. Raises a ValueError if it's not a valid column name """
+        """Returns the column index of the name. Raises a ValueError if it's not a valid column name"""
         return self._column_names.index(column_name)
 
     def needsColorDialog(self, index):

@@ -19,8 +19,9 @@ class Connection(PyDMConnection):
     Manages the requests between the archiver data plugin and the archiver appliance itself.
     """
 
-    def __init__(self, channel: PyDMChannel, address: str, protocol: Optional[str] = None,
-                 parent: Optional[QObject] = None):
+    def __init__(
+        self, channel: PyDMChannel, address: str, protocol: Optional[str] = None, parent: Optional[QObject] = None
+    ):
         super().__init__(channel, address, protocol, parent)
         self.add_listener(channel)
         self.address = address
@@ -73,8 +74,10 @@ class Connection(PyDMConnection):
 
         base_url = os.getenv("PYDM_ARCHIVER_URL")
         if base_url is None:
-            logger.error("Environment variable: PYDM_ARCHIVER_URL must be defined to use the archiver plugin, for "
-                         "example: http://lcls-archapp.slac.stanford.edu")
+            logger.error(
+                "Environment variable: PYDM_ARCHIVER_URL must be defined to use the archiver plugin, for "
+                "example: http://lcls-archapp.slac.stanford.edu"
+            )
             return
 
         url_string = f"{base_url}/retrieval/data/getData.json?{self.address}&from={from_date_str}&to={to_date_str}"
@@ -97,17 +100,22 @@ class Connection(PyDMConnection):
         ----------
         reply: The response from the archiver appliance
         """
-        if reply.error() == QNetworkReply.NoError and reply.header(QNetworkRequest.ContentTypeHeader) == "application/json":
+        if (
+            reply.error() == QNetworkReply.NoError
+            and reply.header(QNetworkRequest.ContentTypeHeader) == "application/json"
+        ):
             bytes_str = reply.readAll()
-            data_dict = json.loads(str(bytes_str, 'utf-8'))
+            data_dict = json.loads(str(bytes_str, "utf-8"))
 
             if "pv=optimized" in reply.url().url():  # From a url object to a string
                 self._send_optimized_data(data_dict)
             else:
                 self._send_raw_data(data_dict)
         else:
-            logger.debug(f"Request for data from archiver failed, request url: {reply.url()} retrieved header: "
-                         f"{reply.header(QNetworkRequest.ContentTypeHeader)} error: {reply.error()}")
+            logger.debug(
+                f"Request for data from archiver failed, request url: {reply.url()} retrieved header: "
+                f"{reply.header(QNetworkRequest.ContentTypeHeader)} error: {reply.error()}"
+            )
         reply.deleteLater()
 
     def _send_raw_data(self, data_dict: dict) -> None:
@@ -115,8 +123,9 @@ class Connection(PyDMConnection):
         Sends a numpy array of shape (2, data_length) containing the x-values (timestamps) and y-values (PV data)
         via the new value signal
         """
-        data = np.array(([point["secs"] for point in data_dict[0]["data"]],
-                         [point["val"] for point in data_dict[0]["data"]]))
+        data = np.array(
+            ([point["secs"] for point in data_dict[0]["data"]], [point["val"] for point in data_dict[0]["data"]])
+        )
         self.new_value_signal[np.ndarray].emit(data)
 
     def _send_optimized_data(self, data_dict: dict) -> None:
@@ -126,11 +135,15 @@ class Connection(PyDMConnection):
         """
         pv_data = [point["val"] for point in data_dict[0]["data"]]
         try:
-            data = np.array(([point["secs"] for point in data_dict[0]["data"]],
-                             [point[0] for point in pv_data],
-                             [point[1] for point in pv_data],
-                             [point[2] for point in pv_data],
-                             [point[3] for point in pv_data]))
+            data = np.array(
+                (
+                    [point["secs"] for point in data_dict[0]["data"]],
+                    [point[0] for point in pv_data],
+                    [point[1] for point in pv_data],
+                    [point[2] for point in pv_data],
+                    [point[3] for point in pv_data],
+                )
+            )
         except TypeError:
             # The archiver will fall back to sending raw data if the optimized request is for more data points
             # than are in the bin

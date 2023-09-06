@@ -8,11 +8,11 @@ from qtpy.QtWidgets import QApplication
 
 # The path to the stylesheet used in these unit tests
 test_stylesheet_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    "..", "test_data", "global_stylesheet.css")
+    os.path.dirname(os.path.realpath(__file__)), "..", "test_data", "global_stylesheet.css"
+)
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def save_and_restore_pydm_stylesheet():
     """
     A fixture for ensuring that modifications to the PYDM_STYLESHEET environment variable are restored

@@ -37,7 +37,7 @@ class RulesEditor(QtWidgets.QDialog):
             self.rules = []
 
         for ac in self.rules:
-            self.lst_rules.addItem(ac.get("name", ''))
+            self.lst_rules.addItem(ac.get("name", ""))
 
     def setup_ui(self):
         """
@@ -93,7 +93,9 @@ class RulesEditor(QtWidgets.QDialog):
         lf_layout.addLayout(lf_btn_layout)
 
         self.lst_rules = QtWidgets.QListWidget()
-        self.lst_rules.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding))
+        self.lst_rules.setSizePolicy(
+            QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        )
         self.lst_rules.itemSelectionChanged.connect(self.load_from_list)
         lf_layout.addWidget(self.lst_rules)
 
@@ -181,8 +183,7 @@ class RulesEditor(QtWidgets.QDialog):
         lbl_expected = QtWidgets.QLabel("Expected Type:")
         self.lbl_expected_type = QtWidgets.QLabel(parent=self)
         # self.lbl_expected_type.setText("")
-        self.lbl_expected_type.setStyleSheet(
-            "color: rgb(0, 128, 255); font-weight: bold;")
+        self.lbl_expected_type.setStyleSheet("color: rgb(0, 128, 255); font-weight: bold;")
         expression_layout.addRow(lbl_expected, self.lbl_expected_type)
 
         lbl_initial = QtWidgets.QLabel("Initial Value:")
@@ -216,10 +217,10 @@ class RulesEditor(QtWidgets.QDialog):
         frm_edit_layout.addLayout(expression_layout)
 
     def open_notes_window(self):
-        """ Window for reading and adding to a rule's notes"""
+        """Window for reading and adding to a rule's notes"""
         self.notes_window = QtWidgets.QDialog(self)
         self.notes_window.setWindowTitle("Notes")
-        
+
         # Allow window to be resized and maximized
         self.notes_window.setWindowFlag(Qt.WindowMinMaxButtonsHint)
         notes_layout = QtWidgets.QVBoxLayout()
@@ -233,10 +234,10 @@ class RulesEditor(QtWidgets.QDialog):
         item = self.lst_rules.currentItem()
         idx = self.lst_rules.indexFromItem(item).row()
         data = self.rules[idx]
-        curr_notes = data.get('notes', '')
+        curr_notes = data.get("notes", "")
         self.notes_edit.setPlainText(curr_notes)
         notes_layout.addWidget(self.notes_edit)
-        
+
         buttons_layout = QtWidgets.QHBoxLayout()
         self.save_button = QtWidgets.QPushButton("Save")
         self.save_button.clicked.connect(self.save_notes)
@@ -251,10 +252,10 @@ class RulesEditor(QtWidgets.QDialog):
         self.notes_window.show()
 
     def save_notes(self):
-        """ Save notes text and close the notes window """
+        """Save notes text and close the notes window"""
         item = self.lst_rules.currentItem()
         idx = self.lst_rules.indexFromItem(item).row()
-        self.rules[idx]['notes'] = self.notes_edit.toPlainText()
+        self.rules[idx]["notes"] = self.notes_edit.toPlainText()
         self.notes_window.close()
 
     def clear_form(self):
@@ -286,24 +287,23 @@ class RulesEditor(QtWidgets.QDialog):
         self.loading_data = True
         self.lst_rule_item = item
         data = self.rules[idx]
-        self.txt_name.setText(data.get('name', ''))
-        self.cmb_property.setCurrentText(data.get('property', ''))
+        self.txt_name.setText(data.get("name", ""))
+        self.cmb_property.setCurrentText(data.get("property", ""))
         self.property_changed(0)
-        self.txt_initial_value.setText(data.get('initial_value', ''))
-        self.txt_expression.setText(data.get('expression', ''))
+        self.txt_initial_value.setText(data.get("initial_value", ""))
+        self.txt_expression.setText(data.get("expression", ""))
 
-        channels = data.get('channels', [])
+        channels = data.get("channels", [])
         self.tbl_channels.clearContents()
         self.tbl_channels.setRowCount(len(channels))
         vlabel = [str(i) for i in range(len(channels))]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
         ch_choices = {True: QtCore.Qt.Checked, False: QtCore.Qt.Unchecked}
         for row, ch in enumerate(channels):
-            ch_name = ch.get('channel', '')
-            ch_tr = ch.get('trigger', False)
-            ch_use_enum = ch.get('use_enum', False)
-            self.tbl_channels.setItem(row, 0,
-                                      QtWidgets.QTableWidgetItem(str(ch_name)))
+            ch_name = ch.get("channel", "")
+            ch_tr = ch.get("trigger", False)
+            ch_use_enum = ch.get("use_enum", False)
+            self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(str(ch_name)))
             checkbox_trigger = QtWidgets.QTableWidgetItem()
             checkbox_trigger.setCheckState(ch_choices[ch_tr])
             self.tbl_channels.setItem(row, 1, checkbox_trigger)
@@ -316,13 +316,14 @@ class RulesEditor(QtWidgets.QDialog):
     def add_rule(self):
         """Add a new rule to the list of rules."""
         default_name = "New Rule"
-        data = {"name": default_name,
-                "property": self.default_property,
-                "initial_value": "",
-                "expression": "",
-                "channels": [],
-                "notes": ""
-                }
+        data = {
+            "name": default_name,
+            "property": self.default_property,
+            "initial_value": "",
+            "expression": "",
+            "channels": [],
+            "notes": "",
+        }
         self.rules.append(data)
         self.lst_rule_item = QtWidgets.QListWidgetItem()
         self.lst_rule_item.setText(default_name)
@@ -371,12 +372,10 @@ class RulesEditor(QtWidgets.QDialog):
             return
         name = self.lst_rule_item.text()
 
-        confirm_message = "Are you sure you want to delete Rule: {}?".format(
-            name)
-        reply = QtWidgets.QMessageBox().question(self, 'Message',
-                                             confirm_message,
-                                             QtWidgets.QMessageBox.Yes,
-                                             QtWidgets.QMessageBox.No)
+        confirm_message = "Are you sure you want to delete Rule: {}?".format(name)
+        reply = QtWidgets.QMessageBox().question(
+            self, "Message", confirm_message, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No
+        )
 
         if reply == QtWidgets.QMessageBox.Yes:
             self.lst_rules.takeItem(idx)
@@ -399,11 +398,11 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
         checkbox_trigger = QtWidgets.QTableWidgetItem()
         checkbox_trigger.setCheckState(state)
-        checkbox_trigger.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
+        checkbox_trigger.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable)
         self.tbl_channels.setItem(row, 1, checkbox_trigger)
         checkbox_use_enum = QtWidgets.QTableWidgetItem()
         checkbox_use_enum.setCheckState(QtCore.Qt.Checked)
-        checkbox_use_enum.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
+        checkbox_use_enum.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable)
         self.tbl_channels.setItem(row, 2, checkbox_use_enum)
         vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
@@ -418,10 +417,9 @@ class RulesEditor(QtWidgets.QDialog):
 
         c = "channel" if len(items) == 1 else "channels"
         confirm_message = "Delete the selected {}?".format(c)
-        reply = QtWidgets.QMessageBox().question(self, 'Message',
-                                             confirm_message,
-                                             QtWidgets.QMessageBox.Yes,
-                                             QtWidgets.QMessageBox.No)
+        reply = QtWidgets.QMessageBox().question(
+            self, "Message", confirm_message, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No
+        )
 
         if reply == QtWidgets.QMessageBox.Yes:
             for itm in reversed(items):
@@ -478,10 +476,8 @@ class RulesEditor(QtWidgets.QDialog):
 
         for row in range(self.tbl_channels.rowCount()):
             ch = self.tbl_channels.item(row, 0).text()
-            tr = self.tbl_channels.item(row,
-                                        1).checkState() == QtCore.Qt.Checked
-            en = self.tbl_channels.item(row,
-                                        2).checkState() == QtCore.Qt.Checked
+            tr = self.tbl_channels.item(row, 1).checkState() == QtCore.Qt.Checked
+            en = self.tbl_channels.item(row, 2).checkState() == QtCore.Qt.Checked
             new_channels.append({"channel": ch, "trigger": tr, "use_enum": en})
 
         self.change_entry("channels", new_channels)
@@ -526,15 +522,12 @@ class RulesEditor(QtWidgets.QDialog):
                 found_trigger = False
                 for ch_idx, ch in enumerate(channels):
                     if not ch.get("channel", ""):
-                        errors.append(
-                            "Rule #{} - Ch. #{} has no channel.".format(idx + 1,
-                                                                        ch_idx))
+                        errors.append("Rule #{} - Ch. #{} has no channel.".format(idx + 1, ch_idx))
                     if ch.get("trigger", False) and not found_trigger:
                         found_trigger = True
 
                 if not found_trigger:
-                    errors.append(
-                        "Rule #{} has no channel for trigger.".format(idx + 1))
+                    errors.append("Rule #{} has no channel for trigger.".format(idx + 1))
 
         if len(errors) > 0:
             error_msg = os.linesep.join(errors)
@@ -562,8 +555,7 @@ class RulesEditor(QtWidgets.QDialog):
                 formWindow.cursor().setProperty("rules", data)
             self.accept()
         else:
-            QtWidgets.QMessageBox.critical(self, "Error Saving", message,
-                                       QtWidgets.QMessageBox.Ok)
+            QtWidgets.QMessageBox.critical(self, "Error Saving", message, QtWidgets.QMessageBox.Ok)
 
     @QtCore.Slot()
     def cancelChanges(self):

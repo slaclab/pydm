@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 class DisplayFormat(object):
     """Display format for showing data in a PyDM widget."""
+
     #: The default display format.
     Default = 0
     #: Show the data as a string.
@@ -56,7 +57,7 @@ def parse_value_for_display(
         return ""
     try:
         widget_name = widget.objectName()
-    except(AttributeError, TypeError):
+    except (AttributeError, TypeError):
         widget_name = ""
 
     if display_format_type == DisplayFormat.Default:
@@ -70,11 +71,12 @@ def parse_value_for_display(
                     warnings.simplefilter("ignore")
                     zeros = np.where(value == 0)[0]
                 if zeros.size > 0:
-                    value = value[:zeros[0]]
+                    value = value[: zeros[0]]
                 r = value.tobytes().decode(string_encoding)
             except Exception:
-                logger.error("Could not decode {0} using {1} at widget named '{2}'.".format(
-                    value, string_encoding, widget_name))
+                logger.error(
+                    "Could not decode {0} using {1} at widget named '{2}'.".format(value, string_encoding, widget_name)
+                )
                 return value
             return r
         else:
@@ -88,23 +90,29 @@ def parse_value_for_display(
         try:
             r = fmt_string.format(value)
         except (ValueError, TypeError):
-            logger.error("Could not display value '{0}' using displayFormat 'Exponential' at widget named "
-                         "'{1}'.".format(value, widget_name))
+            logger.error(
+                "Could not display value '{0}' using displayFormat 'Exponential' at widget named "
+                "'{1}'.".format(value, widget_name)
+            )
             r = value
         return r
     elif display_format_type == DisplayFormat.Hex:
         try:
             r = hex(int(math.floor(value)))
         except (ValueError, TypeError):
-            logger.error("Could not display value '{0}' using displayFormat 'Hex' at widget named "
-                         "'{1}'.".format(value, widget_name))
+            logger.error(
+                "Could not display value '{0}' using displayFormat 'Hex' at widget named "
+                "'{1}'.".format(value, widget_name)
+            )
             r = value
         return r
     elif display_format_type == DisplayFormat.Binary:
         try:
             r = bin(int(math.floor(value)))
         except (ValueError, TypeError):
-            logger.error("Could not display value '{0}' using displayFormat 'Binary' at widget named "
-                         "'{1}'.".format(value, widget_name))
+            logger.error(
+                "Could not display value '{0}' using displayFormat 'Binary' at widget named "
+                "'{1}'.".format(value, widget_name)
+            )
             r = value
         return r

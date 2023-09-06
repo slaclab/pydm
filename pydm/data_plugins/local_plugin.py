@@ -22,35 +22,13 @@ class Connection(PyDMConnection):
         self._precision_set = None
         self._type_kwargs = {}
 
-        self._required_config_keys = [
-            'name',
-            'type',
-            'init'
-        ]
+        self._required_config_keys = ["name", "type", "init"]
 
-        self._extra_config_keys = [
-            "precision",
-            "unit",
-            "upper_limit",
-            "lower_limit",
-            "enum_string"
-        ]
+        self._extra_config_keys = ["precision", "unit", "upper_limit", "lower_limit", "enum_string"]
 
-        self._extra_numpy_config_keys = [
-            "dtype",
-            "copy",
-            "order",
-            "subok",
-            "ndmin"
-        ]
+        self._extra_numpy_config_keys = ["dtype", "copy", "order", "subok", "ndmin"]
 
-        self._data_types = {
-            'int': int,
-            'float': float,
-            'str': str,
-            'bool': bool,
-            'array': np.array
-        }
+        self._data_types = {"int": int, "float": float, "str": str, "bool": bool, "array": np.array}
 
         self._precision = None
         self._unit = None
@@ -67,16 +45,16 @@ class Connection(PyDMConnection):
 
     def _configure_local_plugin(self, channel):
         if self._is_connection_configured:
-            logger.debug('LocalPlugin connection already configured.')
+            logger.debug("LocalPlugin connection already configured.")
             return
 
         try:
             url_data = UrlToPython(channel).get_info()
         except ValueError("Not enough information"):
-            logger.debug('Invalid configuration for LocalPlugin connection', exc_info=True)
+            logger.debug("Invalid configuration for LocalPlugin connection", exc_info=True)
             return
 
-        self._configuration['name'] = url_data[1]
+        self._configuration["name"] = url_data[1]
         address = url_data[2]
 
         if url_data[0] is None:
@@ -86,9 +64,9 @@ class Connection(PyDMConnection):
         self.address = address
 
         # set the object's attributes
-        init_value = self._configuration.get('init')[0]
-        self._value_type = self._configuration.get('type')[0]
-        self.name = self._configuration.get('name')
+        init_value = self._configuration.get("init")[0]
+        self._value_type = self._configuration.get("type")[0]
+        self.name = self._configuration.get("name")
 
         # get the extra info if any
         self.parse_channel_extras(self._configuration)
@@ -121,36 +99,38 @@ class Connection(PyDMConnection):
 
         """
 
-        precision = extras.get('precision')
+        precision = extras.get("precision")
         if precision is not None:
             try:
                 self._precision_set = int(precision[0])
                 self.prec_signal.emit(self._precision_set)
             except ValueError:
-                logger.debug('Cannot convert precision value=%r', precision)
-        unit = extras.get('unit')
+                logger.debug("Cannot convert precision value=%r", precision)
+        unit = extras.get("unit")
         if unit is not None:
             self.unit_signal.emit(str(unit[0]))
-        upper_limit = extras.get('upper_limit')
-        if upper_limit is not None and (self._value_type == 'float' or self._value_type == 'int'):
+        upper_limit = extras.get("upper_limit")
+        if upper_limit is not None and (self._value_type == "float" or self._value_type == "int"):
             self.send_upper_limit(upper_limit[0])
-        lower_limit = extras.get('lower_limit')
-        if lower_limit is not None and (self._value_type == 'float' or self._value_type == 'int'):
+        lower_limit = extras.get("lower_limit")
+        if lower_limit is not None and (self._value_type == "float" or self._value_type == "int"):
             self.send_lower_limit(lower_limit[0])
-        enum_string = extras.get('enum_string')
+        enum_string = extras.get("enum_string")
         if enum_string is not None:
             self.send_enum_string(enum_string[0])
 
-        type_kwargs = {k: v for k, v in extras.items()
-                       if k in self._extra_numpy_config_keys}
+        type_kwargs = {k: v for k, v in extras.items() if k in self._extra_numpy_config_keys}
 
         if type_kwargs:
             self.format_type_params(type_kwargs)
 
-        unused = {k: v for k, v in extras.items()
-                       if k not in self._extra_config_keys
-                       and k not in self._required_config_keys
-                       and k not in self._extra_numpy_config_keys}
+        unused = {
+            k: v
+            for k, v in extras.items()
+            if k not in self._extra_config_keys
+            and k not in self._required_config_keys
+            and k not in self._extra_numpy_config_keys
+        }
 
         if len(unused) == 0:
             return
@@ -287,22 +267,22 @@ class Connection(PyDMConnection):
 
         """
 
-        dtype = type_kwargs.get('dtype')
+        dtype = type_kwargs.get("dtype")
 
         if dtype is not None:
             dtype = dtype[0]
             try:
-                self._type_kwargs['dtype'] = np.dtype(dtype)
+                self._type_kwargs["dtype"] = np.dtype(dtype)
                 return self._type_kwargs
             except TypeError:
-                logger.debug('Cannot convert dtype value=%r', dtype)
+                logger.debug("Cannot convert dtype value=%r", dtype)
         else:
-            dtype = 'object'
+            dtype = "object"
             try:
-                self._type_kwargs['dtype'] = np.dtype(dtype)
+                self._type_kwargs["dtype"] = np.dtype(dtype)
                 return self._type_kwargs
             except TypeError:
-                logger.debug('Cannot convert dtype value=%r', dtype)
+                logger.debug("Cannot convert dtype value=%r", dtype)
 
         return self._type_kwargs
 
@@ -341,7 +321,7 @@ class Connection(PyDMConnection):
                     value = ast.literal_eval(value)
                 return _type(value, **self._type_kwargs)
             except ValueError:
-                logger.debug('Cannot convert value_type')
+                logger.debug("Cannot convert value_type")
         else:
             return None
 
@@ -370,28 +350,23 @@ class Connection(PyDMConnection):
         # which captures the values sent through the plugin
         if channel.value_signal is not None:
             try:
-                channel.value_signal[int].connect(
-                    self.put_value, Qt.QueuedConnection)
+                channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
             try:
-                channel.value_signal[float].connect(
-                    self.put_value, Qt.QueuedConnection)
+                channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
             try:
-                channel.value_signal[str].connect(
-                    self.put_value, Qt.QueuedConnection)
+                channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
             try:
-                channel.value_signal[bool].connect(
-                    self.put_value, Qt.QueuedConnection)
+                channel.value_signal[bool].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
             try:
-                channel.value_signal[np.ndarray].connect(
-                    self.put_value, Qt.QueuedConnection)
+                channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
             except KeyError:
                 pass
 
@@ -421,7 +396,7 @@ class Connection(PyDMConnection):
     @staticmethod
     def precision_for_value(value, max_precision=8):
         dec = decimal.Decimal(str(value))
-        solution = min((len(str(dec).split('.')[1]), max_precision))
+        solution = min((len(str(dec).split(".")[1]), max_precision))
         return solution
 
 
@@ -461,13 +436,13 @@ class UrlToPython:
 
             if not name or not config:
                 raise
-            elif config['init'] is None or config['type'] is None:
+            elif config["init"] is None or config["type"] is None:
                 raise
         except Exception:
             try:
                 if not name:
                     raise
-                logger.debug('LocalPlugin connection %s got new listener.', address)
+                logger.debug("LocalPlugin connection %s got new listener.", address)
                 return None, name, address
             except Exception:
                 msg = "Invalid configuration for LocalPlugin connection. %s"

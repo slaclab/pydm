@@ -6,6 +6,7 @@ from qtpy.QtCore import Slot, Property
 from .base import PyDMWritableWidget
 
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -49,9 +50,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
-    def __init__(self, parent=None, label=None, icon=None,
-                 pressValue=None, releaseValue=None, relative=False,
-                 init_channel=None):
+    def __init__(
+        self, parent=None, label=None, icon=None, pressValue=None, releaseValue=None, relative=False, init_channel=None
+    ):
         if icon:
             QPushButton.__init__(self, icon, label, parent)
         elif label:
@@ -71,7 +72,6 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         self._write_when_release = False
         self._released = False
         self.clicked.connect(self.sendValue)
-
 
     @Property(bool)
     def passwordProtected(self):
@@ -221,7 +221,6 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if str(value) != self._pressValue:
             self._pressValue = str(value)
 
-
     @Property(str)
     def releaseValue(self):
         """
@@ -252,7 +251,6 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         if str(value) != self._releaseValue:
             self._releaseValue = str(value)
-
 
     @Property(bool)
     def relativeChange(self):
@@ -323,7 +321,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             msg.setText(self._confirm_message)
 
             # Force "Yes" button to be on the right (as on macOS) to follow common design practice
-            msg.setStyleSheet("button-layout: 1")    # MacLayout
+            msg.setStyleSheet("button-layout: 1")  # MacLayout
 
             msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             msg.setDefaultButton(QMessageBox.No)
@@ -346,8 +344,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if not self._password_protected:
             return True
 
-        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:",
-                                         QLineEdit.Password, "")
+        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:", QLineEdit.Password, "")
         pwd = str(pwd)
         if not ok or pwd == "":
             return False
@@ -396,8 +393,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
         return val
 
-    def __execute_send(self, new_value, skip_confirm=False, skip_password=False,
-                       is_release=False):
+    def __execute_send(self, new_value, skip_confirm=False, skip_password=False, is_release=False):
         """
         Execute the send operation for push and release.
 
@@ -433,14 +429,11 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
         if not self._relative or self.channeltype == str:
             send_value = new_value
-            self.send_value_signal[self.channeltype].emit(
-                self.channeltype(send_value)
-            )
+            self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
         else:
             send_value = self.value + self.channeltype(new_value)
             self.send_value_signal[self.channeltype].emit(send_value)
         return send_value
-
 
     @Slot()
     def sendReleaseValue(self):
@@ -488,7 +481,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         try:
             self.pressValue = self.channeltype(value)
-        except(ValueError, TypeError):
+        except (ValueError, TypeError):
             logger.error("'{0}' is not a valid pressValue for '{1}'.".format(value, self.channel))
 
     @Property(bool)
@@ -520,7 +513,6 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             self.pressed.connect(self.sendValue)
             self.released.connect(self.sendReleaseValue)
 
-
     @Slot(int)
     @Slot(float)
     @Slot(str)
@@ -539,5 +531,5 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         try:
             self.releaseValue = self.channeltype(value)
-        except(ValueError, TypeError):
+        except (ValueError, TypeError):
             logger.error("'{0}' is not a valid releaseValue for '{1}'.".format(value, self.channel))

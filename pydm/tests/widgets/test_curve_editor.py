@@ -1,7 +1,13 @@
 from qtpy.QtWidgets import QTableView
 from ...widgets.baseplot import BasePlot
-from ...widgets.baseplot_curve_editor import (AxisColumnDelegate, ColorColumnDelegate, LineColumnDelegate,
-                                              SymbolColumnDelegate, RedrawModeColumnDelegate, PlotStyleColumnDelegate)
+from ...widgets.baseplot_curve_editor import (
+    AxisColumnDelegate,
+    ColorColumnDelegate,
+    LineColumnDelegate,
+    SymbolColumnDelegate,
+    RedrawModeColumnDelegate,
+    PlotStyleColumnDelegate,
+)
 from ...widgets.baseplot_table_model import BasePlotCurvesModel
 from ...widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
 from ...widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
@@ -28,11 +34,11 @@ def test_waveform_curve_editor(qtbot):
     # Verify that the drop downs for columns with non built-in types are all put in the correct place
     # Note: We do need to check these on each individual type of curve editor (see below tests) and not just
     # in the base plot editor since each plot type can have varying numbers of columns
-    color_index = table_model.getColumnIndex('Color')
-    line_style_index = table_model.getColumnIndex('Line Style')
-    symbol_index = table_model.getColumnIndex('Symbol')
-    redraw_mode_index = table_model.getColumnIndex('Redraw Mode')
-    plot_style_index = table_model.getColumnIndex('Style')
+    color_index = table_model.getColumnIndex("Color")
+    line_style_index = table_model.getColumnIndex("Line Style")
+    symbol_index = table_model.getColumnIndex("Symbol")
+    redraw_mode_index = table_model.getColumnIndex("Redraw Mode")
+    plot_style_index = table_model.getColumnIndex("Style")
 
     assert type(table_view.itemDelegateForColumn(color_index)) is ColorColumnDelegate
     assert type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
@@ -58,10 +64,10 @@ def test_timeplot_curve_editor(qtbot):
     table_view = curve_editor.table_view
 
     # Verify that the drop downs for columns with non built-in types are all put in the correct place
-    color_index = table_model.getColumnIndex('Color')
-    line_style_index = table_model.getColumnIndex('Line Style')
-    symbol_index = table_model.getColumnIndex('Symbol')
-    plot_style_index = table_model.getColumnIndex('Style')
+    color_index = table_model.getColumnIndex("Color")
+    line_style_index = table_model.getColumnIndex("Line Style")
+    symbol_index = table_model.getColumnIndex("Symbol")
+    plot_style_index = table_model.getColumnIndex("Style")
 
     assert type(table_view.itemDelegateForColumn(color_index)) is ColorColumnDelegate
     assert type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
@@ -86,10 +92,10 @@ def test_scatterplot_editor(qtbot):
     table_view = curve_editor.table_view
 
     # Verify that the drop downs for columns with non built-in types are all put in the correct place
-    color_index = table_model.getColumnIndex('Color')
-    line_style_index = table_model.getColumnIndex('Line Style')
-    symbol_index = table_model.getColumnIndex('Symbol')
-    redraw_mode_index = table_model.getColumnIndex('Redraw Mode')
+    color_index = table_model.getColumnIndex("Color")
+    line_style_index = table_model.getColumnIndex("Line Style")
+    symbol_index = table_model.getColumnIndex("Symbol")
+    redraw_mode_index = table_model.getColumnIndex("Redraw Mode")
 
     assert type(table_view.itemDelegateForColumn(color_index)) is ColorColumnDelegate
     assert type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
@@ -110,25 +116,25 @@ def test_axis_editor(qtbot):
     axis_view = curve_editor.axis_view
 
     # Verify the column count is correct, and the axis column delegate is placed correctly
-    axis_orientation_index = axis_model._column_names.index('Y-Axis Orientation')
+    axis_orientation_index = axis_model._column_names.index("Y-Axis Orientation")
     assert type(axis_view.itemDelegateForColumn(axis_orientation_index)) is AxisColumnDelegate
 
 
 def test_plot_style_column_delegate(qtbot):
-    """ Verify the functionality of the show/hide column feature """
+    """Verify the functionality of the show/hide column feature"""
 
     # Set up a plot with three data items. Two will be plotted as lines, and one as bars.
     base_plot = BasePlot()
     qtbot.addWidget(base_plot)
     line_item_1 = WaveformCurveItem()
     line_item_2 = WaveformCurveItem()
-    bar_item = WaveformCurveItem(plot_style='Bar')
+    bar_item = WaveformCurveItem(plot_style="Bar")
     plot_curves_model = BasePlotCurvesModel(plot=base_plot)
     table_view = QTableView()
     table_view.setModel(plot_curves_model)
-    plot_style_column_delegate = PlotStyleColumnDelegate(parent=base_plot,
-                                                         table_model=plot_curves_model,
-                                                         table_view=table_view)
+    plot_style_column_delegate = PlotStyleColumnDelegate(
+        parent=base_plot, table_model=plot_curves_model, table_view=table_view
+    )
 
     base_plot.addCurve(line_item_1)
     plot_style_column_delegate.toggleColumnVisibility()

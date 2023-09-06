@@ -10,7 +10,8 @@ from .base import PyDMWidget
 
 logger = logging.getLogger(__name__)
 
-_symbolRuleProperties = {'Index': ['set_current_key', int]}
+_symbolRuleProperties = {"Index": ["set_current_key", int]}
+
 
 class PyDMSymbol(QWidget, PyDMWidget, new_properties=_symbolRuleProperties):
     """
@@ -23,6 +24,7 @@ class PyDMSymbol(QWidget, PyDMWidget, new_properties=_symbolRuleProperties):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
@@ -91,7 +93,7 @@ class PyDMSymbol(QWidget, PyDMWidget, new_properties=_symbolRuleProperties):
         if parent_display:
             base_path = os.path.dirname(parent_display.loaded_file())
 
-        for (state, filename) in new_file_dict.items():
+        for state, filename in new_file_dict.items():
             file_path = find_file(filename, base_path=base_path)
             # First, lets try SVG.  We have to try SVG first, otherwise
             # QPixmap will happily load the SVG and turn it into a raster image.

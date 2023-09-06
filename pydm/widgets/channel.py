@@ -91,13 +91,26 @@ class PyDMChannel(object):
         A function to be run when the timestamp updates
 
     """
-    def __init__(self, address=None, connection_slot=None, value_slot=None,
-                 severity_slot=None, write_access_slot=None,
-                 enum_strings_slot=None, unit_slot=None, prec_slot=None,
-                 upper_ctrl_limit_slot=None, lower_ctrl_limit_slot=None,
-                 upper_alarm_limit_slot=None, lower_alarm_limit_slot=None,
-                 upper_warning_limit_slot=None, lower_warning_limit_slot=None,
-                 value_signal=None, timestamp_slot=None):
+
+    def __init__(
+        self,
+        address=None,
+        connection_slot=None,
+        value_slot=None,
+        severity_slot=None,
+        write_access_slot=None,
+        enum_strings_slot=None,
+        unit_slot=None,
+        prec_slot=None,
+        upper_ctrl_limit_slot=None,
+        lower_ctrl_limit_slot=None,
+        upper_alarm_limit_slot=None,
+        lower_alarm_limit_slot=None,
+        upper_warning_limit_slot=None,
+        lower_warning_limit_slot=None,
+        value_signal=None,
+        timestamp_slot=None,
+    ):
         self._address = None
         self.address = address
 
@@ -138,8 +151,7 @@ class PyDMChannel(object):
         try:
             pydm.data_plugins.establish_connection(self)
         except Exception:
-            logger.exception("Unable to make proper connection "
-                             "for %r", self)
+            logger.exception("Unable to make proper connection " "for %r", self)
 
     def disconnect(self, destroying=False):
         """
@@ -151,8 +163,7 @@ class PyDMChannel(object):
                 return
             plugin.remove_connection(self, destroying=destroying)
         except Exception as exc:
-            logger.exception("Unable to remove connection "
-                             "for %r", self)
+            logger.exception("Unable to remove connection " "for %r", self)
 
     def __eq__(self, other):
         if isinstance(self, other.__class__):
@@ -176,22 +187,24 @@ class PyDMChannel(object):
             if self.value_signal and other.value_signal:
                 value_signal_matched = self.value_signal.signal == other.value_signal.signal
 
-            return (address_matched and
-                    connection_slot_matched and
-                    value_slot_matched and
-                    severity_slot_matched and
-                    enum_strings_slot_matched and
-                    unit_slot_matched and
-                    prec_slot_matched and
-                    upper_ctrl_slot_matched and
-                    lower_ctrl_slot_matched and
-                    upper_alarm_slot_matched and
-                    lower_alarm_slot_matched and
-                    upper_warning_slot_matched and
-                    lower_warning_slot_matched and
-                    write_access_slot_matched and
-                    value_signal_matched and
-                    timestamp_slot_matched)
+            return (
+                address_matched
+                and connection_slot_matched
+                and value_slot_matched
+                and severity_slot_matched
+                and enum_strings_slot_matched
+                and unit_slot_matched
+                and prec_slot_matched
+                and upper_ctrl_slot_matched
+                and lower_ctrl_slot_matched
+                and upper_alarm_slot_matched
+                and lower_alarm_slot_matched
+                and upper_warning_slot_matched
+                and lower_warning_slot_matched
+                and write_access_slot_matched
+                and value_signal_matched
+                and timestamp_slot_matched
+            )
 
         return NotImplemented
 
@@ -205,4 +218,4 @@ class PyDMChannel(object):
         return id(self)
 
     def __repr__(self):
-        return '<PyDMChannel ({:})>'.format(self.address)
+        return "<PyDMChannel ({:})>".format(self.address)
