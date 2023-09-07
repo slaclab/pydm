@@ -779,8 +779,7 @@ def test_focus_out_event(qtbot, qapp, display_value):
             "light years",
             False,
             (
-                "Warning: Attempting to convert PyDMLineEdit unit, but 'light years' can not be converted",
-                "to 'light years'.",
+                "Warning: Attempting to convert PyDMLineEdit unit, but 'light years' can not be converted to 'light years'.",  # noqa E501
             ),
         ),
     ],
