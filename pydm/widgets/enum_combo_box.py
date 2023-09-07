@@ -1,12 +1,11 @@
 import logging
-
-logger = logging.getLogger(__name__)
-
 import six
 from qtpy.QtWidgets import QComboBox
 from qtpy.QtCore import Slot, Qt
 from .base import PyDMWritableWidget
 from .. import data_plugins
+
+logger = logging.getLogger(__name__)
 
 
 class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):

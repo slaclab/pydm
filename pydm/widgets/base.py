@@ -118,7 +118,7 @@ def refresh_style(widget):
 
     try:
         widgets.extend(widget.findChildren(QWidget))
-    except:
+    except Exception:
         # If we fail it means that widget is probably destroyed
         return
     for child_widget in widgets:
@@ -303,7 +303,7 @@ class PyDMPrimitiveWidget(object):
             else:
                 setattr(self, method_name, val)
 
-        except:
+        except Exception:
             logger.error(
                 "Error at Rule: %s. Could not execute method %s with " "value %s and type as %s.",
                 name,

@@ -48,19 +48,13 @@ from .slider import PyDMSlider
 from .spinbox import PyDMSpinbox
 from .symbol import PyDMSymbol
 from .waveformtable import PyDMWaveformTable
-from .scale import PyDMScaleIndicator
 from .analog_indicator import PyDMAnalogIndicator
 from .timeplot import PyDMTimePlot
-from .archiver_time_plot import PyDMArchiverTimePlot
 from .waveformplot import PyDMWaveformPlot
-from .scatterplot import PyDMScatterPlot
 from .eventplot import PyDMEventPlot
 from .tab_bar_qtplugin import TabWidgetPlugin
 from .template_repeater import PyDMTemplateRepeater
 from .terminator import PyDMTerminator
-from .timeplot import PyDMTimePlot
-from .waveformplot import PyDMWaveformPlot
-from .waveformtable import PyDMWaveformTable
 from .nt_table import PyDMNTTable
 
 logger = logging.getLogger(__name__)

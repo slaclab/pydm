@@ -33,7 +33,7 @@ class RulesEditor(QtWidgets.QDialog):
 
         try:
             self.rules = json.loads(widget.rules)
-        except:
+        except Exception:
             self.rules = []
 
         for ac in self.rules:
@@ -464,7 +464,7 @@ class RulesEditor(QtWidgets.QDialog):
             self.lbl_expected_type.setText(prop[1].__name__)
             self.get_current_index()
             self.change_entry("property", self.cmb_property.currentText())
-        except:
+        except Exception:
             self.lbl_expected_type.setText("")
 
     def tbl_channels_changed(self, topleft=None, bottomright=None, roles=None):

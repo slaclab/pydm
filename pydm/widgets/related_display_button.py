@@ -337,8 +337,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @Property(bool)
     def followSymlinks(self) -> bool:
         """
-        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it
-        will always use the canonical path. If False (default), the file will be searched without canonicalizing the path beforehand.
+        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed,
+        so that it will always use the canonical path. If False (default), the file will be searched without
+        canonicalizing the path beforehand.
 
         Note that it will not work on Windows if you're using a Python version prior to 3.8.
 
@@ -351,8 +352,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @followSymlinks.setter
     def followSymlinks(self, follow_symlinks: bool) -> None:
         """
-        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it
-        will always use the canonical path. If False (default), the file will be searched using the non-canonical path.
+        If True, any symlinks in the path to filename (including the base path of the parent display) 
+        will be followed, so that it will always use the canonical path. 
+        If False (default), the file will be searched using the non-canonical path.
 
         Note that it will not work on Windows if you're using a Python version prior to 3.8.
 
@@ -521,7 +523,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def context_menu(self):
         try:
             menu = super(PyDMRelatedDisplayButton, self).context_menu()
-        except:
+        except Exception:
             menu = QMenu(self)
         if len(menu.findChildren(QAction)) > 0:
             menu.addSeparator()

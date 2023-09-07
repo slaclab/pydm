@@ -59,7 +59,7 @@ def parsed_address(address):
     -------
     parsed_address : tuple
     """
-    if type(address) != str:
+    if not isinstance(address, str):
         return None
 
     match = re.match(".*?://", address)

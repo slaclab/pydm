@@ -32,7 +32,7 @@ class SymbolEditor(QtWidgets.QDialog):
 
         try:
             self.symbols = json.loads(widget.imageFiles)
-        except:
+        except Exception:
             self.symbols = {}
 
         for state, filename in self.symbols.items():

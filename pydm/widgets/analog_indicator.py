@@ -246,9 +246,11 @@ class QScaleAlarmed(QScale):
         self._painter.setRenderHint(QPainter.Antialiasing)
 
         """
-        bad metadata or user input can cause designer or pydm to crash when drawing the widget, hence the try except block
-        self._cannot_draw_*_flag variables are so that the errors only print once, otherwise they would print on each redraw
-        flags are reset when the element can draw without error
+        bad metadata or user input can cause designer or pydm to crash when drawing the widget,
+        hence the try except block.
+        self._cannot_draw_*_flag variables are so that the errors only print once,
+        otherwise they would print on each redraw.
+        flags are reset when the element can draw without error.
         """
         try:
             self.draw_background()

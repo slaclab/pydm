@@ -181,7 +181,7 @@ def test_scatterplotcurve_get_set_reset_buffer_size(qtbot, new_buffer_size, expe
         ("ca://test_value:Int", None, DEFAULT_BUFFER_SIZE),
     ],
 )
-def test_scatterplotcurve_get_set_reset_buffer_size(qtbot, addr, new_size, expected_buffer_size):
+def test_scatterplotcurve_get_set_reset_buffer_size_channel_addr(qtbot, addr, new_size, expected_buffer_size):
     plot_curve_item = ScatterPlotCurveItem(None, None, bufferSizeChannelAddress=addr)
 
     assert plot_curve_item.getBufferSize() == DEFAULT_BUFFER_SIZE

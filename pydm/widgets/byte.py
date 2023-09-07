@@ -480,7 +480,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         -------
         list
         """
-        return [str(l.text()) for l in self._labels]
+        return [str(currLabel.text()) for currLabel in self._labels]
 
     @labels.setter
     def labels(self, new_labels: List[str]) -> None:
@@ -512,7 +512,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         try:
             int(new_val)
             self.update_indicators()
-        except:
+        except Exception:
             pass
 
     def paintEvent(self, _) -> None:

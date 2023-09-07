@@ -32,7 +32,7 @@ def test_show_with_relative_filename_and_symlink(qtbot, tmp_path):
     symlinked_ui_file = tmp_path / "test_ui_with_relative_path.ui"
     try:
         os.symlink(test_ui_path_with_relative_path, symlinked_ui_file)
-    except:
+    except Exception:
         pytest.skip("Unable to create a symlink for testing purposes.")
 
     QApplication.instance().make_main_window()

@@ -1417,5 +1417,5 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                 try:
                     proxy.signal.disconnect(proxy.signalReceived)
                     proxy.sigDelayed.disconnect(proxy.slot)
-                except:
+                except Exception:
                     pass

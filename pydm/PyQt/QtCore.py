@@ -1,1 +1,1 @@
-from qtpy.QtCore import *
+from qtpy.QtCore import * # noqa: F403

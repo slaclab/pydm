@@ -176,7 +176,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         Options are:
         - **Vertical**: Instances of the template are laid out vertically, in rows.
         - **Horizontal**: Instances of the template are laid out horizontally, in columns.
-        - **Flow**: Instances of the template are laid out horizontally until they reach the edge of the template, at which point they "wrap" into a new row.
+        - **Flow**: Instances of the template are laid out horizontally until they reach the edge of the template,
+        at which point they "wrap" into a new row.
 
         Parameters
         ----------
@@ -395,8 +396,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             if self.layout() is not None:
                 # Trick to remove the existing layout by re-parenting it in an empty widget.
                 QWidget().setLayout(self.layout())
-            l = layout_class(self)
-            self.setLayout(l)
+            currLayoutClass = layout_class(self)
+            self.setLayout(currLayoutClass)
             self.layout().setSpacing(self._temp_layout_spacing)
         try:
             with pydm.data_plugins.connection_queue(defer_connections=True):
@@ -409,7 +410,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                         w.setText("No Template Loaded.  Data: {}".format(variables))
                     w.setParent(self)
                     self.layout().addWidget(w)
-        except:
+        except Exception:
             logger.exception("Template repeater failed to rebuild.")
         finally:
             # If issues happen during the rebuild we should still enable

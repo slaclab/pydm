@@ -94,7 +94,7 @@
        <item>
         <widget class="QLabel" name="modulesVersionLabel">
          <property name="text">
-          <string>Using Python v{pyver}, Numpy v{numpyver}, PyQt v{pyqtver}, Qt v{qtver}, and PyQtGraph v{pyqtgraphver}.</string>
+          <string>Using Python v{pyver}, Numpy v{numpyver}, PyQt v{pyqtver}, Qt v{qtver},&#10;and PyQtGraph v{pyqtgraphver}.</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

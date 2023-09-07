@@ -142,7 +142,8 @@ def test_pydmdrawing_paintEvent(qtbot, signals, alarm_sensitive_content):
     Expectations:
     The paintEvent will be triggered, and the widget's brush color is correctly set.
 
-    NOTE: This test depends on the default stylesheet having different values for 'qproperty-brush' for different alarm states of PyDMDrawing.
+    NOTE: This test depends on the default stylesheet having different values for 'qproperty-brush' for different
+    alarm states of PyDMDrawing.
 
     Parameters
     ----------

@@ -1,4 +1,3 @@
-from pydm.data_plugins.archiver_plugin import Connection
 from pydm.data_plugins.epics_plugins.pyepics_plugin_component import Connection
 from pydm.tests.conftest import ConnectionSignals
 from pydm.widgets.channel import PyDMChannel

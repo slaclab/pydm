@@ -1278,7 +1278,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
             try:
                 float(value)
                 return True
-            except:
+            except Exception:
                 return False
 
         def validate_point(i, point):

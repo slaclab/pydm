@@ -18,7 +18,6 @@ import subprocess
 import platform
 import logging
 
-from .utilities.stylesheet import apply_stylesheet, _get_style_data
 
 logger = logging.getLogger(__name__)
 
@@ -582,7 +581,8 @@ class PyDMMainWindow(QMainWindow):
         # iterate through the items list and add to the menu
         for key in items.keys():
             val = items[key]
-            # if there is a dictionary nested in the primary dictionary, create a new submenu, and call create_menu with that submenu as the parent menu
+            # if there is a dictionary nested in the primary dictionary, create a new submenu, and call create_menu
+            # with that submenu as the parent menu
             if isinstance(val, dict):
                 new_menu = menu.addMenu(key)
                 PyDMMainWindow().create_menu(new_menu, val)

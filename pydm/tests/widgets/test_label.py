@@ -288,7 +288,8 @@ def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, a
        solid, transparent, etc.
     3. The alarm color and border appearance will change only if each corresponding Boolean flag is set to True
 
-    NOTE: This test depends on the default stylesheet having different values for 'color' for different alarm states of PyDMLabel.
+    NOTE: This test depends on the default stylesheet having different values for 'color' for different
+    alarm states of PyDMLabel.
 
     Parameters
     ----------

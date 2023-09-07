@@ -15,7 +15,7 @@ try:
     from epics import utils3
 
     utils3.EPICS_STR_ENCODING = "latin-1"
-except:
+except Exception:
     pass
 
 logger = logging.getLogger(__name__)
@@ -150,7 +150,7 @@ class Connection(PyDMConnection):
                 pass
             self.enum_strings_signal.emit(enum_strs)
         if units is not None and len(units) > 0 and self._unit != units:
-            if type(units) == bytes:
+            if isinstance(units, bytes):
                 units = units.decode()
             self._unit = units
             self.unit_signal.emit(units)
