@@ -104,7 +104,7 @@ class Connection(PyDMConnection):
                         msg = f"Invalid channel... {self.nttable_data_location}"
                         for subfield in self.nttable_data_location:
                             if isinstance(new_value, collections.Container) and not isinstance(new_value, str):
-                                if isinstance(subfield,str):
+                                if isinstance(subfield, str):
                                     try:
                                         new_value = new_value[subfield]
                                         continue

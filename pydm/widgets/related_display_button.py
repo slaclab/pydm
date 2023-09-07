@@ -352,8 +352,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @followSymlinks.setter
     def followSymlinks(self, follow_symlinks: bool) -> None:
         """
-        If True, any symlinks in the path to filename (including the base path of the parent display) 
-        will be followed, so that it will always use the canonical path. 
+        If True, any symlinks in the path to filename (including the base path of the parent display)
+        will be followed, so that it will always use the canonical path.
         If False (default), the file will be searched using the non-canonical path.
 
         Note that it will not work on Windows if you're using a Python version prior to 3.8.

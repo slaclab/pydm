@@ -1,1 +1,1 @@
-from qtpy.uic import * # noqa: F403
+from qtpy.uic import *  # noqa: F403

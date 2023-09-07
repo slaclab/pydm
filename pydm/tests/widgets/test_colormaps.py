@@ -1,7 +1,6 @@
 # Unit Tests for the Color Map
 
 
-
 import numpy as np
 
 from ...widgets.colormaps import (

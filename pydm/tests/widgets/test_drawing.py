@@ -29,7 +29,6 @@ from ...widgets.drawing import (
 )
 
 
-
 # --------------------
 # POSITIVE TEST CASES
 # --------------------

@@ -315,7 +315,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
-        if isinstance(value,int) and value == updateMode.AtFixedRate or isinstance(value,bool) and value is True:
+        if isinstance(value, int) and value == updateMode.AtFixedRate or isinstance(value, bool) and value is True:
             self._update_mode = PyDMTimePlot.AtFixedRate
         else:
             self._update_mode = PyDMTimePlot.OnValueChange
@@ -829,7 +829,7 @@ class PyDMTimePlot(BasePlot, updateMode):
         """
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
-        if isinstance(value,int) and value == updateMode.AtFixedRate or isinstance(value,bool) and value is True:
+        if isinstance(value, int) and value == updateMode.AtFixedRate or isinstance(value, bool) and value is True:
             self._update_mode = PyDMTimePlot.AtFixedRate
             self.update_timer.start()
         else:

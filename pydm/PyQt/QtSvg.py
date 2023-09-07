@@ -1,1 +1,1 @@
-from qtpy.QtSvg import * # noqa: F403
+from qtpy.QtSvg import *  # noqa: F403

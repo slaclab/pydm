@@ -5,10 +5,10 @@ from .widgets import PyDMChannel
 from ._version import get_versions
 
 __all__ = [
-    'PyDMApplication',
-    'Display',
-    'set_read_only',
-    'PyDMChannel',
+    "PyDMApplication",
+    "Display",
+    "set_read_only",
+    "PyDMChannel",
 ]
 
 __version__ = get_versions()["version"]
