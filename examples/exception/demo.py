@@ -1,6 +1,6 @@
 import sys
 import functools
-from qtpy import QtCore, QtGui, QtWidgets
+from qtpy import QtWidgets
 from pydm import exception
 
 

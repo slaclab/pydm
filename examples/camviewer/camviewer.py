@@ -4,7 +4,6 @@ import functools
 from qtpy.QtCore import Slot, Signal, QPointF, QRectF
 from qtpy.QtGui import QPen
 from qtpy.QtWidgets import QSizePolicy
-from os import path
 from pydm import Display
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.base import widget_destroyed
@@ -196,7 +195,7 @@ class CamViewer(Display):
                 new_y = int(y_line_edit.text())
                 if new_x <= marker.maxBounds.width() and new_y <= marker.maxBounds.height():
                     marker.setPos((new_x, new_y))
-            except:
+            except Exception:
                 pass
             coords = marker.getPixelCoords()
             x_line_edit.setText(str(coords[0]))
@@ -342,7 +341,7 @@ class CamViewer(Display):
     def colorMapMinLineEditChanged(self):
         try:
             new_min = int(self.ui.colorMapMinLineEdit.text())
-        except:
+        except Exception:
             self.ui.colorMapMinLineEdit.setText(str(self.ui.colorMapMinSlider.value()))
             return
         if new_min < 0:
@@ -363,7 +362,7 @@ class CamViewer(Display):
     def colorMapMaxLineEditChanged(self):
         try:
             new_max = int(self.ui.colorMapMaxLineEdit.text())
-        except:
+        except Exception:
             self.ui.colorMapMaxLineEdit.setText(str(self.ui.colorMapMaxSlider.value()))
             return
         if new_max < 0:
@@ -384,7 +383,7 @@ class CamViewer(Display):
         num_shots = 1
         try:
             num_shots = int(self.ui.numShotsLineEdit.text())
-        except:
+        except Exception:
             self.ui.numShotsLineEdit.setText(str(num_shots))
         if num_shots < 1:
             num_shots = 1
@@ -440,7 +439,7 @@ class CamViewer(Display):
         self.calculateStats()
         if self._needs_auto_range:
             self.ui.imageView.getView().autoRange(padding=0.0)
-            current_range = self.ui.imageView.getView().viewRange()
+            self.ui.imageView.getView().viewRange()
             self._needs_auto_range = False
 
     def calculateStats(self):

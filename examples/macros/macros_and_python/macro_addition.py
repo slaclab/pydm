@@ -1,4 +1,3 @@
-from os import path
 from pydm import Display
 
 

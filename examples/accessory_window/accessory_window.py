@@ -1,7 +1,7 @@
 import os
 import sys
 from pydm import Display
-from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QWidget, QRadioButton
+from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QPushButton
 from qtpy.QtCore import Slot
 
 

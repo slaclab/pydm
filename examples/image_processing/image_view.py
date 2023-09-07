@@ -1,9 +1,8 @@
 from pydm import Display
 import threading
-from os import path
 from skimage.feature import blob_doh
 from marker import ImageMarker
-from pyqtgraph import mkPen, PlotItem
+from pyqtgraph import mkPen
 
 
 class ImageViewer(Display):

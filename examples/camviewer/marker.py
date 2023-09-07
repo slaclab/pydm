@@ -6,10 +6,10 @@ class ImageMarker(ROI):
     """A crosshair ROI.  Returns the full image line-out for X and Y at the position of the crosshair."""
 
     def __init__(self, pos=None, size=None, **kargs):
-        if size == None:
+        if size is None:
             # size = [100e-6,100e-6]
             size = [20, 20]
-        if pos == None:
+        if pos is None:
             pos = [0, 0]
         self._shape = None
         ROI.__init__(self, pos, size, **kargs)

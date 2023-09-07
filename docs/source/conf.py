@@ -14,8 +14,7 @@
 
 import sys
 import os
-import shlex
-import sphinx_rtd_theme
+import pydm
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -29,8 +28,6 @@ import sphinx_rtd_theme
 module_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
 sys.path.insert(0, module_path)
 sys.path.insert(0, os.path.join(module_path, "pydm/widgets"))
-
-import pydm
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom

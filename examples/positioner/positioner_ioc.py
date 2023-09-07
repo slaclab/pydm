@@ -1,5 +1,4 @@
 from pcaspy import SimpleServer, Driver, Severity
-import time
 import numpy
 
 prefix = "MOTOR:"

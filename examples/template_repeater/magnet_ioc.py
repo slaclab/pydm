@@ -1,4 +1,3 @@
-import os
 import asyncio
 import json
 from caproto.server import ioc_arg_parser, run, pvproperty, PVGroup

@@ -1,9 +1,7 @@
 import epics
 import cams
 import time
-from qtpy import uic
-from qtpy.QtCore import QObject, Slot, Signal
-from qtpy.QtWidgets import QWidget
+from qtpy.QtCore import Slot
 from os import path
 from pydm import Display
 
