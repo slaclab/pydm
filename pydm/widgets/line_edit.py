@@ -85,7 +85,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         send_value = str(self.text())
         # Clean text of unit string
         if self._show_units and self._unit and self._unit in send_value:
-            send_value = send_value[: -len(self._unit)].strip()
+            send_value = send_value[:-len(self._unit)].strip()
         try:
             if self.channeltype not in [str, np.ndarray, bool]:
                 scale = self._scale
@@ -113,8 +113,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                     self.send_value_signal[str].emit(send_value)
                 else:
                     arr_value = list(
-                        filter(None, ast.literal_eval(str(shlex.split(send_value.replace("[", "").replace("]", "")))))
-                    )
+                        filter(None, ast.literal_eval(str(shlex.split(send_value.replace("[", "").replace("]", ""))))))
                     arr_value = np.array(arr_value, dtype=self.subtype)
                     self.send_value_signal[np.ndarray].emit(arr_value)
             elif self.channeltype == bool:
@@ -129,11 +128,8 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                 # Lets just send what we have after all
                 self.send_value_signal[str].emit(send_value)
         except ValueError:
-            logger.exception(
-                "Error trying to set data '{0}' with type '{1}' and format '{2}' at widget '{3}'.".format(
-                    self.text(), self.channeltype, self._display_format_type, self.objectName()
-                )
-            )
+            logger.exception("Error trying to set data '{0}' with type '{1}' and format '{2}' at widget '{3}'."
+                             .format(self.text(), self.channeltype, self._display_format_type, self.objectName()))
 
         self.clearFocus()
         self.set_display()
@@ -172,16 +168,21 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         the user that there are no available conversions
         """
         if self.unitMenu is None:
-            self.unitMenu = QMenu("Convert Units", self)
+            self.unitMenu = QMenu('Convert Units', self)
         else:
             self.unitMenu.clear()
 
         units = utilities.find_unit_options(self._unit)
         if units and self._show_units:
             for choice in units:
-                self.unitMenu.addAction(choice, partial(self.apply_conversion, choice))
+                self.unitMenu.addAction(choice,
+                                        partial(
+                                            self.apply_conversion,
+                                            choice
+                                            )
+                                        )
         else:
-            self.unitMenu.addAction("No Unit Conversions found")
+            self.unitMenu.addAction('No Unit Conversions found')
 
     def apply_conversion(self, unit):
         """
@@ -208,11 +209,8 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
             self.clearFocus()
             self.set_display()
         else:
-            logging.warning(
-                "Warning: Attempting to convert PyDMLineEdit unit, but '{0}' can not be converted to '{1}'.".format(
-                    self._unit, unit
-                )
-            )
+            logging.warning("Warning: Attempting to convert PyDMLineEdit unit, but '{0}' can not be converted to '{1}'."
+                            .format(self._unit, unit))
 
     def widget_ctx_menu(self):
         """
@@ -247,30 +245,22 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
         new_value = self.value
 
-        if self._display_format_type in [
-            DisplayFormat.Default,
-            DisplayFormat.Decimal,
-            DisplayFormat.Exponential,
-            DisplayFormat.Hex,
-            DisplayFormat.Binary,
-        ]:
+        if self._display_format_type in [DisplayFormat.Default,
+                                         DisplayFormat.Decimal,
+                                         DisplayFormat.Exponential,
+                                         DisplayFormat.Hex,
+                                         DisplayFormat.Binary]:
             if self.channeltype not in (str, np.ndarray):
                 try:
                     new_value *= self.channeltype(self._scale)
                 except TypeError:
-                    logger.error(
-                        "Cannot convert the value '{0}', for channel '{1}', to type '{2}'. ".format(
-                            self._scale, self._channel, self.channeltype
-                        )
-                    )
+                    logger.error("Cannot convert the value '{0}', for channel '{1}', to type '{2}'. ".format(
+                        self._scale, self._channel, self.channeltype))
 
-        new_value = parse_value_for_display(
-            value=new_value,
-            precision=self.precision,
-            display_format_type=self._display_format_type,
-            string_encoding=self._string_encoding,
-            widget=self,
-        )
+        new_value = parse_value_for_display(value=new_value,  precision=self.precision,
+                                            display_format_type=self._display_format_type,
+                                            string_encoding=self._string_encoding,
+                                            widget=self)
 
         self._has_displayed_value_yet = True
         if type(new_value) in str_types:
@@ -295,9 +285,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         widget this behavior can lead to a race condition where if the widget is given focus before the PV has been
         connected long enough to receive a value, then the widget never loads the initial text from the PV.
         """
-        if not self._has_displayed_value_yet and (
-            event.reason() == Qt.ActiveWindowFocusReason or event.reason() == Qt.TabFocusReason
-        ):
+        if not self._has_displayed_value_yet and (event.reason() == Qt.ActiveWindowFocusReason or event.reason() == Qt.TabFocusReason):
             # Clearing focus ensures that the widget will display the value for the PV
             self.clearFocus()
             return
@@ -315,8 +303,8 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
     @staticmethod
     def strtobool(val):
-        valid_true = ["Y", "YES", "T", "TRUE", "ON", "1"]
-        valid_false = ["N", "NO", "F", "FALSE", "OFF", "0"]
+        valid_true = ['Y', 'YES', 'T', 'TRUE', 'ON', '1']
+        valid_false = ['N', 'NO', 'F', 'FALSE', 'OFF', '0']
 
         if val.upper() in valid_true:
             return 1
