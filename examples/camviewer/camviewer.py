@@ -27,9 +27,17 @@ class CamViewer(Display):
         super(CamViewer, self).__init__(parent=parent, args=args)
 
         # Set up the list of cameras, and all the PVs
-        test_dict = { "image": "ca://MTEST:Image", "max_width": "ca://MTEST:ImageWidth", "max_height": "ca://MTEST:ImageWidth", "roi_x": None, "roi_y": None, "roi_width": None, "roi_height": None }
+        test_dict = {
+            "image": "ca://MTEST:Image",
+            "max_width": "ca://MTEST:ImageWidth",
+            "max_height": "ca://MTEST:ImageWidth",
+            "roi_x": None,
+            "roi_y": None,
+            "roi_width": None,
+            "roi_height": None,
+        }
         # self.cameras = { "VCC": vcc_dict, "C-Iris": c_iris_dict, "Test": test_dict }
-        self.cameras = {"Testing IOC Image": test_dict }
+        self.cameras = {"Testing IOC Image": test_dict}
         self._channels = []
         self.imageChannel = None
 
@@ -67,7 +75,7 @@ class CamViewer(Display):
         self.yLineoutPlot.setMaximumWidth(80)
         self.yLineoutPlot.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.yLineoutPlot.getPlotItem().invertY()
-        self.yLineoutPlot.hideAxis('bottom')
+        self.yLineoutPlot.hideAxis("bottom")
         # self.yLineoutPlot.setYLink(self.ui.imageView.getView())
         self.ui.imageGridLayout.addWidget(self.yLineoutPlot, 0, 0)
         self.yLineoutPlot.hide()
@@ -79,7 +87,7 @@ class CamViewer(Display):
         self.xLineoutPlot = PlotWidget()
         self.xLineoutPlot.setMaximumHeight(80)
         self.xLineoutPlot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
-        self.xLineoutPlot.hideAxis('left')
+        self.xLineoutPlot.hideAxis("left")
         # self.xLineoutPlot.setXLink(self.ui.imageView.getView())
         self.ui.imageGridLayout.addWidget(self.xLineoutPlot, 1, 1)
         self.xLineoutPlot.hide()
@@ -88,42 +96,42 @@ class CamViewer(Display):
         self.ui.imageView.getView().sigRangeChanged.connect(self.updateLineoutRange)
 
         # Instantiate markers.
-        self.marker_dict = {1:{}, 2:{}, 3:{}, 4:{}}
-        marker_size = QPointF(20., 20.)
-        self.marker_dict[1]['marker'] = ImageMarker((0, 0), size=marker_size, pen=mkPen((100, 100, 255), width=5))
-        self.marker_dict[1]['button'] = self.ui.marker1Button
-        self.marker_dict[1]['xlineedit'] = self.ui.marker1XPosLineEdit
-        self.marker_dict[1]['ylineedit'] = self.ui.marker1YPosLineEdit
+        self.marker_dict = {1: {}, 2: {}, 3: {}, 4: {}}
+        marker_size = QPointF(20.0, 20.0)
+        self.marker_dict[1]["marker"] = ImageMarker((0, 0), size=marker_size, pen=mkPen((100, 100, 255), width=5))
+        self.marker_dict[1]["button"] = self.ui.marker1Button
+        self.marker_dict[1]["xlineedit"] = self.ui.marker1XPosLineEdit
+        self.marker_dict[1]["ylineedit"] = self.ui.marker1YPosLineEdit
 
-        self.marker_dict[2]['marker'] = ImageMarker((0, 0), size=marker_size, pen=mkPen((255, 100, 100), width=5))
-        self.marker_dict[2]['button'] = self.ui.marker2Button
-        self.marker_dict[2]['xlineedit'] = self.ui.marker2XPosLineEdit
-        self.marker_dict[2]['ylineedit'] = self.ui.marker2YPosLineEdit
+        self.marker_dict[2]["marker"] = ImageMarker((0, 0), size=marker_size, pen=mkPen((255, 100, 100), width=5))
+        self.marker_dict[2]["button"] = self.ui.marker2Button
+        self.marker_dict[2]["xlineedit"] = self.ui.marker2XPosLineEdit
+        self.marker_dict[2]["ylineedit"] = self.ui.marker2YPosLineEdit
 
-        self.marker_dict[3]['marker'] = ImageMarker((0, 0), size=marker_size, pen=mkPen((60, 255, 60), width=5))
-        self.marker_dict[3]['button'] = self.ui.marker3Button
-        self.marker_dict[3]['xlineedit'] = self.ui.marker3XPosLineEdit
-        self.marker_dict[3]['ylineedit'] = self.ui.marker3YPosLineEdit
+        self.marker_dict[3]["marker"] = ImageMarker((0, 0), size=marker_size, pen=mkPen((60, 255, 60), width=5))
+        self.marker_dict[3]["button"] = self.ui.marker3Button
+        self.marker_dict[3]["xlineedit"] = self.ui.marker3XPosLineEdit
+        self.marker_dict[3]["ylineedit"] = self.ui.marker3YPosLineEdit
 
-        self.marker_dict[4]['marker'] = ImageMarker((0, 0), size=marker_size, pen=mkPen((255, 60, 255), width=5))
-        self.marker_dict[4]['button'] = self.ui.marker4Button
-        self.marker_dict[4]['xlineedit'] = self.ui.marker4XPosLineEdit
-        self.marker_dict[4]['ylineedit'] = self.ui.marker4YPosLineEdit
+        self.marker_dict[4]["marker"] = ImageMarker((0, 0), size=marker_size, pen=mkPen((255, 60, 255), width=5))
+        self.marker_dict[4]["button"] = self.ui.marker4Button
+        self.marker_dict[4]["xlineedit"] = self.ui.marker4XPosLineEdit
+        self.marker_dict[4]["ylineedit"] = self.ui.marker4YPosLineEdit
         # Disable auto-ranging the image (it feels strange when the zoom changes as you move markers around.)
         self.ui.imageView.getView().getViewBox().disableAutoRange()
         for d in self.marker_dict:
-            marker = self.marker_dict[d]['marker']
+            marker = self.marker_dict[d]["marker"]
             marker.setZValue(20)
             marker.hide()
             marker.sigRegionChanged.connect(self.markerMoved)
             self.ui.imageView.getView().getViewBox().addItem(marker)
-            self.marker_dict[d]['button'].toggled.connect(self.enableMarker)
+            self.marker_dict[d]["button"].toggled.connect(self.enableMarker)
             curvepen = QPen(marker.pen)
             curvepen.setWidth(1)
-            self.marker_dict[d]['xcurve'] = self.xLineoutPlot.plot(pen=curvepen)
-            self.marker_dict[d]['ycurve'] = self.yLineoutPlot.plot(pen=curvepen)
-            self.marker_dict[d]['xlineedit'].returnPressed.connect(self.markerPositionLineEditChanged)
-            self.marker_dict[d]['ylineedit'].returnPressed.connect(self.markerPositionLineEditChanged)
+            self.marker_dict[d]["xcurve"] = self.xLineoutPlot.plot(pen=curvepen)
+            self.marker_dict[d]["ycurve"] = self.yLineoutPlot.plot(pen=curvepen)
+            self.marker_dict[d]["xlineedit"].returnPressed.connect(self.markerPositionLineEditChanged)
+            self.marker_dict[d]["ylineedit"].returnPressed.connect(self.markerPositionLineEditChanged)
 
         # Set up zoom buttons
         self.ui.zoomInButton.clicked.connect(self.zoomIn)
@@ -135,7 +143,6 @@ class CamViewer(Display):
         self.ui.resetROIButton.clicked.connect(self.resetROI)
 
         self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
-
 
     @Slot()
     def zoomIn(self):
@@ -149,26 +156,28 @@ class CamViewer(Display):
     def zoomToActualSize(self):
         if len(self.image_data) == 0:
             return
-        self.ui.imageView.getView().setRange(xRange=(0, self.image_data.shape[0]), yRange=(0, self.image_data.shape[1]), padding=0.0)
+        self.ui.imageView.getView().setRange(
+            xRange=(0, self.image_data.shape[0]), yRange=(0, self.image_data.shape[1]), padding=0.0
+        )
 
     def disable_all_markers(self):
         for d in self.marker_dict:
-            self.marker_dict[d]['button'].setChecked(False)
-            self.marker_dict[d]['marker'].setPos((0, 0))
+            self.marker_dict[d]["button"].setChecked(False)
+            self.marker_dict[d]["marker"].setPos((0, 0))
 
     @Slot(bool)
     def enableMarker(self, checked):
         any_markers_visible = False
         for d in self.marker_dict:
-            marker = self.marker_dict[d]['marker']
-            button = self.marker_dict[d]['button']
+            marker = self.marker_dict[d]["marker"]
+            button = self.marker_dict[d]["button"]
             any_markers_visible = any_markers_visible or button.isChecked()
             marker.setVisible(button.isChecked())
             self.markerMoved(d)
-            self.marker_dict[d]['xcurve'].setVisible(button.isChecked())
-            self.marker_dict[d]['ycurve'].setVisible(button.isChecked())
-            self.marker_dict[d]['xlineedit'].setEnabled(button.isChecked())
-            self.marker_dict[d]['ylineedit'].setEnabled(button.isChecked())
+            self.marker_dict[d]["xcurve"].setVisible(button.isChecked())
+            self.marker_dict[d]["ycurve"].setVisible(button.isChecked())
+            self.marker_dict[d]["xlineedit"].setEnabled(button.isChecked())
+            self.marker_dict[d]["ylineedit"].setEnabled(button.isChecked())
         if any_markers_visible:
             self.xLineoutPlot.show()
             self.yLineoutPlot.show()
@@ -179,9 +188,9 @@ class CamViewer(Display):
     @Slot()
     def markerPositionLineEditChanged(self):
         for d in self.marker_dict:
-            marker = self.marker_dict[d]['marker']
-            x_line_edit = self.marker_dict[d]['xlineedit']
-            y_line_edit = self.marker_dict[d]['ylineedit']
+            marker = self.marker_dict[d]["marker"]
+            x_line_edit = self.marker_dict[d]["xlineedit"]
+            y_line_edit = self.marker_dict[d]["ylineedit"]
             try:
                 new_x = int(x_line_edit.text())
                 new_y = int(y_line_edit.text())
@@ -197,9 +206,9 @@ class CamViewer(Display):
     def markerMoved(self, marker):
         self.updateLineouts()
         for marker_index in self.marker_dict:
-            marker = self.marker_dict[marker_index]['marker']
-            x_line_edit = self.marker_dict[marker_index]['xlineedit']
-            y_line_edit = self.marker_dict[marker_index]['ylineedit']
+            marker = self.marker_dict[marker_index]["marker"]
+            x_line_edit = self.marker_dict[marker_index]["xlineedit"]
+            y_line_edit = self.marker_dict[marker_index]["ylineedit"]
             coords = marker.getPixelCoords()
             x_line_edit.setText(str(coords[0]))
             y_line_edit.setText(str(coords[1]))
@@ -211,9 +220,9 @@ class CamViewer(Display):
 
     def updateLineouts(self):
         for marker_index in self.marker_dict:
-            marker = self.marker_dict[marker_index]['marker']
-            xcurve = self.marker_dict[marker_index]['xcurve']
-            ycurve = self.marker_dict[marker_index]['ycurve']
+            marker = self.marker_dict[marker_index]["marker"]
+            xcurve = self.marker_dict[marker_index]["xcurve"]
+            ycurve = self.marker_dict[marker_index]["ycurve"]
             if marker.isVisible():
                 result, coords = marker.getArrayRegion(self.image_data, self.ui.imageView.getImageItem())
                 xcurve.setData(y=result[0], x=np.arange(len(result[0])))
@@ -258,15 +267,35 @@ class CamViewer(Display):
         self.roiWidthChannel = self.cameras[new_camera]["roi_width"]
         self.roiHeightChannel = self.cameras[new_camera]["roi_height"]
 
-        self._channels = [PyDMChannel(address=self.imageChannel, connection_slot=self.connectionStateChanged, value_slot=self.receiveImageWaveform, severity_slot=self.alarmSeverityChanged),
-                                            PyDMChannel(address=self.widthChannel, value_slot=self.receiveImageWidth),
-                                            PyDMChannel(address=self.maxWidthChannel, value_slot=self.receiveMaxWidth),
-                                            PyDMChannel(address=self.maxHeightChannel, value_slot=self.receiveMaxHeight)]
+        self._channels = [
+            PyDMChannel(
+                address=self.imageChannel,
+                connection_slot=self.connectionStateChanged,
+                value_slot=self.receiveImageWaveform,
+                severity_slot=self.alarmSeverityChanged,
+            ),
+            PyDMChannel(address=self.widthChannel, value_slot=self.receiveImageWidth),
+            PyDMChannel(address=self.maxWidthChannel, value_slot=self.receiveMaxWidth),
+            PyDMChannel(address=self.maxHeightChannel, value_slot=self.receiveMaxHeight),
+        ]
         if self.roiXChannel and self.roiYChannel and self.roiWidthChannel and self.roiHeightChannel:
-            self._channels.extend([PyDMChannel(address=self.roiXChannel, value_slot=self.receiveRoiX, value_signal=self.roi_x_signal, write_access_slot=self.roiWriteAccessChanged),
-                                                         PyDMChannel(address=self.roiYChannel, value_slot=self.receiveRoiY, value_signal=self.roi_y_signal),
-                                                         PyDMChannel(address=self.roiWidthChannel, value_slot=self.receiveRoiWidth, value_signal=self.roi_w_signal),
-                                                         PyDMChannel(address=self.roiHeightChannel, value_slot=self.receiveRoiHeight, value_signal=self.roi_h_signal)])
+            self._channels.extend(
+                [
+                    PyDMChannel(
+                        address=self.roiXChannel,
+                        value_slot=self.receiveRoiX,
+                        value_signal=self.roi_x_signal,
+                        write_access_slot=self.roiWriteAccessChanged,
+                    ),
+                    PyDMChannel(address=self.roiYChannel, value_slot=self.receiveRoiY, value_signal=self.roi_y_signal),
+                    PyDMChannel(
+                        address=self.roiWidthChannel, value_slot=self.receiveRoiWidth, value_signal=self.roi_w_signal
+                    ),
+                    PyDMChannel(
+                        address=self.roiHeightChannel, value_slot=self.receiveRoiHeight, value_signal=self.roi_h_signal
+                    ),
+                ]
+            )
             self.ui.roiXLineEdit.setEnabled(True)
             self.ui.roiYLineEdit.setEnabled(True)
             self.ui.roiWLineEdit.setEnabled(True)
@@ -402,9 +431,9 @@ class CamViewer(Display):
             # self._average_buffer = np.roll(self._average_buffer, 1, axis=0)
             self._average_buffer[self._average_counter] = new_waveform
             mean = np.mean(self._average_buffer, axis=0).astype(new_waveform.dtype)
-            self.image_data = mean.reshape((int(self.image_width), -1), order='F')
+            self.image_data = mean.reshape((int(self.image_width), -1), order="F")
         else:
-            self.image_data = new_waveform.reshape((int(self.image_width), -1), order='F')
+            self.image_data = new_waveform.reshape((int(self.image_width), -1), order="F")
         self.setMarkerBounds()
         self.updateLineouts()
         self.ui.imageView.image_value_changed(self.image_data)
@@ -422,7 +451,11 @@ class CamViewer(Display):
         height = self.image_data.shape[1]
         min_val = np.min(self.image_data)
         max_val = np.max(self.image_data)
-        self.ui.imageStatsLabel.setText("Mean: {0:.2f}, Std: {1:.2f}, Min: {2}, Max: {3}, Width: {4}, Height: {5}".format(mean, std, min_val, max_val, width, height))
+        self.ui.imageStatsLabel.setText(
+            "Mean: {0:.2f}, Std: {1:.2f}, Min: {2}, Max: {3}, Width: {4}, Height: {5}".format(
+                mean, std, min_val, max_val, width, height
+            )
+        )
         # Current view stats
         current_range = self.ui.imageView.getView().viewRange()
         view_x_min = int(max(0, current_range[0][0]))
@@ -436,12 +469,18 @@ class CamViewer(Display):
         height = view_slice.shape[1]
         min_val = np.min(view_slice)
         max_val = np.max(view_slice)
-        self.ui.viewStatsLabel.setText("Mean: {0:.2f}, Std: {1:.2f}, Min: {2}, Max: {3}, Width: {4}, Height: {5}".format(mean, std, min_val, max_val, width, height))
+        self.ui.viewStatsLabel.setText(
+            "Mean: {0:.2f}, Std: {1:.2f}, Min: {2}, Max: {3}, Width: {4}, Height: {5}".format(
+                mean, std, min_val, max_val, width, height
+            )
+        )
 
     def setMarkerBounds(self):
         for marker_index in self.marker_dict:
-            marker = self.marker_dict[marker_index]['marker']
-            marker.maxBounds = QRectF(0, 0, self.image_data.shape[0] + marker.size()[0] - 1, self.image_data.shape[1] + marker.size()[1] - 1)
+            marker = self.marker_dict[marker_index]["marker"]
+            marker.maxBounds = QRectF(
+                0, 0, self.image_data.shape[0] + marker.size()[0] - 1, self.image_data.shape[1] + marker.size()[1] - 1
+            )
 
     @Slot(int)
     def receiveImageWidth(self, new_width):
@@ -501,7 +540,7 @@ class CamViewer(Display):
         self.ui.connectedLabel.setText({True: "Yes", False: "No"}[connected])
 
     def ui_filename(self):
-        return 'camviewer.ui'
+        return "camviewer.ui"
 
     def channels(self):
         return self._channels

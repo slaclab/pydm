@@ -1,3 +1,3 @@
-__all__ = ['main']
+__all__ = ["main"]
 
 from pydm_launcher import *

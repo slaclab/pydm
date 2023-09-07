@@ -37,7 +37,7 @@ class ImageMarker(ROI):
 
     def shape(self):
         if self._shape is None:
-            radius = self.getState()['size'][1]
+            radius = self.getState()["size"][1]
             p = QtGui.QPainterPath()
             p.moveTo(Point(0, -radius))
             p.lineTo(Point(0, radius))
@@ -51,7 +51,7 @@ class ImageMarker(ROI):
         return self._shape
 
     def paint(self, p, *args):
-        radius = self.getState()['size'][1]
+        radius = self.getState()["size"][1]
         p.setRenderHint(QtGui.QPainter.Antialiasing)
         p.setPen(self.currentPen)
         p.drawLine(Point(0, -radius), Point(0, radius))
