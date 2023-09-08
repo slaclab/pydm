@@ -5,5 +5,3 @@ pytest-cov
 pytest-timeout
 p4p
 pyca
-black
-ruff
