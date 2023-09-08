@@ -60,6 +60,22 @@ If you want to see the coverage report do:
 python run_tests.py --show-cov
 ```
 
+# Formatting and Linting
+Code quality is maintained using the tools [black](https://github.com/psf/black) and [ruff](https://github.com/astral-sh/ruff). (installed as part of dev-requirements.txt)
+
+If changes are made, it's recommended to run the following from the root of the repo:
+```bash
+black --line-length 120 .
+ruff --line-length=120 . --fix
+```
+There may be some remaining linter issues that ruff's \"--fix\" can't handle,
+
+so these issues wil need to be fixed manaully until 
+```bash
+ruff --line-length=120 .
+```
+has no output, meaning ruff found no remaining issues.
+
 # Running the Examples
 There are various examples of some of the features of the display manager.
 To launch a particular display run 'python scripts/pydm <filename>'.
