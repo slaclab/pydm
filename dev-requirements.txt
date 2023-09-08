@@ -5,4 +5,4 @@ pytest-cov
 pytest-timeout
 p4p
 pyca
-pip install pre-commit
+pre-commit
