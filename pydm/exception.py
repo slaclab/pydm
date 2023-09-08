@@ -9,7 +9,7 @@ from qtpy import QtWidgets, QtCore
 from .utilities import only_main_thread
 
 """
-Utility functions which installs an exception hook and displays any global 
+Utility functions which installs an exception hook and displays any global
 uncaught exception to operators.
 
 excepthook is based on https://fman.io/blog/pyqt-excepthook/

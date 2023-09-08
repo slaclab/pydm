@@ -80,7 +80,7 @@ def test_send_new_value(
         signals_received += 1
 
     expected_value_type = type(value_to_send.value)
-    if type(value_to_send.value) == list:
+    if isinstance(value_to_send.value, list):
         expected_value_type = np.ndarray
     elif "NTEnum" in value_to_send.getID():
         expected_value_type = int
