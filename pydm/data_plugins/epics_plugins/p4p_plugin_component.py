@@ -110,8 +110,8 @@ class Connection(PyDMConnection):
                                         continue
                                     except (TypeError, IndexError):
                                         logger.debug(
-                                            "Type Error when attempting to use the given key, code will next attempt\
-                                             to convert the key to an int"
+                                            """Type Error when attempting to use the given key, code will next attempt
+                                            to convert the key to an int"""
                                         )
                                     except KeyError:
                                         logger.exception(msg)
