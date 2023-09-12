@@ -1335,7 +1335,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             return false.
         """
 
-        if event.type() == QEvent.Enter:
+        if event.type() == QEvent.Enter and self._connected:
             if not self._pydm_tool_tip:
                 self.setToolTip(self.parseTip(self.toolTip()))
             else:
