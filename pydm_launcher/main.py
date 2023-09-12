@@ -25,7 +25,7 @@ def main():
         otherwise we get the following error if someone adds a WebView at Designer:
         ImportError: QtWebEngineWidgets must be imported before a QCoreApplication instance is created
         """
-        from qtpy import QtWebEngineWidget  # noqa: F401
+        from qtpy import QtWebEngineWidgets  # noqa: F401
     except ImportError:
         logger.debug("QtWebEngine is not supported.")
 
