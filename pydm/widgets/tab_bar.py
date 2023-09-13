@@ -1,4 +1,4 @@
-from qtpy.QtWidgets import (QTabBar, QTabWidget, QWidget)
+from qtpy.QtWidgets import QTabBar, QTabWidget
 from qtpy.QtGui import QIcon, QColor
 from qtpy.QtCore import QByteArray
 from .base import PyDMWidget
@@ -33,7 +33,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         try:
             return str(self.tab_channels[self.currentIndex()]["address"])
         except KeyError:
-            return ''
+            return ""
 
     @currentTabAlarmChannel.setter
     def currentTabAlarmChannel(self, new_alarm_channel):
@@ -59,9 +59,11 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         self.set_initial_icon_for_tab(index)
         if channel:
             # Create PyDMChannel and connect
-            chan = PyDMChannel(address=str(channel),
-                               connection_slot=partial(self.connection_changed_for_tab, index),
-                               severity_slot=partial(self.alarm_changed_for_tab, index))
+            chan = PyDMChannel(
+                address=str(channel),
+                connection_slot=partial(self.connection_changed_for_tab, index),
+                severity_slot=partial(self.alarm_changed_for_tab, index),
+            )
             self.tab_channels[index]["channel"] = chan
             chan.connect()
             self._channels.append(chan)
@@ -97,8 +99,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
             self.setTabIcon(index, QIcon())
         else:
             icon_index = self.ALARM_DISCONNECTED
-            if self.tab_connection_status.get(index,
-                                              False) and index in self.tab_alarm_severity:
+            if self.tab_connection_status.get(index, False) and index in self.tab_alarm_severity:
                 icon_index = self.tab_alarm_severity[index]
             self.setTabIcon(index, self.alarm_icons[icon_index])
 
@@ -160,14 +161,11 @@ class PyDMTabBar(QTabBar, PyDMWidget):
 
     def generate_alarm_icons(self):
         self.alarm_icons = (
-            IconFont().icon('circle', color=self.noAlarmIconColor),
-            IconFont().icon('circle', color=self.minorAlarmIconColor),
-            IconFont().icon('exclamation-circle',
-                            color=self.majorAlarmIconColor),
-            IconFont().icon('question-circle',
-                            color=self.invalidAlarmIconColor),
-            IconFont().icon('times-circle',
-                            color=self.disconnectedAlarmIconColor)
+            IconFont().icon("circle", color=self.noAlarmIconColor),
+            IconFont().icon("circle", color=self.minorAlarmIconColor),
+            IconFont().icon("exclamation-circle", color=self.majorAlarmIconColor),
+            IconFont().icon("question-circle", color=self.invalidAlarmIconColor),
+            IconFont().icon("times-circle", color=self.disconnectedAlarmIconColor),
         )
         for i in range(0, self.count()):
             self.set_initial_icon_for_tab(i)
@@ -200,8 +198,7 @@ class PyDMTabWidget(QTabWidget):
         str
         """
         if self.tabBar().currentTabAlarmChannel:
-            return bytearray(
-                self.tabBar().currentTabAlarmChannel.encode('utf-8'))
+            return bytearray(self.tabBar().currentTabAlarmChannel.encode("utf-8"))
         else:
             return bytearray()
 
@@ -315,8 +312,7 @@ class PyDMTabWidget(QTabWidget):
     def disconnectedAlarmIconColor(self, new_color):
         self.tabBar().disconnectedAlarmIconColor = new_color
 
-    alarmChannels = Property("QStringList", getAlarmChannels,
-                             setAlarmChannels, designable=False)
+    alarmChannels = Property("QStringList", getAlarmChannels, setAlarmChannels, designable=False)
 
     # We make a bunch of dummy properties to block out properties available on QTabWidget,
     # but that we don't want to support on PyDMTabWidget.

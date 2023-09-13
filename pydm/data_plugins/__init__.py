@@ -14,7 +14,7 @@ import entrypoints
 from qtpy.QtWidgets import QApplication
 
 from .. import config
-from ..utilities import (import_module_by_filename, log_failures, parsed_address)
+from ..utilities import import_module_by_filename, log_failures, parsed_address
 from .plugin import PyDMPlugin
 
 logger = logging.getLogger(__name__)
@@ -46,8 +46,7 @@ def establish_queued_connections():
     if __CONNECTION_QUEUE__ is None:
         return
     try:
-        while (__CONNECTION_QUEUE__ is not None and
-               len(__CONNECTION_QUEUE__) > 0):
+        while __CONNECTION_QUEUE__ is not None and len(__CONNECTION_QUEUE__) > 0:
             channel = __CONNECTION_QUEUE__.popleft()
             establish_connection_immediately(channel)
             QApplication.instance().processEvents()
@@ -79,17 +78,16 @@ def plugin_for_address(address: str) -> Optional[PyDMPlugin]:
     try:
         protocol = parsed_address(address).scheme
     except AttributeError:
-        protocol = None 
-    
+        protocol = None
+
     # Use default protocol
     if protocol is None and config.DEFAULT_PROTOCOL is not None:
-        logger.debug("Using default protocol %s for %s",
-                     config.DEFAULT_PROTOCOL, address)
+        logger.debug("Using default protocol %s for %s", config.DEFAULT_PROTOCOL, address)
         # If no protocol was specified, and the default protocol
         # environment variable is specified, try to use that instead.
         protocol = config.DEFAULT_PROTOCOL
 
-    # Load proper plugin module    
+    # Load proper plugin module
     if protocol:
         initialize_plugins_if_needed()
         try:
@@ -97,12 +95,14 @@ def plugin_for_address(address: str) -> Optional[PyDMPlugin]:
         except KeyError:
             logger.exception("Could not find protocol for %r", address)
     # Catch all in case of improper plugin specification
-    logger.error("Channel {addr} did not specify a valid protocol "
-                 "and no default protocol is defined. This channel "
-                 "will receive no data. To specify a default protocol, "
-                 "set the PYDM_DEFAULT_PROTOCOL environment variable."
-                 "".format(addr=address))
-    
+    logger.error(
+        "Channel {addr} did not specify a valid protocol "
+        "and no default protocol is defined. This channel "
+        "will receive no data. To specify a default protocol, "
+        "set the PYDM_DEFAULT_PROTOCOL environment variable."
+        "".format(addr=address)
+    )
+
     return None
 
 
@@ -140,10 +140,7 @@ def add_plugin(plugin: Type[PyDMPlugin]) -> Optional[PyDMPlugin]:
 
 @log_failures(
     logger,
-    explanation=(
-        "Unable to import plugin file: {args[0]}.  "
-        "This plugin will be skipped."
-    ),
+    explanation=("Unable to import plugin file: {args[0]}.  " "This plugin will be skipped."),
     include_traceback=True,
 )
 def _get_plugins_from_source(source_filename: str) -> List[Type[PyDMPlugin]]:
@@ -161,13 +158,7 @@ def _get_plugins_from_source(source_filename: str) -> List[Type[PyDMPlugin]]:
         The plugin classes.
     """
     module = import_module_by_filename(source_filename)
-    return list(
-        set(
-            obj
-            for _, obj in inspect.getmembers(module)
-            if _is_valid_plugin_class(obj)
-        )
-    )
+    return list(set(obj for _, obj in inspect.getmembers(module) if _is_valid_plugin_class(obj)))
 
 
 def find_plugins_from_path(
@@ -213,18 +204,11 @@ def find_plugins_from_entrypoints(
         try:
             plugin_cls = entry.load()
         except Exception as ex:
-            logger.exception(
-                "Failed to load %s entry %s: %s",
-                key, entry.name, ex
-            )
+            logger.exception("Failed to load %s entry %s: %s", key, entry.name, ex)
             continue
 
         if not _is_valid_plugin_class(plugin_cls):
-            logger.warning(
-                "Invalid plugin class specified in entrypoint "
-                "%s: %s",
-                entry.name, plugin_cls
-            )
+            logger.warning("Invalid plugin class specified in entrypoint " "%s: %s", entry.name, plugin_cls)
             continue
 
         yield plugin_cls
@@ -232,16 +216,10 @@ def find_plugins_from_entrypoints(
 
 def _is_valid_plugin_class(obj: Any) -> bool:
     """Is the object a data plugin class?"""
-    return (
-        inspect.isclass(obj)
-        and issubclass(obj, PyDMPlugin)
-        and obj is not PyDMPlugin
-    )
+    return inspect.isclass(obj) and issubclass(obj, PyDMPlugin) and obj is not PyDMPlugin
 
 
-def load_plugins_from_entrypoints(
-    key: str = config.ENTRYPOINT_DATA_PLUGIN
-) -> Dict[str, PyDMPlugin]:
+def load_plugins_from_entrypoints(key: str = config.ENTRYPOINT_DATA_PLUGIN) -> Dict[str, PyDMPlugin]:
     """
     Load plugins from file locations that match a specific token
 
@@ -270,10 +248,7 @@ def load_plugins_from_entrypoints(
     return added_plugins
 
 
-def load_plugins_from_path(
-    locations: List[str],
-    token: str = config.DATA_PLUGIN_SUFFIX
-) -> Dict[str, PyDMPlugin]:
+def load_plugins_from_path(locations: List[str], token: str = config.DATA_PLUGIN_SUFFIX) -> Dict[str, PyDMPlugin]:
     """
     Load plugins from file locations that match a specific token
 
@@ -344,9 +319,9 @@ def initialize_plugins_if_needed():
     __plugins_initialized = True
 
     # Load the data plugins from PYDM_DATA_PLUGINS_PATH
-    logger.debug("*"*80)
+    logger.debug("*" * 80)
     logger.debug("* Loading PyDM Data Plugins")
-    logger.debug("*"*80)
+    logger.debug("*" * 80)
 
     path = os.getenv("PYDM_DATA_PLUGINS_PATH", None)
     if path is None:

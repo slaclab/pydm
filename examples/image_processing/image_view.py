@@ -1,13 +1,11 @@
 from pydm import Display
 import threading
-from os import path
 from skimage.feature import blob_doh
 from marker import ImageMarker
-from pyqtgraph import mkPen, PlotItem
+from pyqtgraph import mkPen
 
 
 class ImageViewer(Display):
-
     def __init__(self, parent=None, args=None):
         super(ImageViewer, self).__init__(parent=parent, args=args)
         self.markers_lock = threading.Lock()
@@ -17,7 +15,7 @@ class ImageViewer(Display):
         self.blobs = list()
 
     def ui_filename(self):
-        return 'image_view.ui'
+        return "image_view.ui"
 
     def draw_markers(self, *args, **kwargs):
         with self.markers_lock:
@@ -37,7 +35,7 @@ class ImageViewer(Display):
 
     def process_image(self, new_image):
         # Find blobs in the image with scikit-image
-        self.blobs = blob_doh(new_image, max_sigma=512, min_sigma=64, threshold=.02)
+        self.blobs = blob_doh(new_image, max_sigma=512, min_sigma=64, threshold=0.02)
 
         # Send the original image data to the image widget
         return new_image

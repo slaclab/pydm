@@ -2,19 +2,18 @@ import os
 import pytest
 import sys
 from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QApplication, QVBoxLayout
+from qtpy.QtWidgets import QApplication
 from ...utilities.stylesheet import global_style
 from ...widgets.related_display_button import PyDMRelatedDisplayButton
 
-test_ui_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    "../test_data", "test.ui")
+test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../test_data", "test.ui")
 test_ui_path_with_stylesheet = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    "../test_data", "test_emb_style.ui")
+    os.path.dirname(os.path.realpath(__file__)), "../test_data", "test_emb_style.ui"
+)
 test_ui_path_with_relative_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    "../test_data", "test_relative_filename_parent.ui")
+    os.path.dirname(os.path.realpath(__file__)), "../test_data", "test_relative_filename_parent.ui"
+)
+
 
 def test_old_display_filename_property(qtbot):
     # This test is mostly only checking that the related display button
@@ -31,9 +30,12 @@ def test_old_display_filename_property(qtbot):
     qtbot.addWidget(button)
     button._rebuild_menu()
     qtbot.mouseRelease(button, Qt.LeftButton)
+
     def check_title():
         assert "Form" in QApplication.instance().main_window.windowTitle()
+
     qtbot.waitUntil(check_title)
+
 
 def test_press_with_filename(qtbot):
     QApplication.instance().make_main_window()
@@ -45,9 +47,12 @@ def test_press_with_filename(qtbot):
     qtbot.addWidget(button)
     button._rebuild_menu()
     qtbot.mouseRelease(button, Qt.LeftButton)
+
     def check_title():
         assert "Form" in QApplication.instance().main_window.windowTitle()
+
     qtbot.waitUntil(check_title)
+
 
 def test_press_without_filename(qtbot):
     QApplication.instance().make_main_window()
@@ -61,6 +66,7 @@ def test_press_without_filename(qtbot):
     qtbot.wait(250)
     assert "Form" not in QApplication.instance().main_window.windowTitle()
 
+
 def test_no_menu_with_one_file(qtbot):
     QApplication.instance().make_main_window()
     main_window = QApplication.instance().main_window
@@ -71,6 +77,7 @@ def test_no_menu_with_one_file(qtbot):
     qtbot.addWidget(button)
     button._rebuild_menu()
     assert button.menu() is None
+
 
 def test_menu_with_additional_files(qtbot):
     QApplication.instance().make_main_window()
@@ -88,9 +95,12 @@ def test_menu_with_additional_files(qtbot):
     qtbot.waitExposed(button.menu())
     qtbot.mouseClick(button.menu(), Qt.LeftButton)
     button.menu().actions()[0].trigger()
+
     def check_title():
         assert "Form" in QApplication.instance().main_window.windowTitle()
+
     qtbot.waitUntil(check_title)
+
 
 def test_menu_goes_away_when_files_removed(qtbot):
     QApplication.instance().make_main_window()
@@ -109,6 +119,7 @@ def test_menu_goes_away_when_files_removed(qtbot):
     button._rebuild_menu()
     assert button.menu() is None
 
+
 def test_menu_goes_away_when_files_all_blank(qtbot):
     QApplication.instance().make_main_window()
     main_window = QApplication.instance().main_window
@@ -121,6 +132,7 @@ def test_menu_goes_away_when_files_all_blank(qtbot):
     button._rebuild_menu()
     assert button.menu() is None
 
+
 def test_press_with_relative_filename(qtbot):
     QApplication.instance().make_main_window()
     main_window = QApplication.instance().main_window
@@ -131,16 +143,22 @@ def test_press_with_relative_filename(qtbot):
     # Default behavior should be to not follow symlinks (for backwards compat.).
     # Same effect as: button.followSymlinks = False
     qtbot.mouseRelease(button, Qt.LeftButton)
+
     def check_title():
         assert "Child" in QApplication.instance().main_window.windowTitle()
+
     qtbot.waitUntil(check_title)
 
-@pytest.mark.skipif(sys.platform == "win32" and sys.version_info < (3, 8), reason="os.path.realpath on Python 3.7 and prior does not resolve symlinks on Windows")
+
+@pytest.mark.skipif(
+    sys.platform == "win32" and sys.version_info < (3, 8),
+    reason="os.path.realpath on Python 3.7 and prior does not resolve symlinks on Windows",
+)
 def test_press_with_relative_filename_and_symlink(qtbot, tmp_path):
     symlinked_ui_file = tmp_path / "test_ui_with_relative_path.ui"
     try:
         os.symlink(test_ui_path_with_relative_path, symlinked_ui_file)
-    except:
+    except Exception:
         pytest.skip("Unable to create a symlink for testing purposes.")
 
     QApplication.instance().make_main_window()
@@ -151,9 +169,12 @@ def test_press_with_relative_filename_and_symlink(qtbot, tmp_path):
     button = main_window.home_widget.relatedDisplayButton
     button.followSymlinks = True
     qtbot.mouseRelease(button, Qt.LeftButton)
+
     def check_title():
         assert "Child" in QApplication.instance().main_window.windowTitle()
+
     qtbot.waitUntil(check_title)
+
 
 def test_no_pydm_app_stylesheet(monkeypatch, qtbot):
     local_is_pydm_app = True

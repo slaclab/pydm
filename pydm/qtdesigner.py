@@ -10,6 +10,7 @@ class DesignerHooks(object):
     Class that handles the integration with PyDM and the Qt Designer
     by hooking up slots to signals provided by FormEditor and other classes.
     """
+
     __instance = None
 
     def __init__(self):
@@ -48,9 +49,7 @@ class DesignerHooks(object):
         if self.form_editor:
             fwman = self.form_editor.formWindowManager()
             if fwman:
-                fwman.formWindowAdded.connect(
-                    self.__new_form_added
-                )
+                fwman.formWindowAdded.connect(self.__new_form_added)
 
     def __new_form_added(self, form_window_interface):
         style_data = stylesheet._get_style_data(None)
@@ -68,7 +67,7 @@ class DesignerHooks(object):
 
     def __handle_exceptions(self, exc_type, value, trace):
         print("Exception occurred while running Qt Designer.")
-        msg = ''.join(traceback.format_exception(exc_type, value, trace))
+        msg = "".join(traceback.format_exception(exc_type, value, trace))
         print(msg)
 
     def __start_kicker(self):

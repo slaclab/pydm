@@ -3,19 +3,20 @@ import pytest
 from ...widgets.byte import PyDMByteIndicator
 
 
-@pytest.mark.parametrize("shift, value, expected", [
-    (0, 0, (False, False, False)),
-    (0, 5, (True, False, True)),
-    (0, -5, (False, False, False)),
-
-    (1, 0, (False, False, False)),
-    (1, 4, (False, True, False)),
-    (1, -5, (False, False, False)),
-
-    (-1, 0, (False, False, False)),
-    (-1, 1, (False, True, False)),
-    (-1, -5, (False, False, False)),
-])
+@pytest.mark.parametrize(
+    "shift, value, expected",
+    [
+        (0, 0, (False, False, False)),
+        (0, 5, (True, False, True)),
+        (0, -5, (False, False, False)),
+        (1, 0, (False, False, False)),
+        (1, 4, (False, True, False)),
+        (1, -5, (False, False, False)),
+        (-1, 0, (False, False, False)),
+        (-1, 1, (False, True, False)),
+        (-1, -5, (False, False, False)),
+    ],
+)
 def test_value_shift(qtbot, signals, shift, value, expected):
     """
     Test the widget's handling of the value changed event affected by predefined shift.

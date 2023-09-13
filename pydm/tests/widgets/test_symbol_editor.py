@@ -1,9 +1,5 @@
-import os
-import pytest
-import logging
 import json
 import copy
-import webbrowser
 
 from qtpy import QtCore
 from qtpy.QtWidgets import QMessageBox, QTableWidgetSelectionRange
@@ -40,7 +36,7 @@ def test_symbol_editor(qtbot, monkeypatch):
     empty.cancelChanges()
 
     # Create the rules data for the widget
-    symbol_dict = {"1":"goodbye.jpg"}
+    symbol_dict = {"1": "goodbye.jpg"}
 
     # Add the rules to the widget
     widget.imageFiles = json.dumps(symbol_dict)
@@ -77,14 +73,14 @@ def test_symbol_editor(qtbot, monkeypatch):
     # Test Delete Symbol with Confirm - NO
     assert se.tbl_symbols.rowCount() == 2
     se.tbl_symbols.setRangeSelected(QTableWidgetSelectionRange(1, 0, 1, 1), True)
-    monkeypatch.setattr(QMessageBox, 'question', lambda *args: QMessageBox.No)
+    monkeypatch.setattr(QMessageBox, "question", lambda *args: QMessageBox.No)
     qtbot.mouseClick(se.btn_del_symbol, QtCore.Qt.LeftButton)
     assert se.tbl_symbols.rowCount() == 2
     assert se.frm_edit.isEnabled()
 
     # Test Delete Symbol with Confirm - YES
     se.tbl_symbols.setRangeSelected(QTableWidgetSelectionRange(1, 0, 1, 1), True)
-    monkeypatch.setattr(QMessageBox, 'question', lambda *args: QMessageBox.Yes)
+    monkeypatch.setattr(QMessageBox, "question", lambda *args: QMessageBox.Yes)
     qtbot.mouseClick(se.btn_del_symbol, QtCore.Qt.LeftButton)
     assert se.tbl_symbols.rowCount() == 1
     assert len(se.symbols) == 1
@@ -92,11 +88,12 @@ def test_symbol_editor(qtbot, monkeypatch):
 
     # Test Delete Symbol with No Selection
     se.tbl_symbols.clearSelection()
-    monkeypatch.setattr(QMessageBox, 'question', lambda *args: QMessageBox.Yes)
+    monkeypatch.setattr(QMessageBox, "question", lambda *args: QMessageBox.Yes)
     qtbot.mouseClick(se.btn_del_symbol, QtCore.Qt.LeftButton)
     assert se.tbl_symbols.rowCount() == 1
     assert len(se.symbols) == 1
     assert se.frm_edit.isEnabled() is False
+
 
 def test_symbol_editor_data_valid(qtbot):
     """
@@ -107,6 +104,7 @@ def test_symbol_editor_data_valid(qtbot):
     qtbot : fixture
         pytest-qt window for widget test
     """
+
     def validate(expected_status, expected_msg):
         status, msg = se.is_data_valid()
         assert status == expected_status
@@ -117,7 +115,7 @@ def test_symbol_editor_data_valid(qtbot):
     qtbot.addWidget(widget)
 
     # Create the rules data for the widget
-    symbol_dict = {"1":"goodbye.jpg"}
+    symbol_dict = {"1": "goodbye.jpg"}
 
     # Add the rules to the widget
     widget.imageFiles = json.dumps(symbol_dict)

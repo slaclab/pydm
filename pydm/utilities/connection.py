@@ -23,7 +23,7 @@ def _change_connection_status(widget, status):
     widgets.extend(widget.findChildren(QWidget))
     for child_widget in widgets:
         try:
-            if hasattr(child_widget, 'channels'):
+            if hasattr(child_widget, "channels"):
                 if child_widget.channels() is None:
                     continue
                 for channel in child_widget.channels():
@@ -35,6 +35,7 @@ def _change_connection_status(widget, status):
                         channel.disconnect()
         except NameError:
             continue
+
 
 def establish_widget_connections(widget):
     """

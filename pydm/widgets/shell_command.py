@@ -35,15 +35,18 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
-    def __init__(self, parent: Optional[QWidget] = None, 
-                 command: Optional[Union[str, List[str]]] = None, 
-                 title: Optional[Union[str, List[str]]] = None,
-                 init_channel: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        parent: Optional[QWidget] = None,
+        command: Optional[Union[str, List[str]]] = None,
+        title: Optional[Union[str, List[str]]] = None,
+        init_channel: Optional[str] = None,
+    ) -> None:
         QPushButton.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.iconFont = IconFont()
         self._icon = self.iconFont.icon("cog")
-        self._warning_icon = self.iconFont.icon('exclamation-circle')
+        self._warning_icon = self.iconFont.icon("exclamation-circle")
         self.setIconSize(QSize(16, 16))
         self.setIcon(self._icon)
         self.setCursor(QCursor(self._icon.pixmap(16, 16)))
@@ -72,7 +75,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
         self._show_confirm_dialog = False
         self._confirm_message = PyDMShellCommand.DEFAULT_CONFIRM_MESSAGE
-    
+
     def confirmDialog(self) -> bool:
         """
         Show the confirmation dialog with the proper message in case
@@ -87,7 +90,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self._show_confirm_dialog:
             if self._confirm_message == "":
                 self._confirm_message = PyDMShellCommand.DEFAULT_CONFIRM_MESSAGE
-            
+
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Question)
             msg.setText(self._confirm_message)
@@ -154,14 +157,14 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         status = self._connected
         tooltip = self.restore_original_tooltip()
         if not status:
-            if tooltip != '':
-                tooltip += '\n'
+            if tooltip != "":
+                tooltip += "\n"
             tooltip += "Alarm PV is disconnected."
-            tooltip += '\n'
+            tooltip += "\n"
             tooltip += self.get_address()
 
         self.setToolTip(tooltip)
-        
+
     @Property(str)
     def environmentVariables(self) -> str:
         """
@@ -266,7 +269,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self._allow_multiple != value:
             self._allow_multiple = value
 
-    @Property('QStringList')
+    @Property("QStringList")
     def titles(self) -> List[str]:
         return self._titles
 
@@ -275,7 +278,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self._titles = val
         self._menu_needs_rebuild = True
 
-    @Property('QStringList')
+    @Property("QStringList")
     def commands(self) -> List[str]:
         return self._commands
 
@@ -315,8 +318,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         ----------
         value : str
         """
-        warnings.warn("'PyDMShellCommand.command' is deprecated, "
-                      "use 'PyDMShellCommand.commands' instead.")
+        warnings.warn("'PyDMShellCommand.command' is deprecated, " "use 'PyDMShellCommand.commands' instead.")
         if not self._commands:
             if value:
                 self.commands = [value]
@@ -393,10 +395,10 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         Setter for the encrypted password.
 
-    	Parameters 
-    	-------
-    	value: str
-    	"""
+        Parameters
+        -------
+        value: str
+        """
         if self._protected_password != value:
             self._protected_password = value
 
@@ -447,13 +449,13 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
 
     def show_warning_icon(self) -> None:
-        """ Show the warning icon.  This is called when a shell command fails
-        (i.e. exits with nonzero status) """
+        """Show the warning icon.  This is called when a shell command fails
+        (i.e. exits with nonzero status)"""
         self.setIcon(self._warning_icon)
         QTimer.singleShot(5000, self.hide_warning_icon)
 
     def hide_warning_icon(self) -> None:
-        """ Hide the warning icon.  This is called on a timer after the warning
+        """Hide the warning icon.  This is called on a timer after the warning
         icon is shown."""
         if self._show_icon:
             self.setIcon(self._icon)
@@ -474,8 +476,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if not self._password_protected:
             return True
 
-        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:",
-                                         QLineEdit.Password, "")
+        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:", QLineEdit.Password, "")
         pwd = str(pwd)
         if not ok or pwd == "":
             return False
@@ -502,7 +503,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
         Parameters
         ----------
-        command : str 
+        command : str
             Shell command
         """
         if not command:
@@ -517,7 +518,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             cmd = os.path.expanduser(os.path.expandvars(command))
-            args = shlex.split(cmd, posix='win' not in sys.platform)
+            args = shlex.split(cmd, posix="win" not in sys.platform)
             try:
                 logger.debug("Launching process: %s", repr(args))
                 stdout = subprocess.PIPE
@@ -529,11 +530,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
                 if self._redirect_output:
                     stdout = None
-                self.process = subprocess.Popen(
-                    args, stdout=stdout, stderr=subprocess.PIPE, env=env_var)
+                self.process = subprocess.Popen(args, stdout=stdout, stderr=subprocess.PIPE, env=env_var)
             except Exception as exc:
                 self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)
         else:
             logger.error("Command '%s' already active.", command)
-

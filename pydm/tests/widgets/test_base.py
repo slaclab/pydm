@@ -21,11 +21,14 @@ logger = logging.getLogger(__name__)
 # --------------------
 
 
-@pytest.mark.parametrize("channel_address, expected", [
-    ("CA://MA_TEST", True),
-    ("", False),
-    (None, False),
-])
+@pytest.mark.parametrize(
+    "channel_address, expected",
+    [
+        ("CA://MA_TEST", True),
+        ("", False),
+        (None, False),
+    ],
+)
 def test_is_channel_valid(channel_address, expected):
     """
     Test to ensure channel validation.
@@ -45,15 +48,22 @@ def test_is_channel_valid(channel_address, expected):
 
 test_local_connection_status_color_map = {
     False: QColor(0, 0, 0),
-    True: QColor(0, 0, 0, )
+    True: QColor(
+        0,
+        0,
+        0,
+    ),
 }
 
 
-@pytest.mark.parametrize("init_channel", [
-    "CA://MA_TEST",
-    "",
-    None,
-])
+@pytest.mark.parametrize(
+    "init_channel",
+    [
+        "CA://MA_TEST",
+        "",
+        None,
+    ],
+)
 def test_pydmwidget_construct(qtbot, init_channel):
     """
     Test the construction of the widget.
@@ -112,11 +122,14 @@ def test_pydmwidget_construct(qtbot, init_channel):
     assert pydm_label.opacity() == 1.0
 
 
-@pytest.mark.parametrize("init_channel", [
-    "CA://MA_TEST",
-    "",
-    None,
-])
+@pytest.mark.parametrize(
+    "init_channel",
+    [
+        "CA://MA_TEST",
+        "",
+        None,
+    ],
+)
 def test_pydmwidget_widget_ctx_menu(qtbot, init_channel):
     """
     Test the initial context menu creation.
@@ -183,16 +196,14 @@ def test_open_context_menu(qtbot, monkeypatch, caplog):
 
     monkeypatch.setattr(QMenu, "exec_", mock_exec_)
 
-    mouse_event = QMouseEvent(QMouseEvent.MouseButtonRelease, pydm_label.rect().center(), Qt.RightButton,
-                              Qt.RightButton, Qt.ShiftModifier)
+    mouse_event = QMouseEvent(
+        QMouseEvent.MouseButtonRelease, pydm_label.rect().center(), Qt.RightButton, Qt.RightButton, Qt.ShiftModifier
+    )
     pydm_label.open_context_menu(mouse_event)
     assert "Context Menu displayed." in caplog.text
 
 
-@pytest.mark.parametrize("init_channel, expected_clipboard_text", [
-    ("CA://MA_TEST", "MA_TEST"),
-    (None, "")
-])
+@pytest.mark.parametrize("init_channel, expected_clipboard_text", [("CA://MA_TEST", "MA_TEST"), (None, "")])
 def test_middle_click(qtbot, monkeypatch, init_channel, expected_clipboard_text):
     """
     Verify that when a middle click happens on a PyDM widget, the PV name of the channel connected to will be
@@ -200,7 +211,7 @@ def test_middle_click(qtbot, monkeypatch, init_channel, expected_clipboard_text)
     """
     pydm_label = PyDMLabel(init_channel=init_channel)
     qtbot.addWidget(pydm_label)
-    copied_text = ''
+    copied_text = ""
 
     # Create a function that will store what would have been copied to the clipboard instead of
     # doing the actual copy so that the user who is running the test does not have their actual clipboard modified
@@ -208,6 +219,7 @@ def test_middle_click(qtbot, monkeypatch, init_channel, expected_clipboard_text)
     def mock_copy(self, text, mode=None):
         nonlocal copied_text
         copied_text = text
+
     monkeypatch.setattr(QClipboard, "setText", mock_copy)
 
     # Perform the middle click and verify the correct text (if any) was copied
@@ -216,11 +228,14 @@ def test_middle_click(qtbot, monkeypatch, init_channel, expected_clipboard_text)
     assert copied_text == expected_clipboard_text
 
 
-@pytest.mark.parametrize("init_channel", [
-    "CA://MA_TEST",
-    "",
-    None,
-])
+@pytest.mark.parametrize(
+    "init_channel",
+    [
+        "CA://MA_TEST",
+        "",
+        None,
+    ],
+)
 def test_pydmwidget_init_for_designer(qtbot, init_channel):
     """
     Test the initialization sequence of a PyDMWidget object.
@@ -252,11 +267,14 @@ def test_pydmwidget_alarm_severity_changed(qtbot):
     assert pydm_label.alarmSeverity == PyDMWidget.ALARM_MAJOR
 
 
-@pytest.mark.parametrize("init_channel", [
-    "CA://MA_TEST",
-    "",
-    None,
-])
+@pytest.mark.parametrize(
+    "init_channel",
+    [
+        "CA://MA_TEST",
+        "",
+        None,
+    ],
+)
 def test_pydmwritablewidget_init_for_designer(qtbot, init_channel):
     """
     Test the initialization sequence of a PyDMWritableWidget object.
@@ -280,10 +298,13 @@ def test_pydmwritablewidget_init_for_designer(qtbot, init_channel):
     assert pydm_lineedit._connected is True
 
 
-@pytest.mark.parametrize("which_limit, new_limit", [
-    ("UPPER", 123.456),
-    ("LOWER", 12.345),
-])
+@pytest.mark.parametrize(
+    "which_limit, new_limit",
+    [
+        ("UPPER", 123.456),
+        ("LOWER", 12.345),
+    ],
+)
 def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
     """
     Test the upper and lower limit settings.
@@ -307,27 +328,23 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
     qtbot.addWidget(pydm_label)
 
     if which_limit == "UPPER":
-        signals.upper_ctrl_limit_signal[type(new_limit)].connect(
-            pydm_label.upperCtrlLimitChanged)
+        signals.upper_ctrl_limit_signal[type(new_limit)].connect(pydm_label.upperCtrlLimitChanged)
         signals.upper_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_label.get_ctrl_limits()[1] == new_limit
     elif which_limit == "LOWER":
-        signals.lower_ctrl_limit_signal[type(new_limit)].connect(
-            pydm_label.lowerCtrlLimitChanged)
+        signals.lower_ctrl_limit_signal[type(new_limit)].connect(pydm_label.lowerCtrlLimitChanged)
         signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_label.get_ctrl_limits()[0] == new_limit
 
 
-@pytest.mark.parametrize("which_limit, new_limit", [
-    (AlarmLimit.HIHI, 100.10),
-    (AlarmLimit.HIGH, 90),
-    (AlarmLimit.LOW, 20.5),
-    (AlarmLimit.LOLO, 7)
-])
+@pytest.mark.parametrize(
+    "which_limit, new_limit",
+    [(AlarmLimit.HIHI, 100.10), (AlarmLimit.HIGH, 90), (AlarmLimit.LOW, 20.5), (AlarmLimit.LOLO, 7)],
+)
 def test_alarm_limits_changed(qtbot, signals: ConnectionSignals, which_limit: str, new_limit: float):
-    """ Ensure that changes to the alarm limits of a PV get sent to the right place """
+    """Ensure that changes to the alarm limits of a PV get sent to the right place"""
     pydm_label = PyDMLabel(init_channel="CA://MA_TEST")
     qtbot.addWidget(pydm_label)
 
@@ -429,11 +446,10 @@ def test_channels_for_tools(qtbot):
     qtbot : fixture
         Window for widget testing
     """
-    pydm_label = PyDMLabel(init_channel='tst://This')
+    pydm_label = PyDMLabel(init_channel="tst://This")
     qtbot.addWidget(pydm_label)
 
-    assert all(x == y for x, y in
-               zip(pydm_label.channels(), pydm_label.channels_for_tools()))
+    assert all(x == y for x, y in zip(pydm_label.channels(), pydm_label.channels_for_tools()))
 
 
 def test_pydmwidget_channel_change(qtbot):
@@ -451,13 +467,13 @@ def test_pydmwidget_channel_change(qtbot):
     assert pydm_label._channel is None
     assert pydm_label.channels() is None
 
-    pydm_label.channel = 'foo://bar'
-    assert pydm_label._channel == 'foo://bar'
-    assert pydm_label.channels()[0].address == 'foo://bar'
+    pydm_label.channel = "foo://bar"
+    assert pydm_label._channel == "foo://bar"
+    assert pydm_label.channels()[0].address == "foo://bar"
 
-    pydm_label.channel = 'abc://def'
-    assert pydm_label._channel == 'abc://def'
-    assert pydm_label.channels()[0].address == 'abc://def'
+    pydm_label.channel = "abc://def"
+    assert pydm_label._channel == "abc://def"
+    assert pydm_label.channels()[0].address == "abc://def"
 
 
 def test_pydmwidget_channels(qtbot):
@@ -479,39 +495,41 @@ def test_pydmwidget_channels(qtbot):
 
     assert pydm_label._channel is None
     assert pydm_label.channels() is None
-    pydm_label.channel = 'test://this'
+    pydm_label.channel = "test://this"
     pydm_channels = pydm_label.channels()[0]
 
-    default_pydm_channels = PyDMChannel(address=pydm_label.channel,
-                                        connection_slot=pydm_label.connectionStateChanged,
-                                        value_slot=pydm_label.channelValueChanged,
-                                        severity_slot=pydm_label.alarmSeverityChanged,
-                                        enum_strings_slot=pydm_label.enumStringsChanged,
-                                        unit_slot=pydm_label.unitChanged,
-                                        prec_slot=pydm_label.precisionChanged,
-                                        upper_ctrl_limit_slot=pydm_label.upperCtrlLimitChanged,
-                                        lower_ctrl_limit_slot=pydm_label.lowerCtrlLimitChanged,
-                                        upper_alarm_limit_slot=pydm_label.upper_alarm_limit_changed,
-                                        upper_warning_limit_slot=pydm_label.upper_warning_limit_changed,
-                                        lower_alarm_limit_slot=pydm_label.lower_alarm_limit_changed,
-                                        lower_warning_limit_slot=pydm_label.lower_warning_limit_changed,
-                                        value_signal=None,
-                                        write_access_slot=None,
-                                        timestamp_slot=pydm_label.timestamp_changed)
+    default_pydm_channels = PyDMChannel(
+        address=pydm_label.channel,
+        connection_slot=pydm_label.connectionStateChanged,
+        value_slot=pydm_label.channelValueChanged,
+        severity_slot=pydm_label.alarmSeverityChanged,
+        enum_strings_slot=pydm_label.enumStringsChanged,
+        unit_slot=pydm_label.unitChanged,
+        prec_slot=pydm_label.precisionChanged,
+        upper_ctrl_limit_slot=pydm_label.upperCtrlLimitChanged,
+        lower_ctrl_limit_slot=pydm_label.lowerCtrlLimitChanged,
+        upper_alarm_limit_slot=pydm_label.upper_alarm_limit_changed,
+        upper_warning_limit_slot=pydm_label.upper_warning_limit_changed,
+        lower_alarm_limit_slot=pydm_label.lower_alarm_limit_changed,
+        lower_warning_limit_slot=pydm_label.lower_warning_limit_changed,
+        value_signal=None,
+        write_access_slot=None,
+        timestamp_slot=pydm_label.timestamp_changed,
+    )
     assert pydm_channels == default_pydm_channels
 
 
 def test_pydmwidget_tooltip(qtbot):
     """
-       Test the tooltip. This test is for a widget whose base class is PyDMWidget.
+    Test the tooltip. This test is for a widget whose base class is PyDMWidget.
 
-       Expectations:
-       1. The widget's tooltip will update
+    Expectations:
+    1. The widget's tooltip will update
 
-       Parameters
-       ----------
-       qtbot : fixture
-           Window for widget testing
+    Parameters
+    ----------
+    qtbot : fixture
+        Window for widget testing
     """
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
@@ -526,12 +544,10 @@ def test_pydmwidget_tooltip(qtbot):
     assert tool_tip == str(pydm_label.value)
 
 
-@pytest.mark.parametrize('channel_address, monitor_disp',  [
-                             ('tst://this', True),
-                             ('tst://this.VAL', True),
-                             ('tst://this.[1:2]', True),
-                             ('tst://this', False)
-                        ])
+@pytest.mark.parametrize(
+    "channel_address, monitor_disp",
+    [("tst://this", True), ("tst://this.VAL", True), ("tst://this.[1:2]", True), ("tst://this", False)],
+)
 def test_pydmwritablewidget_channels(qtbot, channel_address, monitor_disp):
     """
     Test the channels population for the widget whose base class PyDMWritableWidget
@@ -557,30 +573,34 @@ def test_pydmwritablewidget_channels(qtbot, channel_address, monitor_disp):
     pydm_lineedit.channel = channel_address
     pydm_channels = pydm_lineedit.channels()[0]
 
-    default_pydm_channels = PyDMChannel(address=pydm_lineedit.channel,
-                                        connection_slot=pydm_lineedit.connectionStateChanged,
-                                        value_slot=pydm_lineedit.channelValueChanged,
-                                        severity_slot=pydm_lineedit.alarmSeverityChanged,
-                                        enum_strings_slot=pydm_lineedit.enumStringsChanged,
-                                        unit_slot=pydm_lineedit.unitChanged,
-                                        prec_slot=pydm_lineedit.precisionChanged,
-                                        upper_ctrl_limit_slot=pydm_lineedit.upperCtrlLimitChanged,
-                                        lower_ctrl_limit_slot=pydm_lineedit.lowerCtrlLimitChanged,
-                                        upper_alarm_limit_slot=pydm_lineedit.upper_alarm_limit_changed,
-                                        lower_alarm_limit_slot=pydm_lineedit.lower_alarm_limit_changed,
-                                        upper_warning_limit_slot=pydm_lineedit.upper_warning_limit_changed,
-                                        lower_warning_limit_slot=pydm_lineedit.lower_warning_limit_changed,
-                                        value_signal=pydm_lineedit.send_value_signal,
-                                        write_access_slot=pydm_lineedit.writeAccessChanged,
-                                        timestamp_slot=pydm_lineedit.timestamp_changed)
+    default_pydm_channels = PyDMChannel(
+        address=pydm_lineedit.channel,
+        connection_slot=pydm_lineedit.connectionStateChanged,
+        value_slot=pydm_lineedit.channelValueChanged,
+        severity_slot=pydm_lineedit.alarmSeverityChanged,
+        enum_strings_slot=pydm_lineedit.enumStringsChanged,
+        unit_slot=pydm_lineedit.unitChanged,
+        prec_slot=pydm_lineedit.precisionChanged,
+        upper_ctrl_limit_slot=pydm_lineedit.upperCtrlLimitChanged,
+        lower_ctrl_limit_slot=pydm_lineedit.lowerCtrlLimitChanged,
+        upper_alarm_limit_slot=pydm_lineedit.upper_alarm_limit_changed,
+        lower_alarm_limit_slot=pydm_lineedit.lower_alarm_limit_changed,
+        upper_warning_limit_slot=pydm_lineedit.upper_warning_limit_changed,
+        lower_warning_limit_slot=pydm_lineedit.lower_warning_limit_changed,
+        value_signal=pydm_lineedit.send_value_signal,
+        write_access_slot=pydm_lineedit.writeAccessChanged,
+        timestamp_slot=pydm_lineedit.timestamp_changed,
+    )
     assert pydm_channels == default_pydm_channels
     if monitor_disp:
-        assert pydm_lineedit._disp_channel.address == 'tst://this.DISP'
+        assert pydm_lineedit._disp_channel.address == "tst://this.DISP"
     else:
         assert pydm_lineedit._disp_channel is None
 
+
 @pytest.mark.parametrize(
-    "channel_address, connected, write_access, is_app_read_only, disable_put", [
+    "channel_address, connected, write_access, is_app_read_only, disable_put",
+    [
         ("CA://MA_TEST", True, True, True, 0),
         ("CA://MA_TEST", True, False, True, 0),
         ("CA://MA_TEST", True, True, False, 0),
@@ -594,10 +614,11 @@ def test_pydmwritablewidget_channels(qtbot, channel_address, monitor_disp):
         ("CA://MA_TEST", True, True, False, 1),
         ("", False, False, False, 0),
         (None, False, False, False, 0),
-    ])
-def test_pydmwritable_check_enable_state(qtbot, channel_address,
-                                         connected, write_access,
-                                         is_app_read_only, disable_put):
+    ],
+)
+def test_pydmwritable_check_enable_state(
+    qtbot, channel_address, connected, write_access, is_app_read_only, disable_put
+):
     """
     Test the tooltip generated depending on the channel address validation, connection, write access,
     DISP field, and whether the app is read-only. This test is for a widget whose base class is PyDMWritableWidget.
@@ -696,15 +717,20 @@ def test_pydmwidget_rules(qtbot, caplog):
         assert record.levelno == logging.ERROR
     assert "Invalid format for Rules" in caplog.text
 
-    rules = [{'name': 'Rule #1', 'property': 'Enable',
-              'expression': 'ch[0] > 1',
-              'channels': [{'channel': 'ca://MTEST:Float', 'trigger': True}]}]
+    rules = [
+        {
+            "name": "Rule #1",
+            "property": "Enable",
+            "expression": "ch[0] > 1",
+            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+        }
+    ]
 
     rules_json = json.dumps(rules)
     pydm_label.rules = rules_json
     assert pydm_label.rules == rules_json
 
-    rules[0]['name'] = 'Rule #2'
+    rules[0]["name"] = "Rule #2"
     rules_json = json.dumps(rules)
     pydm_label.rules = rules_json
 
@@ -724,22 +750,14 @@ def test_pydmwidget_rule_evaluated(qtbot, caplog):
     qtbot.addWidget(widget)
     widget.show()
 
-    payload = {
-        'name': 'Test Rule 1',
-        'property': 'Invalid Property',
-        'value': 'foo'
-    }
+    payload = {"name": "Test Rule 1", "property": "Invalid Property", "value": "foo"}
 
     widget.rule_evaluated(payload)
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert "is not part of this widget properties" in caplog.text
 
-    payload = {
-        'name': 'Test Rule 1',
-        'property': 'Visible',
-        'value': False
-    }
+    payload = {"name": "Test Rule 1", "property": "Visible", "value": False}
 
     assert widget.isVisible()
     widget.rule_evaluated(payload)

@@ -12,11 +12,10 @@ from ...widgets.baseplot import BasePlotCurveItem, BasePlot
 logger = logging.getLogger(__name__)
 
 
-@pytest.mark.parametrize("color, line_style, line_width, name", [
-    (QColor("red"), Qt.SolidLine, 1, "test_name"),
-    (None, Qt.DashLine, 10, ""),
-    (None, None, None, None)
-])
+@pytest.mark.parametrize(
+    "color, line_style, line_width, name",
+    [(QColor("red"), Qt.SolidLine, 1, "test_name"), (None, Qt.DashLine, 10, ""), (None, None, None, None)],
+)
 def test_baseplotcurveitem_construct(qtbot, color, line_style, line_width, name):
     base_plotcurve_item = BasePlotCurveItem(color, line_style, line_width, name=name)
 
@@ -49,13 +48,13 @@ def test_baseplotcurveitem_properties_and_setters(qtbot):
     base_plotcurve_item.lineWidth = 3
     assert base_plotcurve_item.lineWidth == 3
 
-    base_plotcurve_item.symbol = 'o'
-    assert base_plotcurve_item.symbol == 'o'
+    base_plotcurve_item.symbol = "o"
+    assert base_plotcurve_item.symbol == "o"
     assert base_plotcurve_item._pen.color() == base_plotcurve_item._color
 
     # The invalid symbol 'A' should be ejected
     base_plotcurve_item.symbol = "A"
-    assert base_plotcurve_item.symbol == 'o'
+    assert base_plotcurve_item.symbol == "o"
     base_plotcurve_item.symbolSize = 100
     assert base_plotcurve_item.symbolSize == 100
 
@@ -99,8 +98,8 @@ def test_baseplot_add_curve(qtbot):
 
 
 def test_baseplot_multiple_y_axes(qtbot):
-    """ Test that when we add curves while specifying new y-axis names for them, those axes are created and
-        added to the plot correctly. Also confirm that adding a curve to an existing axis works properly. """
+    """Test that when we add curves while specifying new y-axis names for them, those axes are created and
+    added to the plot correctly. Also confirm that adding a curve to an existing axis works properly."""
     base_plot = BasePlot()
     base_plot.clear()
     base_plot.clearAxes()
@@ -112,34 +111,34 @@ def test_baseplot_multiple_y_axes(qtbot):
     plot_curve_item_2 = WaveformCurveItem()
     plot_curve_item_3 = WaveformCurveItem()
     plot_curve_item_4 = WaveformCurveItem()
-    base_plot.addCurve(plot_curve_item_1, y_axis_name='Test Axis 1')
-    base_plot.addCurve(plot_curve_item_2, y_axis_name='Test Axis 2')
-    base_plot.addCurve(plot_curve_item_3, y_axis_name='Test Axis 3')
-    base_plot.addCurve(plot_curve_item_4, y_axis_name='Test Axis 1')
+    base_plot.addCurve(plot_curve_item_1, y_axis_name="Test Axis 1")
+    base_plot.addCurve(plot_curve_item_2, y_axis_name="Test Axis 2")
+    base_plot.addCurve(plot_curve_item_3, y_axis_name="Test Axis 3")
+    base_plot.addCurve(plot_curve_item_4, y_axis_name="Test Axis 1")
     qtbot.addWidget(base_plot)
 
     # There should be 4 axes (the x-axis, and the 3 new y-axes we have just created)
     assert len(base_plot.plotItem.axes) == 4
 
     # Verify the 4 axes are indeed the ones we expect
-    assert 'bottom' in base_plot.plotItem.axes
-    assert 'Test Axis 1' in base_plot.plotItem.axes
-    assert 'Test Axis 2' in base_plot.plotItem.axes
-    assert 'Test Axis 3' in base_plot.plotItem.axes
+    assert "bottom" in base_plot.plotItem.axes
+    assert "Test Axis 1" in base_plot.plotItem.axes
+    assert "Test Axis 2" in base_plot.plotItem.axes
+    assert "Test Axis 3" in base_plot.plotItem.axes
 
     # Verify their orientations were set correctly
-    assert base_plot.plotItem.axes['Test Axis 1']['item'].orientation == 'left'
-    assert base_plot.plotItem.axes['Test Axis 2']['item'].orientation == 'left'
-    assert base_plot.plotItem.axes['Test Axis 3']['item'].orientation == 'left'
+    assert base_plot.plotItem.axes["Test Axis 1"]["item"].orientation == "left"
+    assert base_plot.plotItem.axes["Test Axis 2"]["item"].orientation == "left"
+    assert base_plot.plotItem.axes["Test Axis 3"]["item"].orientation == "left"
 
     # Verify the curves got assigned to the correct axes
-    assert base_plot.plotItem.curvesPerAxis['Test Axis 1'] == 2
-    assert base_plot.plotItem.curvesPerAxis['Test Axis 2'] == 1
-    assert base_plot.plotItem.curvesPerAxis['Test Axis 3'] == 1
+    assert base_plot.plotItem.curvesPerAxis["Test Axis 1"] == 2
+    assert base_plot.plotItem.curvesPerAxis["Test Axis 2"] == 1
+    assert base_plot.plotItem.curvesPerAxis["Test Axis 3"] == 1
 
 
 def test_baseplot_no_added_y_axes(qtbot):
-    """ Confirm that if the user does not name or create any new y-axes, the plot will still work just fine """
+    """Confirm that if the user does not name or create any new y-axes, the plot will still work just fine"""
     base_plot = BasePlot()
     base_plot.clear()
 
@@ -157,30 +156,32 @@ def test_baseplot_no_added_y_axes(qtbot):
     assert len(base_plot.plotItem.axes) == 4
 
     # Verify their names were not changed in any way
-    assert 'bottom' in base_plot.plotItem.axes
-    assert 'left' in base_plot.plotItem.axes
-    assert 'top' in base_plot.plotItem.axes
-    assert 'right' in base_plot.plotItem.axes
+    assert "bottom" in base_plot.plotItem.axes
+    assert "left" in base_plot.plotItem.axes
+    assert "top" in base_plot.plotItem.axes
+    assert "right" in base_plot.plotItem.axes
 
     # Verify their orientations were not changed in any way
-    assert base_plot.plotItem.axes['bottom']['item'].orientation == 'bottom'
-    assert base_plot.plotItem.axes['left']['item'].orientation == 'left'
-    assert base_plot.plotItem.axes['top']['item'].orientation == 'top'
-    assert base_plot.plotItem.axes['right']['item'].orientation == 'right'
+    assert base_plot.plotItem.axes["bottom"]["item"].orientation == "bottom"
+    assert base_plot.plotItem.axes["left"]["item"].orientation == "left"
+    assert base_plot.plotItem.axes["top"]["item"].orientation == "top"
+    assert base_plot.plotItem.axes["right"]["item"].orientation == "right"
 
 
 def test_timeplot_add_multiple_axes(qtbot):
-    """ Simliar to the multiple y axes test above, but this one creates the new axes first, and invokes the setters
-        for the curves and axes directly, which is exactly what would happen in the flow initiated from designer.
-        Since the base plot has no method for setting curves itself, we instead use a time plot. """
+    """Simliar to the multiple y axes test above, but this one creates the new axes first, and invokes the setters
+    for the curves and axes directly, which is exactly what would happen in the flow initiated from designer.
+    Since the base plot has no method for setting curves itself, we instead use a time plot."""
     time_plot = PyDMTimePlot()
 
     # A list of axes represented in json that would be auto-generated by a user creating a new plot
     # We have 4 unique axes, 2 on the left side of the plot and 2 on the right
-    json_axes = ['{"name": "Axis 1", "orientation": "left", "minRange": -1.0, "maxRange": 1.0, "autoRange": true}',
-                 '{"name": "Axis 2", "orientation": "right", "minRange": -1.0, "maxRange": 1.0, "autoRange": true}',
-                 '{"name": "Axis 3", "orientation": "right", "minRange": -0.5, "maxRange": 0.5, "autoRange": false}',
-                 '{"name": "Axis 4", "orientation": "left", "minRange": -1.0, "maxRange": 1.0, "autoRange": true}']
+    json_axes = [
+        '{"name": "Axis 1", "orientation": "left", "minRange": -1.0, "maxRange": 1.0, "autoRange": true}',
+        '{"name": "Axis 2", "orientation": "right", "minRange": -1.0, "maxRange": 1.0, "autoRange": true}',
+        '{"name": "Axis 3", "orientation": "right", "minRange": -0.5, "maxRange": 0.5, "autoRange": false}',
+        '{"name": "Axis 4", "orientation": "left", "minRange": -1.0, "maxRange": 1.0, "autoRange": true}',
+    ]
 
     time_plot.setYAxes(json_axes)
 
@@ -188,93 +189,95 @@ def test_timeplot_add_multiple_axes(qtbot):
     assert len(time_plot.plotItem.axes) == 5
 
     # Verify the 5 axes are indeed the ones we expect
-    assert 'bottom' in time_plot.plotItem.axes
-    assert 'Axis 1' in time_plot.plotItem.axes
-    assert 'Axis 2' in time_plot.plotItem.axes
-    assert 'Axis 3' in time_plot.plotItem.axes
-    assert 'Axis 4' in time_plot.plotItem.axes
+    assert "bottom" in time_plot.plotItem.axes
+    assert "Axis 1" in time_plot.plotItem.axes
+    assert "Axis 2" in time_plot.plotItem.axes
+    assert "Axis 3" in time_plot.plotItem.axes
+    assert "Axis 4" in time_plot.plotItem.axes
 
     # Verify their orientations were set correctly
-    assert time_plot.plotItem.axes['bottom']['item'].orientation == 'bottom'
-    assert time_plot.plotItem.axes['Axis 1']['item'].orientation == 'left'
-    assert time_plot.plotItem.axes['Axis 2']['item'].orientation == 'right'
-    assert time_plot.plotItem.axes['Axis 3']['item'].orientation == 'right'
-    assert time_plot.plotItem.axes['Axis 4']['item'].orientation == 'left'
+    assert time_plot.plotItem.axes["bottom"]["item"].orientation == "bottom"
+    assert time_plot.plotItem.axes["Axis 1"]["item"].orientation == "left"
+    assert time_plot.plotItem.axes["Axis 2"]["item"].orientation == "right"
+    assert time_plot.plotItem.axes["Axis 3"]["item"].orientation == "right"
+    assert time_plot.plotItem.axes["Axis 4"]["item"].orientation == "left"
 
     # Also confirm that setting a specific range on an axis works
-    assert time_plot.plotItem.axes['Axis 3']['item'].min_range == -0.5
-    assert time_plot.plotItem.axes['Axis 3']['item'].max_range == 0.5
-    assert time_plot.plotItem.axes['Axis 3']['item'].auto_range is False
+    assert time_plot.plotItem.axes["Axis 3"]["item"].min_range == -0.5
+    assert time_plot.plotItem.axes["Axis 3"]["item"].max_range == 0.5
+    assert time_plot.plotItem.axes["Axis 3"]["item"].auto_range is False
 
     # Now let's connect 5 curves with these axes. Sine and cosine will share an axis, the rest will get their own
-    json_curves = ['{"channel": "ca://MTEST:SinVal", "name": "Sine", "color": "white", "lineStyle": 1, '
-                   '"lineWidth": 1, "symbol": null, "symbolSize": 10, "yAxisName": "Axis 1"}',
-                   '{"channel": "ca://MTEST:CosVal", "name": "Cosine", "color": "red", "lineStyle": 1, '
-                   '"lineWidth": 1, "symbol": null, "symbolSize": 10, "yAxisName": "Axis 1"}',
-                   '{"channel": "ca://MTEST:MeanValue", "name": "Orange Value", "color": "orange", "lineStyle": 1, '
-                   '"lineWidth": 1, "symbol": null, "symbolSize": 10, "yAxisName": "Axis 2"}',
-                   '{"channel": "ca://MTEST:MaxValue", "name": "Green Value", "color": "forestgreen", "lineStyle": 1, '
-                   '"lineWidth": 1, "symbol": null, "symbolSize": 10, "yAxisName": "Axis 3"}',
-                   '{"channel": "ca://MTEST:MinValue", "name": "Yellow Value", "color": "yellow", "lineStyle": 1, '
-                   '"lineWidth": 1, "symbol": null, "symbolSize": 10, "yAxisName": "Axis 4"}']
+    json_curves = [
+        '{"channel": "ca://MTEST:SinVal", "name": "Sine", "color": "white", "lineStyle": 1, '
+        '"lineWidth": 1, "symbol": null, "symbolSize": 10, "yAxisName": "Axis 1"}',
+        '{"channel": "ca://MTEST:CosVal", "name": "Cosine", "color": "red", "lineStyle": 1, '
+        '"lineWidth": 1, "symbol": null, "symbolSize": 10, "yAxisName": "Axis 1"}',
+        '{"channel": "ca://MTEST:MeanValue", "name": "Orange Value", "color": "orange", "lineStyle": 1, '
+        '"lineWidth": 1, "symbol": null, "symbolSize": 10, "yAxisName": "Axis 2"}',
+        '{"channel": "ca://MTEST:MaxValue", "name": "Green Value", "color": "forestgreen", "lineStyle": 1, '
+        '"lineWidth": 1, "symbol": null, "symbolSize": 10, "yAxisName": "Axis 3"}',
+        '{"channel": "ca://MTEST:MinValue", "name": "Yellow Value", "color": "yellow", "lineStyle": 1, '
+        '"lineWidth": 1, "symbol": null, "symbolSize": 10, "yAxisName": "Axis 4"}',
+    ]
     time_plot.setCurves(json_curves)
 
     # Verify the curves got assigned to the correct axes
     assert len(time_plot.curves) == 5
-    assert time_plot.plotItem.curvesPerAxis['Axis 1'] == 2
-    assert time_plot.plotItem.curvesPerAxis['Axis 2'] == 1
-    assert time_plot.plotItem.curvesPerAxis['Axis 3'] == 1
-    assert time_plot.plotItem.curvesPerAxis['Axis 4'] == 1
+    assert time_plot.plotItem.curvesPerAxis["Axis 1"] == 2
+    assert time_plot.plotItem.curvesPerAxis["Axis 2"] == 1
+    assert time_plot.plotItem.curvesPerAxis["Axis 3"] == 1
+    assert time_plot.plotItem.curvesPerAxis["Axis 4"] == 1
 
 
 def test_multiaxis_plot_no_designer_flow(qtbot):
-    """ Similar to the tests above except don't use the qt designer flow at all. Verify the correct axes get
-        added to the plot in this case as well. """
+    """Similar to the tests above except don't use the qt designer flow at all. Verify the correct axes get
+    added to the plot in this case as well."""
 
     # Setup a plot with three test data channels, 2 assigned to the same axis, the third to its own
     plot = PyDMTimePlot()
-    plot.addYChannel(y_channel='ca://test_channel', yAxisName='Axis 1')
-    plot.addYChannel(y_channel='ca://test_channel_2', yAxisName='Axis 1')
-    plot.addYChannel(y_channel='ca://test_channel_3', yAxisName='Axis 2')
+    plot.addYChannel(y_channel="ca://test_channel", yAxisName="Axis 1")
+    plot.addYChannel(y_channel="ca://test_channel_2", yAxisName="Axis 1")
+    plot.addYChannel(y_channel="ca://test_channel_3", yAxisName="Axis 2")
 
     # There should be 5 axes, the 3 we definitely expect ('Axis 1' 'Axis 2', and the default 'bottom' x-axis). But
     # pyqtgraph also adds a mirrored 'right' axis and a mirrored 'top' axis. These do not display by
     # default so we'll keep them.
     assert len(plot.plotItem.axes) == 5
-    assert 'bottom' in plot.plotItem.axes
-    assert 'Axis 1' in plot.plotItem.axes
-    assert 'Axis 2' in plot.plotItem.axes
-    assert 'right' in plot.plotItem.axes
-    assert 'top' in plot.plotItem.axes
-    assert plot.plotItem.curvesPerAxis['Axis 1'] == 2
-    assert plot.plotItem.curvesPerAxis['Axis 2'] == 1
+    assert "bottom" in plot.plotItem.axes
+    assert "Axis 1" in plot.plotItem.axes
+    assert "Axis 2" in plot.plotItem.axes
+    assert "right" in plot.plotItem.axes
+    assert "top" in plot.plotItem.axes
+    assert plot.plotItem.curvesPerAxis["Axis 1"] == 2
+    assert plot.plotItem.curvesPerAxis["Axis 2"] == 1
 
     # Now check the case where no new y-axis name is specified for any of the new channels.
     plot = PyDMTimePlot()
-    plot.addYChannel(y_channel='ca://test_channel')
-    plot.addYChannel(y_channel='ca://test_channel_2')
-    plot.addYChannel(y_channel='ca://test_channel_3')
+    plot.addYChannel(y_channel="ca://test_channel")
+    plot.addYChannel(y_channel="ca://test_channel_2")
+    plot.addYChannel(y_channel="ca://test_channel_3")
 
     # Since no new axes were created, we just have the default ones provided by pyqtgraph
     assert len(plot.plotItem.axes) == 4
-    assert 'bottom' in plot.plotItem.axes
-    assert 'left' in plot.plotItem.axes
-    assert 'right' in plot.plotItem.axes
-    assert 'top' in plot.plotItem.axes
+    assert "bottom" in plot.plotItem.axes
+    assert "left" in plot.plotItem.axes
+    assert "right" in plot.plotItem.axes
+    assert "top" in plot.plotItem.axes
 
 
 def test_reset_autorange(qtbot):
-    """ Verify that resetting the autorange properties of the plot works as expected """
+    """Verify that resetting the autorange properties of the plot works as expected"""
     plot = PyDMWaveformPlot()
     plot.setAutoRangeX(False)
     plot.setAutoRangeY(False)
 
     # Quick check to ensure autorange was turned off
     for view in plot.getPlotItem().stackedViews:
-        assert not any(view.state['autoRange'])
+        assert not any(view.state["autoRange"])
 
     plot.resetAutoRangeX()
     plot.resetAutoRangeY()
 
     for view in plot.getPlotItem().stackedViews:
-        assert all(view.state['autoRange'])
+        assert all(view.state["autoRange"])

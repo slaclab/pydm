@@ -1,18 +1,18 @@
 from qtpy.QtCore import QModelIndex, QVariant
 from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate, RedrawModeColumnDelegate
+from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate
 
 
 class PyDMEventPlotCurvesModel(BasePlotCurvesModel):
-    """ This is the data model used by the waveform plot curve editor.
+    """This is the data model used by the waveform plot curve editor.
     It basically acts as a go-between for the curves in a plot, and
     QTableView items.
     """
 
     def __init__(self, plot, parent=None):
         super(PyDMEventPlotCurvesModel, self).__init__(plot, parent=parent)
-        self._column_names = ('Channel', 'Y Index', 'X Index') + self._column_names
-        self._column_names += ('Buffer Size', 'Buffer Size Channel')
+        self._column_names = ("Channel", "Y Index", "X Index") + self._column_names
+        self._column_names += ("Buffer Size", "Buffer Size Channel")
 
     def get_data(self, column_name, curve):
         if column_name == "Channel":
@@ -31,8 +31,7 @@ class PyDMEventPlotCurvesModel(BasePlotCurvesModel):
             return curve.getBufferSize()
         elif column_name == "Buffer Size Channel":
             return curve.bufferSizeChannelAddress or ""
-        return super(PyDMEventPlotCurvesModel, self).get_data(
-            column_name, curve)
+        return super(PyDMEventPlotCurvesModel, self).get_data(column_name, curve)
 
     def set_data(self, column_name, curve, value):
         if column_name == "Channel":
@@ -48,13 +47,11 @@ class PyDMEventPlotCurvesModel(BasePlotCurvesModel):
                 value = None
             curve.bufferSizeChannelAddress = str(value)
         else:
-            return super(PyDMEventPlotCurvesModel, self).set_data(
-                column_name=column_name, curve=curve, value=value)
+            return super(PyDMEventPlotCurvesModel, self).set_data(column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, channel=None, y_idx=None, x_idx=None, name=None, color=None):
-        self.beginInsertRows(QModelIndex(), len(self._plot._curves),
-                             len(self._plot._curves))
+        self.beginInsertRows(QModelIndex(), len(self._plot._curves), len(self._plot._curves))
         self._plot.addChannel(channel, y_idx, x_idx, name, color)
         self.endInsertRows()
 
@@ -72,6 +69,7 @@ class EventPlotCurveEditorDialog(BasePlotCurveEditorDialog):
 
     This thing is mostly just a wrapper for a table view, with a couple
     buttons to add and remove curves, and a button to save the changes."""
+
     TABLE_MODEL_CLASS = PyDMEventPlotCurvesModel
 
     def __init__(self, plot, parent=None):

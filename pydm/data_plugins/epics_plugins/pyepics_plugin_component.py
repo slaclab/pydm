@@ -13,30 +13,55 @@ from qtpy.QtWidgets import QApplication
 
 try:
     from epics import utils3
+
     utils3.EPICS_STR_ENCODING = "latin-1"
-except:
+except Exception:
     pass
 
 logger = logging.getLogger(__name__)
 
-int_types = set((epics.dbr.INT, epics.dbr.CTRL_INT, epics.dbr.TIME_INT,
-                 epics.dbr.ENUM, epics.dbr.CTRL_ENUM, epics.dbr.TIME_ENUM,
-                 epics.dbr.TIME_LONG, epics.dbr.LONG, epics.dbr.CTRL_LONG,
-                 epics.dbr.CHAR, epics.dbr.TIME_CHAR, epics.dbr.CTRL_CHAR,
-                 epics.dbr.TIME_SHORT, epics.dbr.CTRL_SHORT))
+int_types = set(
+    (
+        epics.dbr.INT,
+        epics.dbr.CTRL_INT,
+        epics.dbr.TIME_INT,
+        epics.dbr.ENUM,
+        epics.dbr.CTRL_ENUM,
+        epics.dbr.TIME_ENUM,
+        epics.dbr.TIME_LONG,
+        epics.dbr.LONG,
+        epics.dbr.CTRL_LONG,
+        epics.dbr.CHAR,
+        epics.dbr.TIME_CHAR,
+        epics.dbr.CTRL_CHAR,
+        epics.dbr.TIME_SHORT,
+        epics.dbr.CTRL_SHORT,
+    )
+)
 
-float_types = set((epics.dbr.CTRL_FLOAT, epics.dbr.FLOAT, epics.dbr.TIME_FLOAT,
-                   epics.dbr.CTRL_DOUBLE, epics.dbr.DOUBLE, epics.dbr.TIME_DOUBLE))
+float_types = set(
+    (
+        epics.dbr.CTRL_FLOAT,
+        epics.dbr.FLOAT,
+        epics.dbr.TIME_FLOAT,
+        epics.dbr.CTRL_DOUBLE,
+        epics.dbr.DOUBLE,
+        epics.dbr.TIME_DOUBLE,
+    )
+)
 
 
 class Connection(PyDMConnection):
-
     def __init__(self, channel, pv, protocol=None, parent=None):
         super(Connection, self).__init__(channel, pv, protocol, parent)
         self.app = QApplication.instance()
-        self.pv = epics.PV(pv, connection_callback=self.send_connection_state,
-                           form='ctrl', auto_monitor=epics.dbr.DBE_VALUE|epics.dbr.DBE_ALARM|epics.dbr.DBE_PROPERTY,
-                           access_callback=self.send_access_state)
+        self.pv = epics.PV(
+            pv,
+            connection_callback=self.send_connection_state,
+            form="ctrl",
+            auto_monitor=epics.dbr.DBE_VALUE | epics.dbr.DBE_ALARM | epics.dbr.DBE_PROPERTY,
+            access_callback=self.send_access_state,
+        )
         self._value = None
         self._severity = None
         self._precision = None
@@ -92,11 +117,24 @@ class Connection(PyDMConnection):
                 else:
                     self.new_value_signal[str].emit(char_value)
 
-    def update_ctrl_vars(self, units=None, enum_strs=None, severity=None, upper_ctrl_limit=None, lower_ctrl_limit=None,
-                         precision=None, upper_alarm_limit=None, lower_alarm_limit=None, upper_warning_limit=None,
-                         lower_warning_limit=None, timestamp=None, *args, **kws):
-        """ Callback invoked when there is a change any of these variables. For a full description see:
-            https://cars9.uchicago.edu/software/python/pyepics3/pv.html#user-supplied-callback-functions
+    def update_ctrl_vars(
+        self,
+        units=None,
+        enum_strs=None,
+        severity=None,
+        upper_ctrl_limit=None,
+        lower_ctrl_limit=None,
+        precision=None,
+        upper_alarm_limit=None,
+        lower_alarm_limit=None,
+        upper_warning_limit=None,
+        lower_warning_limit=None,
+        timestamp=None,
+        *args,
+        **kws
+    ):
+        """Callback invoked when there is a change any of these variables. For a full description see:
+        https://cars9.uchicago.edu/software/python/pyepics3/pv.html#user-supplied-callback-functions
         """
         if severity is not None and self._severity != severity:
             self._severity = severity
@@ -107,12 +145,12 @@ class Connection(PyDMConnection):
         if enum_strs is not None and self._enum_strs != enum_strs:
             self._enum_strs = enum_strs
             try:
-                enum_strs = tuple(b.decode(encoding='ascii') for b in enum_strs)
+                enum_strs = tuple(b.decode(encoding="ascii") for b in enum_strs)
             except AttributeError:
                 pass
             self.enum_strings_signal.emit(enum_strs)
         if units is not None and len(units) > 0 and self._unit != units:
-            if type(units) == bytes:
+            if isinstance(units, bytes):
                 units = units.decode()
             self._unit = units
             self.unit_signal.emit(units)
@@ -156,7 +194,7 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(conn)
         if conn:
             self.clear_cache()
-            if hasattr(self, 'pv'):
+            if hasattr(self, "pv"):
                 self.reload_access_state()
                 self.pv.run_callbacks()
 
@@ -172,8 +210,7 @@ class Connection(PyDMConnection):
             try:
                 self.pv.put(new_val)
             except Exception as e:
-                logger.exception("Unable to put %s to %s.  Exception: %s",
-                                 new_val, self.pv.pvname, str(e))
+                logger.exception("Unable to put %s to %s.  Exception: %s", new_val, self.pv.pvname, str(e))
 
     def add_listener(self, channel):
         super(Connection, self).add_listener(channel)

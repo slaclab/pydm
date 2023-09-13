@@ -35,11 +35,11 @@ class QScaleAlarmed(QScale):
         self._cannot_draw_ticks_flag = False
         self._cannot_draw_indicator_flag = False
 
-        self._bg_color = QColor('lightblue')
-        self._minor_alarm_region_color = QColor('white')
-        self._minor_alarm_color = QColor('yellow')
-        self._major_alarm_region_color = QColor('grey')
-        self._major_alarm_color = QColor('red')
+        self._bg_color = QColor("lightblue")
+        self._minor_alarm_region_color = QColor("white")
+        self._minor_alarm_color = QColor("yellow")
+        self._major_alarm_region_color = QColor("grey")
+        self._major_alarm_color = QColor("red")
         self._bg_size_rate = 0.5  # from 0 to 1
         self._scale_height = 40
 
@@ -55,16 +55,14 @@ class QScaleAlarmed(QScale):
         displayed on left/right
         also helpful for use in layouts
         """
-        self.setMaximumSize(QWIDGETSIZE_MAX,
-                            QWIDGETSIZE_MAX)  # Unset fixed size
+        self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)  # Unset fixed size
         if self._orientation == Qt.Horizontal:
             self._widget_width = self.width()
             self._widget_height = self.height()
             self._painter_translation_y = 0
             self._painter_rotation = 0
             # expands scale in horizontal position
-            self.setSizePolicy(QSizePolicy.Expanding,
-                               QSizePolicy.Fixed)
+            self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
             self.setFixedHeight(self._scale_height)
         elif self._orientation == Qt.Vertical:
             # Invert dimensions for paintEvent()
@@ -100,7 +98,7 @@ class QScaleAlarmed(QScale):
         self._painter.setPen(self._tick_pen)
         division_size = self._widget_width / self._num_divisions
         tick_y0 = self._scale_height * self._bg_size_rate
-        tick_yf = tick_y0 + self._scale_height * self._tick_size_rate * .25
+        tick_yf = tick_y0 + self._scale_height * self._tick_size_rate * 0.25
         for i in range(self._num_divisions + 1):
             x = i * division_size
             self._painter.drawLine(x, tick_y0, x, tick_yf)  # x1, y1, x2, y2
@@ -141,7 +139,7 @@ class QScaleAlarmed(QScale):
         points = [
             QPoint(self.position + 0.5 * pointer_width, 0),
             QPoint(self.position - 0.5 * pointer_width, 0),
-            QPoint(self.position, pointer_height)
+            QPoint(self.position, pointer_height),
         ]
         self._painter.drawPolygon(QPolygon(points))
 
@@ -248,9 +246,11 @@ class QScaleAlarmed(QScale):
         self._painter.setRenderHint(QPainter.Antialiasing)
 
         """
-        bad metadata or user input can cause designer or pydm to crash when drawing the widget, hence the try except block
-        self._cannot_draw_*_flag variables are so that the errors only print once, otherwise they would print on each redraw
-        flags are reset when the element can draw without error
+        bad metadata or user input can cause designer or pydm to crash when drawing the widget,
+        hence the try except block.
+        self._cannot_draw_*_flag variables are so that the errors only print once,
+        otherwise they would print on each redraw.
+        flags are reset when the element can draw without error.
         """
         try:
             self.draw_background()

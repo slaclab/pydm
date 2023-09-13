@@ -17,6 +17,7 @@ from qtpy.QtCore import Qt
 # POSITIVE TEST CASES
 # --------------------
 
+
 def test_construct(qtbot):
     """
     Test the basic instantiation of the widget.
@@ -38,6 +39,7 @@ def test_construct(qtbot):
     assert display_format_type == pydm_label.DisplayFormat.Default
     assert pydm_label._string_encoding == pydm_label.app.get_string_encoding() if is_pydm_app() else "utf_8"
 
+
 def test_enable_rich_text(qtbot):
     """
     Test the widget's option for enabling rich text.
@@ -54,42 +56,41 @@ def test_enable_rich_text(qtbot):
     pydm_label = PyDMLabel()
     assert pydm_label.textFormat() == Qt.PlainText
 
-    pydm_label.enableRichText = True #invoke setter
+    pydm_label.enableRichText = True  # invoke setter
     qtbot.addWidget(pydm_label)
     assert pydm_label.textFormat() == Qt.RichText
 
-@pytest.mark.parametrize("value, display_format", [
-    ("abc", DisplayFormat.Default),
-    (123, DisplayFormat.Default),
-    (0b100, DisplayFormat.Default),
-    (0x1FF, DisplayFormat.Default),
 
-    ("abc", DisplayFormat.String),
-    (123, DisplayFormat.String),
-    (0b100, DisplayFormat.String),
-    (0x1FF, DisplayFormat.String),
-
-    ("abc", DisplayFormat.Decimal), # This setting is acceptable. The displayed value will be "abc"
-    (123, DisplayFormat.Decimal),
-    (123.45, DisplayFormat.Decimal),
-    (0b100, DisplayFormat.Decimal),
-    (0x1FF, DisplayFormat.Decimal),
-
-    (123, DisplayFormat.Exponential),
-    (3.000e-02, DisplayFormat.Exponential),
-    (0b100, DisplayFormat.Exponential),
-    (0x1FF, DisplayFormat.Exponential),
-
-    (123, DisplayFormat.Hex),
-    (3.000e-02, DisplayFormat.Hex),
-    (0b100, DisplayFormat.Hex),
-    (0x1FF, DisplayFormat.Hex),
-
-    (123, DisplayFormat.Binary),
-    (3.000e-02, DisplayFormat.Binary),
-    (0b100, DisplayFormat.Binary),
-    (0x1FF, DisplayFormat.Binary),
-])
+@pytest.mark.parametrize(
+    "value, display_format",
+    [
+        ("abc", DisplayFormat.Default),
+        (123, DisplayFormat.Default),
+        (0b100, DisplayFormat.Default),
+        (0x1FF, DisplayFormat.Default),
+        ("abc", DisplayFormat.String),
+        (123, DisplayFormat.String),
+        (0b100, DisplayFormat.String),
+        (0x1FF, DisplayFormat.String),
+        ("abc", DisplayFormat.Decimal),  # This setting is acceptable. The displayed value will be "abc"
+        (123, DisplayFormat.Decimal),
+        (123.45, DisplayFormat.Decimal),
+        (0b100, DisplayFormat.Decimal),
+        (0x1FF, DisplayFormat.Decimal),
+        (123, DisplayFormat.Exponential),
+        (3.000e-02, DisplayFormat.Exponential),
+        (0b100, DisplayFormat.Exponential),
+        (0x1FF, DisplayFormat.Exponential),
+        (123, DisplayFormat.Hex),
+        (3.000e-02, DisplayFormat.Hex),
+        (0b100, DisplayFormat.Hex),
+        (0x1FF, DisplayFormat.Hex),
+        (123, DisplayFormat.Binary),
+        (3.000e-02, DisplayFormat.Binary),
+        (0b100, DisplayFormat.Binary),
+        (0x1FF, DisplayFormat.Binary),
+    ],
+)
 def test_value_changed(qtbot, signals, value, display_format):
     """
     Test the widget's handling of the value changed event.
@@ -117,18 +118,23 @@ def test_value_changed(qtbot, signals, value, display_format):
     signals.new_value_signal[type(value)].emit(value)
     pydm_label.displayFormat = display_format
 
-    displayed_value = parse_value_for_display(value=pydm_label.value, precision=1,
-                                              display_format_type=pydm_label.displayFormat, widget=pydm_label)
-    expected_value = parse_value_for_display(value=value, precision=1,
-                                             display_format_type=display_format, widget=pydm_label)
+    displayed_value = parse_value_for_display(
+        value=pydm_label.value, precision=1, display_format_type=pydm_label.displayFormat, widget=pydm_label
+    )
+    expected_value = parse_value_for_display(
+        value=value, precision=1, display_format_type=display_format, widget=pydm_label
+    )
     assert displayed_value == expected_value
     assert pydm_label.displayFormat == display_format
 
 
-@pytest.mark.parametrize("values, selected_index, expected", [
-    (("ON", "OFF"), 0, "ON"),
-    (("ON", "OFF"), 1, "OFF"),
-])
+@pytest.mark.parametrize(
+    "values, selected_index, expected",
+    [
+        (("ON", "OFF"), 0, "ON"),
+        (("ON", "OFF"), 1, "OFF"),
+    ],
+)
 def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     """
     Test the widget's handling of enum strings, which are choices presented to the user, and the widget's ability to
@@ -165,38 +171,36 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     assert pydm_label.displayFormat == DisplayFormat.String
 
 
-@pytest.mark.parametrize("value, display_format, unit_name, expected", [
-    ("abc", DisplayFormat.Default, "", "abc"),
-    (123, DisplayFormat.Default, "", "123"),
-    (0b100, DisplayFormat.Default, "", "4"),
-    (0x1FF, DisplayFormat.Default, "", "511"),
-
-    ("abc", DisplayFormat.String, "s", "abc s"),
-    (123, DisplayFormat.String, "s", "123 s"),
-    (0b100, DisplayFormat.String, "s", "4 s"),
-    (0x1FF, DisplayFormat.String, "s", "511 s"),
-
-    ("abc", DisplayFormat.Decimal, "light years", "abc light years"),
-    (123, DisplayFormat.Decimal, "light years", "123 light years"),
-    (123.45, DisplayFormat.Decimal, "light years", "123 light years"), # Using default precision of 0
-    (0b100, DisplayFormat.Decimal, "light years", "4 light years"),
-    (0x1FF, DisplayFormat.Decimal, "light years", "511 light years"),
-
-    (123, DisplayFormat.Exponential, "ms", "1e+02 ms"),
-    (3.000e-02, DisplayFormat.Exponential, "ms", "3e-02 ms"),
-    (0b100, DisplayFormat.Exponential, "ms", "4e+00 ms"),
-    (0x1FF, DisplayFormat.Exponential, "ms", "5e+02 ms"),
-
-    (123, DisplayFormat.Hex, "ns", "0x7b ns"),
-    (3.000e-02, DisplayFormat.Hex, "ns", "0x0 ns"),
-    (0b100, DisplayFormat.Hex, "ns", "0x4 ns"),
-    (0x1FF, DisplayFormat.Hex, "ns", "0x1ff ns"),
-
-    (123, DisplayFormat.Binary, "light years", "0b1111011 light years"),
-    (3.000e-02, DisplayFormat.Binary, "light years", "0b0 light years"),
-    (0b100, DisplayFormat.Binary, "light years", "0b100 light years"),
-    (0x1FF, DisplayFormat.Binary, "light years", "0b111111111 light years"),
-])
+@pytest.mark.parametrize(
+    "value, display_format, unit_name, expected",
+    [
+        ("abc", DisplayFormat.Default, "", "abc"),
+        (123, DisplayFormat.Default, "", "123"),
+        (0b100, DisplayFormat.Default, "", "4"),
+        (0x1FF, DisplayFormat.Default, "", "511"),
+        ("abc", DisplayFormat.String, "s", "abc s"),
+        (123, DisplayFormat.String, "s", "123 s"),
+        (0b100, DisplayFormat.String, "s", "4 s"),
+        (0x1FF, DisplayFormat.String, "s", "511 s"),
+        ("abc", DisplayFormat.Decimal, "light years", "abc light years"),
+        (123, DisplayFormat.Decimal, "light years", "123 light years"),
+        (123.45, DisplayFormat.Decimal, "light years", "123 light years"),  # Using default precision of 0
+        (0b100, DisplayFormat.Decimal, "light years", "4 light years"),
+        (0x1FF, DisplayFormat.Decimal, "light years", "511 light years"),
+        (123, DisplayFormat.Exponential, "ms", "1e+02 ms"),
+        (3.000e-02, DisplayFormat.Exponential, "ms", "3e-02 ms"),
+        (0b100, DisplayFormat.Exponential, "ms", "4e+00 ms"),
+        (0x1FF, DisplayFormat.Exponential, "ms", "5e+02 ms"),
+        (123, DisplayFormat.Hex, "ns", "0x7b ns"),
+        (3.000e-02, DisplayFormat.Hex, "ns", "0x0 ns"),
+        (0b100, DisplayFormat.Hex, "ns", "0x4 ns"),
+        (0x1FF, DisplayFormat.Hex, "ns", "0x1ff ns"),
+        (123, DisplayFormat.Binary, "light years", "0b1111011 light years"),
+        (3.000e-02, DisplayFormat.Binary, "light years", "0b0 light years"),
+        (0b100, DisplayFormat.Binary, "light years", "0b100 light years"),
+        (0x1FF, DisplayFormat.Binary, "light years", "0b111111111 light years"),
+    ],
+)
 def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
     """
     Test the widget's capability to display a unit following a value if the user enables unit displaying.
@@ -249,32 +253,31 @@ def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
     assert pydm_label.displayFormat == display_format
 
 
-@pytest.mark.parametrize("alarm_severity, alarm_sensitive_content, alarm_sensitive_border", [
-    (PyDMWidget.ALARM_NONE, True, True),
-    (PyDMWidget.ALARM_NONE, True, False),
-    (PyDMWidget.ALARM_NONE, False, True),
-    (PyDMWidget.ALARM_NONE, False, False),
-
-    (PyDMWidget.ALARM_MINOR, True, True),
-    (PyDMWidget.ALARM_MINOR, True, False),
-    (PyDMWidget.ALARM_MINOR, False, True),
-    (PyDMWidget.ALARM_MINOR, False, False),
-
-    (PyDMWidget.ALARM_MAJOR, True, True),
-    (PyDMWidget.ALARM_MAJOR, True, False),
-    (PyDMWidget.ALARM_MAJOR, False, True),
-    (PyDMWidget.ALARM_MAJOR, False, False),
-
-    (PyDMWidget.ALARM_INVALID, True, True),
-    (PyDMWidget.ALARM_INVALID, True, False),
-    (PyDMWidget.ALARM_INVALID, False, True),
-    (PyDMWidget.ALARM_INVALID, False, False),
-
-    (PyDMWidget.ALARM_DISCONNECTED, True, True),
-    (PyDMWidget.ALARM_DISCONNECTED, True, False),
-    (PyDMWidget.ALARM_DISCONNECTED, False, True),
-    (PyDMWidget.ALARM_DISCONNECTED, False, False),
-])
+@pytest.mark.parametrize(
+    "alarm_severity, alarm_sensitive_content, alarm_sensitive_border",
+    [
+        (PyDMWidget.ALARM_NONE, True, True),
+        (PyDMWidget.ALARM_NONE, True, False),
+        (PyDMWidget.ALARM_NONE, False, True),
+        (PyDMWidget.ALARM_NONE, False, False),
+        (PyDMWidget.ALARM_MINOR, True, True),
+        (PyDMWidget.ALARM_MINOR, True, False),
+        (PyDMWidget.ALARM_MINOR, False, True),
+        (PyDMWidget.ALARM_MINOR, False, False),
+        (PyDMWidget.ALARM_MAJOR, True, True),
+        (PyDMWidget.ALARM_MAJOR, True, False),
+        (PyDMWidget.ALARM_MAJOR, False, True),
+        (PyDMWidget.ALARM_MAJOR, False, False),
+        (PyDMWidget.ALARM_INVALID, True, True),
+        (PyDMWidget.ALARM_INVALID, True, False),
+        (PyDMWidget.ALARM_INVALID, False, True),
+        (PyDMWidget.ALARM_INVALID, False, False),
+        (PyDMWidget.ALARM_DISCONNECTED, True, True),
+        (PyDMWidget.ALARM_DISCONNECTED, True, False),
+        (PyDMWidget.ALARM_DISCONNECTED, False, True),
+        (PyDMWidget.ALARM_DISCONNECTED, False, False),
+    ],
+)
 def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, alarm_sensitive_border):
     """
     Test the widget's appearance changes according to changes in alarm severity.
@@ -285,7 +288,8 @@ def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, a
        solid, transparent, etc.
     3. The alarm color and border appearance will change only if each corresponding Boolean flag is set to True
 
-    NOTE: This test depends on the default stylesheet having different values for 'color' for different alarm states of PyDMLabel.
+    NOTE: This test depends on the default stylesheet having different values for 'color' for different
+    alarm states of PyDMLabel.
 
     Parameters
     ----------
@@ -330,19 +334,24 @@ def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, a
 
 
 TOOLTIP_TEXT = "Testing with Alarm State Changes, Channel Provided."
-@pytest.mark.parametrize("alarm_sensitive_content, alarm_sensitive_border, tooltip", [
-    (True, True, TOOLTIP_TEXT),
-    (True, False, TOOLTIP_TEXT),
-    (False, True, TOOLTIP_TEXT),
-    (False, False, TOOLTIP_TEXT),
 
-    (True, True, ""),
-    (True, False, ""),
-    (False, True, ""),
-    (False, False, ""),
-])
-def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensitive_content, alarm_sensitive_border,
-                                               tooltip):
+
+@pytest.mark.parametrize(
+    "alarm_sensitive_content, alarm_sensitive_border, tooltip",
+    [
+        (True, True, TOOLTIP_TEXT),
+        (True, False, TOOLTIP_TEXT),
+        (False, True, TOOLTIP_TEXT),
+        (False, False, TOOLTIP_TEXT),
+        (True, True, ""),
+        (True, False, ""),
+        (False, True, ""),
+        (False, False, ""),
+    ],
+)
+def test_label_channel_connection_changes_with_alarm(
+    qtbot, signals, alarm_sensitive_content, alarm_sensitive_border, tooltip
+):
     """
     Test the widget's appearance and tooltip changes if a data channel is provided, and the is disconnected,
     and then is reconnected.
@@ -374,7 +383,7 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
         The tooltip for the widget. This can be an empty string
     """
     pydm_label = PyDMLabel()
-    pydm_label.setText('Custom Text')
+    pydm_label.setText("Custom Text")
     qtbot.addWidget(pydm_label)
 
     pydm_label.alarmSensitiveContent = alarm_sensitive_content
@@ -394,10 +403,10 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     assert pydm_label._alarm_state == alarm_severity
-    assert pydm_label._connected == True
+    assert pydm_label._connected is True
     assert pydm_label.toolTip() == tooltip
-    assert pydm_label.isEnabled() == True
-    assert pydm_label.text() == 'Custom Text'
+    assert pydm_label.isEnabled() is True
+    assert pydm_label.text() == "Custom Text"
 
     # Next, disconnect the alarm, and check for the alarm severity, style, text, connection state, enabling state, and
     # tooltip
@@ -405,10 +414,10 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
 
     signals.connection_state_signal.emit(False)
     assert pydm_label._alarm_state == alarm_severity
-    assert pydm_label._connected == False
+    assert pydm_label._connected is False
     assert all(i in pydm_label.toolTip() for i in (tooltip, "PV is disconnected."))
-    assert pydm_label.isEnabled() == False
-    assert pydm_label.text() == 'CA://MTEST'
+    assert pydm_label.isEnabled() is False
+    assert pydm_label.text() == "CA://MTEST"
 
     # Finally, reconnect the alarm, and check for the same attributes
     signals.connection_state_signal.emit(True)
@@ -416,24 +425,27 @@ def test_label_channel_connection_changes_with_alarm(qtbot, signals, alarm_sensi
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     # TODO Set alarm_severity back to NONE
     assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
-    assert pydm_label._connected == True
+    assert pydm_label._connected is True
     assert pydm_label.toolTip() == tooltip
-    assert pydm_label.isEnabled() == True
+    assert pydm_label.isEnabled() is True
 
 
-@pytest.mark.parametrize("alarm_sensitive_content, alarm_sensitive_border, tooltip", [
-    (True, True, TOOLTIP_TEXT),
-    (True, False, TOOLTIP_TEXT),
-    (False, True, TOOLTIP_TEXT),
-    (False, False, TOOLTIP_TEXT),
-
-    (True, True, ""),
-    (True, False, ""),
-    (False, True, ""),
-    (False, False, ""),
-])
-def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alarm_sensitive_content, alarm_sensitive_border,
-                                                      tooltip):
+@pytest.mark.parametrize(
+    "alarm_sensitive_content, alarm_sensitive_border, tooltip",
+    [
+        (True, True, TOOLTIP_TEXT),
+        (True, False, TOOLTIP_TEXT),
+        (False, True, TOOLTIP_TEXT),
+        (False, False, TOOLTIP_TEXT),
+        (True, True, ""),
+        (True, False, ""),
+        (False, True, ""),
+        (False, False, ""),
+    ],
+)
+def test_label_connection_changes_with_alarm_and_no_channel(
+    qtbot, signals, alarm_sensitive_content, alarm_sensitive_border, tooltip
+):
     """
     Test the widget's appearance and tooltip changes if a data channel is not provided, and the connection is not
     available, and available again.
@@ -482,9 +494,9 @@ def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alar
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
-    assert pydm_label._connected == True
+    assert pydm_label._connected is True
     assert pydm_label.toolTip() == tooltip
-    assert pydm_label.isEnabled() == True
+    assert pydm_label.isEnabled() is True
 
     # Next, disconnect the alarm, and check for the alarm severity, style, connection state, enabling state, and
     # tooltip
@@ -492,9 +504,9 @@ def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alar
     blocker.wait()
     assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
 
-    assert pydm_label._connected == False
+    assert pydm_label._connected is False
     assert pydm_label.toolTip() == tooltip
-    assert pydm_label.isEnabled() == True
+    assert pydm_label.isEnabled() is True
 
     # Finally, reconnect the alarm, and check for the same attributes
     signals.connection_state_signal.emit(True)
@@ -502,29 +514,33 @@ def test_label_connection_changes_with_alarm_and_no_channel(qtbot, signals, alar
 
     # Confirm alarm severity, style, connection state, enabling state, and tooltip
     assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
-    assert pydm_label._connected == True
+    assert pydm_label._connected is True
     assert pydm_label.toolTip() == tooltip
-    assert pydm_label.isEnabled() == True
+    assert pydm_label.isEnabled() is True
 
 
 # --------------------
 # NEGATIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("value, display_format, expected", [
-    (np.array([-1, -2]), DisplayFormat.String, "Could not decode"),
-    (np.array([0xfffe, 0xffff]), DisplayFormat.String, "Could not decode"),
-    ("aaa", DisplayFormat.Exponential, "Could not display value 'aaa' using displayFormat 'Exponential'"),
-    ("zzz", DisplayFormat.Hex, "Could not display value 'zzz' using displayFormat 'Hex'"),
-    ("zzz", DisplayFormat.Binary, "Could not display value 'zzz' using displayFormat 'Binary'"),
-])
+
+@pytest.mark.parametrize(
+    "value, display_format, expected",
+    [
+        (np.array([-1, -2]), DisplayFormat.String, "Could not decode"),
+        (np.array([0xFFFE, 0xFFFF]), DisplayFormat.String, "Could not decode"),
+        ("aaa", DisplayFormat.Exponential, "Could not display value 'aaa' using displayFormat 'Exponential'"),
+        ("zzz", DisplayFormat.Hex, "Could not display value 'zzz' using displayFormat 'Hex'"),
+        ("zzz", DisplayFormat.Binary, "Could not display value 'zzz' using displayFormat 'Binary'"),
+    ],
+)
 def test_value_changed_incorrect_display_format(qtbot, signals, caplog, value, display_format, expected):
     """
     Test the widget's handling of incorrect provided values.
 
     Expectations:
     The correct error message is output in stderr.
-    
+
     Parameters
     ----------
     qtbot : fixture
@@ -553,9 +569,12 @@ def test_value_changed_incorrect_display_format(qtbot, signals, caplog, value, d
     assert expected in caplog.text
 
 
-@pytest.mark.parametrize("value, selected_index, expected", [
-    (("ON", "OFF"), 3, "**INVALID**"),
-])
+@pytest.mark.parametrize(
+    "value, selected_index, expected",
+    [
+        (("ON", "OFF"), 3, "**INVALID**"),
+    ],
+)
 def test_enum_strings_changed_incorrect_index(qtbot, signals, value, selected_index, expected):
     """
     Test the widget's handling of incorrect provided enum string index.

@@ -1,6 +1,6 @@
-from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant, QTimer, Slot
-from qtpy.QtGui import QBrush
+from qtpy.QtCore import QAbstractTableModel, Qt, QVariant, QTimer, Slot
 from operator import attrgetter
+
 
 class ConnectionTableModel(QAbstractTableModel):
     def __init__(self, connections=[], parent=None):
@@ -10,12 +10,12 @@ class ConnectionTableModel(QAbstractTableModel):
         self.update_timer.setInterval(1000)
         self.update_timer.timeout.connect(self.update_values)
         self.connections = connections
-        
+
     def sort(self, col, order=Qt.AscendingOrder):
         if self._column_names[col] == "value":
             return
         self.layoutAboutToBeChanged.emit()
-        sort_reversed = (order == Qt.AscendingOrder)
+        sort_reversed = order == Qt.AscendingOrder
         self._connections.sort(key=attrgetter(self._column_names[col]), reverse=sort_reversed)
         self.layoutChanged.emit()
 
@@ -61,14 +61,14 @@ class ConnectionTableModel(QAbstractTableModel):
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
-            return super(ConnectionTableModel, self).headerData(
-                                                section, orientation, role)
+            return super(ConnectionTableModel, self).headerData(section, orientation, role)
         if orientation == Qt.Horizontal and section < self.columnCount():
             return str(self._column_names[section]).capitalize()
         elif orientation == Qt.Vertical and section < self.rowCount():
             return section
+
     # End QAbstractItemModel implementation.
 
     @Slot()
     def update_values(self):
-        self.dataChanged.emit(self.index(0,2), self.index(self.rowCount(),2))
+        self.dataChanged.emit(self.index(0, 2), self.index(self.rowCount(), 2))

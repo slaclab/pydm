@@ -6,7 +6,8 @@ from pydm.utilities import is_pydm_app, is_qt_designer
 from pydm import config
 from pydm.widgets.base import only_if_channel_set
 
-_labelRuleProperties = {'Text': ['value_changed', str]}
+_labelRuleProperties = {"Text": ["value_changed", str]}
+
 
 class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties=_labelRuleProperties):
     Q_ENUMS(DisplayFormat)
@@ -14,7 +15,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
-    
+
     Note: If a PyDMLabel is configured to use a Channel, and also with a rule
     which changes the 'Text' property, the behavior is undefined.  Use either
     the Channel *or* a text rule, but not both.
@@ -79,10 +80,13 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
             The new value from the channel. The type depends on the channel.
         """
         super(PyDMLabel, self).value_changed(new_value)
-        new_value = parse_value_for_display(value=new_value, precision=self.precision,
-                                            display_format_type=self._display_format_type,
-                                            string_encoding=self._string_encoding,
-                                            widget=self)
+        new_value = parse_value_for_display(
+            value=new_value,
+            precision=self.precision,
+            display_format_type=self._display_format_type,
+            string_encoding=self._string_encoding,
+            widget=self,
+        )
         # If the value is a string, just display it as-is, no formatting
         # needed.
         if isinstance(new_value, str_types):
@@ -109,7 +113,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
 
     @only_if_channel_set
     def check_enable_state(self):
-        """ If the channel this label is connected to becomes disconnected, display only the name of the channel. """
+        """If the channel this label is connected to becomes disconnected, display only the name of the channel."""
         if not self._connected:
             self.setText(self.channel)
         super().check_enable_state()
