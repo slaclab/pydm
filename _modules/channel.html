@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>channel &mdash; PyDM 0+untagged.1.g32262f5 documentation</title>
+  <title>channel &mdash; PyDM 1.20.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                0+untagged.1.g32262f5
+                1.20.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -205,13 +205,26 @@
 <span class="sd">        A function to be run when the timestamp updates</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">connection_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">severity_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">write_access_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">enum_strings_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prec_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">upper_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lower_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">upper_alarm_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lower_alarm_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">upper_warning_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lower_warning_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">value_signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">connection_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">value_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">severity_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">write_access_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">enum_strings_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">unit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">prec_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">upper_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lower_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">upper_alarm_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lower_alarm_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">upper_warning_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lower_warning_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">value_signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">timestamp_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_address</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
 
@@ -252,8 +265,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">pydm</span><span class="o">.</span><span class="n">data_plugins</span><span class="o">.</span><span class="n">establish_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to make proper connection &quot;</span>
-                             <span class="s2">&quot;for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to make proper connection &quot;</span> <span class="s2">&quot;for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMChannel.disconnect"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destroying</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -264,9 +276,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">plugin</span><span class="p">:</span>
                 <span class="k">return</span>
             <span class="n">plugin</span><span class="o">.</span><span class="n">remove_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destroying</span><span class="o">=</span><span class="n">destroying</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to remove connection &quot;</span>
-                             <span class="s2">&quot;for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to remove connection &quot;</span> <span class="s2">&quot;for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
@@ -290,22 +301,24 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span><span class="p">:</span>
                 <span class="n">value_signal_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span><span class="o">.</span><span class="n">signal</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span><span class="o">.</span><span class="n">signal</span>
 
-            <span class="k">return</span> <span class="p">(</span><span class="n">address_matched</span> <span class="ow">and</span>
-                    <span class="n">connection_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">value_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">severity_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">enum_strings_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">unit_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">prec_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">upper_ctrl_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">lower_ctrl_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">upper_alarm_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">lower_alarm_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">upper_warning_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">lower_warning_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">write_access_slot_matched</span> <span class="ow">and</span>
-                    <span class="n">value_signal_matched</span> <span class="ow">and</span>
-                    <span class="n">timestamp_slot_matched</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">address_matched</span>
+                <span class="ow">and</span> <span class="n">connection_slot_matched</span>
+                <span class="ow">and</span> <span class="n">value_slot_matched</span>
+                <span class="ow">and</span> <span class="n">severity_slot_matched</span>
+                <span class="ow">and</span> <span class="n">enum_strings_slot_matched</span>
+                <span class="ow">and</span> <span class="n">unit_slot_matched</span>
+                <span class="ow">and</span> <span class="n">prec_slot_matched</span>
+                <span class="ow">and</span> <span class="n">upper_ctrl_slot_matched</span>
+                <span class="ow">and</span> <span class="n">lower_ctrl_slot_matched</span>
+                <span class="ow">and</span> <span class="n">upper_alarm_slot_matched</span>
+                <span class="ow">and</span> <span class="n">lower_alarm_slot_matched</span>
+                <span class="ow">and</span> <span class="n">upper_warning_slot_matched</span>
+                <span class="ow">and</span> <span class="n">lower_warning_slot_matched</span>
+                <span class="ow">and</span> <span class="n">write_access_slot_matched</span>
+                <span class="ow">and</span> <span class="n">value_signal_matched</span>
+                <span class="ow">and</span> <span class="n">timestamp_slot_matched</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">NotImplemented</span>
 
@@ -319,7 +332,7 @@
         <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;&lt;PyDMChannel (</span><span class="si">{:}</span><span class="s1">)&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">&quot;&lt;PyDMChannel (</span><span class="si">{:}</span><span class="s2">)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
