@@ -74,7 +74,9 @@ class myDriver(Driver):
         self.motorYThread.start()
 
     def updateMotor(self, motorVarName, axisVarName):
-        sleepTime = 0.2
+        # mimic the functionality of fully-simulated motor and camera
+        
+        sleepTime = 0.2 # set arbitrarily to match timing when fully-simulated
         motorRbvName = motorVarName + ".RBV"
         motorMovingVarName = motorVarName + ".MOVN"
         motorStopVarName = motorVarName + ".STOP"
@@ -84,23 +86,28 @@ class myDriver(Driver):
             time.sleep(sleepTime)
             motorParam = self.getParam(motorVarName)
 
-            if motorParam != motorRbv:
+            if motorParam != motorRbv: # need to move motor
                 self.setParam(motorMovingVarName, 1)
                 
+                # for Motor X: 'Tw +10' = move right, 'Tw -10' = move left
+                # for Motor Y:'Tw +10' = move up, 'Tw -10' = move down left
                 motorMoveAmount = 10 if motorRbv < motorParam else -10
-                imageMoveAmount = 0.15 if motorRbv < motorParam else -0.15                
+                imageMoveAmount = 0.15 if motorRbv < motorParam else -0.15
+
+                # do movement in increments, updating displayed value and sleeping inbetween
                 while motorRbv != motorParam:
                     currStopVal = self.getParam(motorStopVarName)
                     if currStopVal:
                         break
+
+                    # update displayed values
                     motorRbv = motorRbv + motorMoveAmount
                     self.setParam(motorRbvName, motorRbv)
-                    y_pos = self.getParam(axisVarName)
-                    self.setParam(axisVarName, y_pos  + imageMoveAmount)
+                    axis_pos = self.getParam(axisVarName)
+                    self.setParam(axisVarName, axis_pos  + imageMoveAmount)
                     self.updatePVs()
 
                     time.sleep(sleepTime)
-                
                 
                 self.setParam(motorStopVarName, 0)
                 # if stopped, set motorVar line-edit to the motorRBV text-field value
