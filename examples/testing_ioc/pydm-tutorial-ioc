@@ -6,13 +6,13 @@ import time
 
 from pcaspy import Driver, SimpleServer
 
-''' This file provides the server needed for for providing PVs to run the tutorial. 
+""" This file provides the server needed for for providing PVs to run the tutorial. 
     You can follow along the tutorial here: https://slaclab.github.io/pydm-tutorial/.
     The server mimics variables used by the tutorial, which mimic a simulated camera and motor.
     Mimicking this behavior is done (over running simulator programs) in order to minimize the overhead
     to get the tutorial up-and-running, and since the simulated data is not necessarily needed to learn 
     how to make PyDM user-interface. 
-'''
+"""
 
 MAX_POINTS = 1000
 FREQUENCY = 1000
@@ -22,42 +22,43 @@ MIN_UPDATE_TIME = 0.001
 IMAGE_SIZE = 512
 MESSAGE = "PyDM Rocks!"
 
-prefix = 'IOC:'
+prefix = "IOC:"
 pvdb = {
-        'Run'              : { 'type' : 'enum',
-                                'enums': ['STOP', 'RUN'], 'asg'  : 'default'},
-        'ReadOnly'     : { 'type' : 'enum',
-                                'enums': ['FALSE', 'TRUE'], 'value': 0 },
-        'XPos'             : { 'prec' : 2, 'value' : 0.0, 'asg' : 'default' },
-        'YPos'             : { 'prec' : 2, 'value' : 0.0, 'asg' : 'default' },
-        'Image'            : { 'type' : 'char', 'count': IMAGE_SIZE ** 2, 'value': numpy.zeros(IMAGE_SIZE ** 2, dtype=numpy.uint8), 'asg' : 'default' },
-        'ImageWidth'       : { 'type' : 'int', 'value' : IMAGE_SIZE, 'asg' : 'default' },
-
-        'm1.DESC'           : { 'type' : 'string', 'value': "Motor X", 'asg' : 'default'},
-        'm1'                : { 'type' : 'float', 'value': 500.0, 'asg' : 'default' },
-        'm1.VAL'            : { 'type' : 'float', 'value': 600.0, 'asg' : 'default' },
-        'm1.RBV'            : { 'type' : 'float', 'value': 500.0, 'asg' : 'default' },
-        'm1.MOVN'           : { 'type' : 'int', 'value': 0, 'asg' : 'default' },
-        'm1.STOP'           : { 'type' : 'int', 'value': 0, 'asg' : 'default' },
-        'm1.ACCL'           : { 'type' : 'float', 'value': 0.002, 'asg' : 'default' },
-        'm1.VELO'           : { 'type' : 'float', 'value': 100.0, 'asg' : 'default' },
-
-        'm2.DESC'           : { 'type' : 'string', 'value': "Motor Y", 'asg' : 'default'},
-        'm2'                : { 'type' : 'float', 'value': 500.0, 'asg' : 'default' },
-        'm2.VAL'            : { 'type' : 'float', 'value': 700.0, 'asg' : 'default' },
-        'm2.RBV'            : { 'type' : 'float', 'value': 500.0, 'asg' : 'default' },
-        'm2.MOVN'           : { 'type' : 'int', 'value': 0, 'asg' : 'default' },
-        'm2.STOP'           : { 'type' : 'int', 'value': 0, 'asg' : 'default' },
-        'm2.ACCL'           : { 'type' : 'float', 'value': 0.002, 'asg' : 'default' },
-        'm2.VELO'           : { 'type' : 'float', 'value': 100.0, 'asg' : 'default' },
-
+    "Run": {"type": "enum", "enums": ["STOP", "RUN"], "asg": "default"},
+    "ReadOnly": {"type": "enum", "enums": ["FALSE", "TRUE"], "value": 0},
+    "XPos": {"prec": 2, "value": 0.0, "asg": "default"},
+    "YPos": {"prec": 2, "value": 0.0, "asg": "default"},
+    "Image": {
+        "type": "char",
+        "count": IMAGE_SIZE**2,
+        "value": numpy.zeros(IMAGE_SIZE**2, dtype=numpy.uint8),
+        "asg": "default",
+    },
+    "ImageWidth": {"type": "int", "value": IMAGE_SIZE, "asg": "default"},
+    "m1.DESC": {"type": "string", "value": "Motor X", "asg": "default"},
+    "m1": {"type": "float", "value": 500.0, "asg": "default"},
+    "m1.VAL": {"type": "float", "value": 600.0, "asg": "default"},
+    "m1.RBV": {"type": "float", "value": 500.0, "asg": "default"},
+    "m1.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m1.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m1.ACCL": {"type": "float", "value": 0.002, "asg": "default"},
+    "m1.VELO": {"type": "float", "value": 100.0, "asg": "default"},
+    "m2.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m2": {"type": "float", "value": 500.0, "asg": "default"},
+    "m2.VAL": {"type": "float", "value": 700.0, "asg": "default"},
+    "m2.RBV": {"type": "float", "value": 500.0, "asg": "default"},
+    "m2.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m2.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m2.ACCL": {"type": "float", "value": 0.002, "asg": "default"},
+    "m2.VELO": {"type": "float", "value": 100.0, "asg": "default"},
 }
+
 
 def gaussian_2d(x, y, x0, y0, xsig, ysig):
     return numpy.exp(-0.5 * (((x - x0) / xsig) ** 2 + ((y - y0) / ysig) ** 2))
 
-class myDriver(Driver):
 
+class myDriver(Driver):
     def __init__(self):
         Driver.__init__(self)
         self.eid = threading.Event()
@@ -65,18 +66,30 @@ class myDriver(Driver):
         self.tid.setDaemon(True)
         self.tid.start()
 
-        self.motorXThread = threading.Thread(target=self.updateMotor, args=('m1', 'XPos',))
+        self.motorXThread = threading.Thread(
+            target=self.updateMotor,
+            args=(
+                "m1",
+                "XPos",
+            ),
+        )
         self.motorXThread.setDaemon(True)
         self.motorXThread.start()
 
-        self.motorYThread = threading.Thread(target=self.updateMotor, args=('m2', 'YPos',))
+        self.motorYThread = threading.Thread(
+            target=self.updateMotor,
+            args=(
+                "m2",
+                "YPos",
+            ),
+        )
         self.motorYThread.setDaemon(True)
         self.motorYThread.start()
 
     def updateMotor(self, motorVarName, axisVarName):
         # mimic the functionality of fully-simulated motor and camera
-        
-        sleepTime = 0.2 # set arbitrarily to match timing when fully-simulated
+
+        sleepTime = 0.2  # set arbitrarily to match timing when fully-simulated
         motorRbvName = motorVarName + ".RBV"
         motorMovingVarName = motorVarName + ".MOVN"
         motorStopVarName = motorVarName + ".STOP"
@@ -86,9 +99,9 @@ class myDriver(Driver):
             time.sleep(sleepTime)
             motorParam = self.getParam(motorVarName)
 
-            if motorParam != motorRbv: # need to move motor
+            if motorParam != motorRbv:  # need to move motor
                 self.setParam(motorMovingVarName, 1)
-                
+
                 # for Motor X: 'Tw +10' = move right, 'Tw -10' = move left
                 # for Motor Y:'Tw +10' = move up, 'Tw -10' = move down left
                 motorMoveAmount = 10 if motorRbv < motorParam else -10
@@ -104,17 +117,17 @@ class myDriver(Driver):
                     motorRbv = motorRbv + motorMoveAmount
                     self.setParam(motorRbvName, motorRbv)
                     axis_pos = self.getParam(axisVarName)
-                    self.setParam(axisVarName, axis_pos  + imageMoveAmount)
+                    self.setParam(axisVarName, axis_pos + imageMoveAmount)
                     self.updatePVs()
 
                     time.sleep(sleepTime)
-                
+
                 self.setParam(motorStopVarName, 0)
                 # if stopped, set motorVar line-edit to the motorRBV text-field value
                 # (motor was stopped before reaching the originally entered value)
                 if motorParam != motorRbv:
-                    self.setParam(motorVarName, motorRbv) 
-                
+                    self.setParam(motorVarName, motorRbv)
+
                 self.setParam(motorMovingVarName, 0)
                 self.updatePVs()
 
@@ -126,32 +139,35 @@ class myDriver(Driver):
 
         while True:
             # Generate the image data
-            x0 = 0.5 * (numpy.random.rand() - 0.5) + self.getParam('XPos')
-            y0 = 0.5 * (numpy.random.rand() - 0.5) - self.getParam('YPos')
+            x0 = 0.5 * (numpy.random.rand() - 0.5) + self.getParam("XPos")
+            y0 = 0.5 * (numpy.random.rand() - 0.5) - self.getParam("YPos")
             xsig = 0.8 - 0.2 * numpy.random.rand()
             ysig = 0.8 - 0.2 * numpy.random.rand()
             z = gaussian_2d(xgrid, ygrid, x0, y0, xsig, ysig)
-            image_data = numpy.abs(256.0 * (z)).flatten(order='C').astype(numpy.uint8, copy=False)
-            self.setParam('Image', image_data)
+            image_data = numpy.abs(256.0 * (z)).flatten(order="C").astype(numpy.uint8, copy=False)
+            self.setParam("Image", image_data)
 
             # do updates so clients see the changes
             self.updatePVs()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     try:
-        print('Starting testing-ioc')
-        print('To start processing records do: caput ' + prefix + 'Run 1')
+        print("Starting testing-ioc")
+        print("To start processing records do: caput " + prefix + "Run 1")
         server = SimpleServer()
-        server.initAccessSecurityFile(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'access_rules.as'), P=prefix)
+        server.initAccessSecurityFile(
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "access_rules.as"), P=prefix
+        )
         server.createPV(prefix, pvdb)
         driver = myDriver()
 
         # Manually set the ReadOnly PV to force access rule calculation.
         # You can set ReadOnly to 1 to disable write access on all PVs.
-        driver.setParam('ReadOnly', 0)
+        driver.setParam("ReadOnly", 0)
 
         # process CA transactions
         while True:
             server.process(0.03)
     except KeyboardInterrupt:
-        print('\nInterrupted... finishing testing-ioc')
+        print("\nInterrupted... finishing testing-ioc")
