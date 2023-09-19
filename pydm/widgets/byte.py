@@ -15,6 +15,7 @@ class PyDMBitIndicator(QWidget):
         The parent widget for the Label
 
     """
+
     def __init__(self, parent: Optional[QWidget] = None, circle: bool = False):
         super(PyDMBitIndicator, self).__init__(parent)
         self.circle = circle
@@ -77,6 +78,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent: Optional[QWidget] = None, init_channel=None):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
@@ -201,8 +203,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         if value < 0:
             value = 0
 
-        bits = [(value >> i) & 1
-                for i in range(self._num_bits)]
+        bits = [(value >> i) & 1 for i in range(self._num_bits)]
         for bit, indicator in zip(bits, self._indicators):
             if self._connected:
                 if self._alarm_state == 3:
@@ -352,10 +353,12 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         self._big_endian = is_big_endian
 
-        origin_map = {(Qt.Vertical, True): Qt.BottomLeftCorner,
-                      (Qt.Vertical, False): Qt.TopLeftCorner,
-                      (Qt.Horizontal, True): Qt.TopRightCorner,
-                      (Qt.Horizontal, False): Qt.TopLeftCorner}
+        origin_map = {
+            (Qt.Vertical, True): Qt.BottomLeftCorner,
+            (Qt.Vertical, False): Qt.TopLeftCorner,
+            (Qt.Horizontal, True): Qt.TopRightCorner,
+            (Qt.Horizontal, False): Qt.TopLeftCorner,
+        }
 
         origin = origin_map[(self.orientation, self.bigEndian)]
         self.layout().setOriginCorner(origin)
@@ -436,8 +439,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self._num_bits = new_num_bits
         for indicator in self._indicators:
             indicator.deleteLater()
-        self._indicators = [PyDMBitIndicator(parent=self, circle=self.circles)
-                            for i in range(0, self._num_bits)]
+        self._indicators = [PyDMBitIndicator(parent=self, circle=self.circles) for i in range(0, self._num_bits)]
         old_labels = self.labels
         new_labels = ["Bit {}".format(i) for i in range(0, self._num_bits)]
         for i, old_label in enumerate(old_labels):
@@ -469,7 +471,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self._shift = new_shift
         self.update_indicators()
 
-    @Property('QStringList')
+    @Property("QStringList")
     def labels(self) -> List[str]:
         """
         Labels for each bit.
@@ -478,7 +480,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         -------
         list
         """
-        return [str(l.text()) for l in self._labels]
+        return [str(currLabel.text()) for currLabel in self._labels]
 
     @labels.setter
     def labels(self, new_labels: List[str]) -> None:
@@ -510,7 +512,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         try:
             int(new_val)
             self.update_indicators()
-        except:
+        except Exception:
             pass
 
     def paintEvent(self, _) -> None:
@@ -551,5 +553,5 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
 
             # Checks if _shift attribute exits because base class can call method
             # before the object constructor is complete
-            if hasattr(self, '_shift'):
+            if hasattr(self, "_shift"):
                 self.update_indicators()

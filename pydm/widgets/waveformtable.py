@@ -26,9 +26,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self._columnHeaders = ["Value"]
         self._rowHeaders = []
-        self._itemsFlags = (Qt.ItemIsSelectable |
-                            Qt.ItemIsEditable |
-                            Qt.ItemIsEnabled)
+        self._itemsFlags = Qt.ItemIsSelectable | Qt.ItemIsEditable | Qt.ItemIsEnabled
         self.waveform = None
         self._valueBeingSet = False
         self.setColumnCount(1)
@@ -48,10 +46,10 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         self.waveform = new_waveform
         col_count = self.columnCount()
         len_wave = len(new_waveform)
-        row_count = len_wave//col_count + (1 if len_wave % col_count else 0)
+        row_count = len_wave // col_count + (1 if len_wave % col_count else 0)
         self.setRowCount(row_count)
         for ind, element in enumerate(new_waveform):
-            i, j = ind//col_count, ind % col_count
+            i, j = ind // col_count, ind % col_count
             value_cell = QTableWidgetItem(str(element))
             value_cell.setFlags(self._itemsFlags)
             self.setItem(i, j, value_cell)
@@ -76,7 +74,7 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         item = self.item(row, column)
         if item and self.subtype:
             new_val = self.subtype(item.text())
-            ind = row*self.columnCount() + column
+            ind = row * self.columnCount() + column
             self.waveform[ind] = new_val
             self.send_value_signal[np.ndarray].emit(self.waveform)
 
@@ -88,9 +86,9 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         PyDMWritableWidget.check_enable_state(self)
         self.setEnabled(True)
         if self._write_access and self._connected:
-            self._itemsFlags = Qt.ItemIsSelectable|Qt.ItemIsEditable|Qt.ItemIsEnabled
+            self._itemsFlags = Qt.ItemIsSelectable | Qt.ItemIsEditable | Qt.ItemIsEnabled
         elif self._connected:
-            self._itemsFlags = Qt.ItemIsSelectable|Qt.ItemIsEnabled
+            self._itemsFlags = Qt.ItemIsSelectable | Qt.ItemIsEnabled
         else:
             self._itemsFlags = Qt.ItemIsSelectable
         for col in range(0, self.columnCount()):

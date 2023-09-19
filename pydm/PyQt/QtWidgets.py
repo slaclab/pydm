@@ -1,1 +1,1 @@
-from qtpy.QtWidgets import *
+from qtpy.QtWidgets import *  # noqa: F403

@@ -1,5 +1,5 @@
 from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
-from qtpy.QtWidgets import QAction, QFrame, QApplication, QLabel, QMenu, QVBoxLayout, QWidget
+from qtpy.QtWidgets import QAction, QFrame, QApplication, QLabel, QMenu, QVBoxLayout
 from qtpy.QtCore import QPoint, Qt, QSize, Property, QTimer
 
 import copy
@@ -7,14 +7,20 @@ import os.path
 import logging
 from .base import PyDMPrimitiveWidget
 from .baseplot import BasePlot
-from ..utilities import (is_pydm_app, establish_widget_connections,
-                         close_widget_connections, macro, is_qt_designer,
-                         find_file)
-from ..display import (load_file, ScreenTarget)
+from ..utilities import (
+    is_pydm_app,
+    establish_widget_connections,
+    close_widget_connections,
+    macro,
+    is_qt_designer,
+    find_file,
+)
+from ..display import load_file, ScreenTarget
 
 logger = logging.getLogger(__name__)
 
-_embeddedDisplayRuleProperties = {'Filename': ['filename', str]}
+_embeddedDisplayRuleProperties = {"Filename": ["filename", str]}
+
 
 class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedDisplayRuleProperties):
     """
@@ -40,9 +46,10 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         self._needs_load = True
         self._load_error_timer = None
         self._load_error = None
+        self._follow_symlinks = False
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_context_menu)
-        self.open_in_new_window_action = QAction('Open in New Window', self)
+        self.open_in_new_window_action = QAction("Open in New Window", self)
         self.open_in_new_window_action.triggered.connect(self.open_display_in_new_window)
 
         self.layout = QVBoxLayout(self)
@@ -193,8 +200,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         return parent_macros
 
     def load_if_needed(self):
-        if self._needs_load and (
-                not self._only_load_when_shown or self.isVisible() or is_qt_designer()):
+        if self._needs_load and (not self._only_load_when_shown or self.isVisible() or is_qt_designer()):
             self.embedded_widget = self.open_file()
 
     def open_file(self, force=False):
@@ -207,7 +213,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         """
         if (not force) and (not self._needs_load):
             return
-            
+
         if not self.filename:
             return
 
@@ -215,7 +221,10 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
             parent_display = self.find_parent_display()
             base_path = ""
             if parent_display:
-                base_path = os.path.dirname(parent_display.loaded_file())
+                parent_file_path = parent_display.loaded_file()
+                if self._follow_symlinks:
+                    parent_file_path = os.path.realpath(parent_file_path)
+                base_path = os.path.dirname(parent_file_path)
 
             fname = find_file(self.filename, base_path=base_path, raise_if_not_found=True)
             w = load_file(fname, macros=self.parsed_macros(), target=None)
@@ -240,9 +249,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         self.err_label.hide()
 
     def display_error_text(self, e):
-        self.err_label.setText(
-            "Could not open {filename}.\nError: {err}".format(
-                filename=self._filename, err=e))
+        self.err_label.setText("Could not open {filename}.\nError: {err}".format(filename=self._filename, err=e))
         self.err_label.show()
 
     @property
@@ -265,7 +272,6 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         ----------
         new_widget : QWidget
         """
-        should_reconnect = False
         if new_widget is self._embedded_widget:
             return
         if self._embedded_widget is not None:
@@ -308,16 +314,16 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         if you have many different PyDMEmbeddedWidgets in different tabs of a
         QTabBar or PyDMTabBar: only the tab that the user is looking at will
         be loaded, which can greatly speed up the launch time of a display.
-        
+
         If this property is changed from 'True' to 'False', and the file has
         not been loaded yet, it will be loaded immediately.
-        
+
         Returns
         -------
         bool
         """
         return self._only_load_when_shown
-        
+
     @loadWhenShown.setter
     def loadWhenShown(self, val):
         self._only_load_when_shown = val
@@ -344,6 +350,36 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         disconnect_when_hidden : bool
         """
         self._disconnect_when_hidden = disconnect_when_hidden
+
+    @Property(bool)
+    def followSymlinks(self) -> bool:
+        """
+        If True, any symlinks in the path to filename (including the base path of the parent display)
+        will be followed, so that it will always use the canonical path. If False (default),
+        the file will be searched without canonicalizing the path beforehand.
+
+        Note that it will not work on Windows if you're using a Python version prior to 3.8.
+
+        Returns
+        -------
+        bool
+        """
+        return self._follow_symlinks
+
+    @followSymlinks.setter
+    def followSymlinks(self, follow_symlinks: bool) -> None:
+        """
+        If True, any symlinks in the path to filename (including the base path of the parent display)
+        will be followed, so that it will always use the canonical path.
+        If False (default), the file will be searched using the non-canonical path.
+
+        Note that it will not work on Windows if you're using a Python version prior to 3.8.
+
+        Parameters
+        ----------
+        follow_symlinks : bool
+        """
+        self._follow_symlinks = follow_symlinks
 
     def showEvent(self, e):
         """
@@ -378,19 +414,19 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
             self.display_error_text(self._load_error)
 
     def open_display_in_new_window(self) -> None:
-        """ Open the embedded display in a new window """
+        """Open the embedded display in a new window"""
         if not self.filename:
             return
-        file_path = find_file(self.filename, base_path='', raise_if_not_found=True)
+        file_path = find_file(self.filename, base_path="", raise_if_not_found=True)
         macros = self.parsed_macros()
 
         if is_pydm_app():
             load_file(file_path, macros=macros)
         else:
-            w = load_file(file_path, macros=macros, target=ScreenTarget.DIALOG)
+            load_file(file_path, macros=macros, target=ScreenTarget.DIALOG)
 
     def create_context_menu(self, pos: QPoint) -> QMenu:
-        """ Create the right-click context menu for this embedded widget based on the location of the mouse click """
+        """Create the right-click context menu for this embedded widget based on the location of the mouse click"""
         if self._embedded_widget is None:
             return
 
@@ -426,7 +462,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         return menu
 
     def show_context_menu(self, pos: QPoint) -> None:
-        """ Display the right-click context menu for this embedded widget at the location of the mouse click """
+        """Display the right-click context menu for this embedded widget at the location of the mouse click"""
         menu = self.create_context_menu(pos)
         if menu is not None:
             menu.exec_(self.mapToGlobal(pos))

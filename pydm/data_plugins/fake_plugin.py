@@ -4,7 +4,6 @@ import random
 
 
 class Connection(PyDMConnection):
-
     def __init__(self, widget, address, protocol=None, parent=None):
         super(Connection, self).__init__(widget, address, protocol, parent)
         self.add_listener(widget)
@@ -30,4 +29,3 @@ class Connection(PyDMConnection):
 class FakePlugin(PyDMPlugin):
     protocol = "fake"
     connection_class = Connection
-

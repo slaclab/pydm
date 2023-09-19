@@ -2,7 +2,7 @@
 import os
 import logging
 
-from qtpy.QtWidgets import QApplication, QWidget
+from qtpy.QtWidgets import QApplication
 
 from ..config import STYLESHEET, STYLESHEET_INCLUDE_DEFAULT
 
@@ -12,11 +12,7 @@ logger = logging.getLogger(__name__)
 # Fallback global stylesheet if there is no global stylesheet provided via env
 # variable or command line parameter
 GLOBAL_STYLESHEET = os.path.realpath(
-    os.path.join(
-        os.path.dirname(os.path.realpath(__file__)),
-        '..',
-        'default_stylesheet.qss'
-    )
+    os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "default_stylesheet.qss")
 )
 
 __style_data = None
@@ -93,28 +89,23 @@ def _get_style_data(stylesheet_file_path=None):
             if not f:
                 continue
             try:
-                with open(f, 'r') as stylesheet_file:
-                    logger.debug(
-                        "Opening style file '{0}'...".format(stylesheet_file_path))
+                with open(f, "r") as stylesheet_file:
+                    logger.debug("Opening style file '{0}'...".format(stylesheet_file_path))
                     __style_data += stylesheet_file.read()
                     load_default = False
             except Exception as ex:
-                logger.error(
-                    "Error reading the stylesheet file '{0}'. Exception: {1}".format(
-                        f, str(ex)))
+                logger.error("Error reading the stylesheet file '{0}'. Exception: {1}".format(f, str(ex)))
 
     if load_default or STYLESHEET_INCLUDE_DEFAULT:
         try:
-            with open(GLOBAL_STYLESHEET, 'r') as default_stylesheet:
-                logger.debug("Opening the default stylesheet '{0}'...".format(
-                    GLOBAL_STYLESHEET))
+            with open(GLOBAL_STYLESHEET, "r") as default_stylesheet:
+                logger.debug("Opening the default stylesheet '{0}'...".format(GLOBAL_STYLESHEET))
                 __style_data = default_stylesheet.read() + __style_data
         except Exception as ex:
             __style_data = None
             logger.error(
-                "Cannot find the default stylesheet file '{0}'. Exception: {1}".format(
-                    GLOBAL_STYLESHEET,
-                    str(ex)))
+                "Cannot find the default stylesheet file '{0}'. Exception: {1}".format(GLOBAL_STYLESHEET, str(ex))
+            )
     return __style_data
 
 

@@ -8,8 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class PythonTableModel(QtCore.QAbstractTableModel):
-    def __init__(self, column_names, initial_list=None, parent=None,
-                 edit_method=None, can_edit_method=None):
+    def __init__(self, column_names, initial_list=None, parent=None, edit_method=None, can_edit_method=None):
         super().__init__(parent=parent)
         self.parent = parent
         self._list = None
@@ -39,8 +38,7 @@ class PythonTableModel(QtCore.QAbstractTableModel):
         if self.edit_method is not None:
             editable = True
             if self.can_edit_method is not None:
-                editable = self.can_edit_method(
-                    self._list[index.row()][index.column()])
+                editable = self.can_edit_method(self._list[index.row()][index.column()])
             if editable:
                 f = f | QtCore.Qt.ItemIsEditable
         return f
@@ -82,24 +80,22 @@ class PythonTableModel(QtCore.QAbstractTableModel):
             return False
 
         success = self.edit_method(self.parent, index.row(), index.column(), value)
-        
+
         if success:
             self.dataChanged.emit(index, index)
         return success
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         if role != QtCore.Qt.DisplayRole:
-            return super(PythonTableModel, self).headerData(section,
-                                                            orientation, role)
-        if orientation == QtCore.Qt.Horizontal \
-                and section < self.columnCount():
+            return super(PythonTableModel, self).headerData(section, orientation, role)
+        if orientation == QtCore.Qt.Horizontal and section < self.columnCount():
             return str(self._column_names[section])
         elif orientation == QtCore.Qt.Vertical and section < self.rowCount():
             return section
 
     def sort(self, col, order=QtCore.Qt.AscendingOrder):
         self.layoutAboutToBeChanged.emit()
-        sort_reversed = (order == QtCore.Qt.AscendingOrder)
+        sort_reversed = order == QtCore.Qt.AscendingOrder
         self._list.sort(key=itemgetter(col), reverse=sort_reversed)
         self.layoutChanged.emit()
 
@@ -133,14 +129,12 @@ class PythonTableModel(QtCore.QAbstractTableModel):
         self.endRemoveRows()
 
     def append(self, value):
-        self.beginInsertRows(QtCore.QModelIndex(), len(self._list),
-                             len(self._list))
+        self.beginInsertRows(QtCore.QModelIndex(), len(self._list), len(self._list))
         self._list.append(value)
         self.endInsertRows()
 
     def extend(self, values):
-        self.beginInsertRows(QtCore.QModelIndex(), len(self._list),
-                             len(self._list) + len(values) - 1)
+        self.beginInsertRows(QtCore.QModelIndex(), len(self._list), len(self._list) + len(values) - 1)
         self._list.extend(values)
         self.endInsertRows()
 
@@ -170,25 +164,26 @@ class PythonTableModel(QtCore.QAbstractTableModel):
 
 class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
     """
-    The PyDMNTTable is a table widget used to display PVA NTTable data. 
+    The PyDMNTTable is a table widget used to display PVA NTTable data.
 
-    The PyDMNTTable has two ways of filling the table from the data. 
-    If the incoming data dictionary has a 'labels' and/or a 'value' key. 
-    Then the list of labels will be set with the data from the 'labels' key. 
-    While the data from the 'value' key will be used to set the values in the table. 
+    The PyDMNTTable has two ways of filling the table from the data.
+    If the incoming data dictionary has a 'labels' and/or a 'value' key.
+    Then the list of labels will be set with the data from the 'labels' key.
+    While the data from the 'value' key will be used to set the values in the table.
     if neither 'labels' or 'value' key are present in the incoming 'data' dictionary,
-    then the keys of the data dictionary are set as the labels 
-    and all the values stored by the keys will make up the values of the table. 
-    
+    then the keys of the data dictionary are set as the labels
+    and all the values stored by the keys will make up the values of the table.
+
     Parameters
         ----------
         parent : QWidget, optional
             The parent widget for the PyDMNTTable
         init_channel : str, optional
-            The channel to be used by the widget. 
+            The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
-        self._read_only = True 
+        self._read_only = True
 
         super().__init__(parent=parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
@@ -208,7 +203,7 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
     def readOnly(self, value):
         if self._read_only != value:
             self._read_only = value
-        
+
     def check_enable_state(self):
         """
         Checks whether or not the widget should be disable.
@@ -218,11 +213,11 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         self.setEnabled(True)
         tooltip = self.toolTip()
 
-        if self.readOnly: 
-            if tooltip != '':
-                tooltip += '\n'
+        if self.readOnly:
+            if tooltip != "":
+                tooltip += "\n"
             tooltip += "Running PyDMNTTable on Read-Only mode."
-        
+
         self.setToolTip(tooltip)
 
     def value_changed(self, data=None):
@@ -232,42 +227,38 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         Parameters
         ----------
         data : dict
-            The new value from the channel. 
+            The new value from the channel.
         """
         if data is None:
             return
-        
-        super(PyDMNTTable, self).value_changed(data)
-    
-        labels = data.get('labels', None)
-        values = data.get('value', {})
 
-        if not values: 
+        super(PyDMNTTable, self).value_changed(data)
+
+        labels = data.get("labels", None)
+        values = data.get("value", {})
+
+        if not values:
             values = data.values()
-        
+
         if labels is None or len(labels) == 0:
             labels = data.keys()
             labels = list(labels)
-        
+
         try:
-            values = list(zip(*[v for k, v in data.items()]))
+            values = list(zip(*[v for k, v in data.items() if k != "labels"]))
         except TypeError:
             logger.exception("NTTable value items must be iterables.")
 
         self._table_values = values
 
         if labels != self._table_labels:
-            
             if not self.readOnly:
                 self.edit_method = PyDMNTTable.send_table
             else:
                 self.edit_method = None
 
             self._table_labels = labels
-            self._model = PythonTableModel(labels, 
-                                           initial_list=values, 
-                                           parent=self,
-                                           edit_method=self.edit_method)
+            self._model = PythonTableModel(labels, initial_list=values, parent=self, edit_method=self.edit_method)
             self._table.setModel(self._model)
         else:
             self._model.list = values
@@ -275,13 +266,13 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
     def send_table(self, row, column, value):
         """
         Update Channel value when cell value is changed.
-        
+
         Parameters
         ----------
-        row : int 
+        row : int
             index of row
-        column : int 
-            index of column 
+        column : int
+            index of column
         value : str
             new value of cell
         """
@@ -296,9 +287,11 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         else:
             self.value[self._table_labels[column]][row] = value
 
+        value_to_send = {k: v for k, v in self.value.items() if k != "labels"}
+
         # dictionary needs to be wrapped in another dictionary with a key 'value'
-        # to be passed back to the p4p plugin. 
-        emit_dict = {'value': self.value}  
-        
+        # to be passed back to the p4p plugin.
+        emit_dict = {"value": value_to_send}
+
         self.send_value_signal[dict].emit(emit_dict)
         return True

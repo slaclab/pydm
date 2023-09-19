@@ -38,6 +38,7 @@
     </property>
     <addaction name="actionOpen_File"/>
     <addaction name="separator"/>
+    <addaction name="actionChange_Stylesheet"/>
     <addaction name="actionEdit_in_Designer"/>
     <addaction name="actionReload_Display"/>
     <addaction name="separator"/>
@@ -61,6 +62,7 @@
     <addaction name="actionShow_Menu_Bar"/>
     <addaction name="actionShow_Status_Bar"/>
     <addaction name="actionShow_Connections"/>
+    <addaction name="actionShow_Help"/>
    </widget>
    <widget class="QMenu" name="menuHistory">
     <property name="title">
@@ -324,6 +326,11 @@
    </property>
    <property name="text">
     <string>Load</string>
+   </property>
+  </action>
+  <action name="actionChange_Stylesheet">
+   <property name="text">
+    <string>Change Stylesheet</string>
    </property>
   </action>
  </widget>

@@ -37,7 +37,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         Width of the line connecting the data points.
     redraw_mode: int, optional
         Must be one four values:
-        
+
         - WaveformCurveItem.REDRAW_ON_EITHER: (Default) Redraw after either X or Y receives new data.
         - WaveformCurveItem.REDRAW_ON_X: Redraw after X receives new data.
         - WaveformCurveItem.REDRAW_ON_Y: Redraw after Y receives new data.
@@ -45,20 +45,20 @@ class WaveformCurveItem(BasePlotCurveItem):
     **kargs: optional
         PlotDataItem keyword arguments, such as symbol and symbolSize.
     """
-    _channels = ('x_channel', 'y_channel')
 
-    def __init__(self, y_addr=None, x_addr=None, redraw_mode=None, plot_style='Line', **kws):
+    _channels = ("x_channel", "y_channel")
+
+    def __init__(self, y_addr=None, x_addr=None, redraw_mode=None, plot_style="Line", **kws):
         y_addr = "" if y_addr is None else y_addr
-        if kws.get('name') is None:
+        if kws.get("name") is None:
             y_name = remove_protocol(y_addr)
             if x_addr is None:
                 plot_name = y_name
             else:
                 x_name = remove_protocol(x_addr)
                 plot_name = "{y} vs. {x}".format(y=y_name, x=x_name)
-            kws['name'] = plot_name
-        self.redraw_mode = (redraw_mode if redraw_mode is not None
-                            else self.REDRAW_ON_EITHER)
+            kws["name"] = plot_name
+        self.redraw_mode = redraw_mode if redraw_mode is not None else self.REDRAW_ON_EITHER
         self.needs_new_x = True
         self.needs_new_y = True
         self.x_channel = None
@@ -86,9 +86,9 @@ class WaveformCurveItem(BasePlotCurveItem):
         -------
         OrderedDict
         """
-        dic_ = OrderedDict([("y_channel", self.y_address),
-                            ("x_channel", self.x_address),
-                            ("plot_style", self.plot_style)])
+        dic_ = OrderedDict(
+            [("y_channel", self.y_address), ("x_channel", self.x_address), ("plot_style", self.plot_style)]
+        )
         dic_.update(super(WaveformCurveItem, self).to_dict())
         dic_["redraw_mode"] = self.redraw_mode
         return dic_
@@ -119,9 +119,8 @@ class WaveformCurveItem(BasePlotCurveItem):
             self.x_channel = None
             return
         self.x_channel = PyDMChannel(
-                            address=new_address,
-                            connection_slot=self.xConnectionStateChanged,
-                            value_slot=self.receiveXWaveform)
+            address=new_address, connection_slot=self.xConnectionStateChanged, value_slot=self.receiveXWaveform
+        )
 
     @property
     def y_address(self):
@@ -149,9 +148,8 @@ class WaveformCurveItem(BasePlotCurveItem):
             self.y_channel = None
             return
         self.y_channel = PyDMChannel(
-                            address=new_address,
-                            connection_slot=self.yConnectionStateChanged,
-                            value_slot=self.receiveYWaveform)
+            address=new_address, connection_slot=self.yConnectionStateChanged, value_slot=self.receiveYWaveform
+        )
 
     def update_waveforms_if_ready(self):
         """
@@ -194,7 +192,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         Handler for new x waveform data.  This method is usually called by a
         PyDMChannel when it updates.  You can call this yourself to inject data
         into the curve.
-        
+
         Parameters
         ----------
         new_waveform: numpy.ndarray
@@ -216,7 +214,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         Handler for new y waveform data.  This method is usually called by a
         PyDMChannel when it updates.  You can call this yourself to inject data
         into the curve.
-        
+
         Parameters
         ----------
         new_waveform: numpy.ndarray
@@ -243,27 +241,27 @@ class WaveformCurveItem(BasePlotCurveItem):
             return
         if self.x_waveform is not None:
             if self.x_waveform.shape[0] > self.y_waveform.shape[0]:
-                self.x_waveform = self.x_waveform[:self.y_waveform.shape[0]]
+                self.x_waveform = self.x_waveform[: self.y_waveform.shape[0]]
             elif self.x_waveform.shape[0] < self.y_waveform.shape[0]:
-                self.y_waveform = self.y_waveform[:self.x_waveform.shape[0]]
+                self.y_waveform = self.y_waveform[: self.x_waveform.shape[0]]
 
-        if self.plot_style is None or self.plot_style == 'Line':
+        if self.plot_style is None or self.plot_style == "Line":
             self._setCurveData()
-        elif self.plot_style == 'Bar':
+        elif self.plot_style == "Bar":
             self._setBarGraphItem()
 
         self.needs_new_x = True
         self.needs_new_y = True
 
     def _setCurveData(self):
-        """ Sets the most recently received waveform data for display as a line graph. """
+        """Sets the most recently received waveform data for display as a line graph."""
         if self.x_waveform is None:
             self.setData(y=self.y_waveform.astype(float))
             return
         self.setData(x=self.x_waveform.astype(float), y=self.y_waveform.astype(float))
 
     def _setBarGraphItem(self):
-        """ Sets the most recently received waveform data for display as a bar graph. """
+        """Sets the most recently received waveform data for display as a bar graph."""
         if self.y_waveform is None:
             return
 
@@ -275,14 +273,10 @@ class WaveformCurveItem(BasePlotCurveItem):
                 brushes[np.argwhere(self.y_waveform < self.lower_threshold)] = self.threshold_color
 
         if self.x_waveform is None:
-            self.bar_graph_item.setOpts(x=np.arange(len(self.y_waveform)),
-                                        height=self.y_waveform,
-                                        brushes=brushes)
+            self.bar_graph_item.setOpts(x=np.arange(len(self.y_waveform)), height=self.y_waveform, brushes=brushes)
             return
 
-        self.bar_graph_item.setOpts(x=self.x_waveform,
-                                    height=self.y_waveform,
-                                    brushes=brushes)
+        self.bar_graph_item.setOpts(x=self.x_waveform, height=self.y_waveform, brushes=brushes)
 
     def limits(self):
         """
@@ -296,14 +290,16 @@ class WaveformCurveItem(BasePlotCurveItem):
         if self.y_waveform is None or self.y_waveform.shape[0] == 0:
             raise NoDataError("Curve has no Y data, cannot determine limits.")
         if self.x_waveform is None:
-            yspan = (float(np.amax(self.y_waveform)) -
-                     float(np.amin(self.y_waveform)))
-            return ((0, len(self.y_waveform)),
-                    (float(np.amin(self.y_waveform) - yspan),
-                     float(np.amax(self.y_waveform) + yspan)))
+            yspan = float(np.amax(self.y_waveform)) - float(np.amin(self.y_waveform))
+            return (
+                (0, len(self.y_waveform)),
+                (float(np.amin(self.y_waveform) - yspan), float(np.amax(self.y_waveform) + yspan)),
+            )
         else:
-            return ((float(np.amin(self.x_waveform)), float(np.amax(self.x_waveform))),
-                    (float(np.amin(self.y_waveform)), float(np.amax(self.y_waveform))))
+            return (
+                (float(np.amin(self.x_waveform)), float(np.amax(self.x_waveform))),
+                (float(np.amin(self.y_waveform)), float(np.amax(self.y_waveform))),
+            )
 
     def channels(self):
         return [self.y_channel, self.x_channel]
@@ -340,8 +336,7 @@ class PyDMWaveformPlot(BasePlot):
         pyqtgraph.mkColor will accept.
     """
 
-    def __init__(self, parent=None, init_x_channels=[], init_y_channels=[],
-                 background='default'):
+    def __init__(self, parent=None, init_x_channels=[], init_y_channels=[], background="default"):
         super(PyDMWaveformPlot, self).__init__(parent, background)
         # If the user supplies a single string instead of a list,
         # wrap it in a list.
@@ -350,17 +345,15 @@ class PyDMWaveformPlot(BasePlot):
         if isinstance(init_y_channels, str):
             init_y_channels = [init_y_channels]
         if len(init_x_channels) == 0:
-            init_x_channels = list(itertools.repeat(None,
-                                                    len(init_y_channels)))
+            init_x_channels = list(itertools.repeat(None, len(init_y_channels)))
         if len(init_x_channels) != len(init_y_channels):
-            raise ValueError("If lists are provided for both X and Y " +
-                             "channels, they must be the same length.")
+            raise ValueError("If lists are provided for both X and Y " + "channels, they must be the same length.")
         # self.channel_pairs is an ordered dictionary that is keyed on a
         # (x_channel, y_channel) tuple, with WaveformCurveItem values.
         # It gets populated in self.addChannel().
         self.channel_pairs = OrderedDict()
         init_channel_pairs = zip(init_x_channels, init_y_channels)
-        for (x_chan, y_chan) in init_channel_pairs:
+        for x_chan, y_chan in init_channel_pairs:
             self.addChannel(y_chan, x_channel=x_chan)
 
     def initialize_for_designer(self):
@@ -368,10 +361,24 @@ class PyDMWaveformPlot(BasePlot):
         # This function gets called by PyDMTimePlot's designer plugin.
         pass
 
-    def addChannel(self, y_channel=None, x_channel=None, plot_style=None, name=None,
-                   color=None, lineStyle=None, lineWidth=None,
-                   symbol=None, symbolSize=None, barWidth=None, upperThreshold=None,
-                   lowerThreshold=None, thresholdColor=None, redraw_mode=None, yAxisName=None):
+    def addChannel(
+        self,
+        y_channel=None,
+        x_channel=None,
+        plot_style=None,
+        name=None,
+        color=None,
+        lineStyle=None,
+        lineWidth=None,
+        symbol=None,
+        symbolSize=None,
+        barWidth=None,
+        upperThreshold=None,
+        lowerThreshold=None,
+        thresholdColor=None,
+        redraw_mode=None,
+        yAxisName=None,
+    ):
         """
         Add a new curve to the plot.  In addition to the arguments below,
         all other keyword arguments are passed to the underlying
@@ -419,25 +426,27 @@ class PyDMWaveformPlot(BasePlot):
             doesn't yet exist
         """
         plot_opts = {}
-        plot_opts['symbol'] = symbol
+        plot_opts["symbol"] = symbol
         if symbolSize is not None:
-            plot_opts['symbolSize'] = symbolSize
+            plot_opts["symbolSize"] = symbolSize
         if lineStyle is not None:
-            plot_opts['lineStyle'] = lineStyle
+            plot_opts["lineStyle"] = lineStyle
         if lineWidth is not None:
-            plot_opts['lineWidth'] = lineWidth
+            plot_opts["lineWidth"] = lineWidth
         if redraw_mode is not None:
-            plot_opts['redraw_mode'] = redraw_mode
+            plot_opts["redraw_mode"] = redraw_mode
         self._needs_redraw = False
-        curve = WaveformCurveItem(y_addr=y_channel,
-                                  x_addr=x_channel,
-                                  plot_style=plot_style,
-                                  name=name,
-                                  color=color,
-                                  yAxisName=yAxisName,
-                                  **plot_opts)
+        curve = WaveformCurveItem(
+            y_addr=y_channel,
+            x_addr=x_channel,
+            plot_style=plot_style,
+            name=name,
+            color=color,
+            yAxisName=yAxisName,
+            **plot_opts
+        )
         self.channel_pairs[(y_channel, x_channel)] = curve
-        if plot_style == 'Bar':
+        if plot_style == "Bar":
             if barWidth is None:
                 barWidth = 1.0  # Can't use default since it can be explicitly set to None and avoided
             curve.bar_graph_item = BarGraphItem(x=[], height=[], width=barWidth, brush=color)
@@ -519,26 +528,29 @@ class PyDMWaveformPlot(BasePlot):
             return
         self.clearCurves()
         for d in new_list:
-            color = d.get('color')
-            thresholdColor = d.get('thresholdColor')
+            color = d.get("color")
+            thresholdColor = d.get("thresholdColor")
             if color:
                 color = QColor(color)
             if thresholdColor:
                 thresholdColor = QColor(thresholdColor)
-            self.addChannel(d['y_channel'], d['x_channel'],
-                            plot_style=d.get('plot_style'),
-                            name=d.get('name'), color=color,
-                            lineStyle=d.get('lineStyle'),
-                            lineWidth=d.get('lineWidth'),
-                            symbol=d.get('symbol'),
-                            symbolSize=d.get('symbolSize'),
-                            barWidth=d.get('barWidth'),
-                            upperThreshold=d.get('upperThreshold'),
-                            lowerThreshold=d.get('lowerThreshold'),
-                            thresholdColor=thresholdColor,
-                            redraw_mode=d.get('redraw_mode'),
-                            yAxisName=d.get('yAxisName')
-                            )
+            self.addChannel(
+                d["y_channel"],
+                d["x_channel"],
+                plot_style=d.get("plot_style"),
+                name=d.get("name"),
+                color=color,
+                lineStyle=d.get("lineStyle"),
+                lineWidth=d.get("lineWidth"),
+                symbol=d.get("symbol"),
+                symbolSize=d.get("symbolSize"),
+                barWidth=d.get("barWidth"),
+                upperThreshold=d.get("upperThreshold"),
+                lowerThreshold=d.get("lowerThreshold"),
+                thresholdColor=thresholdColor,
+                redraw_mode=d.get("redraw_mode"),
+                yAxisName=d.get("yAxisName"),
+            )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
 
@@ -552,38 +564,61 @@ class PyDMWaveformPlot(BasePlot):
         """
         chans = []
         chans.extend([curve.y_channel for curve in self._curves])
-        chans.extend([curve.x_channel for curve in self._curves
-                     if curve.x_channel is not None])
+        chans.extend([curve.x_channel for curve in self._curves if curve.x_channel is not None])
         return chans
 
     # The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange,
     # and maxYRange are all defined in BasePlot, but we don't expose them as
     # properties there, because not all plot subclasses necessarily want them
     # to be user-configurable in Designer.
-    autoRangeX = Property(bool, BasePlot.getAutoRangeX,
-                          BasePlot.setAutoRangeX, BasePlot.resetAutoRangeX,
-                          doc="""
+    autoRangeX = Property(
+        bool,
+        BasePlot.getAutoRangeX,
+        BasePlot.setAutoRangeX,
+        BasePlot.resetAutoRangeX,
+        doc="""
 Whether or not the X-axis automatically rescales to fit the data.
-If true, the values in minXRange and maxXRange are ignored.""")
+If true, the values in minXRange and maxXRange are ignored.""",
+    )
 
-    minXRange = Property(float, BasePlot.getMinXRange,
-                         BasePlot.setMinXRange, doc="""
-Minimum X-axis value visible on the plot.""")
+    minXRange = Property(
+        float,
+        BasePlot.getMinXRange,
+        BasePlot.setMinXRange,
+        doc="""
+Minimum X-axis value visible on the plot.""",
+    )
 
-    maxXRange = Property(float, BasePlot.getMaxXRange,
-                         BasePlot.setMaxXRange, doc="""
-Maximum X-axis value visible on the plot.""")
+    maxXRange = Property(
+        float,
+        BasePlot.getMaxXRange,
+        BasePlot.setMaxXRange,
+        doc="""
+Maximum X-axis value visible on the plot.""",
+    )
 
-    autoRangeY = Property(bool, BasePlot.getAutoRangeY,
-                          BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY,
-                          doc="""
+    autoRangeY = Property(
+        bool,
+        BasePlot.getAutoRangeY,
+        BasePlot.setAutoRangeY,
+        BasePlot.resetAutoRangeY,
+        doc="""
 Whether or not the Y-axis automatically rescales to fit the data.
-If true, the values in minYRange and maxYRange are ignored.""")
+If true, the values in minYRange and maxYRange are ignored.""",
+    )
 
-    minYRange = Property(float, BasePlot.getMinYRange,
-                         BasePlot.setMinYRange, doc="""
-Minimum Y-axis value visible on the plot.""")
+    minYRange = Property(
+        float,
+        BasePlot.getMinYRange,
+        BasePlot.setMinYRange,
+        doc="""
+Minimum Y-axis value visible on the plot.""",
+    )
 
-    maxYRange = Property(float, BasePlot.getMaxYRange,
-                         BasePlot.setMaxYRange, doc="""
-Maximum Y-axis value visible on the plot.""")
+    maxYRange = Property(
+        float,
+        BasePlot.getMaxYRange,
+        BasePlot.setMaxYRange,
+        doc="""
+Maximum Y-axis value visible on the plot.""",
+    )

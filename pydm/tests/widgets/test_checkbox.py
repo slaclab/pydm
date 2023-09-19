@@ -8,11 +8,15 @@ from ...widgets.checkbox import PyDMCheckbox
 # POSITIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("init_channel", [
-    "CA://MTEST",
-    "",
-    None,
-])
+
+@pytest.mark.parametrize(
+    "init_channel",
+    [
+        "CA://MTEST",
+        "",
+        None,
+    ],
+)
 def test_construct(qtbot, init_channel):
     """
     Test the widget construct.
@@ -33,16 +37,19 @@ def test_construct(qtbot, init_channel):
     assert not pydm_checkbox.isChecked()
 
 
-@pytest.mark.parametrize("init_checked_status, new_value", [
-    (True, 0),
-    (True, -1),
-    (False, 0),
-    (False, -66),
-    (True, 1),
-    (False, 1),
-    (True, 999),
-    (False, 999),
-])
+@pytest.mark.parametrize(
+    "init_checked_status, new_value",
+    [
+        (True, 0),
+        (True, -1),
+        (False, 0),
+        (False, -66),
+        (True, 1),
+        (False, 1),
+        (True, 999),
+        (False, 999),
+    ],
+)
 def test_value_changed(qtbot, signals, init_checked_status, new_value):
     """
 
@@ -73,11 +80,14 @@ def test_value_changed(qtbot, signals, init_checked_status, new_value):
     assert pydm_checkbox.isChecked() if new_value > 0 else not pydm_checkbox.isChecked()
 
 
-@pytest.mark.parametrize("is_checked", [
-    True,
-    False,
-    None,
-])
+@pytest.mark.parametrize(
+    "is_checked",
+    [
+        True,
+        False,
+        None,
+    ],
+)
 def test_send_value(qtbot, signals, is_checked):
     """
     Test the data sent from the widget to the channel when the widget is checked or unchecked.
@@ -103,4 +113,3 @@ def test_send_value(qtbot, signals, is_checked):
     pydm_checkbox.send_value(is_checked)
 
     assert signals.value == 1 if is_checked else signals.value == 0
-

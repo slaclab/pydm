@@ -10,8 +10,7 @@ from typing import Optional
 
 from qtpy import QtGui, QtWidgets
 from qtpy.QtCore import QPoint, QRect, Qt, qRound
-from qtpy.QtGui import (QColor, QFont, QFontDatabase, QIcon, QIconEngine,
-                        QPainter, QPixmap)
+from qtpy.QtGui import QColor, QFont, QFontDatabase, QIcon, QIconEngine, QPainter, QPixmap
 
 if sys.version_info[0] == 3:
     unichr = chr
@@ -20,6 +19,7 @@ if sys.version_info[0] == 3:
 class IconFont(object):
     """IconFont represents an icon font.  Users will generally want
     to use IconFont.icon() to get a QIcon object for the character they want."""
+
     __instance = None
 
     def __init__(self):
@@ -43,6 +43,7 @@ class IconFont(object):
         Load font from ``ttf_filename`` with a mapping defined in
         ``charmap_filename``.
         """
+
         def hook(obj):
             result = {}
             for key in obj:
@@ -67,10 +68,8 @@ class IconFont(object):
 
         self.font_name = font_families[0]
 
-        filename = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), charmap_filename
-        )
-        with open(filename, 'r') as codes:
+        filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), charmap_filename)
+        with open(filename, "r") as codes:
             self.char_map = json.load(codes, object_hook=hook)
 
         self.loaded_fonts[cache_key] = {
@@ -169,8 +168,11 @@ class CharIconEngine(QIconEngine):
             self._base_color = QColor(90, 90, 90)
         else:
             self._base_color = color
-        self._disabled_color = QColor.fromHslF(self._base_color.hueF(), self._base_color.saturationF(),
-                                               max(min(self._base_color.lightnessF() + 0.25, 1.0), 0.0))
+        self._disabled_color = QColor.fromHslF(
+            self._base_color.hueF(),
+            self._base_color.saturationF(),
+            max(min(self._base_color.lightnessF() + 0.25, 1.0), 0.0),
+        )
 
     def paint(self, painter, rect, mode, state):
         painter.save()

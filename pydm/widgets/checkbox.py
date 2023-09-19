@@ -14,6 +14,7 @@ class PyDMCheckbox(QCheckBox, PyDMWritableWidget):
         The channel to be used by the widget.
 
     """
+
     def __init__(self, parent=None, init_channel=None):
         QCheckBox.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)

@@ -8,8 +8,7 @@ import functools
 import json
 import copy
 import numpy as np
-from qtpy.QtWidgets import (QApplication, QMenu, QGraphicsOpacityEffect,
-                            QToolTip, QWidget)
+from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect, QToolTip, QWidget
 from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
@@ -18,6 +17,7 @@ from ..utilities import is_qt_designer, remove_protocol
 from ..display import Display
 from .rules import RulesDispatcher
 from datetime import datetime
+from typing import Optional
 
 try:
     from json.decoder import JSONDecodeError
@@ -118,7 +118,7 @@ def refresh_style(widget):
 
     try:
         widgets.extend(widget.findChildren(QWidget))
-    except:
+    except Exception:
         # If we fail it means that widget is probably destroyed
         return
     for child_widget in widgets:
@@ -128,7 +128,8 @@ def refresh_style(widget):
             child_widget.update()
         except Exception as ex:
             # Widget was probably destroyed
-            logger.debug('Error while refreshing stylesheet. %s ', ex)
+            logger.debug("Error while refreshing stylesheet. %s ", ex)
+
 
 class PyDMPrimitiveWidget(object):
     """
@@ -136,11 +137,12 @@ class PyDMPrimitiveWidget(object):
     All Widget classes from PyDMWidget will be True for
     isinstance(obj, PyDMPrimitiveWidget)
     """
+
     DEFAULT_RULE_PROPERTY = "Visible"
     RULE_PROPERTIES = {
-        'Enable': ['setEnabled', bool],
-        'Visible': ['setVisible', bool],
-        'Opacity': ['set_opacity', float]
+        "Enable": ["setEnabled", bool],
+        "Visible": ["setVisible", bool],
+        "Opacity": ["set_opacity", float],
     }
 
     def __init__(self, **kwargs):
@@ -198,12 +200,12 @@ class PyDMPrimitiveWidget(object):
         EDM. If the QWidget does not have a valid PyDMChannel nothing will be
         displayed
         """
-        channels_method = getattr(self, 'channels', None)
+        channels_method = getattr(self, "channels", None)
         if channels_method is None:
             return
         channels = channels_method()
         if not channels:
-            logger.debug('Widget has no channels to display tooltip')
+            logger.debug("Widget has no channels to display tooltip")
             return
 
         addrs = []
@@ -224,7 +226,7 @@ class PyDMPrimitiveWidget(object):
         clipboard = QApplication.clipboard()
 
         mode = clipboard.Clipboard
-        if platform.system() == 'Linux':
+        if platform.system() == "Linux":
             # Mode Selection is only valid for X11.
             mode = clipboard.Selection
 
@@ -278,13 +280,12 @@ class PyDMPrimitiveWidget(object):
         -------
         None
         """
-        name = payload.get('name', '')
-        prop = payload.get('property', '')
-        value = payload.get('value', None)
+        name = payload.get("name", "")
+        prop = payload.get("property", "")
+        value = payload.get("value", None)
 
         if prop not in self.RULE_PROPERTIES:
-            logger.error('Error at Rule: %s. %s is not part of this widget properties.',
-                         name, prop)
+            logger.error("Error at Rule: %s. %s is not part of this widget properties.", name, prop)
             return
 
         method_name, data_type = self.RULE_PROPERTIES[prop]
@@ -302,10 +303,14 @@ class PyDMPrimitiveWidget(object):
             else:
                 setattr(self, method_name, val)
 
-        except:
-            logger.error('Error at Rule: %s. Could not execute method %s with '
-                         'value %s and type as %s.',
-                         name, method_name, value, data_type.__name__)
+        except Exception:
+            logger.error(
+                "Error at Rule: %s. Could not execute method %s with " "value %s and type as %s.",
+                name,
+                method_name,
+                value,
+                data_type.__name__,
+            )
 
     @Property(str, designable=False)
     def rules(self):
@@ -338,8 +343,8 @@ class PyDMPrimitiveWidget(object):
                 rules_list = json.loads(self._rules)
                 if rules_list:
                     RulesDispatcher().register(self, rules_list)
-            except JSONDecodeError as ex:
-                logger.exception('Invalid format for Rules')
+            except JSONDecodeError:
+                logger.exception("Invalid format for Rules")
 
     def find_parent_display(self):
         widget = self.parent()
@@ -351,7 +356,8 @@ class PyDMPrimitiveWidget(object):
 
 
 class AlarmLimit(str, enum.Enum):
-    """ An enum for holding values corresponding to the EPICS alarm limits """
+    """An enum for holding values corresponding to the EPICS alarm limits"""
+
     HIHI = "HIHI"
     HIGH = "HIGH"
     LOW = "LOW"
@@ -359,7 +365,6 @@ class AlarmLimit(str, enum.Enum):
 
 
 class TextFormatter(object):
-
     default_precision_from_pv = True
 
     def __init__(self):
@@ -481,7 +486,6 @@ class TextFormatter(object):
             if self.value is not None:
                 self.value_changed(self.value)
 
-
     @Property(bool)
     def showUnits(self):
         """
@@ -540,9 +544,7 @@ class TextFormatter(object):
             True means that the widget will use the precision information
             from the Channel if available.
         """
-        return (self._precision_from_pv
-                if self._precision_from_pv is not None
-                else self.default_precision_from_pv)
+        return self._precision_from_pv if self._precision_from_pv is not None else self.default_precision_from_pv
 
     @precisionFromPV.setter
     def precisionFromPV(self, value):
@@ -583,10 +585,8 @@ class TextFormatter(object):
         self.update_format_string()
 
 
-_positionRuleProperties = {
-    'Position - X': ['setX', int],
-    'Position - Y': ['setY', int]
-    }
+_positionRuleProperties = {"Position - X": ["setX", int], "Position - Y": ["setY", int]}
+
 
 class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
     """
@@ -600,6 +600,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         The channel to be used by the widget.
 
     """
+
     # Alarm types
     ALARM_NONE = 0
     ALARM_MINOR = 1
@@ -635,19 +636,21 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         self._pydm_tool_tip = ""
         self._tool_tip_substrings = []
-        self._tool_tip_channel_table = {"address": '_channel',
-                                        "connection": '_connected',
-                                        "SEVR": '_alarm_state',
-                                        "enum_strings": 'enum_strings',
-                                        "EGU": '_unit',
-                                        "PREC": '_prec',
-                                        "DRVH": '_upper_ctrl_limit',
-                                        "DRVL": '_lower_ctrl_limit',
-                                        "HIHI": 'upper_alarm_limit',
-                                        "LOLO": 'lower_alarm_limit',
-                                        "HIGH": 'upper_warning_limit',
-                                        "LOW": 'lower_warning_limit',
-                                        "TIME": "timestamp"}
+        self._tool_tip_channel_table = {
+            "address": "_channel",
+            "connection": "_connected",
+            "SEVR": "_alarm_state",
+            "enum_strings": "enum_strings",
+            "EGU": "_unit",
+            "PREC": "_prec",
+            "DRVH": "_upper_ctrl_limit",
+            "DRVL": "_lower_ctrl_limit",
+            "HIHI": "upper_alarm_limit",
+            "LOLO": "lower_alarm_limit",
+            "HIGH": "upper_warning_limit",
+            "LOW": "lower_warning_limit",
+            "TIME": "timestamp",
+        }
 
         # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
@@ -659,9 +662,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
 
-        self.destroyed.connect(
-            functools.partial(widget_destroyed, self.channels, weakref.ref(self))
-        )
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     def widget_ctx_menu(self):
         """
@@ -688,8 +689,16 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         if menu is None:
             menu = QMenu(parent=self)
 
-        kwargs = {'channels': self.channels_for_tools(), 'sender': self}
+        kwargs = {"channels": self.channels_for_tools(), "sender": self}
         tools.assemble_tools_menu(menu, widget_only=True, widget=self, **kwargs)
+
+        # Add a view help action if the parent display has an associated help file
+        parent_display = self.find_parent_display()
+        if parent_display is not None and parent_display.help_window is not None:
+            if len(menu.actions()) > 0:
+                menu.addSeparator()
+            menu.addAction("View Help for this Display", parent_display.show_help)
+
         return menu
 
     def open_context_menu(self, ev):
@@ -701,7 +710,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         ev : QEvent
         """
         menu = self.generate_context_menu()
-        action = menu.exec_(self.mapToGlobal(ev.pos()))
+        menu.exec_(self.mapToGlobal(ev.pos()))
         del menu
 
     def init_for_designer(self):
@@ -1135,12 +1144,13 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             return new_tip
 
         if not self._tool_tip_substrings:
-            list_of_attributes = [substring.start() for substring in re.finditer('\$\(', new_tip)]
+            list_of_attributes = [substring.start() for substring in re.finditer("\$\(", new_tip)]
             tool_tip_substrings = []
 
             for index in list_of_attributes:
-                tool_tip_substrings.append([new_tip[index+2:new_tip.index(")", index)],
-                                            new_tip[index:new_tip.index(")", index)+1]])
+                tool_tip_substrings.append(
+                    [new_tip[index + 2 : new_tip.index(")", index)], new_tip[index : new_tip.index(")", index) + 1]]
+                )
 
             self._tool_tip_substrings = copy.deepcopy(tool_tip_substrings)
         else:
@@ -1148,9 +1158,9 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         if tool_tip_substrings:
             for index, value in enumerate(tool_tip_substrings):
-                if value[0] == 'name':
+                if value[0] == "name":
                     value_of_attribute = self.channel
-                elif value[0].split('.')[0] == 'pv_value':
+                elif value[0].split(".")[0] == "pv_value":
                     if value[0].count(".") == 0:
                         value_of_attribute = self.value
                     else:
@@ -1198,44 +1208,49 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         value : str
             Channel address
         """
+        self.set_channel(value)
+
+    def set_channel(self, value):
+        """A setter method without a pyqt decorator so subclasses can use this functionality"""
         if self._channel != value:
             # Remove old connections
-            for channel in [c for c in self._channels if
-                            c.address == self._channel]:
+            for channel in [c for c in self._channels if c.address == self._channel]:
                 channel.disconnect()
                 self._channels.remove(channel)
             # Load new channel
             self._channel = str(value)
             if not self._channel:
-                logger.debug('Channel was set to an empty string.')
+                logger.debug("Channel was set to an empty string.")
                 return
-            channel = PyDMChannel(address=self._channel,
-                                  connection_slot=self.connectionStateChanged,
-                                  value_slot=self.channelValueChanged,
-                                  severity_slot=self.alarmSeverityChanged,
-                                  enum_strings_slot=self.enumStringsChanged,
-                                  unit_slot=None,
-                                  prec_slot=None,
-                                  upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
-                                  lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
-                                  upper_alarm_limit_slot=self.upper_alarm_limit_changed,
-                                  lower_alarm_limit_slot=self.lower_alarm_limit_changed,
-                                  upper_warning_limit_slot=self.upper_warning_limit_changed,
-                                  lower_warning_limit_slot=self.lower_warning_limit_changed,
-                                  value_signal=None,
-                                  write_access_slot=None,
-                                  timestamp_slot=self.timestamp_changed)
+            channel = PyDMChannel(
+                address=self._channel,
+                connection_slot=self.connectionStateChanged,
+                value_slot=self.channelValueChanged,
+                severity_slot=self.alarmSeverityChanged,
+                enum_strings_slot=self.enumStringsChanged,
+                unit_slot=None,
+                prec_slot=None,
+                upper_ctrl_limit_slot=self.upperCtrlLimitChanged,
+                lower_ctrl_limit_slot=self.lowerCtrlLimitChanged,
+                upper_alarm_limit_slot=self.upper_alarm_limit_changed,
+                lower_alarm_limit_slot=self.lower_alarm_limit_changed,
+                upper_warning_limit_slot=self.upper_warning_limit_changed,
+                lower_warning_limit_slot=self.lower_warning_limit_changed,
+                value_signal=None,
+                write_access_slot=None,
+                timestamp_slot=self.timestamp_changed,
+            )
             # Load writeable channels if our widget requires them. These should
             # not exist on the base PyDMWidget but prevents us from duplicating
             # the method below to only make two more connections
-            if hasattr(self, 'writeAccessChanged'):
+            if hasattr(self, "writeAccessChanged"):
                 channel.write_access_slot = self.writeAccessChanged
-            if hasattr(self, 'send_value_signal'):
+            if hasattr(self, "send_value_signal"):
                 channel.value_signal = self.send_value_signal
             # Do the same thing for classes that use the TextFormatter mixin.
-            if hasattr(self, 'unitChanged'):
+            if hasattr(self, "unitChanged"):
                 channel.unit_slot = self.unitChanged
-            if hasattr(self, 'precisionChanged'):
+            if hasattr(self, "precisionChanged"):
                 channel.prec_slot = self.precisionChanged
             # Connect write channels if we have them
             channel.connect()
@@ -1256,10 +1271,10 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         status = self._connected
         tooltip = self.restore_original_tooltip()
         if not status:
-            if tooltip != '':
-                tooltip += '\n'
+            if tooltip != "":
+                tooltip += "\n"
             tooltip += "PV is disconnected."
-            tooltip += '\n'
+            tooltip += "\n"
             tooltip += self.get_address()
 
         self.setToolTip(tooltip)
@@ -1348,13 +1363,16 @@ class PyDMWritableWidget(PyDMWidget):
         Emitted when the user changes the value
     """
 
-    __Signals__ = ("send_value_signal([int], [float], [str], [bool], [object])")
+    __Signals__ = "send_value_signal([int], [float], [str], [bool], [object])"
 
     # Emitted when the user changes the value.
     send_value_signal = Signal([int], [float], [str], [bool], [object])
 
     def __init__(self, init_channel=None):
         self._write_access = False
+        self._disp_channel = None
+        self._disable_put = False
+        self._monitor_disp = False
         super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
 
     def init_for_designer(self):
@@ -1382,7 +1400,7 @@ class PyDMWritableWidget(PyDMWidget):
             True to stop the event from being handled further; otherwise
             return false.
         """
-        channel = getattr(self, 'channel', None)
+        channel = getattr(self, "channel", None)
 
         if is_channel_valid(channel):
             status = self._write_access and self._connected
@@ -1394,6 +1412,62 @@ class PyDMWritableWidget(PyDMWidget):
                 QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
 
         return PyDMWidget.eventFilter(self, obj, event)
+
+    @Property(bool)
+    def monitorDisp(self) -> bool:
+        """
+        Whether to monitor the DISP field for this widget's channel
+        """
+        return self._monitor_disp
+
+    @monitorDisp.setter
+    def monitorDisp(self, monitor_disp: bool) -> None:
+        """
+        Whether to monitor the DISP field for this widget's channel
+        """
+        if self._monitor_disp != monitor_disp:
+            self._monitor_disp = monitor_disp
+            if self._disp_channel is not None:
+                if monitor_disp:
+                    self._disp_channel.connect()
+                else:
+                    self._disp_channel.disconnect()
+
+    @Property(str)
+    def channel(self) -> Optional[str]:
+        """
+        The channel address in use for this widget.
+
+        Returns
+        -------
+        channel : str
+            Channel address
+        """
+        if self._channel:
+            return str(self._channel)
+        return None
+
+    @channel.setter
+    def channel(self, value: str) -> None:
+        """
+        The channel address in use for this widget. Also sets up a monitor on the DISP field.
+        """
+        if self._channel != value:
+            self.set_channel(value)
+            if not self._monitor_disp or self._channel is None:
+                return
+
+            base_channel = self._channel.split(".", 1)[0] if "." in self._channel else self._channel
+            if self._disp_channel is None or self._disp_channel.address != f"{base_channel}.DISP":
+                if self._disp_channel is not None:
+                    self._disp_channel.disconnect()
+                self._disp_channel = PyDMChannel(address=f"{base_channel}.DISP", value_slot=self.disp_value_changed)
+                self._disp_channel.connect()
+
+    def disp_value_changed(self, new_disp_value: int) -> None:
+        """Callback function to receive changes to the DISP field of the monitored channel"""
+        self._disable_put = new_disp_value
+        self.check_enable_state()
 
     def write_access_changed(self, new_write_access):
         """
@@ -1422,26 +1496,30 @@ class PyDMWritableWidget(PyDMWidget):
         self.write_access_changed(write_access)
 
     @only_if_channel_set
-    def check_enable_state(self):
+    def check_enable_state(self) -> None:
         """
-        Checks whether or not the widget should be disable.
-        This method also disables the widget and add a Tool Tip
-        with the reason why it is disabled.
+        Checks whether or not the widget should be disabled.
+        This method also disables the widget and adds a tool tip with the reason why it is disabled.
         """
-        status = self._write_access and self._connected
+        status = self._write_access and self._connected and not self._disable_put
         tooltip = self.restore_original_tooltip()
         if not self._connected:
-            if tooltip != '':
-                tooltip += '\n'
+            if tooltip != "":
+                tooltip += "\n"
             tooltip += "PV is disconnected."
-            tooltip += '\n'
+            tooltip += "\n"
             tooltip += self.get_address()
         elif not self._write_access:
-            if tooltip != '':
-                tooltip += '\n'
+            if tooltip != "":
+                tooltip += "\n"
             if data_plugins.is_read_only():
                 tooltip += "Running PyDM on Read-Only mode."
             else:
                 tooltip += "Access denied by Channel Access Security."
+        elif self._disable_put:
+            if tooltip != "":
+                tooltip += "\n"
+            tooltip += "Access denied by DISP field"
+
         self.setToolTip(tooltip)
         self.setEnabled(status)

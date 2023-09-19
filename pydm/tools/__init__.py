@@ -19,11 +19,7 @@ _ext_tools_loaded: bool = False
 
 def _is_valid_external_tool_class(obj: Any) -> bool:
     """Is the object a valid external tool?"""
-    return (
-        inspect.isclass(obj)
-        and issubclass(obj, ExternalTool)
-        and obj is not ExternalTool
-    )
+    return inspect.isclass(obj) and issubclass(obj, ExternalTool) and obj is not ExternalTool
 
 
 @log_failures(logger, explanation="Failed to load External Tool: {args[0]}")
@@ -47,13 +43,7 @@ def _get_tools_from_source(source_filename: str) -> List[ExternalTool]:
         If no subclassed external tools are found.
     """
     module = import_module_by_filename(source_filename)
-    classes = list(
-        set(
-            obj
-            for _, obj in inspect.getmembers(module)
-            if _is_valid_external_tool_class(obj)
-        )
-    )
+    classes = list(set(obj for _, obj in inspect.getmembers(module) if _is_valid_external_tool_class(obj)))
 
     if not classes:
         raise ValueError(
@@ -84,10 +74,7 @@ def install_external_tool(tool: Union[str, ExternalTool]) -> None:
 
     for tool_obj in objects:
         if not isinstance(tool_obj, ExternalTool):
-            raise ValueError(
-                f"Invalid tool found: {tool}. String or ExternalTool "
-                f"expected."
-            )
+            raise ValueError(f"Invalid tool found: {tool}. String or ExternalTool " f"expected.")
 
         if tool_obj.group is not None and tool_obj.group:
             if tool_obj.group not in ext_tools:
@@ -99,17 +86,11 @@ def install_external_tool(tool: Union[str, ExternalTool]) -> None:
     ext_tools = collections.OrderedDict(sorted(ext_tools.items()))
     for ext_tool_name in ext_tools:
         if isinstance(ext_tools[ext_tool_name], dict):
-            ext_tools[ext_tool_name] = collections.OrderedDict(
-                sorted(ext_tools[ext_tool_name].items())
-            )
+            ext_tools[ext_tool_name] = collections.OrderedDict(sorted(ext_tools[ext_tool_name].items()))
 
 
 def assemble_tools_menu(
-    parent_menu: QMenu,
-    clear_menu: bool = False,
-    widget_only: bool = False,
-    widget: Optional[QWidget] = None,
-    **kwargs
+    parent_menu: QMenu, clear_menu: bool = False, widget_only: bool = False, widget: Optional[QWidget] = None, **kwargs
 ) -> None:
     """
     Assemble the Tools menu for a given parent menu.
@@ -134,6 +115,7 @@ def assemble_tools_menu(
         instance. In general this dict is composed by `channels` which
         is a list and `sender` which is a QWidget.
     """
+
     def assemble_action(menu, tool_obj):
         if tool_obj.icon is not None:
             action = menu.addAction(tool_obj.name)
@@ -159,8 +141,7 @@ def assemble_tools_menu(
                         continue
                     if widget is not None and not t.is_compatible_with(widget):
                         logger.debug(
-                            "Skipping tool %s as it is incompatible with "
-                            "widget %s.",
+                            "Skipping tool %s as it is incompatible with " "widget %s.",
                             t.name,
                             widget,
                         )
@@ -189,18 +170,11 @@ def get_entrypoint_tools() -> Generator[ExternalTool, None, None]:
         try:
             tool_cls = entry.load()
         except Exception as ex:
-            logger.exception(
-                "Failed to load %s entry %s: %s",
-                ENTRYPOINT_EXTERNAL_TOOL, entry.name, ex
-            )
+            logger.exception("Failed to load %s entry %s: %s", ENTRYPOINT_EXTERNAL_TOOL, entry.name, ex)
             continue
 
         if not _is_valid_external_tool_class(tool_cls):
-            logger.warning(
-                "Invalid external tool class specified in entrypoint "
-                "%s: %s",
-                entry.name, tool_cls
-            )
+            logger.warning("Invalid external tool class specified in entrypoint " "%s: %s", entry.name, tool_cls)
             continue
 
         yield tool_cls()
@@ -211,10 +185,7 @@ def get_tools_from_path() -> Generator[ExternalTool, None, None]:
     tools_path = os.getenv("PYDM_TOOLS_PATH", None)
 
     if not tools_path:
-        logger.debug(
-            "External Tools not loaded from PYDM_TOOLS_PATH as no path "
-            "was specified."
-        )
+        logger.debug("External Tools not loaded from PYDM_TOOLS_PATH as no path " "was specified.")
         return
 
     logger.debug("Looking for external tools at: %s", tools_path)

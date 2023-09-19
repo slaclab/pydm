@@ -4,7 +4,6 @@ from pyqtgraph import ImageView, PlotItem
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 import numpy as np
-import threading
 import logging
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
@@ -15,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 class ReadingOrder(object):
     """Class to build ReadingOrder ENUM property."""
+
     Fortranlike = 0
     Clike = 1
 
@@ -42,14 +42,13 @@ class ImageUpdateThread(QThread):
         if image_dimensions == 1:
             if width < 1:
                 # We don't have a width for this image yet, so we can't draw it
-                logging.debug(
-                    "ImageUpdateThread - no width available. Aborting.")
+                logging.debug("ImageUpdateThread - no width available. Aborting.")
                 return
             try:
                 if reading_order == ReadingOrder.Clike:
-                    img = img.reshape((-1, width), order='C')
+                    img = img.reshape((-1, width), order="C")
                 else:
-                    img = img.reshape((width, -1), order='F')
+                    img = img.reshape((width, -1), order="F")
             except ValueError:
                 logger.error("Invalid width for image during reshape: %d", width)
 
@@ -128,14 +127,13 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         PyDMWidget.__init__(self)
         self._channels = [None, None]
         self.thread = None
-        self.axes = dict({'t': None, "x": 0, "y": 1, "c": None})
+        self.axes = dict({"t": None, "x": 0, "y": 1, "c": None})
         self.showAxes = self._show_axes
         self.imageItem.setOpts(axisOrder="row-major")
 
         # Hide some itens of the widget.
         self.ui.histogram.hide()
-        self.getImageItem().sigImageChanged.disconnect(
-            self.ui.histogram.imageChanged)
+        self.getImageItem().sigImageChanged.disconnect(self.ui.histogram.imageChanged)
         self.ui.roiBtn.hide()
         self.ui.menuBtn.hide()
 
@@ -157,9 +155,9 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         self.newImageSignal = self.getImageItem().sigImageChanged
         # Set live channels if requested on initialization
         if image_channel:
-            self.imageChannel = image_channel or ''
+            self.imageChannel = image_channel or ""
         if width_channel:
-            self.widthChannel = width_channel or ''
+            self.widthChannel = width_channel or ""
 
     @Property(str, designable=False)
     def channel(self):
@@ -397,8 +395,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         If necessary, reshape the image to 2D first.
         """
         if self.thread is not None and not self.thread.isFinished():
-            logger.warning(
-                "Image processing has taken longer than the refresh rate.")
+            logger.warning("Image processing has taken longer than the refresh rate.")
             return
         self.thread = ImageUpdateThread(self)
         self.thread.updateSignal.connect(self.__updateDisplay)
@@ -411,10 +408,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         mini, maxi = data[0], data[1]
         img = data[2]
         self.getImageItem().setLevels([mini, maxi])
-        self.getImageItem().setImage(
-            img,
-            autoLevels=False,
-            autoDownsample=self.autoDownsample)
+        self.getImageItem().setImage(img, autoLevels=False, autoDownsample=self.autoDownsample)
 
     @Property(bool)
     def autoDownsample(self):
@@ -463,8 +457,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         ----------
         new_width: int
         """
-        if (self._image_width != int(new_width) and
-                (self._widthchannel is None or self._widthchannel == '')):
+        if self._image_width != int(new_width) and (self._widthchannel is None or self._widthchannel == ""):
             self._image_width = int(new_width)
 
     @Property(bool)
@@ -531,7 +524,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if self._imagechannel:
             return str(self._imagechannel.address)
         else:
-            return ''
+            return ""
 
     @imageChannel.setter
     def imageChannel(self, value):
@@ -549,10 +542,11 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                 self._imagechannel.disconnect()
             # Create and connect new channel
             self._imagechannel = PyDMChannel(
-                            address=value,
-                            connection_slot=self.image_connection_state_changed,
-                            value_slot=self.image_value_changed,
-                            severity_slot=self.alarmSeverityChanged)
+                address=value,
+                connection_slot=self.image_connection_state_changed,
+                value_slot=self.image_value_changed,
+                severity_slot=self.alarmSeverityChanged,
+            )
             self._channels[0] = self._imagechannel
             self._imagechannel.connect()
 
@@ -569,7 +563,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if self._widthchannel:
             return str(self._widthchannel.address)
         else:
-            return ''
+            return ""
 
     @widthChannel.setter
     def widthChannel(self, value):
@@ -587,13 +581,13 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
                 self._widthchannel.disconnect()
             # Create and connect new channel
             self._widthchannel = PyDMChannel(
-                            address=value,
-                            connection_slot=self.connectionStateChanged,
-                            value_slot=self.image_width_changed,
-                            severity_slot=self.alarmSeverityChanged)
+                address=value,
+                connection_slot=self.connectionStateChanged,
+                value_slot=self.image_width_changed,
+                severity_slot=self.alarmSeverityChanged,
+            )
             self._channels[1] = self._widthchannel
             self._widthchannel.connect()
-
 
     def channels(self):
         """
@@ -647,8 +641,8 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
     @showAxes.setter
     def showAxes(self, show):
         self._show_axes = show
-        self.getView().showAxis('left', show=show)
-        self.getView().showAxis('bottom', show=show)
+        self.getView().showAxis("left", show=show)
+        self.getView().showAxis("bottom", show=show)
 
     @Property(float)
     def scaleXAxis(self):
@@ -659,13 +653,13 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         xAxisScale to 1/100 = 0.01 to make the X Axis report in millimeter units.
         """
         # protect against access to not yet initialized view
-        if hasattr(self, 'view'):
-            return self.getView().getAxis('bottom').scale
+        if hasattr(self, "view"):
+            return self.getView().getAxis("bottom").scale
         return None
 
     @scaleXAxis.setter
     def scaleXAxis(self, new_scale):
-        self.getView().getAxis('bottom').setScale(new_scale)
+        self.getView().getAxis("bottom").setScale(new_scale)
 
     @Property(float)
     def scaleYAxis(self):
@@ -676,10 +670,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.
         """
         # protect against access to not yet initialized view
-        if hasattr(self, 'view'):
-            return self.getView().getAxis('left').scale
+        if hasattr(self, "view"):
+            return self.getView().getAxis("left").scale
         return None
 
     @scaleYAxis.setter
     def scaleYAxis(self, new_scale):
-        self.getView().getAxis('left').setScale(new_scale)
+        self.getView().getAxis("left").setScale(new_scale)

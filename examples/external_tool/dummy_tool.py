@@ -3,18 +3,12 @@ from pydm.utilities.iconfont import IconFont
 
 
 class DummyTool(ExternalTool):
-
     def __init__(self):
         icon = IconFont().icon("cogs")
         name = "Dummy Tool"
         group = "Example"
         use_with_widgets = False
-        super().__init__(
-            icon=icon,
-            name=name,
-            group=group,
-            use_with_widgets=use_with_widgets
-        )
+        super().__init__(icon=icon, name=name, group=group, use_with_widgets=use_with_widgets)
 
     def call(self, channels, sender):
         print("Called Dummy Tool from: {} with:".format(sender))
@@ -29,23 +23,17 @@ class DummyTool(ExternalTool):
 
     def get_info(self):
         ret = ExternalTool.get_info(self)
-        ret.update({'file': __file__})
+        ret.update({"file": __file__})
         return ret
 
 
 class DummyTool3(ExternalTool):
-
     def __init__(self):
         icon = None
         name = "Dummy Tool 3"
         group = ""
         use_with_widgets = False
-        super().__init__(
-            icon=icon,
-            name=name,
-            group=group,
-            use_with_widgets=use_with_widgets
-        )
+        super().__init__(icon=icon, name=name, group=group, use_with_widgets=use_with_widgets)
 
     def call(self, channels, sender):
         print("Called Dummy Tool 3 from: {} with:".format(sender))
@@ -60,5 +48,5 @@ class DummyTool3(ExternalTool):
 
     def get_info(self):
         ret = ExternalTool.get_info(self)
-        ret.update({'file': __file__})
+        ret.update({"file": __file__})
         return ret

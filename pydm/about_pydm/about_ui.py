@@ -8,6 +8,7 @@
 
 from qtpy import QtCore, QtWidgets, QtGui
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -95,9 +96,14 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "About PyDM"))
         self.pydmLabel.setText(_translate("Form", "PyDM"))
         self.pydmVersionLabel.setText(_translate("Form", "Version {version}"))
-        self.modulesVersionLabel.setText(_translate("Form", "Using Python v{pyver}, Numpy v{numpyver}, PyQt v{pyqtver}, Qt v{qtver}, and PyQtGraph v{pyqtgraphver}."))
+        self.modulesVersionLabel.setText(
+            _translate(
+                "Form",
+                """Using Python v{pyver}, Numpy v{numpyver}, PyQt v{pyqtver}, Qt v{qtver},
+                 and PyQtGraph v{pyqtgraphver}.""",
+            )
+        )
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.versionTab), _translate("Form", "Version"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.externalToolsTab), _translate("Form", "External Tools"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.dataPluginsTab), _translate("Form", "Data Plugins"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.contributorsTab), _translate("Form", "Contributors"))
-

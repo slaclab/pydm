@@ -1,7 +1,17 @@
 import platform
-from qtpy.QtWidgets import (QWidget, QTableView, QAbstractItemView, QHBoxLayout,
-                            QVBoxLayout, QAbstractScrollArea, QPushButton,
-                            QApplication, QFileDialog, QMessageBox, QLabel)
+from qtpy.QtWidgets import (
+    QWidget,
+    QTableView,
+    QAbstractItemView,
+    QHBoxLayout,
+    QVBoxLayout,
+    QAbstractScrollArea,
+    QPushButton,
+    QApplication,
+    QFileDialog,
+    QMessageBox,
+    QLabel,
+)
 from qtpy.QtCore import Qt, Slot, QTimer
 from .connection_table_model import ConnectionTableModel
 from .. import data_plugins
@@ -38,22 +48,21 @@ class ConnectionInspector(QWidget):
 
     def fetch_data(self):
         plugins = data_plugins.plugin_modules
-        return [connection
-                for p in plugins.values()
-                for connection in p.connections.values()
-                ]
+        return [
+            connection
+            for p in plugins.values()
+            for connection in p.connections.values()
+            # DISP field is connected to separately for writable channels, including it on this list is redundant
+            if not connection.address.endswith(".DISP")
+        ]
 
     @Slot()
     def save_list_to_file(self):
-        filename, filters = QFileDialog.getSaveFileName(self,
-                                                        "Save connection list",
-                                                        "",
-                                                        "Text Files (*.txt)")
+        filename, filters = QFileDialog.getSaveFileName(self, "Save connection list", "", "Text Files (*.txt)")
         try:
             with open(filename, "w") as f:
                 for conn in self.table_view.model().connections:
-                    f.write(
-                        "{p}://{a}\n".format(p=conn.protocol, a=conn.address))
+                    f.write("{p}://{a}\n".format(p=conn.protocol, a=conn.address))
             self.save_status_label.setText("File saved to {}".format(filename))
         except Exception as e:
             msgBox = QMessageBox()
@@ -64,14 +73,14 @@ class ConnectionInspector(QWidget):
 
     @Slot()
     def copy_pv_list_to_clipboard(self):
-        """ Copy the list of PVs from the table to the clipboard """
+        """Copy the list of PVs from the table to the clipboard"""
         pv_list = [connection.address for connection in self.table_view.model().connections]
         if len(pv_list) == 0:
             return
 
         pvs_to_copy = " ".join(pv_list)
         clipboard = QApplication.clipboard()
-        if platform.system() == 'Linux':
+        if platform.system() == "Linux":
             # Mode Selection is only valid for X11.
             clipboard.setText(pvs_to_copy, clipboard.Selection)
         clipboard.setText(pvs_to_copy, clipboard.Clipboard)
@@ -80,8 +89,7 @@ class ConnectionInspector(QWidget):
 class ConnectionTableView(QTableView):
     def __init__(self, connections=[], parent=None):
         super(ConnectionTableView, self).__init__(parent)
-        self.setSizeAdjustPolicy(
-            QAbstractScrollArea.AdjustToContentsOnFirstShow)
+        self.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContentsOnFirstShow)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.horizontalHeader().setStretchLastSection(True)
         self.setSelectionMode(QAbstractItemView.SingleSelection)

@@ -27,7 +27,7 @@ def unregister_widget_rules(widget):
     widgets.extend(widget.findChildren(QWidget))
     for child_widget in widgets:
         try:
-            if hasattr(child_widget, 'rules'):
+            if hasattr(child_widget, "rules"):
                 if child_widget.rules:
                     RulesDispatcher().unregister(weakref.ref(child_widget))
         except Exception:
@@ -37,7 +37,7 @@ def unregister_widget_rules(widget):
 def register_widget_rules(widget):
     """
     Given a widget to start from, traverse the tree of child widgets,
-    and try to unregister rules to any widgets.
+    and try to register rules to any widgets.
 
     Parameters
     ----------
@@ -47,7 +47,7 @@ def register_widget_rules(widget):
     widgets.extend(widget.findChildren(QWidget))
     for child_widget in widgets:
         try:
-            if hasattr(child_widget, 'rules'):
+            if hasattr(child_widget, "rules"):
                 if child_widget.rules:
                     rules = json.loads(child_widget.rules)
                     RulesDispatcher().register(child_widget, rules)
@@ -60,6 +60,7 @@ class RulesDispatcher(object):
     Singleton class responsible for handling all the interactions with the
     RulesEngine and dispatch the payloads from the rules thread to the widget.
     """
+
     __instance = None
 
     def __init__(self):
@@ -120,17 +121,17 @@ class RulesDispatcher(object):
             The payload data including the widget for method invoking.
         """
         try:
-            widget = payload.pop('widget')
+            widget = payload.pop("widget")
             if isinstance(widget, weakref.ref):
                 widget_ref = widget
                 widget = widget()
-            if widget is None: # Widget is dead... lets unregister the ref
+            if widget is None:  # Widget is dead... lets unregister the ref
                 self.rules_engine.unregister(widget_ref)
             else:
                 widget.rule_evaluated(payload)
-        except RuntimeError as ex:
+        except RuntimeError:
             logger.debug("Widget reference was gone but not yet for Python.")
-        except Exception as ex:
+        except Exception:
             logger.exception("Error at RulesDispatcher.")
 
 
@@ -144,6 +145,7 @@ class RulesEngine(QThread):
     rule_signal : dict
         Emitted when a new value for the property is calculated by the engine.
     """
+
     rule_signal = Signal(dict)
 
     def __init__(self):
@@ -163,30 +165,26 @@ class RulesEngine(QThread):
 
         rules_db = []
         for idx, rule in enumerate(rules):
-            channels_list = rule.get('channels', [])
+            channels_list = rule.get("channels", [])
 
             item = dict()
-            item['rule'] = rule
-            initial_val = rule.get('initial_value', "").strip()
-            name = rule.get('name')
-            prop = rule.get('property')
-            item['initial_value'] = initial_val
-            item['calculate'] = False
-            item['values'] = [None] * len(channels_list)
-            item['enums'] = [None] * len(channels_list)
-            item['conn'] = [False] * len(channels_list)
-            item['channels'] = []
+            item["rule"] = rule
+            initial_val = rule.get("initial_value", "").strip()
+            name = rule.get("name")
+            prop = rule.get("property")
+            item["initial_value"] = initial_val
+            item["calculate"] = False
+            item["values"] = [None] * len(channels_list)
+            item["enums"] = [None] * len(channels_list)
+            item["conn"] = [False] * len(channels_list)
+            item["channels"] = []
 
             for ch_idx, ch in enumerate(channels_list):
-                conn_cb = functools.partial(self.callback_conn, widget_ref,
-                                            idx, ch_idx)
-                value_cb = functools.partial(self.callback_value, widget_ref,
-                                             idx, ch_idx, ch['trigger'])
-                enums_cb = functools.partial(self.callback_enum, widget_ref,
-                                             idx, ch_idx)
-                c = PyDMChannel(ch['channel'], connection_slot=conn_cb,
-                                value_slot=value_cb, enum_strings_slot=enums_cb)
-                item['channels'].append(c)
+                conn_cb = functools.partial(self.callback_conn, widget_ref, idx, ch_idx)
+                value_cb = functools.partial(self.callback_value, widget_ref, idx, ch_idx, ch["trigger"])
+                enums_cb = functools.partial(self.callback_enum, widget_ref, idx, ch_idx)
+                c = PyDMChannel(ch["channel"], connection_slot=conn_cb, value_slot=value_cb, enum_strings_slot=enums_cb)
+                item["channels"].append(c)
             rules_db.append(item)
 
             if initial_val and not is_qt_designer():
@@ -195,7 +193,7 @@ class RulesEngine(QThread):
         if rules_db:
             self.widget_map[widget_ref] = rules_db
             for rule in rules_db:
-                for ch in rule['channels']:
+                for ch in rule["channels"]:
                     ch.connect()
 
     def unregister(self, widget_ref):
@@ -212,7 +210,7 @@ class RulesEngine(QThread):
             return
 
         for rule in w_data:
-            for ch in rule['channels']:
+            for ch in rule["channels"]:
                 ch.disconnect(destroying=widget_ref() is None)
 
         del w_data
@@ -225,7 +223,7 @@ class RulesEngine(QThread):
             w_map = self.widget_map.copy()
             for widget_ref, rules in w_map.items():
                 for idx, rule in enumerate(rules):
-                    if rule['calculate']:
+                    if rule["calculate"]:
                         self.calculate_expression(widget_ref, idx, rule)
             self.msleep(33)  # 30Hz
 
@@ -256,11 +254,11 @@ class RulesEngine(QThread):
         """
         try:
             w_map = self.widget_map[widget_ref]
-            w_map[index]['enums'][ch_index] = enums
-            if not all(w_map[index]['conn']):
+            w_map[index]["enums"][ch_index] = enums
+            if not all(w_map[index]["conn"]):
                 self.warn_unconnected_channels(widget_ref, index)
                 return
-            w_map[index]['calculate'] = True
+            w_map[index]["calculate"] = True
         except (KeyError, IndexError):
             pass
 
@@ -288,12 +286,12 @@ class RulesEngine(QThread):
         """
         try:
             w_map = self.widget_map[widget_ref]
-            w_map[index]['values'][ch_index] = value
+            w_map[index]["values"][ch_index] = value
             if trigger:
-                if not all(w_map[index]['conn']):
+                if not all(w_map[index]["conn"]):
                     self.warn_unconnected_channels(widget_ref, index)
                     return
-                w_map[index]['calculate'] = True
+                w_map[index]["calculate"] = True
         except (KeyError, IndexError):
             pass
 
@@ -317,7 +315,7 @@ class RulesEngine(QThread):
         None
         """
         try:
-            self.widget_map[widget_ref][index]['conn'][ch_index] = value
+            self.widget_map[widget_ref][index]["conn"][ch_index] = value
         except (KeyError, IndexError):
             # widget_ref was destroyed
             pass
@@ -325,7 +323,8 @@ class RulesEngine(QThread):
     def warn_unconnected_channels(self, widget_ref, index):
         logger.debug(
             "Rule '%s': Not all channels are connected, skipping execution.",
-            self.widget_map[widget_ref][index]['rule']['name'])
+            self.widget_map[widget_ref][index]["rule"]["name"],
+        )
 
     def calculate_expression(self, widget_ref, idx, rule):
         """
@@ -340,11 +339,11 @@ class RulesEngine(QThread):
         -------
         None
         """
-        rule['calculate'] = False
+        rule["calculate"] = False
 
-        vals = rule['values']
-        enums = rule['enums']
-        channel_properties = rule["rule"]['channels']
+        vals = rule["values"]
+        enums = rule["enums"]
+        channel_properties = rule["rule"]["channels"]
 
         calc_vals = []
         for en, val, chan in zip(enums, vals, channel_properties):
@@ -356,21 +355,19 @@ class RulesEngine(QThread):
                     pass
             calc_vals.append(v)
 
-        eval_env = {'np': np,
-                    'ch': calc_vals}
-        eval_env.update({k: v
-                         for k, v in math.__dict__.items()
-                         if k[0] != '_'})
+        eval_env = {"np": np, "ch": calc_vals}
+        eval_env.update({k: v for k, v in math.__dict__.items() if k[0] != "_"})
 
-        expression = rule['rule']['expression']
-        name = rule['rule']['name']
-        prop = rule['rule']['property']
+        expression = rule["rule"]["expression"]
+        name = rule["rule"]["name"]
+        prop = rule["rule"]["property"]
         try:
             val = eval(expression, eval_env)
             self.emit_value(widget_ref, name, prop, val)
-        except Exception as e:
-            logger.exception(f"Error while evaluating Rule with name: {name} and type: {prop} "
-                             f"and expression: {expression}")
+        except Exception:
+            logger.exception(
+                f"Error while evaluating Rule with name: {name} and type: {prop} " f"and expression: {expression}"
+            )
 
     def emit_value(self, widget_ref, name, prop, val):
         """
@@ -387,6 +384,5 @@ class RulesEngine(QThread):
         val : object
             The value to emit
         """
-        payload = {'widget': widget_ref, 'name': name, 'property': prop,
-                   'value': val}
+        payload = {"widget": widget_ref, "name": name, "property": prop, "value": val}
         self.rule_signal.emit(payload)

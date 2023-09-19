@@ -30,6 +30,7 @@ as well as a straightforward python framework to build complex applications.
    :caption: User & API Documentation
 
    stylesheets.rst
+   help_files.rst
    widgets/index.rst
    widgets/widget_rules/index.rst
    add_data_plugins.rst
