@@ -14,8 +14,8 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
 
-    .. note:: 
-        If a PyDMLabel is configured to use a Channel, and also with a rule which changes the 'Text' property, 
+    .. note::
+        If a PyDMLabel is configured to use a Channel, and also with a rule which changes the 'Text' property,
         the behavior is undefined.  Use either
         the Channel *or* a text rule, but not both.
 
