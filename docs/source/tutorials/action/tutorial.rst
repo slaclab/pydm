@@ -24,7 +24,7 @@ The application is a simulated x-ray beam positioning/alignment application
 in which the data from a camera will be presented along with two mirror motor
 axes to position the beam in X and Y.
 
-.. figure:: /_static/action/application.png
+.. figure:: /_static/tutorials/action/application.png
    :scale: 100 %
    :align: center
    :alt: Tutorial Application
@@ -36,7 +36,7 @@ axes to position the beam in X and Y.
 Macro Components
 ----------------
 
-.. figure:: /_static/action/components.png
+.. figure:: /_static/tutorials/action/components.png
    :scale: 100 %
    :align: center
    :alt: Tutorial Application

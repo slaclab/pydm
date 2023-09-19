@@ -27,7 +27,7 @@ In order to use this disk, start by creating a new virtual Machine, select Type 
 Configure the amount of memory to use (something greater or equal 2048MB should do it.
 Make sure to select ``Use an existing virtual hard disk file.`` and select the extracted ``.vmdk`` file.
 
-.. figure:: /_static/new_vm.png
+.. figure:: /_static/tutorials/new_vm.png
     :scale: 100 %
     :align: center
     :alt: Create new VM

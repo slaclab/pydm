@@ -28,7 +28,7 @@ method to filter our list of motors and present a list of
 
 Here is how it will look once we are done:
 
-.. figure:: /_static/action/python/all_motors.png
+.. figure:: /_static/tutorials/action/python/all_motors.png
    :scale: 75 %
    :align: center
    :alt: All Motors Screen
@@ -254,7 +254,7 @@ Here is how it will look once we are done:
 
      pydm all_motors.py
 
-  .. figure:: /_static/action/python/all_motors.gif
+  .. figure:: /_static/tutorials/action/python/all_motors.gif
      :scale: 75 %
      :align: center
 

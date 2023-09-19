@@ -140,7 +140,7 @@ This is accomplished by subclassing `pydm.Display` (See :ref:`Display` for more 
 
      pydm main.py
 
-  .. figure:: /_static/action/little_code/main.gif
+  .. figure:: /_static/tutorials/action/little_code/main.gif
      :scale: 75 %
      :align: center
 

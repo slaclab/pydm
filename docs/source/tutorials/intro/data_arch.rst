@@ -11,7 +11,7 @@ Data Architecture
 
 * This system makes it possible to mix-and-match different data sources within the same display, using the same widget set.
 
-.. figure:: /_static/intro/architecture.png
+.. figure:: /_static/tutorials/intro/architecture.png
    :scale: 25 %
    :align: center
    :alt: PyDM Data Plugin Architecture

@@ -13,7 +13,7 @@ The Launcher is available for Linux, OSX and Windows and it can be called using 
 
 This will result in the PyDM Main Window being displayed.
 
-.. figure:: /_static/intro/main_window.png
+.. figure:: /_static/tutorials/intro/main_window.png
    :scale: 75 %
    :align: center
    :alt: PyDM Main Window

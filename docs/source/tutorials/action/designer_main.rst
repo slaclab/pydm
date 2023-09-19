@@ -18,7 +18,7 @@ components of this tutorial.
 
 The finished result will look like this:
 
-.. figure:: /_static/action/main/main.png
+.. figure:: /_static/tutorials/action/main/main.png
    :scale: 75 %
    :align: center
    :alt: Expert Motor Screen
@@ -31,7 +31,7 @@ The finished result will look like this:
   Let's start by opening the :ref:`Qt Designer <Designer>`
   and creating a new ``Widget``.
 
-  .. figure:: /_static/action/new_widget.gif
+  .. figure:: /_static/tutorials/action/new_widget.gif
      :scale: 100 %
      :align: center
 
@@ -40,7 +40,7 @@ The finished result will look like this:
   With the new form available, let's add a ``Vertical Layout`` widget and make
   it fill the whole form. Let's select ``Layout Vertically`` for the Form.
 
-  .. figure:: /_static/action/inline/inline_layout.gif
+  .. figure:: /_static/tutorials/action/inline/inline_layout.gif
      :scale: 100 %
      :align: center
 
@@ -48,7 +48,7 @@ The finished result will look like this:
 
   Now that we have a layout, let's take a look at the widgets on this screen:
 
-  .. figure:: /_static/action/main/widgets.png
+  .. figure:: /_static/tutorials/action/main/widgets.png
      :scale: 70 %
      :align: center
 
@@ -229,7 +229,7 @@ The finished result will look like this:
 
     The end result will be something like this:
 
-    .. figure:: /_static/action/main/main_all_widgets_ok.png
+    .. figure:: /_static/tutorials/action/main/main_all_widgets_ok.png
        :scale: 100 %
        :align: center
 
@@ -250,7 +250,7 @@ The finished result will look like this:
 
      pydm main.ui
 
-  .. figure:: /_static/action/main/main.png
+  .. figure:: /_static/tutorials/action/main/main.png
      :scale: 75 %
      :align: center
      :alt: Main Application Screen

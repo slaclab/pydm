@@ -31,7 +31,7 @@ Once you open Designer, you'll be greeted by a mostly
 blank screen, with a list of widgets on the left, and a property inspector on the
 right.
 
-.. figure:: /_static/action/designer.png
+.. figure:: /_static/tutorials/action/designer.png
    :scale: 33 %
    :align: center
    :alt: Screenshot of newly-opened Qt Designer.
@@ -45,7 +45,7 @@ To make a new PyDM display, go to File->New..., then choose to build a new Widge
     All PyDM displays must have a Widget for the base - if you try to make 
     one using a MainWindow, your display will not work properly.
 
-.. figure:: /_static/action/new_widget.png
+.. figure:: /_static/tutorials/action/new_widget.png
    :scale: 100 %
    :align: center
    :alt: Screenshot of new file screen
@@ -57,7 +57,7 @@ If you drag a PyDMLabel (in the 'PyDM Display Widgets' section) onto the form,
 on the right side of the screen you can see all the properties for this widget.
 At the bottom of the properties list are the PyDM-specific properties.
 
-.. figure:: /_static/action/pydm_properties.png
+.. figure:: /_static/tutorials/action/pydm_properties.png
    :scale: 33 %
    :align: center
    :alt: Screenshot showing the PyDMLabel's properties.

@@ -19,7 +19,7 @@ each motor.
 
 The finished result will look like this:
 
-.. figure:: /_static/action/inline/inline.png
+.. figure:: /_static/tutorials/action/inline/inline.png
    :scale: 75 %
    :align: center
    :alt: Inline Motor Screen
@@ -31,7 +31,7 @@ The finished result will look like this:
   Let's start by opening :ref:`Qt Designer <Designer>`
   and creating a new ``Widget``.
 
-  .. figure:: /_static/action/new_widget.gif
+  .. figure:: /_static/tutorials/action/new_widget.gif
      :scale: 100 %
      :align: center
 
@@ -40,7 +40,7 @@ The finished result will look like this:
   With the new form available, let's add a GridLayout widget to it.  To make it
   fill the whole form let's select ``Layout Vertically`` for the form.
 
-  .. figure:: /_static/action/inline/inline_layout.gif
+  .. figure:: /_static/tutorials/action/inline/inline_layout.gif
      :scale: 100 %
      :align: center
 
@@ -48,7 +48,7 @@ The finished result will look like this:
 
   Now that we have a layout, let's take a look at the widgets on this screen:
 
-  .. figure:: /_static/action/inline/widgets.png
+  .. figure:: /_static/tutorials/action/inline/widgets.png
      :scale: 70 %
      :align: center
 
@@ -66,7 +66,7 @@ The finished result will look like this:
     #. Set the ``displayFormat`` property of this label to: ``String``.
     #. Expand the ``Font`` property and mark the checkbox for ``Bold``.
 
-    .. figure:: /_static/action/inline/inline_desc.gif
+    .. figure:: /_static/tutorials/action/inline/inline_desc.gif
        :scale: 100 %
        :align: center
 
@@ -91,7 +91,7 @@ The finished result will look like this:
        * This property will indicate the minimum size constrains for the widget and
          avoid this widget from being hidden or reduced to an unusable size on window resizing.
 
-    .. figure:: /_static/action/inline/inline_3_2.gif
+    .. figure:: /_static/tutorials/action/inline/inline_3_2.gif
        :scale: 100 %
        :align: center
 
@@ -115,7 +115,7 @@ The finished result will look like this:
          avoid this widget becoming hidden or reduced to an unusable size when a user
          resizes the window.
 
-    .. figure:: /_static/action/inline/inline_3_3.gif
+    .. figure:: /_static/tutorials/action/inline/inline_3_3.gif
        :scale: 100 %
        :align: center
 
@@ -137,7 +137,7 @@ The finished result will look like this:
        ``32``.
     #. Repeat the same previous step for the ``maximumSize`` property.
 
-    .. figure:: /_static/action/inline/inline_3_4.gif
+    .. figure:: /_static/tutorials/action/inline/inline_3_4.gif
        :scale: 100 %
        :align: center
 
@@ -161,7 +161,7 @@ The finished result will look like this:
        give the button a nice look and feel and bring the attention to it in case
        of emergency.
 
-    .. figure:: /_static/action/inline/inline_3_5.gif
+    .. figure:: /_static/tutorials/action/inline/inline_3_5.gif
        :scale: 100 %
        :align: center
 
@@ -178,7 +178,7 @@ The finished result will look like this:
        channel will be relative to the channel's current value.
     #. Set the ``text`` property to ``Tw +10``.
 
-    .. figure:: /_static/action/inline/inline_3_6.gif
+    .. figure:: /_static/tutorials/action/inline/inline_3_6.gif
        :scale: 100 %
        :align: center
 
@@ -216,7 +216,7 @@ The finished result will look like this:
        ``Height`` to ``24``.
     #. Repeat the same previous step for the ``maximumSize`` property.
 
-    .. figure:: /_static/action/inline/inline_3_8.gif
+    .. figure:: /_static/tutorials/action/inline/inline_3_8.gif
        :scale: 100 %
        :align: center
 
@@ -224,7 +224,7 @@ The finished result will look like this:
 
     After adding all the widgets to the layout, it will look like this:
 
-    .. figure:: /_static/action/inline/inline_all_widgets.png
+    .. figure:: /_static/tutorials/action/inline/inline_all_widgets.png
        :scale: 50 %
        :align: center
 
@@ -251,13 +251,13 @@ The finished result will look like this:
          ``layoutSpacing`` to ``0`` so the form is very tight.
        * Expand the ``maximumSize`` property and set ``Height`` to ``38``.
 
-    .. figure:: /_static/action/inline/inline_3_9.gif
+    .. figure:: /_static/tutorials/action/inline/inline_3_9.gif
        :scale: 100 %
        :align: center
 
     The end result will be something like this:
 
-    .. figure:: /_static/action/inline/inline_all_widgets_ok.png
+    .. figure:: /_static/tutorials/action/inline/inline_all_widgets_ok.png
        :scale: 75 %
        :align: center
 
@@ -278,7 +278,7 @@ The finished result will look like this:
 
      pydm -m '{"MOTOR":"IOC:m1"}' inline_motor.ui
 
-  .. figure:: /_static/action/inline/inline.png
+  .. figure:: /_static/tutorials/action/inline/inline.png
      :scale: 75 %
      :align: center
      :alt: Inline Motor Screen
