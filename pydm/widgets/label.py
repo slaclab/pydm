@@ -26,6 +26,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     Q_ENUMS(DisplayFormat)
     DisplayFormat = DisplayFormat
 

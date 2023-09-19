@@ -1,11 +1,9 @@
-import time
 from os import path
 from pydm import Display
 from scipy.ndimage.measurements import maximum_position
 
 
 class BeamPositioning(Display):
-
     def __init__(self, parent=None, args=None):
         super(BeamPositioning, self).__init__(parent=parent, args=args)
         # Attach our custom process_image method
@@ -18,7 +16,7 @@ class BeamPositioning(Display):
 
     def ui_filename(self):
         # Point to our UI file
-        return 'main.ui'
+        return "main.ui"
 
     def ui_filepath(self):
         # Return the full path to the UI file

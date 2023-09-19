@@ -28,9 +28,10 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     Q_ENUMS(DisplayFormat)
     DisplayFormat = DisplayFormat
-    
+
     def __init__(self, parent=None, init_channel=None):
         QLineEdit.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
