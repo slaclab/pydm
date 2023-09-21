@@ -58,7 +58,6 @@ PyDMArchiverTimePlot
 
 .. autoclass:: pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot
    :members:
-   :inherited-members:
    :show-inheritance:
 
 #######################
@@ -67,5 +66,4 @@ ArchivePlotCurveItem
 
 .. autoclass:: pydm.widgets.archiver_time_plot.ArchivePlotCurveItem
    :members:
-   :inherited-members:
    :show-inheritance:

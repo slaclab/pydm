@@ -54,7 +54,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference external" href="https://slaclab.github.io/pydm-tutorial">Explore Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorial</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
 <ul>
@@ -406,12 +406,6 @@ this method (after calling superclass implementation) to add the menu.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.base.PyDMWidget.get_designer_icon">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_designer_icon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.base.PyDMWidget.get_designer_icon" title="Permalink to this definition"></a></dt>
-<dd><p>Icon for usage in Qt designer.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.base.PyDMWidget.init_for_designer">
 <span class="sig-name descname"><span class="pre">init_for_designer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/base.html#PyDMWidget.init_for_designer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.base.PyDMWidget.init_for_designer" title="Permalink to this definition"></a></dt>
 <dd><p>Method called after the constructor to tweak configurations for
@@ -454,21 +448,6 @@ This slot sends the new limit value to the
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.base.PyDMWidget.opacity">
-<span class="sig-name descname"><span class="pre">opacity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.base.PyDMWidget.opacity" title="Permalink to this definition"></a></dt>
-<dd><p>Float value between 0 and 1 representing the opacity of the widget
-where 0 means transparent.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>opacity</strong></p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.base.PyDMWidget.open_context_menu">
 <span class="sig-name descname"><span class="pre">open_context_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ev</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/base.html#PyDMWidget.open_context_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.base.PyDMWidget.open_context_menu" title="Permalink to this definition"></a></dt>
 <dd><p>Handler for when the Default Context Menu is requested.</p>
@@ -490,32 +469,6 @@ where 0 means transparent.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>tip_with_attribute_info</strong> – ToolTip string which has had the attribute names replaced with the attribute values.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.base.PyDMWidget.rule_evaluated">
-<span class="sig-name descname"><span class="pre">rule_evaluated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.base.PyDMWidget.rule_evaluated" title="Permalink to this definition"></a></dt>
-<dd><p>Callback called when a rule has a new value for a property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – Dictionary containing the rule name, the property to be set and the
-new value.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.base.PyDMWidget.rules">
-<span class="sig-name descname"><span class="pre">rules</span></span><a class="headerlink" href="#pydm.widgets.base.PyDMWidget.rules" title="Permalink to this definition"></a></dt>
-<dd><p>JSON-formatted list of dictionaries, with rules for the widget.</p>
-<dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
@@ -554,27 +507,6 @@ new value.</p>
 <dt class="sig sig-object py" id="pydm.widgets.base.PyDMWidget.set_channel">
 <span class="sig-name descname"><span class="pre">set_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/base.html#PyDMWidget.set_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.base.PyDMWidget.set_channel" title="Permalink to this definition"></a></dt>
 <dd><p>A setter method without a pyqt decorator so subclasses can use this functionality</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.base.PyDMWidget.set_opacity">
-<span class="sig-name descname"><span class="pre">set_opacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.base.PyDMWidget.set_opacity" title="Permalink to this definition"></a></dt>
-<dd><p>Float value between 0 and 1 representing the opacity of the widget
-where 0 means transparent.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>val</strong> (<em>float</em>) – The new value for the opacity</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.base.PyDMWidget.show_address_tooltip">
-<span class="sig-name descname"><span class="pre">show_address_tooltip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.widgets.base.PyDMWidget.show_address_tooltip" title="Permalink to this definition"></a></dt>
-<dd><p>Show the PyDMTooltip and copy address to clipboard</p>
-<p>This is intended to replicate the behavior of the “middle click” from
-EDM. If the QWidget does not have a valid PyDMChannel nothing will be
-displayed</p>
 </dd></dl>
 
 <dl class="py method">

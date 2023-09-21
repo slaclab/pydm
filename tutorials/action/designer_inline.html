@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inline Motor Screen &mdash; PyDM 1.20.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Expert Motor Screen" href="designer_expert.html" />
+    <link rel="prev" title="Building Your First Display with Qt Designer" href="designer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyDM
+          </a>
+              <div class="version">
+                1.20.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../intro.html">Setting up the Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/launcher.html">PyDM Launcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/channels.html">Channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/data_arch.html">Data Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/macros.html">Macro Substitution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/widgets.html">Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/datasource.html">Data Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html">About the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro_designer.html">Introduction to Qt Designer</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="designer.html">Building Your First Display with Qt Designer</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Inline Motor Screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="designer_expert.html">Expert Motor Screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="designer_main.html">Main Screen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro_python.html">A Word About Python Displays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="little_code.html">Adding Code into the Main Display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Making Pure Python Displays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/help.html">Getting Help With PyDM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/requests.html">Bug and Requests</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help_files.html">Adding Help Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/p4p_plugin.html">P4P Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/designer_widgets.html">Designer Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Tutorial</a></li>
+          <li class="breadcrumb-item"><a href="designer.html">Building Your First Display with Qt Designer</a></li>
+      <li class="breadcrumb-item active">Inline Motor Screen</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/tutorials/action/designer_inline.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="inline-motor-screen">
+<span id="inline"></span><h1>Inline Motor Screen<a class="headerlink" href="#inline-motor-screen" title="Permalink to this heading"></a></h1>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>Check-list:</strong></p>
+<ul class="simple">
+<li><p>Make sure that you have your <a class="reference internal" href="../intro.html#environment"><span class="std std-ref">Environment</span></a> properly configured.</p></li>
+<li><p>That your <a class="reference internal" href="../intro.html#virtualmachine"><span class="std std-ref">Virtual Machine</span></a> is up and ready.</p></li>
+<li><p>That the <a class="reference internal" href="../intro.html#pythonenv"><span class="std std-ref">Python environment</span></a> is set.</p></li>
+<li><p>That all <a class="reference internal" href="../intro.html#iocs"><span class="std std-ref">three IOCs</span></a> are running.</p></li>
+</ul>
+</div>
+<p>For this screen, we want to present useful information to the user to operate
+the motors, and also provide a way for them to access other less-commonly-used parameters via an “Expert” screen. To make this screen re-usable in other displays, it will be necessary
+to use <a class="reference internal" href="../intro/macros.html#macros"><span class="std std-ref">Macro Substitution</span></a> that will later be replaced by the proper information for
+each motor.</p>
+<p>The finished result will look like this:</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../_images/inline.png"><img alt="Inline Motor Screen" src="../../_images/inline.png" style="width: 588.0px; height: 161.25px;" /></a>
+<figcaption>
+<p><span class="caption-text">Inline Motor Screen</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<ul>
+<li><p><strong>Step 1.</strong></p>
+<p>Let’s start by opening <a class="reference internal" href="intro_designer.html#designer"><span class="std std-ref">Qt Designer</span></a>
+and creating a new <code class="docutils literal notranslate"><span class="pre">Widget</span></code>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/new_widget.gif"><img alt="../../_images/new_widget.gif" src="../../_images/new_widget.gif" style="width: 552.0px; height: 340.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 2.</strong></p>
+<p>With the new form available, let’s add a GridLayout widget to it.  To make it
+fill the whole form let’s select <code class="docutils literal notranslate"><span class="pre">Layout</span> <span class="pre">Vertically</span></code> for the form.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_layout.gif"><img alt="../../_images/inline_layout.gif" src="../../_images/inline_layout.gif" style="width: 557.0px; height: 344.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 3.</strong></p>
+<p>Now that we have a layout, let’s take a look at the widgets on this screen:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/widgets1.png"><img alt="../../_images/widgets1.png" src="../../_images/widgets1.png" style="width: 560.0px; height: 73.5px;" /></a>
+</figure>
+<ul>
+<li><p><strong>Step 3.1.</strong></p>
+<p>The first <code class="docutils literal notranslate"><span class="pre">PyDMLabel</span></code> will display the description of the motor:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMLabel</span></code> at the previously added <code class="docutils literal notranslate"><span class="pre">GridLayout</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">Channel</span></code> property of this label to: <code class="docutils literal notranslate"><span class="pre">ca://${MOTOR}.DESC</span></code>.</p>
+<ul class="simple">
+<li><p>${MOTOR} is a macro that will later be replaced by a value sent by screens
+using this widget in embedded displays, related displays, or when launching
+using the command line.</p></li>
+</ul>
+</li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">displayFormat</span></code> property of this label to: <code class="docutils literal notranslate"><span class="pre">String</span></code>.</p></li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">Font</span></code> property and mark the checkbox for <code class="docutils literal notranslate"><span class="pre">Bold</span></code>.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_desc.gif"><img alt="../../_images/inline_desc.gif" src="../../_images/inline_desc.gif" style="width: 557.0px; height: 344.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 3.2.</strong></p>
+<p>The second widget is a <code class="docutils literal notranslate"><span class="pre">PyDMLineEdit</span></code> which will be used to set the desired
+position for the motor:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMLineEdit</span></code> into the <code class="docutils literal notranslate"><span class="pre">GridLayout</span></code> on the side of the
+previously added <code class="docutils literal notranslate"><span class="pre">PyDMLabel</span></code> (<strong>Note</strong>: The border will become blue showing that
+the widget will be placed on the side and not on top or under the other widget).</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">Channel</span></code> property of this line edit to: <code class="docutils literal notranslate"><span class="pre">ca://${MOTOR}.VAL</span></code>.</p></li>
+<li><p>Change its <code class="docutils literal notranslate"><span class="pre">displayFormat</span></code> property to <code class="docutils literal notranslate"><span class="pre">Decimal</span></code>.</p></li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">sizePolicy</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Horizontal</span> <span class="pre">Policy</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Policy</span></code> to <code class="docutils literal notranslate"><span class="pre">Fixed</span></code>.</p>
+<ul class="simple">
+<li><p>This will make the widget respect the size on screen.</p></li>
+</ul>
+</li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">minimumSize</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Width</span></code> to <code class="docutils literal notranslate"><span class="pre">75</span></code>.</p>
+<ul class="simple">
+<li><p>This property will indicate the minimum size constrains for the widget and
+avoid this widget from being hidden or reduced to an unusable size on window resizing.</p></li>
+</ul>
+</li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_3_2.gif"><img alt="../../_images/inline_3_2.gif" src="../../_images/inline_3_2.gif" style="width: 557.0px; height: 344.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 3.3.</strong></p>
+<p>The third widget is a <code class="docutils literal notranslate"><span class="pre">PyDMLabel</span></code> which will be used to monitor the readback
+value for the motor:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMLabel</span></code> at the <code class="docutils literal notranslate"><span class="pre">GridLayout</span></code> on the side of the
+previously added <code class="docutils literal notranslate"><span class="pre">PyDMLineEdit</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">Channel</span></code> property of this line edit to: <code class="docutils literal notranslate"><span class="pre">ca://${MOTOR}.RBV</span></code>.</p></li>
+<li><p>Change its <code class="docutils literal notranslate"><span class="pre">displayFormat</span></code> property to <code class="docutils literal notranslate"><span class="pre">Decimal</span></code>.</p></li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">sizePolicy</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Horizontal</span> <span class="pre">Policy</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Policy</span></code> to <code class="docutils literal notranslate"><span class="pre">Fixed</span></code>.</p>
+<ul class="simple">
+<li><p>This will make the widget respect the size on screen.</p></li>
+</ul>
+</li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">minimumSize</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Width</span></code> to <code class="docutils literal notranslate"><span class="pre">75</span></code>.</p>
+<ul class="simple">
+<li><p>This property will indicate the minimum size constraints for the widget and
+avoid this widget becoming hidden or reduced to an unusable size when a user
+resizes the window.</p></li>
+</ul>
+</li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_3_3.gif"><img alt="../../_images/inline_3_3.gif" src="../../_images/inline_3_3.gif" style="width: 557.0px; height: 344.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 3.4.</strong></p>
+<p>The fourth widget is a <code class="docutils literal notranslate"><span class="pre">PyDMByteIndicator</span></code> which will be used for visual
+feedback that the motor is moving:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMByteIndicator</span></code> into the <code class="docutils literal notranslate"><span class="pre">GridLayout</span></code> on the side of the
+previously added <code class="docutils literal notranslate"><span class="pre">PyDMLabel</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">Channel</span></code> property of this line edit to: <code class="docutils literal notranslate"><span class="pre">ca://${MOTOR}.MOVN</span></code>.</p></li>
+<li><p>Turn off the <code class="docutils literal notranslate"><span class="pre">showLabels</span></code> property since we are only interested on the
+color for this widget.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">circles</span></code> property so we have a circle instead of a square.</p></li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">sizePolicy</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Horizontal</span> <span class="pre">Policy</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Policy</span></code> to <code class="docutils literal notranslate"><span class="pre">Fixed</span></code>.</p></li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">minimumSize</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Width</span></code> and <code class="docutils literal notranslate"><span class="pre">Height</span></code> to
+<code class="docutils literal notranslate"><span class="pre">32</span></code>.</p></li>
+<li><p>Repeat the same previous step for the <code class="docutils literal notranslate"><span class="pre">maximumSize</span></code> property.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_3_4.gif"><img alt="../../_images/inline_3_4.gif" src="../../_images/inline_3_4.gif" style="width: 557.0px; height: 344.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 3.5.</strong></p>
+<p>The fifth widget is a <code class="docutils literal notranslate"><span class="pre">PyDMPushButton</span></code> which will be used to stop the motor:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMPushButton</span></code> at the <code class="docutils literal notranslate"><span class="pre">GridLayout</span></code> on the side of the
+previously added <code class="docutils literal notranslate"><span class="pre">PyDMByteIndicator</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">channel</span></code> property of this line edit to: <code class="docutils literal notranslate"><span class="pre">ca://${MOTOR}.STOP</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">pressValue</span></code> property to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<ul class="simple">
+<li><p>This is the value that will be written to the channel once the button is
+pressed.</p></li>
+</ul>
+</li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">text</span></code> property to <code class="docutils literal notranslate"><span class="pre">Stop</span></code>.</p></li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">sizePolicy</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Horizontal</span> <span class="pre">Policy</span></code> to <code class="docutils literal notranslate"><span class="pre">Minimum</span></code>
+and the <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Policy</span></code> to <code class="docutils literal notranslate"><span class="pre">Fixed</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">styleSheet</span></code> property to <code class="docutils literal notranslate"><span class="pre">background-color:</span> <span class="pre">red;</span></code> in order to
+give the button a nice look and feel and bring the attention to it in case
+of emergency.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_3_5.gif"><img alt="../../_images/inline_3_5.gif" src="../../_images/inline_3_5.gif" style="width: 557.0px; height: 344.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 3.6.</strong></p>
+<p>The sixth widget is also a <code class="docutils literal notranslate"><span class="pre">PyDMPushButton</span></code> which will be used to tweak the
+motor a certain distance in the positive direction:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMPushButton</span></code> into the <code class="docutils literal notranslate"><span class="pre">GridLayout</span></code> on the side of the
+previously added <code class="docutils literal notranslate"><span class="pre">PyDMPushButton</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">channel</span></code> property of this line edit to: <code class="docutils literal notranslate"><span class="pre">ca://${MOTOR}.VAL</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">pressValue</span></code> property to <code class="docutils literal notranslate"><span class="pre">10</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">relativeChange</span></code> property so the new value written to the
+channel will be relative to the channel’s current value.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">text</span></code> property to <code class="docutils literal notranslate"><span class="pre">Tw</span> <span class="pre">+10</span></code>.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_3_6.gif"><img alt="../../_images/inline_3_6.gif" src="../../_images/inline_3_6.gif" style="width: 557.0px; height: 344.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 3.7.</strong></p>
+<p>The seventh widget is also a <code class="docutils literal notranslate"><span class="pre">PyDMPushButton</span></code> which will be used to tweak the
+motor a certain distance in the negative direction:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMPushButton</span></code> into the <code class="docutils literal notranslate"><span class="pre">GridLayout</span></code> on the side of the
+previously added <code class="docutils literal notranslate"><span class="pre">PyDMPushButton</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">channel</span></code> property of this line edit to: <code class="docutils literal notranslate"><span class="pre">ca://${MOTOR}.VAL</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">pressValue</span></code> property to <code class="docutils literal notranslate"><span class="pre">-10</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">relativeChange</span></code> property so the new value written to the
+channel will be relative to the channel’s current value.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">text</span></code> property to <code class="docutils literal notranslate"><span class="pre">Tw</span> <span class="pre">-10</span></code>.</p></li>
+</ol>
+</li>
+<li><p><strong>Step 3.8.</strong></p>
+<p>The final widget is a <code class="docutils literal notranslate"><span class="pre">PyDMRelatedDisplayButton</span></code> which will be used to launch
+the <strong>engineer</strong> screen so users can configure advanced parameters and troubleshoot
+possible issues with the motor:</p>
+<ol class="arabic">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMRelatedDisplayButton</span></code> at the <code class="docutils literal notranslate"><span class="pre">GridLayout</span></code> on the
+side of the previously added <code class="docutils literal notranslate"><span class="pre">PyDMPushButton</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">text</span></code> property to <code class="docutils literal notranslate"><span class="pre">Engineer...</span></code>.</p></li>
+<li><p>Add the string <code class="docutils literal notranslate"><span class="pre">exper_motor.ui</span></code> to the <code class="docutils literal notranslate"><span class="pre">filenames</span></code> property.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We will create the <code class="docutils literal notranslate"><span class="pre">expert_motor.ui</span></code> file in the next section.</p>
+</div>
+</li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">openInNewWindow</span></code> property so the screen will show up in a standalone
+window.</p></li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">minimumSize</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Width</span></code> to <code class="docutils literal notranslate"><span class="pre">125</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Height</span></code> to <code class="docutils literal notranslate"><span class="pre">24</span></code>.</p></li>
+<li><p>Repeat the same previous step for the <code class="docutils literal notranslate"><span class="pre">maximumSize</span></code> property.</p></li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_3_8.gif"><img alt="../../_images/inline_3_8.gif" src="../../_images/inline_3_8.gif" style="width: 557.0px; height: 344.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 3.9.</strong></p>
+<p>After adding all the widgets to the layout, it will look like this:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_all_widgets.png"><img alt="../../_images/inline_all_widgets.png" src="../../_images/inline_all_widgets.png" style="width: 404.0px; height: 328.0px;" /></a>
+</figure>
+<p>Let’s adjust the sizes and reduce the top and bottom margins on the layout.</p>
+<ol class="arabic simple">
+<li><p>Using the Object Inspector on the top-right corner, select the <code class="docutils literal notranslate"><span class="pre">gridLayout</span></code>
+object and:</p>
+<ul class="simple">
+<li><p>Set the property <code class="docutils literal notranslate"><span class="pre">layoutRightMargin</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
+<li><p>Set the property <code class="docutils literal notranslate"><span class="pre">layoutBottomMargin</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
+<li><p>Set the property <code class="docutils literal notranslate"><span class="pre">layoutHorizontalSpacing</span></code> to <code class="docutils literal notranslate"><span class="pre">10</span></code>.</p></li>
+<li><p>Set the property <code class="docutils literal notranslate"><span class="pre">layoutVerticalSpacing</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Using the Object Inspector on the top-right corner, select the <code class="docutils literal notranslate"><span class="pre">Form</span></code>
+object and:</p>
+<ul class="simple">
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">geometry</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Width</span></code> to <code class="docutils literal notranslate"><span class="pre">700</span></code> and <code class="docutils literal notranslate"><span class="pre">Height</span></code> to
+<code class="docutils literal notranslate"><span class="pre">32</span></code>.</p></li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">sizePolicy</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Policy</span></code> to <code class="docutils literal notranslate"><span class="pre">Fixed</span></code>.</p></li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">minimumSize</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Width</span></code> to <code class="docutils literal notranslate"><span class="pre">700</span></code> and <code class="docutils literal notranslate"><span class="pre">Height</span></code> to
+<code class="docutils literal notranslate"><span class="pre">32</span></code>.</p></li>
+<li><p>Scroll all the way down on the property editor and set <code class="docutils literal notranslate"><span class="pre">layoutLeftMargin</span></code>,
+<code class="docutils literal notranslate"><span class="pre">layoutTopMargin</span></code>, <code class="docutils literal notranslate"><span class="pre">layoutRightMargin</span></code>, <code class="docutils literal notranslate"><span class="pre">layoutBottomMargin</span></code> and
+<code class="docutils literal notranslate"><span class="pre">layoutSpacing</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code> so the form is very tight.</p></li>
+<li><p>Expand the <code class="docutils literal notranslate"><span class="pre">maximumSize</span></code> property and set <code class="docutils literal notranslate"><span class="pre">Height</span></code> to <code class="docutils literal notranslate"><span class="pre">38</span></code>.</p></li>
+</ul>
+</li>
+</ol>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_3_9.gif"><img alt="../../_images/inline_3_9.gif" src="../../_images/inline_3_9.gif" style="width: 596.0px; height: 338.0px;" /></a>
+</figure>
+<p>The end result will be something like this:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_all_widgets_ok.png"><img alt="../../_images/inline_all_widgets_ok.png" src="../../_images/inline_all_widgets_ok.png" style="width: 600.0px; height: 48.75px;" /></a>
+</figure>
+</li>
+</ul>
+</li>
+<li><p><strong>Step 4.</strong></p>
+<p>Save this file as <code class="docutils literal notranslate"><span class="pre">inline_motor.ui</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For this tutorial it is important to use this file name as it will be referenced
+at the other sections. If you change it, please remember to also change it in the
+next steps when referenced.</p>
+</div>
+</li>
+<li><p><strong>Step 5.</strong></p>
+<p>Test the Inline Motor Screen:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pydm<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;{&quot;MOTOR&quot;:&quot;IOC:m1&quot;}&#39;</span><span class="w"> </span>inline_motor.ui
+</pre></div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline.png"><img alt="Inline Motor Screen" src="../../_images/inline.png" style="width: 588.0px; height: 161.25px;" /></a>
+</figure>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this file using <code class="xref download docutils literal notranslate"><span class="pre">this</span> <span class="pre">link</span></code>.</p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="designer.html" class="btn btn-neutral float-left" title="Building Your First Display with Qt Designer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="designer_expert.html" class="btn btn-neutral float-right" title="Expert Motor Screen" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

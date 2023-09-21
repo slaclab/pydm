@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setting up the Environment &mdash; PyDM 1.20.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PyDM Launcher" href="intro/launcher.html" />
+    <link rel="prev" title="Tutorial" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyDM
+          </a>
+              <div class="version">
+                1.20.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setting up the Environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#virtual-machine">Virtual Machine</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#using-the-downloaded-disk">Using the Downloaded Disk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#useful-virtual-machine-information">Useful Virtual Machine Information</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-your-own-environment">Creating your own environment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/launcher.html">PyDM Launcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/channels.html">Channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/data_arch.html">Data Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/macros.html">Macro Substitution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/widgets.html">Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/datasource.html">Data Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action/tutorial.html">About the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action/intro_designer.html">Introduction to Qt Designer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action/designer.html">Building Your First Display with Qt Designer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action/intro_python.html">A Word About Python Displays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action/little_code.html">Adding Code into the Main Display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action/python.html">Making Pure Python Displays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contrib/help.html">Getting Help With PyDM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contrib/requests.html">Bug and Requests</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help_files.html">Adding Help Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/p4p_plugin.html">P4P Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/designer_widgets.html">Designer Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorial</a></li>
+      <li class="breadcrumb-item active">Setting up the Environment</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/intro.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="setting-up-the-environment">
+<span id="environment"></span><h1>Setting up the Environment<a class="headerlink" href="#setting-up-the-environment" title="Permalink to this heading"></a></h1>
+<section id="virtual-machine">
+<span id="virtualmachine"></span><h2>Virtual Machine<a class="headerlink" href="#virtual-machine" title="Permalink to this heading"></a></h2>
+<p>We provide a virtual machine disk that is the base for the application that will
+be developed during this tutorial.</p>
+<p>You can download the disk using this <a class="reference external" href="https://drive.google.com/a/stanford.edu/file/d/1SE4_oDF2wg_7ltKOIdJuZIqkpHzLUkbm/view?usp=sharing">Link</a>.</p>
+<section id="using-the-downloaded-disk">
+<h3>Using the Downloaded Disk<a class="headerlink" href="#using-the-downloaded-disk" title="Permalink to this heading"></a></h3>
+<p>After downloading it, extract the <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> file, create a new Virtual Machine at the virtualization client of your preference.</p>
+<p>The instructions below are for <a class="reference external" href="https://www.virtualbox.org/wiki/Downloads">Oracle VirtualBox</a> .
+Oracle VirtualBox is available for Windows, OS X and Linux hosts.</p>
+<p>This file is not a complete Virtual Machine dump that can be imported but instead a disk.</p>
+<p>In order to use this disk, start by creating a new virtual Machine, select Type as <code class="docutils literal notranslate"><span class="pre">Linux</span></code> and Version as <code class="docutils literal notranslate"><span class="pre">Ubuntu</span> <span class="pre">(64-bit)</span></code>.
+Configure the amount of memory to use (something greater or equal 2048MB should do it.
+Make sure to select <code class="docutils literal notranslate"><span class="pre">Use</span> <span class="pre">an</span> <span class="pre">existing</span> <span class="pre">virtual</span> <span class="pre">hard</span> <span class="pre">disk</span> <span class="pre">file.</span></code> and select the extracted <code class="docutils literal notranslate"><span class="pre">.vmdk</span></code> file.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/new_vm.png"><img alt="Create new VM" src="../_images/new_vm.png" style="width: 750.0px; height: 573.0px;" /></a>
+</figure>
+</section>
+<section id="useful-virtual-machine-information">
+<h3>Useful Virtual Machine Information<a class="headerlink" href="#useful-virtual-machine-information" title="Permalink to this heading"></a></h3>
+<section id="user-account">
+<h4>User Account<a class="headerlink" href="#user-account" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Username</p></th>
+<th class="head"><p>Password</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user</p></td>
+<td><p>tutorial</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="python-environment">
+<span id="pythonenv"></span><h4>Python Environment<a class="headerlink" href="#python-environment" title="Permalink to this heading"></a></h4>
+<p>On this machine we are using Miniconda to handle our Python environment and dependencies.
+To have access to the environmnet please do:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>tutorial
+</pre></div>
+</div>
+</section>
+<section id="simulated-epics-iocs">
+<span id="iocs"></span><h4>Simulated EPICS IOCs<a class="headerlink" href="#simulated-epics-iocs" title="Permalink to this heading"></a></h4>
+<p>This machine comes with simulated motors and cameras.
+The IOCs can be started through their launcher scripts available at:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/tutorial/iocs_launcher
+
+<span class="c1"># For the AreaDetector (cameras) simulation use</span>
+./simDetector
+
+<span class="c1"># For the simulated motor axis use</span>
+./simMotor
+
+<span class="c1"># For the linking IOC</span>
+./simLinker
+</pre></div>
+</div>
+<p>For AreaDetector (cameras):</p>
+<ul class="simple">
+<li><p>The prefix for the PVs is <code class="docutils literal notranslate"><span class="pre">13SIM1:</span></code> so we have: <code class="docutils literal notranslate"><span class="pre">13SIM1:cam1</span></code> as well as <code class="docutils literal notranslate"><span class="pre">13SIM1:cam2</span></code> available.</p></li>
+</ul>
+<p>For Motor Axis:</p>
+<ul class="simple">
+<li><p>The prexif for the PVs is <code class="docutils literal notranslate"><span class="pre">IOC:</span></code> so we have: <code class="docutils literal notranslate"><span class="pre">IOC:m1</span> <span class="pre">..</span> <span class="pre">IOC:m8</span></code></p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="creating-your-own-environment">
+<h2>Creating your own environment<a class="headerlink" href="#creating-your-own-environment" title="Permalink to this heading"></a></h2>
+<p>If you decide to create your own environment and not use the Virtual Machine
+provided please refer to the <a class="reference external" href="http://slaclab.github.io/pydm/">PyDM Documentation Website</a>
+for an up-to-date dependency list as well as detailed installation instructions.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="intro/launcher.html" class="btn btn-neutral float-right" title="PyDM Launcher" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

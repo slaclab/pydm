@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Main Screen &mdash; PyDM 1.20.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="A Word About Python Displays" href="intro_python.html" />
+    <link rel="prev" title="Expert Motor Screen" href="designer_expert.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyDM
+          </a>
+              <div class="version">
+                1.20.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../intro.html">Setting up the Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/launcher.html">PyDM Launcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/channels.html">Channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/data_arch.html">Data Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/macros.html">Macro Substitution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/widgets.html">Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/datasource.html">Data Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html">About the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro_designer.html">Introduction to Qt Designer</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="designer.html">Building Your First Display with Qt Designer</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="designer_inline.html">Inline Motor Screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="designer_expert.html">Expert Motor Screen</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Main Screen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro_python.html">A Word About Python Displays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="little_code.html">Adding Code into the Main Display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Making Pure Python Displays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/help.html">Getting Help With PyDM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contrib/requests.html">Bug and Requests</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help_files.html">Adding Help Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/p4p_plugin.html">P4P Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/designer_widgets.html">Designer Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Tutorial</a></li>
+          <li class="breadcrumb-item"><a href="designer.html">Building Your First Display with Qt Designer</a></li>
+      <li class="breadcrumb-item active">Main Screen</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/tutorials/action/designer_main.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="main-screen">
+<span id="main"></span><h1>Main Screen<a class="headerlink" href="#main-screen" title="Permalink to this heading"></a></h1>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>Check-list:</strong></p>
+<ul class="simple">
+<li><p>Make sure that you have your <a class="reference internal" href="../intro.html#environment"><span class="std std-ref">Environment</span></a> properly configured.</p></li>
+<li><p>That your <a class="reference internal" href="../intro.html#virtualmachine"><span class="std std-ref">Virtual Machine</span></a> is up and ready.</p></li>
+<li><p>That the <a class="reference internal" href="../intro.html#pythonenv"><span class="std std-ref">Python environment</span></a> is set.</p></li>
+<li><p>That all <a class="reference internal" href="../intro.html#iocs"><span class="std std-ref">three IOCs</span></a> are running.</p></li>
+</ul>
+</div>
+<p>This will be the main piece of our Beam Positioning application and will group the other
+components of this tutorial.</p>
+<p>The finished result will look like this:</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../_images/main.png"><img alt="Expert Motor Screen" src="../../_images/main.png" style="width: 627.0px; height: 676.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">Main Screen for Beam Positioning Application</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<ul>
+<li><p><strong>Step 1.</strong></p>
+<p>Let’s start by opening the <a class="reference internal" href="intro_designer.html#designer"><span class="std std-ref">Qt Designer</span></a>
+and creating a new <code class="docutils literal notranslate"><span class="pre">Widget</span></code>.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/new_widget.gif"><img alt="../../_images/new_widget.gif" src="../../_images/new_widget.gif" style="width: 552.0px; height: 340.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 2.</strong></p>
+<p>With the new form available, let’s add a <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Layout</span></code> widget and make
+it fill the whole form. Let’s select <code class="docutils literal notranslate"><span class="pre">Layout</span> <span class="pre">Vertically</span></code> for the Form.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/inline_layout.gif"><img alt="../../_images/inline_layout.gif" src="../../_images/inline_layout.gif" style="width: 557.0px; height: 344.0px;" /></a>
+</figure>
+</li>
+<li><p><strong>Step 3.</strong></p>
+<p>Now that we have a layout, let’s take a look at the widgets on this screen:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/widgets2.png"><img alt="../../_images/widgets2.png" src="../../_images/widgets2.png" style="width: 560.0px; height: 389.9px;" /></a>
+</figure>
+<ul>
+<li><p><strong>Step 3.1.</strong></p>
+<p>The first <code class="docutils literal notranslate"><span class="pre">Label</span></code> will be the title of our screen:</p>
+<ol class="arabic">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">Label</span></code> into the previously added <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Layout</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">text</span></code> property of this label to: <code class="docutils literal notranslate"><span class="pre">Beam</span> <span class="pre">Alignment</span></code>.</p></li>
+<li><p>In order to make the label look better as a title, add the following to
+the <code class="docutils literal notranslate"><span class="pre">stylesheet</span></code> property:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">QLabel</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">qproperty-alignment</span><span class="p">:</span><span class="w"> </span><span class="n">AlignCenter</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="mh">#FF1736</span><span class="mi">5</span><span class="n">D</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-top-left-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-top-right-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#FF1736</span><span class="mi">5</span><span class="n">D</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="kt">px</span><span class="w"> </span><span class="mi">0</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nb">rgb</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">);</span>
+<span class="w">    </span><span class="k">max-height</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p><strong>Step 3.2.</strong></p>
+<p>The second widget that we will add is a <code class="docutils literal notranslate"><span class="pre">PyDMImageView</span></code>, which will display
+the image coming from our camera:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMImageView</span></code> into the previously added <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Layout</span></code> under
+the <code class="docutils literal notranslate"><span class="pre">Label</span></code> that was added at <strong>Step 3.1</strong>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">objectName</span></code> property to <code class="docutils literal notranslate"><span class="pre">imageView</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">imageChannel</span></code> property to <code class="docutils literal notranslate"><span class="pre">ca://13SIM1:image1:ArrayData</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">widthChannel</span></code> property to <code class="docutils literal notranslate"><span class="pre">ca://13SIM1:image1:ArraySize1_RBV</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">readingOrder</span></code> property to <code class="docutils literal notranslate"><span class="pre">Clike</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">maxRedrawRate</span></code> property to <code class="docutils literal notranslate"><span class="pre">30</span></code> so we can update the image at
+30 Hz.</p></li>
+</ol>
+</li>
+<li><p><strong>Step 3.3.</strong></p>
+<p>The third widget that we will add is a <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Layout</span></code>, which will be the
+placeholder for the controls area of the screen:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Layout</span></code> into the previously added <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Layout</span></code> under
+the <code class="docutils literal notranslate"><span class="pre">PyDMImageView</span></code> that was added at <strong>Step 3.2</strong>.</p></li>
+</ol>
+</li>
+<li><p><strong>Step 3.4.</strong></p>
+<p>The fourth widget that we will add is a <code class="docutils literal notranslate"><span class="pre">Label</span></code>, which will be updated with
+the result of the calculation of beam position in the next section (<a class="reference internal" href="little_code.html#littlecode"><span class="std std-ref">Adding Code into the Main Display</span></a>):</p>
+<ol class="arabic">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">Label</span></code> into the <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Layout</span></code> that was added in
+<strong>Step 3.3</strong>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">objectName</span></code> property of this widget to <code class="docutils literal notranslate"><span class="pre">lbl_blobs</span></code>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>It is very important to set the <code class="docutils literal notranslate"><span class="pre">objectName</span></code> property of widgets in
+the designer if you intend to access them using code, otherwise the
+names will be automatically assigned, and will not make much sense later
+on.</p>
+</div>
+</li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">text</span></code> property to empty so this label will only show information
+when we write to it using the code later on.</p></li>
+</ol>
+</li>
+<li><p><strong>Step 3.5.</strong></p>
+<p>The fifth widget that we will add is another <code class="docutils literal notranslate"><span class="pre">Label</span></code>, which will show the title
+of our controls area:</p>
+<ol class="arabic">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">Label</span></code> into the <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Layout</span></code> that was added in
+<strong>Step 3.3</strong> right under the <code class="docutils literal notranslate"><span class="pre">Label</span></code> added in <strong>Step 3.5</strong>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">text</span></code> property of this label to: <code class="docutils literal notranslate"><span class="pre">Controls</span></code>.</p></li>
+<li><p>In order to make the label look better as a title, add the following to
+the <code class="docutils literal notranslate"><span class="pre">stylesheet</span></code> property:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">QLabel</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">qproperty-alignment</span><span class="p">:</span><span class="w"> </span><span class="n">AlignCenter</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="mh">#FF1736</span><span class="mi">5</span><span class="n">D</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-top-left-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-top-right-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#FF1736</span><span class="mi">5</span><span class="n">D</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="kt">px</span><span class="w"> </span><span class="mi">0</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nb">rgb</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">);</span>
+<span class="w">    </span><span class="k">max-height</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p><strong>Step 3.6.</strong></p>
+<p>The sixth widget that we will add is a <code class="docutils literal notranslate"><span class="pre">Frame</span></code>, which will be the container
+for our two motors’ <code class="docutils literal notranslate"><span class="pre">Embedded</span> <span class="pre">Displays</span></code>:</p>
+<ol class="arabic">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">Frame</span></code> under the <code class="docutils literal notranslate"><span class="pre">Label</span></code> added in <strong>Step 3.6</strong>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">frameShape</span></code> property to <code class="docutils literal notranslate"><span class="pre">StyledPanel</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">frameShadow</span></code> property to <code class="docutils literal notranslate"><span class="pre">Raised</span></code></p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">stylesheet</span></code> property to:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">QFrame</span><span class="p">#</span><span class="nn">frame</span><span class="p">{</span>
+<span class="w">    </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="mh">#FF1736</span><span class="mi">5</span><span class="n">D</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-bottom-left-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">    </span><span class="k">border-bottom-right-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p><strong>Step 3.7.</strong></p>
+<p>The seventh widget that we will add is a <code class="docutils literal notranslate"><span class="pre">PyDMEmbeddedDisplay</span></code>, which will
+display the <code class="docutils literal notranslate"><span class="pre">inline_motor.ui</span></code> with information for our first motor axis:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMEmbeddedDisplay</span></code> into the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> added in <strong>Step 3.7</strong>.</p></li>
+<li><p>Right-click the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> from <strong>Step 3.7</strong> and select <code class="docutils literal notranslate"><span class="pre">Layout</span> <span class="pre">&gt;&gt;</span> <span class="pre">Layout</span> <span class="pre">Vertically</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">macros</span></code> property to <code class="docutils literal notranslate"><span class="pre">{&quot;MOTOR&quot;:&quot;IOC:m1&quot;}</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">filename</span></code> property to <code class="docutils literal notranslate"><span class="pre">inline_motor.ui</span></code>.</p></li>
+</ol>
+</li>
+<li><p><strong>Step 3.8.</strong></p>
+<p>The eigth widget that we will add is a <code class="docutils literal notranslate"><span class="pre">PyDMEmbeddedDisplay</span></code>, which will
+display the <code class="docutils literal notranslate"><span class="pre">inline_motor.ui</span></code> with information for our second motor axis:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMEmbeddedDisplay</span></code> into the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> added in <strong>Step 3.7</strong>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">macros</span></code> property to <code class="docutils literal notranslate"><span class="pre">{&quot;MOTOR&quot;:&quot;IOC:m2&quot;}</span></code>.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">filename</span></code> property to <code class="docutils literal notranslate"><span class="pre">inline_motor.ui</span></code>.</p></li>
+</ol>
+</li>
+<li><p><strong>Step 3.9.</strong></p>
+<p>Finally, the ninth widget that we will add is a <code class="docutils literal notranslate"><span class="pre">PyDMRelatedDisplayButton</span></code>, which will
+open the <code class="docutils literal notranslate"><span class="pre">All</span> <span class="pre">Motors</span></code> screen that will be developed <a class="reference internal" href="python.html#purepython"><span class="std std-ref">later</span></a>:</p>
+<ol class="arabic simple">
+<li><p>Drag and drop a <code class="docutils literal notranslate"><span class="pre">PyDMRelatedDisplayButton</span></code> into the <code class="docutils literal notranslate"><span class="pre">Vertical</span> <span class="pre">Layout</span></code> added in <strong>Step 2</strong>.</p></li>
+<li><p>Add the string <code class="docutils literal notranslate"><span class="pre">all_motors.py</span></code> to the <code class="docutils literal notranslate"><span class="pre">filenames</span></code> property.</p></li>
+<li><p>Uncheck the <code class="docutils literal notranslate"><span class="pre">openInNewWindow</span></code> property.</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">text</span></code> property to: <code class="docutils literal notranslate"><span class="pre">View</span> <span class="pre">All</span> <span class="pre">Motors</span></code></p></li>
+</ol>
+</li>
+<li><p><strong>Step 3.10.</strong></p>
+<p>Once all the widgets are added to the form, it is now time to adjust the layouts
+and make sure that all is well positioned and behaving nicely.</p>
+<ol class="arabic">
+<li><p>Using the <code class="docutils literal notranslate"><span class="pre">Object</span> <span class="pre">Inspector</span></code> at the top-right corner of the Qt Designer
+window, select the <code class="docutils literal notranslate"><span class="pre">frame</span></code> object and set the properties according
+to the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>layoutLeftMargin</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>layoutTopMargin</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>layoutRightMargin</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>layoutBottomMargin</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>layoutSpacing</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>Continuing with the <code class="docutils literal notranslate"><span class="pre">Object</span> <span class="pre">Inspector</span></code>, select the <code class="docutils literal notranslate"><span class="pre">vertical</span> <span class="pre">layout</span></code>
+object right before the <code class="docutils literal notranslate"><span class="pre">frame</span></code> and set the properties according to the
+table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>layoutSpacing</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>Still with the <code class="docutils literal notranslate"><span class="pre">Object</span> <span class="pre">Inspector</span></code>, now select the top most <code class="docutils literal notranslate"><span class="pre">verticalLayout</span></code>
+object set the properties according to the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>layoutSpacing</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<p>The end result will be something like this:</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/main_all_widgets_ok.png"><img alt="../../_images/main_all_widgets_ok.png" src="../../_images/main_all_widgets_ok.png" style="width: 733.0px; height: 725.0px;" /></a>
+</figure>
+</li>
+</ul>
+</li>
+<li><p><strong>Step 4.</strong></p>
+<p>Save this file as <code class="docutils literal notranslate"><span class="pre">main.ui</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For this tutorial it is important to use this file name, as it will be referenced
+at the other sections. If you change it please remember to also change at the
+next steps when referenced.</p>
+</div>
+</li>
+<li><p><strong>Step 5.</strong></p>
+<p>Test the Expert Motor Screen:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pydm<span class="w"> </span>main.ui
+</pre></div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../_images/main.png"><img alt="Main Application Screen" src="../../_images/main.png" style="width: 627.0px; height: 676.5px;" /></a>
+</figure>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can download this file using <code class="xref download docutils literal notranslate"><span class="pre">this</span> <span class="pre">link</span></code>.</p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="designer_expert.html" class="btn btn-neutral float-left" title="Expert Motor Screen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="intro_python.html" class="btn btn-neutral float-right" title="A Word About Python Displays" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bug and Requests &mdash; PyDM 1.20.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Customizing the Look and Feel" href="../../stylesheets.html" />
+    <link rel="prev" title="Getting Help With PyDM" href="help.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyDM
+          </a>
+              <div class="version">
+                1.20.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../intro.html">Setting up the Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/launcher.html">PyDM Launcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/channels.html">Channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/data_arch.html">Data Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/macros.html">Macro Substitution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/widgets.html">Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/datasource.html">Data Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../action/tutorial.html">About the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../action/intro_designer.html">Introduction to Qt Designer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../action/designer.html">Building Your First Display with Qt Designer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../action/intro_python.html">A Word About Python Displays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../action/little_code.html">Adding Code into the Main Display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../action/python.html">Making Pure Python Displays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="help.html">Getting Help With PyDM</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Bug and Requests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#is-it-a-problem-a-question-or-a-request">1. Is it a problem, a question or a request?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#write-helpfully">2. Write helpfully</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#template-for-bugs-and-requests">Template for Bugs and Requests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help_files.html">Adding Help Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/p4p_plugin.html">P4P Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_plugins/external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/designer_widgets.html">Designer Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Tutorial</a></li>
+      <li class="breadcrumb-item active">Bug and Requests</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/tutorials/contrib/requests.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bug-and-requests">
+<h1>Bug and Requests<a class="headerlink" href="#bug-and-requests" title="Permalink to this heading"></a></h1>
+<p>If you spot a problem with PyDM, please let us know.
+Follow the steps below to increase the chances of a quick resolution.</p>
+<section id="is-it-a-problem-a-question-or-a-request">
+<h2>1. Is it a problem, a question or a request?<a class="headerlink" href="#is-it-a-problem-a-question-or-a-request" title="Permalink to this heading"></a></h2>
+<p>For questions about how to use PyDM, please refer to the <span class="xref std std-doc">/contrib/help</span> page.</p>
+<p>If you don’t have a GitHub account we strongly encourage you to create one by following the 3 easy steps described on this <a class="reference external" href="https://github.com/join">page</a>.</p>
+<p>Problems (not questions!) with the software or website can be reported as GitHub issues (<a class="reference external" href="https://help.github.com/articles/creating-an-issue/">See here how to create one</a>).</p>
+<p><strong>Problems include:</strong></p>
+<ul class="simple">
+<li><p>Bugs (or probable bugs) with the PyDM software</p></li>
+<li><p>Typos or other mistakes in the Reference or elsewhere on the documentation</p></li>
+</ul>
+<p>If you create a new issue that’s really just a clarifying question about how to use PyDM, we’ll close it and nicely ask
+you to visit the <span class="xref std std-doc">/contrib/help</span> channels in the future.</p>
+<p>Ideas or suggestions for enhancements should be posted as GitHub issues with the ‘REQUEST: ‘ prefix to your issue title.
+When in doubt, start by reaching us through one of the <span class="xref std std-doc">/contrib/help</span> channels.</p>
+</section>
+<section id="write-helpfully">
+<h2>2. Write helpfully<a class="headerlink" href="#write-helpfully" title="Permalink to this heading"></a></h2>
+<p>To write an effective issue report:</p>
+<ul class="simple">
+<li><p>Be precise</p></li>
+<li><p>Be clear</p></li>
+<li><p>Explain the steps required to reproduce the bug</p></li>
+<li><p>Cite your OS and version, and which version of PyDM you’re using</p></li>
+<li><p>If reporting an issue on the website, include the URL where the problem is</p></li>
+<li><p>Screenshots are super helpful! They let us see what you see. You can drag images directly onto the issue text to upload them.</p></li>
+<li><p>Errors are super helpful! (Sometimes.) Copy and paste any errors into the issue.</p></li>
+<li><p>Include only one bug per report</p></li>
+<li><p>Separate fact from speculation</p></li>
+<li><p>No bug is too trivial to report, as small bugs may hide big bugs.</p></li>
+</ul>
+</section>
+<section id="template-for-bugs-and-requests">
+<h2>Template for Bugs and Requests<a class="headerlink" href="#template-for-bugs-and-requests" title="Permalink to this heading"></a></h2>
+<p>We strongly recommend that you follow the template below but feel free to add more information (More is always better in this case):</p>
+<dl>
+<dt><strong>Expected Behavior</strong></dt><dd><ul class="simple">
+<li><p>Provide a general summary of the issue in the Title above</p></li>
+<li><p>If you are describing a bug, tell us what should happen</p></li>
+<li><p>If you are suggesting a change/improvement, tell us how it should work</p></li>
+</ul>
+</dd>
+<dt><strong>Current Behavior</strong></dt><dd><ul class="simple">
+<li><p>If describing a bug, tell us what happens instead of the expected behavior</p></li>
+<li><p>If suggesting a change/improvement, explain the difference from current behavior</p></li>
+</ul>
+</dd>
+<dt><strong>Possible Solution</strong></dt><dd><ul class="simple">
+<li><p>Not obligatory, but suggest a fix/reason for the bug, or ideas how to implement the addition or change</p></li>
+</ul>
+</dd>
+<dt><strong>Steps to Reproduce (for bugs)</strong></dt><dd><ul class="simple">
+<li><p>Provide a link to a live example, or an unambiguous set of steps to reproduce this bug. Include code to reproduce, if relevant</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Step 1</p></li>
+<li><p>Step 2</p></li>
+<li><p>Step 3</p></li>
+</ol>
+</dd>
+<dt><strong>Context</strong></dt><dd><ul class="simple">
+<li><p>How has this issue affected you? What are you trying to accomplish?</p></li>
+<li><p>Providing context helps us come up with a solution that is most useful in the real world</p></li>
+</ul>
+</dd>
+<dt><strong>Your Environment</strong></dt><dd><ul class="simple">
+<li><p>Include as many relevant details about the environment you experienced the bug in</p></li>
+<li><p>One good start point is the <strong>File &gt; About</strong> screen at PyDM.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="help.html" class="btn btn-neutral float-left" title="Getting Help With PyDM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../stylesheets.html" class="btn btn-neutral float-right" title="Customizing the Look and Feel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
