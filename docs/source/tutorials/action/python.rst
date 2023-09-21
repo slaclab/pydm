@@ -5,12 +5,7 @@ Making Pure Python Displays
 
 .. important::
 
-    **Check-list:**
-
-    * Make sure that you have your :ref:`Environment <Environment>` properly configured.
-    * That your :ref:`VirtualMachine` is up and ready.
-    * That the :ref:`Python environment <PythonEnv>` is set.
-    * That all :ref:`three IOCs <IOCS>` are running.
+    * Make sure the PCASpy tutorial server is :ref:`running <Setup>`
 
 As we saw in the :ref:`A Word About Python Display <Python>` section, it is
 possible to make displays using Python code and a .ui file from Qt Designer.
