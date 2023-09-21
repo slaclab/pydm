@@ -10,6 +10,7 @@ from ast import literal_eval
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent
 from qtpy.QtCore import Property, QSize, Qt, QTimer
+from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont
 from typing import Optional, Union, List
@@ -378,6 +379,11 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             # Use the setter as it also checks whether the existing password is the same with the
             # new one, and only updates if the new password is different
             self.protectedPassword = sha.hexdigest()
+
+            # Make sure designer knows it should save the protectedPassword field
+            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self)
+            if formWindow:
+                formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
 
     @Property(str)
     def protectedPassword(self) -> str:
