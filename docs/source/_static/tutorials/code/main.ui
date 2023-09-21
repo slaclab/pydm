@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>724</width>
+    <height>695</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="acceptDrops">
+   <bool>false</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Beam Positioning</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+        qproperty-alignment: AlignCenter;
+	border: 1px solid #FF17365D;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	background-color: #FF17365D;
+	padding: 5px 0px;
+	color: rgb(255, 255, 255);
+	max-height: 25px;
+        font-size: 14px;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Beam Alignment</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="PyDMImageView" name="imageView">
+       <property name="minimumSize">
+        <size>
+         <width>600</width>
+         <height>480</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="whatsThis">
+        <string>
+    A PyQtGraph ImageView with support for Channels and more from PyDM.
+
+    If there is no :attr:`channelWidth` it is possible to define the width of
+    the image with the :attr:`width` property.
+
+    The :attr:`normalizeData` property defines if the colors of the images are
+    relative to the :attr:`colorMapMin` and :attr:`colorMapMax` property or to
+    the minimum and maximum values of the image.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    image_channel : str, optional
+        The channel to be used by the widget for the image data.
+    width_channel : str, optional
+        The channel to be used by the widget to receive the image width
+        information
+    </string>
+       </property>
+       <property name="colorMapMax" stdset="0">
+        <double>255.000000000000000</double>
+       </property>
+       <property name="normalizeData" stdset="0">
+        <bool>true</bool>
+       </property>
+       <property name="readingOrder" stdset="0">
+        <enum>PyDMImageView::Clike</enum>
+       </property>
+       <property name="imageChannel" stdset="0">
+        <string>ca://13SIM1:image1:ArrayData</string>
+       </property>
+       <property name="widthChannel" stdset="0">
+        <string>ca://13SIM1:image1:ArraySize0_RBV</string>
+       </property>
+       <property name="maxRedrawRate" stdset="0">
+        <number>30</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="lbl_blobs">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+        qproperty-alignment: AlignCenter;
+	border: 1px solid #FF17365D;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	background-color: #FF17365D;
+	padding: 5px 0px;
+	color: rgb(255, 255, 255);
+	max-height: 25px;
+        font-size: 14px;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>Controls</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="frame">
+         <property name="styleSheet">
+          <string notr="true">QFrame#frame{
+	border: 1px solid #FF17365D;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="PyDMEmbeddedDisplay" name="PyDMEmbeddedDisplay">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>700</width>
+              <height>42</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>100</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="whatsThis">
+             <string>
+    A QFrame capable of rendering a PyDM Display
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+
+    </string>
+            </property>
+            <property name="macros" stdset="0">
+             <string>{&quot;MOTOR&quot;:&quot;IOC:m1&quot;}</string>
+            </property>
+            <property name="filename" stdset="0">
+             <string>inline_motor.ui</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="PyDMEmbeddedDisplay" name="PyDMEmbeddedDisplay_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>700</width>
+              <height>42</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>100</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="whatsThis">
+             <string>
+    A QFrame capable of rendering a PyDM Display
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+
+    </string>
+            </property>
+            <property name="macros" stdset="0">
+             <string>{&quot;MOTOR&quot;:&quot;IOC:m2&quot;}</string>
+            </property>
+            <property name="filename" stdset="0">
+             <string>inline_motor.ui</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>
+    A QPushButton capable of opening a new Display at the same of at a
+    new window.
+
+    Parameters
+    ----------
+    init_channel : str, optional
+        The channel to be used by the widget.
+
+    filename : str, optional
+        The file to be opened
+    </string>
+     </property>
+     <property name="text">
+      <string>View All Motors</string>
+     </property>
+     <property name="displayFilename" stdset="0">
+      <string>all_motors.py</string>
+     </property>
+     <property name="openInNewWindow" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMEmbeddedDisplay</class>
+   <extends>QFrame</extends>
+   <header>pydm.widgets.embedded_display</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMImageView</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.image</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMRelatedDisplayButton</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.related_display_button</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
