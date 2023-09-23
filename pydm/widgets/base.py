@@ -192,6 +192,10 @@ class PyDMPrimitiveWidget(object):
                 return True
         return False
 
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MiddleButton:
+            self.show_address_tooltip(event)
+
     def show_address_tooltip(self, event):
         """
         Show the PyDMTooltip and copy address to clipboard
@@ -1346,6 +1350,9 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         return super().eventFilter(obj, event)
 
+    def mouseReleaseEvent(self, event):
+        # super func handles middle-click presses and stops them from pasting into PyDMLineEdits
+        return super().mouseReleaseEvent(event)
 
 class PyDMWritableWidget(PyDMWidget):
     """
