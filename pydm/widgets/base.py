@@ -186,15 +186,11 @@ class PyDMPrimitiveWidget(object):
         """
         # Override the eventFilter to capture all middle mouse button events,
         # and show a tooltip if needed.
-        if event.type() == QEvent.MouseButtonPress:
+        if event.type() == QEvent.MouseButtonRelease:
             if event.button() == Qt.MiddleButton:
                 self.show_address_tooltip(event)
                 return True
         return False
-
-    def mouseReleaseEvent(self, event):
-        if event.button() == Qt.MiddleButton:
-            self.show_address_tooltip(event)
 
     def show_address_tooltip(self, event):
         """
@@ -1349,10 +1345,6 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             return True
 
         return super().eventFilter(obj, event)
-
-    def mouseReleaseEvent(self, event):
-        # super func handles middle-click presses and stops them from pasting into PyDMLineEdits
-        return super().mouseReleaseEvent(event)
 
 class PyDMWritableWidget(PyDMWidget):
     """
