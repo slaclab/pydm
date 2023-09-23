@@ -1346,6 +1346,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         return super().eventFilter(obj, event)
 
+
 class PyDMWritableWidget(PyDMWidget):
     """
     PyDM base class for Writable widgets.
