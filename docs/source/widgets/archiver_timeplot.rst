@@ -46,7 +46,7 @@ be plotted as bars to show the full range of data represented by each point. As 
 of 365, a request for a year of data for a PV that updates every second would return roughly
 365 points each of which will contain the min and max of that day's data to plot the full range represented.
 
-.. figure:: /_static/widgets/archiver_time_plot/archiver_time_plot.gif
+.. figure:: /_static/widgets/archiver_time_plot/archiver_plot.gif
    :scale: 100 %
    :align: center
    :alt: Requesting additional data from a live plot

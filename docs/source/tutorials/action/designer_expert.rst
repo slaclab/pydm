@@ -306,4 +306,4 @@ The finished result will look like this:
      :alt: Expert Motor Screen
 
 .. note::
-    You can download this file using :download:`this link </_static/code/expert_motor.ui>`.
+    You can download this file using :download:`this link </_static/tutorials/code/expert_motor.ui>`.

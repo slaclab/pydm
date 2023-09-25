@@ -250,5 +250,5 @@ The finished result will look like this:
      :alt: Main Application Screen
 
 .. note::
-    You can download this file using :download:`this link </_static/code/main.ui>`.
+    You can download this file using :download:`this link </_static/tutorials/code/main.ui>`.
 

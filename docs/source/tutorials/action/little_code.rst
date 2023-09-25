@@ -140,4 +140,4 @@ This is accomplished by subclassing `pydm.Display` (See :ref:`Display` for more 
      :align: center
 
 .. note::
-    You can download this file using :download:`this link </_static/code/main.py>`.
+    You can download this file using :download:`this link </_static/tutorials/code/main.py>`.

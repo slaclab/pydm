@@ -279,4 +279,4 @@ The finished result will look like this:
      :alt: Inline Motor Screen
 
 .. note::
-    You can download this file using :download:`this link </_static/code/inline_motor.ui>`.
+    You can download this file using :download:`this link </_static/tutorials/code/inline_motor.ui>`.

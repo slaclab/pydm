@@ -3,7 +3,7 @@
 Tutorial Setup
 ==========================
 
-.. _Server
+.. _Setup
 
 PCASpy Server
 ---------------
