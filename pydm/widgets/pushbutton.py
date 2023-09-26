@@ -2,6 +2,7 @@ import hashlib
 
 from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit
 from qtpy.QtCore import Slot, Property
+from qtpy import QtDesigner
 from .base import PyDMWritableWidget
 
 import logging
@@ -126,6 +127,11 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             # Use the setter as it also checks whether the existing password is the same with the
             # new one, and only updates if the new password is different
             self.protectedPassword = sha.hexdigest()
+
+            # Make sure designer knows it should save the protectedPassword field
+            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self)
+            if formWindow:
+                formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
 
     @Property(str)
     def protectedPassword(self):
