@@ -1,9 +1,7 @@
-.. _Setup
+.. _Setup:
 
 Tutorial Setup
 ==========================
-
-.. _Setup
 
 PCASpy Server
 ---------------

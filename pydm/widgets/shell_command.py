@@ -329,6 +329,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     def passwordProtected(self) -> bool:
         """
         Whether or not this button is password protected.
+
         Returns
         -------
         bool
@@ -340,6 +341,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     def passwordProtected(self, value: bool) -> None:
         """
         Whether or not this button is password protected.
+
         Parameters
         ----------
         value : bool
@@ -353,8 +355,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         Password to be encrypted using SHA256.
 
         .. warning::
-            To avoid issues exposing the password this method
-            always returns an empty string.
+          To avoid issues exposing the password this method always returns an empty string.
 
         Returns
         -------
