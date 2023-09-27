@@ -1,6 +1,6 @@
 import hashlib
 
-from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit
+from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit, QStyle
 from qtpy.QtCore import Slot, Property
 from .base import PyDMWritableWidget
 
@@ -71,6 +71,40 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         self._write_when_release = False
         self._released = False
         self.clicked.connect(self.sendValue)
+
+        # Standard icons (which come with the qt install, and work cross-platform),
+        # can not be set with a widget's "icon" property in designer, only in python.
+        # so we provide our own propery to specify standard icons and set them with python in the prop's setter.
+        self._standard_icon_name = ""
+
+    @Property(str)
+    def standardIcon(self) -> str:
+        """
+        Message to be displayed at the Confirmation dialog.
+
+        Returns
+        -------
+        str
+        """
+        print ("standardIcon getter: ", self._standard_icon_name)
+        return self._standard_icon_name
+
+    @standardIcon.setter
+    def standardIcon(self, value: str) -> None:
+        """
+        Message to be displayed at the Confirmation dialog.
+
+        Parameters
+        ----------
+        value : str
+        """
+        print ("standardIcon setter: ", self._standard_icon_name)
+        if self._standard_icon_name != value:
+            self._standard_icon_name  = value
+            icon = getattr(QStyle, value, None)
+            if icon:
+                print ("setting icon")
+                self.setIcon(self.style().standardIcon(icon))
 
     @Property(bool)
     def passwordProtected(self):
@@ -146,7 +180,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @Property(bool)
     def showConfirmDialog(self):
         """
-        Wether or not to display a confirmation dialog.
+        Whether or not to display a confirmation dialog.
 
         Returns
         -------
@@ -157,7 +191,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @showConfirmDialog.setter
     def showConfirmDialog(self, value):
         """
-        Wether or not to display a confirmation dialog.
+        Whether or not to display a confirmation dialog.
 
         Parameters
         ----------
@@ -482,7 +516,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @Property(bool)
     def writeWhenRelease(self):
         """
-        Wether or not to write releaseValue on release
+        Whether or not to write releaseValue on release
 
         Returns
         -------
@@ -493,7 +527,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @writeWhenRelease.setter
     def writeWhenRelease(self, value):
         """
-        Wether or not to write releaseValue on release
+        Whether or not to write releaseValue on release
 
         Parameters
         ----------

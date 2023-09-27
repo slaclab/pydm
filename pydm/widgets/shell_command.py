@@ -7,7 +7,7 @@ import logging
 import warnings
 import hashlib
 from ast import literal_eval
-from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget
+from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from .base import PyDMWidget, only_if_channel_set
@@ -76,6 +76,11 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self._show_confirm_dialog = False
         self._confirm_message = PyDMShellCommand.DEFAULT_CONFIRM_MESSAGE
 
+        # Standard icons (which come with the qt install, and work cross-platform),
+        # can not be set with a widget's "icon" property in designer, only in python.
+        # so we provide our own propery to specify standard icons and set them with python in the prop's setter.
+        self._standard_icon_name = ""
+
     def confirmDialog(self) -> bool:
         """
         Show the confirmation dialog with the proper message in case
@@ -102,10 +107,37 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
         return True
 
+    @Property(str)
+    def standardIcon(self) -> str:
+        """
+        Message to be displayed at the Confirmation dialog.
+
+        Returns
+        -------
+        str
+        """
+        return self._standard_icon_name
+
+    @standardIcon.setter
+    def standardIcon(self, value: str) -> None:
+        """
+        Message to be displayed at the Confirmation dialog.
+
+        Parameters
+        ----------
+        value : str
+        """
+        if self._standard_icon_name != value:
+            self._standard_icon_name  = value
+            icon = getattr(QStyle, value, None)
+            if icon:
+                self.setIcon(self.style().standardIcon(icon))
+
+
     @Property(bool)
     def showConfirmDialog(self) -> bool:
         """
-        Wether or not to display a confirmation dialog.
+        Whether or not to display a confirmation dialog.
 
         Returns
         -------
@@ -116,7 +148,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     @showConfirmDialog.setter
     def showConfirmDialog(self, value: bool) -> None:
         """
-        Wether or not to display a confirmation dialog.
+        Whether or not to display a confirmation dialog.
 
         Parameters
         ----------

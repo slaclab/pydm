@@ -4,7 +4,7 @@ import logging
 import warnings
 from functools import partial
 import hashlib
-from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit, QWidget
+from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 from .base import PyDMWidget, only_if_channel_set
@@ -74,6 +74,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
 
         self._follow_symlinks = False
 
+        # Standard icons (which come with the qt install, and work cross-platform),
+        # can not be set with a widget's "icon" property in designer, only in python.
+        # so we provide our own propery to specify standard icons and set them with python in the prop's setter.
+        self._standard_icon_name = ""
+
     @only_if_channel_set
     def check_enable_state(self) -> None:
         """
@@ -90,6 +95,32 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
             tooltip += self.get_address()
 
         self.setToolTip(tooltip)
+
+    @Property(str)
+    def standardIcon(self) -> str:
+        """
+        Message to be displayed at the Confirmation dialog.
+
+        Returns
+        -------
+        str
+        """
+        return self._standard_icon_name
+
+    @standardIcon.setter
+    def standardIcon(self, value: str) -> None:
+        """
+        Message to be displayed at the Confirmation dialog.
+
+        Parameters
+        ----------
+        value : str
+        """
+        if self._standard_icon_name != value:
+            self._standard_icon_name  = value
+            icon = getattr(QStyle, value, None)
+            if icon:
+                self.setIcon(self.style().standardIcon(icon))
 
     @Property("QStringList")
     def filenames(self) -> List[str]:
