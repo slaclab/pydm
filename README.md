@@ -1,10 +1,6 @@
-![PyDM: Python Display Manager](pydm_banner.jpg)
-
 [![Build Status](https://github.com/slaclab/pydm/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/slaclab/pydm/actions/workflows/run-tests.yml)
 
-<p align="center">
-<img src="pydm_banner.png" width="128" height="128" align="right"/>
-</p>
+![PyDM: Python Display Manager](pydm_banner.jpg)
 
 <p>
   <img src="pydm_launcher/icons/pydm_128.png" width="128" height="128" align="right"/>
