@@ -73,6 +73,17 @@ def test_construct(qtbot, command, title):
     assert shell_cmd_icon_pixmap.toImage() == default_icon_pixmap.toImage()
     assert pydm_shell_command.cursor().pixmap().toImage() == default_icon_pixmap.toImage()
 
+    # verify that qt standard icons can be set through our custom property
+    style = pydm_shell_command.style()
+    test_icon = style.standardIcon(style.SP_DesktopIcon)
+    test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    pydm_shell_command.standardIcon = "SP_DesktopIcon"
+    shell_cmd_icon = pydm_shell_command.icon()
+    shell_cmd_icon_image = shell_cmd_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    assert test_icon_image == shell_cmd_icon_image
+
 
 def test_deprecated_command_property_with_no_commands(qtbot):
     pydm_shell_command = PyDMShellCommand()
