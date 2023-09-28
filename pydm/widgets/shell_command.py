@@ -128,11 +128,10 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         value : str
         """
         if self._standard_icon_name != value:
-            self._standard_icon_name  = value
+            self._standard_icon_name = value
             icon = getattr(QStyle, value, None)
             if icon:
                 self.setIcon(self.style().standardIcon(icon))
-
 
     @Property(bool)
     def showConfirmDialog(self) -> bool:
