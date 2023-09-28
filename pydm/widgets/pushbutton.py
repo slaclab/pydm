@@ -86,7 +86,6 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         -------
         str
         """
-        print("standardIcon getter: ", self._standard_icon_name)
         return self._standard_icon_name
 
     @standardIcon.setter
@@ -98,12 +97,10 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         ----------
         value : str
         """
-        print("standardIcon setter: ", self._standard_icon_name)
         if self._standard_icon_name != value:
             self._standard_icon_name = value
             icon = getattr(QStyle, value, None)
             if icon:
-                print("setting icon")
                 self.setIcon(self.style().standardIcon(icon))
 
     @Property(bool)
