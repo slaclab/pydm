@@ -197,9 +197,9 @@ class PyDMPrimitiveWidget(object):
                 if channels:
                     self.show_address_tooltip(event, channels)
                     return True
-                else: 
-                    # return and run default behavior middle-click paste if PyDMLineEdit 
-                    # is not connected to channel, so you can still paste the middle-click 
+                else:
+                    # return and run default behavior middle-click paste if PyDMLineEdit
+                    # is not connected to channel, so you can still paste the middle-click
                     # clipboard into edits intended for text entry.
                     return False
         return False
