@@ -99,7 +99,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @Property(str)
     def standardIcon(self) -> str:
         """
-        Message to be displayed at the Confirmation dialog.
+        Name of icon to be set from Qt provided standard icons.
+        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable icons.
 
         Returns
         -------
@@ -110,7 +111,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @standardIcon.setter
     def standardIcon(self, value: str) -> None:
         """
-        Message to be displayed at the Confirmation dialog.
+        Name of icon to be set from Qt provided standard icons.
+        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable icons.
 
         Parameters
         ----------

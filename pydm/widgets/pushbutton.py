@@ -80,7 +80,8 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @Property(str)
     def standardIcon(self) -> str:
         """
-        Message to be displayed at the Confirmation dialog.
+        Name of icon to be set from Qt provided standard icons.
+        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable icons.
 
         Returns
         -------
@@ -91,7 +92,8 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @standardIcon.setter
     def standardIcon(self, value: str) -> None:
         """
-        Message to be displayed at the Confirmation dialog.
+        Name of icon to be set from Qt provided standard icons.
+        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable icons.
 
         Parameters
         ----------
