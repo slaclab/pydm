@@ -190,11 +190,21 @@ class PyDMPrimitiveWidget(object):
         # from getting paste into PyDMLineEdits, since paste happens at mouse release.
         if event.type() == QEvent.MouseButtonRelease:
             if event.button() == Qt.MiddleButton:
-                self.show_address_tooltip(event)
-                return True
+                channels_method = getattr(self, "channels", None)
+                if channels_method is None:
+                    return
+                channels = channels_method()
+                if channels:
+                    self.show_address_tooltip(event, channels)
+                    return True
+                else: 
+                    # return and run default behavior middle-click paste if PyDMLineEdit 
+                    # is not connected to channel, so you can still paste the middle-click 
+                    # clipboard into edits intended for text entry.
+                    return False
         return False
 
-    def show_address_tooltip(self, event):
+    def show_address_tooltip(self, event, channels):
         """
         Show the PyDMTooltip and copy address to clipboard
 
