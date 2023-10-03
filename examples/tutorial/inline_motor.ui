@@ -102,6 +102,9 @@
        <property name="channel" stdset="0">
         <string>ca://${MOTOR}.RBV</string>
        </property>
+       <property name="enableRichText" stdset="0">
+        <bool>false</bool>
+       </property>
        <property name="displayFormat" stdset="0">
         <enum>PyDMLabel::Decimal</enum>
        </property>
@@ -442,6 +445,9 @@
        </property>
        <property name="channel" stdset="0">
         <string>ca://${MOTOR}.DESC</string>
+       </property>
+       <property name="enableRichText" stdset="0">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

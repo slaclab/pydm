@@ -124,6 +124,27 @@
             <property name="whatsThis">
              <string/>
             </property>
+            <property name="precision" stdset="0">
+             <number>0</number>
+            </property>
+            <property name="showUnits" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="precisionFromPV" stdset="0">
+             <bool>true</bool>
+            </property>
+            <property name="alarmSensitiveContent" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="alarmSensitiveBorder" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="PyDMToolTip" stdset="0">
+             <string/>
+            </property>
+            <property name="monitorDisp" stdset="0">
+             <bool>false</bool>
+            </property>
             <property name="channel" stdset="0">
              <string>ca://${MOTOR}.DESC</string>
             </property>
@@ -153,11 +174,26 @@
             <property name="whatsThis">
              <string/>
             </property>
-            <property name="alarmSensitiveContent" stdset="0">
-             <bool>false</bool>
+            <property name="precision" stdset="0">
+             <number>0</number>
             </property>
             <property name="showUnits" stdset="0">
              <bool>true</bool>
+            </property>
+            <property name="precisionFromPV" stdset="0">
+             <bool>true</bool>
+            </property>
+            <property name="alarmSensitiveContent" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="alarmSensitiveBorder" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="PyDMToolTip" stdset="0">
+             <string/>
+            </property>
+            <property name="monitorDisp" stdset="0">
+             <bool>false</bool>
             </property>
             <property name="channel" stdset="0">
              <string>ca://${MOTOR}.VAL</string>
@@ -182,11 +218,29 @@
             <property name="whatsThis">
              <string/>
             </property>
+            <property name="precision" stdset="0">
+             <number>0</number>
+            </property>
             <property name="showUnits" stdset="0">
              <bool>true</bool>
             </property>
+            <property name="precisionFromPV" stdset="0">
+             <bool>true</bool>
+            </property>
+            <property name="alarmSensitiveContent" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="alarmSensitiveBorder" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="PyDMToolTip" stdset="0">
+             <string/>
+            </property>
             <property name="channel" stdset="0">
              <string>ca://${MOTOR}.RBV</string>
+            </property>
+            <property name="enableRichText" stdset="0">
+             <bool>false</bool>
             </property>
             <property name="displayFormat" stdset="0">
              <enum>PyDMLabel::Decimal</enum>
@@ -214,11 +268,26 @@
             <property name="whatsThis">
              <string/>
             </property>
-            <property name="alarmSensitiveContent" stdset="0">
-             <bool>false</bool>
+            <property name="precision" stdset="0">
+             <number>0</number>
             </property>
             <property name="showUnits" stdset="0">
              <bool>true</bool>
+            </property>
+            <property name="precisionFromPV" stdset="0">
+             <bool>true</bool>
+            </property>
+            <property name="alarmSensitiveContent" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="alarmSensitiveBorder" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="PyDMToolTip" stdset="0">
+             <string/>
+            </property>
+            <property name="monitorDisp" stdset="0">
+             <bool>false</bool>
             </property>
             <property name="channel" stdset="0">
              <string>ca://${MOTOR}.VELO</string>
@@ -249,11 +318,26 @@
             <property name="whatsThis">
              <string/>
             </property>
-            <property name="alarmSensitiveContent" stdset="0">
-             <bool>false</bool>
+            <property name="precision" stdset="0">
+             <number>0</number>
             </property>
             <property name="showUnits" stdset="0">
              <bool>true</bool>
+            </property>
+            <property name="precisionFromPV" stdset="0">
+             <bool>true</bool>
+            </property>
+            <property name="alarmSensitiveContent" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="alarmSensitiveBorder" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="PyDMToolTip" stdset="0">
+             <string/>
+            </property>
+            <property name="monitorDisp" stdset="0">
+             <bool>false</bool>
             </property>
             <property name="channel" stdset="0">
              <string>ca://${MOTOR}.ACCL</string>

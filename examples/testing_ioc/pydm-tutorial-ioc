@@ -36,21 +36,21 @@ pvdb = {
     },
     "ImageWidth": {"type": "int", "value": IMAGE_SIZE, "asg": "default"},
     "m1.DESC": {"type": "string", "value": "Motor X", "asg": "default"},
-    "m1": {"type": "float", "value": 500.0, "asg": "default"},
-    "m1.VAL": {"type": "float", "value": 600.0, "asg": "default"},
-    "m1.RBV": {"type": "float", "value": 500.0, "asg": "default"},
+    "m1": {"type": "float", "unit": "degrees", "prec": 1, "value": 500.0, "asg": "default"},
+    "m1.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m1.RBV": {"type": "float", "prec": 5, "unit": "degrees", "value": 500.0, "asg": "default"},
     "m1.MOVN": {"type": "int", "value": 0, "asg": "default"},
     "m1.STOP": {"type": "int", "value": 0, "asg": "default"},
-    "m1.ACCL": {"type": "float", "value": 0.002, "asg": "default"},
-    "m1.VELO": {"type": "float", "value": 100.0, "asg": "default"},
+    "m1.ACCL": {"type": "float", "prec": 3, "unit": "sec", "value": 0.002, "asg": "default"},
+    "m1.VELO": {"type": "float", "prec": 1, "unit": "degrees", "value": 100.0, "asg": "default"},
     "m2.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
-    "m2": {"type": "float", "value": 500.0, "asg": "default"},
-    "m2.VAL": {"type": "float", "value": 700.0, "asg": "default"},
-    "m2.RBV": {"type": "float", "value": 500.0, "asg": "default"},
+    "m2": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m2.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m2.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
     "m2.MOVN": {"type": "int", "value": 0, "asg": "default"},
     "m2.STOP": {"type": "int", "value": 0, "asg": "default"},
-    "m2.ACCL": {"type": "float", "value": 0.002, "asg": "default"},
-    "m2.VELO": {"type": "float", "value": 100.0, "asg": "default"},
+    "m2.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m2.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
 }
 
 
@@ -103,9 +103,13 @@ class myDriver(Driver):
                 self.setParam(motorMovingVarName, 1)
 
                 # for Motor X: 'Tw +10' = move right, 'Tw -10' = move left
-                # for Motor Y:'Tw +10' = move up, 'Tw -10' = move down left
+                # for Motor Y: 'Tw -10' = move up, 'Tw +10' = move down left
                 motorMoveAmount = 10 if motorRbv < motorParam else -10
-                imageMoveAmount = 0.15 if motorRbv < motorParam else -0.15
+                # so Motor Y buttons move as expected
+                if axisVarName == "YPos":
+                    imageMoveAmount = -0.2 if motorRbv < motorParam else 0.2
+                else:
+                    imageMoveAmount = 0.2 if motorRbv < motorParam else -0.2
 
                 # do movement in increments, updating displayed value and sleeping inbetween
                 while motorRbv != motorParam:
