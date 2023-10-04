@@ -143,8 +143,7 @@ class myDriver(Driver):
         self.motorYThread.start()
 
         for i in range(3, 9):
-            currMotorName = "m"+str(i)
-            print (currMotorName)
+            currMotorName = "m" + str(i)
             motorCurrThread = threading.Thread(
                 target=self.updateMotor,
                 args=(
@@ -189,7 +188,7 @@ class myDriver(Driver):
                     # update displayed values
                     motorRbv = motorRbv + motorMoveAmount
                     self.setParam(motorRbvName, motorRbv)
-                    
+
                     # only update axis for m1(XPos) and m2(YPos)
                     if axisVarName != "NA":
                         axis_pos = self.getParam(axisVarName)

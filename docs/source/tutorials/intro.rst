@@ -22,7 +22,7 @@ Using the PCASpy Server
     You will need to export the following variable in each terminal that will run either the PCASpy server or pydm:
    .. code-block:: bash
 
-       export EPICS_CA_MAX_ARRAY_BYTES=10000000
+       export EPICS_CA_MAX_ARRAY_BYTES=262150
 
 Run the server as follows:
  .. code-block:: bash
