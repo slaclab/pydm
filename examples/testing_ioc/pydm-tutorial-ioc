@@ -175,9 +175,9 @@ class myDriver(Driver):
                 motorMoveAmount = 10 if motorRbv < motorParam else -10
                 # so Motor Y buttons move as expected
                 if axisVarName == "YPos":
-                    imageMoveAmount = -0.2 if motorRbv < motorParam else 0.2
+                    imageMoveAmount = -0.1 if motorRbv < motorParam else 0.1
                 else:
-                    imageMoveAmount = 0.2 if motorRbv < motorParam else -0.2
+                    imageMoveAmount = 0.1 if motorRbv < motorParam else -0.1
 
                 # do movement in increments, updating displayed value and sleeping inbetween
                 while motorRbv != motorParam:
@@ -214,10 +214,10 @@ class myDriver(Driver):
 
         while True:
             # Generate the image data
-            x0 = 0.5 * (numpy.random.rand() - 0.5) + self.getParam("XPos")
-            y0 = 0.5 * (numpy.random.rand() - 0.5) - self.getParam("YPos")
-            xsig = 0.8 - 0.2 * numpy.random.rand()
-            ysig = 0.8 - 0.2 * numpy.random.rand()
+            x0 = 0.1 * (numpy.random.rand() - 0.5) + self.getParam("XPos")
+            y0 = 0.1 * (numpy.random.rand() - 0.5) - self.getParam("YPos")
+            xsig = 0.6
+            ysig = 0.2
             z = gaussian_2d(xgrid, ygrid, x0, y0, xsig, ysig)
             image_data = numpy.abs(256.0 * (z)).flatten(order="C").astype(numpy.uint8, copy=False)
             self.setParam("Image", image_data)
