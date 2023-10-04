@@ -250,5 +250,11 @@ The finished result will look like this:
      :alt: Main Application Screen
 
 .. note::
-    You can download this file using :download:`this link </_static/tutorials/code/main.ui>`.
+    Purple borders will appear around any widgets that have "Alarm Sensitive Border" enabled.
+    These can be removed by unchecking this setting, but for the purposes of this tutorial the
+    borders are only a cosmetic issue and not indiciating an issue with the ui files.
+    (borders are a byproduct of using the PCASpy server to mimic PV's and not an error) 
+
+.. note::
+    You can download this file using :download:`this link <../../../../examples/tutorial/main.ui>`.
 

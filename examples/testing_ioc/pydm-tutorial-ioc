@@ -35,6 +35,7 @@ pvdb = {
         "asg": "default",
     },
     "ImageWidth": {"type": "int", "value": IMAGE_SIZE, "asg": "default"},
+    # m1
     "m1.DESC": {"type": "string", "value": "Motor X", "asg": "default"},
     "m1": {"type": "float", "unit": "degrees", "prec": 1, "value": 500.0, "asg": "default"},
     "m1.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
@@ -43,6 +44,7 @@ pvdb = {
     "m1.STOP": {"type": "int", "value": 0, "asg": "default"},
     "m1.ACCL": {"type": "float", "prec": 3, "unit": "sec", "value": 0.002, "asg": "default"},
     "m1.VELO": {"type": "float", "prec": 1, "unit": "degrees", "value": 100.0, "asg": "default"},
+    # m2
     "m2.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
     "m2": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
     "m2.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
@@ -51,6 +53,60 @@ pvdb = {
     "m2.STOP": {"type": "int", "value": 0, "asg": "default"},
     "m2.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
     "m2.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m3
+    "m3.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m3": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m3.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m3.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m3.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m3.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m3.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m3.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m4
+    "m4.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m4": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m4.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m4.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m4.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m4.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m4.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m4.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m5
+    "m5.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m5": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m5.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m5.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m5.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m5.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m5.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m5.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m6
+    "m6.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m6": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m6.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m6.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m6.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m6.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m6.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m6.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m7
+    "m7.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m7": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m7.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m7.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m7.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m7.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m7.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m7.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m8
+    "m8.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m8": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m8.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m8.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m8.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m8.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m8.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m8.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
 }
 
 
@@ -86,6 +142,19 @@ class myDriver(Driver):
         self.motorYThread.setDaemon(True)
         self.motorYThread.start()
 
+        for i in range(3, 9):
+            currMotorName = "m"+str(i)
+            print (currMotorName)
+            motorCurrThread = threading.Thread(
+                target=self.updateMotor,
+                args=(
+                    currMotorName,
+                    "NA",
+                ),
+            )
+            motorCurrThread.setDaemon(True)
+            motorCurrThread.start()
+
     def updateMotor(self, motorVarName, axisVarName):
         # mimic the functionality of fully-simulated motor and camera
 
@@ -120,8 +189,11 @@ class myDriver(Driver):
                     # update displayed values
                     motorRbv = motorRbv + motorMoveAmount
                     self.setParam(motorRbvName, motorRbv)
-                    axis_pos = self.getParam(axisVarName)
-                    self.setParam(axisVarName, axis_pos + imageMoveAmount)
+                    
+                    # only update axis for m1(XPos) and m2(YPos)
+                    if axisVarName != "NA":
+                        axis_pos = self.getParam(axisVarName)
+                        self.setParam(axisVarName, axis_pos + imageMoveAmount)
                     self.updatePVs()
 
                     time.sleep(sleepTime)
