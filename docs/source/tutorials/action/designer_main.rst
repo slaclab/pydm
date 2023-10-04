@@ -251,9 +251,8 @@ The finished result will look like this:
 
 .. note::
     Purple borders will appear around any widgets that have "Alarm Sensitive Border" enabled.
-    These can be removed by unchecking this setting, but for the purposes of this tutorial the
-    borders are only a cosmetic issue and not indiciating an issue with the ui files.
-    (borders are a byproduct of using the PCASpy server to mimic PV's and not an error) 
+    These can be removed by unchecking the setting. (for the purposes of this tutorial, the
+    borders are not significant and can be checked on or off)
 
 .. note::
     You can download this file using :download:`this link <../../../../examples/tutorial/main.ui>`.
