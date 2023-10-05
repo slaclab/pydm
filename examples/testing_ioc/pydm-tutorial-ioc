@@ -160,7 +160,10 @@ class myDriver(Driver):
         sleepTime = 0.2  # set arbitrarily to match timing when fully-simulated
         motorRbvName = motorVarName + ".RBV"
         motorMovingVarName = motorVarName + ".MOVN"
+        # set to avoid button having purple "uninit" color
+        self.setParam(motorMovingVarName, 0)
         motorStopVarName = motorVarName + ".STOP"
+        motorValVarName = motorVarName + ".VAL"
 
         motorRbv = self.getParam(motorRbvName)
         while True:
@@ -188,13 +191,14 @@ class myDriver(Driver):
                     # update displayed values
                     motorRbv = motorRbv + motorMoveAmount
                     self.setParam(motorRbvName, motorRbv)
+                    self.setParam(motorValVarName, motorRbv)
 
                     # only update axis for m1(XPos) and m2(YPos)
                     if axisVarName != "NA":
                         axis_pos = self.getParam(axisVarName)
                         self.setParam(axisVarName, axis_pos + imageMoveAmount)
-                    self.updatePVs()
 
+                    self.updatePVs()
                     time.sleep(sleepTime)
 
                 self.setParam(motorStopVarName, 0)
