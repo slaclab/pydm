@@ -54,7 +54,7 @@ pvdb = {
     "m2.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
     "m2.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
     # m3
-    "m3.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m3.DESC": {"type": "string", "value": "Motor 3", "asg": "default"},
     "m3": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
     "m3.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
     "m3.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
@@ -63,7 +63,7 @@ pvdb = {
     "m3.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
     "m3.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
     # m4
-    "m4.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m4.DESC": {"type": "string", "value": "Motor 4", "asg": "default"},
     "m4": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
     "m4.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
     "m4.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
@@ -72,7 +72,7 @@ pvdb = {
     "m4.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
     "m4.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
     # m5
-    "m5.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m5.DESC": {"type": "string", "value": "Motor 5", "asg": "default"},
     "m5": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
     "m5.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
     "m5.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
@@ -81,7 +81,7 @@ pvdb = {
     "m5.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
     "m5.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
     # m6
-    "m6.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m6.DESC": {"type": "string", "value": "Motor 6", "asg": "default"},
     "m6": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
     "m6.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
     "m6.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
@@ -90,7 +90,7 @@ pvdb = {
     "m6.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
     "m6.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
     # m7
-    "m7.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m7.DESC": {"type": "string", "value": "Motor 7", "asg": "default"},
     "m7": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
     "m7.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
     "m7.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
@@ -99,7 +99,7 @@ pvdb = {
     "m7.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
     "m7.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
     # m8
-    "m8.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m8.DESC": {"type": "string", "value": "Motor 8", "asg": "default"},
     "m8": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
     "m8.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
     "m8.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
