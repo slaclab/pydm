@@ -251,8 +251,8 @@ The finished result will look like this:
 
 .. note::
     Purple borders will appear around any widgets that have "Alarm Sensitive Border" enabled.
-    These can be removed by unchecking the setting. (for the purposes of this tutorial, the
-    borders are not significant and can be checked on or off)
+    These can be removed by simply unchecking the setting. (for the purposes of this tutorial,
+    these borders are not significant and can be in either the on or off state)
 
 .. note::
     You can download this file using :download:`this link <../../../../examples/tutorial/main.ui>`.
