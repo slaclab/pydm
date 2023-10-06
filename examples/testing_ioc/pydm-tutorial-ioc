@@ -192,9 +192,13 @@ class myDriver(Driver):
 
                     # allow for setting values not divisible by 10
                     if motorParam > 0:
-                        motorRbv = motorParam if (motorRbv + motorMoveAmount > motorParam) else motorRbv + motorMoveAmount
+                        motorRbv = (
+                            motorParam if (motorRbv + motorMoveAmount > motorParam) else motorRbv + motorMoveAmount
+                        )
                     else:
-                        motorRbv = motorParam if (motorRbv + motorMoveAmount < motorParam) else motorRbv + motorMoveAmount
+                        motorRbv = (
+                            motorParam if (motorRbv + motorMoveAmount < motorParam) else motorRbv + motorMoveAmount
+                        )
                     self.setParam(motorRbvName, motorRbv)
                     self.setParam(motorValVarName, motorRbv)
 
