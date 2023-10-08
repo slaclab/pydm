@@ -7,11 +7,11 @@ import time
 from pcaspy import Driver, SimpleServer
 
 """ This file provides the server needed for for providing PVs to run the tutorial. 
-    You can follow along the tutorial here: hhttps://slaclab.github.io/pydm/tutorials/index.html
+    You can follow along the tutorial here: https://slaclab.github.io/pydm/tutorials/index.html
     The server mimics variables used by the tutorial, which mimic a simulated camera and motor.
     Mimicking this behavior is done (over running simulator programs) in order to minimize the overhead
     to get the tutorial up-and-running, and since the simulated data is not necessarily needed to learn 
-    how to make PyDM user-interface. 
+    how to make a PyDM user-interface.
 """
 
 MAX_POINTS = 1000

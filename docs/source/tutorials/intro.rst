@@ -13,14 +13,14 @@ The server mimics some PVs of a motor and camera, and is located as follows:
 
     examples/testing_ioc/pydm-tutorial-ioc
 
-Running 'pip install -r requirements.txt' provides all needed prerequisites.
+Installing PCASpy from the documentation above and following the :ref:`pydm installation instructions<Install>` provides all needed prerequisites for this tutorial.
 
 Using the PCASpy Server
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note::
     You will need to export the following variable in each terminal that will run either the PCASpy server or pydm:
-   .. code-block:: bash
+     .. code-block:: bash
 
        export EPICS_CA_MAX_ARRAY_BYTES=300000
 
@@ -32,7 +32,7 @@ Run the server as follows:
 In another terminal window, enable the sever's running state:
  .. code-block:: bash
 
-    caput MTEST:Run 1
+    caput IOC:Run 1
 
 The server will now be running and the tutorial files can access the necessary PV's.
 
