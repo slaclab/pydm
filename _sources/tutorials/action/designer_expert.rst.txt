@@ -5,13 +5,7 @@ Expert Motor Screen
 
 .. important::
 
-    **Check-list:**
-
-    * Make sure that you have your :ref:`Environment <Environment>` properly configured.
-    * That your :ref:`VirtualMachine` is up and ready.
-    * That the :ref:`Python environment <PythonEnv>` is set.
-    * That all :ref:`three IOCs <IOCS>` are running.
-
+    * Make sure the PCASpy tutorial server is :ref:`running <Setup>`
 
 For this screen we will present detailed information to the user for the motors.
 Also, to ensure that we can re-use this screen in other displays, it will be
@@ -312,4 +306,4 @@ The finished result will look like this:
      :alt: Expert Motor Screen
 
 .. note::
-    You can download this file using :download:`this link </_static/code/expert_motor.ui>`.
+    You can download this file using :download:`this link <../../../../examples/tutorial/expert_motor.ui>`.

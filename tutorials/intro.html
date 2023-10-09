@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Setting up the Environment &mdash; PyDM 1.20.1 documentation</title>
+  <title>Tutorial Setup &mdash; PyDM 1.20.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -57,13 +57,11 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Setting up the Environment</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#virtual-machine">Virtual Machine</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#using-the-downloaded-disk">Using the Downloaded Disk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#useful-virtual-machine-information">Useful Virtual Machine Information</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pcaspy-server">PCASpy Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#using-the-pcaspy-server">Using the PCASpy Server</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#creating-your-own-environment">Creating your own environment</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="intro/launcher.html">PyDM Launcher</a></li>
@@ -130,7 +128,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Tutorial</a></li>
-      <li class="breadcrumb-item active">Setting up the Environment</li>
+      <li class="breadcrumb-item active">Tutorial Setup</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tutorials/intro.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -140,83 +138,47 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="setting-up-the-environment">
-<span id="environment"></span><h1>Setting up the Environment<a class="headerlink" href="#setting-up-the-environment" title="Permalink to this heading"></a></h1>
-<section id="virtual-machine">
-<span id="virtualmachine"></span><h2>Virtual Machine<a class="headerlink" href="#virtual-machine" title="Permalink to this heading"></a></h2>
-<p>We provide a virtual machine disk that is the base for the application that will
-be developed during this tutorial.</p>
-<p>You can download the disk using this <a class="reference external" href="https://drive.google.com/a/stanford.edu/file/d/1SE4_oDF2wg_7ltKOIdJuZIqkpHzLUkbm/view?usp=sharing">Link</a>.</p>
-<section id="using-the-downloaded-disk">
-<h3>Using the Downloaded Disk<a class="headerlink" href="#using-the-downloaded-disk" title="Permalink to this heading"></a></h3>
-<p>After downloading it, extract the <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> file, create a new Virtual Machine at the virtualization client of your preference.</p>
-<p>The instructions below are for <a class="reference external" href="https://www.virtualbox.org/wiki/Downloads">Oracle VirtualBox</a> .
-Oracle VirtualBox is available for Windows, OS X and Linux hosts.</p>
-<p>This file is not a complete Virtual Machine dump that can be imported but instead a disk.</p>
-<p>In order to use this disk, start by creating a new virtual Machine, select Type as <code class="docutils literal notranslate"><span class="pre">Linux</span></code> and Version as <code class="docutils literal notranslate"><span class="pre">Ubuntu</span> <span class="pre">(64-bit)</span></code>.
-Configure the amount of memory to use (something greater or equal 2048MB should do it.
-Make sure to select <code class="docutils literal notranslate"><span class="pre">Use</span> <span class="pre">an</span> <span class="pre">existing</span> <span class="pre">virtual</span> <span class="pre">hard</span> <span class="pre">disk</span> <span class="pre">file.</span></code> and select the extracted <code class="docutils literal notranslate"><span class="pre">.vmdk</span></code> file.</p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../_images/new_vm.png"><img alt="Create new VM" src="../_images/new_vm.png" style="width: 750.0px; height: 573.0px;" /></a>
-</figure>
-</section>
-<section id="useful-virtual-machine-information">
-<h3>Useful Virtual Machine Information<a class="headerlink" href="#useful-virtual-machine-information" title="Permalink to this heading"></a></h3>
-<section id="user-account">
-<h4>User Account<a class="headerlink" href="#user-account" title="Permalink to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Username</p></th>
-<th class="head"><p>Password</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>user</p></td>
-<td><p>tutorial</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="python-environment">
-<span id="pythonenv"></span><h4>Python Environment<a class="headerlink" href="#python-environment" title="Permalink to this heading"></a></h4>
-<p>On this machine we are using Miniconda to handle our Python environment and dependencies.
-To have access to the environmnet please do:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>tutorial
+  <section id="tutorial-setup">
+<span id="setup"></span><h1>Tutorial Setup<a class="headerlink" href="#tutorial-setup" title="Permalink to this heading"></a></h1>
+<section id="pcaspy-server">
+<h2>PCASpy Server<a class="headerlink" href="#pcaspy-server" title="Permalink to this heading"></a></h2>
+<p>A <a class="reference external" href="https://pcaspy.readthedocs.io/en/latest/">PCASpy</a> server provides PVs for the tutorial files to read/write.</p>
+<dl>
+<dt>The server mimics some PVs of a motor and camera, and is located as follows:</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>examples/testing_ioc/pydm-tutorial-ioc
 </pre></div>
 </div>
-</section>
-<section id="simulated-epics-iocs">
-<span id="iocs"></span><h4>Simulated EPICS IOCs<a class="headerlink" href="#simulated-epics-iocs" title="Permalink to this heading"></a></h4>
-<p>This machine comes with simulated motors and cameras.
-The IOCs can be started through their launcher scripts available at:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/tutorial/iocs_launcher
-
-<span class="c1"># For the AreaDetector (cameras) simulation use</span>
-./simDetector
-
-<span class="c1"># For the simulated motor axis use</span>
-./simMotor
-
-<span class="c1"># For the linking IOC</span>
-./simLinker
+</dd>
+</dl>
+<p>Installing PCASpy from the documentation above and following the <a class="reference internal" href="../installation.html#install"><span class="std std-ref">pydm installation instructions</span></a> provides all needed prerequisites for this tutorial.</p>
+<section id="using-the-pcaspy-server">
+<h3>Using the PCASpy Server<a class="headerlink" href="#using-the-pcaspy-server" title="Permalink to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<dl>
+<dt>You will need to export the following variable in each terminal that will run either the PCASpy server or pydm:</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">EPICS_CA_MAX_ARRAY_BYTES</span><span class="o">=</span><span class="m">300000</span>
 </pre></div>
 </div>
-<p>For AreaDetector (cameras):</p>
-<ul class="simple">
-<li><p>The prefix for the PVs is <code class="docutils literal notranslate"><span class="pre">13SIM1:</span></code> so we have: <code class="docutils literal notranslate"><span class="pre">13SIM1:cam1</span></code> as well as <code class="docutils literal notranslate"><span class="pre">13SIM1:cam2</span></code> available.</p></li>
-</ul>
-<p>For Motor Axis:</p>
-<ul class="simple">
-<li><p>The prexif for the PVs is <code class="docutils literal notranslate"><span class="pre">IOC:</span></code> so we have: <code class="docutils literal notranslate"><span class="pre">IOC:m1</span> <span class="pre">..</span> <span class="pre">IOC:m8</span></code></p></li>
-</ul>
+</dd>
+</dl>
+</div>
+<dl>
+<dt>Run the server as follows:</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./examples/testing_ioc/pydm-tutorial-ioc
+</pre></div>
+</div>
+</dd>
+<dt>In another terminal window, enable the sever’s running state:</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>caput<span class="w"> </span>IOC:Run<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>The server will now be running and the tutorial files can access the necessary PV’s.</p>
+<dl>
+<dt>In another (third) terminal window, the completed tutorial files can be ran as follows:</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pydm<span class="w"> </span>&lt;tutorial_file_name&gt;.ui<span class="p">|</span>.py
+</pre></div>
+</div>
+</dd>
+</dl>
 </section>
-</section>
-</section>
-<section id="creating-your-own-environment">
-<h2>Creating your own environment<a class="headerlink" href="#creating-your-own-environment" title="Permalink to this heading"></a></h2>
-<p>If you decide to create your own environment and not use the Virtual Machine
-provided please refer to the <a class="reference external" href="http://slaclab.github.io/pydm/">PyDM Documentation Website</a>
-for an up-to-date dependency list as well as detailed installation instructions.</p>
 </section>
 </section>
 
@@ -231,7 +193,7 @@ for an up-to-date dependency list as well as detailed installation instructions.
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016, mgibbs, hhslepicka, trendahl, zlentz.</p>
+    <p>&#169; Copyright 2023, hhslepicka, trendahl, zlentz, yektay, nstelter.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
