@@ -56,8 +56,8 @@ master_doc = "index"
 
 # General information about the project.
 project = "PyDM"
-copyright = "2016, mgibbs, hhslepicka, trendahl, zlentz"
-author = "mgibbs, hhslepicka, trendahl, zlentz"
+copyright = "2023, hhslepicka, trendahl, zlentz, yektay, nstelter"
+author = "mgibbs, hhslepicka, trendahl, zlentz, yektay, nstelter"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -73,7 +73,7 @@ release = pydm.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:

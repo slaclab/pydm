@@ -478,7 +478,7 @@ class PyDMDrawingLine(PyDMDrawing):
         diff_x = startpoint.x() - endpoint.x()
         diff_y = startpoint.y() - endpoint.y()
 
-        length = math.sqrt(diff_x**2 + diff_y**2)
+        length = max(math.sqrt(diff_x**2 + diff_y**2), 1.0)
 
         norm_x = diff_x / length
         norm_y = diff_y / length

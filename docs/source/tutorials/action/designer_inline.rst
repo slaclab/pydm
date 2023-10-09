@@ -5,12 +5,7 @@ Inline Motor Screen
 
 .. important::
 
-    **Check-list:**
-
-    * Make sure that you have your :ref:`Environment <Environment>` properly configured.
-    * That your :ref:`VirtualMachine` is up and ready.
-    * That the :ref:`Python environment <PythonEnv>` is set.
-    * That all :ref:`three IOCs <IOCS>` are running.
+    * Make sure the PCASpy tutorial server is :ref:`running <Setup>`
 
 For this screen, we want to present useful information to the user to operate
 the motors, and also provide a way for them to access other less-commonly-used parameters via an "Expert" screen. To make this screen re-usable in other displays, it will be necessary
@@ -284,4 +279,4 @@ The finished result will look like this:
      :alt: Inline Motor Screen
 
 .. note::
-    You can download this file using :download:`this link </_static/code/inline_motor.ui>`.
+    You can download this file using :download:`this link <../../../../examples/tutorial/inline_motor.ui>`.

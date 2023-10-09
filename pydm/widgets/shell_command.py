@@ -10,6 +10,7 @@ from ast import literal_eval
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent
 from qtpy.QtCore import Property, QSize, Qt, QTimer
+from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont
 from typing import Optional, Union, List
@@ -329,6 +330,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     def passwordProtected(self) -> bool:
         """
         Whether or not this button is password protected.
+
         Returns
         -------
         bool
@@ -340,6 +342,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     def passwordProtected(self, value: bool) -> None:
         """
         Whether or not this button is password protected.
+
         Parameters
         ----------
         value : bool
@@ -353,8 +356,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         Password to be encrypted using SHA256.
 
         .. warning::
-            To avoid issues exposing the password this method
-            always returns an empty string.
+          To avoid issues exposing the password this method always returns an empty string.
 
         Returns
         -------
@@ -378,6 +380,11 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             # Use the setter as it also checks whether the existing password is the same with the
             # new one, and only updates if the new password is different
             self.protectedPassword = sha.hexdigest()
+
+            # Make sure designer knows it should save the protectedPassword field
+            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self)
+            if formWindow:
+                formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
 
     @Property(str)
     def protectedPassword(self) -> str:

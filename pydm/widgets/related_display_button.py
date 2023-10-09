@@ -7,6 +7,7 @@ import hashlib
 from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit, QWidget
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
+from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
@@ -268,6 +269,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def passwordProtected(self) -> bool:
         """
         Whether or not this button is password protected.
+
         Returns
         -------
         bool
@@ -279,6 +281,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def passwordProtected(self, value: bool) -> None:
         """
         Whether or not this button is password protected.
+
         Parameters
         ----------
         value : bool
@@ -292,8 +295,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         Password to be encrypted using SHA256.
 
         .. warning::
-        To avoid issues exposing the password this method
-        always returns an empty string.
+          To avoid issues exposing the password this method always returns an empty string.
 
         Returns
         -------
@@ -317,6 +319,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
             # Use the setter as it also checks whether the existing password is the same with the
             # new one, and only updates if the new password is different
             self.protectedPassword = sha.hexdigest()
+
+            # Make sure designer knows it should save the protectedPassword field
+            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self)
+            if formWindow:
+                formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
 
     @Property(str)
     def protectedPassword(self) -> str:

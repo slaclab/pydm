@@ -5,13 +5,7 @@ Main Screen
 
 .. important::
 
-    **Check-list:**
-
-    * Make sure that you have your :ref:`Environment <Environment>` properly configured.
-    * That your :ref:`VirtualMachine` is up and ready.
-    * That the :ref:`Python environment <PythonEnv>` is set.
-    * That all :ref:`three IOCs <IOCS>` are running.
-
+    * Make sure the PCASpy tutorial server is :ref:`running <Setup>`
 
 This will be the main piece of our Beam Positioning application and will group the other
 components of this tutorial.
@@ -256,5 +250,10 @@ The finished result will look like this:
      :alt: Main Application Screen
 
 .. note::
-    You can download this file using :download:`this link </_static/code/main.ui>`.
+    Purple borders will appear around any widgets that have "Alarm Sensitive Border" enabled.
+    These can be removed by simply unchecking the setting. (for the purposes of this tutorial,
+    these borders are not significant and can be in either the on or off state)
+
+.. note::
+    You can download this file using :download:`this link <../../../../examples/tutorial/main.ui>`.
 

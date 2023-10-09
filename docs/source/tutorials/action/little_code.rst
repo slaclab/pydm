@@ -5,12 +5,7 @@ Adding Code into the Main Display
 
 .. important::
 
-    **Check-list:**
-
-    * Make sure that you have your :ref:`Environment <Environment>` properly configured.
-    * That your :ref:`VirtualMachine` is up and ready.
-    * That the :ref:`Python environment <PythonEnv>` is set.
-    * That all :ref:`three IOCs <IOCS>` are running.
+    * Make sure the PCASpy tutorial server is :ref:`running <Setup>`
 
 For this particular application it would be of interest to not only see the beam
 image on the screen, but to also calculate the maximum point on the image and display
@@ -145,4 +140,4 @@ This is accomplished by subclassing `pydm.Display` (See :ref:`Display` for more 
      :align: center
 
 .. note::
-    You can download this file using :download:`this link </_static/code/main.py>`.
+    You can download this file using :download:`this link </_static/tutorials/code/main.py>`.

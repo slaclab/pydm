@@ -15,7 +15,7 @@
   <br>
 </p>
 <p align="center">
-  <strong>« Explore PyDM <a href="https://slaclab.github.io/pydm/">docs</a> and <a href="https://slaclab.github.io/pydm-tutorial">tutorials</a> »</strong>
+  <strong>« Explore PyDM <a href="https://slaclab.github.io/pydm/">docs</a> and <a href="https://slaclab.github.io/pydm/tutorials/index.html">tutorials</a> »</strong>
   <br>
   <br>
   <a href="https://github.com/slaclab/pydm/issues/new?template=bug-report.md">Report bug</a>

@@ -6,7 +6,7 @@ Follow the steps below to increase the chances of a quick resolution.
 
 1. Is it a problem, a question or a request?
 --------------------------------------------
-For questions about how to use PyDM, please refer to the :doc:`/contrib/help` page.
+For questions about how to use PyDM, please refer to the :doc:`help` page.
 
 If you don't have a GitHub account we strongly encourage you to create one by following the 3 easy steps described on this `page <https://github.com/join>`_.
 
@@ -18,10 +18,10 @@ Problems (not questions!) with the software or website can be reported as GitHub
 - Typos or other mistakes in the Reference or elsewhere on the documentation
 
 If you create a new issue that’s really just a clarifying question about how to use PyDM, we’ll close it and nicely ask
-you to visit the :doc:`/contrib/help` channels in the future.
+you to visit the :doc:`help` channels in the future.
 
 Ideas or suggestions for enhancements should be posted as GitHub issues with the 'REQUEST: ' prefix to your issue title.
-When in doubt, start by reaching us through one of the :doc:`/contrib/help` channels.
+When in doubt, start by reaching us through one of the :doc:`help` channels.
 
 
 2. Write helpfully
