@@ -1,0 +1,261 @@
+#!/usr/bin/env python
+import os
+import threading
+import numpy
+import time
+
+from pcaspy import Driver, SimpleServer
+
+""" This file provides the server needed for for providing PVs to run the tutorial. 
+    You can follow along the tutorial here: https://slaclab.github.io/pydm/tutorials/index.html
+    The server mimics variables used by the tutorial, which mimic a simulated camera and motor.
+    Mimicking this behavior is done (over running simulator programs) in order to minimize the overhead
+    to get the tutorial up-and-running, and since the simulated data is not necessarily needed to learn 
+    how to make a PyDM user-interface.
+"""
+
+MAX_POINTS = 1000
+FREQUENCY = 1000
+AMPLITUDE = 1.0
+NUM_DIVISIONS = 10
+MIN_UPDATE_TIME = 0.001
+IMAGE_SIZE = 512
+MESSAGE = "PyDM Rocks!"
+
+prefix = "IOC:"
+pvdb = {
+    "Run": {"type": "enum", "enums": ["STOP", "RUN"], "asg": "default"},
+    "ReadOnly": {"type": "enum", "enums": ["FALSE", "TRUE"], "value": 0},
+    "XPos": {"prec": 2, "value": 0.0, "asg": "default"},
+    "YPos": {"prec": 2, "value": 0.0, "asg": "default"},
+    "Image": {
+        "type": "char",
+        "count": IMAGE_SIZE**2,
+        "value": numpy.zeros(IMAGE_SIZE**2, dtype=numpy.uint8),
+        "asg": "default",
+    },
+    "ImageWidth": {"type": "int", "value": IMAGE_SIZE, "asg": "default"},
+    # m1
+    "m1.DESC": {"type": "string", "value": "Motor X", "asg": "default"},
+    "m1": {"type": "float", "unit": "degrees", "prec": 1, "value": 500.0, "asg": "default"},
+    "m1.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m1.RBV": {"type": "float", "prec": 5, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m1.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m1.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m1.ACCL": {"type": "float", "prec": 3, "unit": "sec", "value": 0.002, "asg": "default"},
+    "m1.VELO": {"type": "float", "prec": 1, "unit": "degrees", "value": 100.0, "asg": "default"},
+    # m2
+    "m2.DESC": {"type": "string", "value": "Motor Y", "asg": "default"},
+    "m2": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m2.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m2.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m2.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m2.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m2.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m2.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m3
+    "m3.DESC": {"type": "string", "value": "Motor 3", "asg": "default"},
+    "m3": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m3.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m3.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m3.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m3.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m3.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m3.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m4
+    "m4.DESC": {"type": "string", "value": "Motor 4", "asg": "default"},
+    "m4": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m4.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m4.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m4.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m4.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m4.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m4.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m5
+    "m5.DESC": {"type": "string", "value": "Motor 5", "asg": "default"},
+    "m5": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m5.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m5.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m5.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m5.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m5.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m5.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m6
+    "m6.DESC": {"type": "string", "value": "Motor 6", "asg": "default"},
+    "m6": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m6.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m6.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m6.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m6.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m6.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m6.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m7
+    "m7.DESC": {"type": "string", "value": "Motor 7", "asg": "default"},
+    "m7": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m7.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m7.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m7.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m7.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m7.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m7.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+    # m8
+    "m8.DESC": {"type": "string", "value": "Motor 8", "asg": "default"},
+    "m8": {"type": "float", "prec": 1, "unit": "degrees", "value": 500.0, "asg": "default"},
+    "m8.VAL": {"type": "float", "unit": "degrees", "prec": 5, "value": 500.0, "asg": "default"},
+    "m8.RBV": {"type": "float", "prec": 5, "value": 500.0, "unit": "degrees", "asg": "default"},
+    "m8.MOVN": {"type": "int", "value": 0, "asg": "default"},
+    "m8.STOP": {"type": "int", "value": 0, "asg": "default"},
+    "m8.ACCL": {"type": "float", "prec": 3, "value": 0.002, "unit": "sec", "asg": "default"},
+    "m8.VELO": {"type": "float", "prec": 1, "value": 100.0, "unit": "degrees", "asg": "default"},
+}
+
+
+def gaussian_2d(x, y, x0, y0, xsig, ysig):
+    return numpy.exp(-0.5 * (((x - x0) / xsig) ** 2 + ((y - y0) / ysig) ** 2))
+
+
+class myDriver(Driver):
+    def __init__(self):
+        Driver.__init__(self)
+        self.eid = threading.Event()
+        self.tid = threading.Thread(target=self.runSimScope)
+        self.tid.setDaemon(True)
+        self.tid.start()
+
+        self.motorXThread = threading.Thread(
+            target=self.updateMotor,
+            args=(
+                "m1",
+                "XPos",
+            ),
+        )
+        self.motorXThread.setDaemon(True)
+        self.motorXThread.start()
+
+        self.motorYThread = threading.Thread(
+            target=self.updateMotor,
+            args=(
+                "m2",
+                "YPos",
+            ),
+        )
+        self.motorYThread.setDaemon(True)
+        self.motorYThread.start()
+
+        for i in range(3, 9):
+            currMotorName = "m" + str(i)
+            motorCurrThread = threading.Thread(
+                target=self.updateMotor,
+                args=(
+                    currMotorName,
+                    "NA",
+                ),
+            )
+            motorCurrThread.setDaemon(True)
+            motorCurrThread.start()
+
+    def updateMotor(self, motorVarName, axisVarName):
+        # mimic the functionality of fully-simulated motor and camera
+
+        sleepTime = 0.2  # set arbitrarily to match timing when fully-simulated
+        motorRbvName = motorVarName + ".RBV"
+        motorMovingVarName = motorVarName + ".MOVN"
+        # set to avoid button having purple "uninit" color
+        self.setParam(motorMovingVarName, 0)
+        motorStopVarName = motorVarName + ".STOP"
+        motorValVarName = motorVarName + ".VAL"
+
+        motorRbv = self.getParam(motorRbvName)
+        while True:
+            time.sleep(sleepTime)
+            motorParam = self.getParam(motorVarName)
+
+            if motorParam != motorRbv:  # need to move motor
+                self.setParam(motorMovingVarName, 1)
+
+                # for Motor X: 'Tw +10' = move right, 'Tw -10' = move left
+                # for Motor Y: 'Tw -10' = move up, 'Tw +10' = move down left
+                motorMoveAmount = 10 if motorRbv < motorParam else -10
+                # so Motor Y buttons move as expected
+                if axisVarName == "YPos":
+                    imageMoveAmount = -0.1 if motorRbv < motorParam else 0.1
+                else:
+                    imageMoveAmount = 0.1 if motorRbv < motorParam else -0.1
+
+                # do movement in increments, updating displayed value and sleeping inbetween
+                while motorRbv != motorParam:
+                    currStopVal = self.getParam(motorStopVarName)
+                    if currStopVal:
+                        break
+
+                    # update displayed values
+
+                    # allow for setting values not divisible by 10
+                    if motorParam > 0:
+                        motorRbv = (
+                            motorParam if (motorRbv + motorMoveAmount > motorParam) else motorRbv + motorMoveAmount
+                        )
+                    else:
+                        motorRbv = (
+                            motorParam if (motorRbv + motorMoveAmount < motorParam) else motorRbv + motorMoveAmount
+                        )
+                    self.setParam(motorRbvName, motorRbv)
+                    self.setParam(motorValVarName, motorRbv)
+
+                    # only update axis for m1(XPos) and m2(YPos)
+                    if axisVarName != "NA":
+                        axis_pos = self.getParam(axisVarName)
+                        self.setParam(axisVarName, axis_pos + imageMoveAmount)
+
+                    self.updatePVs()
+                    time.sleep(sleepTime)
+
+                self.setParam(motorStopVarName, 0)
+                # if stopped, set motorVar line-edit to the motorRBV text-field value
+                # (motor was stopped before reaching the originally entered value)
+                if motorParam != motorRbv:
+                    self.setParam(motorVarName, motorRbv)
+
+                self.setParam(motorMovingVarName, 0)
+                self.updatePVs()
+
+    def runSimScope(self):
+        # simulate scope waveform
+        x = numpy.linspace(-5.0, 5.0, IMAGE_SIZE)
+        y = numpy.linspace(-5.0, 5.0, IMAGE_SIZE)
+        xgrid, ygrid = numpy.meshgrid(x, y)
+
+        while True:
+            # Generate the image data
+            x0 = 0.1 * (numpy.random.rand() - 0.5) + self.getParam("XPos")
+            y0 = 0.1 * (numpy.random.rand() - 0.5) - self.getParam("YPos")
+            xsig = 0.6
+            ysig = 0.2
+            z = gaussian_2d(xgrid, ygrid, x0, y0, xsig, ysig)
+            image_data = numpy.abs(256.0 * (z)).flatten(order="C").astype(numpy.uint8, copy=False)
+            self.setParam("Image", image_data)
+
+            # do updates so clients see the changes
+            self.updatePVs()
+
+
+if __name__ == "__main__":
+    try:
+        print("Starting testing-ioc")
+        print("To start processing records do: caput " + prefix + "Run 1")
+        server = SimpleServer()
+        server.initAccessSecurityFile(
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), "access_rules.as"), P=prefix
+        )
+        server.createPV(prefix, pvdb)
+        driver = myDriver()
+
+        # Manually set the ReadOnly PV to force access rule calculation.
+        # You can set ReadOnly to 1 to disable write access on all PVs.
+        driver.setParam("ReadOnly", 0)
+
+        # process CA transactions
+        while True:
+            server.process(0.03)
+    except KeyboardInterrupt:
+        print("\nInterrupted... finishing testing-ioc")

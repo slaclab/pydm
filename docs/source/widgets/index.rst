@@ -17,6 +17,8 @@ Display Widgets
    related_display_button.rst
    scale.rst
    symbol.rst
+   analog_indicator.rst
+   nt_table.rst
 
 Input Widgets
 -------------
@@ -61,6 +63,13 @@ Drawing Widgets
    :maxdepth: 1
 
    drawing.rst
+
+Base Widgets
+------------
+.. toctree::
+   :maxdepth: 1
+
+   PyDMWidget.rst
 
 Utilities
 ---------

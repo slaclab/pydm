@@ -175,11 +175,11 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
     and all the values stored by the keys will make up the values of the table.
 
     Parameters
-        ----------
-        parent : QWidget, optional
-            The parent widget for the PyDMNTTable
-        init_channel : str, optional
-            The channel to be used by the widget.
+    ----------
+    parent : QWidget, optional
+        The parent widget for the PyDMNTTable
+    init_channel : str, optional
+        The channel to be used by the widget.
     """
 
     def __init__(self, parent=None, init_channel=None):

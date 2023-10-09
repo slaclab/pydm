@@ -5,12 +5,7 @@ Making Pure Python Displays
 
 .. important::
 
-    **Check-list:**
-
-    * Make sure that you have your :ref:`Environment <Environment>` properly configured.
-    * That your :ref:`VirtualMachine` is up and ready.
-    * That the :ref:`Python environment <PythonEnv>` is set.
-    * That all :ref:`three IOCs <IOCS>` are running.
+    * Make sure the PCASpy tutorial server is :ref:`running <Setup>`
 
 As we saw in the :ref:`A Word About Python Display <Python>` section, it is
 possible to make displays using Python code and a .ui file from Qt Designer.
@@ -37,7 +32,7 @@ Here is how it will look once we are done:
 
    In order to simplify this tutorial, instead of using a database or other type
    of service, the data to populate the list of motors will come from a simple text file
-   named ``motor_db.txt`` that can be downloaded :download:`here </_static/code/motor_db.txt>`.
+   named ``motor_db.txt`` that can be downloaded :download:`here </_static/tutorials/code/motor_db.txt>`.
 
 * **Step 1.**
 
@@ -259,4 +254,4 @@ Here is how it will look once we are done:
      :align: center
 
 .. note::
-    You can download this file using :download:`this link </_static/code/all_motors.py>`.
+    You can download this file using :download:`this link </_static/tutorials/code/all_motors.py>`.

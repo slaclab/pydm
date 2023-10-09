@@ -269,6 +269,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def passwordProtected(self) -> bool:
         """
         Whether or not this button is password protected.
+
         Returns
         -------
         bool
@@ -280,6 +281,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def passwordProtected(self, value: bool) -> None:
         """
         Whether or not this button is password protected.
+
         Parameters
         ----------
         value : bool
@@ -293,8 +295,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         Password to be encrypted using SHA256.
 
         .. warning::
-        To avoid issues exposing the password this method
-        always returns an empty string.
+          To avoid issues exposing the password this method always returns an empty string.
 
         Returns
         -------
