@@ -433,7 +433,7 @@ class PyDMScatterPlot(BasePlot):
             plot_opts["lineWidth"] = lineWidth
         if redraw_mode is not None:
             plot_opts["redraw_mode"] = redraw_mode
-        curve = ScatterPlotCurveItem(
+        curve = self.createCurveItem(
             y_addr=y_channel,
             x_addr=x_channel,
             name=name,
@@ -447,6 +447,17 @@ class PyDMScatterPlot(BasePlot):
         self.channel_pairs[(x_channel, y_channel)] = curve
         self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         curve.data_changed.connect(self.set_needs_redraw)
+
+    def createCurveItem(self, y_addr, x_addr, name, color, yAxisName, bufferSizeChannelAddress, **plot_opts):
+        return ScatterPlotCurveItem(
+            y_addr,
+            x_addr,
+            name=name,
+            color=color,
+            yAxisName=yAxisName,
+            bufferSizeChannelAddress=bufferSizeChannelAddress,
+            **plot_opts
+        )
 
     def removeChannel(self, curve):
         """
