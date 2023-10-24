@@ -68,6 +68,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self.process = None
         self._show_icon = True
         self._redirect_output = False
+        # atm this is mainly to allow for command chaining ("cmd1;cmd2", "cmd1 && cmd2" etc ...),
+        # which Popen doesn't allow without enabling bash.
+        self._run_cmds_in_bash = False
 
         self._password_protected = False
         self._password = ""
@@ -125,6 +128,29 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         if self._show_confirm_dialog != value:
             self._show_confirm_dialog = value
+
+    @Property(bool)
+    def runCommandsInBash(self) -> bool:
+        """
+        Wether or not to run shell cmds with Popen's option to run them in a bash shell.
+
+        Returns
+        -------
+        bool
+        """
+        return self._run_cmds_in_bash
+
+    @runCommandsInBash.setter
+    def runCommandsInBash(self, value: bool) -> None:
+        """
+        Wether or not to run shell cmds with Popen's option to run them in a bash shell.
+
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._run_cmds_in_bash != value:
+            self._run_cmds_in_bash = value
 
     @Property(str)
     def confirmMessage(self) -> str:
@@ -526,6 +552,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             cmd = os.path.expanduser(os.path.expandvars(command))
             args = shlex.split(cmd, posix="win" not in sys.platform)
+            # when using bash Popen doesn't take the cmd in a list
+            if self._run_cmds_in_bash:
+                args = cmd
             try:
                 logger.debug("Launching process: %s", repr(args))
                 stdout = subprocess.PIPE
@@ -537,7 +566,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
                 if self._redirect_output:
                     stdout = None
-                self.process = subprocess.Popen(args, stdout=stdout, stderr=subprocess.PIPE, env=env_var)
+                self.process = subprocess.Popen(
+                    args, stdout=stdout, stderr=subprocess.PIPE, env=env_var, shell=self._run_cmds_in_bash
+                )
             except Exception as exc:
                 self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)
