@@ -557,7 +557,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
                 self.update_indicators()
 
 
-class PyDMMultiStateLEDIndicator(QWidget, PyDMWidget):
+class PyDMMultiStateIndicator(QWidget, PyDMWidget):
     """
     Widget with 16 available states that are set by the connected channel.
     Each state represents a different color that can be configured.
@@ -599,7 +599,7 @@ class PyDMMultiStateLEDIndicator(QWidget, PyDMWidget):
         new_val : int
             The new value from the channel.
         """
-        super(PyDMMultiStateLEDIndicator, self).value_changed(new_val)
+        super(PyDMMultiStateIndicator, self).value_changed(new_val)
         try:
             int(new_val)
             if new_val >= 0 and new_val <= 15:  # use states 0-15 (16 total states)

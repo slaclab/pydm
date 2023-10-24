@@ -2,7 +2,7 @@ import pytest
 
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Qt
-from ...widgets.byte import PyDMMultiStateLEDIndicator
+from ...widgets.byte import PyDMMultiStateIndicator
 
 
 @pytest.mark.parametrize(
@@ -31,7 +31,7 @@ def test_state_change(qtbot, signals, value, expectedColor):
     expected : int
         Expected resulting color after state-update
     """
-    pydm_multistate = PyDMMultiStateLEDIndicator()
+    pydm_multistate = PyDMMultiStateIndicator()
     qtbot.addWidget(pydm_multistate)
     pydm_multistate.show()
 
