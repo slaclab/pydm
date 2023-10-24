@@ -19,8 +19,8 @@ def test_state_change(qtbot, signals, value, expectedColor):
     Test the widget's handling of the value changed event.
 
     Expectations:
-    1. Value coming from the control system is correctly shifted by the predefined value
-    2. Resulting value should be non-negative
+    1. Widget state is update to reflect incoming signal value
+    2. Widgets color after state-update is the correct color set for the new state
 
     Parameters
     ----------
@@ -28,12 +28,8 @@ def test_state_change(qtbot, signals, value, expectedColor):
         pytest-qt window for widget testing
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
-    value : int
-        The value to be displayed by the widget
-    shift : int
-        The value's bit shift
     expected : int
-        Expected resulting value
+        Expected resulting color after state-update
     """
     pydm_multistate = PyDMMultiStateLEDIndicator()
     qtbot.addWidget(pydm_multistate)
