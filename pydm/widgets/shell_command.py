@@ -68,8 +68,8 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self.process = None
         self._show_icon = True
         self._redirect_output = False
-        # atm this is mainly to allow for command chaining ("cmd1;cmd2", "cmd1 && cmd2" etc ...),
-        # which Popen doesn't allow without enabling bash.
+        # currently Bash is used to allow for command chaining ("cmd1;cmd2", "cmd1 && cmd2", etc ...),
+        # since Popen doesn't allow for this without enabling bash.
         self._run_cmds_in_bash = False
 
         self._password_protected = False
@@ -552,7 +552,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             cmd = os.path.expanduser(os.path.expandvars(command))
             args = shlex.split(cmd, posix="win" not in sys.platform)
-            # when using bash Popen doesn't take the cmd in a list
+            # when bash enabled, Popen takes the cmds as a single string (not list)
             if self._run_cmds_in_bash:
                 args = cmd
             try:
