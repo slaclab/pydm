@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>379</width>
+    <height>358</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>The PyDMShellCommand button with run your command through a Bash shell if you enable the &quot;runCommandsInBash&quot; option. </string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMShellCommand" name="PyDMShellCommand">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Bash Option Enabled</string>
+     </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="PyDMToolTip" stdset="0">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string/>
+     </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="runCommandsInBash" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="confirmMessage" stdset="0">
+      <string>Are you sure you want to proceed?</string>
+     </property>
+     <property name="environmentVariables" stdset="0">
+      <string/>
+     </property>
+     <property name="showIcon" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="redirectCommandOutput" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="allowMultipleExecutions" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="titles" stdset="0">
+      <stringlist/>
+     </property>
+     <property name="commands" stdset="0">
+      <stringlist>
+       <string>bash -c 'echo AAA; echo BBB'</string>
+      </stringlist>
+     </property>
+     <property name="passwordProtected" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="password" stdset="0">
+      <string/>
+     </property>
+     <property name="protectedPassword" stdset="0">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>You also can run through Bash (without needing to enable the option) by specifying &quot;bash -c&quot; at the start of your command or by having the shell command call a script the runs multiple commands.  </string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMShellCommand" name="PyDMShellCommand_3">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Using &quot;-c bash&quot;</string>
+     </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="PyDMToolTip" stdset="0">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string/>
+     </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="runCommandsInBash" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="confirmMessage" stdset="0">
+      <string>Are you sure you want to proceed?</string>
+     </property>
+     <property name="environmentVariables" stdset="0">
+      <string/>
+     </property>
+     <property name="showIcon" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="redirectCommandOutput" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="allowMultipleExecutions" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="titles" stdset="0">
+      <stringlist/>
+     </property>
+     <property name="commands" stdset="0">
+      <stringlist>
+       <string>bash -c 'echo Hello World! ; echo Hello Again!'</string>
+      </stringlist>
+     </property>
+     <property name="passwordProtected" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="password" stdset="0">
+      <string/>
+     </property>
+     <property name="protectedPassword" stdset="0">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMShellCommand" name="PyDMShellCommand_2">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Calling external script</string>
+     </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="PyDMToolTip" stdset="0">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string/>
+     </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="runCommandsInBash" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="confirmMessage" stdset="0">
+      <string>Are you sure you want to proceed?</string>
+     </property>
+     <property name="environmentVariables" stdset="0">
+      <string/>
+     </property>
+     <property name="showIcon" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="redirectCommandOutput" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="allowMultipleExecutions" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="titles" stdset="0">
+      <stringlist>
+       <string>Print &quot;Hello, World!&quot; to terminal</string>
+       <string>Print current working directory to terminal</string>
+      </stringlist>
+     </property>
+     <property name="commands" stdset="0">
+      <stringlist>
+       <string>./example_cmd.sh</string>
+      </stringlist>
+     </property>
+     <property name="passwordProtected" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="password" stdset="0">
+      <string/>
+     </property>
+     <property name="protectedPassword" stdset="0">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMShellCommand</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.shell_command</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
