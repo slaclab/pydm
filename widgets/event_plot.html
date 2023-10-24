@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PyDMEventPlot &mdash; PyDM 1.20.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Archiver Appliance Enabled Time Plots" href="archiver_timeplot.html" />
+    <link rel="prev" title="PyDMTimePlot" href="timeplot.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyDM
+          </a>
+              <div class="version">
+                1.20.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorial</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help_files.html">Adding Help Files</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Widgets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#display-widgets">Display Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#input-widgets">Input Widgets</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#plot-widgets">Plot Widgets</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="curve_editor.html">Plot Curve Editor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scatterplot.html">PyDMScatterPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scatterplot.html#scatterplotcurveitem">ScatterPlotCurveItem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="timeplot.html">PyDMTimePlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="timeplot.html#timeplotcurveitem">TimePlotCurveItem</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMEventPlot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.widgets.eventplot.PyDMEventPlot"><code class="docutils literal notranslate"><span class="pre">PyDMEventPlot</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="archiver_timeplot.html">Archiver Appliance Enabled Time Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="archiver_timeplot.html#pydmarchivertimeplot">PyDMArchiverTimePlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="archiver_timeplot.html#archiveplotcurveitem">ArchivePlotCurveItem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="waveformplot.html">PyDMWaveformPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="waveformplot.html#waveformcurveitem">WaveformCurveItem</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#container-widgets">Container Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#drawing-widgets">Drawing Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#base-widgets">Base Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/p4p_plugin.html">P4P Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/designer_widgets.html">Designer Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Widgets</a></li>
+      <li class="breadcrumb-item active">PyDMEventPlot</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/widgets/event_plot.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pydmeventplot">
+<h1>PyDMEventPlot<a class="headerlink" href="#pydmeventplot" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.eventplot.</span></span><span class="sig-name descname"><span class="pre">PyDMEventPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_x_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_y_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/eventplot.html#PyDMEventPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BasePlot</span></code></p>
+<p>PyDMEventPlot is a widget to plot one scalar value against another.
+All of the values arrive in a single event-built array, and indices are
+used to identify which values to plot.  Multiple scalar pairs can be
+plotted on the same plot.  Each pair has a buffer which stores previous
+values.  All values in the buffer are drawn.  The buffer size for each
+pair is user configurable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>optional</em>) – The parent of this widget.</p></li>
+<li><p><strong>channel</strong> (<em>optional</em>) – A string with the address for a channel.  This channel should produce
+an array of data for each event.  The index parameters are used to
+select data from this array to be plotted.</p></li>
+<li><p><strong>init_x_indices</strong> (<em>optional</em>) – init_x_indices can be None, an integer, or a list of integers possibly
+containing None.  These indices are used to select values from the
+data array provided by channel to be plotted.  In the event that
+an index is None, the curve will be created, but no plotting will
+occur until an integer index is set.  If lists are specified for
+both init_x_indices and init_y_indices, they both must have the same
+length. If a single x index was specified, and a list of y indices is
+specified, all of the selected y data will be plotted against the same x.</p></li>
+<li><p><strong>init_y_indices</strong> (<em>optional</em>) – init_y_indices can be None, an integer, or a list of integers possibly
+containing None.  These indices are used to select values from the
+data array provided by channel to be plotted.  In the event that
+an index is None, the curve will be created, but no plotting will
+occur until an integer index is set.  If lists are specified for
+both init_x_indices and init_y_indices, they both must have the same
+length. If a single x index was specified, and a list of y indices is
+specified, all of the selected y data will be plotted against the same x.</p></li>
+<li><p><strong>background</strong> (<em>optional</em>) – The background color for the plot. Accepts any arguments that
+pyqtgraph.mkColor will accept.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.addChannel">
+<span class="sig-name descname"><span class="pre">addChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineStyle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineWidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'o'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yAxisName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bufferSizeChannelAddress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/eventplot.html#PyDMEventPlot.addChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.addChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Add a new curve to the plot.  In addition to the arguments below,
+all other keyword arguments are passed to the underlying
+pyqtgraph.PlotDataItem used to draw the curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel</strong> (<em>str</em>) – The channel for the curve data.</p></li>
+<li><p><strong>y_idx</strong> (<em>int</em>) – The index for the y data for the curve.</p></li>
+<li><p><strong>x_idx</strong> (<em>int</em><em>, </em><em>optional</em>) – The index for the x data for the curve.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – A name for this curve.  The name will be used in the plot legend.</p></li>
+<li><p><strong>color</strong> (<em>str</em><em> or </em><em>QColor</em><em>, </em><em>optional</em>) – A color for the line of the curve.  If not specified, the plot will
+automatically assign a unique color from a set of default colors.</p></li>
+<li><p><strong>lineStyle</strong> (<em>int</em><em>, </em><em>optional</em>) – Style of the line connecting the data points.
+0 means no line (scatter plot).</p></li>
+<li><p><strong>lineWidth</strong> (<em>int</em><em>, </em><em>optional</em>) – Width of the line connecting the data points.</p></li>
+<li><p><strong>buffer_size</strong> (<em>int</em><em>, </em><em>optional</em>) – number of points to keep in the buffer.</p></li>
+<li><p><strong>bufferSizeChannelAddress</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of a channel that defines the buffer size (int).</p></li>
+<li><p><strong>symbol</strong> (<em>int</em><em>, </em><em>optional</em>) – Which symbol to use to represent the data.</p></li>
+<li><p><strong>symbol</strong> – Size of the symbol.</p></li>
+<li><p><strong>yAxisName</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the y axis to associate with this curve. Will be created if it
+doesn’t yet exist</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.autoRangeX">
+<span class="sig-name descname"><span class="pre">autoRangeX</span></span><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.autoRangeX" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not the X-axis automatically rescales to fit the data.
+If true, the values in minXRange and maxXRange are ignored.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.autoRangeY">
+<span class="sig-name descname"><span class="pre">autoRangeY</span></span><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.autoRangeY" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not the Y-axis automatically rescales to fit the data.
+If true, the values in minYRange and maxYRange are ignored.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.channels">
+<span class="sig-name descname"><span class="pre">channels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/eventplot.html#PyDMEventPlot.channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.channels" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the list of channels used by all curves in the plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.clearCurves">
+<span class="sig-name descname"><span class="pre">clearCurves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/eventplot.html#PyDMEventPlot.clearCurves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.clearCurves" title="Permalink to this definition"></a></dt>
+<dd><p>Remove all curves from the plot.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.curves">
+<span class="sig-name descname"><span class="pre">curves</span></span><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.curves" title="Permalink to this definition"></a></dt>
+<dd><p>Get a list of json representations for each curve.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.getCurves">
+<span class="sig-name descname"><span class="pre">getCurves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/eventplot.html#PyDMEventPlot.getCurves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.getCurves" title="Permalink to this definition"></a></dt>
+<dd><p>Get a list of json representations for each curve.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.maxXRange">
+<span class="sig-name descname"><span class="pre">maxXRange</span></span><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.maxXRange" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum X-axis value visible on the plot.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.maxYRange">
+<span class="sig-name descname"><span class="pre">maxYRange</span></span><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.maxYRange" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum Y-axis value visible on the plot.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.minXRange">
+<span class="sig-name descname"><span class="pre">minXRange</span></span><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.minXRange" title="Permalink to this definition"></a></dt>
+<dd><p>Minimum X-axis value visible on the plot.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.minYRange">
+<span class="sig-name descname"><span class="pre">minYRange</span></span><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.minYRange" title="Permalink to this definition"></a></dt>
+<dd><p>Minimum Y-axis value visible on the plot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.redrawPlot">
+<span class="sig-name descname"><span class="pre">redrawPlot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/eventplot.html#PyDMEventPlot.redrawPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.redrawPlot" title="Permalink to this definition"></a></dt>
+<dd><p>Request a redraw from each curve in the plot.
+Called by curves when they get new data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.removeChannel">
+<span class="sig-name descname"><span class="pre">removeChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/eventplot.html#PyDMEventPlot.removeChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.removeChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a curve from the plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>curve</strong> (<em>EventPlotCurveItem</em>) – The curve to remove.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.removeChannelAtIndex">
+<span class="sig-name descname"><span class="pre">removeChannelAtIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/eventplot.html#PyDMEventPlot.removeChannelAtIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.removeChannelAtIndex" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a curve from the plot, given an index
+for a curve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index for the curve to remove.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.eventplot.PyDMEventPlot.setCurves">
+<span class="sig-name descname"><span class="pre">setCurves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/eventplot.html#PyDMEventPlot.setCurves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.eventplot.PyDMEventPlot.setCurves" title="Permalink to this definition"></a></dt>
+<dd><p>Replace all existing curves with new ones.  This function
+is mostly used as a way to load curves from a .ui file, and
+almost all users will want to add curves through addChannel,
+not this method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_list</strong> (<em>list</em>) – A list of json strings representing each curve in the plot.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="timeplot.html" class="btn btn-neutral float-left" title="PyDMTimePlot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="archiver_timeplot.html" class="btn btn-neutral float-right" title="Archiver Appliance Enabled Time Plots" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, hhslepicka, trendahl, zlentz, yektay, nstelter.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

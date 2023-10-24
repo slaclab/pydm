@@ -44,6 +44,7 @@ Plot Widgets
    curve_editor.rst
    scatterplot.rst
    timeplot.rst
+   event_plot.rst
    archiver_timeplot.rst
    waveformplot.rst
 
