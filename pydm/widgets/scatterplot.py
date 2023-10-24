@@ -448,16 +448,8 @@ class PyDMScatterPlot(BasePlot):
         self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         curve.data_changed.connect(self.set_needs_redraw)
 
-    def createCurveItem(self, y_addr, x_addr, name, color, yAxisName, bufferSizeChannelAddress, **plot_opts):
-        return ScatterPlotCurveItem(
-            y_addr,
-            x_addr,
-            name=name,
-            color=color,
-            yAxisName=yAxisName,
-            bufferSizeChannelAddress=bufferSizeChannelAddress,
-            **plot_opts
-        )
+    def createCurveItem(self, *args, **kwargs):
+        return ScatterPlotCurveItem(*args, **kwargs)
 
     def removeChannel(self, curve):
         """

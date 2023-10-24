@@ -359,17 +359,8 @@ class PyDMEventPlot(BasePlot):
         self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         curve.data_changed.connect(self.set_needs_redraw)
 
-    def createCurveItem(self, channel, y_idx, x_idx, name, color, yAxisName, bufferSizeChannelAddress, **plot_opts):
-        return EventPlotCurveItem(
-            addr=channel,
-            y_idx=y_idx,
-            x_idx=x_idx,
-            name=name,
-            color=color,
-            yAxisName=yAxisName,
-            bufferSizeChannelAddress=bufferSizeChannelAddress,
-            **plot_opts
-        )
+    def createCurveItem(self, *args, **kwargs):
+        return EventPlotCurveItem(*args, *kwargs)
 
     def removeChannel(self, curve):
         """

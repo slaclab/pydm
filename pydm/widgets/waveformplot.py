@@ -457,10 +457,8 @@ class PyDMWaveformPlot(BasePlot):
             curve.getViewBox().addItem(curve.bar_graph_item)
         curve.data_changed.connect(self.set_needs_redraw)
 
-    def createCurveItem(self, y_addr, x_addr, plot_style, name, color, yAxisName, **plot_opts):
-        return WaveformCurveItem(
-            y_addr, x_addr, plot_style=plot_style, name=name, color=color, yAxisName=yAxisName, **plot_opts
-        )
+    def createCurveItem(self, *args, **kwargs):
+        return WaveformCurveItem(*args, **kwargs)
 
     def removeChannel(self, curve):
         """
