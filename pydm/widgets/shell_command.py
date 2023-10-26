@@ -68,8 +68,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self.process = None
         self._show_icon = True
         self._redirect_output = False
-        # currently Bash is used to allow for command chaining ("cmd1;cmd2", "cmd1 && cmd2", etc ...),
-        # since Popen doesn't allow for this without enabling bash.
+        # Bash allows for more options such as command chaining ("cmd1;cmd2", "cmd1 && cmd2", etc ...)
         self._run_cmds_in_bash = False
 
         self._password_protected = False
@@ -566,9 +565,11 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
                 if self._redirect_output:
                     stdout = None
+
                 self.process = subprocess.Popen(
                     args, stdout=stdout, stderr=subprocess.PIPE, env=env_var, shell=self._run_cmds_in_bash
                 )
+
             except Exception as exc:
                 self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)

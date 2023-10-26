@@ -79,7 +79,7 @@
      </property>
      <property name="commands" stdset="0">
       <stringlist>
-       <string>bash -c 'echo AAA; echo BBB'</string>
+       <string>echo Fist; echo Second</string>
       </stringlist>
      </property>
      <property name="passwordProtected" stdset="0">
@@ -142,7 +142,7 @@
       <bool>true</bool>
      </property>
      <property name="redirectCommandOutput" stdset="0">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="allowMultipleExecutions" stdset="0">
       <bool>false</bool>
@@ -152,7 +152,7 @@
      </property>
      <property name="commands" stdset="0">
       <stringlist>
-       <string>bash -c 'echo Hello World! ; echo Hello Again!'</string>
+       <string>bash -c &quot;echo 'Hello One'; echo 'Hello two'&quot;</string>
       </stringlist>
      </property>
      <property name="passwordProtected" stdset="0">
