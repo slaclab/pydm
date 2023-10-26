@@ -108,7 +108,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     @Property(bool)
     def showConfirmDialog(self) -> bool:
         """
-        Wether or not to display a confirmation dialog.
+        Whether or not to display a confirmation dialog.
 
         Returns
         -------
@@ -119,7 +119,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     @showConfirmDialog.setter
     def showConfirmDialog(self, value: bool) -> None:
         """
-        Wether or not to display a confirmation dialog.
+        Whether or not to display a confirmation dialog.
 
         Parameters
         ----------
@@ -131,7 +131,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     @Property(bool)
     def runCommandsInBash(self) -> bool:
         """
-        Wether or not to run shell cmds with Popen's option to run them in a bash shell.
+        Whether or not to run shell cmds with Popen's option to run them through a bash shell.
 
         Returns
         -------
@@ -142,7 +142,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     @runCommandsInBash.setter
     def runCommandsInBash(self, value: bool) -> None:
         """
-        Wether or not to run shell cmds with Popen's option to run them in a bash shell.
+        Whether or not to run shell cmds with Popen's option to run them in through a bash shell.
 
         Parameters
         ----------
