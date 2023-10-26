@@ -519,7 +519,7 @@ class PyDMTimePlot(BasePlot, updateMode):
 
         # Add curve
         new_curve = self.createCurveItem(
-            y_channel=y_channel,
+            channel_address=y_channel,
             plot_by_timestamps=self._plot_by_timestamps,
             plot_style=plot_style,
             name=name,
