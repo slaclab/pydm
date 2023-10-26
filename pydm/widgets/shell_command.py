@@ -551,7 +551,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             cmd = os.path.expanduser(os.path.expandvars(command))
             args = shlex.split(cmd, posix="win" not in sys.platform)
-            # when bash enabled, Popen takes the cmds as a single string (not list)
+            # when Bash enabled, Popen takes the cmds as a single string (not list)
             if self._run_cmds_in_bash:
                 args = cmd
             try:
@@ -565,7 +565,6 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
                 if self._redirect_output:
                     stdout = None
-
                 self.process = subprocess.Popen(
                     args, stdout=stdout, stderr=subprocess.PIPE, env=env_var, shell=self._run_cmds_in_bash
                 )
