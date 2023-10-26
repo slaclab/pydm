@@ -142,7 +142,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     @runCommandsInBash.setter
     def runCommandsInBash(self, value: bool) -> None:
         """
-        Whether or not to run shell cmds with Popen's option to run them in through a bash shell.
+        Whether or not to run shell cmds with Popen's option to run them through a bash shell.
 
         Parameters
         ----------
