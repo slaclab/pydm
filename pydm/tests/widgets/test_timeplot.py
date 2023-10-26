@@ -221,6 +221,16 @@ def test_pydmtimeplot_construct(qtbot):
     assert pydm_timeplot._bottom_axis.orientation == "bottom"
 
 
+def test_pydmtimeplot_add_curve(qtbot):
+    pydm_timeplot = PyDMTimePlot()
+    qtbot.addWidget(pydm_timeplot)
+
+    curve_pv = "loc://test:timeplot:pv"
+    pydm_timeplot.addYChannel(curve_pv)
+
+    assert pydm_timeplot.findCurve(curve_pv) is not None
+
+
 @mock.patch("pydm.widgets.timeplot.TimePlotCurveItem.setData")
 @mock.patch("pyqtgraph.BarGraphItem.setOpts")
 def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
