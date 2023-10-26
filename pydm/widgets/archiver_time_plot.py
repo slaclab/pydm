@@ -2,7 +2,7 @@ import json
 import time
 import numpy as np
 from collections import OrderedDict
-from typing import List, Optional, Union
+from typing import List, Optional
 from pyqtgraph import DateAxisItem, ErrorBarItem
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
@@ -332,26 +332,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             return DEFAULT_ARCHIVE_BUFFER_SIZE
         return self._curves[0].getArchiveBufferSize()
 
-    def createCurveItem(
-        self,
-        y_channel: str,
-        plot_by_timestamps: bool,
-        name: str,
-        color: Union[QColor, str],
-        yAxisName: str,
-        useArchiveData: bool,
-        **plot_opts
-    ) -> ArchivePlotCurveItem:
+    def createCurveItem(self, *args, **kwargs) -> ArchivePlotCurveItem:
         """Create and return a curve item to be plotted"""
-        curve_item = ArchivePlotCurveItem(
-            y_channel,
-            use_archive_data=useArchiveData,
-            plot_by_timestamps=plot_by_timestamps,
-            name=name,
-            color=color,
-            yAxisName=yAxisName,
-            **plot_opts
-        )
+        curve_item = ArchivePlotCurveItem(*args, **kwargs)
         curve_item.archive_data_received_signal.connect(self.archive_data_received)
         return curve_item
 

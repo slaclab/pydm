@@ -343,7 +343,7 @@ class PyDMEventPlot(BasePlot):
             plot_opts["lineStyle"] = lineStyle
         if lineWidth is not None:
             plot_opts["lineWidth"] = lineWidth
-        curve = EventPlotCurveItem(
+        curve = self.createCurveItem(
             addr=channel,
             y_idx=y_idx,
             x_idx=x_idx,
@@ -358,6 +358,9 @@ class PyDMEventPlot(BasePlot):
         self.index_pairs[(x_idx, y_idx)] = curve
         self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         curve.data_changed.connect(self.set_needs_redraw)
+
+    def createCurveItem(self, *args, **kwargs):
+        return EventPlotCurveItem(*args, *kwargs)
 
     def removeChannel(self, curve):
         """

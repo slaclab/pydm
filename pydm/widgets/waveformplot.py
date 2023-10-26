@@ -436,7 +436,7 @@ class PyDMWaveformPlot(BasePlot):
         if redraw_mode is not None:
             plot_opts["redraw_mode"] = redraw_mode
         self._needs_redraw = False
-        curve = WaveformCurveItem(
+        curve = self.createCurveItem(
             y_addr=y_channel,
             x_addr=x_channel,
             plot_style=plot_style,
@@ -456,6 +456,9 @@ class PyDMWaveformPlot(BasePlot):
             # Must happen after addCurve() so that the view box has been created
             curve.getViewBox().addItem(curve.bar_graph_item)
         curve.data_changed.connect(self.set_needs_redraw)
+
+    def createCurveItem(self, *args, **kwargs):
+        return WaveformCurveItem(*args, **kwargs)
 
     def removeChannel(self, curve):
         """
