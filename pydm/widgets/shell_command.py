@@ -8,11 +8,12 @@ import warnings
 import hashlib
 from ast import literal_eval
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
-from qtpy.QtGui import QCursor, QIcon, QMouseEvent
+from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont
 from typing import Optional, Union, List
+from pydm.utilities import iconfont
 
 logger = logging.getLogger(__name__)
 
@@ -77,9 +78,13 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self._confirm_message = PyDMShellCommand.DEFAULT_CONFIRM_MESSAGE
 
         # Standard icons (which come with the qt install, and work cross-platform),
+        # and icons from the "Font Awesome" icon set (https://fontawesome.com/)
         # can not be set with a widget's "icon" property in designer, only in python.
-        # so we provide our own propery to specify standard icons and set them with python in the prop's setter.
-        self._standard_icon_name = ""
+        # so we provide our own property to specify standard icons and set them with python in the prop's setter.
+        self._pydm_icon_name = ""
+        # The color of "Font Awesome" icons can be set,
+        # but standard icons are already colored and can not be set.
+        self._pydm_icon_color = QColor(90, 90, 90)
 
     def confirmDialog(self) -> bool:
         """
@@ -108,32 +113,67 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         return True
 
     @Property(str)
-    def standardIcon(self) -> str:
+    def PyDMIcon(self) -> str:
         """
-        Name of icon to be set from Qt provided standard icons.
-        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable icons.
+        Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
+        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
+        See https://fontawesome.com/icons?d=gallery for list of usable fontawesome icons.
 
         Returns
         -------
         str
         """
-        return self._standard_icon_name
+        return self._pydm_icon_name
 
-    @standardIcon.setter
-    def standardIcon(self, value: str) -> None:
+    @PyDMIcon.setter
+    def PyDMIcon(self, value: str) -> None:
         """
-        Name of icon to be set from Qt provided standard icons.
-        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable icons.
+        Name of icon to be set from Qt provided standard icons or from the "Font Awesome" icon-set.
+        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
+        See https://fontawesome.com/icons?d=gallery for list of usable "Font Awesome" icons.
 
         Parameters
         ----------
         value : str
         """
-        if self._standard_icon_name != value:
-            self._standard_icon_name = value
+        if self._pydm_icon_name == value:
+            return
+
+        # We don't know if user is trying to use a standard icon or an icon from "Font Awesome",
+        # so 1st try to create a Font Awesome one, which hits exception if icon name is not valid.
+        try:
+            icon_f = iconfont.IconFont()
+            i = icon_f.icon(value, color=self._pydm_icon_color)
+            self.setIcon(i)
+        except Exception:
             icon = getattr(QStyle, value, None)
             if icon:
                 self.setIcon(self.style().standardIcon(icon))
+
+        self._pydm_icon_name = value
+
+    @Property(QColor)
+    def PyDMIconColor(self) -> QColor:
+        """
+        The color of the icon (color is only applied if using icon from the "Font Awesome" set)
+        Returns
+        -------
+        QColor
+        """
+        return self._pydm_icon_color
+
+    @PyDMIconColor.setter
+    def PyDMIconColor(self, state_color: QColor) -> None:
+        """
+        The color of the icon (color is only applied if using icon from the "Font Awesome" set)
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if state_color != self._pydm_icon_color:
+            self._pydm_icon_color = state_color
+            # call setter to apply new color
+            self.pydmIcon = self._pydm_icon_name
 
     @Property(bool)
     def showConfirmDialog(self) -> bool:

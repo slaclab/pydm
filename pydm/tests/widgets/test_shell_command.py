@@ -78,7 +78,18 @@ def test_construct(qtbot, command, title):
     test_icon = style.standardIcon(style.SP_DesktopIcon)
     test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
 
-    pydm_shell_command.standardIcon = "SP_DesktopIcon"
+    pydm_shell_command.PyDMIcon = "SP_DesktopIcon"
+    shell_cmd_icon = pydm_shell_command.icon()
+    shell_cmd_icon_image = shell_cmd_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    assert test_icon_image == shell_cmd_icon_image
+
+    # verify that "Font Awesome" icons can be set through our custom property
+    icon_f = IconFont()
+    test_icon = icon_f.icon("eye-slash", color=None)
+    test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    pydm_shell_command.PyDMIcon = "eye-slash"
     shell_cmd_icon = pydm_shell_command.icon()
     shell_cmd_icon_image = shell_cmd_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
 

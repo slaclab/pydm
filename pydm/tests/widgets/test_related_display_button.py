@@ -66,11 +66,22 @@ def test_press_with_filename(qtbot):
     test_icon = style.standardIcon(style.SP_DesktopIcon)
     test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
 
-    button.standardIcon = "SP_DesktopIcon"
+    button.PyDMIcon = "SP_DesktopIcon"
     shell_cmd_icon = button.icon()
     shell_cmd_icon_image = shell_cmd_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
 
     assert test_icon_image == shell_cmd_icon_image
+
+    # verify that "Font Awesome" icons can be set through our custom property
+    icon_f = IconFont()
+    test_icon = icon_f.icon("eye-slash", color=None)
+    test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    button.PyDMIcon = "eye-slash"
+    button_icon = button.icon()
+    push_btn_icon_image = button_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    assert test_icon_image == push_btn_icon_image
 
     def check_title():
         assert "Form" in QApplication.instance().main_window.windowTitle()
