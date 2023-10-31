@@ -161,8 +161,13 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         """
         if state_color != self._pydm_icon_color:
             self._pydm_icon_color = state_color
-            # call setter to apply new color
-            self.pydmIcon = self._pydm_icon_name
+            # apply the new color
+            try:
+                icon_f = iconfont.IconFont()
+                i = icon_f.icon(self._pydm_icon_name, color=self._pydm_icon_color)
+                self.setIcon(i)
+            except Exception:
+                return
 
     @Property("QStringList")
     def filenames(self) -> List[str]:
