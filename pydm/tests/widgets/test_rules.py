@@ -48,7 +48,7 @@ def test_unregister(qtbot):
             "name": "Rule #1",
             "property": "Visible",
             "expression": "ch[0] < 1",
-            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+            "channels": [{"channel": "ca://TESTRULES:Float", "trigger": True}],
         }
     ]
 
@@ -81,7 +81,7 @@ def test_rules_not_connected(qtbot, caplog):
             "name": "Rule #1",
             "property": "Visible",
             "expression": "ch[0] < 1",
-            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+            "channels": [{"channel": "ca://TESTRULES:Float", "trigger": True}],
         }
     ]
 
@@ -111,6 +111,7 @@ def test_rules_ok(qtbot, caplog):
     caplog : fixture
         To capture the log messages
     """
+
     widget = PyDMLabel()
     qtbot.addWidget(widget)
     widget.show()
@@ -121,7 +122,7 @@ def test_rules_ok(qtbot, caplog):
             "name": "Rule #1",
             "property": "Visible",
             "expression": "ch[0] < 1",
-            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+            "channels": [{"channel": "ca://TESTRULES:Float", "trigger": True}],
         }
     ]
 
@@ -166,7 +167,7 @@ def test_rules_enums(use_enum, visible, qtbot, caplog):
             "name": "Rule #1",
             "property": "Visible",
             "expression": 'ch[0] == "RUN"',
-            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+            "channels": [{"channel": "ca://TESTRULES:Float", "trigger": True}],
         }
     ]
     if use_enum is not None:
@@ -225,7 +226,7 @@ def test_rules_invalid_expr(qtbot, caplog):
             "name": "Rule #1",
             "property": "Visible",
             "expression": "ch[0] < 1",
-            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+            "channels": [{"channel": "ca://TESTRULES:Float", "trigger": True}],
         }
     ]
 
@@ -278,7 +279,7 @@ def test_rules_initial_value(qtbot, caplog):
             "property": "Text",
             "expression": "str(ch[0])",
             "initial_value": "Initial Value Test",
-            "channels": [{"channel": "ca://MTEST:Float", "trigger": True}],
+            "channels": [{"channel": "ca://TESTRULES:Float", "trigger": True}],
         }
     ]
 
