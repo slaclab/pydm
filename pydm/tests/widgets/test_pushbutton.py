@@ -107,7 +107,18 @@ def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_
         test_icon = style.standardIcon(style.SP_DesktopIcon)
         test_icon_image = test_icon.pixmap(size).toImage()
 
-        pydm_pushbutton.standardIcon = "SP_DesktopIcon"
+        pydm_pushbutton.PyDMIcon = "SP_DesktopIcon"
+        push_btn_icon = pydm_pushbutton.icon()
+        push_btn_icon_image = push_btn_icon.pixmap(size).toImage()
+
+        assert test_icon_image == push_btn_icon_image
+
+        # verify that "Font Awesome" icons can be set through our custom property
+        icon_f = IconFont()
+        test_icon = icon_f.icon("eye-slash", color=None)
+        test_icon_image = test_icon.pixmap(size).toImage()
+
+        pydm_pushbutton.PyDMIcon = "eye-slash"
         push_btn_icon = pydm_pushbutton.icon()
         push_btn_icon_image = push_btn_icon.pixmap(size).toImage()
 
