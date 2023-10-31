@@ -4,7 +4,7 @@ from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit, QStyle
 from qtpy.QtCore import Slot, Property
 from .base import PyDMWritableWidget
-from pydm.utilities import iconfont
+from ..utilities import IconFont
 import logging
 
 logger = logging.getLogger(__name__)
@@ -112,7 +112,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         # We don't know if user is trying to use a standard icon or an icon from "Font Awesome",
         # so 1st try to create a Font Awesome one, which hits exception if icon name is not valid.
         try:
-            icon_f = iconfont.IconFont()
+            icon_f = IconFont()
             i = icon_f.icon(value, color=self._pydm_icon_color)
             self.setIcon(i)
         except Exception:
@@ -144,7 +144,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             self._pydm_icon_color = state_color
             # apply the new color
             try:
-                icon_f = iconfont.IconFont()
+                icon_f = IconFont()
                 i = icon_f.icon(self._pydm_icon_name, color=self._pydm_icon_color)
                 self.setIcon(i)
             except Exception:

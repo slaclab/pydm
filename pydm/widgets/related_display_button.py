@@ -13,7 +13,6 @@ from ..utilities.macro import parse_macro_string
 from ..utilities.stylesheet import merge_widget_stylesheet
 from ..display import load_file, ScreenTarget
 from typing import Optional, List
-from pydm.utilities import iconfont
 
 logger = logging.getLogger(__name__)
 
@@ -131,7 +130,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         # We don't know if user is trying to use a standard icon or an icon from "Font Awesome",
         # so 1st try to create a Font Awesome one, which hits exception if icon name is not valid.
         try:
-            icon_f = iconfont.IconFont()
+            icon_f = IconFont()
             i = icon_f.icon(value, color=self._pydm_icon_color)
             self.setIcon(i)
         except Exception:
@@ -163,7 +162,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
             self._pydm_icon_color = state_color
             # apply the new color
             try:
-                icon_f = iconfont.IconFont()
+                icon_f = IconFont()
                 i = icon_f.icon(self._pydm_icon_name, color=self._pydm_icon_color)
                 self.setIcon(i)
             except Exception:
