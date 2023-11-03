@@ -39,7 +39,7 @@
       <string/>
      </property>
      <property name="text">
-      <string>Bash Option Enabled</string>
+      <string>runCmdsInFullShell Option Enabled</string>
      </property>
      <property name="alarmSensitiveContent" stdset="0">
       <bool>false</bool>
@@ -55,9 +55,6 @@
      </property>
      <property name="showConfirmDialog" stdset="0">
       <bool>false</bool>
-     </property>
-     <property name="runCommandsInBash" stdset="0">
-      <bool>true</bool>
      </property>
      <property name="confirmMessage" stdset="0">
       <string>Are you sure you want to proceed?</string>
@@ -90,6 +87,9 @@
      </property>
      <property name="protectedPassword" stdset="0">
       <string/>
+     </property>
+     <property name="runCommandsInBash" stdset="0">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -129,9 +129,6 @@
      <property name="showConfirmDialog" stdset="0">
       <bool>false</bool>
      </property>
-     <property name="runCommandsInBash" stdset="0">
-      <bool>false</bool>
-     </property>
      <property name="confirmMessage" stdset="0">
       <string>Are you sure you want to proceed?</string>
      </property>
@@ -164,6 +161,9 @@
      <property name="protectedPassword" stdset="0">
       <string/>
      </property>
+     <property name="runCommandsInBash" stdset="0">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -187,9 +187,6 @@
       <string/>
      </property>
      <property name="showConfirmDialog" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="runCommandsInBash" stdset="0">
       <bool>false</bool>
      </property>
      <property name="confirmMessage" stdset="0">
@@ -226,6 +223,9 @@
      </property>
      <property name="protectedPassword" stdset="0">
       <string/>
+     </property>
+     <property name="runCommandsInBash" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
