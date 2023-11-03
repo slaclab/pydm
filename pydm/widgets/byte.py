@@ -659,6 +659,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         if new_state != self._curr_state:
             self._curr_state = new_state
+            self.value_changed(new_state)
 
     # color state setters/getters
     @Property(QColor)
