@@ -68,7 +68,8 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self.process = None
         self._show_icon = True
         self._redirect_output = False
-        # shell allows for more options such as command chaining ("cmd1;cmd2", "cmd1 && cmd2", etc ...)
+        # shell allows for more options such as command chaining ("cmd1;cmd2", "cmd1 && cmd2", etc ...),
+        # use of environment variables, glob expansion ('ls *.txt'), etc...
         self._run_cmds_in_full_shell = False
 
         self._password_protected = False
@@ -129,7 +130,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             self._show_confirm_dialog = value
 
     @Property(bool)
-    def runCommandsInFullShell(self) -> bool:
+    def runCmdsInFullShell(self) -> bool:
         """
         Whether or not to run cmds with Popen's option for running them through a shell subprocess.
 
@@ -139,8 +140,8 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._run_cmds_in_full_shell
 
-    @runCommandsInFullShell.setter
-    def runCommandsInFullShell(self, value: bool) -> None:
+    @runCmdsInFullShell.setter
+    def runCmdsInFullShell(self, value: bool) -> None:
         """
         Whether or not to run cmds with Popen's option for running them through a shell subprocess.
 
@@ -551,7 +552,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             cmd = os.path.expanduser(os.path.expandvars(command))
             args = shlex.split(cmd, posix="win" not in sys.platform)
-            # when Bash enabled, Popen takes the cmds as a single string (not list)
+            # when shell enabled, Popen should take the cmds as a single string (not list)
             if self._run_cmds_in_full_shell:
                 args = cmd
             try:
