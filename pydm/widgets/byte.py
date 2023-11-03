@@ -639,6 +639,28 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         self._painter.end()
 
     # color state setters/getters
+    @Property(int)
+    def currentValue(self) -> int:
+        """
+        The color for when widget is in state 0
+        Returns
+        -------
+        int
+        """
+        return self._curr_state
+
+    @currentValue.setter
+    def currentValue(self, new_state: int) -> None:
+        """
+        The color for when widget is in state 0
+        Parameters
+        ----------
+        new_color : int
+        """
+        if new_state != self._curr_state:
+            self._curr_state = new_state
+
+    # color state setters/getters
     @Property(QColor)
     def state0Color(self) -> QColor:
         """
