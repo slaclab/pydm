@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>510</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>500</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_main">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The PyDMIcon property allows for specifying icons in Designer from provided cross-platform icon sets.&lt;/p&gt;&lt;p&gt;Icons can be used from both Qt's standard icon set (https://doc.qt.io/qt-6/qstyle.html#StandardPixmap-enum) and the &amp;quot;Font Awesome&amp;quot; icon set (https://fontawesome.com/icons?d=gallery).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMFrame" name="PyDMFrame">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>
+    QFrame with support for alarms
+    This class inherits from QFrame and PyDMWidget.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Run</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>This button uses an icon from Qt's standard icon set.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="PyDMPushButton" name="PyDMPushButton">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>This button uses a standard icon.</string>
+        </property>
+        <property name="alarmSensitiveContent" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="alarmSensitiveBorder" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="PyDMToolTip" stdset="0">
+         <string/>
+        </property>
+        <property name="monitorDisp" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://MTEST:Run</string>
+        </property>
+        <property name="PyDMIcon" stdset="0">
+         <string>SP_ArrowUp</string>
+        </property>
+        <property name="PyDMIconColor" stdset="0">
+         <color>
+          <red>170</red>
+          <green>0</green>
+          <blue>127</blue>
+         </color>
+        </property>
+        <property name="passwordProtected" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="password" stdset="0">
+         <string/>
+        </property>
+        <property name="protectedPassword" stdset="0">
+         <string/>
+        </property>
+        <property name="showConfirmDialog" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="confirmMessage" stdset="0">
+         <string/>
+        </property>
+        <property name="pressValue" stdset="0">
+         <string>1</string>
+        </property>
+        <property name="releaseValue" stdset="0">
+         <string>None</string>
+        </property>
+        <property name="relativeChange" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="writeWhenRelease" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="standardIcon" stdset="0">
+         <string>eye-slash</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMFrame" name="PyDMFrame_2">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>
+    QFrame with support for alarms
+    This class inherits from QFrame and PyDMWidget.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+     </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Run</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>This button uses an icon from the &quot;Font Awesome&quot; icon set.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="PyDMPushButton" name="PyDMPushButton_2">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="text">
+         <string>This button uses a &quot;Font Awesome&quot; icon.</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+        <property name="alarmSensitiveContent" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="alarmSensitiveBorder" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="PyDMToolTip" stdset="0">
+         <string/>
+        </property>
+        <property name="monitorDisp" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://MTEST:Run</string>
+        </property>
+        <property name="PyDMIcon" stdset="0">
+         <string>arrow-up</string>
+        </property>
+        <property name="passwordProtected" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="password" stdset="0">
+         <string/>
+        </property>
+        <property name="protectedPassword" stdset="0">
+         <string/>
+        </property>
+        <property name="showConfirmDialog" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="confirmMessage" stdset="0">
+         <string/>
+        </property>
+        <property name="pressValue" stdset="0">
+         <string>0</string>
+        </property>
+        <property name="releaseValue" stdset="0">
+         <string>None</string>
+        </property>
+        <property name="relativeChange" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="writeWhenRelease" stdset="0">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMFrame" name="PyDMFrame_3">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string>
+    QFrame with support for alarms
+    This class inherits from QFrame and PyDMWidget.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    </string>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="channel" stdset="0">
+      <string>ca://MTEST:Run</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>The color of icons from the &quot;Font Awesome&quot; set is configurable. (this can't be done with Qt standard icons since they are already multi-colored)</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="PyDMPushButton" name="PyDMPushButton_3">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="text">
+         <string>This button uses a colored &quot;Font Awesome&quot; icon.</string>
+        </property>
+        <property name="alarmSensitiveContent" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="alarmSensitiveBorder" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="PyDMToolTip" stdset="0">
+         <string/>
+        </property>
+        <property name="monitorDisp" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="channel" stdset="0">
+         <string>ca://MTEST:Run</string>
+        </property>
+        <property name="PyDMIcon" stdset="0">
+         <string>arrow-up</string>
+        </property>
+        <property name="PyDMIconColor" stdset="0">
+         <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="passwordProtected" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="password" stdset="0">
+         <string/>
+        </property>
+        <property name="protectedPassword" stdset="0">
+         <string/>
+        </property>
+        <property name="showConfirmDialog" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="confirmMessage" stdset="0">
+         <string/>
+        </property>
+        <property name="pressValue" stdset="0">
+         <string>0</string>
+        </property>
+        <property name="releaseValue" stdset="0">
+         <string>None</string>
+        </property>
+        <property name="relativeChange" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="writeWhenRelease" stdset="0">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMFrame</class>
+   <extends>QFrame</extends>
+   <header>pydm.widgets.frame</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PyDMPushButton</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.pushbutton</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,10 +1,11 @@
 import os
 import pytest
 import sys
-from qtpy.QtCore import Qt
+from qtpy.QtCore import Qt, QSize
 from qtpy.QtWidgets import QApplication
 from ...utilities.stylesheet import global_style
 from ...widgets.related_display_button import PyDMRelatedDisplayButton
+from ...utilities import IconFont
 
 test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../test_data", "test.ui")
 test_ui_path_with_stylesheet = os.path.join(
@@ -47,6 +48,40 @@ def test_press_with_filename(qtbot):
     qtbot.addWidget(button)
     button._rebuild_menu()
     qtbot.mouseRelease(button, Qt.LeftButton)
+
+    # verify default icon is set as expected
+    DEFAULT_ICON_NAME = "file"
+    DEFAULT_ICON_SIZE = QSize(16, 16)
+
+    default_icon = IconFont().icon(DEFAULT_ICON_NAME)
+
+    default_icon_pixmap = default_icon.pixmap(DEFAULT_ICON_SIZE)
+    related_display_button_icon_pixmap = button.icon().pixmap(DEFAULT_ICON_SIZE)
+
+    assert related_display_button_icon_pixmap.toImage() == default_icon_pixmap.toImage()
+    assert button.cursor().pixmap().toImage() == default_icon_pixmap.toImage()
+
+    # verify that qt standard icons can be set through our custom property
+    style = button.style()
+    test_icon = style.standardIcon(style.SP_DesktopIcon)
+    test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    button.PyDMIcon = "SP_DesktopIcon"
+    shell_cmd_icon = button.icon()
+    shell_cmd_icon_image = shell_cmd_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    assert test_icon_image == shell_cmd_icon_image
+
+    # verify that "Font Awesome" icons can be set through our custom property
+    icon_f = IconFont()
+    test_icon = icon_f.icon("eye-slash", color=None)
+    test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    button.PyDMIcon = "eye-slash"
+    button_icon = button.icon()
+    push_btn_icon_image = button_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    assert test_icon_image == push_btn_icon_image
 
     def check_title():
         assert "Form" in QApplication.instance().main_window.windowTitle()

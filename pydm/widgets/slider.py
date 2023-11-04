@@ -530,7 +530,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
     def set_enable_state(self):
         """
-        Determines wether or not the widget must be enabled or not depending
+        Determines Whether or not the widget must be enabled or not depending
         on the write access, connection state and presence of limits information
         """
         # Even though by documentation disabling parent QFrame (self), should disable internal
@@ -718,7 +718,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
     @Property(bool)
     def userDefinedLimits(self):
         """
-        Wether or not to use limits defined by the user and not from the
+        Whether or not to use limits defined by the user and not from the
         channel
 
         Returns
@@ -730,7 +730,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
     @userDefinedLimits.setter
     def userDefinedLimits(self, user_defined_limits):
         """
-        Wether or not to use limits defined by the user and not from the
+        Whether or not to use limits defined by the user and not from the
         channel
 
         Parameters
