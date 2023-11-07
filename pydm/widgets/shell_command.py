@@ -68,6 +68,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self.process = None
         self._show_icon = True
         self._redirect_output = False
+        # shell allows for more options such as command chaining ("cmd1;cmd2", "cmd1 && cmd2", etc ...),
+        # use of environment variables, glob expansion ('ls *.txt'), etc...
+        self._run_commands_in_full_shell = False
 
         self._password_protected = False
         self._password = ""
@@ -202,6 +205,29 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         if self._show_confirm_dialog != value:
             self._show_confirm_dialog = value
+
+    @Property(bool)
+    def runCommandsInFullShell(self) -> bool:
+        """
+        Whether or not to run cmds with Popen's option for running them through a shell subprocess.
+
+        Returns
+        -------
+        bool
+        """
+        return self._run_commands_in_full_shell
+
+    @runCommandsInFullShell.setter
+    def runCommandsInFullShell(self, value: bool) -> None:
+        """
+        Whether or not to run cmds with Popen's option for running them through a shell subprocess.
+
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._run_commands_in_full_shell != value:
+            self._run_commands_in_full_shell = value
 
     @Property(str)
     def confirmMessage(self) -> str:
@@ -603,6 +629,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             cmd = os.path.expanduser(os.path.expandvars(command))
             args = shlex.split(cmd, posix="win" not in sys.platform)
+            # when shell enabled, Popen should take the cmds as a single string (not list)
+            if self._run_commands_in_full_shell:
+                args = cmd
             try:
                 logger.debug("Launching process: %s", repr(args))
                 stdout = subprocess.PIPE
@@ -614,7 +643,10 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
                 if self._redirect_output:
                     stdout = None
-                self.process = subprocess.Popen(args, stdout=stdout, stderr=subprocess.PIPE, env=env_var)
+                self.process = subprocess.Popen(
+                    args, stdout=stdout, stderr=subprocess.PIPE, env=env_var, shell=self._run_commands_in_full_shell
+                )
+
             except Exception as exc:
                 self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)
