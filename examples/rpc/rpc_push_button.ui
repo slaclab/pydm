@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>458</width>
+    <height>386</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This button sends a simple Remote Procedure Call (RPC) that gets back the result of simple function of the &amp;quot;target object&amp;quot; (connected channel)&lt;/p&gt;&lt;p&gt;When pushed the button sends a RPC command containing two int args, and gets back the calculated result of adding them together.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="PyDMShellCommand" name="PyDMShellCommand">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Send RPC Command</string>
+     </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="PyDMToolTip" stdset="0">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string>pva://pv:call:add?lhs=4&amp;rhs=7&amp;pydm_pollrate=10</string>
+     </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="confirmMessage" stdset="0">
+      <string/>
+     </property>
+     <property name="environmentVariables" stdset="0">
+      <string/>
+     </property>
+     <property name="showIcon" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="redirectCommandOutput" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="allowMultipleExecutions" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="titles" stdset="0">
+      <stringlist/>
+     </property>
+     <property name="commands" stdset="0">
+      <stringlist>
+       <string>echo First; echo Second</string>
+      </stringlist>
+     </property>
+     <property name="passwordProtected" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="password" stdset="0">
+      <string/>
+     </property>
+     <property name="protectedPassword" stdset="0">
+      <string/>
+     </property>
+     <property name="runCommandsInFullShell" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="runCommandsInBash" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMShellCommand</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.shell_command</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
