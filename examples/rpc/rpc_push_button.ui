@@ -23,7 +23,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This button sends a simple Remote Procedure Call (RPC) that gets back the result of simple function of the &amp;quot;target object&amp;quot; (connected channel)&lt;/p&gt;&lt;p&gt;When pushed the button sends a RPC command containing two int args, and gets back the calculated result of adding them together.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This button sends a Remote Procedure Call (RPC) that gets back the result of simple function of the &amp;quot;target object&amp;quot; (connected channel)&lt;/p&gt;&lt;p&gt;When pushed, the button sends a RPC command containing two int args and gets back the calculated result of adding them together.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -87,12 +87,6 @@
      </property>
      <property name="protectedPassword" stdset="0">
       <string/>
-     </property>
-     <property name="runCommandsInFullShell" stdset="0">
-      <bool>true</bool>
-     </property>
-     <property name="runCommandsInBash" stdset="0">
-      <bool>true</bool>
      </property>
     </widget>
    </item>

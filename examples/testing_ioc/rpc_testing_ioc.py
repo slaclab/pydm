@@ -4,15 +4,15 @@ from p4p.nt import NTScalar
 import logging
 
 
-class Summer(object):
+class RPCTestServer(object):
     @rpc(NTScalar("d"))
-    def add(self, lhs, rhs):  # 'lhs' and 'rhs' are arbitrary names.  The method name 'add' will be part of the PV name
+    def add(self, lhs, rhs):  # 'lhs' and 'rhs' are arbitrary names. The method name 'add' will be part of the PV name
         return float(lhs) + float(rhs)
 
 
 logging.basicConfig(level=logging.DEBUG)
-adder = Summer()
+adder = RPCTestServer()
 
-quickRPCServer(provider="Example", prefix="pv:call:", target=adder)  # A prefix for method PV names.
+quickRPCServer(provider="Example", prefix="RPCTEST:", target=adder)
 
-# from terminal: pvcall pv:call:add lhs=1 rhs=1
+# to use: call from another terminal "pvcall RPCTEST:add lhs=1 rhs=1"
