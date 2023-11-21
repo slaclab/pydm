@@ -1,4 +1,4 @@
-# This workflow will install pydm dependencies, lint with flake8, and run the test suite, for all combinations
+# This workflow will install pydm dependencies and run the test suite for all combinations
 # of operating systems and version numbers specified in the matrix
 
 name: Build Status
@@ -20,8 +20,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.8, 3.9]
-        pyqt-version: [5.12.3, 5.15.7]
+        python-version: ['3.8', '3.9', '3.10']
+        pyqt-version: [5.12.3, 5.15.9]
     env:
       DISPLAY: ':99.0'
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
@@ -38,12 +38,11 @@ jobs:
     - name: Install python packages
       shell: bash -el {0}
       run: |
-        # Note the pinning of zipp here is because versions 3.16.0+ do not support python 3.7. Specifying zipp can be entirely removed (will be pulled in by flake8) if pydm drops support for 3.7
         if [ "$RUNNER_OS" == "Windows" ]; then
-          mamba install flake8 zipp=3.15.0 pyqt=${{ matrix.pyqt-version }}
+          mamba install pyqt=${{ matrix.pyqt-version }}
           mamba install --file requirements.txt --file windows-dev-requirements.txt
         else
-          mamba install flake8 zipp=3.15.0 pyqt=${{ matrix.pyqt-version }} $(cat requirements.txt dev-requirements.txt)
+          mamba install pyqt=${{ matrix.pyqt-version }} $(cat requirements.txt dev-requirements.txt)
         fi
     - name: Install packages for testing a pyqt app on linux
       shell: bash -el {0}
