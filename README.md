@@ -76,7 +76,7 @@ python scripts/pydm examples/home.ui
 ```
 
 # Building the Documentation Locally
-In order to build the documentation you will need to instll some dependencies
+In order to build the documentation you will need to install some dependencies
 that are not part of the runtime dependencies of PyDM.
 
 Assuming that you have cloned this repository do:
@@ -116,27 +116,5 @@ pip install .[all]
 When using Anaconda to install PyDM at a Linux Environment it will automatically
 define the PYQTDESIGNERPATH environment variable pointing to /etc/pydm which
 will have a file named designer_plugin.py which will make all the PyDM widgets
-available to the Qt Designer.
-
-### Most Recent Development Build
-
-[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/installer/conda.svg)](https://conda.anaconda.org/pydm-dev)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/platforms.svg)](https://anaconda.org/pydm-dev/pydm)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/version.svg)](https://anaconda.org/pydm-dev/pydm)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/downloads.svg)](https://anaconda.org/pydm-dev/pydm)
-
-
-```sh
-conda install -c pydm-dev -c conda-forge pydm
-```
-### Most Recent Tagged Build
-
-[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/installer/conda.svg)](https://conda.anaconda.org/pydm-tag)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/platforms.svg)](https://anaconda.org/pydm-tag/pydm)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/version.svg)](https://anaconda.org/pydm-tag/pydm)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/downloads.svg)](https://anaconda.org/pydm-tag/pydm)
-
-
-```sh
-conda install -c pydm-tag -c conda-forge pydm
-```
+available to the Qt Designer. For more information please see
+our <a href="https://slaclab.github.io/pydm/installation.html">installation guide</a>.
