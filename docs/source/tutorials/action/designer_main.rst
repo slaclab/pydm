@@ -78,8 +78,8 @@ The finished result will look like this:
     #. Drag and drop a ``PyDMImageView`` into the previously added ``Vertical Layout`` under
        the ``Label`` that was added at **Step 3.1**.
     #. Set the ``objectName`` property to ``imageView``.
-    #. Set the ``imageChannel`` property to ``ca://13SIM1:image1:ArrayData``.
-    #. Set the ``widthChannel`` property to ``ca://13SIM1:image1:ArraySize1_RBV``.
+    #. Set the ``imageChannel`` property to ``ca://IOC:Image``.
+    #. Set the ``widthChannel`` property to ``ca://IOC:ImageWidth``.
     #. Set the ``readingOrder`` property to ``Clike``.
     #. Set the ``maxRedrawRate`` property to ``30`` so we can update the image at
        30 Hz.
