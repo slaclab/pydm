@@ -1,4 +1,4 @@
-# This workflow will install pydm dependencies, lint with flake8, and run the test suite, for all combinations
+# This workflow will install pydm dependencies and run the test suite for all combinations
 # of operating systems and version numbers specified in the matrix
 
 name: Build Status
@@ -39,10 +39,10 @@ jobs:
       shell: bash -el {0}
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          mamba install flake8 pyqt=${{ matrix.pyqt-version }}
+          mamba install pyqt=${{ matrix.pyqt-version }}
           mamba install --file requirements.txt --file windows-dev-requirements.txt
         else
-          mamba install flake8 pyqt=${{ matrix.pyqt-version }} $(cat requirements.txt dev-requirements.txt)
+          mamba install pyqt=${{ matrix.pyqt-version }} $(cat requirements.txt dev-requirements.txt)
         fi
     - name: Install packages for testing a pyqt app on linux
       shell: bash -el {0}
