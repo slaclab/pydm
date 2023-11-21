@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.data_plugins &mdash; PyDM 1.20.1 documentation</title>
+  <title>pydm.data_plugins &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -128,7 +128,7 @@
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
 
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">config</span>
-<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="p">(</span><span class="n">import_module_by_filename</span><span class="p">,</span> <span class="n">log_failures</span><span class="p">,</span> <span class="n">parsed_address</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">import_module_by_filename</span><span class="p">,</span> <span class="n">log_failures</span><span class="p">,</span> <span class="n">parsed_address</span>
 <span class="kn">from</span> <span class="nn">.plugin</span> <span class="kn">import</span> <span class="n">PyDMPlugin</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -160,8 +160,7 @@
     <span class="k">if</span> <span class="n">__CONNECTION_QUEUE__</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">while</span> <span class="p">(</span><span class="n">__CONNECTION_QUEUE__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
-               <span class="nb">len</span><span class="p">(</span><span class="n">__CONNECTION_QUEUE__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">while</span> <span class="n">__CONNECTION_QUEUE__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">__CONNECTION_QUEUE__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">channel</span> <span class="o">=</span> <span class="n">__CONNECTION_QUEUE__</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
             <span class="n">establish_connection_immediately</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
             <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>
@@ -193,17 +192,16 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">protocol</span> <span class="o">=</span> <span class="n">parsed_address</span><span class="p">(</span><span class="n">address</span><span class="p">)</span><span class="o">.</span><span class="n">scheme</span>
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-        <span class="n">protocol</span> <span class="o">=</span> <span class="kc">None</span> 
-    
+        <span class="n">protocol</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="c1"># Use default protocol</span>
     <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Using default protocol </span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
-                     <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Using default protocol </span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
         <span class="c1"># If no protocol was specified, and the default protocol</span>
         <span class="c1"># environment variable is specified, try to use that instead.</span>
         <span class="n">protocol</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span>
 
-    <span class="c1"># Load proper plugin module    </span>
+    <span class="c1"># Load proper plugin module</span>
     <span class="k">if</span> <span class="n">protocol</span><span class="p">:</span>
         <span class="n">initialize_plugins_if_needed</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
@@ -211,12 +209,14 @@
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Could not find protocol for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
     <span class="c1"># Catch all in case of improper plugin specification</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Channel </span><span class="si">{addr}</span><span class="s2"> did not specify a valid protocol &quot;</span>
-                 <span class="s2">&quot;and no default protocol is defined. This channel &quot;</span>
-                 <span class="s2">&quot;will receive no data. To specify a default protocol, &quot;</span>
-                 <span class="s2">&quot;set the PYDM_DEFAULT_PROTOCOL environment variable.&quot;</span>
-                 <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="o">=</span><span class="n">address</span><span class="p">))</span>
-    
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+        <span class="s2">&quot;Channel </span><span class="si">{addr}</span><span class="s2"> did not specify a valid protocol &quot;</span>
+        <span class="s2">&quot;and no default protocol is defined. This channel &quot;</span>
+        <span class="s2">&quot;will receive no data. To specify a default protocol, &quot;</span>
+        <span class="s2">&quot;set the PYDM_DEFAULT_PROTOCOL environment variable.&quot;</span>
+        <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="o">=</span><span class="n">address</span><span class="p">)</span>
+    <span class="p">)</span>
+
     <span class="k">return</span> <span class="kc">None</span>
 
 
@@ -254,10 +254,7 @@
 
 <span class="nd">@log_failures</span><span class="p">(</span>
     <span class="n">logger</span><span class="p">,</span>
-    <span class="n">explanation</span><span class="o">=</span><span class="p">(</span>
-        <span class="s2">&quot;Unable to import plugin file: </span><span class="si">{args[0]}</span><span class="s2">.  &quot;</span>
-        <span class="s2">&quot;This plugin will be skipped.&quot;</span>
-    <span class="p">),</span>
+    <span class="n">explanation</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Unable to import plugin file: </span><span class="si">{args[0]}</span><span class="s2">.  &quot;</span> <span class="s2">&quot;This plugin will be skipped.&quot;</span><span class="p">),</span>
     <span class="n">include_traceback</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">def</span> <span class="nf">_get_plugins_from_source</span><span class="p">(</span><span class="n">source_filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">PyDMPlugin</span><span class="p">]]:</span>
@@ -275,13 +272,7 @@
 <span class="sd">        The plugin classes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">module</span> <span class="o">=</span> <span class="n">import_module_by_filename</span><span class="p">(</span><span class="n">source_filename</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
-        <span class="nb">set</span><span class="p">(</span>
-            <span class="n">obj</span>
-            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">_is_valid_plugin_class</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">obj</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">module</span><span class="p">)</span> <span class="k">if</span> <span class="n">_is_valid_plugin_class</span><span class="p">(</span><span class="n">obj</span><span class="p">)))</span>
 
 
 <span class="k">def</span> <span class="nf">find_plugins_from_path</span><span class="p">(</span>
@@ -327,18 +318,11 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">plugin_cls</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-                <span class="s2">&quot;Failed to load </span><span class="si">%s</span><span class="s2"> entry </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">key</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ex</span>
-            <span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed to load </span><span class="si">%s</span><span class="s2"> entry </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
             <span class="k">continue</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_valid_plugin_class</span><span class="p">(</span><span class="n">plugin_cls</span><span class="p">):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Invalid plugin class specified in entrypoint &quot;</span>
-                <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">plugin_cls</span>
-            <span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Invalid plugin class specified in entrypoint &quot;</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">plugin_cls</span><span class="p">)</span>
             <span class="k">continue</span>
 
         <span class="k">yield</span> <span class="n">plugin_cls</span>
@@ -346,16 +330,10 @@
 
 <span class="k">def</span> <span class="nf">_is_valid_plugin_class</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Is the object a data plugin class?&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span>
-        <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PyDMPlugin</span><span class="p">)</span>
-        <span class="ow">and</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">PyDMPlugin</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PyDMPlugin</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">PyDMPlugin</span>
 
 
-<span class="k">def</span> <span class="nf">load_plugins_from_entrypoints</span><span class="p">(</span>
-    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ENTRYPOINT_DATA_PLUGIN</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PyDMPlugin</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">load_plugins_from_entrypoints</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ENTRYPOINT_DATA_PLUGIN</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PyDMPlugin</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load plugins from file locations that match a specific token</span>
 
@@ -384,10 +362,7 @@
     <span class="k">return</span> <span class="n">added_plugins</span>
 
 
-<div class="viewcode-block" id="load_plugins_from_path"><a class="viewcode-back" href="../../add_data_plugins.html#pydm.data_plugins.load_plugins_from_path">[docs]</a><span class="k">def</span> <span class="nf">load_plugins_from_path</span><span class="p">(</span>
-    <span class="n">locations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA_PLUGIN_SUFFIX</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PyDMPlugin</span><span class="p">]:</span>
+<div class="viewcode-block" id="load_plugins_from_path"><a class="viewcode-back" href="../../add_data_plugins.html#pydm.data_plugins.load_plugins_from_path">[docs]</a><span class="k">def</span> <span class="nf">load_plugins_from_path</span><span class="p">(</span><span class="n">locations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DATA_PLUGIN_SUFFIX</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PyDMPlugin</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load plugins from file locations that match a specific token</span>
 
@@ -458,9 +433,9 @@
     <span class="n">__plugins_initialized</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="c1"># Load the data plugins from PYDM_DATA_PLUGINS_PATH</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;* Loading PyDM Data Plugins&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
 
     <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_DATA_PLUGINS_PATH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

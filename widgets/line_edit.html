@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMLineEdit &mdash; PyDM 1.20.1 documentation</title>
+  <title>PyDMLineEdit &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -145,6 +145,18 @@
 <dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.line_edit.</span></span><span class="sig-name descname"><span class="pre">PyDMLineEdit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QLineEdit</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TextFormatter</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMWritableWidget</span></code>, <a class="reference internal" href="utilities.html#pydm.widgets.display_format.DisplayFormat" title="pydm.widgets.display_format.DisplayFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisplayFormat</span></code></a></p>
+<p>A QLineEdit (writable text field) with support for Channels and more
+from PyDM.
+This widget offers an unit conversion menu when users Right Click
+into it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.line_edit.PyDMLineEdit.apply_conversion">
 <span class="sig-name descname"><span class="pre">apply_conversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/line_edit.html#PyDMLineEdit.apply_conversion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.line_edit.PyDMLineEdit.apply_conversion" title="Permalink to this definition"></a></dt>

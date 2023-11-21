@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.archiver_time_plot &mdash; PyDM 1.20.1 documentation</title>
+  <title>pydm.widgets.archiver_time_plot &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -116,8 +116,8 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">DateAxisItem</span><span class="p">,</span> <span class="n">ErrorBarItem</span><span class="p">,</span> <span class="n">ViewBox</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">DateAxisItem</span><span class="p">,</span> <span class="n">ErrorBarItem</span>
 <span class="kn">from</span> <span class="nn">pydm.widgets.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span> <span class="nn">pydm.widgets.timeplot</span> <span class="kn">import</span> <span class="n">TimePlotCurveItem</span>
 <span class="kn">from</span> <span class="nn">pydm.widgets</span> <span class="kn">import</span> <span class="n">PyDMTimePlot</span>
@@ -125,10 +125,12 @@
 <span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
+
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">DEFAULT_ARCHIVE_BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">18000</span>
 <span class="n">DEFAULT_TIME_SPAN</span> <span class="o">=</span> <span class="mf">5.0</span>
+
 
 <div class="viewcode-block" id="ArchivePlotCurveItem"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem">[docs]</a><span class="k">class</span> <span class="nc">ArchivePlotCurveItem</span><span class="p">(</span><span class="n">TimePlotCurveItem</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -157,7 +159,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_channel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span> <span class="o">=</span> <span class="n">DEFAULT_ARCHIVE_BUFFER_SIZE</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
         <span class="c1"># When optimized or mean value data is requested, we can display error bars representing</span>
         <span class="c1"># the full range of values retrieved</span>
@@ -168,60 +170,66 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">setArchiveChannel</span><span class="p">(</span><span class="n">channel_address</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.to_dict"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderedDict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns an OrderedDict representation with values for all properties needed to recreate this curve. &quot;&quot;&quot;</span>
-        <span class="n">dic_</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;useArchiveData&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_archive_data</span><span class="p">),</span> <span class="p">])</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an OrderedDict representation with values for all properties needed to recreate this curve.&quot;&quot;&quot;</span>
+        <span class="n">dic_</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;useArchiveData&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_archive_data</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">ArchivePlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">dic_</span></div>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.setArchiveChannel"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setArchiveChannel">[docs]</a>    <span class="k">def</span> <span class="nf">setArchiveChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Creates the channel for the input address for communicating with the archiver appliance plugin. &quot;&quot;&quot;</span>
-        <span class="n">archiver_prefix</span> <span class="o">=</span> <span class="s1">&#39;archiver://pv=&#39;</span>
-        <span class="k">if</span> <span class="n">address</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;ca://&#39;</span><span class="p">):</span>
-            <span class="n">archive_address</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ca://&#39;</span><span class="p">,</span> <span class="n">archiver_prefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">address</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;pva://&#39;</span><span class="p">):</span>
-            <span class="n">archive_address</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;pva://&#39;</span><span class="p">,</span> <span class="n">archiver_prefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the channel for the input address for communicating with the archiver appliance plugin.&quot;&quot;&quot;</span>
+        <span class="n">archiver_prefix</span> <span class="o">=</span> <span class="s2">&quot;archiver://pv=&quot;</span>
+        <span class="k">if</span> <span class="n">address</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ca://&quot;</span><span class="p">):</span>
+            <span class="n">archive_address</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;ca://&quot;</span><span class="p">,</span> <span class="n">archiver_prefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">address</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;pva://&quot;</span><span class="p">):</span>
+            <span class="n">archive_address</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;pva://&quot;</span><span class="p">,</span> <span class="n">archiver_prefix</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">archive_address</span> <span class="o">=</span> <span class="n">archiver_prefix</span> <span class="o">+</span> <span class="n">address</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">archive_channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">archive_address</span><span class="p">,</span>
-                                           <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveArchiveData</span><span class="p">,</span>
-                                           <span class="n">value_signal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_request_signal</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archive_channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span>
+            <span class="n">address</span><span class="o">=</span><span class="n">archive_address</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveArchiveData</span><span class="p">,</span> <span class="n">value_signal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_request_signal</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.receiveArchiveData"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.receiveArchiveData">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">receiveArchiveData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Receive data from archiver appliance and place it into the archive data buffer.</span>
-<span class="sd">            Will overwrite any previously existing data at the indices written to.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Receive data from archiver appliance and place it into the archive data buffer.</span>
+<span class="sd">        Will overwrite any previously existing data at the indices written to.</span>
 
-<span class="sd">            Parameters</span>
-<span class="sd">            ----------</span>
-<span class="sd">            data : np.ndarray</span>
-<span class="sd">                A numpy array of varying shape consisting of archived data for display.</span>
-<span class="sd">                At a minimum, index 0 will contain the timestamps and index 1 the actual data observations.</span>
-<span class="sd">                Additional indices may be used as well based on the type of request made to the archiver appliance.</span>
-<span class="sd">                For example optimized data will include standard deviations, minimums, and maximums</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : np.ndarray</span>
+<span class="sd">            A numpy array of varying shape consisting of archived data for display.</span>
+<span class="sd">            At a minimum, index 0 will contain the timestamps and index 1 the actual data observations.</span>
+<span class="sd">            Additional indices may be used as well based on the type of request made to the archiver appliance.</span>
+<span class="sd">            For example optimized data will include standard deviations, minimums, and maximums</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">archive_data_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">max_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">archive_data_length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">max_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">archive_data_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">while</span> <span class="n">max_x</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">]:</span>
                 <span class="c1"># Sometimes optimized queries return data past the current timestamp, this will delete those data points</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
                 <span class="n">archive_data_length</span> <span class="o">-=</span> <span class="mi">1</span>
-                <span class="n">max_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">archive_data_length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">max_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">archive_data_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">archive_data_length</span><span class="p">:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">archive_data_length</span><span class="p">:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">archive_data_length</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">archive_data_length</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">=</span> <span class="n">archive_data_length</span>
 
         <span class="c1"># Error bars</span>
         <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>  <span class="c1"># 5 indicates optimized data was requested from the archiver</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span><span class="p">:],</span>
-                                        <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span><span class="p">:],</span>
-                                        <span class="n">top</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                                        <span class="n">bottom</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
-                                        <span class="n">beam</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                                        <span class="n">pen</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="p">:],</span>
+                <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="p">:],</span>
+                <span class="n">top</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">bottom</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                <span class="n">beam</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">pen</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">},</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_needs_set</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar_item</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_needs_set</span> <span class="o">=</span> <span class="kc">False</span>
@@ -244,14 +252,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">archive_data_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">min_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">max_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">archive_data_length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">max_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">archive_data_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
         <span class="c1"># Get the indices between which we want to insert the data</span>
         <span class="n">min_insertion_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">min_x</span><span class="p">)</span>
         <span class="n">max_insertion_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">max_x</span><span class="p">)</span>
         <span class="c1"># Delete any non-raw data between the indices so we don&#39;t have multiple data points for the same timestamp</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">,</span>
-                                             <span class="nb">slice</span><span class="p">(</span><span class="n">min_insertion_index</span><span class="p">,</span> <span class="n">max_insertion_index</span><span class="p">),</span>
-                                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="n">min_insertion_index</span><span class="p">,</span> <span class="n">max_insertion_index</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
         <span class="n">num_points_deleted</span> <span class="o">=</span> <span class="n">max_insertion_index</span> <span class="o">-</span> <span class="n">min_insertion_index</span>
         <span class="n">delta_points</span> <span class="o">=</span> <span class="n">archive_data_length</span> <span class="o">-</span> <span class="n">num_points_deleted</span>
         <span class="k">if</span> <span class="n">archive_data_length</span> <span class="o">&gt;</span> <span class="n">num_points_deleted</span><span class="p">:</span>
@@ -273,11 +281,19 @@
             <span class="nb">super</span><span class="p">(</span><span class="n">ArchivePlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">redrawCurve</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)))</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
 
-                <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)))</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">ZeroDivisionError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
@@ -289,26 +305,26 @@
 <span class="sd">        Initialize the archive data buffer used for this curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.getArchiveBufferSize"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.getArchiveBufferSize">[docs]</a>    <span class="k">def</span> <span class="nf">getArchiveBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Return the length of the archive buffer &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the length of the archive buffer&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.setArchiveBufferSize"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setArchiveBufferSize">[docs]</a>    <span class="k">def</span> <span class="nf">setArchiveBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Set the length of the archive data buffer and zero it out &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the length of the archive data buffer and zero it out&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initializeArchiveBuffer</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.resetArchiveBufferSize"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.resetArchiveBufferSize">[docs]</a>    <span class="k">def</span> <span class="nf">resetArchiveBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Reset the length of the archive buffer back to the default and zero it out &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the length of the archive buffer back to the default and zero it out&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span> <span class="o">!=</span> <span class="n">DEFAULT_ARCHIVE_BUFFER_SIZE</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span> <span class="o">=</span> <span class="n">DEFAULT_ARCHIVE_BUFFER_SIZE</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initializeArchiveBuffer</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.channels"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.channels">[docs]</a>    <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">PyDMChannel</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Return the list of channels this curve is connected to &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the list of channels this curve is connected to&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_channel</span><span class="p">]</span></div></div>
 
 
@@ -330,11 +346,20 @@
 <span class="sd">        The number of bins of data returned from the archiver when using optimized requests</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QObject</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-                 <span class="n">background</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">optimized_data_bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMArchiverTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_y_channels</span><span class="o">=</span><span class="n">init_y_channels</span><span class="p">,</span>
-                                                   <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span>
-                                                   <span class="n">bottom_axis</span><span class="o">=</span><span class="n">DateAxisItem</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">))</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QObject</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">init_y_channels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">background</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+        <span class="n">optimized_data_bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMArchiverTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">init_y_channels</span><span class="o">=</span><span class="n">init_y_channels</span><span class="p">,</span>
+            <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span>
+            <span class="n">bottom_axis</span><span class="o">=</span><span class="n">DateAxisItem</span><span class="p">(</span><span class="s2">&quot;bottom&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimized_data_bins</span> <span class="o">=</span> <span class="n">optimized_data_bins</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_prev_x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Holds the minimum x-value of the previous update of the plot</span>
@@ -342,14 +367,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_archive_request_queued</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot.updateXAxis"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.updateXAxis">[docs]</a>    <span class="k">def</span> <span class="nf">updateXAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_immediately</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,</span>
-<span class="sd">            a request will be made for backfill data &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,</span>
+<span class="sd">        a request will be made for backfill data&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">min_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Gets the leftmost timestamp displayed on the x-axis</span>
+        <span class="n">min_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s2">&quot;bottom&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Gets the leftmost timestamp displayed on the x-axis</span>
         <span class="n">max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">max_x</span><span class="p">()</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">])</span>
-        <span class="n">max_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">max_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getAxis</span><span class="p">(</span><span class="s2">&quot;bottom&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">min_x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># This is zero when the plot first renders</span>
             <span class="n">min_x</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="n">min_x</span>
@@ -395,7 +420,7 @@
 <span class="sd">           to the timestamp of the oldest live data point in the buffer if available. If no live points are</span>
 <span class="sd">           recorded yet, then defaults to the timestamp at which the plot was first rendered.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">processing_command</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">processing_command</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="n">min_x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">min_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
@@ -412,46 +437,44 @@
                 <span class="c1"># Max amount of raw data to return before using optimized data</span>
                 <span class="n">max_data_request</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.80</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">getArchiveBufferSize</span><span class="p">())</span>
                 <span class="k">if</span> <span class="n">requested_seconds</span> <span class="o">&gt;</span> <span class="n">max_data_request</span><span class="p">:</span>
-                    <span class="n">processing_command</span> <span class="o">=</span> <span class="s1">&#39;optimized_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimized_data_bins</span><span class="p">)</span>
+                    <span class="n">processing_command</span> <span class="o">=</span> <span class="s2">&quot;optimized_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimized_data_bins</span><span class="p">)</span>
                 <span class="n">curve</span><span class="o">.</span><span class="n">archive_data_request_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">processing_command</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot.getArchiveBufferSize"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getArchiveBufferSize">[docs]</a>    <span class="k">def</span> <span class="nf">getArchiveBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns the size of the data buffer used to store archived data &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the size of the data buffer used to store archived data&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">DEFAULT_ARCHIVE_BUFFER_SIZE</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getArchiveBufferSize</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMArchiverTimePlot.createCurveItem"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.createCurveItem">[docs]</a>    <span class="k">def</span> <span class="nf">createCurveItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_channel</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">plot_by_timestamps</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">QColor</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-                        <span class="n">yAxisName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">useArchiveData</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchivePlotCurveItem</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Create and return a curve item to be plotted &quot;&quot;&quot;</span>
-        <span class="n">curve_item</span> <span class="o">=</span> <span class="n">ArchivePlotCurveItem</span><span class="p">(</span><span class="n">y_channel</span><span class="p">,</span> <span class="n">use_archive_data</span><span class="o">=</span><span class="n">useArchiveData</span><span class="p">,</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="n">plot_by_timestamps</span><span class="p">,</span>
-                                          <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">yAxisName</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
+<div class="viewcode-block" id="PyDMArchiverTimePlot.createCurveItem"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.createCurveItem">[docs]</a>    <span class="k">def</span> <span class="nf">createCurveItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArchivePlotCurveItem</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create and return a curve item to be plotted&quot;&quot;&quot;</span>
+        <span class="n">curve_item</span> <span class="o">=</span> <span class="n">ArchivePlotCurveItem</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">curve_item</span><span class="o">.</span><span class="n">archive_data_received_signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_received</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">curve_item</span></div>
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot.archive_data_received"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.archive_data_received">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">archive_data_received</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Take any action needed when this plot receives new data from archiver appliance &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Take any action needed when this plot receives new data from archiver appliance&quot;&quot;&quot;</span>
         <span class="n">max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">max_x</span><span class="p">()</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">])</span>
         <span class="c1"># Assure the user sees all data available whenever the request data is returned</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setXRange</span><span class="p">(</span><span class="n">max_x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTimeSpan</span><span class="p">(),</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_archive_request_queued</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot.setTimeSpan"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setTimeSpan">[docs]</a>    <span class="k">def</span> <span class="nf">setTimeSpan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Set the value of the plot&#39;s timespan &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the value of the plot&#39;s timespan&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">DEFAULT_TIME_SPAN</span><span class="p">:</span>  <span class="c1"># Less than 5 seconds will break the plot</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_time_span</span> <span class="o">=</span> <span class="n">value</span></div>
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot.clearCurves"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.clearCurves">[docs]</a>    <span class="k">def</span> <span class="nf">clearCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Clear all curves from the plot &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear all curves from the plot&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
             <span class="c1"># Need to clear out any bars from optimized data, then super() can handle the rest</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">curve</span><span class="o">.</span><span class="n">error_bar_needs_set</span><span class="p">:</span>
                 <span class="n">curve</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">error_bar_item</span><span class="p">)</span>
 
         <span class="c1"># reset _min_x to let updateXAxis make requests anew</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_starting_timestamp</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_starting_timestamp</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">clearCurves</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot.getCurves"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.getCurves">[docs]</a>    <span class="k">def</span> <span class="nf">getCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -478,18 +501,20 @@
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clearCurves</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">new_list</span><span class="p">:</span>
-            <span class="n">color</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">addYChannel</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">],</span>
-                             <span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span>
-                             <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
-                             <span class="n">lineStyle</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lineStyle&#39;</span><span class="p">),</span>
-                             <span class="n">lineWidth</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lineWidth&#39;</span><span class="p">),</span>
-                             <span class="n">symbol</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbol&#39;</span><span class="p">),</span>
-                             <span class="n">symbolSize</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">),</span>
-                             <span class="n">yAxisName</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;yAxisName&#39;</span><span class="p">),</span>
-                             <span class="n">useArchiveData</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;useArchiveData&#39;</span><span class="p">))</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addYChannel</span><span class="p">(</span>
+                <span class="n">d</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                <span class="n">lineStyle</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lineStyle&quot;</span><span class="p">),</span>
+                <span class="n">lineWidth</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lineWidth&quot;</span><span class="p">),</span>
+                <span class="n">symbol</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">),</span>
+                <span class="n">symbolSize</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;symbolSize&quot;</span><span class="p">),</span>
+                <span class="n">yAxisName</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;yAxisName&quot;</span><span class="p">),</span>
+                <span class="n">useArchiveData</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;useArchiveData&quot;</span><span class="p">),</span>
+            <span class="p">)</span></div>
 
     <span class="n">curves</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getCurves</span><span class="p">,</span> <span class="n">setCurves</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 </pre></div>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMShellCommand &mdash; PyDM 1.20.1 documentation</title>
+  <title>PyDMShellCommand &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -156,6 +156,26 @@
 </ul>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.PyDMIcon">
+<span class="sig-name descname"><span class="pre">PyDMIcon</span></span><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.PyDMIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
+See “enum QStyle::StandardPixmap” in Qt’s QStyle documentation for full list of usable standard icons.
+See https://fontawesome.com/icons?d=gallery for list of usable fontawesome icons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.PyDMIconColor">
+<span class="sig-name descname"><span class="pre">PyDMIconColor</span></span><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.PyDMIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>The color of the icon (color is only applied if using icon from the “Font Awesome” set)
+:rtype: QColor</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.allowMultipleExecutions">
 <span class="sig-name descname"><span class="pre">allowMultipleExecutions</span></span><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.allowMultipleExecutions" title="Permalink to this definition"></a></dt>
@@ -277,8 +297,7 @@ button, your widget receives the release event.</p>
 <dd><p>Password to be encrypted using SHA256.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>To avoid issues exposing the password this method
-always returns an empty string.</p>
+<p>To avoid issues exposing the password this method always returns an empty string.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -290,13 +309,16 @@ always returns an empty string.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.passwordProtected">
 <span class="sig-name descname"><span class="pre">passwordProtected</span></span><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.passwordProtected" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not this button is password protected.
-:returns: * <em>bool</em></p>
-<blockquote>
-<div><ul class="simple">
+<dd><p>Whether or not this button is password protected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>bool</em></p></li>
 <li><p><em>——-</em></p></li>
 </ul>
-</div></blockquote>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -322,9 +344,20 @@ always returns an empty string.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.runCommandsInFullShell">
+<span class="sig-name descname"><span class="pre">runCommandsInFullShell</span></span><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.runCommandsInFullShell" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to run cmds with Popen’s option for running them through a shell subprocess.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.showConfirmDialog">
 <span class="sig-name descname"><span class="pre">showConfirmDialog</span></span><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.showConfirmDialog" title="Permalink to this definition"></a></dt>
-<dd><p>Wether or not to display a confirmation dialog.</p>
+<dd><p>Whether or not to display a confirmation dialog.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>

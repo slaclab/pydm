@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.application &mdash; PyDM 1.20.1 documentation</title>
+  <title>pydm.application &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -126,7 +126,7 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Slot</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
 <span class="kn">from</span> <span class="nn">.main_window</span> <span class="kn">import</span> <span class="n">PyDMMainWindow</span>
 
 <span class="kn">from</span> <span class="nn">.utilities</span> <span class="kn">import</span> <span class="n">which</span><span class="p">,</span> <span class="n">path_info</span>
@@ -183,16 +183,29 @@
 <span class="sd">    homefile : str, optional</span>
 <span class="sd">        The path to a PyDM file to return to whenever the home button is clicked in the navigation bar.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Instantiate our plugins.</span>
     <span class="n">plugins</span> <span class="o">=</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">plugin_modules</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span> <span class="n">display_args</span><span class="o">=</span><span class="p">[],</span>
-                 <span class="n">perfmon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_nav_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_menu_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">hide_status_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">use_main_window</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stylesheet_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fullscreen</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">home_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">display_args</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">perfmon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">hide_nav_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">hide_menu_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">hide_status_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_main_window</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">stylesheet_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">fullscreen</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">home_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">command_line_args</span><span class="p">)</span>
         <span class="c1"># Enable High DPI display, if available.</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="s1">&#39;AA_UseHighDpiPixmaps&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">Qt</span><span class="p">,</span> <span class="s2">&quot;AA_UseHighDpiPixmaps&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AA_UseHighDpiPixmaps</span><span class="p">)</span>
 
         <span class="n">data_plugins</span><span class="o">.</span><span class="n">set_read_only</span><span class="p">(</span><span class="n">read_only</span><span class="p">)</span>
@@ -214,12 +227,20 @@
 
         <span class="c1"># Open a window if required.</span>
         <span class="k">if</span> <span class="n">ui_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">make_main_window</span><span class="p">(</span><span class="n">stylesheet_path</span><span class="o">=</span><span class="n">stylesheet_path</span><span class="p">,</span> <span class="n">home_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">home_file</span><span class="p">,</span>
-                                  <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="n">command_line_args</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">make_main_window</span><span class="p">(</span>
+                <span class="n">stylesheet_path</span><span class="o">=</span><span class="n">stylesheet_path</span><span class="p">,</span>
+                <span class="n">home_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">home_file</span><span class="p">,</span>
+                <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span>
+                <span class="n">command_line_args</span><span class="o">=</span><span class="n">command_line_args</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">use_main_window</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">make_main_window</span><span class="p">(</span><span class="n">stylesheet_path</span><span class="o">=</span><span class="n">stylesheet_path</span><span class="p">,</span> <span class="n">home_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">home_file</span><span class="p">,</span>
-                                  <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="n">command_line_args</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">make_main_window</span><span class="p">(</span>
+                <span class="n">stylesheet_path</span><span class="o">=</span><span class="n">stylesheet_path</span><span class="p">,</span>
+                <span class="n">home_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">home_file</span><span class="p">,</span>
+                <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span>
+                <span class="n">command_line_args</span><span class="o">=</span><span class="n">command_line_args</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">had_file</span> <span class="o">=</span> <span class="n">ui_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="c1"># Re-enable sigint (usually blocked by pyqt)</span>
@@ -228,6 +249,7 @@
         <span class="c1"># Performance monitoring</span>
         <span class="k">if</span> <span class="n">perfmon</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">psutil</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">perf</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">perf_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">perf_timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
@@ -244,8 +266,7 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">is_read_only</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.is_read_only&#39; is deprecated, &quot;</span>
-                      <span class="s2">&quot;use &#39;pydm.data_plugins.is_read_only&#39; instead.&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.is_read_only&#39; is deprecated, &quot;</span> <span class="s2">&quot;use &#39;pydm.data_plugins.is_read_only&#39; instead.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">is_read_only</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMApplication.get_CPU_usage"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.get_CPU_usage">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
@@ -292,7 +313,9 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Not in the PATH and no ENV VAR pointing to it...</span>
                 <span class="c1"># Let&#39;s try the script folder...</span>
-                <span class="n">pydm_display_app_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;pydm_launcher&quot;</span><span class="p">,</span> <span class="s2">&quot;main.py&quot;</span><span class="p">)</span>
+                <span class="n">pydm_display_app_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;pydm_launcher&quot;</span><span class="p">,</span> <span class="s2">&quot;main.py&quot;</span>
+                <span class="p">)</span>
 
         <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">pydm_display_app_path</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_nav_bar</span><span class="p">:</span>
@@ -328,12 +351,14 @@
 <span class="sd">        of starting up a new process, because PyDMApplications only have</span>
 <span class="sd">        one window per process.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">main_window</span> <span class="o">=</span> <span class="n">PyDMMainWindow</span><span class="p">(</span><span class="n">hide_nav_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_nav_bar</span><span class="p">,</span>
-                                     <span class="n">hide_menu_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span><span class="p">,</span>
-                                     <span class="n">hide_status_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span><span class="p">,</span>
-                                     <span class="n">home_file</span><span class="o">=</span><span class="n">home_file</span><span class="p">,</span>
-                                     <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span>
-                                     <span class="n">command_line_args</span><span class="o">=</span><span class="n">command_line_args</span><span class="p">)</span>
+        <span class="n">main_window</span> <span class="o">=</span> <span class="n">PyDMMainWindow</span><span class="p">(</span>
+            <span class="n">hide_nav_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_nav_bar</span><span class="p">,</span>
+            <span class="n">hide_menu_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_menu_bar</span><span class="p">,</span>
+            <span class="n">hide_status_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_status_bar</span><span class="p">,</span>
+            <span class="n">home_file</span><span class="o">=</span><span class="n">home_file</span><span class="p">,</span>
+            <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">,</span>
+            <span class="n">command_line_args</span><span class="o">=</span><span class="n">command_line_args</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">main_window</span> <span class="o">=</span> <span class="n">main_window</span>
         <span class="n">apply_stylesheet</span><span class="p">(</span><span class="n">stylesheet_path</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">main_window</span><span class="p">)</span>
@@ -356,8 +381,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        PyDMPlugin</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.plugin_for_channel&#39; is deprecated, &quot;</span>
-                      <span class="s2">&quot;use &#39;pydm.data_plugins.plugin_for_address&#39; instead.&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;&#39;PyDMApplication.plugin_for_channel&#39; is deprecated, &quot;</span> <span class="s2">&quot;use &#39;pydm.data_plugins.plugin_for_address&#39; instead.&quot;</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">channel</span><span class="o">.</span><span class="n">address</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">channel</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">plugin_for_address</span><span class="p">(</span><span class="n">channel</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
@@ -370,8 +396,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        channel : PyDMChannel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.add_connection&#39; is deprecated, &quot;</span>
-                      <span class="s2">&quot;use PyDMConnection.connect()&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.add_connection&#39; is deprecated, &quot;</span> <span class="s2">&quot;use PyDMConnection.connect()&quot;</span><span class="p">)</span>
         <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.remove_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.remove_connection">[docs]</a>    <span class="k">def</span> <span class="nf">remove_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
@@ -382,18 +407,17 @@
 <span class="sd">        ----------</span>
 <span class="sd">        channel : PyDMChannel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.remove_connection&#39; is deprecated, &quot;</span>
-                      <span class="s2">&quot;use PyDMConnection.disconnect()&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.remove_connection&#39; is deprecated, &quot;</span> <span class="s2">&quot;use PyDMConnection.disconnect()&quot;</span><span class="p">)</span>
         <span class="n">channel</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.eventFilter"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.eventFilter">[docs]</a>    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.eventFilter&#39; is deprecated, &quot;</span>
-                      <span class="s2">&quot; this function is now found on PyDMWidget&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.eventFilter&#39; is deprecated, &quot;</span> <span class="s2">&quot; this function is now found on PyDMWidget&quot;</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">show_address_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.show_address_tooltip&#39; is deprecated, &quot;</span>
-                      <span class="s2">&quot; this function is now found on PyDMWidget&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;&#39;PyDMApplication.show_address_tooltip&#39; is deprecated, &quot;</span> <span class="s2">&quot; this function is now found on PyDMWidget&quot;</span>
+        <span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">show_address_tooltip</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMApplication.establish_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.establish_widget_connections">[docs]</a>    <span class="k">def</span> <span class="nf">establish_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
@@ -408,8 +432,10 @@
 <span class="sd">        ----------</span>
 <span class="sd">        widget : QWidget</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.establish_widget_connections&#39; is deprecated, &quot;</span>
-                      <span class="s2">&quot;this function is now found on `utilities.establish_widget_connections`.&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;&#39;PyDMApplication.establish_widget_connections&#39; is deprecated, &quot;</span>
+            <span class="s2">&quot;this function is now found on `utilities.establish_widget_connections`.&quot;</span>
+        <span class="p">)</span>
         <span class="n">connection</span><span class="o">.</span><span class="n">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMApplication.close_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.close_widget_connections">[docs]</a>    <span class="k">def</span> <span class="nf">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
@@ -423,7 +449,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;&#39;PyDMApplication.close_widget_connections&#39; is deprecated, &quot;</span>
-            <span class="s2">&quot;this function is now found on `utilities.close_widget_connections`.&quot;</span><span class="p">)</span>
+            <span class="s2">&quot;this function is now found on `utilities.close_widget_connections`.&quot;</span>
+        <span class="p">)</span>
         <span class="n">connection</span><span class="o">.</span><span class="n">close_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span></div></div>
 </pre></div>
 

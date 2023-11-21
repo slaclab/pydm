@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.slider &mdash; PyDM 1.20.1 documentation</title>
+  <title>pydm.widgets.slider &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -116,8 +116,19 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QSlider</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> \
-    <span class="n">QWidget</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QCheckBox</span><span class="p">,</span> <span class="n">QComboBox</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QFrame</span><span class="p">,</span>
+    <span class="n">QLabel</span><span class="p">,</span>
+    <span class="n">QSlider</span><span class="p">,</span>
+    <span class="n">QVBoxLayout</span><span class="p">,</span>
+    <span class="n">QHBoxLayout</span><span class="p">,</span>
+    <span class="n">QSizePolicy</span><span class="p">,</span>
+    <span class="n">QWidget</span><span class="p">,</span>
+    <span class="n">QLineEdit</span><span class="p">,</span>
+    <span class="n">QPushButton</span><span class="p">,</span>
+    <span class="n">QCheckBox</span><span class="p">,</span>
+    <span class="n">QComboBox</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pydm.widgets</span> <span class="kn">import</span> <span class="n">PyDMLabel</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">is_channel_valid</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
@@ -137,6 +148,7 @@
 <span class="sd">    init_channel : str, optional</span>
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">actionTriggered</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">rangeChanged</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
     <span class="n">sliderMoved</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
@@ -246,11 +258,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_buttons</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">menu_layout</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">text_info</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span> <span class="s1">&#39;Increment&#39;</span><span class="p">,</span> <span class="s1">&#39;Increment scale&#39;</span><span class="p">,</span> <span class="s1">&#39;Precision&#39;</span><span class="p">,</span> <span class="s1">&#39;Precision from PV&#39;</span><span class="p">,</span> <span class="s1">&#39;Number Format&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;OK&#39;</span><span class="p">,</span> <span class="s1">&#39;Apply&#39;</span><span class="p">,</span> <span class="s1">&#39;Cancel&#39;</span><span class="p">]</span>
+        <span class="n">text_info</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;Value&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Increment&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Increment scale&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Precision&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Precision from PV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Number Format&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;OK&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Apply&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Cancel&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
 
-        <span class="n">combo_box_table_scale</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1e0&#39;</span><span class="p">,</span> <span class="s1">&#39;1e1&#39;</span><span class="p">,</span> <span class="s1">&#39;1e2&#39;</span><span class="p">,</span> <span class="s1">&#39;1e3&#39;</span><span class="p">,</span> <span class="s1">&#39;1e4&#39;</span><span class="p">,</span> <span class="s1">&#39;1e5&#39;</span><span class="p">]</span>
-        <span class="n">combo_box_table_format</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Float&#39;</span><span class="p">,</span> <span class="s1">&#39;Exp&#39;</span><span class="p">]</span>
+        <span class="n">combo_box_table_scale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;1e0&quot;</span><span class="p">,</span> <span class="s2">&quot;1e1&quot;</span><span class="p">,</span> <span class="s2">&quot;1e2&quot;</span><span class="p">,</span> <span class="s2">&quot;1e3&quot;</span><span class="p">,</span> <span class="s2">&quot;1e4&quot;</span><span class="p">,</span> <span class="s2">&quot;1e5&quot;</span><span class="p">]</span>
+        <span class="n">combo_box_table_format</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="s2">&quot;Exp&quot;</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -290,7 +311,7 @@
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_buttons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_buttons</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_widget</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_buttons</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text_info</span><span class="p">[</span><span class="n">key</span><span class="o">+</span><span class="mi">6</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_buttons</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text_info</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="mi">6</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">menu_layout</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_buttons</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 
         <span class="n">main_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_layout</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
@@ -312,7 +333,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">new_step_size</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
-            <span class="n">new_step_size_scaled</span> <span class="o">=</span> <span class="n">new_step_size</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
+            <span class="n">new_step_size_scaled</span> <span class="o">=</span> <span class="n">new_step_size</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
             <span class="k">if</span> <span class="n">new_step_size_scaled</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">=</span> <span class="n">new_step_size_scaled</span>
 
@@ -352,7 +373,7 @@
 
         <span class="n">format_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">format_type</span> <span class="o">==</span> <span class="s1">&#39;Float&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">format_type</span> <span class="o">==</span> <span class="s2">&quot;Float&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
@@ -437,6 +458,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the limits and value labels with the correct values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">def</span> <span class="nf">set_label</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">label_widget</span><span class="p">,</span> <span class="n">exp_format</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">label_widget</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -444,7 +466,7 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">exp_format</span><span class="p">:</span>
                     <span class="n">label_widget</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;%.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;E&#39;</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;%.&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;E&quot;</span>
                     <span class="n">text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">%</span> <span class="n">Decimal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_units</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                         <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">)</span>
@@ -495,10 +517,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        new_indexes : list of floats</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">))</span> <span class="o">-</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">new_indexes_scaled</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span>
-                                        <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)))</span>
-        <span class="n">new_indexes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">index</span><span class="o">/</span><span class="n">scale</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">new_indexes_scaled</span><span class="p">]</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">))</span> <span class="o">-</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">new_indexes_scaled</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">*</span> <span class="n">scale</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">new_indexes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">index</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">new_indexes_scaled</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">new_indexes</span></div>
 
 <div class="viewcode-block" id="PyDMSlider.find_closest_slider_position_to_value"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.find_closest_slider_position_to_value">[docs]</a>    <span class="k">def</span> <span class="nf">find_closest_slider_position_to_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
@@ -621,7 +644,7 @@
 
 <div class="viewcode-block" id="PyDMSlider.set_enable_state"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.set_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Determines wether or not the widget must be enabled or not depending</span>
+<span class="sd">        Determines Whether or not the widget must be enabled or not depending</span>
 <span class="sd">        on the write access, connection state and presence of limits information</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Even though by documentation disabling parent QFrame (self), should disable internal</span>
@@ -694,18 +717,18 @@
 <span class="sd">        timespan.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">hasTracking</span><span class="p">()</span>
-        
+
     <span class="nd">@tracking</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setTracking</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
-    
+
 <div class="viewcode-block" id="PyDMSlider.hasTracking"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.hasTracking">[docs]</a>    <span class="k">def</span> <span class="nf">hasTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        An alternative function to get the tracking property, to match what</span>
 <span class="sd">        Qt provides for QSlider.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracking</span></div>
-    
+
 <div class="viewcode-block" id="PyDMSlider.setTracking"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.setTracking">[docs]</a>    <span class="k">def</span> <span class="nf">setTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        An alternative function to set the tracking property, to match what</span>
@@ -721,7 +744,7 @@
 <span class="sd">        don&#39;t want to accidentally change the slider as you are scrolling.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_mouse_wheel</span>
-    
+
     <span class="nd">@ignoreMouseWheel</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">ignoreMouseWheel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_mouse_wheel</span> <span class="o">=</span> <span class="n">checked</span>
@@ -809,7 +832,7 @@
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">userDefinedLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Wether or not to use limits defined by the user and not from the</span>
+<span class="sd">        Whether or not to use limits defined by the user and not from the</span>
 <span class="sd">        channel</span>
 
 <span class="sd">        Returns</span>
@@ -821,7 +844,7 @@
     <span class="nd">@userDefinedLimits</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">userDefinedLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_defined_limits</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Wether or not to use limits defined by the user and not from the</span>
+<span class="sd">        Whether or not to use limits defined by the user and not from the</span>
 <span class="sd">        channel</span>
 
 <span class="sd">        Parameters</span>

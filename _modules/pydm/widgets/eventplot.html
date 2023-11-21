@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.eventplot &mdash; PyDM 1.20.1 documentation</title>
+  <title>pydm.widgets.eventplot &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -120,7 +120,6 @@
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">.baseplot</span> <span class="kn">import</span> <span class="n">BasePlot</span><span class="p">,</span> <span class="n">NoDataError</span><span class="p">,</span> <span class="n">BasePlotCurveItem</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
-<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">remove_protocol</span>
 
 
 <span class="n">DEFAULT_BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">1200</span>
@@ -128,7 +127,7 @@
 
 
 <span class="k">class</span> <span class="nc">EventPlotCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
-    <span class="n">_channels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;channel&#39;</span><span class="p">)</span>
+    <span class="n">_channels</span> <span class="o">=</span> <span class="s2">&quot;channel&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">y_idx</span><span class="p">,</span> <span class="n">x_idx</span><span class="p">,</span> <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="kc">None</span>
@@ -136,18 +135,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">x_idx</span> <span class="o">=</span> <span class="n">x_idx</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_idx</span> <span class="o">=</span> <span class="n">y_idx</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">kws</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">kws</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">kws</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kws</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel_connected</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="n">DEFAULT_BUFFER_SIZE</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">),</span>
-                                    <span class="n">order</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">if</span> <span class="s1">&#39;symbol&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kws</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">kws</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;o&#39;</span>
-        <span class="k">if</span> <span class="s1">&#39;lineStyle&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kws</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">kws</span><span class="p">[</span><span class="s1">&#39;lineStyle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span>
+        <span class="k">if</span> <span class="s2">&quot;symbol&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kws</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">kws</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;o&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;lineStyle&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kws</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">kws</span><span class="p">[</span><span class="s2">&quot;lineStyle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">EventPlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannelAddress</span> <span class="o">=</span> <span class="n">bufferSizeChannelAddress</span>
 
@@ -161,11 +159,9 @@
 <span class="sd">            Representation with values for all properties</span>
 <span class="sd">            needed to recreate this curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dic_</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">),</span>
-                            <span class="p">(</span><span class="s2">&quot;y_idx&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_idx</span><span class="p">),</span>
-                            <span class="p">(</span><span class="s2">&quot;x_idx&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_idx</span><span class="p">)])</span>
+        <span class="n">dic_</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;y_idx&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_idx</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x_idx&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_idx</span><span class="p">)])</span>
         <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">EventPlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
-        <span class="n">dic_</span><span class="p">[</span><span class="s1">&#39;buffer_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getBufferSize</span><span class="p">()</span>
+        <span class="n">dic_</span><span class="p">[</span><span class="s2">&quot;buffer_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getBufferSize</span><span class="p">()</span>
         <span class="n">dic_</span><span class="p">[</span><span class="s2">&quot;bufferSizeChannelAddress&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannelAddress</span>
         <span class="k">return</span> <span class="n">dic_</span>
 
@@ -196,9 +192,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span>
-            <span class="n">address</span><span class="o">=</span><span class="n">new_address</span><span class="p">,</span>
-            <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span>
-            <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveValue</span><span class="p">)</span>
+            <span class="n">address</span><span class="o">=</span><span class="n">new_address</span><span class="p">,</span> <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveValue</span>
+        <span class="p">)</span>
 
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">connectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
@@ -220,8 +215,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_idx</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_idx</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_idx</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot; The x_idx and y_idx typing is made this late so that macros can</span>
-<span class="sd">            can be used alongside regular indexing. &quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;The x_idx and y_idx typing is made this late so that macros can</span>
+<span class="sd">            can be used alongside regular indexing.&quot;&quot;&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_idx</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_idx</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_idx</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_idx</span><span class="p">:</span>
@@ -235,8 +230,7 @@
 
     <span class="k">def</span> <span class="nf">initialize_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">),</span>
-                                    <span class="n">order</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">getBufferSize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span><span class="p">)</span>
@@ -282,7 +276,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span>
             <span class="n">address</span><span class="o">=</span><span class="n">new_address</span><span class="p">,</span>
             <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeConnectionStateChanged</span><span class="p">,</span>
-            <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannelValueReceiver</span><span class="p">)</span>
+            <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannelValueReceiver</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
 
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
@@ -310,8 +305,10 @@
 <span class="sd">        Called by the curve&#39;s parent plot whenever the curve needs to be</span>
 <span class="sd">        re-drawn with new data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
-                     <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
+            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">limits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -324,10 +321,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">NoDataError</span><span class="p">(</span><span class="s2">&quot;Curve has no data, cannot determine limits.&quot;</span><span class="p">)</span>
-        <span class="n">x_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span>
-        <span class="n">y_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:]</span>
-        <span class="k">return</span> <span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">x_data</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">x_data</span><span class="p">))),</span>
-                <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">y_data</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">y_data</span><span class="p">))))</span>
+        <span class="n">x_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span>
+        <span class="n">y_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">x_data</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">x_data</span><span class="p">))),</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">y_data</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">y_data</span><span class="p">))))</span>
 
     <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">]</span>
@@ -337,7 +333,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PyDMEventPlot is a widget to plot one scalar value against another.</span>
 <span class="sd">    All of the values arrive in a single event-built array, and indices are</span>
-<span class="sd">    used to identify which values to plot.  Multiple scalar pairs can be </span>
+<span class="sd">    used to identify which values to plot.  Multiple scalar pairs can be</span>
 <span class="sd">    plotted on the same plot.  Each pair has a buffer which stores previous</span>
 <span class="sd">    values.  All values in the buffer are drawn.  The buffer size for each</span>
 <span class="sd">    pair is user configurable.</span>
@@ -372,8 +368,8 @@
 <span class="sd">        The background color for the plot. Accepts any arguments that</span>
 <span class="sd">        pyqtgraph.mkColor will accept.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_x_indices</span><span class="o">=</span><span class="p">[],</span> <span class="n">init_y_indices</span><span class="o">=</span><span class="p">[],</span>
-                 <span class="n">background</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_x_indices</span><span class="o">=</span><span class="p">[],</span> <span class="n">init_y_indices</span><span class="o">=</span><span class="p">[],</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEventPlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="p">)</span>
         <span class="c1"># If the user supplies a single integer instead of a list,</span>
         <span class="c1"># wrap it in a list.</span>
@@ -384,19 +380,17 @@
         <span class="k">if</span> <span class="n">init_y_indices</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">init_y_indices</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">init_x_indices</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_x_indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">init_x_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span>
-                                                   <span class="nb">len</span><span class="p">(</span><span class="n">init_y_indices</span><span class="p">)))</span>
+            <span class="n">init_x_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_y_indices</span><span class="p">)))</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_x_indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">init_x_indices</span> <span class="o">=</span> <span class="n">init_x_indices</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">init_y_indices</span><span class="p">)</span>
+            <span class="n">init_x_indices</span> <span class="o">=</span> <span class="n">init_x_indices</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_y_indices</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_x_indices</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_y_indices</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If lists are provided for both X and Y &quot;</span> <span class="o">+</span>
-                             <span class="s2">&quot;indices, they must be the same length.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If lists are provided for both X and Y &quot;</span> <span class="o">+</span> <span class="s2">&quot;indices, they must be the same length.&quot;</span><span class="p">)</span>
         <span class="c1"># self.index_pairs is an ordered dictionary that is keyed on a</span>
         <span class="c1"># (x_idx, y_idx) tuple, with EventPlotCurveItem values.</span>
         <span class="c1"># It gets populated in self.addChannel().</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index_pairs</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="n">init_index_pairs</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">init_x_indices</span><span class="p">,</span> <span class="n">init_y_indices</span><span class="p">)</span>
-        <span class="k">for</span> <span class="p">(</span><span class="n">x_idx</span><span class="p">,</span> <span class="n">y_idx</span><span class="p">)</span> <span class="ow">in</span> <span class="n">init_index_pairs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">x_idx</span><span class="p">,</span> <span class="n">y_idx</span> <span class="ow">in</span> <span class="n">init_index_pairs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span> <span class="n">y_idx</span><span class="o">=</span><span class="n">y_idx</span><span class="p">,</span> <span class="n">x_idx</span><span class="o">=</span><span class="n">x_idx</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -405,10 +399,21 @@
         <span class="c1"># This function gets called by PyDMTimePlot&#39;s designer plugin.</span>
         <span class="k">pass</span>
 
-<div class="viewcode-block" id="PyDMEventPlot.addChannel"><a class="viewcode-back" href="../../../widgets/event_plot.html#pydm.widgets.eventplot.PyDMEventPlot.addChannel">[docs]</a>    <span class="k">def</span> <span class="nf">addChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineStyle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lineWidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">symbolSize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">yAxisName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEventPlot.addChannel"><a class="viewcode-back" href="../../../widgets/event_plot.html#pydm.widgets.eventplot.PyDMEventPlot.addChannel">[docs]</a>    <span class="k">def</span> <span class="nf">addChannel</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">y_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lineStyle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lineWidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+        <span class="n">symbolSize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">buffer_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">yAxisName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a new curve to the plot.  In addition to the arguments below,</span>
 <span class="sd">        all other keyword arguments are passed to the underlying</span>
@@ -445,26 +450,31 @@
 <span class="sd">            doesn&#39;t yet exist</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plot_opts</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span>
+        <span class="n">plot_opts</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span>
         <span class="k">if</span> <span class="n">symbolSize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbolSize</span>
+            <span class="n">plot_opts</span><span class="p">[</span><span class="s2">&quot;symbolSize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbolSize</span>
         <span class="k">if</span> <span class="n">lineStyle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;lineStyle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineStyle</span>
+            <span class="n">plot_opts</span><span class="p">[</span><span class="s2">&quot;lineStyle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineStyle</span>
         <span class="k">if</span> <span class="n">lineWidth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">plot_opts</span><span class="p">[</span><span class="s1">&#39;lineWidth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineWidth</span>
-        <span class="n">curve</span> <span class="o">=</span> <span class="n">EventPlotCurveItem</span><span class="p">(</span><span class="n">addr</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
-                                   <span class="n">y_idx</span><span class="o">=</span><span class="n">y_idx</span><span class="p">,</span>
-                                   <span class="n">x_idx</span><span class="o">=</span><span class="n">x_idx</span><span class="p">,</span>
-                                   <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-                                   <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
-                                   <span class="n">yAxisName</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">,</span>
-                                   <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="n">bufferSizeChannelAddress</span><span class="p">,</span>
-                                   <span class="o">**</span><span class="n">plot_opts</span><span class="p">)</span>
+            <span class="n">plot_opts</span><span class="p">[</span><span class="s2">&quot;lineWidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineWidth</span>
+        <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createCurveItem</span><span class="p">(</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
+            <span class="n">y_idx</span><span class="o">=</span><span class="n">y_idx</span><span class="p">,</span>
+            <span class="n">x_idx</span><span class="o">=</span><span class="n">x_idx</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">yAxisName</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">,</span>
+            <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="n">bufferSizeChannelAddress</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">plot_opts</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">buffer_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">curve</span><span class="o">.</span><span class="n">setBufferSize</span><span class="p">(</span><span class="n">buffer_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index_pairs</span><span class="p">[(</span><span class="n">x_idx</span><span class="p">,</span> <span class="n">y_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="n">curve</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">curve_color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">y_axis_name</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">)</span>
         <span class="n">curve</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_needs_redraw</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">createCurveItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">EventPlotCurveItem</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEventPlot.removeChannel"><a class="viewcode-back" href="../../../widgets/event_plot.html#pydm.widgets.eventplot.PyDMEventPlot.removeChannel">[docs]</a>    <span class="k">def</span> <span class="nf">removeChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -537,19 +547,23 @@
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clearCurves</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">new_list</span><span class="p">:</span>
-            <span class="n">color</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">],</span>
-                            <span class="n">y_idx</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;y_idx&#39;</span><span class="p">],</span> <span class="n">x_idx</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;x_idx&#39;</span><span class="p">],</span>
-                            <span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
-                            <span class="n">lineStyle</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lineStyle&#39;</span><span class="p">),</span>
-                            <span class="n">lineWidth</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lineWidth&#39;</span><span class="p">),</span>
-                            <span class="n">symbol</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbol&#39;</span><span class="p">),</span>
-                            <span class="n">symbolSize</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbolSize&#39;</span><span class="p">),</span>
-                            <span class="n">buffer_size</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;buffer_size&#39;</span><span class="p">),</span>
-                            <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bufferSizeChannelAddress&#39;</span><span class="p">),</span>
-                            <span class="n">yAxisName</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;yAxisName&#39;</span><span class="p">))</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span>
+                <span class="n">channel</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">],</span>
+                <span class="n">y_idx</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;y_idx&quot;</span><span class="p">],</span>
+                <span class="n">x_idx</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;x_idx&quot;</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                <span class="n">lineStyle</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lineStyle&quot;</span><span class="p">),</span>
+                <span class="n">lineWidth</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lineWidth&quot;</span><span class="p">),</span>
+                <span class="n">symbol</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">),</span>
+                <span class="n">symbolSize</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;symbolSize&quot;</span><span class="p">),</span>
+                <span class="n">buffer_size</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;buffer_size&quot;</span><span class="p">),</span>
+                <span class="n">bufferSizeChannelAddress</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bufferSizeChannelAddress&quot;</span><span class="p">),</span>
+                <span class="n">yAxisName</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;yAxisName&quot;</span><span class="p">),</span>
+            <span class="p">)</span></div>
 
     <span class="n">curves</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getCurves</span><span class="p">,</span> <span class="n">setCurves</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -563,42 +577,64 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">chans</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">chans</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">channel</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">])</span>
-        <span class="n">chans</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">bufferSizeChannel</span>
-                      <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span>
-                      <span class="k">if</span> <span class="n">curve</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
+        <span class="n">chans</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">curve</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span> <span class="k">if</span> <span class="n">curve</span><span class="o">.</span><span class="n">bufferSizeChannel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">chans</span></div>
 
     <span class="c1"># The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange,</span>
     <span class="c1"># and maxYRange are all defined in BasePlot, but we don&#39;t expose them as</span>
     <span class="c1"># properties there, because not all plot subclasses necessarily want</span>
     <span class="c1"># them to be user-configurable in Designer.</span>
-    <span class="n">autoRangeX</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeX</span><span class="p">,</span>
-                          <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeX</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeX</span><span class="p">,</span>
-                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">autoRangeX</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span>
+        <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeX</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeX</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeX</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">Whether or not the X-axis automatically rescales to fit the data.</span>
-<span class="s2">If true, the values in minXRange and maxXRange are ignored.&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">If true, the values in minXRange and maxXRange are ignored.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">minXRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinXRange</span><span class="p">,</span>
-                         <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinXRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Minimum X-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">minXRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinXRange</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinXRange</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Minimum X-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">maxXRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxXRange</span><span class="p">,</span>
-                         <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxXRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Maximum X-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">maxXRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxXRange</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxXRange</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Maximum X-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">autoRangeY</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeY</span><span class="p">,</span>
-                          <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeY</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeY</span><span class="p">,</span>
-                          <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">autoRangeY</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span>
+        <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">getAutoRangeY</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">setAutoRangeY</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">resetAutoRangeY</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">Whether or not the Y-axis automatically rescales to fit the data.</span>
-<span class="s2">If true, the values in minYRange and maxYRange are ignored.&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">If true, the values in minYRange and maxYRange are ignored.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">minYRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinYRange</span><span class="p">,</span>
-                         <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinYRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Minimum Y-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">minYRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMinYRange</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMinYRange</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Minimum Y-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">maxYRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxYRange</span><span class="p">,</span>
-                         <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxYRange</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Maximum Y-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">)</span></div>
+    <span class="n">maxYRange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span>
+        <span class="nb">float</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">getMaxYRange</span><span class="p">,</span>
+        <span class="n">BasePlot</span><span class="o">.</span><span class="n">setMaxYRange</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Maximum Y-axis value visible on the plot.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
 </pre></div>
 
            </div>

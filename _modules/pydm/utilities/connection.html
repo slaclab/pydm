@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.utilities.colors &mdash; PyDM 1.21.0 documentation</title>
+  <title>pydm.utilities.connection &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -102,7 +102,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">pydm.utilities.colors</li>
+      <li class="breadcrumb-item active">pydm.utilities.connection</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -111,81 +111,68 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pydm.utilities.colors</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">os</span>
+  <h1>Source code for pydm.utilities.connection</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QWidget</span>
 
-<span class="n">svg_color_to_hex_map</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">hex_to_svg_color_map</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s2">&quot;hex2color.pkl&quot;</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">hex_to_svg_color_map</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s2">&quot;color2hex.pkl&quot;</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">svg_color_to_hex_map</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="svg_color_from_hex"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.colors.svg_color_from_hex">[docs]</a><span class="k">def</span> <span class="nf">svg_color_from_hex</span><span class="p">(</span><span class="n">hex_string</span><span class="p">,</span> <span class="n">hex_on_fail</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_change_connection_status</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the SVG color based on its HEX equivalent.</span>
+<span class="sd">    Connect or disconnect the inner channels of widgets on the</span>
+<span class="sd">    given widget based on the status parameter.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    hex_string: str</span>
-<span class="sd">        The color code in hex. E.g. #000000</span>
+<span class="sd">    widget : QWidget</span>
+<span class="sd">        The widget which will be iterated over for channel connection.</span>
 
-<span class="sd">    hex_on_fail: bool, Optional</span>
-<span class="sd">        Whether or not to return the `hex_string` when an invalid color is submitted.</span>
-<span class="sd">        Default is False.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    str</span>
-<span class="sd">        The SVG color string.</span>
+<span class="sd">    status : bool</span>
+<span class="sd">        If True, will call connect on the channels otherwise it will call</span>
+<span class="sd">        disconnect.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">hex_on_fail</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">hex_to_svg_color_map</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">hex_to_svg_color_map</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
-    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">hex_string</span></div>
+    <span class="n">widgets</span> <span class="o">=</span> <span class="p">[</span><span class="n">widget</span><span class="p">]</span>
+    <span class="n">widgets</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">child_widget</span> <span class="ow">in</span> <span class="n">widgets</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">child_widget</span><span class="p">,</span> <span class="s2">&quot;channels&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">child_widget</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">child_widget</span><span class="o">.</span><span class="n">channels</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+                        <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">channel</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+            <span class="k">continue</span>
 
 
-<div class="viewcode-block" id="hex_from_svg_color"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.colors.hex_from_svg_color">[docs]</a><span class="k">def</span> <span class="nf">hex_from_svg_color</span><span class="p">(</span><span class="n">color_string</span><span class="p">):</span>
+<div class="viewcode-block" id="establish_widget_connections"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.establish_widget_connections">[docs]</a><span class="k">def</span> <span class="nf">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the HEX color based on its SVG equivalent.</span>
+<span class="sd">    Connect the inner channels of widgets on the given widget.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    color_string: str</span>
-<span class="sd">        The SVG color string. E.g. black</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    str</span>
-<span class="sd">        The HEX color string.</span>
+<span class="sd">    widget : QWidget</span>
+<span class="sd">        The widget which will be iterated over for channel connection.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">svg_color_to_hex_map</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">color_string</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span></div>
+    <span class="n">_change_connection_status</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
 
 
-<span class="n">default_colors</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;white&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;red&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;dodgerblue&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;forestgreen&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;fuchsia&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;turquoise&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;deeppink&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;lime&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;whitesmoke&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;beige&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;purple&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;teal&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;darksalmon&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;brown&quot;</span><span class="p">,</span>
-<span class="p">]</span>
+<div class="viewcode-block" id="close_widget_connections"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.close_widget_connections">[docs]</a><span class="k">def</span> <span class="nf">close_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Disconnect the inner channels of widgets on the given widget.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    widget : QWidget</span>
+<span class="sd">        The widget which will be iterated over for channel disconnection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_change_connection_status</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

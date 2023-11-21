@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Utilities &mdash; PyDM 1.20.1 documentation</title>
+  <title>Utilities &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -69,22 +69,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Utilities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-pydm.utilities">General</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.copy_to_clipboard"><code class="docutils literal notranslate"><span class="pre">copy_to_clipboard()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.find_display_in_path"><code class="docutils literal notranslate"><span class="pre">find_display_in_path()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.find_file"><code class="docutils literal notranslate"><span class="pre">find_file()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.get_clipboard"><code class="docutils literal notranslate"><span class="pre">get_clipboard()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.get_clipboard_modes"><code class="docutils literal notranslate"><span class="pre">get_clipboard_modes()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.get_clipboard_text"><code class="docutils literal notranslate"><span class="pre">get_clipboard_text()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.get_designer_current_path"><code class="docutils literal notranslate"><span class="pre">get_designer_current_path()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.import_module_by_filename"><code class="docutils literal notranslate"><span class="pre">import_module_by_filename()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.is_pydm_app"><code class="docutils literal notranslate"><span class="pre">is_pydm_app()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.is_qt_designer"><code class="docutils literal notranslate"><span class="pre">is_qt_designer()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.is_ssh_session"><code class="docutils literal notranslate"><span class="pre">is_ssh_session()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.log_failures"><code class="docutils literal notranslate"><span class="pre">log_failures()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.only_main_thread"><code class="docutils literal notranslate"><span class="pre">only_main_thread()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.path_info"><code class="docutils literal notranslate"><span class="pre">path_info()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.setup_renderer"><code class="docutils literal notranslate"><span class="pre">setup_renderer()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.which"><code class="docutils literal notranslate"><span class="pre">which()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.IconFont"><code class="docutils literal notranslate"><span class="pre">IconFont</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.utilities.IconFont.font"><code class="docutils literal notranslate"><span class="pre">IconFont.font()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.utilities.IconFont.get_char_for_name"><code class="docutils literal notranslate"><span class="pre">IconFont.get_char_for_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.utilities.IconFont.icon"><code class="docutils literal notranslate"><span class="pre">IconFont.icon()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.utilities.IconFont.load_font"><code class="docutils literal notranslate"><span class="pre">IconFont.load_font()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.close_widget_connections"><code class="docutils literal notranslate"><span class="pre">close_widget_connections()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.convert"><code class="docutils literal notranslate"><span class="pre">convert()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.establish_widget_connections"><code class="docutils literal notranslate"><span class="pre">establish_widget_connections()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.find_unit_options"><code class="docutils literal notranslate"><span class="pre">find_unit_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.find_unittype"><code class="docutils literal notranslate"><span class="pre">find_unittype()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.parsed_address"><code class="docutils literal notranslate"><span class="pre">parsed_address()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.protocol_and_address"><code class="docutils literal notranslate"><span class="pre">protocol_and_address()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pydm.utilities.remove_protocol"><code class="docutils literal notranslate"><span class="pre">remove_protocol()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#icons">Icons</a><ul>
@@ -168,38 +167,142 @@
 of protocol in a string, handling macro substitution in files, etc.</p>
 <section id="module-pydm.utilities">
 <span id="general"></span><h2>General<a class="headerlink" href="#module-pydm.utilities" title="Permalink to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.copy_to_clipboard">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">copy_to_clipboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#copy_to_clipboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.copy_to_clipboard" title="Permalink to this definition"></a></dt>
-<dd><p>Copy <code class="docutils literal notranslate"><span class="pre">text</span></code> to the clipboard.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydm.utilities.IconFont">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">IconFont</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.IconFont" title="Permalink to this definition"></a></dt>
+<dd><p>IconFont represents an icon font.  Users will generally want
+to use IconFont.icon() to get a QIcon object for the character they want.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.utilities.IconFont.font">
+<span class="sig-name descname"><span class="pre">font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QFont</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.font"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.IconFont.font" title="Permalink to this definition"></a></dt>
+<dd><p>Load the font at a given pixel size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The font, if available.  If a QApplication is not yet created,
+None will be returned.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>QtGui.QFont or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.utilities.IconFont.get_char_for_name">
+<span class="sig-name descname"><span class="pre">get_char_for_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.get_char_for_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.IconFont.get_char_for_name" title="Permalink to this definition"></a></dt>
+<dd><p>Get a character icon for the given name from the character map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The user-friendly icon name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Qt-facing icon text to use with the font.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.utilities.IconFont.icon">
+<span class="sig-name descname"><span class="pre">icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QIcon</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.icon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.IconFont.icon" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve the icon given a name and color.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>str</em>) – The text to copy to the clipboard.</p></li>
-<li><p><strong>quiet</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>keyword-only</em>) – If quiet is set, do not log the copied text.  Defaults to False.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The Icon string identifier.
+Icon strings can be found at: <a class="reference external" href="https://fontawesome.com/icons?d=gallery">https://fontawesome.com/icons?d=gallery</a></p></li>
+<li><p><strong>color</strong> (<em>QColor</em><em>, </em><em>Optional</em>) – The base color to use when constructing the Icon. Default is QColor(90, 90, 90).</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The desired Icon.  <code class="docutils literal notranslate"><span class="pre">None</span></code> if a QApplication is not yet available.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QIcon</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.utilities.IconFont.load_font">
+<span class="sig-name descname"><span class="pre">load_font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttf_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charmap_filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/iconfont.html#IconFont.load_font"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.IconFont.load_font" title="Permalink to this definition"></a></dt>
+<dd><p>Load font from <code class="docutils literal notranslate"><span class="pre">ttf_filename</span></code> with a mapping defined in
+<code class="docutils literal notranslate"><span class="pre">charmap_filename</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydm.utilities.close_widget_connections">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">close_widget_connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/connection.html#close_widget_connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.close_widget_connections" title="Permalink to this definition"></a></dt>
+<dd><p>Disconnect the inner channels of widgets on the given widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>widget</strong> (<em>QWidget</em>) – The widget which will be iterated over for channel disconnection.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.find_display_in_path">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">find_display_in_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#find_display_in_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.find_display_in_path" title="Permalink to this definition"></a></dt>
-<dd><p>Look for a display file in a given path.
-This is basically a wrapper on top of the <code class="docutils literal notranslate"><span class="pre">which</span></code>
-command defined below so we don’t need to keep redefining
-the <code class="docutils literal notranslate"><span class="pre">PYDM_DISPLAYS_PATH</span></code> variable.</p>
+<dt class="sig sig-object py" id="pydm.utilities.convert">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.convert" title="Permalink to this definition"></a></dt>
+<dd><p>Find the conversion rate of two different unit strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>file</strong> (<em>str</em>) – The file name.</p></li>
-<li><p><strong>mode</strong> (<em>int</em>) – The mode required for the file, defaults to os.F_OK | os.R_OK.
-Which ensure that the file exists and we can read it.</p></li>
-<li><p><strong>path</strong> (<em>str</em>) – The PATH string.</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – The current unit string</p></li>
+<li><p><strong>desired</strong> (<em>str</em>) – The desired unit string</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Returns the full path to the file or None in case it was not found.</p>
+<dd class="field-even"><p>The relation between unit and desired or None if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydm.utilities.establish_widget_connections">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">establish_widget_connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/connection.html#establish_widget_connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.establish_widget_connections" title="Permalink to this definition"></a></dt>
+<dd><p>Connect the inner channels of widgets on the given widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>widget</strong> (<em>QWidget</em>) – The widget which will be iterated over for channel connection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydm.utilities.find_unit_options">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">find_unit_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unit_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.find_unit_options" title="Permalink to this definition"></a></dt>
+<dd><p>Find the options for a given unit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>unit</strong> (<em>str</em>) – The unit string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The list of similar units in crescent order or None if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydm.utilities.find_unittype">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">find_unittype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/units.html#find_unittype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.find_unittype" title="Permalink to this definition"></a></dt>
+<dd><p>Find the type of a unit string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>unit</strong> (<em>str</em>) – The unit string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tp</strong> – The unit type name or None if not found.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
@@ -208,203 +311,15 @@ Which ensure that the file exists and we can read it.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.find_file">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">find_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_if_not_found</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#find_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.find_file" title="Permalink to this definition"></a></dt>
-<dd><p>Look for files at the search paths common to PyDM.</p>
-<p>The search order is as follows:</p>
-<ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">base_path</span></code> argument</p></li>
-<li><p>Qt Designer Path - the path for the current form as reported by the
-designer</p></li>
-<li><p>The current working directory</p></li>
-<li><p>Directories listed in <code class="docutils literal notranslate"><span class="pre">extra_path</span></code></p></li>
-<li><p>Directories listed in the environment variable <code class="docutils literal notranslate"><span class="pre">PYDM_DISPLAYS_PATH</span></code></p></li>
-</ul>
+<dt class="sig sig-object py" id="pydm.utilities.parsed_address">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">parsed_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#parsed_address"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.parsed_address" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the given address parsed into a 6-tuple. The parsing is done by urllib.parse.urlparse</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fname</strong> (<em>str</em>) – The file name. Environment variables, ~ and ~user constructs before
-search.</p></li>
-<li><p><strong>base_path</strong> (<em>str</em>) – The directory name of a file pathname from a display, if any</p></li>
-<li><p><strong>mode</strong> (<em>int</em>) – The mode required for the file, defaults to os.F_OK | os.R_OK.
-Which ensure that the file exists and we can read it.</p></li>
-<li><p><strong>extra_path</strong> (<em>list</em>) – Additional paths to look for file.</p></li>
-<li><p><strong>raise_if_not_found</strong> (<em>bool</em>) – Flag which if False will add a check that raises a FileNotFoundError
-instead of returning None when the file is not found.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>address</strong> (<em>str</em>) – The address from which to remove the address prefix.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>file_path</strong> – Returns the file path or None in case the file was not found</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.get_clipboard">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">get_clipboard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QClipboard</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities.html#get_clipboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.get_clipboard" title="Permalink to this definition"></a></dt>
-<dd><p>Get the clipboard instance. Requires a QApplication.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.get_clipboard_modes">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">get_clipboard_modes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/utilities.html#get_clipboard_modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.get_clipboard_modes" title="Permalink to this definition"></a></dt>
-<dd><p>Get the clipboard modes for the current platform.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Qt-specific modes to try for interacting with the clipboard.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list of int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.get_clipboard_text">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">get_clipboard_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/utilities.html#get_clipboard_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.get_clipboard_text" title="Permalink to this definition"></a></dt>
-<dd><p>Get <code class="docutils literal notranslate"><span class="pre">text</span></code> from the clipboard. If unavailable or unset, empty string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The clipboard text, if available.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.get_designer_current_path">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">get_designer_current_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#get_designer_current_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.get_designer_current_path" title="Permalink to this definition"></a></dt>
-<dd><p>Fetch the absolute path for the current active form at Qt Designer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – The absolute path for the current active form or None in case not
-available</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.import_module_by_filename">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">import_module_by_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_to_modules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">module</span></span></span><a class="reference internal" href="../_modules/pydm/utilities.html#import_module_by_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.import_module_by_filename" title="Permalink to this definition"></a></dt>
-<dd><p>For a given source filename, import it and search for objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_filename</strong> (<em>str</em>) – The source code filename.</p></li>
-<li><p><strong>add_to_modules</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>keyword-only</em>) – Add the imported module to <code class="docutils literal notranslate"><span class="pre">sys.modules</span></code>.  Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>module</strong> – The imported module.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>types.ModuleType</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.is_pydm_app">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">is_pydm_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_pydm_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.is_pydm_app" title="Permalink to this definition"></a></dt>
-<dd><p>Check whether or not <cite>QApplication.instance()</cite> is a PyDMApplication.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>app</strong> (<em>QApplication</em><em>, </em><em>Optional</em>) – The app to inspect. If no application is provided the current running <cite>QApplication</cite> will be queried.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if it is a PyDMApplication, False otherwise.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.is_qt_designer">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">is_qt_designer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_qt_designer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.is_qt_designer" title="Permalink to this definition"></a></dt>
-<dd><p>Check whether or not running inside Qt Designer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if inside Designer, False otherwise.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.is_ssh_session">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">is_ssh_session</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#is_ssh_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.is_ssh_session" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not this is a SSH session.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if it is a ssh session, False otherwise.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.log_failures">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">log_failures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explanation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Failed</span> <span class="pre">to</span> <span class="pre">run</span> <span class="pre">{func.__name__}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_traceback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#log_failures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.log_failures" title="Permalink to this definition"></a></dt>
-<dd><p>Decorator that wraps a function to be run.</p>
-<p>Exceptions raised while executing that function will be logged.
-In case of an exception, the wrapper will return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>logger</strong> (<em>logging.Logger</em>) – The logger instance to log messages to.</p></li>
-<li><p><strong>explanation</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl class="simple">
-<dt>The explanation message to include.  Format arguments include:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">func</span></code>, <code class="docutils literal notranslate"><span class="pre">args</span></code>, <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>, and the exception <code class="docutils literal notranslate"><span class="pre">ex</span></code>.</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>include_traceback</strong> (<em>bool</em><em>, </em><em>optional</em>) – Include traceback information in the log message.</p></li>
-<li><p><strong>level</strong> (<em>int</em><em>, </em><em>optional</em>) – Logging level to use.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.only_main_thread">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">only_main_thread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#only_main_thread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.only_main_thread" title="Permalink to this definition"></a></dt>
-<dd><p>Decorator that wraps a function which should only be executed at the Qt
-main thread.</p>
-<p>The decorator will log an error message and raise a RuntimeError if the
-decorated function is invoked from a thread other than the Qt main one.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>func</strong> (<em>callable</em>) – The function to wrap</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>wrapper</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.path_info">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">path_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#path_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.path_info" title="Permalink to this definition"></a></dt>
-<dd><p>Retrieve basic information about the given path.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path_str</strong> (<em>str</em>) – The path from which to extract information.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>base dir, file name, list of args</p>
+<dd class="field-even"><p><strong>parsed_address</strong></p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
@@ -413,24 +328,35 @@ decorated function is invoked from a thread other than the Qt main one.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.setup_renderer">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">setup_renderer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#setup_renderer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.setup_renderer" title="Permalink to this definition"></a></dt>
-<dd><p>This utility function reverts the renderer to Software rendering if it is
-running in a SSH session.</p>
+<dt class="sig sig-object py" id="pydm.utilities.protocol_and_address">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">protocol_and_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#protocol_and_address"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.protocol_and_address" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the Protocol and Address pieces of a Channel Address</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>address</strong> (<em>str</em>) – The address from which to remove the address prefix.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>protocol</strong> (<em>str</em>) – The protocol used. None in case the protocol is not specified.</p></li>
+<li><p><strong>addr</strong> (<em>str</em>) – The piece of the address without the protocol.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pydm.utilities.which">
-<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">which</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities.html#which"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.which" title="Permalink to this definition"></a></dt>
-<dd><p>Given a command, mode, and a PATH string, return the path which
-conforms to the given mode on the PATH, or None if there is no such
-file.
-<cite>mode</cite> defaults to os.F_OK | os.X_OK. <cite>path</cite> defaults to the result
-of os.environ.get(“PATH”), or can be overridden with a custom search
-path.
-Note: This function was backported from the Python 3 source code and modified
-to deal with the case in which we WANT to look at the path even with a relative
-path.</p>
+<dt class="sig sig-object py" id="pydm.utilities.remove_protocol">
+<span class="sig-prename descclassname"><span class="pre">pydm.utilities.</span></span><span class="sig-name descname"><span class="pre">remove_protocol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/utilities/remove_protocol.html#remove_protocol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.utilities.remove_protocol" title="Permalink to this definition"></a></dt>
+<dd><p>Removes the first occurrence of the protocol string (‘://’) from the string <cite>addr</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>addr</strong> (<em>str</em>) – The address from which to remove the address prefix.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

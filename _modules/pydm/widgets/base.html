@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.base &mdash; PyDM 1.20.1 documentation</title>
+  <title>pydm.widgets.base &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -122,8 +122,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QApplication</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QGraphicsOpacityEffect</span><span class="p">,</span>
-                            <span class="n">QToolTip</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QGraphicsOpacityEffect</span><span class="p">,</span> <span class="n">QToolTip</span><span class="p">,</span> <span class="n">QWidget</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QIcon</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QEvent</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
@@ -233,7 +232,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">widgets</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">QWidget</span><span class="p">))</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="c1"># If we fail it means that widget is probably destroyed</span>
         <span class="k">return</span>
     <span class="k">for</span> <span class="n">child_widget</span> <span class="ow">in</span> <span class="n">widgets</span><span class="p">:</span>
@@ -243,7 +242,8 @@
             <span class="n">child_widget</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="c1"># Widget was probably destroyed</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Error while refreshing stylesheet. </span><span class="si">%s</span><span class="s1"> &#39;</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Error while refreshing stylesheet. </span><span class="si">%s</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
+
 
 <span class="k">class</span> <span class="nc">PyDMPrimitiveWidget</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -251,11 +251,12 @@
 <span class="sd">    All Widget classes from PyDMWidget will be True for</span>
 <span class="sd">    isinstance(obj, PyDMPrimitiveWidget)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">DEFAULT_RULE_PROPERTY</span> <span class="o">=</span> <span class="s2">&quot;Visible&quot;</span>
     <span class="n">RULE_PROPERTIES</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;Enable&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setEnabled&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span>
-        <span class="s1">&#39;Visible&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setVisible&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span>
-        <span class="s1">&#39;Opacity&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;set_opacity&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+        <span class="s2">&quot;Enable&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;setEnabled&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span>
+        <span class="s2">&quot;Visible&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;setVisible&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span>
+        <span class="s2">&quot;Opacity&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;set_opacity&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
     <span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -313,12 +314,12 @@
 <span class="sd">        EDM. If the QWidget does not have a valid PyDMChannel nothing will be</span>
 <span class="sd">        displayed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">channels_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;channels&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">channels_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;channels&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">channels_method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="n">channels</span> <span class="o">=</span> <span class="n">channels_method</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">channels</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Widget has no channels to display tooltip&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Widget has no channels to display tooltip&quot;</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="n">addrs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -339,7 +340,7 @@
         <span class="n">clipboard</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span>
 
         <span class="n">mode</span> <span class="o">=</span> <span class="n">clipboard</span><span class="o">.</span><span class="n">Clipboard</span>
-        <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;Linux&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Linux&quot;</span><span class="p">:</span>
             <span class="c1"># Mode Selection is only valid for X11.</span>
             <span class="n">mode</span> <span class="o">=</span> <span class="n">clipboard</span><span class="o">.</span><span class="n">Selection</span>
 
@@ -393,13 +394,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;property&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;property&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">prop</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Error at Rule: </span><span class="si">%s</span><span class="s1">. </span><span class="si">%s</span><span class="s1"> is not part of this widget properties.&#39;</span><span class="p">,</span>
-                         <span class="n">name</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error at Rule: </span><span class="si">%s</span><span class="s2">. </span><span class="si">%s</span><span class="s2"> is not part of this widget properties.&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="n">method_name</span><span class="p">,</span> <span class="n">data_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span>
@@ -417,10 +417,14 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
 
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Error at Rule: </span><span class="si">%s</span><span class="s1">. Could not execute method </span><span class="si">%s</span><span class="s1"> with &#39;</span>
-                         <span class="s1">&#39;value </span><span class="si">%s</span><span class="s1"> and type as </span><span class="si">%s</span><span class="s1">.&#39;</span><span class="p">,</span>
-                         <span class="n">name</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">data_type</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Error at Rule: </span><span class="si">%s</span><span class="s2">. Could not execute method </span><span class="si">%s</span><span class="s2"> with &quot;</span> <span class="s2">&quot;value </span><span class="si">%s</span><span class="s2"> and type as </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span>
+                <span class="n">name</span><span class="p">,</span>
+                <span class="n">method_name</span><span class="p">,</span>
+                <span class="n">value</span><span class="p">,</span>
+                <span class="n">data_type</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="p">)</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">rules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -453,8 +457,8 @@
                 <span class="n">rules_list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">rules_list</span><span class="p">:</span>
                     <span class="n">RulesDispatcher</span><span class="p">()</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules_list</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Invalid format for Rules&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">JSONDecodeError</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Invalid format for Rules&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">find_parent_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">widget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
@@ -466,7 +470,8 @@
 
 
 <span class="k">class</span> <span class="nc">AlarmLimit</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; An enum for holding values corresponding to the EPICS alarm limits &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An enum for holding values corresponding to the EPICS alarm limits&quot;&quot;&quot;</span>
+
     <span class="n">HIHI</span> <span class="o">=</span> <span class="s2">&quot;HIHI&quot;</span>
     <span class="n">HIGH</span> <span class="o">=</span> <span class="s2">&quot;HIGH&quot;</span>
     <span class="n">LOW</span> <span class="o">=</span> <span class="s2">&quot;LOW&quot;</span>
@@ -474,7 +479,6 @@
 
 
 <span class="k">class</span> <span class="nc">TextFormatter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
     <span class="n">default_precision_from_pv</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -596,7 +600,6 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
-
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">showUnits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -655,9 +658,7 @@
 <span class="sd">            True means that the widget will use the precision information</span>
 <span class="sd">            from the Channel if available.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_precision_from_pv</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_precision_from_pv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_precision_from_pv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_precision_from_pv</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_precision_from_pv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_precision_from_pv</span>
 
     <span class="nd">@precisionFromPV</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">precisionFromPV</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -698,10 +699,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span>
 
 
-<span class="n">_positionRuleProperties</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;Position - X&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setX&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
-    <span class="s1">&#39;Position - Y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setY&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
-    <span class="p">}</span>
+<span class="n">_positionRuleProperties</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Position - X&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;setX&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="s2">&quot;Position - Y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;setY&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">]}</span>
+
 
 <div class="viewcode-block" id="PyDMWidget"><a class="viewcode-back" href="../../../widgets/PyDMWidget.html#pydm.widgets.base.PyDMWidget">[docs]</a><span class="k">class</span> <span class="nc">PyDMWidget</span><span class="p">(</span><span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_positionRuleProperties</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -715,6 +714,7 @@
 <span class="sd">        The channel to be used by the widget.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Alarm types</span>
     <span class="n">ALARM_NONE</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">ALARM_MINOR</span> <span class="o">=</span> <span class="mi">1</span>
@@ -750,19 +750,21 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_tool_tip</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tool_tip_substrings</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tool_tip_channel_table</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s1">&#39;_channel&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;connection&quot;</span><span class="p">:</span> <span class="s1">&#39;_connected&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;SEVR&quot;</span><span class="p">:</span> <span class="s1">&#39;_alarm_state&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;enum_strings&quot;</span><span class="p">:</span> <span class="s1">&#39;enum_strings&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;EGU&quot;</span><span class="p">:</span> <span class="s1">&#39;_unit&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;PREC&quot;</span><span class="p">:</span> <span class="s1">&#39;_prec&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;DRVH&quot;</span><span class="p">:</span> <span class="s1">&#39;_upper_ctrl_limit&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;DRVL&quot;</span><span class="p">:</span> <span class="s1">&#39;_lower_ctrl_limit&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;HIHI&quot;</span><span class="p">:</span> <span class="s1">&#39;upper_alarm_limit&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;LOLO&quot;</span><span class="p">:</span> <span class="s1">&#39;lower_alarm_limit&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;HIGH&quot;</span><span class="p">:</span> <span class="s1">&#39;upper_warning_limit&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;LOW&quot;</span><span class="p">:</span> <span class="s1">&#39;lower_warning_limit&#39;</span><span class="p">,</span>
-                                        <span class="s2">&quot;TIME&quot;</span><span class="p">:</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tool_tip_channel_table</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;_channel&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;_connected&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SEVR&quot;</span><span class="p">:</span> <span class="s2">&quot;_alarm_state&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;enum_strings&quot;</span><span class="p">:</span> <span class="s2">&quot;enum_strings&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;EGU&quot;</span><span class="p">:</span> <span class="s2">&quot;_unit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;PREC&quot;</span><span class="p">:</span> <span class="s2">&quot;_prec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRVH&quot;</span><span class="p">:</span> <span class="s2">&quot;_upper_ctrl_limit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DRVL&quot;</span><span class="p">:</span> <span class="s2">&quot;_lower_ctrl_limit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;HIHI&quot;</span><span class="p">:</span> <span class="s2">&quot;upper_alarm_limit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;LOLO&quot;</span><span class="p">:</span> <span class="s2">&quot;lower_alarm_limit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;HIGH&quot;</span><span class="p">:</span> <span class="s2">&quot;upper_warning_limit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;LOW&quot;</span><span class="p">:</span> <span class="s2">&quot;lower_warning_limit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;TIME&quot;</span><span class="p">:</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
 
         <span class="c1"># If this label is inside a PyDMApplication (not Designer) start it in</span>
         <span class="c1"># the disconnected state.</span>
@@ -774,9 +776,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ALARM_DISCONNECTED</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">widget_destroyed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">widget_destroyed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
 
 <div class="viewcode-block" id="PyDMWidget.widget_ctx_menu"><a class="viewcode-back" href="../../../widgets/PyDMWidget.html#pydm.widgets.base.PyDMWidget.widget_ctx_menu">[docs]</a>    <span class="k">def</span> <span class="nf">widget_ctx_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -803,7 +803,7 @@
         <span class="k">if</span> <span class="n">menu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;channels&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels_for_tools</span><span class="p">(),</span> <span class="s1">&#39;sender&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">}</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels_for_tools</span><span class="p">(),</span> <span class="s2">&quot;sender&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="p">}</span>
         <span class="n">tools</span><span class="o">.</span><span class="n">assemble_tools_menu</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">widget_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Add a view help action if the parent display has an associated help file</span>
@@ -811,7 +811,7 @@
         <span class="k">if</span> <span class="n">parent_display</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">parent_display</span><span class="o">.</span><span class="n">help_window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">actions</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
-            <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s1">&#39;View Help for this Display&#39;</span><span class="p">,</span> <span class="n">parent_display</span><span class="o">.</span><span class="n">show_help</span><span class="p">)</span>
+            <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s2">&quot;View Help for this Display&quot;</span><span class="p">,</span> <span class="n">parent_display</span><span class="o">.</span><span class="n">show_help</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">menu</span></div>
 
@@ -824,7 +824,7 @@
 <span class="sd">        ev : QEvent</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_context_menu</span><span class="p">()</span>
-        <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">()))</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">pos</span><span class="p">()))</span>
         <span class="k">del</span> <span class="n">menu</span></div>
 
 <div class="viewcode-block" id="PyDMWidget.init_for_designer"><a class="viewcode-back" href="../../../widgets/PyDMWidget.html#pydm.widgets.base.PyDMWidget.init_for_designer">[docs]</a>    <span class="k">def</span> <span class="nf">init_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1258,12 +1258,13 @@
             <span class="k">return</span> <span class="n">new_tip</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tool_tip_substrings</span><span class="p">:</span>
-            <span class="n">list_of_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">substring</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">substring</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="s1">&#39;\$\(&#39;</span><span class="p">,</span> <span class="n">new_tip</span><span class="p">)]</span>
+            <span class="n">list_of_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">substring</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">substring</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="s2">&quot;\$\(&quot;</span><span class="p">,</span> <span class="n">new_tip</span><span class="p">)]</span>
             <span class="n">tool_tip_substrings</span> <span class="o">=</span> <span class="p">[]</span>
 
             <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">list_of_attributes</span><span class="p">:</span>
-                <span class="n">tool_tip_substrings</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">new_tip</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">2</span><span class="p">:</span><span class="n">new_tip</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">)],</span>
-                                            <span class="n">new_tip</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">new_tip</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]])</span>
+                <span class="n">tool_tip_substrings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">new_tip</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span> <span class="p">:</span> <span class="n">new_tip</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">)],</span> <span class="n">new_tip</span><span class="p">[</span><span class="n">index</span> <span class="p">:</span> <span class="n">new_tip</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
+                <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_tool_tip_substrings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tool_tip_substrings</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1271,9 +1272,9 @@
 
         <span class="k">if</span> <span class="n">tool_tip_substrings</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tool_tip_substrings</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span>
                     <span class="n">value_of_attribute</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span>
-                <span class="k">elif</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;pv_value&#39;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;pv_value&quot;</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="n">value_of_attribute</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -1324,45 +1325,46 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_channel</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMWidget.set_channel"><a class="viewcode-back" href="../../../widgets/PyDMWidget.html#pydm.widgets.base.PyDMWidget.set_channel">[docs]</a>    <span class="k">def</span> <span class="nf">set_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; A setter method without a pyqt decorator so subclasses can use this functionality &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A setter method without a pyqt decorator so subclasses can use this functionality&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
             <span class="c1"># Remove old connections</span>
-            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="k">if</span>
-                            <span class="n">c</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">]:</span>
                 <span class="n">channel</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
             <span class="c1"># Load new channel</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Channel was set to an empty string.&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Channel was set to an empty string.&quot;</span><span class="p">)</span>
                 <span class="k">return</span>
-            <span class="n">channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span>
-                                  <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span>
-                                  <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">channelValueChanged</span><span class="p">,</span>
-                                  <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">,</span>
-                                  <span class="n">enum_strings_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">enumStringsChanged</span><span class="p">,</span>
-                                  <span class="n">unit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                  <span class="n">prec_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                  <span class="n">upper_ctrl_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upperCtrlLimitChanged</span><span class="p">,</span>
-                                  <span class="n">lower_ctrl_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lowerCtrlLimitChanged</span><span class="p">,</span>
-                                  <span class="n">upper_alarm_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_alarm_limit_changed</span><span class="p">,</span>
-                                  <span class="n">lower_alarm_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_alarm_limit_changed</span><span class="p">,</span>
-                                  <span class="n">upper_warning_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_warning_limit_changed</span><span class="p">,</span>
-                                  <span class="n">lower_warning_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_warning_limit_changed</span><span class="p">,</span>
-                                  <span class="n">value_signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                  <span class="n">write_access_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                  <span class="n">timestamp_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamp_changed</span><span class="p">)</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span>
+                <span class="n">address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span>
+                <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span>
+                <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">channelValueChanged</span><span class="p">,</span>
+                <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">,</span>
+                <span class="n">enum_strings_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">enumStringsChanged</span><span class="p">,</span>
+                <span class="n">unit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">prec_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">upper_ctrl_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upperCtrlLimitChanged</span><span class="p">,</span>
+                <span class="n">lower_ctrl_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lowerCtrlLimitChanged</span><span class="p">,</span>
+                <span class="n">upper_alarm_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_alarm_limit_changed</span><span class="p">,</span>
+                <span class="n">lower_alarm_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_alarm_limit_changed</span><span class="p">,</span>
+                <span class="n">upper_warning_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_warning_limit_changed</span><span class="p">,</span>
+                <span class="n">lower_warning_limit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_warning_limit_changed</span><span class="p">,</span>
+                <span class="n">value_signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">write_access_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">timestamp_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamp_changed</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="c1"># Load writeable channels if our widget requires them. These should</span>
             <span class="c1"># not exist on the base PyDMWidget but prevents us from duplicating</span>
             <span class="c1"># the method below to only make two more connections</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;writeAccessChanged&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;writeAccessChanged&quot;</span><span class="p">):</span>
                 <span class="n">channel</span><span class="o">.</span><span class="n">write_access_slot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writeAccessChanged</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;send_value_signal&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;send_value_signal&quot;</span><span class="p">):</span>
                 <span class="n">channel</span><span class="o">.</span><span class="n">value_signal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span>
             <span class="c1"># Do the same thing for classes that use the TextFormatter mixin.</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;unitChanged&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;unitChanged&quot;</span><span class="p">):</span>
                 <span class="n">channel</span><span class="o">.</span><span class="n">unit_slot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitChanged</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;precisionChanged&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;precisionChanged&quot;</span><span class="p">):</span>
                 <span class="n">channel</span><span class="o">.</span><span class="n">prec_slot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">precisionChanged</span>
             <span class="c1"># Connect write channels if we have them</span>
             <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
@@ -1383,10 +1385,10 @@
         <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span>
         <span class="n">tooltip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restore_original_tooltip</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;PV is disconnected.&quot;</span>
-            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_address</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span>
@@ -1449,7 +1451,7 @@
 <span class="sd">            return false.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">Enter</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">Enter</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_tool_tip</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parseTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toolTip</span><span class="p">()))</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1475,7 +1477,7 @@
 <span class="sd">        Emitted when the user changes the value</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">__Signals__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;send_value_signal([int], [float], [str], [bool], [object])&quot;</span><span class="p">)</span>
+    <span class="n">__Signals__</span> <span class="o">=</span> <span class="s2">&quot;send_value_signal([int], [float], [str], [bool], [object])&quot;</span>
 
     <span class="c1"># Emitted when the user changes the value.</span>
     <span class="n">send_value_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">([</span><span class="nb">int</span><span class="p">],</span> <span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="p">[</span><span class="nb">object</span><span class="p">])</span>
@@ -1512,7 +1514,7 @@
 <span class="sd">            True to stop the event from being handled further; otherwise</span>
 <span class="sd">            return false.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">channel</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;channel&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">channel</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;channel&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">is_channel_valid</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
             <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span>
@@ -1570,14 +1572,14 @@
                 <span class="k">return</span>
 
             <span class="n">base_channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disp_channel</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disp_channel</span><span class="o">.</span><span class="n">address</span> <span class="o">!=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">base_channel</span><span class="si">}</span><span class="s1">.DISP&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disp_channel</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disp_channel</span><span class="o">.</span><span class="n">address</span> <span class="o">!=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_channel</span><span class="si">}</span><span class="s2">.DISP&quot;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disp_channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_disp_channel</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_disp_channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">base_channel</span><span class="si">}</span><span class="s1">.DISP&#39;</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">disp_value_changed</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_disp_channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_channel</span><span class="si">}</span><span class="s2">.DISP&quot;</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">disp_value_changed</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_disp_channel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">disp_value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_disp_value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Callback function to receive changes to the DISP field of the monitored channel &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback function to receive changes to the DISP field of the monitored channel&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_disable_put</span> <span class="o">=</span> <span class="n">new_disp_value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span>
 
@@ -1616,22 +1618,22 @@
         <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disable_put</span>
         <span class="n">tooltip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restore_original_tooltip</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;PV is disconnected.&quot;</span>
-            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="n">tooltip</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_address</span><span class="p">()</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="k">if</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">is_read_only</span><span class="p">():</span>
                 <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Running PyDM on Read-Only mode.&quot;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Access denied by Channel Access Security.&quot;</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disable_put</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s1">&#39;Access denied by DISP field&#39;</span>
+            <span class="k">if</span> <span class="n">tooltip</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">tooltip</span> <span class="o">+=</span> <span class="s2">&quot;Access denied by DISP field&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>

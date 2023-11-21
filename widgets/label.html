@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMLabel &mdash; PyDM 1.20.1 documentation</title>
+  <title>PyDMLabel &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -145,10 +145,43 @@
 <dt class="sig sig-object py" id="pydm.widgets.label.PyDMLabel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.label.</span></span><span class="sig-name descname"><span class="pre">PyDMLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/label.html#PyDMLabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.label.PyDMLabel" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QLabel</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TextFormatter</span></code>, <a class="reference internal" href="PyDMWidget.html#pydm.widgets.base.PyDMWidget" title="pydm.widgets.base.PyDMWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMWidget</span></code></a>, <a class="reference internal" href="utilities.html#pydm.widgets.display_format.DisplayFormat" title="pydm.widgets.display_format.DisplayFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisplayFormat</span></code></a></p>
+<p>A QLabel with support for setting the text via a PyDM Channel, or
+through the PyDM Rules system.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a PyDMLabel is configured to use a Channel, and also with a rule which changes the ‘Text’ property,
+the behavior is undefined.  Use either
+the Channel <em>or</em> a text rule, but not both.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget for the Label</p></li>
+<li><p><strong>init_channel</strong> (<em>str</em><em>, </em><em>optional</em>) – The channel to be used by the widget.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.label.PyDMLabel.check_enable_state">
 <span class="sig-name descname"><span class="pre">check_enable_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/label.html#PyDMLabel.check_enable_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.label.PyDMLabel.check_enable_state" title="Permalink to this definition"></a></dt>
 <dd><p>If the channel this label is connected to becomes disconnected, display only the name of the channel.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.label.PyDMLabel.displayFormat">
+<span class="sig-name descname"><span class="pre">displayFormat</span></span><a class="headerlink" href="#pydm.widgets.label.PyDMLabel.displayFormat" title="Permalink to this definition"></a></dt>
+<dd><p>displayFormat property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Getter<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the displayFormat</p>
+</dd>
+<dt class="field-even">Setter<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sets the displayFormat</p>
+</dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

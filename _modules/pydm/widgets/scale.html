@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.scale &mdash; PyDM 1.20.1 documentation</title>
+  <title>pydm.widgets.scale &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             PyDM
           </a>
               <div class="version">
-                1.20.1
+                1.21.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -131,6 +131,7 @@
 <span class="sd">    parent : QWidget</span>
 <span class="sd">        The parent widget for the Scale</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QWidget</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">QScale</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="mi">1</span>
@@ -138,17 +139,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_upper_limit</span> <span class="o">=</span> <span class="mi">5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># unit: pixel</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;darkgray&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bg_size_rate</span> <span class="o">=</span> <span class="mf">0.8</span>    <span class="c1"># from 0 to 1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bg_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s2">&quot;darkgray&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bg_size_rate</span> <span class="o">=</span> <span class="mf">0.8</span>  <span class="c1"># from 0 to 1</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_indicator_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indicator_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pointer_width_rate</span> <span class="o">=</span> <span class="mf">0.05</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_barIndicator</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_divisions</span> <span class="o">=</span> <span class="mi">10</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_ticks</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tick_pen</span> <span class="o">=</span> <span class="n">QPen</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tick_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tick_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tick_width</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tick_size_rate</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># from 0 to 1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">()</span>
@@ -225,9 +226,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tick_pen</span><span class="p">)</span>
         <span class="n">division_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widget_width</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_divisions</span>
         <span class="n">tick_y0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widget_height</span>
-        <span class="n">tick_yf</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_size_rate</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_widget_height</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_divisions</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">division_size</span><span class="p">)</span>
+        <span class="n">tick_yf</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_size_rate</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widget_height</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_divisions</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">division_size</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawLine</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tick_y0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tick_yf</span><span class="p">)</span>  <span class="c1"># x1, y1, x2, y2</span>
 
     <span class="k">def</span> <span class="nf">draw_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -260,7 +261,7 @@
             <span class="n">QPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
             <span class="n">QPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">pointer_width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pointer_height</span> <span class="o">//</span> <span class="mi">2</span><span class="p">),</span>
             <span class="n">QPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">pointer_height</span><span class="p">),</span>
-            <span class="n">QPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">pointer_width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pointer_height</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">QPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">pointer_width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pointer_height</span> <span class="o">//</span> <span class="mi">2</span><span class="p">),</span>
         <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">QPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">))</span>
 
@@ -300,7 +301,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_painter_translation_x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Invert appearance if needed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_painter_scale_x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flip_traslation_y</span><span class="p">)</span>      <span class="c1"># Invert scale if needed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flip_traslation_y</span><span class="p">)</span>  <span class="c1"># Invert scale if needed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flip_scale_y</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span>
@@ -315,8 +316,12 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the position (pixel) in which the pointer should be drawn for a given value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_limit</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_limit</span> <span class="ow">or</span> \
-           <span class="bp">self</span><span class="o">.</span><span class="n">_upper_limit</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_limit</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_limit</span>
+            <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_limit</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_limit</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_limit</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="p">):</span>
             <span class="n">proportion</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># Invalid</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">proportion</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_limit</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_limit</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_limit</span><span class="p">)</span>
@@ -503,9 +508,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lower_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upper_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&lt;val&gt;&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lower_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&lt;min&gt;&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">upper_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&lt;max&gt;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&lt;val&gt;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&lt;min&gt;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&lt;max&gt;&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">TopEdge</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_limits_from_channel</span> <span class="o">=</span> <span class="kc">True</span>
@@ -566,8 +571,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_lower_limit</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMScaleIndicator.setup_widgets_for_orientation"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">,</span> <span class="n">flipped</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">inverted</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                                      <span class="n">value_position</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Edge</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setup_widgets_for_orientation"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setup_widgets_for_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">setup_widgets_for_orientation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">,</span> <span class="n">flipped</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">inverted</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">value_position</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Edge</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reconstruct the widget given the orientation.</span>
 
@@ -643,8 +649,7 @@
 
         <span class="k">elif</span> <span class="n">new_orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">limits_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">value_position</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">RightEdge</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">flipped</span><span class="p">)</span> <span class="ow">or</span> \
-               <span class="p">(</span><span class="n">value_position</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">LeftEdge</span> <span class="ow">and</span> <span class="n">flipped</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">value_position</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">RightEdge</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">flipped</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">value_position</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">LeftEdge</span> <span class="ow">and</span> <span class="n">flipped</span><span class="p">):</span>
                 <span class="n">add_value_between_limits</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">add_value_between_limits</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1063,12 +1068,12 @@
     <span class="nd">@valuePosition</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">valuePosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Edge</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">       The position of the value label (Top, Bottom, Left or Right).</span>
+<span class="sd">        The position of the value label (Top, Bottom, Left or Right).</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        position : int</span>
-<span class="sd">            Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge</span>
+<span class="sd">         Parameters</span>
+<span class="sd">         ----------</span>
+<span class="sd">         position : int</span>
+<span class="sd">             Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span> <span class="o">=</span> <span class="n">position</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flipScale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">invertedAppearance</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
