@@ -1,15 +1,34 @@
-from p4p.rpc import rpcproxy, rpccall
+from p4p import Type, Value
 from p4p.client.thread import Context
 
+ctxt = Context("pva")
+V = Value(
+    Type(
+        [
+            ("schema", "s"),
+            ("path", "s"),
+            (
+                "query",
+                (
+                    "s",
+                    None,
+                    [
+                        ("lhs", "d"),
+                        ("rhs", "d"),
+                    ],
+                ),
+            ),
+        ]
+    ),
+    {
+        "schema": "pva",
+        "path": "pv:call:add",
+        "query": {
+            "lhs": 1,
+            "rhs": 1,
+        },
+    },
+)
+print(ctxt.rpc("pv:call:add", V))
 
-@rpcproxy
-class MyProxy(object):
-    @rpccall("%sadd")
-    def add(lhs="d", rhs="d"):
-        pass
-
-
-context = Context("pva")
-proxy = MyProxy(context=context, format="RPCTEST:")
-print("Sending RPC request to 'RPCTEST:add' function with args 4 and 6...")
-print("Result: ", proxy.add(4, 6))
+print(ctxt.rpc("pv:name:add", {"A": 5, "B": 6}))

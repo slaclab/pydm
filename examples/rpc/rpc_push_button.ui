@@ -23,7 +23,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This button sends a Remote Procedure Call (RPC) that gets back the result of simple function of the &amp;quot;target object&amp;quot; (connected channel)&lt;/p&gt;&lt;p&gt;When pushed, the button sends a RPC command containing two int args and gets back the calculated result of adding them together.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This label displays the result of a Remote Procedure Call (RPC), which gets back the result of simple function of the &amp;quot;target object&amp;quot; (connected channel)&lt;/p&gt;&lt;p&gt;The RPC channel specifies two int args and gets back the calculated result of adding them together. Arguments specified in RPC channels must have constant values.&lt;/p&gt;&lt;p&gt;7 + 4 =&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -31,15 +31,18 @@
     </widget>
    </item>
    <item>
-    <widget class="PyDMShellCommand" name="PyDMShellCommand">
+    <widget class="PyDMLabel" name="PyDMLabel">
      <property name="toolTip">
       <string/>
      </property>
-     <property name="whatsThis">
-      <string/>
+     <property name="precision" stdset="0">
+      <number>3</number>
      </property>
-     <property name="text">
-      <string>Send RPC Command</string>
+     <property name="showUnits" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="precisionFromPV" stdset="0">
+      <bool>false</bool>
      </property>
      <property name="alarmSensitiveContent" stdset="0">
       <bool>false</bool>
@@ -51,42 +54,10 @@
       <string/>
      </property>
      <property name="channel" stdset="0">
-      <string>pva://pv:call:add?lhs=4&amp;rhs=7&amp;pydm_pollrate=10</string>
+      <string>pva://pv:call:add?lhs=4.87&amp;rhs=7.88&amp;pydm_pollrate=10</string>
      </property>
-     <property name="showConfirmDialog" stdset="0">
+     <property name="enableRichText" stdset="0">
       <bool>false</bool>
-     </property>
-     <property name="confirmMessage" stdset="0">
-      <string/>
-     </property>
-     <property name="environmentVariables" stdset="0">
-      <string/>
-     </property>
-     <property name="showIcon" stdset="0">
-      <bool>true</bool>
-     </property>
-     <property name="redirectCommandOutput" stdset="0">
-      <bool>true</bool>
-     </property>
-     <property name="allowMultipleExecutions" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="titles" stdset="0">
-      <stringlist/>
-     </property>
-     <property name="commands" stdset="0">
-      <stringlist>
-       <string>echo First; echo Second</string>
-      </stringlist>
-     </property>
-     <property name="passwordProtected" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="password" stdset="0">
-      <string/>
-     </property>
-     <property name="protectedPassword" stdset="0">
-      <string/>
      </property>
     </widget>
    </item>
@@ -94,9 +65,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PyDMShellCommand</class>
-   <extends>QPushButton</extends>
-   <header>pydm.widgets.shell_command</header>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.label</header>
   </customwidget>
  </customwidgets>
  <resources/>
