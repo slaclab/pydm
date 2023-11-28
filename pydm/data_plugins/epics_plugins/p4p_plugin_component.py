@@ -53,8 +53,8 @@ class Connection(PyDMConnection):
         # RPC = Remote Procedure Calls (https://mdavidsaver.github.io/p4p/rpc.html#p4p.rpc.rpcproxy)
         # example channel: pva://pv:call:add?lhs=4&rhs=7&pydm_pollrate=10
         self._rpc_function_name = ""  # pv:call:add (in case of above example)
-        self._rpc_arg_names = []  # ['lhs', 'rhs']
-        self._rpc_arg_values = []  # ['4', '7']
+        self._rpc_arg_names = []  # ['lhs', 'rhs'] (in case of above example)
+        self._rpc_arg_values = []  # ['4', '7'] (in case of above example)
         # Poll rate in seconds
         self._rpc_poll_rate = 0  # 10
         # channel.address provides the entire user-entered channel (instead of 'channel' var)
@@ -62,25 +62,15 @@ class Connection(PyDMConnection):
 
         self.monitor = None
         self.is_rpc_request = self.is_rpc_request(channel.address)
-        # RPC requests are handled simply and don't require continuous monitoring,
-        # instead they use the p4p 'rpc' call at a specified  a pollrate
-        self.add_listener(channel)
 
+        # RPC requests are handled simply and don't require continuous monitoring,
+        # instead they use the p4p 'rpc' call at a specified a pollrate.
+        self.add_listener(channel)
         if not self.is_rpc_request:
             self.monitor = P4PPlugin.context.monitor(name=self.address, cb=self.send_new_value, notify_disconnect=True)
-        else:
-            # In case of RPC, we can just query the channel immediately and emit the value,
-            # and let the pollrate dictate if/when we query and emit again.
-            self.value_obj = self.create_value_obj(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)
-            if self.value_obj is None:
-                return
-            result = P4PPlugin.context.rpc(self._rpc_function_name, self.value_obj)
-            print("Result: ", result.value)
-            self.emit_for_type(result.value)
-            if self._rpc_poll_rate > 0:
-                self.poll_rpc_channel()
 
     def emit_for_type(self, value) -> None:
+        # Emit for the types currently supported as RPC request args
         if isinstance(value, int):
             self.new_value_signal[int].emit(value)
         elif isinstance(value, float):
@@ -92,14 +82,13 @@ class Connection(PyDMConnection):
         # Keep executing this function at polling rate
         threading.Timer(self._rpc_poll_rate, self.poll_rpc_channel).start()
         result = P4PPlugin.context.rpc(self._rpc_function_name, self.value_obj)
-        print("Result: ", result.value)
         self.emit_for_type(result.value)
 
     def get_arg_datatype(self, arg_value_string):
-        # try and figure out what datatype the RPC request args are
+        # Try to figure out the datatype of RPC request args
         try:
             int(arg_value_string)
-            return "d", int(arg_value_string)
+            return "i", int(arg_value_string)
         except Exception:
             pass
         try:
@@ -107,12 +96,13 @@ class Connection(PyDMConnection):
             return "f", float(arg_value_string)
         except Exception:
             pass
-        # try bool after int/float is ruled out, since bool(int) and bool(float) are  valid
+        # try bool after int/float is ruled out, since bool(int) and bool(float) are valid
         try:
             bool(arg_value_string)
             return "?", bool(arg_value_string)
         except Exception:
             pass
+
         return None
 
     def create_value_obj(self, rpc_function_name, rpc_arg_names, rpc_arg_values) -> Value:
@@ -165,7 +155,8 @@ class Connection(PyDMConnection):
         if full_channel is None:
             return False
         else:
-            return ("?" in full_channel and "&" in full_channel) or "pydm_pollrate=" in full_channel
+            return ("?" in full_channel and "&" in full_channel) or "&pydm_pollrate=" in full_channel
+        # Could check with regex, but think this is overly complected??
         # pattern = re.compile(r'pva://([^?]+)\?(?:([^=]+)=([^&]+)&){1,}pydm_pollrate=([^&]+)$')
         # return bool(pattern.match(full_channel))
 
@@ -185,8 +176,6 @@ class Connection(PyDMConnection):
         self._timestamp = None
 
     def send_new_value(self, value: Value) -> None:
-        print("!!inside : ", value, ", ", type(value))
-
         """Callback invoked whenever a new value is received by our monitor. Emits signals based on values changed."""
         if isinstance(value, Disconnected):
             self._connected = False
@@ -315,7 +304,6 @@ class Connection(PyDMConnection):
 
     @staticmethod
     def convert_epics_nttable(epics_struct):
-        print("!!inside convert_epics_nttable")
         """
         Converts an epics nttable (passed as a class object p4p.wrapper.Value) to a python dictionary.
 
@@ -339,7 +327,6 @@ class Connection(PyDMConnection):
 
     @staticmethod
     def set_value_by_keys(table, keys, new_value):
-        print("!!inside set_value_by_keys")
         """
         Saves the passed new_value into the appropriate spot in the given table
         using the given keys.
@@ -362,7 +349,6 @@ class Connection(PyDMConnection):
             Connection.set_value_by_keys(table[key], keys[1:], new_value)
 
     def put_value(self, value):
-        print("!!inside put_value")
         """Write a value to the PV"""
 
         if self.nttable_data_location:
@@ -383,7 +369,6 @@ class Connection(PyDMConnection):
             logger.error(f"Unable to put value: {value} to channel {self.monitor.name}: {e}")
 
     def add_listener(self, channel: PyDMChannel):
-        print("!!inside add_listener: ", channel)
         """
         Adds a listener to this connection, connecting the appropriate signals/slots to the input PyDMChannel.
         Parameters
@@ -392,6 +377,28 @@ class Connection(PyDMConnection):
             The channel that will be listening to any changes from this connection
         """
         super().add_listener(channel)
+
+        if self.is_rpc_request:
+            # In case of RPC, we can just query the channel immediately and emit the value,
+            # and let the pollrate dictate if/when we query and emit again.
+            self.value_obj = self.create_value_obj(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)
+            if self.value_obj is None:
+                return
+
+            result = None
+            try:
+                result = P4PPlugin.context.rpc(self._rpc_function_name, self.value_obj)
+            except Exception:
+                # So widget displays name of channel when can't connect to RPC channel
+                self.connection_state_signal.emit(False)
+                return
+
+            if result:
+                self.emit_for_type(result.value)
+                if self._rpc_poll_rate > 0:
+                    self.poll_rpc_channel()
+
+            return
 
         if self.monitor is not None and self._connected:
             # Adding a listener to an already connected PV. Manually send the signals indicating the PV is
@@ -427,6 +434,7 @@ class Connection(PyDMConnection):
 
     def close(self):
         """Closes out this connection."""
+        # If RPC, we have no monitor to close
         if self.monitor:
             self.monitor.close()
         super().close()

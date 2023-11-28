@@ -2,27 +2,20 @@ from p4p.rpc import rpc, quickRPCServer
 from p4p.nt import NTScalar
 
 
-class Summer(object):
+class Demo(object):
+    @rpc(NTScalar("i"))
+    def add_two_ints(self, a, b):
+        return a + b
+
     @rpc(NTScalar("f"))
-    def add(self, lhs, rhs):  # 'lhs' and 'rhs' are arbitrary names.  The method name 'add' will be part of the PV name
-        return lhs + rhs
+    def add_int_float(self, a, b):
+        return a + b
+
+    @rpc(NTScalar("i"))
+    def add_three_ints_negate_option(self, a, b, negate):
+        res = a + b
+        return -1 * res if negate else res
 
 
-adder = Summer()
-
-quickRPCServer(provider="Example", prefix="pv:call:", target=adder)  # A prefix for method PV names.
-
-"""
-a = [('lhs', 'd'),('rhs', 'd')]
-b = [('schema', 's'),('path', 's'),('query', ('s', None, a))]
-c = {}
-c['schema'] = 'pva'
-c['path'] = 'pv:call:add'
-d = {}
-d['lhs'] = 1
-d['rhs'] = 1
-c['query'] = d
-
-V = Value(Type(b), c)
-print (ctxt.rpc('pv:call:add', V))
-"""
+adder = Demo()
+quickRPCServer(provider="Example", prefix="pv:call:", target=adder)
