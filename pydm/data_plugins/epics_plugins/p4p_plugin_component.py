@@ -57,7 +57,7 @@ class Connection(PyDMConnection):
         # Poll rate in seconds
         self._rpc_poll_rate = 0  # 10
         # channel.address provides the entire user-entered channel (instead of 'channel' var)
-        self.parse_input_string(channel.address)
+        self.parse_rpc_channel(channel.address)
 
         self.monitor = None
         self.is_rpc_request = self.is_rpc_request(channel.address)
@@ -132,7 +132,7 @@ class Connection(PyDMConnection):
         values["query"] = args_values
         return Value(Type(types), values)
 
-    def parse_input_string(self, input_string) -> None:
+    def parse_rpc_channel(self, input_string) -> None:
         parsed_url = urlparse(input_string)
         raw_args = parsed_url.query
         parsed_args = parse_qs(raw_args)
