@@ -155,3 +155,39 @@ def test_convert_epics_nttable():
 
     result = Connection.convert_epics_nttable(epics_struct)
     assert result == solution
+
+
+@pytest.mark.parametrize(
+    "address, expected_function_name, expected_arg_names, expected_arg_values, expected_poll_rate",
+    [
+        ("pva://pv:call:add?a=4&b=7&pydm_pollrate=10", "pv:call:add", ["a", "b"], ["4", "7"], 10),
+        ("pva://pv:call:add?a=4&b=7", "pv:call:add", ["a", "b"], ["4", "7"], 0),
+        (
+            "pva://pv:call:add_three_ints_negate_option?a=2&b=7&negate=True&pydm_pollrate=10",
+            "pv:call:add_three_ints_negate_option",
+            ["a", "b", "negate"],
+            ["2", "7", "True"],
+            10,
+        ),
+        (
+            "pva://pv:call:add_ints_floats?a=3&b=4&c=5&d=6&e=7.8&pydm_pollrate=1",
+            "pv:call:add_ints_floats",
+            ["a", "b", "c", "d", "e"],
+            ["3", "4", "5", "6", "7.8"],
+            1,
+        ),
+        ("", "", [], [], 0),
+    ],
+)
+def test_parsing_rpc_channel(
+    monkeypatch, address, expected_function_name, expected_arg_names, expected_arg_values, expected_poll_rate
+):
+    mock_channel = PyDMChannel(address=address)
+    monkeypatch.setattr(P4PPlugin, "context", MockContext())
+    monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
+    p4p_connection = Connection(mock_channel, address)
+
+    assert p4p_connection._rpc_function_name == expected_function_name
+    assert p4p_connection._rpc_arg_names == expected_arg_names
+    assert p4p_connection._rpc_arg_values == expected_arg_values
+    assert p4p_connection._rpc_poll_rate == expected_poll_rate
