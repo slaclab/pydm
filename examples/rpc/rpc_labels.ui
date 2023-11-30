@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>458</width>
-    <height>386</height>
+    <width>497</width>
+    <height>415</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,7 +65,7 @@
           <string/>
          </property>
          <property name="channel" stdset="0">
-          <string>pva://pv:call:add_two_ints?a=2&amp;b=7</string>
+          <string>pva://pv:call:add_two_ints?a=2&amp;b=7&amp;</string>
          </property>
          <property name="enableRichText" stdset="0">
           <bool>false</bool>

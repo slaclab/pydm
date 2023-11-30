@@ -3,6 +3,7 @@ import numpy as np
 import collections
 import threading
 import p4p
+import re
 from p4p.client.thread import Context, Disconnected
 from p4p.wrapper import Type, Value
 from .pva_codec import decompress
@@ -55,17 +56,17 @@ class Connection(PyDMConnection):
         self._rpc_arg_names = []  # ['lhs', 'rhs'] (in case of above example)
         self._rpc_arg_values = []  # ['4', '7'] (in case of above example)
         # Poll rate in seconds
-        self._rpc_poll_rate = 0  # 10
+        self._rpc_poll_rate = 0  # (in case of above example)
         # channel.address provides the entire user-entered channel (instead of 'channel' var)
         self.parse_rpc_channel(channel.address)
 
         self.monitor = None
-        self.is_rpc_request = self.is_rpc_request(channel.address)
+        self.is_rpc = self.is_rpc_address(channel.address)
 
         # RPC requests are handled simply and don't require continuous monitoring,
         # instead they use the p4p 'rpc' call at a specified a pollrate.
         self.add_listener(channel)
-        if not self.is_rpc_request:
+        if not self.is_rpc:
             self.monitor = P4PPlugin.context.monitor(name=self.address, cb=self.send_new_value, notify_disconnect=True)
 
     def emit_for_type(self, value) -> None:
@@ -101,7 +102,6 @@ class Connection(PyDMConnection):
             return "?", bool(arg_value_string)
         except Exception:
             pass
-
         return None
 
     def create_value_obj(self, rpc_function_name, rpc_arg_names, rpc_arg_values) -> Value:
@@ -149,15 +149,13 @@ class Connection(PyDMConnection):
         self._rpc_arg_values = list(parsed_args.values())
         self._rpc_poll_rate = int(pollrate[0])  # [0] takes value out of 1 item list
 
-    def is_rpc_request(self, full_channel) -> bool:
+    def is_rpc_address(self, full_channel) -> bool:
         # example of valid channel: pva://pv:call:add?lhs=4&rhs=7&pydm_pollrate=10
         if full_channel is None:
             return False
         else:
-            return ("?" in full_channel and "&" in full_channel) or "&pydm_pollrate=" in full_channel
-        # Could check with regex, but think this is overly complected??
-        # pattern = re.compile(r'pva://([^?]+)\?(?:([^=]+)=([^&]+)&){1,}pydm_pollrate=([^&]+)$')
-        # return bool(pattern.match(full_channel))
+            pattern = re.compile(r"pva://([^?]+)\?(?:([^=]+)=([^&]+)&)*?(?:pydm_pollrate=([^&]+))?$")
+            return bool(pattern.match(full_channel))
 
     def clear_cache(self) -> None:
         """Clear out all the stored values of this connection."""
@@ -360,7 +358,7 @@ class Connection(PyDMConnection):
             logger.warning(f"PyDM read-only mode is enabled, could not write value: {value} to {self.address}")
             return
 
-        if self.is_rpc_request:
+        if self.is_rpc:
             return
         try:
             P4PPlugin.context.put(self.monitor.name, value)
@@ -377,7 +375,7 @@ class Connection(PyDMConnection):
         """
         super().add_listener(channel)
 
-        if self.is_rpc_request:
+        if self.is_rpc:
             # In case of RPC, we can just query the channel immediately and emit the value,
             # and let the pollrate dictate if/when we query and emit again.
             self.value_obj = self.create_value_obj(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)

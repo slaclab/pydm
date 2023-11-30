@@ -191,3 +191,33 @@ def test_parsing_rpc_channel(
     assert p4p_connection._rpc_arg_names == expected_arg_names
     assert p4p_connection._rpc_arg_values == expected_arg_values
     assert p4p_connection._rpc_poll_rate == expected_poll_rate
+
+
+@pytest.mark.parametrize(
+    "address, is_valid_rpc",
+    [
+        # valid rpc
+        ("pva://pv:call:add?a=4&b=7&pydm_pollrate=10", True),
+        ("pva://pv:call:add?a=4&b=7&", True),
+        ("pva://pv:call:add_three_ints_negate_option?a=2&b=7&negate=True&pydm_pollrate=10", True),
+        ("pva://pv:call:add_ints_floats?a=3&b=4&c=5&d=6&e=7.8&pydm_pollrate=1", True),
+        # valid pva addresses but not rpc
+        ("pva://PyDM:PVA:IntValue", False),
+        # totally invalid
+        ("this is not valid!! pva://&&==!!", False),
+        ("pva://", False),
+        ("", False),
+        (None, False),
+    ],
+)
+def test_is_rpc_check(
+    monkeypatch,
+    address,
+    is_valid_rpc,
+):
+    mock_channel = PyDMChannel(address=address)
+    monkeypatch.setattr(P4PPlugin, "context", MockContext())
+    monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
+    p4p_connection = Connection(mock_channel, address)
+
+    assert p4p_connection.is_rpc_address(address) == is_valid_rpc
