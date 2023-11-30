@@ -1,7 +1,6 @@
 import logging
 import numpy as np
 import collections
-import threading
 import p4p
 import re
 from p4p.client.thread import Context, Disconnected
@@ -57,11 +56,12 @@ class Connection(PyDMConnection):
         self._rpc_arg_values = []  # ['4', '7'] (in case of above example)
         # Poll rate in seconds
         self._rpc_poll_rate = 0  # (in case of above example)
-        # channel.address provides the entire user-entered channel (instead of 'channel' var)
-        self.parse_rpc_channel(channel.address)
 
         self.monitor = None
         self.is_rpc = self.is_rpc_address(channel.address)
+        if self.is_rpc:
+            # channel.address provides the entire user-entered channel (instead of 'channel' var)
+            self.parse_rpc_channel(channel.address)
 
         # RPC requests are handled simply and don't require continuous monitoring,
         # instead they use the p4p 'rpc' call at a specified a pollrate.
@@ -77,12 +77,6 @@ class Connection(PyDMConnection):
             self.new_value_signal[float].emit(value)
         elif isinstance(value, bool):
             self.new_value_signal[bool].emit(value)
-
-    def poll_rpc_channel(self) -> None:
-        # Keep executing this function at polling rate
-        threading.Timer(self._rpc_poll_rate, self.poll_rpc_channel).start()
-        result = P4PPlugin.context.rpc(self._rpc_function_name, self.value_obj)
-        self.emit_for_type(result.value)
 
     def get_arg_datatype(self, arg_value_string):
         # Try to figure out the datatype of RPC request args
@@ -391,6 +385,7 @@ class Connection(PyDMConnection):
                 return
 
             if result:
+                self.connection_state_signal.emit(True)
                 self.emit_for_type(result.value)
                 if self._rpc_poll_rate > 0:
                     self.poll_rpc_channel()
