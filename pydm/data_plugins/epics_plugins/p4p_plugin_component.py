@@ -1,6 +1,7 @@
 import logging
 import numpy as np
 import collections
+import threading
 import p4p
 import re
 from p4p.client.thread import Context, Disconnected
@@ -77,6 +78,18 @@ class Connection(PyDMConnection):
             self.new_value_signal[float].emit(value)
         elif isinstance(value, bool):
             self.new_value_signal[bool].emit(value)
+        elif isinstance(value, str):
+            self.new_value_signal[str].emit(value)
+
+    def poll_rpc_channel(self) -> None:
+        # Keep executing this function at polling rate
+        threading.Timer(self._rpc_poll_rate, self.poll_rpc_channel).start()
+        result = P4PPlugin.context.rpc(self._rpc_function_name, self.value_obj)
+        if result:
+            self.connection_state_signal.emit(True)
+            self.emit_for_type(result.value)
+        else:
+            self.connection_state_signal.emit(False)
 
     def get_arg_datatype(self, arg_value_string):
         # Try to figure out the datatype of RPC request args
@@ -90,13 +103,10 @@ class Connection(PyDMConnection):
             return "f", float(arg_value_string)
         except Exception:
             pass
-        # try bool after int/float is ruled out, since bool(int) and bool(float) are valid
-        try:
-            bool(arg_value_string)
+        if arg_value_string.lower() == "True" or arg_value_string.lower() == "False":
             return "?", bool(arg_value_string)
-        except Exception:
-            pass
-        return None
+        # Assume arg is just a string if no other type works
+        return "s", arg_value_string
 
     def create_value_obj(self, rpc_function_name, rpc_arg_names, rpc_arg_values) -> Value:
         """

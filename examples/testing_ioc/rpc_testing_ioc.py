@@ -17,6 +17,10 @@ class Demo(object):
         res = a + b
         return -1 * res if negate else res
 
+    @rpc(NTScalar("s"))
+    def take_return_string(self, a):
+        return a + "!!"
+
 
 adder = Demo()
 quickRPCServer(provider="Example", prefix="pv:call:", target=adder)
