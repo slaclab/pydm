@@ -6,8 +6,7 @@ from pydm.data_plugins.epics_plugins.p4p_plugin_component import Connection, P4P
 from pydm.tests.conftest import ConnectionSignals
 from pydm.widgets.channel import PyDMChannel
 from pytest import MonkeyPatch
-from p4p.wrapper import Value
-from p4p import Type
+from p4p.wrapper import Type, Value
 
 
 class MockContext:
@@ -182,6 +181,11 @@ def test_convert_epics_nttable():
 def test_parsing_rpc_channel(
     monkeypatch, address, expected_function_name, expected_arg_names, expected_arg_values, expected_poll_rate
 ):
+    """
+    Ensure we can tell when a pva channel is an RPC call or not,
+    and when it is make sure we are extracting its data correctly.
+    """
+
     mock_channel = PyDMChannel(address=address)
     monkeypatch.setattr(P4PPlugin, "context", MockContext())
     monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
@@ -196,14 +200,15 @@ def test_parsing_rpc_channel(
 @pytest.mark.parametrize(
     "address, is_valid_rpc",
     [
-        # valid rpc
+        # Valid RPC
         ("pva://pv:call:add?a=4&b=7&pydm_pollrate=10", True),
+        # When pollrate is not specified, the last argument must also end with '&' character
         ("pva://pv:call:add?a=4&b=7&", True),
         ("pva://pv:call:add_three_ints_negate_option?a=2&b=7&negate=True&pydm_pollrate=10", True),
         ("pva://pv:call:add_ints_floats?a=3&b=4&c=5&d=6&e=7.8&pydm_pollrate=1", True),
-        # valid pva addresses but not rpc
+        # Valid pva addresses but not RPC
         ("pva://PyDM:PVA:IntValue", False),
-        # totally invalid
+        # Totally invalid
         ("this is not valid!! pva://&&==!!", False),
         ("pva://", False),
         ("", False),
@@ -215,9 +220,183 @@ def test_is_rpc_check(
     address,
     is_valid_rpc,
 ):
+    """Ensure that the regex is working for checking if a pva address is a RPC request or not"""
     mock_channel = PyDMChannel(address=address)
     monkeypatch.setattr(P4PPlugin, "context", MockContext())
     monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
     p4p_connection = Connection(mock_channel, address)
 
     assert p4p_connection.is_rpc_address(address) == is_valid_rpc
+
+
+@pytest.mark.parametrize(
+    "address, expected_value_obj",
+    [
+        (
+            "pva://pv:call:add?a=4&b=7&pydm_pollrate=10",
+            Value(
+                Type(
+                    [
+                        ("schema", "s"),
+                        ("path", "s"),
+                        (
+                            "query",
+                            (
+                                "s",
+                                None,
+                                [
+                                    ("a", "i"),
+                                    ("b", "i"),
+                                ],
+                            ),
+                        ),
+                    ]
+                ),
+                {
+                    "schema": "pva",
+                    "path": "pv:call:add",
+                    "query": {
+                        "a": 4,
+                        "b": 7,
+                    },
+                },
+            ),
+        ),
+        # Check that not specifying pollrate doesn't effect Value obj creation
+        (
+            "pva://pv:call:add?a=4&b=7&pydm_pollrate=10",
+            Value(
+                Type(
+                    [
+                        ("schema", "s"),
+                        ("path", "s"),
+                        (
+                            "query",
+                            (
+                                "s",
+                                None,
+                                [
+                                    ("a", "i"),
+                                    ("b", "i"),
+                                ],
+                            ),
+                        ),
+                    ]
+                ),
+                {
+                    "schema": "pva",
+                    "path": "pv:call:add",
+                    "query": {
+                        "a": 4,
+                        "b": 7,
+                    },
+                },
+            ),
+        ),
+        # Make sure args of mixed datatypes work correctly
+        (
+            "pva://pv:call:add?a=4&b=7.5&pydm_pollrate=10",
+            Value(
+                Type(
+                    [
+                        ("schema", "s"),
+                        ("path", "s"),
+                        (
+                            "query",
+                            (
+                                "s",
+                                None,
+                                [
+                                    ("a", "i"),
+                                    ("b", "f"),
+                                ],
+                            ),
+                        ),
+                    ]
+                ),
+                {
+                    "schema": "pva",
+                    "path": "pv:call:add",
+                    "query": {
+                        "a": 4,
+                        "b": 7.5,
+                    },
+                },
+            ),
+        ),
+        # Try with more args
+        (
+            "pva://pv:call:add?a=1&b=2&c=3&d=4&e=5&pydm_pollrate=10",
+            Value(
+                Type(
+                    [
+                        ("schema", "s"),
+                        ("path", "s"),
+                        (
+                            "query",
+                            (
+                                "s",
+                                None,
+                                [
+                                    ("a", "i"),
+                                    ("b", "i"),
+                                    ("c", "i"),
+                                    ("d", "i"),
+                                    ("e", "i"),
+                                ],
+                            ),
+                        ),
+                    ]
+                ),
+                {
+                    "schema": "pva",
+                    "path": "pv:call:add",
+                    "query": {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5},
+                },
+            ),
+        ),
+    ],
+)
+def test_create_rpc_value_obj(
+    monkeypatch,
+    address,
+    expected_value_obj,
+):
+    """
+    To make successful RPC call, we first need to create a p4p Value object to pass in.
+    You can see an example of the Value obj structure in the p4p docs:
+    https://mdavidsaver.github.io/p4p/rpc.html#using-low-level-client-api.
+    Much of the Value obj remains the same for different addresses,
+    mainly just changing the types/values and function-name specified in the address.
+    """
+    mock_channel = PyDMChannel(address=address)
+    monkeypatch.setattr(P4PPlugin, "context", MockContext())
+    monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
+    p4p_connection = Connection(mock_channel, address)
+    value_obj = p4p_connection.create_value_obj(
+        p4p_connection._rpc_function_name, p4p_connection._rpc_arg_names, p4p_connection._rpc_arg_values
+    )
+
+    """
+    The value_obj will look like this (for example address 'pva://pv:call:add?a=4&b=7&pydm_pollrate=10'):
+
+    struct {
+        string schema = "pva"
+        string path = "pv:call:add"
+        struct {
+            int32_t a = 4
+            int32_t b = 7
+        } query
+    }
+    """
+
+    assert value_obj.schema == expected_value_obj.schema
+    assert value_obj.path == expected_value_obj.path
+    assert value_obj.query.a == expected_value_obj.query.a
+    assert value_obj.query.b == expected_value_obj.query.b
+
+    # simple check to see if checking many-args case
+    if "c" in value_obj.query:
+        assert value_obj.query.c == expected_value_obj.query.c
+        assert value_obj.query.d == expected_value_obj.query.d
+        assert value_obj.query.e == expected_value_obj.query.e
