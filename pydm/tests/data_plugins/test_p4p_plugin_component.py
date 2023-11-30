@@ -160,7 +160,7 @@ def test_convert_epics_nttable():
     "address, expected_function_name, expected_arg_names, expected_arg_values, expected_poll_rate",
     [
         ("pva://pv:call:add?a=4&b=7&pydm_pollrate=10", "pv:call:add", ["a", "b"], ["4", "7"], 10),
-        ("pva://pv:call:add?a=4&b=7", "pv:call:add", ["a", "b"], ["4", "7"], 0),
+        ("pva://pv:call:add?a=4&b=7&", "pv:call:add", ["a", "b"], ["4", "7"], 0),
         (
             "pva://pv:call:add_three_ints_negate_option?a=2&b=7&negate=True&pydm_pollrate=10",
             "pv:call:add_three_ints_negate_option",
@@ -175,6 +175,13 @@ def test_convert_epics_nttable():
             ["3", "4", "5", "6", "7.8"],
             1,
         ),
+        (
+            "pva://pv:call:take_return_string?a=Hello&",
+            "pv:call:take_return_string",
+            ["a"],
+            ["Hello"],
+            0,
+        ),
         ("", "", [], [], 0),
     ],
 )
@@ -185,7 +192,6 @@ def test_parsing_rpc_channel(
     Ensure we can tell when a pva channel is an RPC call or not,
     and when it is make sure we are extracting its data correctly.
     """
-
     mock_channel = PyDMChannel(address=address)
     monkeypatch.setattr(P4PPlugin, "context", MockContext())
     monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
@@ -204,6 +210,7 @@ def test_parsing_rpc_channel(
         ("pva://pv:call:add?a=4&b=7&pydm_pollrate=10", True),
         # When pollrate is not specified, the last argument must also end with '&' character
         ("pva://pv:call:add?a=4&b=7&", True),
+        ("pva://pv:call:take_return_string?a=Hello&", True),
         ("pva://pv:call:add_three_ints_negate_option?a=2&b=7&negate=True&pydm_pollrate=10", True),
         ("pva://pv:call:add_ints_floats?a=3&b=4&c=5&d=6&e=7.8&pydm_pollrate=1", True),
         # Valid pva addresses but not RPC
@@ -355,6 +362,34 @@ def test_is_rpc_check(
                 },
             ),
         ),
+        # Check using str arg
+        (
+            "pva://pv:call:take_return_string?a=Hello&b=World&",
+            Value(
+                Type(
+                    [
+                        ("schema", "s"),
+                        ("path", "s"),
+                        (
+                            "query",
+                            (
+                                "s",
+                                None,
+                                [
+                                    ("a", "s"),
+                                    ("b", "s"),
+                                ],
+                            ),
+                        ),
+                    ]
+                ),
+                {
+                    "schema": "pva",
+                    "path": "pv:call:take_return_string",
+                    "query": {"a": "Hello", "b": "World"},
+                },
+            ),
+        ),
     ],
 )
 def test_create_rpc_value_obj(
@@ -395,7 +430,7 @@ def test_create_rpc_value_obj(
     assert value_obj.query.a == expected_value_obj.query.a
     assert value_obj.query.b == expected_value_obj.query.b
 
-    # simple check to see if checking many-args case
+    # check to see if checking many-args case
     if "c" in value_obj.query:
         assert value_obj.query.c == expected_value_obj.query.c
         assert value_obj.query.d == expected_value_obj.query.d
