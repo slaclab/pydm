@@ -83,7 +83,7 @@
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>(pollrate=10 sec) 2 + 7 (*-1 if negate) =</string>
+          <string>(pollrate=0.1 sec) 2 + 7 (*-1 if negate) =</string>
          </property>
         </widget>
        </item>
@@ -111,7 +111,7 @@
           <string/>
          </property>
          <property name="channel" stdset="0">
-          <string>pva://pv:call:add_three_ints_negate_option?a=2&amp;b=7&amp;negate=True&amp;pydm_pollrate=10</string>
+          <string>pva://pv:call:add_three_ints_negate_option?a=2&amp;b=7&amp;negate=True&amp;pydm_pollrate=0.1</string>
          </property>
          <property name="enableRichText" stdset="0">
           <bool>false</bool>
@@ -155,7 +155,7 @@
         <string/>
        </property>
        <property name="channel" stdset="0">
-        <string>pva://pv:call:add_int_float?a=3&amp;b=7.8&amp;pydm_pollrate=1</string>
+        <string>pva://pv:call:add_int_float?a=3&amp;b=7.8&amp;pydm_pollrate=0.5</string>
        </property>
        <property name="enableRichText" stdset="0">
         <bool>false</bool>
