@@ -4,6 +4,7 @@ import collections
 import threading
 import p4p
 import re
+import time
 from p4p.client.thread import Context, Disconnected
 from p4p.wrapper import Type, Value
 from .pva_codec import decompress
@@ -83,13 +84,26 @@ class Connection(PyDMConnection):
 
     def poll_rpc_channel(self) -> None:
         # Keep executing this function at polling rate
-        threading.Timer(self._rpc_poll_rate, self.poll_rpc_channel).start()
-        result = P4PPlugin.context.rpc(self._rpc_function_name, self.value_obj)
-        if result:
-            self.connection_state_signal.emit(True)
-            self.emit_for_type(result.value)
-        else:
-            self.connection_state_signal.emit(False)
+        while True:
+            start_time = time.process_time()
+            result = P4PPlugin.context.rpc(
+                name=self._rpc_function_name, value=self._value_obj, timeout=self._rpc_poll_rate
+            )
+            rpc_call_time = time.process_time() - start_time
+            if result:
+                self.connection_state_signal.emit(True)
+                # print ("Succ: ", result.value)
+                self.emit_for_type(result.value)
+            else:
+                # print ("Fail!")
+                self.connection_state_signal.emit(False)
+
+            # We want to call "rpc" every self._rpc_poll_rate seconds,
+            # so wait if the call is quicker than the rate.
+            # The timeout arg makes sure a single call is never slower than poll rate.
+            poll_rate_and_rpc_call_time_dif = self._rpc_poll_rate - rpc_call_time
+            if poll_rate_and_rpc_call_time_dif > 0:
+                time.sleep(poll_rate_and_rpc_call_time_dif)
 
     def get_arg_datatype(self, arg_value_string):
         # Try to figure out the datatype of RPC request args
@@ -141,7 +155,7 @@ class Connection(PyDMConnection):
         raw_args = parsed_url.query
         parsed_args = parse_qs(raw_args)
         function_name = parsed_url.netloc
-        pollrate = parsed_args.get("pydm_pollrate", "0")
+        pollrate = parsed_args.get("pydm_pollrate", "0.0")
         if "pydm_pollrate" in parsed_args:
             del parsed_args["pydm_pollrate"]
 
@@ -151,7 +165,7 @@ class Connection(PyDMConnection):
         self._rpc_function_name = function_name
         self._rpc_arg_names = list(parsed_args.keys())
         self._rpc_arg_values = list(parsed_args.values())
-        self._rpc_poll_rate = int(pollrate[0])  # [0] takes value out of 1 item list
+        self._rpc_poll_rate = float(pollrate[0])  # [0] takes value out of 1 item list
 
     def is_rpc_address(self, full_channel) -> bool:
         # example of valid channel: pva://pv:call:add?lhs=4&rhs=7&pydm_pollrate=10
@@ -382,13 +396,13 @@ class Connection(PyDMConnection):
         if self.is_rpc:
             # In case of RPC, we can just query the channel immediately and emit the value,
             # and let the pollrate dictate if/when we query and emit again.
-            self.value_obj = self.create_value_obj(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)
-            if self.value_obj is None:
+            self._value_obj = self.create_value_obj(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)
+            if self._value_obj is None:
                 return
 
             result = None
             try:
-                result = P4PPlugin.context.rpc(self._rpc_function_name, self.value_obj)
+                result = P4PPlugin.context.rpc(self._rpc_function_name, self._value_obj)
             except Exception:
                 # So widget displays name of channel when can't connect to RPC channel
                 self.connection_state_signal.emit(False)
@@ -398,7 +412,9 @@ class Connection(PyDMConnection):
                 self.connection_state_signal.emit(True)
                 self.emit_for_type(result.value)
                 if self._rpc_poll_rate > 0:
-                    self.poll_rpc_channel()
+                    background_polling_thread = threading.Thread(target=self.poll_rpc_channel, daemon=True)
+                    # Start the thread
+                    background_polling_thread.start()
 
             return
 
