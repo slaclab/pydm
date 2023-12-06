@@ -81,3 +81,26 @@ Examples
 A small pva testing ioc is included under ``examples/testing/pva_testing_ioc.py``. This can be run in order to
 generate a couple of test PVs, which can be connected to using the example .ui file under
 ``examples/pva/pva.ui``.
+
+
+RPC
+---
+
+The P4P data plugin also supports **remote method calls** (RPC).
+
+RPCs are set using a pva addresses, formatted as follows::
+
+    pva://<address>?<arg_1_name>=<arg_1_value>&<arg_2_name>=<arg_2_value>&...pydm_pollrate=<poll_rate_float>
+
+Note:
+-You can specify as many arg name/value pairs as needed.
+-"pydm_pollrate" is an optional parameter, but if included must be specified after the arg name/value pairs. If not specified,
+the last arg name/value pair must still end with a "&" character. (when not-specified, the RPC will just not be polled)
+
+An example RPC::
+    
+    pva://my_address?arg1=value1&arg2=value2&pydm_pollrate=10.5
+
+Examples of using RPCs with PyDMLabels are provided in ``examples/rpc/rpc_labels.py``.
+For the examples to work properly, first make sure ``python examples/testing_ioc/rpc_testing_ioc.py`` is
+running in another terminal.
