@@ -56,8 +56,10 @@ class Connection(PyDMConnection):
         self._rpc_function_name = ""  # pv:call:add (in case of above example)
         self._rpc_arg_names = []  # ['lhs', 'rhs'] (in case of above example)
         self._rpc_arg_values = []  # ['4', '7'] (in case of above example)
+        self._value_obj = None
         # Poll rate in seconds
         self._rpc_poll_rate = 0  # (in case of above example)
+        self._background_polling_thread = None
 
         self.monitor = None
         self.is_rpc = self.is_rpc_address(channel.address)
@@ -90,20 +92,19 @@ class Connection(PyDMConnection):
                 name=self._rpc_function_name, value=self._value_obj, timeout=self._rpc_poll_rate
             )
             rpc_call_time = time.process_time() - start_time
-            if result:
-                self.connection_state_signal.emit(True)
-                # print ("Succ: ", result.value)
-                self.emit_for_type(result.value)
-            else:
-                # print ("Fail!")
-                self.connection_state_signal.emit(False)
-
             # We want to call "rpc" every self._rpc_poll_rate seconds,
-            # so wait if the call is quicker than the rate.
-            # The timeout arg makes sure a single call is never slower than poll rate.
+            # so wait when the call returns faster than the polling-rate.
+            # The timeout arg makes sure a single call is never slower then the polling-rate.
             poll_rate_and_rpc_call_time_dif = self._rpc_poll_rate - rpc_call_time
             if poll_rate_and_rpc_call_time_dif > 0:
                 time.sleep(poll_rate_and_rpc_call_time_dif)
+
+            print("Res: ", result.value)
+            if result:
+                self.connection_state_signal.emit(True)
+                self.emit_for_type(result.value)
+            else:
+                self.connection_state_signal.emit(False)
 
     def get_arg_datatype(self, arg_value_string):
         # Try to figure out the datatype of RPC request args
@@ -412,9 +413,9 @@ class Connection(PyDMConnection):
                 self.connection_state_signal.emit(True)
                 self.emit_for_type(result.value)
                 if self._rpc_poll_rate > 0:
-                    background_polling_thread = threading.Thread(target=self.poll_rpc_channel, daemon=True)
+                    self._background_polling_thread = threading.Thread(target=self.poll_rpc_channel)
                     # Start the thread
-                    background_polling_thread.start()
+                    self._background_polling_thread.start()
 
             return
 
