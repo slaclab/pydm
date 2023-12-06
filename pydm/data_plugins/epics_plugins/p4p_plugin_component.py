@@ -51,8 +51,8 @@ class Connection(PyDMConnection):
         self._lower_warning_limit = None
         self._timestamp = None
 
-        # RPC = Remote Procedure Calls (https://mdavidsaver.github.io/p4p/rpc.html#p4p.rpc.rpcproxy)
-        # example channel: pva://pv:call:add?lhs=4&rhs=7&pydm_pollrate=10
+        # RPC = Remote Procedure Call (https://mdavidsaver.github.io/p4p/rpc.html#p4p.rpc.rpcproxy)
+        # example address: pva://pv:call:add?lhs=4&rhs=7&pydm_pollrate=10
         self._rpc_function_name = ""  # pv:call:add (in case of above example)
         self._rpc_arg_names = []  # ['lhs', 'rhs'] (in case of above example)
         self._rpc_arg_values = []  # ['4', '7'] (in case of above example)
@@ -126,7 +126,7 @@ class Connection(PyDMConnection):
     def create_value_obj(self, rpc_function_name, rpc_arg_names, rpc_arg_values) -> Value:
         """
         Create the 'Value' object needed to call 'P4PPlugin.context.rpc',
-        will contain info on RPC function's args and value.
+        will contain info on the RPC function's args and value.
         (see example object here: https://mdavidsaver.github.io/p4p/rpc.html#using-low-level-client-api)
         Note: should be able to call '.rpc' with just a struct and it will construct the Value obj for us,
         but currently doesn't seem to work (ex: 'ctxt.rpc('pv:name:add', {'A':5, 'B'; 6})' )
@@ -395,7 +395,7 @@ class Connection(PyDMConnection):
         super().add_listener(channel)
 
         if self.is_rpc:
-            # In case of RPC, we can just query the channel immediately and emit the value,
+            # In case of a RPC, we can just query the channel immediately and emit the value,
             # and let the pollrate dictate if/when we query and emit again.
             self._value_obj = self.create_value_obj(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)
             if self._value_obj is None:
