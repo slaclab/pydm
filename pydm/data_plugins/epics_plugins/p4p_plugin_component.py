@@ -99,7 +99,6 @@ class Connection(PyDMConnection):
             if poll_rate_and_rpc_call_time_dif > 0:
                 time.sleep(poll_rate_and_rpc_call_time_dif)
 
-            print("Res: ", result.value)
             if result:
                 self.connection_state_signal.emit(True)
                 self.emit_for_type(result.value)
@@ -413,7 +412,7 @@ class Connection(PyDMConnection):
                 self.connection_state_signal.emit(True)
                 self.emit_for_type(result.value)
                 if self._rpc_poll_rate > 0:
-                    self._background_polling_thread = threading.Thread(target=self.poll_rpc_channel)
+                    self._background_polling_thread = threading.Thread(target=self.poll_rpc_channel, daemon=True)
                     # Start the thread
                     self._background_polling_thread.start()
 
