@@ -86,9 +86,9 @@ generate a couple of test PVs, which can be connected to using the example .ui f
 RPC
 ---
 
-The P4P data plugin also supports **remote method calls** (RPC) for use with the **PyDMLabel** widget.
+The P4P data plugin also supports **remote method calls** (RPC).
 
-RPCs allow for calling methods on a target IOC, and receiving back the method's result which can be displayed by a PyDMLabel.
+RPCs allow for calling methods on a target IOC, and receiving back the method's result.
 RPC addresses must contain arguments matching the name and data-type of those defined in the target's method (RPCs must have at least one argument and value pair).
 These arguments are static and set in the widget's channel address.
 
