@@ -1,4 +1,10 @@
-# code adapted from p4p docs: https://mdavidsaver.github.io/p4p/rpc.html
+"""
+This is an example of a server that sends back RPC results, mimicking the behavior of an ioc.
+The server defines three functions with differing names, number of args, and arg types.
+To view demo, first run this file with 'python rpc_testing_ioc.py',
+and then run 'pydm examples/rpc/rpc_lables.ui' from another terminal.
+(code adapted from p4p docs: https://mdavidsaver.github.io/p4p/rpc.html)
+"""
 from p4p.rpc import rpc, quickRPCServer
 from p4p.nt import NTScalar
 

@@ -126,11 +126,12 @@ class Connection(PyDMConnection):
         """
         Create the 'Value' object needed to call 'P4PPlugin.context.rpc',
         will contain info on the RPC function's args and value.
-        (see example object here: https://mdavidsaver.github.io/p4p/rpc.html#using-low-level-client-api)
-        Note: should be able to call '.rpc' with just a struct and it will construct the Value obj for us,
+        (see example object here: https://mdavidsaver.github.io/p4p/rpc.html#using-low-level-client-api,
+        or see object constructed in examples/rpc/rpc_testing_client.py)
+        Note: might be able to call '.rpc' with just a struct and it will construct the Value obj for us,
         but currently doesn't seem to work (ex: 'ctxt.rpc('pv:name:add', {'A':5, 'B'; 6})' )
         """
-        # Should be formatted as: [(<arg1>, <arg1_type_string>), ...]
+        # Should be formatted as: [ (<arg1>, <arg1_type_string>), (<arg2>, <arg2_type_string>), ... ]
         arg_datatypes = []
         for i in range(len(rpc_arg_names)):
             data_type, _ = self.get_arg_datatype(rpc_arg_values[i])
