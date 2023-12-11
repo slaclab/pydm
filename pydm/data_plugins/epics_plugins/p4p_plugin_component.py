@@ -402,7 +402,10 @@ class Connection(PyDMConnection):
 
             result = None
             try:
-                result = P4PPlugin.context.rpc(self._rpc_function_name, self._value_obj)
+                # For first RPC use arbitrary small timeout (0.1) so we don't stall if are failing to connect,
+                # and prevent a very slow load if many widgets are timing out.
+                # When polling-rate is set, subsequent RPC calls will be sent at the actual rate.
+                result = P4PPlugin.context.rpc(self._rpc_function_name, self._value_obj, timeout=0.1)
             except Exception:
                 # So widget displays name of channel when can't connect to RPC channel
                 self.connection_state_signal.emit(False)
