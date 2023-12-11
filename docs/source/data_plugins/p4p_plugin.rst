@@ -86,21 +86,23 @@ generate a couple of test PVs, which can be connected to using the example .ui f
 RPC
 ---
 
-The P4P data plugin also supports **remote method calls** (RPC).
+The P4P data plugin also supports **remote method calls** (RPC) for use with the **PyDMLabel** widget.
 
-RPCs are set using a pva addresses, formatted as follows::
+RPCs allow for calling methods on a target IOC, and receiving back the method's result which can be displayed by a PyDMLabel.
+RPC addresses must contain arguments matching the name and data-type of those defined in the target's method (RPCs must have at least one argument and value pair).
+These arguments are static and set in the widget's channel address.
 
-    pva://<address>?<arg_1_name>=<arg_1_value>&<arg_2_name>=<arg_2_value>&...pydm_pollrate=<poll_rate_float>
+RPCs can be set using a pva address in the following format::
 
-Note:
--You can specify as many arg name/value pairs as needed.
--"pydm_pollrate" is an optional parameter, but if included must be specified after the arg name/value pairs. If not specified,
-the last arg name/value pair must still end with a "&" character. (when not-specified, the RPC will just not be polled)
+    pva://<address>?<arg_1_name>=<arg_1_value>&<arg_2_name>=<arg_2_value>&...(pydm_pollrate=<poll_rate_float>)
+
+*"pydm_pollrate" is an optional parameter, but when included must be placed after the arg name/value pairs in the address. 
+When not used, the last arg name/value pair must still end with a "&" character. (when not used, the RPC will be called once and not be polled)*
 
 An example RPC::
     
     pva://my_address?arg1=value1&arg2=value2&pydm_pollrate=10.5
 
-Examples of using RPCs with PyDMLabels are provided in ``examples/rpc/rpc_labels.py``.
-For the examples to work properly, first make sure ``python examples/testing_ioc/rpc_testing_ioc.py`` is
+Additional examples of using RPCs with PyDMLabels are provided in ``examples/rpc/rpc_labels.py``.
+To run examples, first make sure ``python examples/testing_ioc/rpc_testing_ioc.py`` is actively
 running in another terminal.
