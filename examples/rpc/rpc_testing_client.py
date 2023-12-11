@@ -1,4 +1,11 @@
-# code adapted p4p docs: https://mdavidsaver.github.io/p4p/rpc.html
+"""
+This is an example of a simple client for RPCs, along with a
+hard-coded example of how the Value object is constructed.
+To demo, first run 'python examples/testing_ioc/rpc_testing_ioc.py'
+from another terminal,
+then run this file with 'python rpc_testing_client.py'
+(code adapted p4p docs: https://mdavidsaver.github.io/p4p/rpc.html)
+"""
 from p4p import Type, Value
 from p4p.client.thread import Context
 
@@ -32,11 +39,11 @@ V = Value(
         },
     },
 )
-print(ctxt.rpc("pv:call:add_two_ints", V))
+print(ctxt.rpc("pv:call:add_two_ints", V, timeout=0.5))
 
 
-# Same result as above, but can define and use a proxy class if know ahead-of-time
-# the signature of the function RPC will call.
+# You can also get same result as above if you define and use a proxy class,
+# but this is best if you know ahead-of-time the signature of the function RPC will call.
 
 """
 from p4p.rpc import rpcproxy, rpccall
