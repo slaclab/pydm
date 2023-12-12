@@ -402,6 +402,19 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         logging.debug("ImageView RedrawImage Thread Launched")
         self.thread.start()
 
+    def toggleRedraw(self) -> bool:
+        """
+        Start or stop the thread responsible for drawing the image. Can be called by the user to
+        pause redrawing the image, and resume later if needed.
+
+        Returns
+        -------
+        bool
+            True if the image is being redrawn on a timer, false otherwise
+        """
+        self.redraw_timer.stop() if self.redraw_timer.isActive() else self.redraw_timer.start()
+        return self.redraw_timer.isActive()
+
     @Slot(list)
     def __updateDisplay(self, data):
         logging.debug("ImageView Update Display with new image")
