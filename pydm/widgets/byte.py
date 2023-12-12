@@ -555,3 +555,445 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             # before the object constructor is complete
             if hasattr(self, "_shift"):
                 self.update_indicators()
+
+
+class PyDMMultiStateIndicator(QWidget, PyDMWidget):
+    """
+    Widget with 16 available states that are set by the connected channel.
+    Each state represents a different color that can be configured.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
+
+    def __init__(self, parent: Optional[QWidget] = None, init_channel=None):
+        QWidget.__init__(self, parent)
+        PyDMWidget.__init__(self, init_channel=init_channel)
+        self._state_colors = [QColor(Qt.black)] * 16
+        self._curr_state = 0
+        self._curr_color = QColor(Qt.black)
+        self._painter = QPainter()
+        self._brush = QBrush(Qt.SolidPattern)
+        self._pen = QPen(Qt.SolidLine)
+        self._render_as_rectangle = False
+
+    # whether or not we render the widget as a circle (default) or a rectangle
+    @Property(bool)
+    def renderAsRectangle(self) -> bool:
+        return self._render_as_rectangle
+
+    @renderAsRectangle.setter
+    def renderAsRectangle(self, new_val: bool) -> None:
+        if new_val != self._render_as_rectangle:
+            self._render_as_rectangle = new_val
+
+    def value_changed(self, new_val: int) -> None:
+        """
+        Callback invoked when the Channel value is changed.
+        Parameters
+        ----------
+        new_val : int
+            The new value from the channel.
+        """
+        super(PyDMMultiStateIndicator, self).value_changed(new_val)
+        try:
+            int(new_val)
+            if new_val >= 0 and new_val <= 15:  # use states 0-15 (16 total states)
+                self._curr_state = int(new_val)
+                self._curr_color = self._state_colors[self._curr_state]
+                self.update()
+        except Exception:
+            pass
+
+    def paintEvent(self, event: QPaintEvent) -> None:
+        """
+        Paint events are sent to widgets that need to update themselves,
+        for instance when part of a widget is exposed because a covering
+        widget was moved.
+
+        Paint the widget according to the state colors.
+
+        Parameters
+        ----------
+        event : QPaintEvent
+        """
+        self._painter.begin(self)
+        opt = QStyleOption()
+        opt.initFrom(self)
+        self.style().drawPrimitive(QStyle.PE_Widget, opt, self._painter, self)
+        self._painter.setRenderHint(QPainter.Antialiasing)
+        self._painter.setBrush(QBrush(self._curr_color))
+        self._painter.setPen(QPen(Qt.red))
+        if self._render_as_rectangle:
+            self._painter.drawRect(self.rect())
+        else:  # render as circle
+            rect = self.rect()
+            w = rect.width()
+            h = rect.height()
+            r = int(min(w, h) / 2.0 - 2.0 * max(self._pen.widthF(), 1.0))
+            self._painter.drawEllipse(QPoint(w // 2, h // 2), r, r)
+        self._painter.end()
+
+    # color state setters/getters
+    @Property(int)
+    def currentValue(self) -> int:
+        """
+        The color for when widget is in state 0
+        Returns
+        -------
+        int
+        """
+        return self._curr_state
+
+    @currentValue.setter
+    def currentValue(self, new_state: int) -> None:
+        """
+        The color for when widget is in state 0
+        Parameters
+        ----------
+        new_color : int
+        """
+        if new_state != self._curr_state:
+            self._curr_state = new_state
+            self.value_changed(new_state)
+
+    # color state setters/getters
+    @Property(QColor)
+    def state0Color(self) -> QColor:
+        """
+        The color for when widget is in state 0
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[0]
+
+    @state0Color.setter
+    def state0Color(self, state_color: QColor) -> None:
+        """
+        The color for when widget is in state 0
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if state_color != self._state_colors[0]:
+            self._state_colors[0] = state_color
+
+    @Property(QColor)
+    def state1Color(self) -> QColor:
+        """
+        The color for when widget is in state 1
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[1]
+
+    @state1Color.setter
+    def state1Color(self, state_color: QColor) -> None:
+        """
+        The color for when widget is in state 1
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if state_color != self._state_colors[1]:
+            self._state_colors[1] = state_color
+
+    @Property(QColor)
+    def state2Color(self) -> QColor:
+        """
+        The color for when widget is in state 2
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[2]
+
+    @state2Color.setter
+    def state2Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 2
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[2]:
+            self._state_colors[2] = new_color
+
+    @Property(QColor)
+    def state3Color(self) -> QColor:
+        """
+        The color for when widget is in state 3
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[3]
+
+    @state3Color.setter
+    def state3Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 3
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[3]:
+            self._state_colors[3] = new_color
+
+    @Property(QColor)
+    def state4Color(self) -> QColor:
+        """
+        The color for when widget is in state 4
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[4]
+
+    @state4Color.setter
+    def state4Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 4
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[4]:
+            self._state_colors[4] = new_color
+
+    @Property(QColor)
+    def state5Color(self) -> QColor:
+        """
+        The color for when widget is in state 5
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[5]
+
+    @state5Color.setter
+    def state5Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 5
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[5]:
+            self._state_colors[5] = new_color
+
+    @Property(QColor)
+    def state6Color(self) -> QColor:
+        """
+        The color for when widget is in state 6
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[6]
+
+    @state6Color.setter
+    def state6Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 6
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[6]:
+            self._state_colors[6] = new_color
+
+    @Property(QColor)
+    def state7Color(self) -> QColor:
+        """
+        The color for when widget is in state 7
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[7]
+
+    @state7Color.setter
+    def state7Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 7
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[7]:
+            self._state_colors[7] = new_color
+
+    @Property(QColor)
+    def state8Color(self) -> QColor:
+        """
+        The color for when widget is in state 8
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[8]
+
+    @state8Color.setter
+    def state8Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 8
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[8]:
+            self._state_colors[8] = new_color
+
+    @Property(QColor)
+    def state9Color(self) -> QColor:
+        """
+        The color for when widget is in state 9
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[9]
+
+    @state9Color.setter
+    def state9Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 9
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[9]:
+            self._state_colors[9] = new_color
+
+    @Property(QColor)
+    def state10Color(self) -> QColor:
+        """
+        The color for when widget is in state 10
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[10]
+
+    @state10Color.setter
+    def state10Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 10
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[10]:
+            self._state_colors[10] = new_color
+
+    @Property(QColor)
+    def state11Color(self) -> QColor:
+        """
+        The color for when widget is in state 11
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[11]
+
+    @state11Color.setter
+    def state11Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 11
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[11]:
+            self._state_colors[11] = new_color
+
+    @Property(QColor)
+    def state12Color(self) -> QColor:
+        """
+        The color for when widget is in state 12
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[12]
+
+    @state12Color.setter
+    def state12Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 12
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[12]:
+            self._state_colors[12] = new_color
+
+    @Property(QColor)
+    def state13Color(self) -> QColor:
+        """
+        The color for when widget is in state 13
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[13]
+
+    @state13Color.setter
+    def state13Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 13
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[13]:
+            self._state_colors[13] = new_color
+
+    @Property(QColor)
+    def state14Color(self) -> QColor:
+        """
+        The color for when widget is in state 14
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[14]
+
+    @state14Color.setter
+    def state14Color(self, new_color: QColor) -> None:
+        """
+        The color for when widget is in state 14
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._state_colors[14]:
+            self._state_colors[14] = new_color
+
+    @Property(QColor)
+    def state15Color(self) -> QColor:
+        """
+        The color for when widget is in state 15
+        Returns
+        -------
+        QColor
+        """
+        return self._state_colors[15]
+
+    @state15Color.setter
+    def state15Color(self, state_color: QColor) -> None:
+        """
+        The color for when widget is in state 15
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if state_color != self._state_colors[15]:
+            self._state_colors[15] = state_color

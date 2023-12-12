@@ -10,6 +10,7 @@ Display Widgets
    :maxdepth: 1
 
    byte.rst
+   multistate.rst
    datetime_label.rst
    image.rst
    label.rst
@@ -74,7 +75,6 @@ Base Widgets
 
 Utilities
 ---------
-
 .. toctree::
    :maxdepth: 1
 

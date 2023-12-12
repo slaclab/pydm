@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>325</width>
+    <height>264</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="PyDMMultiStateIndicator" name="PyDMMultiStateIndicator">
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="channel" stdset="0">
+        <string>ca://MTEST:Float</string>
+       </property>
+       <property name="renderAsRectangle" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="state0Color" stdset="0">
+        <color>
+         <red>0</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="state1Color" stdset="0">
+        <color>
+         <red>170</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="state2Color" stdset="0">
+        <color>
+         <red>0</red>
+         <green>85</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="state3Color" stdset="0">
+        <color>
+         <red>170</red>
+         <green>85</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="state4Color" stdset="0">
+        <color>
+         <red>0</red>
+         <green>170</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="state5Color" stdset="0">
+        <color>
+         <red>170</red>
+         <green>170</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="state6Color" stdset="0">
+        <color>
+         <red>0</red>
+         <green>255</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="state7Color" stdset="0">
+        <color>
+         <red>170</red>
+         <green>255</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="state8Color" stdset="0">
+        <color>
+         <red>0</red>
+         <green>0</green>
+         <blue>127</blue>
+        </color>
+       </property>
+       <property name="state9Color" stdset="0">
+        <color>
+         <red>170</red>
+         <green>0</green>
+         <blue>127</blue>
+        </color>
+       </property>
+       <property name="state10Color" stdset="0">
+        <color>
+         <red>0</red>
+         <green>85</green>
+         <blue>127</blue>
+        </color>
+       </property>
+       <property name="state11Color" stdset="0">
+        <color>
+         <red>170</red>
+         <green>85</green>
+         <blue>127</blue>
+        </color>
+       </property>
+       <property name="state12Color" stdset="0">
+        <color>
+         <red>0</red>
+         <green>170</green>
+         <blue>127</blue>
+        </color>
+       </property>
+       <property name="state13Color" stdset="0">
+        <color>
+         <red>170</red>
+         <green>170</green>
+         <blue>127</blue>
+        </color>
+       </property>
+       <property name="state14Color" stdset="0">
+        <color>
+         <red>0</red>
+         <green>255</green>
+         <blue>127</blue>
+        </color>
+       </property>
+       <property name="state15Color" stdset="0">
+        <color>
+         <red>170</red>
+         <green>255</green>
+         <blue>127</blue>
+        </color>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMMultiStateIndicator</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.byte</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
