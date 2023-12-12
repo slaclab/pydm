@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMLogDisplay &mdash; PyDM 1.21.0 documentation</title>
+  <title>PyDMMultiStateIndicator &mdash; PyDM 1.21.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -22,8 +22,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PyDMRelatedDisplayButton" href="related_display_button.html" />
-    <link rel="prev" title="PyDMLabel" href="label.html" /> 
+    <link rel="next" title="PyDMDateTimeLabel" href="datetime_label.html" />
+    <link rel="prev" title="PyDMByteIndicator" href="byte.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -67,14 +67,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Widgets</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#display-widgets">Display Widgets</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="byte.html">PyDMByteIndicator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="multistate.html">PyDMMultiStateIndicator</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMMultiStateIndicator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="datetime_label.html">PyDMDateTimeLabel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="image.html">PyDMImageView</a></li>
 <li class="toctree-l3"><a class="reference internal" href="label.html">PyDMLabel</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">PyDMLogDisplay</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#pydm.widgets.logdisplay.PyDMLogDisplay"><code class="docutils literal notranslate"><span class="pre">PyDMLogDisplay</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="log.html">PyDMLogDisplay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="related_display_button.html">PyDMRelatedDisplayButton</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scale.html">PyDMScaleIndicator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="symbol.html">PyDMSymbol</a></li>
@@ -132,9 +129,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Widgets</a></li>
-      <li class="breadcrumb-item active">PyDMLogDisplay</li>
+      <li class="breadcrumb-item active">PyDMMultiStateIndicator</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/widgets/log.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/widgets/multistate.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -142,79 +139,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="pydmlogdisplay">
-<h1>PyDMLogDisplay<a class="headerlink" href="#pydmlogdisplay" title="Permalink to this heading"></a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="pydm.widgets.logdisplay.PyDMLogDisplay">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.logdisplay.</span></span><span class="sig-name descname"><span class="pre">PyDMLogDisplay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">LogLevels</span></code></p>
-<p>Standard display for Log Output</p>
-<p>This widget handles instantating a <code class="docutils literal notranslate"><span class="pre">GuiHandler</span></code> and displaying log
-messages to a <code class="docutils literal notranslate"><span class="pre">QPlainTextEdit</span></code>. The level of the log can be changed from
-inside the widget itself, allowing users to select from any of the
-<code class="docutils literal notranslate"><span class="pre">.levels</span></code> specified by the widget.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parent</strong> (<em>QObject</em><em>, </em><em>optional</em>) – </p></li>
-<li><p><strong>logname</strong> (<em>str</em>) – Name of log to display in widget</p></li>
-<li><p><strong>level</strong> (<em>logging.Level</em>) – Initial level of log display</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.logdisplay.PyDMLogDisplay.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.clear" title="Permalink to this definition"></a></dt>
-<dd><p>Clear the text area.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.logdisplay.PyDMLogDisplay.logFormat">
-<span class="sig-name descname"><span class="pre">logFormat</span></span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.logFormat" title="Permalink to this definition"></a></dt>
-<dd><p>Format for log messages</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.logdisplay.PyDMLogDisplay.logName">
-<span class="sig-name descname"><span class="pre">logName</span></span><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.logName" title="Permalink to this definition"></a></dt>
-<dd><p>Name of associated log</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.logdisplay.PyDMLogDisplay.paintEvent">
-<span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.paintEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.paintEvent" title="Permalink to this definition"></a></dt>
-<dd><p>Paint events are sent to widgets that need to update themselves,
-for instance when part of a widget is exposed because a covering
-widget was moved.</p>
-<p>At PyDMDrawing this method handles the alarm painting with parameters
-from the stylesheet, configures the brush, pen and calls <code class="docutils literal notranslate"><span class="pre">`draw_item`</span></code>
-so the specifics can be performed for each of the drawing classes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>event</strong> (<em>QPaintEvent</em>) – </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.logdisplay.PyDMLogDisplay.setLevel">
-<span class="sig-name descname"><span class="pre">setLevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.setLevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.setLevel" title="Permalink to this definition"></a></dt>
-<dd><p>Set the level of the contained logger</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.logdisplay.PyDMLogDisplay.sizeHint">
-<span class="sig-name descname"><span class="pre">sizeHint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QSize</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.sizeHint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.sizeHint" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.logdisplay.PyDMLogDisplay.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/logdisplay.html#PyDMLogDisplay.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.logdisplay.PyDMLogDisplay.write" title="Permalink to this definition"></a></dt>
-<dd><p>Write a message to the log display</p>
-</dd></dl>
-
-</dd></dl>
-
+  <section id="pydmmultistateindicator">
+<h1>PyDMMultiStateIndicator<a class="headerlink" href="#pydmmultistateindicator" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>See <a class="reference external" href="https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QWidget.html">QWidget Documentation</a> for all inherited properties and methods.</p>
@@ -225,8 +151,8 @@ so the specifics can be performed for each of the drawing classes.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="label.html" class="btn btn-neutral float-left" title="PyDMLabel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="related_display_button.html" class="btn btn-neutral float-right" title="PyDMRelatedDisplayButton" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="byte.html" class="btn btn-neutral float-left" title="PyDMByteIndicator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="datetime_label.html" class="btn btn-neutral float-right" title="PyDMDateTimeLabel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
