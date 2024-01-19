@@ -12,7 +12,9 @@ from ..utilities import is_qt_designer, find_file
 
 logger = logging.getLogger(__name__)
 
-
+_penRuleProperties = {"Set Pen Color": ["penColor", QColor],
+                      "Set Pen Style": ["penStyle", int],
+                      "Set Pen Width": ["penWidth", float]}
 def deg_to_qt(deg):
     """
     Converts from degrees to QT degrees.
@@ -63,7 +65,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
-
+    
     def __init__(self, parent=None, init_channel=None):
         self._rotation = 0.0
         self._brush = QBrush(Qt.SolidPattern)
@@ -447,7 +449,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
                 self.penStyle = self._original_pen_style
 
 
-class PyDMDrawingLine(PyDMDrawing):
+class PyDMDrawingLine(PyDMDrawing,new_properties= _penRuleProperties):
     """
     A widget with a line drawn in it.
     This class inherits from PyDMDrawing.
