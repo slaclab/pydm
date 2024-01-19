@@ -5,7 +5,7 @@ import weakref
 
 from qtpy.QtCore import QThread, QMutex, Signal
 from qtpy.QtWidgets import QWidget, QApplication
-from qtpy.QtGui import QColor, QPainter, QBrush, QPen
+from qtpy.QtGui import QColor
 from ..utilities import is_qt_designer
 from .channel import PyDMChannel
 

@@ -65,7 +65,6 @@ class PyDMDrawing(QWidget, PyDMWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
-    
     def __init__(self, parent=None, init_channel=None):
         self._rotation = 0.0
         self._brush = QBrush(Qt.SolidPattern)
