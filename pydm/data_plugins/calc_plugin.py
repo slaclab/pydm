@@ -205,16 +205,20 @@ class Connection(PyDMConnection):
 
         try:
             url_data = UrlToPython(channel)
+            #new implementation: url_data = UrlToPython(channel).get_info()
         except ValueError("Not enough information"):
             logger.debug("Invalid configuration for Calc Plugin connection", exc_info=True)
             return
 
         self._configuration["name"] = url_data.name
+        #new implementation:self._configuration["name"] = url_data[1]
         self._configuration.update(url_data.config)
+        #new implmentation: self._configuration.update(url_data[0])
         self._waiting_config = False
 
         self._calc_thread = CalcThread(self._configuration)
         self._calc_thread.setObjectName("calc_{}".format(url_data.name))
+        #new implementation: self._calc_thread.setObjectName("calc_{}".format(url_data[1]))
         self._calc_thread.new_data_signal.connect(self.receive_new_data, Qt.QueuedConnection)
         self._calc_thread.start()
         return True
@@ -249,6 +253,7 @@ class CalculationPlugin(PyDMPlugin):
     def get_connection_id(channel):
         obj = UrlToPython(channel)
         return obj.name
+        #new implementation: return obj.get_info()[1]
 
 
 class UrlToPython:
@@ -286,3 +291,41 @@ class UrlToPython:
                 raise ValueError("error in Calc Plugin plugin input")
 
         return True
+    
+"""
+New Implementation for URLtoPython class
+class UrlToPython:
+    def __init__(self, channel):
+        self.channel = channel
+        
+    def get_info(self):
+       
+        #Parses a given url into a list and a string.
+
+        #Returns
+        #-------
+        #A tuple: (<list>, <str>)
+      
+        address = PyDMPlugin.get_parsed_address(self.channel)
+        name = None
+        config = None
+
+        try:
+            config = parse.parse_qs(address.query.replace("+", "%2B"))
+            name = address.netloc
+
+            if not name or not config:
+                raise
+        except Exception:
+            try:
+                if not name:
+                    raise
+                logger.debug("Calc Plugin  connection %s got new listener.", address)
+                return None, name, address
+            except Exception:
+                msg = "Invalid configuration for Calc Plugin  connection. %s"
+                logger.exception(msg, address, exc_info=True)
+                raise ValueError("error in Calc Plugin plugin input")
+
+        return config, name, address
+"""
