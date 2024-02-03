@@ -378,7 +378,6 @@ class PyDMEventPlot(BasePlot):
         Remove a curve from the plot, given an index
         for a curve.
 
-
         Parameters
         ----------
         index: int
