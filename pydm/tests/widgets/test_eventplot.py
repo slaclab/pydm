@@ -2,7 +2,7 @@ from ...widgets.eventplot import PyDMEventPlot
 
 
 def test_add_channel(qtbot):
-    """ A quick check to ensure adding a channel to an event plot works as expected """
+    """A quick check to ensure adding a channel to an event plot works as expected"""
     event_plot = PyDMEventPlot()
     qtbot.addWidget(event_plot)
 
