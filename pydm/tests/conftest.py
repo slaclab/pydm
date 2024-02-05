@@ -126,6 +126,10 @@ def qapp(qapp_args):
     -------
     An instance of PyDMApplication.
     """
+    # Don't pass along the default app name we get from pytest-qt otherwise PyDM will misinterpret it as a ui file name
+    if "pytest-qt-qapp" == qapp_args[0]:
+        qapp_args.remove("pytest-qt-qapp")
+
     yield PyDMApplication(use_main_window=False, *qapp_args)
 
 
