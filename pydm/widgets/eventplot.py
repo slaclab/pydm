@@ -360,7 +360,7 @@ class PyDMEventPlot(BasePlot):
         curve.data_changed.connect(self.set_needs_redraw)
 
     def createCurveItem(self, *args, **kwargs):
-        return EventPlotCurveItem(*args, *kwargs)
+        return EventPlotCurveItem(*args, **kwargs)
 
     def removeChannel(self, curve):
         """

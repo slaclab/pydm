@@ -1,6 +1,7 @@
 import os
 import pytest
 import sys
+import warnings
 from qtpy.QtCore import Qt, QSize
 from qtpy.QtWidgets import QApplication
 from ...utilities.stylesheet import global_style
@@ -24,7 +25,7 @@ def test_old_display_filename_property(qtbot):
     main_window.setWindowTitle("Related Display Button Test")
     qtbot.addWidget(main_window)
     button = PyDMRelatedDisplayButton(parent=main_window)
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings(record=True) as record:
         button.displayFilename = test_ui_path
     assert len(record) >= 1
     assert button.filenames[0] == test_ui_path
