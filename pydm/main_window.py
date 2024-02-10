@@ -6,7 +6,7 @@ from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
 from qtpy.QtGui import QKeySequence
 from .utilities import IconFont, find_file, establish_widget_connections, close_widget_connections
 from .pydm_ui import Ui_MainWindow
-from .display import Display, ScreenTarget, load_file
+from .display import Display, ScreenTarget, load_file, clear_compiled_ui_file_cache
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
 from .show_macros import MacroWindow
@@ -442,6 +442,7 @@ class PyDMMainWindow(QMainWindow):
         loaded_file = curr_display.loaded_file()
 
         self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
+        clear_compiled_ui_file_cache()
         new_widget = self.open(loaded_file, macros=macros, args=args)
         new_widget.previous_display = prev_display
         new_widget.next_display = next_display
