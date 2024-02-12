@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="PyDMEventPlot" name="PyDMEventPlot">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>341</width>
+     <height>271</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="yAxes">
+    <stringlist>
+     <string>{&quot;name&quot;: &quot;Axis 1&quot;, &quot;orientation&quot;: &quot;left&quot;, &quot;label&quot;: null, &quot;minRange&quot;: -1.0, &quot;maxRange&quot;: 1.0, &quot;autoRange&quot;: true, &quot;logMode&quot;: false}</string>
+    </stringlist>
+   </property>
+   <property name="curves">
+    <stringlist>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:Waveform&quot;, &quot;y_idx&quot;: &quot;1&quot;, &quot;x_idx&quot;: &quot;2&quot;, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;white&quot;, &quot;lineStyle&quot;: 2, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;o&quot;, &quot;symbolSize&quot;: 15, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;buffer_size&quot;: 2, &quot;bufferSizeChannelAddress&quot;: null}</string>
+     <string>{&quot;channel&quot;: &quot;ca://MTEST:Waveform&quot;, &quot;y_idx&quot;: &quot;3&quot;, &quot;x_idx&quot;: &quot;3&quot;, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;red&quot;, &quot;lineStyle&quot;: 2, &quot;lineWidth&quot;: 1, &quot;symbol&quot;: &quot;star&quot;, &quot;symbolSize&quot;: 15, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;buffer_size&quot;: 2, &quot;bufferSizeChannelAddress&quot;: null}</string>
+    </stringlist>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMEventPlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.eventplot</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
