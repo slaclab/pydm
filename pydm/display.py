@@ -116,6 +116,14 @@ def _load_ui_into_display(uifile, display):
     display.ui = display
 
 
+def clear_compiled_ui_file_cache() -> None:
+    """
+    Clears the cache of compiled ui files. Needed if changes to the underlying ui files have been made on disk and
+    need to be picked up, such as the user choosing to reload the display.
+    """
+    _compile_ui_file.cache_clear()
+
+
 def _load_compiled_ui_into_display(
     code_string: str, class_name: str, display: Display, macros: Optional[Dict[str, str]] = None
 ) -> None:
