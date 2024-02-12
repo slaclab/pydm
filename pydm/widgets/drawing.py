@@ -12,9 +12,13 @@ from ..utilities import is_qt_designer, find_file
 
 logger = logging.getLogger(__name__)
 
-_penRuleProperties = {"Set Pen Color": ["penColor", QColor],
-                      "Set Pen Style": ["penStyle", int],
-                      "Set Pen Width": ["penWidth", float]}
+_penRuleProperties = {
+    "Set Pen Color": ["penColor", QColor],
+    "Set Pen Style": ["penStyle", int],
+    "Set Pen Width": ["penWidth", float],
+}
+
+
 def deg_to_qt(deg):
     """
     Converts from degrees to QT degrees.
@@ -65,6 +69,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         self._rotation = 0.0
         self._brush = QBrush(Qt.SolidPattern)
@@ -216,11 +221,15 @@ class PyDMDrawing(QWidget, PyDMWidget):
         origHeight = self.height()
 
         if origWidth == 0:
-            logger.error("Invalid width. The value must be greater than {0}".format(origWidth))
+            logger.error(
+                "Invalid width. The value must be greater than {0}".format(origWidth)
+            )
             return
 
         if origHeight == 0:
-            logger.error("Invalid height. The value must be greater than {0}".format(origHeight))
+            logger.error(
+                "Invalid height. The value must be greater than {0}".format(origHeight)
+            )
             return
 
         if origWidth <= origHeight:
@@ -448,7 +457,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
                 self.penStyle = self._original_pen_style
 
 
-class PyDMDrawingLine(PyDMDrawing,new_properties= _penRuleProperties):
+class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
     """
     A widget with a line drawn in it.
     This class inherits from PyDMDrawing.
@@ -825,7 +834,9 @@ class PyDMDrawingImage(PyDMDrawing):
         super(PyDMDrawingImage, self).draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
         if not isinstance(self._pixmap, QMovie):
-            _scaled = self._pixmap.scaled(int(w), int(h), self._aspect_ratio_mode, Qt.SmoothTransformation)
+            _scaled = self._pixmap.scaled(
+                int(w), int(h), self._aspect_ratio_mode, Qt.SmoothTransformation
+            )
             # Make sure the image is centered if smaller than the widget itself
             if w > _scaled.width():
                 logger.debug("Centering image horizontally ...")
@@ -1063,7 +1074,9 @@ class PyDMDrawingArc(PyDMDrawing):
         super(PyDMDrawingArc, self).draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        painter.drawArc(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
+        painter.drawArc(
+            QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle)
+        )
 
 
 class PyDMDrawingPie(PyDMDrawingArc):
@@ -1090,7 +1103,9 @@ class PyDMDrawingPie(PyDMDrawingArc):
         super(PyDMDrawingPie, self).draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        painter.drawPie(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
+        painter.drawPie(
+            QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle)
+        )
 
 
 class PyDMDrawingChord(PyDMDrawingArc):
@@ -1117,7 +1132,9 @@ class PyDMDrawingChord(PyDMDrawingArc):
         super(PyDMDrawingChord, self).draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        painter.drawChord(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
+        painter.drawChord(
+            QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle)
+        )
 
 
 class PyDMDrawingPolygon(PyDMDrawing):
@@ -1236,17 +1253,24 @@ class PyDMDrawingPolyline(PyDMDrawing):
                     midpoint_x = (point1.x() + point2.x()) / 2
                     midpoint_y = (point1.y() + point2.y()) / 2
                     midpoint = QPointF(midpoint_x, midpoint_y)
-                    points = PyDMDrawingLine._arrow_points(point1, midpoint, 6, 6)  # 6 = arbitrary arrow size
+                    points = PyDMDrawingLine._arrow_points(
+                        point1, midpoint, 6, 6
+                    )  # 6 = arbitrary arrow size
                     painter.drawPolygon(points)
 
         # Draw the arrows
         if self._arrow_end_point_selection and (len(self._points[1]) >= 2):
-            points = PyDMDrawingLine._arrow_points(p2d(self._points[1]), p2d(self._points[0]), 6, 6)
+            points = PyDMDrawingLine._arrow_points(
+                p2d(self._points[1]), p2d(self._points[0]), 6, 6
+            )
             painter.drawPolygon(points)
 
         if self._arrow_start_point_selection and (len(self._points[1]) >= 2):
             points = PyDMDrawingLine._arrow_points(
-                p2d(self._points[len(self._points) - 2]), p2d(self._points[len(self._points) - 1]), 6, 6
+                p2d(self._points[len(self._points) - 2]),
+                p2d(self._points[len(self._points) - 1]),
+                6,
+                6,
             )
             painter.drawPolygon(points)
 
@@ -1288,10 +1312,18 @@ class PyDMDrawingPolyline(PyDMDrawing):
                 try:
                     point = ast.literal_eval(point)
                 except SyntaxError:
-                    logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
+                    logger.error(
+                        "point %d must be two numbers, comma-separated, received '%s'",
+                        i,
+                        pt,
+                    )
                     return
             if not isinstance(point, (list, tuple)) or len(point) != 2:
-                logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
+                logger.error(
+                    "point %d must be two numbers, comma-separated, received '%s'",
+                    i,
+                    pt,
+                )
                 return
             try:
                 point = list(map(float, point))  # ensure all values are float

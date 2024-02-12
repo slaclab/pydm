@@ -182,9 +182,18 @@ class RulesEngine(QThread):
 
             for ch_idx, ch in enumerate(channels_list):
                 conn_cb = functools.partial(self.callback_conn, widget_ref, idx, ch_idx)
-                value_cb = functools.partial(self.callback_value, widget_ref, idx, ch_idx, ch["trigger"])
-                enums_cb = functools.partial(self.callback_enum, widget_ref, idx, ch_idx)
-                c = PyDMChannel(ch["channel"], connection_slot=conn_cb, value_slot=value_cb, enum_strings_slot=enums_cb)
+                value_cb = functools.partial(
+                    self.callback_value, widget_ref, idx, ch_idx, ch["trigger"]
+                )
+                enums_cb = functools.partial(
+                    self.callback_enum, widget_ref, idx, ch_idx
+                )
+                c = PyDMChannel(
+                    ch["channel"],
+                    connection_slot=conn_cb,
+                    value_slot=value_cb,
+                    enum_strings_slot=enums_cb,
+                )
                 item["channels"].append(c)
             rules_db.append(item)
 
@@ -367,7 +376,8 @@ class RulesEngine(QThread):
             self.emit_value(widget_ref, name, prop, val)
         except Exception:
             logger.exception(
-                f"Error while evaluating Rule with name: {name} and type: {prop} " f"and expression: {expression}"
+                f"Error while evaluating Rule with name: {name} and type: {prop} "
+                f"and expression: {expression}"
             )
 
     def emit_value(self, widget_ref, name, prop, val):
