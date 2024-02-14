@@ -5,6 +5,7 @@ import weakref
 
 from qtpy.QtCore import QThread, QMutex, Signal
 from qtpy.QtWidgets import QWidget, QApplication
+from qtpy.QtGui import QColor
 from ..utilities import is_qt_designer
 from .channel import PyDMChannel
 
@@ -183,7 +184,12 @@ class RulesEngine(QThread):
                 conn_cb = functools.partial(self.callback_conn, widget_ref, idx, ch_idx)
                 value_cb = functools.partial(self.callback_value, widget_ref, idx, ch_idx, ch["trigger"])
                 enums_cb = functools.partial(self.callback_enum, widget_ref, idx, ch_idx)
-                c = PyDMChannel(ch["channel"], connection_slot=conn_cb, value_slot=value_cb, enum_strings_slot=enums_cb)
+                c = PyDMChannel(
+                    ch["channel"],
+                    connection_slot=conn_cb,
+                    value_slot=value_cb,
+                    enum_strings_slot=enums_cb,
+                )
                 item["channels"].append(c)
             rules_db.append(item)
 
@@ -355,7 +361,7 @@ class RulesEngine(QThread):
                     pass
             calc_vals.append(v)
 
-        eval_env = {"np": np, "ch": calc_vals}
+        eval_env = {"np": np, "ch": calc_vals, "QColor": QColor}
         eval_env.update({k: v for k, v in math.__dict__.items() if k[0] != "_"})
 
         expression = rule["rule"]["expression"]

@@ -12,6 +12,12 @@ from ..utilities import is_qt_designer, find_file
 
 logger = logging.getLogger(__name__)
 
+_penRuleProperties = {
+    "Set Pen Color": ["penColor", QColor],
+    "Set Pen Style": ["penStyle", int],
+    "Set Pen Width": ["penWidth", float],
+}
+
 
 def deg_to_qt(deg):
     """
@@ -447,7 +453,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
                 self.penStyle = self._original_pen_style
 
 
-class PyDMDrawingLine(PyDMDrawing):
+class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
     """
     A widget with a line drawn in it.
     This class inherits from PyDMDrawing.
@@ -1245,7 +1251,10 @@ class PyDMDrawingPolyline(PyDMDrawing):
 
         if self._arrow_start_point_selection and (len(self._points[1]) >= 2):
             points = PyDMDrawingLine._arrow_points(
-                p2d(self._points[len(self._points) - 2]), p2d(self._points[len(self._points) - 1]), 6, 6
+                p2d(self._points[len(self._points) - 2]),
+                p2d(self._points[len(self._points) - 1]),
+                6,
+                6,
             )
             painter.drawPolygon(points)
 
@@ -1287,10 +1296,18 @@ class PyDMDrawingPolyline(PyDMDrawing):
                 try:
                     point = ast.literal_eval(point)
                 except SyntaxError:
-                    logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
+                    logger.error(
+                        "point %d must be two numbers, comma-separated, received '%s'",
+                        i,
+                        pt,
+                    )
                     return
             if not isinstance(point, (list, tuple)) or len(point) != 2:
-                logger.error("point %d must be two numbers, comma-separated, received '%s'", i, pt)
+                logger.error(
+                    "point %d must be two numbers, comma-separated, received '%s'",
+                    i,
+                    pt,
+                )
                 return
             try:
                 point = list(map(float, point))  # ensure all values are float
