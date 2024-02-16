@@ -52,9 +52,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.error_bar_item = ErrorBarItem()
         self.error_bar_needs_set = True
 
-        if channel_address is not None and use_archive_data:
-            self.setArchiveChannel(channel_address)
-
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
         dic_ = OrderedDict(
@@ -65,15 +62,24 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         dic_.update(super(ArchivePlotCurveItem, self).to_dict())
         return dic_
 
-    def setArchiveChannel(self, address: str) -> None:
+    @TimePlotCurveItem.address.setter
+    def address(self, new_address: str) -> None:
         """Creates the channel for the input address for communicating with the archiver appliance plugin."""
+        TimePlotCurveItem.address.__set__(self, new_address)
+
+        if not new_address:
+            self.archive_channel = None
+            return
+        elif self.archive_channel and new_address == self.archive_channel.address:
+            return
+
         archiver_prefix = "archiver://pv="
-        if address.startswith("ca://"):
-            archive_address = address.replace("ca://", archiver_prefix, 1)
-        elif address.startswith("pva://"):
-            archive_address = address.replace("pva://", archiver_prefix, 1)
+        if new_address.startswith("ca://"):
+            archive_address = new_address.replace("ca://", archiver_prefix, 1)
+        elif new_address.startswith("pva://"):
+            archive_address = new_address.replace("pva://", archiver_prefix, 1)
         else:
-            archive_address = archiver_prefix + address
+            archive_address = archiver_prefix + new_address
 
         self.archive_channel = PyDMChannel(
             address=archive_address, value_slot=self.receiveArchiveData, value_signal=self.archive_data_request_signal
