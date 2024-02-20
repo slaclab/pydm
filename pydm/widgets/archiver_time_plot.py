@@ -4,6 +4,7 @@ import numpy as np
 from collections import OrderedDict
 from typing import List, Optional
 from pyqtgraph import DateAxisItem, ErrorBarItem
+from pydm.utilities import remove_protocol
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
@@ -73,14 +74,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         elif self.archive_channel and new_address == self.archive_channel.address:
             return
 
-        archiver_prefix = "archiver://pv="
-        if new_address.startswith("ca://"):
-            archive_address = new_address.replace("ca://", archiver_prefix, 1)
-        elif new_address.startswith("pva://"):
-            archive_address = new_address.replace("pva://", archiver_prefix, 1)
-        else:
-            archive_address = archiver_prefix + new_address
-
+        # Prepare new address to use the archiver plugin and create the new channel
+        archive_address = "archiver://pv=" + remove_protocol(new_address)
         self.archive_channel = PyDMChannel(
             address=archive_address, value_slot=self.receiveArchiveData, value_signal=self.archive_data_request_signal
         )
