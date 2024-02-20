@@ -127,6 +127,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
             address=new_address, connection_slot=self.connectionStateChanged, value_slot=self.receiveNewValue
         )
 
+        # Clear the data from the previous channel and redraw the curve
+        self.initialize_buffer()
+        self.redrawCurve()
+
     @property
     def plotByTimeStamps(self):
         return self._plot_by_timestamps

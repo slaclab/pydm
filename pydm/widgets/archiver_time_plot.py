@@ -85,6 +85,10 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             address=archive_address, value_slot=self.receiveArchiveData, value_signal=self.archive_data_request_signal
         )
 
+        # Clear the archive data of the previous channel and redraw the curve
+        self.initializeArchiveBuffer()
+        self.redrawCurve()
+
     @Slot(np.ndarray)
     def receiveArchiveData(self, data: np.ndarray) -> None:
         """Receive data from archiver appliance and place it into the archive data buffer.
