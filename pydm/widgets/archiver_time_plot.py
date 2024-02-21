@@ -39,7 +39,9 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
 
-    def __init__(self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws):
+    def __init__(
+        self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws
+    ):
         super(ArchivePlotCurveItem, self).__init__(channel_address, **kws)
         self.use_archive_data = use_archive_data
         self.archive_channel = None
@@ -218,7 +220,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         """ """
         if self.liveData:
             super().receiveNewValue(new_value)
-            
+
+
 class PyDMArchiverTimePlot(PyDMTimePlot):
     """
     PyDMArchiverTimePlot is a PyDMTimePlot with support for receiving data from
@@ -425,7 +428,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         thresholdColor=None,
         yAxisName=None,
         useArchiveData=False,
-        liveData=True
+        liveData=True,
     ):
         """
         Overrides timeplot addYChannel method to be able to pass the liveData flag.
@@ -445,4 +448,5 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             thresholdColor=thresholdColor,
             yAxisName=yAxisName,
             useArchiveData=useArchiveData,
-            liveData=liveData)
+            liveData=liveData,
+        )

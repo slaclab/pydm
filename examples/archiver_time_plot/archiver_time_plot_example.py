@@ -31,15 +31,14 @@ class archiver_time_plot_example(Display):
             color="red",
             yAxisName="Axis",
             useArchiveData=True,
-            liveData=True
+            liveData=True,
         )
-        
+
         self.plot_archived.addYChannel(
             y_channel="CA://XCOR:LI29:302:IACT",
             name="name",
             color="blue",
             yAxisName="Axis",
             useArchiveData=True,
-            liveData=False
+            liveData=False,
         )
-        

@@ -509,7 +509,7 @@ class PyDMTimePlot(BasePlot, updateMode):
         new_curve : TimePlotCurveItem
             The newly created curve.
         """
-        plot_opts = dict()        
+        plot_opts = dict()
         plot_opts["symbol"] = symbol
         if symbolSize is not None:
             plot_opts["symbolSize"] = symbolSize
@@ -519,7 +519,7 @@ class PyDMTimePlot(BasePlot, updateMode):
             plot_opts["lineWidth"] = lineWidth
         if kwargs:
             plot_opts.update(kwargs)
-            
+
         # Add curve
         new_curve = self.createCurveItem(
             channel_address=y_channel,
