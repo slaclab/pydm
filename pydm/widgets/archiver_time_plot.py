@@ -39,13 +39,14 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
 
-    def __init__(self, channel_address: Optional[str] = None, use_archive_data: bool = True, **kws):
+    def __init__(self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws):
         super(ArchivePlotCurveItem, self).__init__(channel_address, **kws)
         self.use_archive_data = use_archive_data
         self.archive_channel = None
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
+        self.liveData = liveData
 
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
@@ -213,7 +214,11 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         """Return the list of channels this curve is connected to"""
         return [self.channel, self.archive_channel]
 
-
+    def receiveNewValue(self, new_value):
+        """ """
+        if self.liveData:
+            super().receiveNewValue(new_value)
+            
 class PyDMArchiverTimePlot(PyDMTimePlot):
     """
     PyDMArchiverTimePlot is a PyDMTimePlot with support for receiving data from
@@ -403,3 +408,41 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
+
+    def addYChannel(
+        self,
+        y_channel=None,
+        plot_style=None,
+        name=None,
+        color=None,
+        lineStyle=None,
+        lineWidth=None,
+        symbol=None,
+        symbolSize=None,
+        barWidth=None,
+        upperThreshold=None,
+        lowerThreshold=None,
+        thresholdColor=None,
+        yAxisName=None,
+        useArchiveData=False,
+        liveData=True
+    ):
+        """
+        Overrides timeplot addYChannel method to be able to pass the liveData flag.
+        """
+        super().addYChannel(
+            y_channel=y_channel,
+            plot_style=plot_style,
+            name=name,
+            color=color,
+            lineStyle=lineStyle,
+            lineWidth=lineWidth,
+            symbol=symbol,
+            symbolSize=symbolSize,
+            barWidth=barWidth,
+            upperThreshold=upperThreshold,
+            lowerThreshold=lowerThreshold,
+            thresholdColor=thresholdColor,
+            yAxisName=yAxisName,
+            useArchiveData=useArchiveData,
+            liveData=liveData)

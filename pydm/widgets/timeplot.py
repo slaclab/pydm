@@ -468,6 +468,7 @@ class PyDMTimePlot(BasePlot, updateMode):
         thresholdColor=None,
         yAxisName=None,
         useArchiveData=False,
+        **kwargs
     ):
         """
         Adds a new curve to the current plot
@@ -508,7 +509,7 @@ class PyDMTimePlot(BasePlot, updateMode):
         new_curve : TimePlotCurveItem
             The newly created curve.
         """
-        plot_opts = dict()
+        plot_opts = dict()        
         plot_opts["symbol"] = symbol
         if symbolSize is not None:
             plot_opts["symbolSize"] = symbolSize
@@ -516,7 +517,9 @@ class PyDMTimePlot(BasePlot, updateMode):
             plot_opts["lineStyle"] = lineStyle
         if lineWidth is not None:
             plot_opts["lineWidth"] = lineWidth
-
+        if kwargs:
+            plot_opts.update(kwargs)
+            
         # Add curve
         new_curve = self.createCurveItem(
             channel_address=y_channel,
@@ -544,7 +547,6 @@ class PyDMTimePlot(BasePlot, updateMode):
 
         new_curve.data_changed.connect(self.set_needs_redraw)
         self.redraw_timer.start()
-
         return new_curve
 
     def createCurveItem(self, *args, **kwargs):
