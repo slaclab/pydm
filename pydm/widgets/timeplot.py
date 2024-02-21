@@ -128,8 +128,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
         )
 
         # Clear the data from the previous channel and redraw the curve
-        self.initialize_buffer()
-        self.redrawCurve()
+        if self.points_accumulated:
+            self.initialize_buffer()
+            self.redrawCurve()
 
     @property
     def plotByTimeStamps(self):

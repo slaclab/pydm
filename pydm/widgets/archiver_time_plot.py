@@ -41,7 +41,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     archive_data_received_signal = Signal()
 
     def __init__(self, channel_address: Optional[str] = None, use_archive_data: bool = True, **kws):
-        super(ArchivePlotCurveItem, self).__init__(channel_address, **kws)
+        super(ArchivePlotCurveItem, self).__init__(**kws)
         self.use_archive_data = use_archive_data
         self.archive_channel = None
         self.archive_points_accumulated = 0
@@ -52,6 +52,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # the full range of values retrieved
         self.error_bar_item = ErrorBarItem()
         self.error_bar_needs_set = True
+
+        self.address = channel_address
 
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
@@ -81,8 +83,9 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         )
 
         # Clear the archive data of the previous channel and redraw the curve
-        self.initializeArchiveBuffer()
-        self.redrawCurve()
+        if self.archive_points_accumulated:
+            self.initializeArchiveBuffer()
+            self.redrawCurve()
 
     @Slot(np.ndarray)
     def receiveArchiveData(self, data: np.ndarray) -> None:
