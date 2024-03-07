@@ -130,7 +130,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         if new_macros != self._macros:
             self._macros = new_macros
             self._needs_load = True
-            self.load_if_needed()
+        self.load_if_needed()
 
     @Property(str)
     def filename(self):
@@ -164,7 +164,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
                     self._load_error_timer.stop()
                     self._load_error_timer = None
                 self.clear_error_text()
-            self.load_if_needed()
+        self.load_if_needed()
 
     def set_macros_and_filename(self, new_filename, new_macros):
         """
@@ -180,6 +180,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         new_macros = str(new_macros)
         if new_macros != self._macros:
             self._macros = new_macros
+            self._needs_load = True
 
         self.filename = new_filename
 
