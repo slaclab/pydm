@@ -5,7 +5,7 @@ import weakref
 
 from qtpy.QtCore import QThread, QMutex, Signal
 from qtpy.QtWidgets import QWidget, QApplication
-from qtpy.QtGui import QColor
+from qtpy.QtGui import QColor, QBrush
 from ..utilities import is_qt_designer
 from .channel import PyDMChannel
 
@@ -361,7 +361,7 @@ class RulesEngine(QThread):
                     pass
             calc_vals.append(v)
 
-        eval_env = {"np": np, "ch": calc_vals, "QColor": QColor}
+        eval_env = {"np": np, "ch": calc_vals, "QColor": QColor, "QBrush": QBrush}
         eval_env.update({k: v for k, v in math.__dict__.items() if k[0] != "_"})
 
         expression = rule["rule"]["expression"]
