@@ -53,7 +53,8 @@ class ConnectionInspector(QWidget):
             for p in plugins.values()
             for connection in p.connections.values()
             # DISP field is connected to separately for writable channels, including it on this list is redundant
-            if not connection.address.endswith(".DISP")
+            # Local plugins have a ParseResult address, not a string, so they may not have a 'endswith' attribute
+            if (not connection.address.endswith(".DISP") if hasattr(connection.address, "endswith") else True)
         ]
 
     @Slot()
