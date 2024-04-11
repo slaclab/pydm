@@ -1230,21 +1230,42 @@ def test_pydmdrawingpolyline_arrows(qapp, qtbot, points, num_points):
     num_points :int
         The actual number of vertices of the polygon.
     """
-    drawing = PyDMDrawingPolyline()
-    qtbot.addWidget(drawing)
+    # try with polyline
+    polyLine = PyDMDrawingPolyline()
+    qtbot.addWidget(polyLine)
 
     # make sure points seutp correctly before drawing arrows
-    drawing.setPoints(points)
-    assert len(drawing.getPoints()) == num_points
+    polyLine.setPoints(points)
+    assert len(polyLine.getPoints()) == num_points
 
     # enable all arrow options
-    drawing._arrow_end_point_selection = True
-    drawing._arrow_start_point_selection = True
-    drawing._arrow_mid_point_selection = True
-    drawing._arrow_mid_point_flipped = True
-    drawing.draw_item(drawing._painter)
+    polyLine._arrow_end_point_selection = True
+    polyLine._arrow_start_point_selection = True
+    polyLine._arrow_mid_point_selection = True
+    polyLine._arrow_mid_point_flipped = True
+    polyLine.draw_item(polyLine._painter)
+    polyLine.show()
 
-    drawing.show()
+    # just be sure size prop exists and can be changed without breaking things
+    polyLine._arrow_size += 3
+    polyLine.draw_item(polyLine._painter)
+    polyLine.show()
+
+    # now try with line
+    line = PyDMDrawingLine()
+    qtbot.addWidget(line)
+    
+    # enable all arrow options
+    line._arrow_end_point_selection = True
+    line._arrow_start_point_selection = True
+    line._arrow_mid_point_selection = True
+    line._arrow_mid_point_flipped = True
+    line.draw_item(polyLine._painter)
+    line.show()
+
+    line._arrow_size += 3
+    line.draw_item(polyLine._painter)
+    line.show()
 
 
 # # ---------------------------
