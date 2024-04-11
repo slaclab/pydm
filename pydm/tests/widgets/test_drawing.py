@@ -1254,7 +1254,7 @@ def test_pydmdrawingpolyline_arrows(qapp, qtbot, points, num_points):
     # now try with line
     line = PyDMDrawingLine()
     qtbot.addWidget(line)
-    
+
     # enable all arrow options
     line._arrow_end_point_selection = True
     line._arrow_start_point_selection = True

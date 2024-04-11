@@ -1268,12 +1268,16 @@ class PyDMDrawingPolyline(PyDMDrawing):
                     midpoint_x = (point1.x() + point2.x()) / 2
                     midpoint_y = (point1.y() + point2.y()) / 2
                     midpoint = QPointF(midpoint_x, midpoint_y)
-                    points = PyDMDrawingLine._arrow_points(point1, midpoint, self._arrow_size, self._arrow_size)  # 6 = arbitrary arrow size
+                    points = PyDMDrawingLine._arrow_points(
+                        point1, midpoint, self._arrow_size, self._arrow_size
+                    )  # 6 = arbitrary arrow size
                     painter.drawPolygon(points)
 
         # Draw the arrows
         if self._arrow_end_point_selection and (len(self._points[1]) >= 2):
-            points = PyDMDrawingLine._arrow_points(p2d(self._points[1]), p2d(self._points[0]), self._arrow_size, self._arrow_size)
+            points = PyDMDrawingLine._arrow_points(
+                p2d(self._points[1]), p2d(self._points[0]), self._arrow_size, self._arrow_size
+            )
             painter.drawPolygon(points)
 
         if self._arrow_start_point_selection and (len(self._points[1]) >= 2):
