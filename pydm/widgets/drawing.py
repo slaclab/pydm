@@ -454,9 +454,9 @@ class PyDMDrawing(QWidget, PyDMWidget, new_properties=_penRuleProperties):
                 self.penStyle = self._original_pen_style
 
 
-class PyDMDrawingLine(PyDMDrawing):
+class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
     """
-    A widget with a line drawn in it.
+    A base class for single poly line widgets.
     This class inherits from PyDMDrawing.
 
     Parameters
@@ -468,15 +468,15 @@ class PyDMDrawingLine(PyDMDrawing):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingLine, self).__init__(parent, init_channel)
+        super(PyDMDrawingLineBase, self).__init__(parent, init_channel)
+
+        self.penStyle = Qt.SolidLine
+        self.penWidth = 1
         self._arrow_end_point_selection = False
         self._arrow_start_point_selection = False
         self._arrow_mid_point_selection = False
         self._mid_point_arrow_flipped = False
         self._arrow_size = 6  # 6 is arbitrary size that looked good for default, not in any specific 'units'
-        self.rotation = 0
-        self.penStyle = Qt.SolidLine
-        self.penWidth = 1
 
     @staticmethod
     def _arrow_points(startpoint, endpoint, height, width):
@@ -672,7 +672,7 @@ class PyDMDrawingLine(PyDMDrawing):
         -------
         bool
         """
-        return self._mid_point_arrow_flipped
+        return self._arrow_mid_point_flipped
 
     @flipMidPointArrow.setter
     def flipMidPointArrow(self, new_selection):
@@ -683,9 +683,267 @@ class PyDMDrawingLine(PyDMDrawing):
         -------
         new_selection : bool
         """
-        if self._mid_point_arrow_flipped != new_selection:
-            self._mid_point_arrow_flipped = new_selection
+        if self._arrow_mid_point_flipped != new_selection:
+            self._arrow_mid_point_flipped = new_selection
             self.update()
+
+    @staticmethod
+    def _arrow_points(startpoint, endpoint, height, width):
+        """
+        Returns the three points needed to make a triangle with .drawPolygon
+        """
+        diff_x = startpoint.x() - endpoint.x()
+        diff_y = startpoint.y() - endpoint.y()
+
+        length = max(math.sqrt(diff_x**2 + diff_y**2), 1.0)
+
+        norm_x = diff_x / length
+        norm_y = diff_y / length
+
+        perp_x = -norm_y
+        perp_y = norm_x
+
+        left_x = endpoint.x() + height * norm_x + width * perp_x
+        left_y = endpoint.y() + height * norm_y + width * perp_y
+        right_x = endpoint.x() + height * norm_x - width * perp_x
+        right_y = endpoint.y() + height * norm_y - width * perp_y
+
+        left = QPointF(left_x, left_y)
+        right = QPointF(right_x, right_y)
+
+        return QPolygonF([left, endpoint, right])
+
+class PyDMDrawingLine(PyDMDrawingLineBase, new_properties=_penRuleProperties):
+    """
+    A widget with a line drawn in it.
+    This class inherits from PyDMDrawingLineBase.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
+
+    def __init__(self, parent=None, init_channel=None):
+        super(PyDMDrawingLine, self).__init__(parent, init_channel)
+
+    def draw_item(self, painter):
+        """
+        Draws the line after setting up the canvas with a call to
+        ```PyDMDrawing.draw_item```.
+        """
+        super(PyDMDrawingLine, self).draw_item(painter)
+        x, y, w, h = self.get_bounds()
+
+        # Figure out how long to make the line to touch the bounding box
+        # Length varies depending on rotation
+
+        # Find the quadrant 1 angle equivalent
+        angle = self._rotation % 360
+        if 90 < angle <= 180:
+            angle = 180 - angle
+        elif 180 < angle <= 270:
+            angle = angle - 180
+        elif 270 < angle <= 360:
+            angle = 360 - angle
+        angle_rad = math.radians(angle)
+
+        # Find the angle of the rop right corner of the bounding box
+        try:
+            critical_angle = math.atan(h / w)
+        except ZeroDivisionError:
+            critical_angle = math.pi / 2
+
+        # Pick a length based on which side we intersect with
+        if angle_rad > critical_angle:
+            try:
+                length = h / math.sin(angle_rad)
+            except ZeroDivisionError:
+                length = w
+        else:
+            try:
+                length = w / math.cos(angle_rad)
+            except ZeroDivisionError:
+                length = h
+
+        # Define endpoints potentially outside the bounding box
+        # Will land on the bounding box after rotation
+        midpoint = x + w / 2
+        start_point = QPointF(midpoint - length / 2, 0)
+        end_point = QPointF(midpoint + length / 2, 0)
+        mid_point = QPointF(midpoint, 0)
+
+        # Draw the line
+        painter.drawLine(start_point, end_point)
+
+        # Draw the arrows
+        if self._arrow_end_point_selection:
+            points = self._arrow_points(start_point, end_point, self._arrow_size, self._arrow_size)
+            painter.drawPolygon(points)
+
+        if self._arrow_start_point_selection:
+            points = self._arrow_points(end_point, start_point, self._arrow_size, self._arrow_size)
+            painter.drawPolygon(points)
+
+        if self._arrow_mid_point_selection:
+            if self._arrow_mid_point_flipped:
+                points = self._arrow_points(start_point, mid_point, self._arrow_size, self._arrow_size)
+            else:
+                points = self._arrow_points(end_point, mid_point, self._arrow_size, self._arrow_size)
+            painter.drawPolygon(points)
+
+
+class PyDMDrawingPolyline(PyDMDrawingLineBase):
+    """
+    A widget with a multi-segment, piecewise-linear line drawn in it.
+    This class inherits from PyDMDrawingLineBase.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
+
+    def __init__(self, parent=None, init_channel=None):
+        super(PyDMDrawingPolyline, self).__init__(parent, init_channel)
+        self._points = []
+
+    def draw_item(self, painter):
+        """
+        Draws the segmented line after setting up the canvas with a call to
+        ``PyDMDrawing.draw_item``.
+        """
+        super(PyDMDrawingPolyline, self).draw_item(painter)
+        x, y, w, h = self.get_bounds()
+
+        def p2d(pt):
+            "convert point to drawing coordinates"
+            # drawing coordinates are centered: (0,0) is in center
+            # our points are absolute: (0,0) is upper-left corner
+            if isinstance(pt, str):
+                # 2022-05-11: needed for backwards compatibility support
+                # PyDM releases up to v1.15.1
+                # adl2pydm tags up to 0.0.2
+                pt = tuple(map(int, pt.split(",")))
+            u, v = pt
+            return QPointF(u + x, v + y)
+
+        if len(self._points) > 1:
+            for i, p1 in enumerate(self._points[:-1]):
+                painter.drawLine(p2d(p1), p2d(self._points[i + 1]))
+                if self._arrow_mid_point_selection:
+                    point1 = p2d(p1)
+                    point2 = p2d(self._points[i + 1])
+                    if self._arrow_mid_point_flipped:
+                        point1, point2 = point2, point1  # swap values
+
+                    # arrow points at midpoint of line
+                    midpoint_x = (point1.x() + point2.x()) / 2
+                    midpoint_y = (point1.y() + point2.y()) / 2
+                    midpoint = QPointF(midpoint_x, midpoint_y)
+                    points = self._arrow_points(point1, midpoint, self._arrow_size, self._arrow_size)  # 6 = arbitrary arrow size
+                    painter.drawPolygon(points)
+
+        # Draw the arrows
+        if self._arrow_end_point_selection and (len(self._points[1]) >= 2):
+            points = self._arrow_points(p2d(self._points[1]), p2d(self._points[0]), self._arrow_size, self._arrow_size)
+            painter.drawPolygon(points)
+
+        if self._arrow_start_point_selection and (len(self._points[1]) >= 2):
+            points = self._arrow_points(
+                p2d(self._points[len(self._points) - 2]),
+                p2d(self._points[len(self._points) - 1]),
+                self._arrow_size,
+                self._arrow_size,
+            )
+            painter.drawPolygon(points)
+
+    def getPoints(self):
+        """Convert internal points representation for use as QStringList."""
+        points = [f"{pt[0]}, {pt[1]}" for pt in self._points]
+        return points
+
+    def _validator(self, value):
+        """
+        ensure that `value` has correct form
+
+        Parameters
+        ----------
+        value : [ordered pairs]
+            List of strings representing ordered pairs
+            of integer coordinates.  Each ordered pair
+            is a tuple or list.
+
+        Returns
+        ----------
+        verified : [ordered pairs]
+            List of `tuple(number, number)`.
+
+        """
+
+        def isfloat(value):
+            if isinstance(value, str):
+                value = value.strip()
+            try:
+                float(value)
+                return True
+            except Exception:
+                return False
+
+        def validate_point(i, point):
+            """Ignore (instead of fail on) any of these pathologies."""
+            if isinstance(point, str):
+                try:
+                    point = ast.literal_eval(point)
+                except SyntaxError:
+                    logger.error(
+                        "point %d must be two numbers, comma-separated, received '%s'",
+                        i,
+                        pt,
+                    )
+                    return
+            if not isinstance(point, (list, tuple)) or len(point) != 2:
+                logger.error(
+                    "point %d must be two numbers, comma-separated, received '%s'",
+                    i,
+                    pt,
+                )
+                return
+            try:
+                point = list(map(float, point))  # ensure all values are float
+            except ValueError:
+                logger.error("point %d content must be numeric, received '%s'", i, pt)
+                return
+
+            return point
+
+        verified = []
+        for i, pt in enumerate(value, start=1):
+            point = validate_point(i, pt)
+            if point is not None:
+                verified.append(point)
+
+        return verified
+
+    def setPoints(self, value):
+        verified = self._validator(value)
+        if verified is not None:
+            if len(verified) < 2:
+                logger.error("Must have two or more points")
+                return
+
+            self._points = verified
+            self.update()
+
+    def resetPoints(self):
+        self._points = []
+        self.update()
+
+    points = Property("QStringList", getPoints, setPoints, resetPoints)
 
 
 class PyDMDrawingImage(PyDMDrawing):
@@ -1211,7 +1469,7 @@ class PyDMDrawingPolygon(PyDMDrawing):
         painter.drawPolygon(QPolygonF(poly))
 
 
-class PyDMDrawingPolyline(PyDMDrawing):
+class PyDMDrawingPolyline(PyDMDrawing, new_properties=_penRuleProperties):
     """
     A widget with a multi-segment, piecewise-linear line drawn in it.
     This class inherits from PyDMDrawing.
