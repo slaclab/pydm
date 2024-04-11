@@ -472,6 +472,7 @@ class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
         self._arrow_start_point_selection = False
         self._arrow_mid_point_selection = False
         self._mid_point_arrow_flipped = False
+        self._arrow_size = 6
         self.rotation = 0
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
@@ -553,24 +554,48 @@ class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
 
         # Draw the arrows
         if self._arrow_end_point_selection:
-            points = self._arrow_points(start_point, end_point, 6, 6)
+            points = self._arrow_points(start_point, end_point, self._arrow_size, self._arrow_size)
             painter.drawPolygon(points)
 
         if self._arrow_start_point_selection:
-            points = self._arrow_points(end_point, start_point, 6, 6)
+            points = self._arrow_points(end_point, start_point, self._arrow_size, self._arrow_size)
             painter.drawPolygon(points)
 
         if self._arrow_mid_point_selection:
             if self._mid_point_arrow_flipped:
-                points = self._arrow_points(start_point, mid_point, 6, 6)
+                points = self._arrow_points(start_point, mid_point, self._arrow_size, self._arrow_size)
             else:
-                points = self._arrow_points(end_point, mid_point, 6, 6)
+                points = self._arrow_points(end_point, mid_point, self._arrow_size, self._arrow_size)
             painter.drawPolygon(points)
+
+    @Property(int)
+    def arrowSize(self):
+        """
+        If True, an arrow will be drawn at the end of the line.
+
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_size
+
+    @arrowSize.setter
+    def arrowSize(self, new_size):
+        """
+        Size to render line arrows.
+
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_size != new_size:
+            self._arrow_size = new_size
+            self.update()
 
     @Property(bool)
     def arrowEndPoint(self):
         """
-        If True, an arrow will be drawn at the end of the line.
+        Size to render line arrows.
 
         Returns
         -------
@@ -1204,6 +1229,8 @@ class PyDMDrawingPolyline(PyDMDrawing):
         self._arrow_start_point_selection = False
         self._arrow_mid_point_selection = False
         self._arrow_mid_point_flipped = False
+        self._arrow_size = 6
+
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
         self._points = []
@@ -1241,20 +1268,20 @@ class PyDMDrawingPolyline(PyDMDrawing):
                     midpoint_x = (point1.x() + point2.x()) / 2
                     midpoint_y = (point1.y() + point2.y()) / 2
                     midpoint = QPointF(midpoint_x, midpoint_y)
-                    points = PyDMDrawingLine._arrow_points(point1, midpoint, 6, 6)  # 6 = arbitrary arrow size
+                    points = PyDMDrawingLine._arrow_points(point1, midpoint, self._arrow_size, self._arrow_size)  # 6 = arbitrary arrow size
                     painter.drawPolygon(points)
 
         # Draw the arrows
         if self._arrow_end_point_selection and (len(self._points[1]) >= 2):
-            points = PyDMDrawingLine._arrow_points(p2d(self._points[1]), p2d(self._points[0]), 6, 6)
+            points = PyDMDrawingLine._arrow_points(p2d(self._points[1]), p2d(self._points[0]), self._arrow_size, self._arrow_size)
             painter.drawPolygon(points)
 
         if self._arrow_start_point_selection and (len(self._points[1]) >= 2):
             points = PyDMDrawingLine._arrow_points(
                 p2d(self._points[len(self._points) - 2]),
                 p2d(self._points[len(self._points) - 1]),
-                6,
-                6,
+                self._arrow_size,
+                self._arrow_size,
             )
             painter.drawPolygon(points)
 
@@ -1338,6 +1365,30 @@ class PyDMDrawingPolyline(PyDMDrawing):
     def resetPoints(self):
         self._points = []
         self.update()
+
+    @Property(int)
+    def arrowSize(self):
+        """
+        If True, an arrow will be drawn at the end of the line.
+
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_size
+
+    @arrowSize.setter
+    def arrowSize(self, new_size):
+        """
+        Size to render line arrows.
+
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_size != new_size:
+            self._arrow_size = new_size
+            self.update()
 
     @Property(bool)
     def arrowEndPoint(self):
