@@ -257,6 +257,41 @@ class TimePlotCurveItem(BasePlotCurveItem):
             self._bufferSize = DEFAULT_BUFFER_SIZE
             self.initialize_buffer()
 
+    def insert_live_data(self, data: np.ndarray) -> None:
+        """
+        Inserts data directly into the live buffer.
+
+        Example use case would be pausing the gathering of data and
+        filling the buffer with missed data.
+
+        Parameters
+        ----------
+        data : np.ndarray
+           A numpy array of shape (2, length_of_data). Index 0 contains
+           timestamps and index 1 contains the data observations.
+        """
+        live_data_length = len(data[0])
+        min_x = data[0][0]
+        max_x = data[0][live_data_length - 1]
+        # Get the indices between which we want to insert the data
+        min_insertion_index = np.searchsorted(self.data_buffer[0], min_x)
+        max_insertion_index = np.searchsorted(self.data_buffer[0], max_x)
+        # Delete any non-raw data between the indices so we don't have multiple data points for the same timestamp
+        self.data_buffer = np.delete(
+            self.data_buffer, slice(min_insertion_index, max_insertion_index), axis=1
+        )
+        num_points_deleted = max_insertion_index - min_insertion_index
+        delta_points = live_data_length - num_points_deleted
+        if live_data_length > num_points_deleted:
+            # If the insertion will overflow the data buffer, need to delete the oldest points
+            self.data_buffer = np.delete(self.data_buffer, slice(0, delta_points), axis=1)
+        else:
+            self.data_buffer = np.insert(self.data_buffer, [0], np.zeros((2, delta_points)), axis=1)
+        min_insertion_index = np.searchsorted(self.data_buffer[0], min_x)
+        self.data_buffer = np.insert(self.data_buffer, [min_insertion_index], data[0:2], axis=1)
+
+        self.points_accumulated += live_data_length - num_points_deleted
+
     @Slot()
     def redrawCurve(self, min_x: Optional[float] = None, max_x: Optional[float] = None):
         """
