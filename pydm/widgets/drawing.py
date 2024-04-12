@@ -456,7 +456,7 @@ class PyDMDrawing(QWidget, PyDMWidget, new_properties=_penRuleProperties):
 
 class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
     """
-    A base class for single poly line widgets.
+    A base class for single and poly line widgets.
     This class inherits from PyDMDrawing.
 
     Parameters
@@ -469,106 +469,13 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
 
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingLineBase, self).__init__(parent, init_channel)
-
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
-        self._arrow_size = 6  # 6 is arbitrary size that looked good for default, not in any specific 'units'
-
+        self._arrow_size = 6 # 6 is arbitrary size that looked good for default, not in any specific 'units'
         self._arrow_end_point_selection = False
         self._arrow_start_point_selection = False
         self._arrow_mid_point_selection = False
-        self._mid_point_arrow_flipped = False
-
-    @staticmethod
-    def _arrow_points(startpoint, endpoint, height, width):
-        """
-        Returns the three points needed to make a triangle with .drawPolygon
-        """
-        diff_x = startpoint.x() - endpoint.x()
-        diff_y = startpoint.y() - endpoint.y()
-
-        length = max(math.sqrt(diff_x**2 + diff_y**2), 1.0)
-
-        norm_x = diff_x / length
-        norm_y = diff_y / length
-
-        perp_x = -norm_y
-        perp_y = norm_x
-
-        left_x = endpoint.x() + height * norm_x + width * perp_x
-        left_y = endpoint.y() + height * norm_y + width * perp_y
-        right_x = endpoint.x() + height * norm_x - width * perp_x
-        right_y = endpoint.y() + height * norm_y - width * perp_y
-
-        left = QPointF(left_x, left_y)
-        right = QPointF(right_x, right_y)
-
-        return QPolygonF([left, endpoint, right])
-
-    def draw_item(self, painter):
-        """
-        Draws the line after setting up the canvas with a call to
-        ```PyDMDrawing.draw_item```.
-        """
-        super(PyDMDrawingLine, self).draw_item(painter)
-        x, y, w, h = self.get_bounds()
-
-        # Figure out how long to make the line to touch the bounding box
-        # Length varies depending on rotation
-
-        # Find the quadrant 1 angle equivalent
-        angle = self._rotation % 360
-        if 90 < angle <= 180:
-            angle = 180 - angle
-        elif 180 < angle <= 270:
-            angle = angle - 180
-        elif 270 < angle <= 360:
-            angle = 360 - angle
-        angle_rad = math.radians(angle)
-
-        # Find the angle of the rop right corner of the bounding box
-        try:
-            critical_angle = math.atan(h / w)
-        except ZeroDivisionError:
-            critical_angle = math.pi / 2
-
-        # Pick a length based on which side we intersect with
-        if angle_rad > critical_angle:
-            try:
-                length = h / math.sin(angle_rad)
-            except ZeroDivisionError:
-                length = w
-        else:
-            try:
-                length = w / math.cos(angle_rad)
-            except ZeroDivisionError:
-                length = h
-
-        # Define endpoints potentially outside the bounding box
-        # Will land on the bounding box after rotation
-        midpoint = x + w / 2
-        start_point = QPointF(midpoint - length / 2, 0)
-        end_point = QPointF(midpoint + length / 2, 0)
-        mid_point = QPointF(midpoint, 0)
-
-        # Draw the line
-        painter.drawLine(start_point, end_point)
-
-        # Draw the arrows
-        if self._arrow_end_point_selection:
-            points = self._arrow_points(start_point, end_point, self._arrow_size, self._arrow_size)
-            painter.drawPolygon(points)
-
-        if self._arrow_start_point_selection:
-            points = self._arrow_points(end_point, start_point, self._arrow_size, self._arrow_size)
-            painter.drawPolygon(points)
-
-        if self._arrow_mid_point_selection:
-            if self._mid_point_arrow_flipped:
-                points = self._arrow_points(start_point, mid_point, self._arrow_size, self._arrow_size)
-            else:
-                points = self._arrow_points(end_point, mid_point, self._arrow_size, self._arrow_size)
-            painter.drawPolygon(points)
+        self._arrow_mid_point_flipped = False
 
     @Property(int)
     def arrowSize(self):
