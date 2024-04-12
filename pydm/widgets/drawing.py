@@ -472,7 +472,7 @@ class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
         self._arrow_start_point_selection = False
         self._arrow_mid_point_selection = False
         self._mid_point_arrow_flipped = False
-        self._arrow_size = 6 # 6 is arbitrary size that looked good for default, not in any specific 'units'
+        self._arrow_size = 6  # 6 is arbitrary size that looked good for default, not in any specific 'units'
         self.rotation = 0
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
@@ -571,7 +571,7 @@ class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
     @Property(int)
     def arrowSize(self):
         """
-        If True, an arrow will be drawn at the end of the line.
+        Size to render line arrows.
 
         Returns
         -------
@@ -595,7 +595,7 @@ class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
     @Property(bool)
     def arrowEndPoint(self):
         """
-        Size to render line arrows.
+        If True, an arrow will be drawn at the end of the line.
 
         Returns
         -------
@@ -1229,8 +1229,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
         self._arrow_start_point_selection = False
         self._arrow_mid_point_selection = False
         self._arrow_mid_point_flipped = False
-        self._arrow_size = 6
-
+        self._arrow_size = 6  # 6 is arbitrary size that looked good for default, not in any specific 'units'
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
         self._points = []
@@ -1268,9 +1267,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
                     midpoint_x = (point1.x() + point2.x()) / 2
                     midpoint_y = (point1.y() + point2.y()) / 2
                     midpoint = QPointF(midpoint_x, midpoint_y)
-                    points = PyDMDrawingLine._arrow_points(
-                        point1, midpoint, self._arrow_size, self._arrow_size
-                    )  # 6 = arbitrary arrow size
+                    points = PyDMDrawingLine._arrow_points(point1, midpoint, self._arrow_size, self._arrow_size)
                     painter.drawPolygon(points)
 
         # Draw the arrows
@@ -1373,7 +1370,7 @@ class PyDMDrawingPolyline(PyDMDrawing):
     @Property(int)
     def arrowSize(self):
         """
-        If True, an arrow will be drawn at the end of the line.
+        Size to render line arrows.
 
         Returns
         -------
