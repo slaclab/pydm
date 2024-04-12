@@ -472,11 +472,12 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
 
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
+        self._arrow_size = 6  # 6 is arbitrary size that looked good for default, not in any specific 'units'
+
         self._arrow_end_point_selection = False
         self._arrow_start_point_selection = False
         self._arrow_mid_point_selection = False
         self._mid_point_arrow_flipped = False
-        self._arrow_size = 6  # 6 is arbitrary size that looked good for default, not in any specific 'units'
 
     @staticmethod
     def _arrow_points(startpoint, endpoint, height, width):
@@ -713,6 +714,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
 
         return QPolygonF([left, endpoint, right])
 
+
 class PyDMDrawingLine(PyDMDrawingLineBase, new_properties=_penRuleProperties):
     """
     A widget with a line drawn in it.
@@ -845,7 +847,9 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
                     midpoint_x = (point1.x() + point2.x()) / 2
                     midpoint_y = (point1.y() + point2.y()) / 2
                     midpoint = QPointF(midpoint_x, midpoint_y)
-                    points = self._arrow_points(point1, midpoint, self._arrow_size, self._arrow_size)  # 6 = arbitrary arrow size
+                    points = self._arrow_points(
+                        point1, midpoint, self._arrow_size, self._arrow_size
+                    )  # 6 = arbitrary arrow size
                     painter.drawPolygon(points)
 
         # Draw the arrows
