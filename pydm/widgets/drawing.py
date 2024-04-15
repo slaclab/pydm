@@ -16,6 +16,7 @@ _penRuleProperties = {
     "Set Pen Color": ["penColor", QColor],
     "Set Pen Style": ["penStyle", int],
     "Set Pen Width": ["penWidth", float],
+    "Set Brush Color": ["brush", QBrush],
 }
 
 
@@ -57,7 +58,7 @@ def qt_to_deg(deg):
     return deg / 16.0
 
 
-class PyDMDrawing(QWidget, PyDMWidget):
+class PyDMDrawing(QWidget, PyDMWidget, new_properties=_penRuleProperties):
     """
     Base class to be used for all PyDM Drawing Widgets.
     This class inherits from QWidget and PyDMWidget.
@@ -453,7 +454,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
                 self.penStyle = self._original_pen_style
 
 
-class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
+class PyDMDrawingLine(PyDMDrawing):
     """
     A widget with a line drawn in it.
     This class inherits from PyDMDrawing.
