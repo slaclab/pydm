@@ -399,20 +399,26 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
 
         if self._parameters_menu_flag:
             self._slider_position_to_value_map = self.create_slider_positions_map()
-            print(self._slider_position_to_value_map)
             self._parameters_menu_flag = False
-        elif is_channel_valid(self.step_size_channel):
-            pass
+
         else:
             # if no defaults. create a linear space from min to max from default num_steps = 101, this means we cant step to max, but also cant call create map without a value
             print('just opened display with only limits set')
             self._slider_position_to_value_map = np.linspace(self.minimum, self.maximum, num=self._num_steps)
-            self.
             # try to connect channel and remap. do nothing if not valid 
             # checks 
             # flag
             # emit channel
             # what happens if step size channel is init'd
+            if is_channel_valid(self.step_size_channel):
+                # need to check if we have a value!!!!!! and that step size is being set.
+                print('valid channel set')
+                self.init_step_size_channel()
+                #self._slider_position_to_value_map = self.create_slider_positions_map()
+                #print(self.value,self.step_size,self.num_steps)
+
+
+
         self.update_labels()
         self.rangeChanged.emit(self.minimum, self.maximum)
         self.set_slider_to_closest_value(self.value)
@@ -424,22 +430,26 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
 
 
 
-
-
-
-
     def init_step_size_channel(self):
         if  self.step_size_channel_pv is None:
             self.step_size_channel_pv = PyDMChannel(address=self.step_size_channel, value_slot=self.step_size_changed)
+
             self.step_size_channel_pv.connect()
-        elif self.step_size_channel_pv is not None and self.step_size_channel_pv.address == self.step_size_channel:
+            print(self.step_size_channel_pv.address)
+            print('case5 path1')
+        '''
+        elif self.step_size_channel_pv is not None and self.step_size_channel_pv.address != self.step_size_channel:
             self.step_size_channel_pv.disconnect()
             self.step_size_channel_pv = None
             self.step_size_channel_pv = PyDMChannel(address=self.step_size_channel, value_slot=self.step_size_changed)
             self.step_size_channel_pv.connect()
-        if self.step_size_channel_pv is not None:
-            self.step_size_channel.disconnect()
-            self.step_size_channel = None
+            print('case5 path2')
+        elif self.step_size_channel_pv is not None and self.step_size_channel_pv.address == self.step_size_channel:
+            return True
+        '''
+
+            # once channel is set the value_slot calls the step_size_change slot which call step_size setter, really want to make sure this isnt too recursive
+
     
     def create_slider_positions_map(self):
         print(self._step_size)
@@ -960,8 +970,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
         self.num_steps = ((self.maximum - self.minimum) / self._step_size) 
 
         return True
-
-    @Slot(int)
+ 
+    @Slot(str)
     @Slot(float)
     def step_size_changed(self, new_val):
         """
@@ -972,11 +982,14 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
         ----------
         new_val : int, float
         """
-        
-        if new_val > 0:
-            print('step size changed')
-            print(f'is this the val from channel: {new_val}')
-            self.step_size = new_val
+        print(new_val)
+        try:
+            self.step_size = float(new_val)
+        except ValueError:
+            print('cannot cast PV value as float')
+
+
+
 
     @Property(str)
     def step_size_channel(self):
