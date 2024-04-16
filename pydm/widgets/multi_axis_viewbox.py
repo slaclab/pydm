@@ -1,5 +1,5 @@
-from pyqtgraph import ViewBox
-from qtpy.QtCore import Qt, Signal
+from pyqtgraph import GraphicsWidget, ViewBox
+from qtpy.QtCore import Qt, QRectF, Signal
 
 
 class MultiAxisViewBox(ViewBox):
@@ -16,6 +16,14 @@ class MultiAxisViewBox(ViewBox):
     sigMouseDraggedDone = Signal()
     sigMouseWheelZoomed = Signal(object, object, object)
     sigHistoryChanged = Signal(object)
+
+    def boundingRect(self) -> QRectF:
+        """Bypass the ViewBox implementation of boundingRect which gives us extra padding we don't want in pydm"""
+        return GraphicsWidget.boundingRect(self)
+
+    def sceneBoundingRect(self) -> QRectF:
+        """Bypass the ViewBox implementation of sceneBoundingRect which gives us extra padding we don't want in pydm"""
+        return GraphicsWidget.sceneBoundingRect(self)
 
     def wheelEvent(self, ev, axis=None, fromSignal=False):
         """
