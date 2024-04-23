@@ -456,6 +456,9 @@ class PyDMTimePlot(BasePlot, updateMode):
         for channel in init_y_channels:
             self.addYChannel(channel)
 
+        self.auto_scroll_timer = QTimer()
+        self.auto_scroll_timer.timeout.connect(self.auto_scroll)
+
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
         # This function gets called by PyDMTimePlot's designer plugin.
@@ -618,7 +621,7 @@ class PyDMTimePlot(BasePlot, updateMode):
             Update the axis range(s) immediately if True, or defer until the
             next rendering.
         """
-        if len(self._curves) == 0:
+        if len(self._curves) == 0 or self.auto_scroll_timer.isActive():
             return
 
         if self._plot_by_timestamps:
@@ -747,6 +750,41 @@ class PyDMTimePlot(BasePlot, updateMode):
                 thresholdColor=curve.threshold_color,
                 yAxisName=curve.y_axis_name,
             )
+
+    def setAutoScroll(self, enable: bool = False, timespan: float = 60, padding: float = 0.1, refresh_rate: int = 5000):
+        """Enable/Disable autoscrolling along the x-axis. This will (un)pause
+        the autoscrolling QTimer, which calls the auto_scroll slot when time is up.
+
+        Parameters
+        ----------
+        enable : bool, optional
+            Whether or not to start the autoscroll QTimer, by default False
+        timespan : float, optional
+            The timespan to set for autoscrolling along the x-axis in seconds, by default 60
+        padding : float, optional
+            The size of the empty space between the data and the sides of the plot, by default 0.1
+        refresh_rate : int, optional
+            How often the scroll should occur in milliseconds, by default 5000
+        """
+        if not enable:
+            self.auto_scroll_timer.stop()
+            return
+
+        self.setAutoRangeX(False)
+        if timespan <= 0:
+            min_x, max_x = self.getViewBox().viewRange()[0]
+            timespan = max_x - min_x
+        self.scroll_timespan = timespan
+        self.scroll_padding = max(padding * timespan, refresh_rate / 1000)
+
+        self.auto_scroll_timer.start(refresh_rate)
+        self.auto_scroll()
+
+    def auto_scroll(self):
+        """Autoscrolling slot to be called by the autoscroll QTimer."""
+        curr = time.time()
+        # Only include padding on the right
+        self.plotItem.setXRange(curr - self.scroll_timespan, curr + self.scroll_padding)
 
     def addLegendItem(self, item, pv_name, force_show_legend=False):
         """
