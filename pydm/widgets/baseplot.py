@@ -34,7 +34,7 @@ class BasePlotCurveItem(PlotDataItem):
     ----------
     color : QColor, optional
         The color used to draw the curve line and the symbols.
-    lineStyle: int, optional
+    lineStyle: Qt.PenStyle, optional
         Style of the line connecting the data points.
         Must be a value from the Qt::PenStyle enum
         (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
@@ -193,7 +193,7 @@ class BasePlotCurveItem(PlotDataItem):
         return self._thresholdColor
 
     @threshold_color.setter
-    def threshold_color(self, new_color: QColor):
+    def threshold_color(self, new_color: Union[QColor, str]):
         """
         Set the color used for bars exceeding either the upper or lower thresholds.
 
@@ -201,6 +201,8 @@ class BasePlotCurveItem(PlotDataItem):
         -------
         new_color: QColor
         """
+        if isinstance(new_color, str):
+            new_color = QColor(new_color)
         self._thresholdColor = new_color
 
     @property
