@@ -434,6 +434,14 @@ class BasePlotAxisItem(AxisItem):
         self._log_mode = logMode
         self.setRange(minRange, maxRange)
 
+    def linkToView(self, view):
+        if oldView := self.linkedView():
+            oldView.sigXRangeChanged.disconnect(self.sigXRangeChanged.emit)
+            oldView.sigYRangeChanged.disconnect(self.sigYRangeChanged.emit)
+        view.sigXRangeChanged.connect(self.sigXRangeChanged.emit)
+        view.sigYRangeChanged.connect(self.sigYRangeChanged.emit)
+        super().linkToView(view)
+
     @property
     def name(self) -> str:
         """
