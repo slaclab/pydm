@@ -410,6 +410,8 @@ class BasePlotAxisItem(AxisItem):
     """
 
     log_mode_updated = Signal(str, bool)
+    sigXRangeChanged = Signal(object, object)
+    sigYRangeChanged = Signal(object, object)
     axis_orientations = OrderedDict([("Left", "left"), ("Right", "right")])
 
     def __init__(
@@ -432,6 +434,7 @@ class BasePlotAxisItem(AxisItem):
         self._max_range = maxRange
         self._auto_range = autoRange
         self._log_mode = logMode
+        self.setRange(minRange, maxRange)
 
     @property
     def name(self) -> str:
@@ -497,7 +500,7 @@ class BasePlotAxisItem(AxisItem):
         -------
         float
         """
-        return self._min_range
+        return self.range[0]
 
     @min_range.setter
     def min_range(self, min_range: float) -> None:
@@ -508,7 +511,7 @@ class BasePlotAxisItem(AxisItem):
         ----------
         min_range: float
         """
-        self._min_range = min_range
+        self.linkedView().setYRange(min_range, self.range[1], padding=0)
 
     @property
     def max_range(self) -> float:
@@ -519,7 +522,7 @@ class BasePlotAxisItem(AxisItem):
         -------
         float
         """
-        return self._max_range
+        return self.range[1]
 
     @max_range.setter
     def max_range(self, max_range: float) -> None:
@@ -530,7 +533,7 @@ class BasePlotAxisItem(AxisItem):
         ----------
         max_range: float
         """
-        self._max_range = max_range
+        self.linkedView().setYRange(self.range[0], max_range, padding=0)
 
     @property
     def auto_range(self) -> bool:
@@ -592,8 +595,8 @@ class BasePlotAxisItem(AxisItem):
                 ("name", self._name),
                 ("orientation", self._orientation),
                 ("label", self._label),
-                ("minRange", self._min_range),
-                ("maxRange", self._max_range),
+                ("minRange", self.range[0]),
+                ("maxRange", self.range[1]),
                 ("autoRange", self._auto_range),
                 ("logMode", self._log_mode),
             ]
