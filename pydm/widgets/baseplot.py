@@ -430,8 +430,6 @@ class BasePlotAxisItem(AxisItem):
         self._name = name
         self._orientation = orientation
         self._label = label
-        self._min_range = minRange
-        self._max_range = maxRange
         self._auto_range = autoRange
         self._log_mode = logMode
         self.setRange(minRange, maxRange)
