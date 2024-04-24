@@ -14,8 +14,7 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
         super().__init__(plot, parent=parent)
         self._column_names = ("Channel", "Live Data", "Archive Data") + self._column_names
 
-        self.checkable_cols = {self.getColumnIndex("Live Data"),
-                               self.getColumnIndex("Archive Data")}
+        self.checkable_cols = {self.getColumnIndex("Live Data"), self.getColumnIndex("Archive Data")}
 
     def flags(self, index):
         flags = super().flags(index)
