@@ -16,7 +16,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 DEFAULT_ARCHIVE_BUFFER_SIZE = 18000
-DEFAULT_TIME_SPAN = 5.0
+DEFAULT_TIME_SPAN = 3600.0
 MIN_TIME_SPAN = 5.0
 
 
