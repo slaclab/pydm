@@ -308,7 +308,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 self._min_x = self._min_x - self.getTimeSpan()
                 self._archive_request_queued = True
                 self.requestDataFromArchiver()
-            self.plotItem.setXRange(time.time() - DEFAULT_TIME_SPAN, time.time(), padding=0.0, update=update_immediately)
+            self.plotItem.setXRange(
+                time.time() - DEFAULT_TIME_SPAN, time.time(), padding=0.0, update=update_immediately
+            )
         elif min_x < self._min_x and not self.plotItem.isAnyXAutoRange():
             # This means the user has manually scrolled to the left, so request archived data
             self._min_x = min_x
@@ -327,7 +329,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 self.setTimeSpan(max_point - min_x)
             else:
                 # Keep the plot moving with a rolling window based on the current timestamp
-                self.plotItem.setXRange(max_point - self.getTimeSpan(), max_point, padding=0.0, update=update_immediately)
+                self.plotItem.setXRange(
+                    max_point - self.getTimeSpan(), max_point, padding=0.0, update=update_immediately
+                )
         self._prev_x = min_x
 
     def requestDataFromArchiver(self, min_x: Optional[float] = None, max_x: Optional[float] = None) -> None:
@@ -475,7 +479,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
 class PyDMDateAxisItem(DateAxisItem):
     sigMouseInteraction = Signal()
 
-    def __init__(self, orientation='bottom', utcOffset=None, **kwargs):
+    def __init__(self, orientation="bottom", utcOffset=None, **kwargs):
         super().__init__(orientation, utcOffset, **kwargs)
 
     def mouseDragEvent(self, event: QEvent):
