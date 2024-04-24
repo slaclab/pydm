@@ -81,7 +81,7 @@ class BasePlotCurveItem(PlotDataItem):
         lineStyle: Optional[Qt.PenStyle] = None,
         lineWidth: Optional[int] = None,
         yAxisName: Optional[str] = None,
-        **kws
+        **kws,
     ) -> None:
         self._color = QColor("white")
         self._thresholdColor = QColor("white")
@@ -423,7 +423,7 @@ class BasePlotAxisItem(AxisItem):
         maxRange: Optional[float] = 1.0,
         autoRange: Optional[bool] = True,
         logMode: Optional[bool] = False,
-        **kws
+        **kws,
     ) -> None:
         super(BasePlotAxisItem, self).__init__(orientation, **kws)
 
