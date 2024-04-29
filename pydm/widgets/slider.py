@@ -1,7 +1,7 @@
 import logging
 import numpy as np
 from decimal import Decimal
-from qtpy.QtCore import Qt, Signal, Slot, Property
+from qtpy.QtCore import Qt, Signal, Slot, Property, QEvent
 from qtpy.QtWidgets import (
     QFrame,
     QLabel,
@@ -14,6 +14,7 @@ from qtpy.QtWidgets import (
     QPushButton,
     QCheckBox,
     QComboBox,
+
 )
 from pydm.widgets import PyDMLabel
 from .base import PyDMWritableWidget, TextFormatter, is_channel_valid
@@ -24,6 +25,15 @@ logger = logging.getLogger(__name__)
 _step_size_properties = {
     "Set Step Size ": ["step_size", float],
 }
+
+class PyDMPrimitiveSlider(QSlider):
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MiddleButton:
+            # Ignore middle-click events
+            return
+        else:
+            # Call the default mousePressEvent implementation for other mouse buttons
+            super().mousePressEvent(event)
 
 class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_size_properties):
     """
@@ -79,7 +89,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
         self.high_lim_label.setObjectName("highLimLabel")
         self.high_lim_label.setSizePolicy(label_size_policy)
         self.high_lim_label.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
-        self._slider = QSlider(parent=self)
+        self._slider = PyDMPrimitiveSlider(parent=self)
         self._slider.setOrientation(Qt.Horizontal)
 
         self._orig_wheel_event = self._slider.wheelEvent
@@ -111,6 +121,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
         """
         Method to specifically ignore mouse wheel events.
         """
+        print('wheel event')
         if self._ignore_mouse_wheel:
             e.ignore()
         else:
