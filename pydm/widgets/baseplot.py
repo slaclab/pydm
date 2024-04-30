@@ -130,9 +130,7 @@ class BasePlotCurveItem(PlotDataItem):
         -------
         str
         """
-        return str(
-            utilities.colors.svg_color_from_hex(self.color.name(), hex_on_fail=True)
-        )
+        return str(utilities.colors.svg_color_from_hex(self.color.name(), hex_on_fail=True))
 
     @color_string.setter
     def color_string(self, new_color_string: str) -> None:
@@ -189,11 +187,7 @@ class BasePlotCurveItem(PlotDataItem):
         -------
         str
         """
-        return str(
-            utilities.colors.svg_color_from_hex(
-                self.threshold_color.name(), hex_on_fail=True
-            )
-        )
+        return str(utilities.colors.svg_color_from_hex(self.threshold_color.name(), hex_on_fail=True))
 
     @property
     def threshold_color(self) -> QColor:
@@ -653,9 +647,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             # The pyqtgraph PlotItem.setAxisItems() will always add an an AxisItem called left whether you asked
             # it to or not. This will clear it if not specifically requested.
             plotItem.removeAxis("left")
-        super(BasePlot, self).__init__(
-            parent=parent, background=background, plotItem=plotItem
-        )
+        super(BasePlot, self).__init__(parent=parent, background=background, plotItem=plotItem)
 
         self.plotItem = plotItem
         self.plotItem.hideButtons()
@@ -748,9 +740,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
 
         if curve_color is None:
-            curve_color = utilities.colors.default_colors[
-                len(self._curves) % len(utilities.colors.default_colors)
-            ]
+            curve_color = utilities.colors.default_colors[len(self._curves) % len(utilities.colors.default_colors)]
             plot_data_item.color_string = curve_color
 
         self._curves.append(plot_data_item)
@@ -758,14 +748,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if y_axis_name is None:
             if utilities.is_qt_designer():
                 # If we are just in designer, add an axis that will not conflict with the pyqtgraph default
-                self.addAxis(
-                    plot_data_item=plot_data_item, name="Axis 1", orientation="left"
-                )
+                self.addAxis(plot_data_item=plot_data_item, name="Axis 1", orientation="left")
             # If not in designer and the user did not name the axis, use the pyqtgraph default one named left
             elif "left" not in self.plotItem.axes:
-                self.addAxis(
-                    plot_data_item=plot_data_item, name="left", orientation="left"
-                )
+                self.addAxis(plot_data_item=plot_data_item, name="left", orientation="left")
             else:
                 self.plotItem.linkDataToAxis(plot_data_item, "left")
         elif y_axis_name in self.plotItem.axes:
@@ -1391,11 +1377,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.redraw_timer.setInterval(int((1.0 / self._redraw_rate) * 1000))
 
     def pausePlotting(self) -> bool:
-        (
-            self.redraw_timer.stop()
-            if self.redraw_timer.isActive()
-            else self.redraw_timer.start()
-        )
+        (self.redraw_timer.stop() if self.redraw_timer.isActive() else self.redraw_timer.start())
         return self.redraw_timer.isActive()
 
     def mouseMoved(self, evt: QMouseEvent) -> None:
