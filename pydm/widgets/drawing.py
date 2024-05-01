@@ -761,11 +761,13 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
                     painter.drawPolygon(points)
 
         # Draw the arrows
-        if self._arrow_end_point_selection and (len(self._points[1]) >= 2):
+        # While we enforce >=2 points when user adds points, we need to check '(len(self._points) > 0)' here so we
+        # don't break trying to add arrows to new polyline with no points yet.
+        if self._arrow_end_point_selection and (len(self._points) > 0) and (len(self._points[1]) >= 2):
             points = self._arrow_points(p2d(self._points[1]), p2d(self._points[0]), self._arrow_size, self._arrow_size)
             painter.drawPolygon(points)
 
-        if self._arrow_start_point_selection and (len(self._points[1]) >= 2):
+        if self._arrow_start_point_selection and (len(self._points) > 0) and (len(self._points[1]) >= 2):
             points = self._arrow_points(
                 p2d(self._points[len(self._points) - 2]),
                 p2d(self._points[len(self._points) - 1]),
