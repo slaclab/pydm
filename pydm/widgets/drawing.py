@@ -9,6 +9,7 @@ from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRec
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_qt_designer, find_file
+from typing import List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -454,7 +455,7 @@ class PyDMDrawing(QWidget, PyDMWidget, new_properties=_penRuleProperties):
                 self.penStyle = self._original_pen_style
 
 
-class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
+class PyDMDrawingLineBase(PyDMDrawing):
     """
     A base class for single and poly line widgets.
     This class inherits from PyDMDrawing.
@@ -478,7 +479,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
         self._arrow_mid_point_flipped = False
 
     @Property(int)
-    def arrowSize(self):
+    def arrowSize(self) -> int:
         """
         Size to render line arrows.
 
@@ -489,7 +490,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
         return self._arrow_size
 
     @arrowSize.setter
-    def arrowSize(self, new_size):
+    def arrowSize(self, new_size) -> None:
         """
         Size to render line arrows.
 
@@ -502,7 +503,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
             self.update()
 
     @Property(bool)
-    def arrowEndPoint(self):
+    def arrowEndPoint(self) -> bool:
         """
         If True, an arrow will be drawn at the end of the line.
 
@@ -513,7 +514,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
         return self._arrow_end_point_selection
 
     @arrowEndPoint.setter
-    def arrowEndPoint(self, new_selection):
+    def arrowEndPoint(self, new_selection) -> None:
         """
         If True, an arrow will be drawn at the end of the line.
 
@@ -526,7 +527,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
             self.update()
 
     @Property(bool)
-    def arrowStartPoint(self):
+    def arrowStartPoint(self) -> bool:
         """
         If True, an arrow will be drawn at the start of the line.
 
@@ -537,7 +538,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
         return self._arrow_start_point_selection
 
     @arrowStartPoint.setter
-    def arrowStartPoint(self, new_selection):
+    def arrowStartPoint(self, new_selection) -> None:
         """
         If True, an arrow will be drawn at the start of the line.
 
@@ -550,7 +551,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
             self.update()
 
     @Property(bool)
-    def arrowMidPoint(self):
+    def arrowMidPoint(self) -> bool:
         """
         If True, an arrow will be drawn at the midpoint of the line.
         Returns
@@ -560,7 +561,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
         return self._arrow_mid_point_selection
 
     @arrowMidPoint.setter
-    def arrowMidPoint(self, new_selection):
+    def arrowMidPoint(self, new_selection) -> None:
         """
         If True, an arrow will be drawn at the midpoint of the line.
         Parameters
@@ -572,7 +573,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
             self.update()
 
     @Property(bool)
-    def flipMidPointArrow(self):
+    def flipMidPointArrow(self) -> bool:
         """
         Flips the direction of the midpoint arrow.
 
@@ -583,7 +584,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
         return self._arrow_mid_point_flipped
 
     @flipMidPointArrow.setter
-    def flipMidPointArrow(self, new_selection):
+    def flipMidPointArrow(self, new_selection) -> None:
         """
         Flips the direction of the midpoint arrow.
 
@@ -596,7 +597,7 @@ class PyDMDrawingLineBase(PyDMDrawing, new_properties=_penRuleProperties):
             self.update()
 
     @staticmethod
-    def _arrow_points(startpoint, endpoint, height, width):
+    def _arrow_points(startpoint, endpoint, height, width) -> QPolygonF:
         """
         Returns the three points needed to make a triangle with .drawPolygon
         """
@@ -638,7 +639,7 @@ class PyDMDrawingLine(PyDMDrawingLineBase, new_properties=_penRuleProperties):
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingLine, self).__init__(parent, init_channel)
 
-    def draw_item(self, painter):
+    def draw_item(self, painter) -> None:
         """
         Draws the line after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
@@ -721,7 +722,7 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
         super(PyDMDrawingPolyline, self).__init__(parent, init_channel)
         self._points = []
 
-    def draw_item(self, painter):
+    def draw_item(self, painter) -> None:
         """
         Draws the segmented line after setting up the canvas with a call to
         ``PyDMDrawing.draw_item``.
@@ -773,12 +774,12 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
             )
             painter.drawPolygon(points)
 
-    def getPoints(self):
+    def getPoints(self) -> List[str]:
         """Convert internal points representation for use as QStringList."""
         points = [f"{pt[0]}, {pt[1]}" for pt in self._points]
         return points
 
-    def _validator(self, value):
+    def _validator(self, value) -> bool:
         """
         ensure that `value` has correct form
 
@@ -796,7 +797,7 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
 
         """
 
-        def isfloat(value):
+        def isfloat(value) -> bool:
             if isinstance(value, str):
                 value = value.strip()
             try:
@@ -805,7 +806,7 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
             except Exception:
                 return False
 
-        def validate_point(i, point):
+        def validate_point(i, point) -> Optional[List[float]]:
             """Ignore (instead of fail on) any of these pathologies."""
             if isinstance(point, str):
                 try:
@@ -840,7 +841,7 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
 
         return verified
 
-    def setPoints(self, value):
+    def setPoints(self, value) -> None:
         verified = self._validator(value)
         if verified is not None:
             if len(verified) < 2:
@@ -850,7 +851,7 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
             self._points = verified
             self.update()
 
-    def resetPoints(self):
+    def resetPoints(self) -> None:
         self._points = []
         self.update()
 
@@ -910,11 +911,11 @@ class PyDMDrawingImage(PyDMDrawing):
     def designer_form_saved(self, filename):  # pragma: no cover
         self.filename = self._file
 
-    def reload_image(self):
+    def reload_image(self) -> None:
         self.filename = self._file
 
     @Property(str)
-    def filename(self):
+    def filename(self) -> str:
         """
         The filename of the image to be displayed.
         This can be an absolute or relative path to the display file.
@@ -927,7 +928,7 @@ class PyDMDrawingImage(PyDMDrawing):
         return self._file
 
     @filename.setter
-    def filename(self, new_file):
+    def filename(self, new_file) -> None:
         """
         The filename of the image to be displayed.
 
