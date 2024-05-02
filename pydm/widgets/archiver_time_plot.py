@@ -60,12 +60,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
-        dic_ = OrderedDict(
-            [
-                ("useArchiveData", self.use_archive_data),
-                ("liveData", self.liveData)
-            ]
-        )
+        dic_ = OrderedDict([("useArchiveData", self.use_archive_data), ("liveData", self.liveData)])
         dic_.update(super(ArchivePlotCurveItem, self).to_dict())
         return dic_
 
@@ -85,7 +80,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # Avoids noisy requests when first rendering the plot
         if max_x - min_x > 5:
             self.archive_data_request_signal.emit(min_x, max_x - 1, "")
-
 
     def setArchiveChannel(self, address: str) -> None:
         """Creates the channel for the input address for communicating with the archiver appliance plugin."""

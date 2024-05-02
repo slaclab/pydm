@@ -277,9 +277,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         min_insertion_index = np.searchsorted(self.data_buffer[0], min_x)
         max_insertion_index = np.searchsorted(self.data_buffer[0], max_x)
         # Delete any non-raw data between the indices so we don't have multiple data points for the same timestamp
-        self.data_buffer = np.delete(
-            self.data_buffer, slice(min_insertion_index, max_insertion_index), axis=1
-        )
+        self.data_buffer = np.delete(self.data_buffer, slice(min_insertion_index, max_insertion_index), axis=1)
         num_points_deleted = max_insertion_index - min_insertion_index
         delta_points = live_data_length - num_points_deleted
         if live_data_length > num_points_deleted:
