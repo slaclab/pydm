@@ -65,7 +65,11 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         dic_.update(super(ArchivePlotCurveItem, self).to_dict())
         return dic_
 
-    @TimePlotCurveItem.address.setter
+    @property
+    def address(self):
+        return super().address
+        
+    @address.setter
     def address(self, new_address: str) -> None:
         """Creates the channel for the input address for communicating with the archiver appliance plugin."""
         TimePlotCurveItem.address.__set__(self, new_address)
