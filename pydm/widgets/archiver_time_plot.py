@@ -68,7 +68,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     @property
     def address(self):
         return super().address
-        
+
     @address.setter
     def address(self, new_address: str) -> None:
         """Creates the channel for the input address for communicating with the archiver appliance plugin."""
