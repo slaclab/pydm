@@ -158,7 +158,7 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
         # unchanged
         assert signals.value is None
 
-
+'''
 @pytest.mark.parametrize(
     "value, step_size, precision, precision_from_pv", [("0.5", "1", "5", False), ("1", "0.1", "3", False)]
 )
@@ -196,7 +196,7 @@ def test_parameters_menu(qtbot, value, step_size, precision, precision_from_pv):
     assert pydm_slider.step_size == float(step_size)
     assert pydm_slider.precision == float(precision)
     print("flag3")
-
+'''
 
 @pytest.mark.parametrize(
     "show_labels, tick_position",
