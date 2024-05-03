@@ -561,7 +561,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         super(PyDMSlider, self).write_access_changed(new_write_access)
         self.set_enable_state()
 
-
     def value_changed(self, new_val):
         """
         Callback invoked when the Channel value is changed.
@@ -573,7 +572,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         """
         PyDMWritableWidget.value_changed(self, new_val)
         # Calls find_closest_slider_position_to_value twice.
-        # Comment for the reviewer. I am aware this is not an elegant solution. 
+        # Comment for the reviewer. I am aware this is not an elegant solution.
         # I need a way to know if something is an external change or an internal change
         self.check_if_value_in_map(new_val)
         if hasattr(self, "value_label"):
@@ -583,13 +582,12 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
             self.set_slider_to_closest_value(self.value)
         self.update_format_string()
 
-    def check_if_value_in_map(self,val):
+    def check_if_value_in_map(self, val):
         if self._slider_position_to_value_map is not None:
             arg_diff = self.find_closest_slider_position_to_value(val)
             smallest_diff = self._slider_position_to_value_map[arg_diff] - float(val)
             if smallest_diff != 0.0:
                 self.remap_flag = True
-        
 
     def ctrl_limit_changed(self, which, new_limit):
         """
