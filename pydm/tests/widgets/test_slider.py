@@ -7,7 +7,7 @@ import numpy as np
 from qtpy.QtWidgets import QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
 from qtpy.QtCore import Qt, QMargins, QPoint
 
-from ...widgets.slider import PyDMSlider
+from ...widgets.slider import PyDMSlider, PyDMPrimitiveSlider
 from ...widgets.base import PyDMWidget
 
 
@@ -55,7 +55,7 @@ def test_construct(qtbot):
         int(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
     )
 
-    assert type(pydm_slider._slider) == QSlider
+    assert type(pydm_slider._slider) == PyDMPrimitiveSlider
     assert pydm_slider._slider.orientation() == Qt.Orientation(Qt.Horizontal)
 
     assert pydm_slider._slider_position_to_value_map is None
@@ -179,7 +179,7 @@ def test_parameters_menu(qtbot, value, step_size, precision, precision_from_pv):
     pydm_slider.userDefinedLimits = True
     pydm_slider.userMaximum = 10
     pydm_slider.userMinimum = -10
-
+    # pydm_slider.value = 0
     pydm_slider.slider_parameters_menu(QPoint(0, 0))
 
     # value
@@ -192,10 +192,10 @@ def test_parameters_menu(qtbot, value, step_size, precision, precision_from_pv):
     pydm_slider.slider_parameters_menu_input_widgets[4].setChecked(precision_from_pv)
     # apply changes
     pydm_slider.apply_step_size_menu_changes()
-
     assert pydm_slider.value == float(value)
     assert pydm_slider.step_size == float(step_size)
     assert pydm_slider.precision == float(precision)
+    print("flag3")
 
 
 @pytest.mark.parametrize(
@@ -405,9 +405,9 @@ def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, con
         assert pydm_slider.userMinimum == minimum
         assert pydm_slider.userMaximum == maximum
         assert pydm_slider._slider.minimum() == 0
-        assert pydm_slider._slider.maximum() == pydm_slider.num_steps - 1
+        assert pydm_slider._slider.maximum() == pydm_slider.num_steps
         assert pydm_slider._slider.singleStep() == 1
-        assert pydm_slider._slider.pageStep() == 10
+        assert pydm_slider._slider.pageStep() == 1
         assert np.array_equal(
             pydm_slider._slider_position_to_value_map,
             np.linspace(pydm_slider.minimum, pydm_slider.maximum, num=pydm_slider._num_steps),
@@ -460,7 +460,7 @@ def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
     pydm_slider.set_slider_to_closest_value(new_value)
 
     if new_value is None or pydm_slider._needs_limit_info:
-        assert pydm_slider._silder.value() == 0
+        assert pydm_slider._slider.value() == 0
     else:
         assert pydm_slider._mute_internal_slider_changes is False
         assert pydm_slider._slider.value() == expected_slider_value

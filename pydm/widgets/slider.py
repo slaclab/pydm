@@ -452,6 +452,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         return positions_map
 
     def step_size_to_slider_positions_map(self):
+        # there is a case where this gets called and self.value is None!!!
         self._num_steps = int((self.maximum - self.minimum) / self.step_size) + 1
         forward_map = []
         backward_map = []
