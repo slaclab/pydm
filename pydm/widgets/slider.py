@@ -1,7 +1,7 @@
 import logging
 import numpy as np
 from decimal import Decimal
-from qtpy.QtCore import Qt, Signal, Slot, Property, QEvent
+from qtpy.QtCore import Qt, Signal, Slot, Property
 from qtpy.QtWidgets import (
     QFrame,
     QLabel,
@@ -14,7 +14,6 @@ from qtpy.QtWidgets import (
     QPushButton,
     QCheckBox,
     QComboBox,
-
 )
 from pydm.widgets import PyDMLabel
 from .base import PyDMWritableWidget, TextFormatter, is_channel_valid
@@ -26,6 +25,7 @@ _step_size_properties = {
     "Set Step Size ": ["step_size", float],
 }
 
+
 class PyDMPrimitiveSlider(QSlider):
     def mousePressEvent(self, event):
         if event.button() == Qt.MiddleButton:
@@ -35,7 +35,8 @@ class PyDMPrimitiveSlider(QSlider):
             # Call the default mousePressEvent implementation for other mouse buttons
             super().mousePressEvent(event)
 
-class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_size_properties):
+
+class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step_size_properties):
     """
     A QSlider with support for Channels and more from PyDM.
 
@@ -240,8 +241,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
             new_step_size = float(self.slider_parameters_menu_input_widgets[1].text())
             new_step_size_scaled = new_step_size * float(self.slider_parameters_menu_input_widgets[2].currentText())
             if new_step_size_scaled > 0:
-                
-            # if new step_size scaled greater than zero we want to disconnect the step size channel and reset step size
+                # if new step_size scaled greater than zero we want to
+                # disconnect the step size channel and reset step size
 
                 if self.step_size_channel_pv is not None:
                     self.allowMaxEmit = False
@@ -256,7 +257,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
             # want all logic for receiving a string here
             if is_channel_valid(self.slider_parameters_menu_input_widgets[1].text()):
                 pv_address = self.slider_parameters_menu_input_widgets[1].text()
-                self.init_step_size_channel(pv_address=pv_address,slot=self.step_size_changed)
+                self.init_step_size_channel(pv_address=pv_address, slot=self.step_size_changed)
                 self.step_size_channel = pv_address
             else:
                 logger.error("step input is incorrect")
@@ -401,25 +402,24 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
             self._slider_position_to_value_map = self.create_slider_positions_map()
             self._parameters_menu_flag = False
         else:
-            # if no defaults. create a linear space from min to max from default num_steps = 101, this means we cant step to max, but also cant call create map without a value
+            # if no defaults. create a linear space from min to max from default num_steps = 101,
+            # this means we cant step to max, but also cant call create map without a value
             self._slider_position_to_value_map = np.linspace(self.minimum, self.maximum, num=self._num_steps)
             if is_channel_valid(self.step_size_channel):
-                self.init_step_size_channel(pv_address=self.step_size_channel,slot=self.step_size_changed )
+                self.init_step_size_channel(pv_address=self.step_size_channel, slot=self.step_size_changed)
 
         self.update_labels()
         self.rangeChanged.emit(self.minimum, self.maximum)
-        #self.set_slider_to_closest_value(self.value)
+        # self.set_slider_to_closest_value(self.value)
         self._slider.setMinimum(0)
         if self.allowMaxEmit:
             self._slider.setMaximum(self._num_steps)
         else:
-
             self._slider.valueChanged.disconnect(self.internal_slider_value_changed)
             self._slider.setMaximum(self._num_steps)
             self._slider.valueChanged.connect(self.internal_slider_value_changed)
 
             self.allowMaxEmit = True
-            
 
         self.set_slider_to_closest_value(self.value)
 
@@ -427,23 +427,21 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
         self._slider.setPageStep(1)
         self.set_enable_state()
 
-    def init_step_size_channel(self,pv_address,slot):
-
-        if  self.step_size_channel_pv is None:
+    def init_step_size_channel(self, pv_address, slot):
+        if self.step_size_channel_pv is None:
             self.step_size_channel_pv = PyDMChannel(address=pv_address, value_slot=slot)
             self.step_size_channel_pv.connect()
 
         elif self.step_size_channel_pv is not None and self.step_size_channel_pv.address != pv_address:
-
             self.step_size_channel_pv.disconnect()
             self.step_size_channel_pv = None
             self.step_size_channel_pv = PyDMChannel(address=pv_address, value_slot=slot)
             self.step_size_channel_pv.connect()
-        #else:
-            # once channel is set the value_slot calls the step_size_change slot which call step_size setter, really want to make sure this isnt too recursive
+        # else:
+        # once channel is set the value_slot calls the step_size_change slot which call step_size setter,
+        # really want to make sure this isnt too recursive
 
     def create_slider_positions_map(self):
-
         if self._step_size > 0:
             positions_map = self.step_size_to_slider_positions_map()
 
@@ -454,45 +452,44 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
         return positions_map
 
     def step_size_to_slider_positions_map(self):
+        self._num_steps = int((self.maximum - self.minimum) / self.step_size) + 1
+        forward_map = []
+        backward_map = []
+        step_counter = 0
+        forward_map_value = self.value
+        backward_map_value = self.value
 
-            self._num_steps = int((self.maximum-self.minimum)/self.step_size) + 1
-            forward_map = []
-            backward_map = []
-            step_counter = 0
-            forward_map_value = self.value
-            backward_map_value = self.value
+        while forward_map_value < self.maximum:
+            step_counter += 1
+            forward_map.append(forward_map_value)
+            forward_map_value += self._step_size
+        # check if end points are less than or greater than correct vals,
+        # if less add a new point, is greater set endpoint to max/min
+        if forward_map[-1] < self.maximum:
+            forward_map.append(self.maximum)
+        elif forward_map[-1] > self.maximum:
+            forward_map[-1] = self.maximum
 
-            while forward_map_value < self.maximum:
-                step_counter += 1
-                forward_map.append(forward_map_value)
-                forward_map_value += self._step_size
-            # check if end points are less than or greater than correct vals, if less add a new point, is greater set endpoint to max/min
-            if forward_map[-1] < self.maximum:
-                forward_map.append(self.maximum)
-            elif forward_map[-1] > self.maximum:
-                forward_map[-1] = self.maximum
+        while backward_map_value > self.minimum:
+            step_counter += 1
+            backward_map_value -= self._step_size
+            backward_map.append(backward_map_value)
 
-            while backward_map_value > self.minimum:
-                step_counter += 1
-                backward_map_value -= self._step_size
-                backward_map.append(backward_map_value)
+        if backward_map[-1] > self.minimum:
+            backward_map.append(self.minimum)
+        elif backward_map[-1] < self.minimum:
+            backward_map[-1] = self.minimum
 
-            if backward_map[-1] > self.minimum:
-                backward_map.append(self.minimum)
-            elif backward_map[-1] < self.minimum:
-                backward_map[-1] = self.minimum
-            
-            backward_map = list(reversed(backward_map))
-            slider_position_map = np.array(backward_map + forward_map)
-            return slider_position_map
-    
+        backward_map = list(reversed(backward_map))
+        slider_position_map = np.array(backward_map + forward_map)
+        return slider_position_map
+
     def calc_step_size(self):
-         self.step_size = (self.maximum-self.minimum)/self.num_steps
-         # maybe do callback to stepsize line edit  here?
-
+        self.step_size = (self.maximum - self.minimum) / self.num_steps
+        # maybe do callback to stepsize line edit  here?
 
     def calc_num_steps(self):
-        self._num_steps = int((self.maximum-self.minimum)/self.step_size) + 1
+        self._num_steps = int((self.maximum - self.minimum) / self.step_size) + 1
 
     def find_closest_slider_position_to_value(self, val):
         """
@@ -684,7 +681,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
         if not self._mute_internal_slider_changes:
             try:
                 self.value = self._slider_position_to_value_map[val]
-                
+
                 self.send_value_signal[float].emit(self.value)
             except IndexError:
                 pass
@@ -957,16 +954,16 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
         ----------
         new_step_size : float
         """
-        
+
         if self.maximum is None or self.minimum is None or new_step_size <= 0:
             return False
 
         self._step_size = float(new_step_size)
         self._parameters_menu_flag = True
-        self.num_steps = ((self.maximum - self.minimum) / self._step_size) 
+        self.num_steps = (self.maximum - self.minimum) / self._step_size
 
         return True
- 
+
     @Slot(str)
     @Slot(float)
     def step_size_changed(self, new_val):
@@ -981,23 +978,23 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget,new_properties=_step_
         try:
             self.step_size = float(new_val)
         except ValueError:
-            logger.debug('cannot cast PV value as float')
+            logger.debug("cannot cast PV value as float")
 
     @Property(str)
     def step_size_channel(self):
-        '''String to connect to pydm channel after initialization'''
+        """String to connect to pydm channel after initialization"""
         return self._step_size_channel
-  
+
     @step_size_channel.setter
     def step_size_channel(self, step_size_channel):
         self._step_size_channel = step_size_channel
 
     @property
     def value(self):
-        return self._value 
-    
+        return self._value
+
     @value.setter
-    def value(self,new_value):
+    def value(self, new_value):
         self._value = new_value
         if self.remap_flag:
             self.remap_flag = False
