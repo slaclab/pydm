@@ -4,6 +4,7 @@ import numpy as np
 from collections import OrderedDict
 from typing import List, Optional
 from pyqtgraph import DateAxisItem, ErrorBarItem
+from pydm.utilities import remove_protocol
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
@@ -65,6 +66,32 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         return dic_
 
     @property
+    def address(self):
+        return super().address
+
+    @address.setter
+    def address(self, new_address: str) -> None:
+        """Creates the channel for the input address for communicating with the archiver appliance plugin."""
+        TimePlotCurveItem.address.__set__(self, new_address)
+
+        if not new_address:
+            self.archive_channel = None
+            return
+        elif self.archive_channel and new_address == self.archive_channel.address:
+            return
+
+        # Prepare new address to use the archiver plugin and create the new channel
+        archive_address = "archiver://pv=" + remove_protocol(new_address)
+        self.archive_channel = PyDMChannel(
+            address=archive_address, value_slot=self.receiveArchiveData, value_signal=self.archive_data_request_signal
+        )
+
+        # Clear the archive data of the previous channel and redraw the curve
+        if self.archive_points_accumulated:
+            self.initializeArchiveBuffer()
+            self.redrawCurve()
+
+    @property
     def liveData(self):
         return self._liveData
 
@@ -73,7 +100,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         if not get_live:
             self._liveData = False
             return
-                
+
         min_x = self.data_buffer[0, self._bufferSize - 1]
         max_x = time.time()
 
@@ -429,7 +456,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 symbolSize=d.get("symbolSize"),
                 yAxisName=d.get("yAxisName"),
                 useArchiveData=d.get("useArchiveData"),
-                liveData=d.get("liveData")
+                liveData=d.get("liveData"),
             )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
