@@ -9,6 +9,7 @@ from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRec
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget
 from ..utilities import is_qt_designer, find_file
+from typing import List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +17,7 @@ _penRuleProperties = {
     "Set Pen Color": ["penColor", QColor],
     "Set Pen Style": ["penStyle", int],
     "Set Pen Width": ["penWidth", float],
+    "Set Brush Color": ["brush", QBrush],
 }
 
 
@@ -57,7 +59,7 @@ def qt_to_deg(deg):
     return deg / 16.0
 
 
-class PyDMDrawing(QWidget, PyDMWidget):
+class PyDMDrawing(QWidget, PyDMWidget, new_properties=_penRuleProperties):
     """
     Base class to be used for all PyDM Drawing Widgets.
     This class inherits from QWidget and PyDMWidget.
@@ -453,9 +455,9 @@ class PyDMDrawing(QWidget, PyDMWidget):
                 self.penStyle = self._original_pen_style
 
 
-class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
+class PyDMDrawingLineBase(PyDMDrawing):
     """
-    A widget with a line drawn in it.
+    A base class for single and poly line widgets.
     This class inherits from PyDMDrawing.
 
     Parameters
@@ -467,17 +469,135 @@ class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingLine, self).__init__(parent, init_channel)
+        super(PyDMDrawingLineBase, self).__init__(parent, init_channel)
+        self.penStyle = Qt.SolidLine
+        self.penWidth = 1
+        self._arrow_size = 6  # 6 is arbitrary size that looked good for default, not in any specific 'units'
         self._arrow_end_point_selection = False
         self._arrow_start_point_selection = False
         self._arrow_mid_point_selection = False
-        self._mid_point_arrow_flipped = False
-        self.rotation = 0
-        self.penStyle = Qt.SolidLine
-        self.penWidth = 1
+        self._arrow_mid_point_flipped = False
+
+    @Property(int)
+    def arrowSize(self) -> int:
+        """
+        Size to render line arrows.
+
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_size
+
+    @arrowSize.setter
+    def arrowSize(self, new_size) -> None:
+        """
+        Size to render line arrows.
+
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_size != new_size:
+            self._arrow_size = new_size
+            self.update()
+
+    @Property(bool)
+    def arrowEndPoint(self) -> bool:
+        """
+        If True, an arrow will be drawn at the end of the line.
+
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_end_point_selection
+
+    @arrowEndPoint.setter
+    def arrowEndPoint(self, new_selection) -> None:
+        """
+        If True, an arrow will be drawn at the end of the line.
+
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_end_point_selection != new_selection:
+            self._arrow_end_point_selection = new_selection
+            self.update()
+
+    @Property(bool)
+    def arrowStartPoint(self) -> bool:
+        """
+        If True, an arrow will be drawn at the start of the line.
+
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_start_point_selection
+
+    @arrowStartPoint.setter
+    def arrowStartPoint(self, new_selection) -> None:
+        """
+        If True, an arrow will be drawn at the start of the line.
+
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_start_point_selection != new_selection:
+            self._arrow_start_point_selection = new_selection
+            self.update()
+
+    @Property(bool)
+    def arrowMidPoint(self) -> bool:
+        """
+        If True, an arrow will be drawn at the midpoint of the line.
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_mid_point_selection
+
+    @arrowMidPoint.setter
+    def arrowMidPoint(self, new_selection) -> None:
+        """
+        If True, an arrow will be drawn at the midpoint of the line.
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_mid_point_selection != new_selection:
+            self._arrow_mid_point_selection = new_selection
+            self.update()
+
+    @Property(bool)
+    def flipMidPointArrow(self) -> bool:
+        """
+        Flips the direction of the midpoint arrow.
+
+        Returns
+        -------
+        bool
+        """
+        return self._arrow_mid_point_flipped
+
+    @flipMidPointArrow.setter
+    def flipMidPointArrow(self, new_selection) -> None:
+        """
+        Flips the direction of the midpoint arrow.
+
+        Parameters
+        -------
+        new_selection : bool
+        """
+        if self._arrow_mid_point_flipped != new_selection:
+            self._arrow_mid_point_flipped = new_selection
+            self.update()
 
     @staticmethod
-    def _arrow_points(startpoint, endpoint, height, width):
+    def _arrow_points(startpoint, endpoint, height, width) -> QPolygonF:
         """
         Returns the three points needed to make a triangle with .drawPolygon
         """
@@ -502,7 +622,24 @@ class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
 
         return QPolygonF([left, endpoint, right])
 
-    def draw_item(self, painter):
+
+class PyDMDrawingLine(PyDMDrawingLineBase, new_properties=_penRuleProperties):
+    """
+    A widget with a line drawn in it.
+    This class inherits from PyDMDrawingLineBase.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
+
+    def __init__(self, parent=None, init_channel=None):
+        super(PyDMDrawingLine, self).__init__(parent, init_channel)
+
+    def draw_item(self, painter) -> None:
         """
         Draws the line after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
@@ -553,113 +690,174 @@ class PyDMDrawingLine(PyDMDrawing, new_properties=_penRuleProperties):
 
         # Draw the arrows
         if self._arrow_end_point_selection:
-            points = self._arrow_points(start_point, end_point, 6, 6)
+            points = self._arrow_points(start_point, end_point, self._arrow_size, self._arrow_size)
             painter.drawPolygon(points)
 
         if self._arrow_start_point_selection:
-            points = self._arrow_points(end_point, start_point, 6, 6)
+            points = self._arrow_points(end_point, start_point, self._arrow_size, self._arrow_size)
             painter.drawPolygon(points)
 
         if self._arrow_mid_point_selection:
-            if self._mid_point_arrow_flipped:
-                points = self._arrow_points(start_point, mid_point, 6, 6)
+            if self._arrow_mid_point_flipped:
+                points = self._arrow_points(start_point, mid_point, self._arrow_size, self._arrow_size)
             else:
-                points = self._arrow_points(end_point, mid_point, 6, 6)
+                points = self._arrow_points(end_point, mid_point, self._arrow_size, self._arrow_size)
             painter.drawPolygon(points)
 
-    @Property(bool)
-    def arrowEndPoint(self):
-        """
-        If True, an arrow will be drawn at the end of the line.
 
-        Returns
-        -------
-        bool
-        """
-        return self._arrow_end_point_selection
+class PyDMDrawingPolyline(PyDMDrawingLineBase):
+    """
+    A widget with a multi-segment, piecewise-linear line drawn in it.
+    This class inherits from PyDMDrawingLineBase.
 
-    @arrowEndPoint.setter
-    def arrowEndPoint(self, new_selection):
-        """
-        If True, an arrow will be drawn at the end of the line.
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
 
-        Parameters
-        -------
-        new_selection : bool
-        """
-        if self._arrow_end_point_selection != new_selection:
-            self._arrow_end_point_selection = new_selection
-            self.update()
+    def __init__(self, parent=None, init_channel=None):
+        super(PyDMDrawingPolyline, self).__init__(parent, init_channel)
+        self._points = []
 
-    @Property(bool)
-    def arrowStartPoint(self):
+    def draw_item(self, painter) -> None:
         """
-        If True, an arrow will be drawn at the start of the line.
+        Draws the segmented line after setting up the canvas with a call to
+        ``PyDMDrawing.draw_item``.
+        """
+        super(PyDMDrawingPolyline, self).draw_item(painter)
+        x, y, w, h = self.get_bounds()
 
-        Returns
-        -------
-        bool
-        """
-        return self._arrow_start_point_selection
+        def p2d(pt):
+            "convert point to drawing coordinates"
+            # drawing coordinates are centered: (0,0) is in center
+            # our points are absolute: (0,0) is upper-left corner
+            if isinstance(pt, str):
+                # 2022-05-11: needed for backwards compatibility support
+                # PyDM releases up to v1.15.1
+                # adl2pydm tags up to 0.0.2
+                pt = tuple(map(int, pt.split(",")))
+            u, v = pt
+            return QPointF(u + x, v + y)
 
-    @arrowStartPoint.setter
-    def arrowStartPoint(self, new_selection):
-        """
-        If True, an arrow will be drawn at the start of the line.
+        if len(self._points) > 1:
+            for i, p1 in enumerate(self._points[:-1]):
+                painter.drawLine(p2d(p1), p2d(self._points[i + 1]))
+                if self._arrow_mid_point_selection:
+                    point1 = p2d(p1)
+                    point2 = p2d(self._points[i + 1])
+                    if self._arrow_mid_point_flipped:
+                        point1, point2 = point2, point1  # swap values
 
-        Parameters
-        -------
-        new_selection : bool
-        """
-        if self._arrow_start_point_selection != new_selection:
-            self._arrow_start_point_selection = new_selection
-            self.update()
+                    # arrow points at midpoint of line
+                    midpoint_x = (point1.x() + point2.x()) / 2
+                    midpoint_y = (point1.y() + point2.y()) / 2
+                    midpoint = QPointF(midpoint_x, midpoint_y)
+                    points = self._arrow_points(
+                        point1, midpoint, self._arrow_size, self._arrow_size
+                    )  # 6 = arbitrary arrow size
+                    painter.drawPolygon(points)
 
-    @Property(bool)
-    def arrowMidPoint(self):
-        """
-        If True, an arrow will be drawn at the midpoint of the line.
-        Returns
-        -------
-        bool
-        """
-        return self._arrow_mid_point_selection
+        # Draw the arrows
+        # While we enforce >=2 points when user adds points, we need to check '(len(self._points) > 0)' here so we
+        # don't break trying to add arrows to new polyline with no points yet.
+        if self._arrow_end_point_selection and (len(self._points) > 0) and (len(self._points[1]) >= 2):
+            points = self._arrow_points(p2d(self._points[1]), p2d(self._points[0]), self._arrow_size, self._arrow_size)
+            painter.drawPolygon(points)
 
-    @arrowMidPoint.setter
-    def arrowMidPoint(self, new_selection):
-        """
-        If True, an arrow will be drawn at the midpoint of the line.
-        Parameters
-        -------
-        new_selection : bool
-        """
-        if self._arrow_mid_point_selection != new_selection:
-            self._arrow_mid_point_selection = new_selection
-            self.update()
+        if self._arrow_start_point_selection and (len(self._points) > 0) and (len(self._points[1]) >= 2):
+            points = self._arrow_points(
+                p2d(self._points[len(self._points) - 2]),
+                p2d(self._points[len(self._points) - 1]),
+                self._arrow_size,
+                self._arrow_size,
+            )
+            painter.drawPolygon(points)
 
-    @Property(bool)
-    def flipMidPointArrow(self):
-        """
-        Flips the direction of the midpoint arrow.
+    def getPoints(self) -> List[str]:
+        """Convert internal points representation for use as QStringList."""
+        points = [f"{pt[0]}, {pt[1]}" for pt in self._points]
+        return points
 
-        Returns
-        -------
-        bool
+    def _validator(self, value) -> bool:
         """
-        return self._mid_point_arrow_flipped
-
-    @flipMidPointArrow.setter
-    def flipMidPointArrow(self, new_selection):
-        """
-        Flips the direction of the midpoint arrow.
+        ensure that `value` has correct form
 
         Parameters
-        -------
-        new_selection : bool
+        ----------
+        value : [ordered pairs]
+            List of strings representing ordered pairs
+            of integer coordinates.  Each ordered pair
+            is a tuple or list.
+
+        Returns
+        ----------
+        verified : [ordered pairs]
+            List of `tuple(number, number)`.
+
         """
-        if self._mid_point_arrow_flipped != new_selection:
-            self._mid_point_arrow_flipped = new_selection
+
+        def isfloat(value) -> bool:
+            if isinstance(value, str):
+                value = value.strip()
+            try:
+                float(value)
+                return True
+            except Exception:
+                return False
+
+        def validate_point(i, point) -> Optional[List[float]]:
+            """Ignore (instead of fail on) any of these pathologies."""
+            if isinstance(point, str):
+                try:
+                    point = ast.literal_eval(point)
+                except SyntaxError:
+                    logger.error(
+                        "point %d must be two numbers, comma-separated, received '%s'",
+                        i,
+                        pt,
+                    )
+                    return
+            if not isinstance(point, (list, tuple)) or len(point) != 2:
+                logger.error(
+                    "point %d must be two numbers, comma-separated, received '%s'",
+                    i,
+                    pt,
+                )
+                return
+            try:
+                point = list(map(float, point))  # ensure all values are float
+            except ValueError:
+                logger.error("point %d content must be numeric, received '%s'", i, pt)
+                return
+
+            return point
+
+        verified = []
+        for i, pt in enumerate(value, start=1):
+            point = validate_point(i, pt)
+            if point is not None:
+                verified.append(point)
+
+        return verified
+
+    def setPoints(self, value) -> None:
+        verified = self._validator(value)
+        if verified is not None:
+            if len(verified) < 2:
+                logger.error("Must have two or more points")
+                return
+
+            self._points = verified
             self.update()
+
+    def resetPoints(self) -> None:
+        self._points = []
+        self.update()
+
+    points = Property("QStringList", getPoints, setPoints, resetPoints)
 
 
 class PyDMDrawingImage(PyDMDrawing):
@@ -715,11 +913,11 @@ class PyDMDrawingImage(PyDMDrawing):
     def designer_form_saved(self, filename):  # pragma: no cover
         self.filename = self._file
 
-    def reload_image(self):
+    def reload_image(self) -> None:
         self.filename = self._file
 
     @Property(str)
-    def filename(self):
+    def filename(self) -> str:
         """
         The filename of the image to be displayed.
         This can be an absolute or relative path to the display file.
@@ -732,7 +930,7 @@ class PyDMDrawingImage(PyDMDrawing):
         return self._file
 
     @filename.setter
-    def filename(self, new_file):
+    def filename(self, new_file) -> None:
         """
         The filename of the image to be displayed.
 
@@ -1183,257 +1381,6 @@ class PyDMDrawingPolygon(PyDMDrawing):
         x, y, w, h = self.get_bounds(maxsize=not self.is_square())
         poly = self._calculate_drawing_points(x, y, w, h)
         painter.drawPolygon(QPolygonF(poly))
-
-
-class PyDMDrawingPolyline(PyDMDrawing):
-    """
-    A widget with a multi-segment, piecewise-linear line drawn in it.
-    This class inherits from PyDMDrawing.
-
-    Parameters
-    ----------
-    parent : QWidget
-        The parent widget for the Label
-    init_channel : str, optional
-        The channel to be used by the widget.
-    """
-
-    def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingPolyline, self).__init__(parent, init_channel)
-        self._arrow_end_point_selection = False
-        self._arrow_start_point_selection = False
-        self._arrow_mid_point_selection = False
-        self._arrow_mid_point_flipped = False
-        self.penStyle = Qt.SolidLine
-        self.penWidth = 1
-        self._points = []
-
-    def draw_item(self, painter):
-        """
-        Draws the segmented line after setting up the canvas with a call to
-        ``PyDMDrawing.draw_item``.
-        """
-        super(PyDMDrawingPolyline, self).draw_item(painter)
-        x, y, w, h = self.get_bounds()
-
-        def p2d(pt):
-            "convert point to drawing coordinates"
-            # drawing coordinates are centered: (0,0) is in center
-            # our points are absolute: (0,0) is upper-left corner
-            if isinstance(pt, str):
-                # 2022-05-11: needed for backwards compatibility support
-                # PyDM releases up to v1.15.1
-                # adl2pydm tags up to 0.0.2
-                pt = tuple(map(int, pt.split(",")))
-            u, v = pt
-            return QPointF(u + x, v + y)
-
-        if len(self._points) > 1:
-            for i, p1 in enumerate(self._points[:-1]):
-                painter.drawLine(p2d(p1), p2d(self._points[i + 1]))
-                if self._arrow_mid_point_selection:
-                    point1 = p2d(p1)
-                    point2 = p2d(self._points[i + 1])
-                    if self._arrow_mid_point_flipped:
-                        point1, point2 = point2, point1  # swap values
-
-                    # arrow points at midpoint of line
-                    midpoint_x = (point1.x() + point2.x()) / 2
-                    midpoint_y = (point1.y() + point2.y()) / 2
-                    midpoint = QPointF(midpoint_x, midpoint_y)
-                    points = PyDMDrawingLine._arrow_points(point1, midpoint, 6, 6)  # 6 = arbitrary arrow size
-                    painter.drawPolygon(points)
-
-        # Draw the arrows
-        if self._arrow_end_point_selection and (len(self._points[1]) >= 2):
-            points = PyDMDrawingLine._arrow_points(p2d(self._points[1]), p2d(self._points[0]), 6, 6)
-            painter.drawPolygon(points)
-
-        if self._arrow_start_point_selection and (len(self._points[1]) >= 2):
-            points = PyDMDrawingLine._arrow_points(
-                p2d(self._points[len(self._points) - 2]),
-                p2d(self._points[len(self._points) - 1]),
-                6,
-                6,
-            )
-            painter.drawPolygon(points)
-
-    def getPoints(self):
-        """Convert internal points representation for use as QStringList."""
-        points = [f"{pt[0]}, {pt[1]}" for pt in self._points]
-        return points
-
-    def _validator(self, value):
-        """
-        ensure that `value` has correct form
-
-        Parameters
-        ----------
-        value : [ordered pairs]
-            List of strings representing ordered pairs
-            of integer coordinates.  Each ordered pair
-            is a tuple or list.
-
-        Returns
-        ----------
-        verified : [ordered pairs]
-            List of `tuple(number, number)`.
-
-        """
-
-        def isfloat(value):
-            if isinstance(value, str):
-                value = value.strip()
-            try:
-                float(value)
-                return True
-            except Exception:
-                return False
-
-        def validate_point(i, point):
-            """Ignore (instead of fail on) any of these pathologies."""
-            if isinstance(point, str):
-                try:
-                    point = ast.literal_eval(point)
-                except SyntaxError:
-                    logger.error(
-                        "point %d must be two numbers, comma-separated, received '%s'",
-                        i,
-                        pt,
-                    )
-                    return
-            if not isinstance(point, (list, tuple)) or len(point) != 2:
-                logger.error(
-                    "point %d must be two numbers, comma-separated, received '%s'",
-                    i,
-                    pt,
-                )
-                return
-            try:
-                point = list(map(float, point))  # ensure all values are float
-            except ValueError:
-                logger.error("point %d content must be numeric, received '%s'", i, pt)
-                return
-
-            return point
-
-        verified = []
-        for i, pt in enumerate(value, start=1):
-            point = validate_point(i, pt)
-            if point is not None:
-                verified.append(point)
-
-        return verified
-
-    def setPoints(self, value):
-        verified = self._validator(value)
-        if verified is not None:
-            if len(verified) < 2:
-                logger.error("Must have two or more points")
-                return
-
-            self._points = verified
-            self.update()
-
-    def resetPoints(self):
-        self._points = []
-        self.update()
-
-    @Property(bool)
-    def arrowEndPoint(self):
-        """
-        If True, an arrow will be drawn at the start of the last polyline segment.
-
-        Returns
-        -------
-        bool
-        """
-        return self._arrow_end_point_selection
-
-    @arrowEndPoint.setter
-    def arrowEndPoint(self, new_selection):
-        """
-        If True, an arrow will be drawn at the start of the last polyline segment.
-
-        Parameters
-        -------
-        new_selection : bool
-        """
-        if self._arrow_end_point_selection != new_selection:
-            self._arrow_end_point_selection = new_selection
-            self.update()
-
-    @Property(bool)
-    def arrowStartPoint(self):
-        """
-        If True, an arrow will be drawn at the start of the first polyline segment.
-
-        Returns
-        -------
-        bool
-        """
-        return self._arrow_start_point_selection
-
-    @arrowStartPoint.setter
-    def arrowStartPoint(self, new_selection):
-        """
-        If True, an arrow will be drawn at the start of the first polyline segment.
-
-        Parameters
-        -------
-        new_selection : bool
-        """
-        if self._arrow_start_point_selection != new_selection:
-            self._arrow_start_point_selection = new_selection
-            self.update()
-
-    @Property(bool)
-    def arrowMidPoint(self):
-        """
-        If True, an arrows will be drawn at the midpoints of the segments of the polyline.
-        Returns
-        -------
-        bool
-        """
-        return self._arrow_mid_point_selection
-
-    @arrowMidPoint.setter
-    def arrowMidPoint(self, new_selection):
-        """
-        If True, an arrows will be drawn at the midpoints of the segments of the polyline.
-        Parameters
-        -------
-        new_selection : bool
-        """
-        if self._arrow_mid_point_selection != new_selection:
-            self._arrow_mid_point_selection = new_selection
-            self.update()
-
-    @Property(bool)
-    def flipMidPointArrow(self):
-        """
-        Flips the direction of the midpoint arrows.
-
-        Returns
-        -------
-        bool
-        """
-        return self._arrow_mid_point_flipped
-
-    @flipMidPointArrow.setter
-    def flipMidPointArrow(self, new_selection):
-        """
-        Flips the direction of the midpoint arrows.
-
-        Parameters
-        -------
-        new_selection : bool
-        """
-        if self._arrow_mid_point_flipped != new_selection:
-            self._arrow_mid_point_flipped = new_selection
-            self.update()
-
-    points = Property("QStringList", getPoints, setPoints, resetPoints)
 
 
 class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
