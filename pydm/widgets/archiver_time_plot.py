@@ -107,7 +107,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         if max_x - min_x > 5:
             self.archive_data_request_signal.emit(min_x, max_x - 1, "")
 
-    def setArchiveChannel(self, address: str) -> None:
+    def setArchiveChannel(self, new_address: str) -> None:
         """Creates the channel for the input address for communicating with the archiver appliance plugin."""
         TimePlotCurveItem.address.__set__(self, new_address)
 
