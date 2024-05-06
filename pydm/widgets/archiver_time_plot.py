@@ -73,7 +73,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         if not get_live:
             self._liveData = False
             return
-
+                
         min_x = self.data_buffer[0, self._bufferSize - 1]
         max_x = time.time()
 
@@ -428,7 +428,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 symbol=d.get("symbol"),
                 symbolSize=d.get("symbolSize"),
                 yAxisName=d.get("yAxisName"),
-                useArchiveData=d.get("useArchiveData"),
+                useArchiveData=d.get("useArchiveData")
+                liveData=d.get("liveData"),
             )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
