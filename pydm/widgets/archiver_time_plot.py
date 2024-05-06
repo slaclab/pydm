@@ -43,7 +43,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     def __init__(
         self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws
     ):
-        super(ArchivePlotCurveItem, self).__init__(channel_address, **kws)
+        super(ArchivePlotCurveItem, self).__init__(**kws)
         self.use_archive_data = use_archive_data
         self.archive_channel = None
         self.archive_points_accumulated = 0
