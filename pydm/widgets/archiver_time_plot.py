@@ -107,27 +107,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         if max_x - min_x > 5:
             self.archive_data_request_signal.emit(min_x, max_x - 1, "")
 
-    def setArchiveChannel(self, new_address: str) -> None:
-        """Creates the channel for the input address for communicating with the archiver appliance plugin."""
-        TimePlotCurveItem.address.__set__(self, new_address)
-
-        if not new_address:
-            self.archive_channel = None
-            return
-        elif self.archive_channel and new_address == self.archive_channel.address:
-            return
-
-        # Prepare new address to use the archiver plugin and create the new channel
-        archive_address = "archiver://pv=" + remove_protocol(new_address)
-        self.archive_channel = PyDMChannel(
-            address=archive_address, value_slot=self.receiveArchiveData, value_signal=self.archive_data_request_signal
-        )
-
-        # Clear the archive data of the previous channel and redraw the curve
-        if self.archive_points_accumulated:
-            self.initializeArchiveBuffer()
-            self.redrawCurve()
-
     @Slot(np.ndarray)
     def receiveArchiveData(self, data: np.ndarray) -> None:
         """Receive data from archiver appliance and place it into the archive data buffer.
