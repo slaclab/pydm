@@ -8,7 +8,7 @@ from pydm.utilities import remove_protocol
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
-from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot, Qt, QEvent
+from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
 from qtpy.QtGui import QColor
 
 import logging
@@ -316,7 +316,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             init_y_channels=init_y_channels,
             plot_by_timestamps=True,
             background=background,
-            bottom_axis=PyDMDateAxisItem(),
+            bottom_axis=DateAxisItem("bottom"),
         )
         self.optimized_data_bins = optimized_data_bins
         self._min_x = None
@@ -548,19 +548,3 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             useArchiveData=useArchiveData,
             liveData=liveData,
         )
-
-
-class PyDMDateAxisItem(DateAxisItem):
-    sigMouseInteraction = Signal()
-
-    def __init__(self, orientation="bottom", utcOffset=None, **kwargs):
-        super().__init__(orientation, utcOffset, **kwargs)
-
-    def mouseDragEvent(self, event: QEvent):
-        if event.button() == Qt.LeftButton and event.isStart():
-            self.sigMouseInteraction.emit()
-        return super().mouseDragEvent(event)
-
-    def wheelEvent(self, event: QEvent):
-        self.sigMouseInteraction.emit()
-        return super().wheelEvent(event)
