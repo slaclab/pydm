@@ -428,8 +428,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 symbol=d.get("symbol"),
                 symbolSize=d.get("symbolSize"),
                 yAxisName=d.get("yAxisName"),
-                useArchiveData=d.get("useArchiveData")
-                liveData=d.get("liveData"),
+                useArchiveData=d.get("useArchiveData"),
+                liveData=d.get("liveData")
             )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
