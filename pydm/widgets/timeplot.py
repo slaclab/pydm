@@ -115,13 +115,22 @@ class TimePlotCurveItem(BasePlotCurveItem):
         return self.channel.address
 
     @address.setter
-    def address(self, new_address):
-        if new_address is None or len(str(new_address)) < 1:
+    def address(self, new_address: str):
+        """Creates the channel for the input address for communicating with the address' plugin."""
+        if not new_address:
             self.channel = None
             return
+        elif self.channel and new_address == self.channel.address:
+            return
+
         self.channel = PyDMChannel(
             address=new_address, connection_slot=self.connectionStateChanged, value_slot=self.receiveNewValue
         )
+
+        # Clear the data from the previous channel and redraw the curve
+        if self.points_accumulated:
+            self.initialize_buffer()
+            self.redrawCurve()
 
     @property
     def plotByTimeStamps(self):
