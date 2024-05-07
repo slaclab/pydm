@@ -186,22 +186,15 @@ class PyDMPrimitiveWidget(object):
         """
         # Override the eventFilter to capture all middle mouse button events,
         # and show a tooltip if needed.
-        # We capture the release event (instead of press event) to prevent clipboard contents
-        # from getting paste into PyDMLineEdits, since paste happens at mouse release.
+        if event.type() == QEvent.MouseButtonPress:
+            if event.button() == Qt.MiddleButton:
+                self.show_address_tooltip(event)
+                return True
         if event.type() == QEvent.MouseButtonRelease:
             if event.button() == Qt.MiddleButton:
-                channels_method = getattr(self, "channels", None)
-                if channels_method is None:
-                    return
-                channels = channels_method()
-                if channels:
-                    self.show_address_tooltip(event)
-                    return True
-                else:
-                    # return and run default behavior middle-click paste if PyDMLineEdit
-                    # is not connected to channel, so you can still paste the middle-click
-                    # clipboard into edits intended for text entry.
-                    return False
+                event.ignore()
+                return True
+
         return False
 
     def show_address_tooltip(self, event):
