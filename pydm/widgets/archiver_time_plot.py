@@ -40,13 +40,16 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
 
-    def __init__(self, channel_address: Optional[str] = None, use_archive_data: bool = True, **kws):
+    def __init__(
+        self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws
+    ):
         super(ArchivePlotCurveItem, self).__init__(**kws)
         self.use_archive_data = use_archive_data
         self.archive_channel = None
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
+        self._liveData = liveData
 
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
@@ -57,11 +60,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
-        dic_ = OrderedDict(
-            [
-                ("useArchiveData", self.use_archive_data),
-            ]
-        )
+        dic_ = OrderedDict([("useArchiveData", self.use_archive_data), ("liveData", self.liveData)])
         dic_.update(super(ArchivePlotCurveItem, self).to_dict())
         return dic_
 
@@ -91,6 +90,25 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             self.initializeArchiveBuffer()
             self.redrawCurve()
 
+    @property
+    def liveData(self):
+        return self._liveData
+
+    @liveData.setter
+    def liveData(self, get_live: bool):
+        if not get_live:
+            self._liveData = False
+            return
+
+        min_x = self.data_buffer[0, self._bufferSize - 1]
+        max_x = time.time()
+
+        # Avoids noisy requests when first rendering the plot
+        if max_x - min_x > 5:
+            self.archive_data_request_signal.emit(min_x, max_x - 1, "")
+
+        self._liveData = True
+
     @Slot(np.ndarray)
     def receiveArchiveData(self, data: np.ndarray) -> None:
         """Receive data from archiver appliance and place it into the archive data buffer.
@@ -106,6 +124,13 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         """
         archive_data_length = len(data[0])
         max_x = data[0][archive_data_length - 1]
+
+        # Filling live buffer if data is more recent than Archive Data Buffer
+        last_ts = self.archive_data_buffer[0][-1]
+        if self.archive_data_buffer.any() and (int(last_ts) <= data[0][0]):
+            self.insert_live_data(data)
+            self.data_changed.emit()
+            return
 
         if self.points_accumulated != 0:
             while max_x > self.data_buffer[0][-self.points_accumulated]:
@@ -224,6 +249,11 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     def channels(self) -> List[PyDMChannel]:
         """Return the list of channels this curve is connected to"""
         return [self.channel, self.archive_channel]
+
+    def receiveNewValue(self, new_value):
+        """ """
+        if self._liveData:
+            super().receiveNewValue(new_value)
 
 
 class PyDMArchiverTimePlot(PyDMTimePlot):
@@ -412,6 +442,46 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 symbolSize=d.get("symbolSize"),
                 yAxisName=d.get("yAxisName"),
                 useArchiveData=d.get("useArchiveData"),
+                liveData=d.get("liveData"),
             )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
+
+    def addYChannel(
+        self,
+        y_channel=None,
+        plot_style=None,
+        name=None,
+        color=None,
+        lineStyle=None,
+        lineWidth=None,
+        symbol=None,
+        symbolSize=None,
+        barWidth=None,
+        upperThreshold=None,
+        lowerThreshold=None,
+        thresholdColor=None,
+        yAxisName=None,
+        useArchiveData=False,
+        liveData=True,
+    ) -> ArchivePlotCurveItem:
+        """
+        Overrides timeplot addYChannel method to be able to pass the liveData flag.
+        """
+        return super().addYChannel(
+            y_channel=y_channel,
+            plot_style=plot_style,
+            name=name,
+            color=color,
+            lineStyle=lineStyle,
+            lineWidth=lineWidth,
+            symbol=symbol,
+            symbolSize=symbolSize,
+            barWidth=barWidth,
+            upperThreshold=upperThreshold,
+            lowerThreshold=lowerThreshold,
+            thresholdColor=thresholdColor,
+            yAxisName=yAxisName,
+            useArchiveData=useArchiveData,
+            liveData=liveData,
+        )
