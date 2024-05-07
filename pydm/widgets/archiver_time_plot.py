@@ -106,7 +106,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # Avoids noisy requests when first rendering the plot
         if max_x - min_x > 5:
             self.archive_data_request_signal.emit(min_x, max_x - 1, "")
-        
+
         self._liveData = True
 
     @Slot(np.ndarray)
