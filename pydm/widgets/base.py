@@ -195,7 +195,7 @@ class PyDMPrimitiveWidget(object):
                     return
                 channels = channels_method()
                 if channels:
-                    self.show_address_tooltip(event, channels)
+                    self.show_address_tooltip(event)
                     return True
                 else:
                     # return and run default behavior middle-click paste if PyDMLineEdit
@@ -204,7 +204,7 @@ class PyDMPrimitiveWidget(object):
                     return False
         return False
 
-    def show_address_tooltip(self, event, channels):
+    def show_address_tooltip(self, event):
         """
         Show the PyDMTooltip and copy address to clipboard
 
