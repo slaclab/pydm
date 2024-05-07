@@ -106,6 +106,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # Avoids noisy requests when first rendering the plot
         if max_x - min_x > 5:
             self.archive_data_request_signal.emit(min_x, max_x - 1, "")
+        
+        self._liveData = True
 
     @Slot(np.ndarray)
     def receiveArchiveData(self, data: np.ndarray) -> None:
@@ -127,7 +129,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         last_ts = self.archive_data_buffer[0][-1]
         if self.archive_data_buffer.any() and (int(last_ts) <= data[0][0]):
             self.insert_live_data(data)
-            self._liveData = True
             self.data_changed.emit()
             return
 
