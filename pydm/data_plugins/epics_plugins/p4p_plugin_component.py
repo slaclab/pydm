@@ -7,6 +7,7 @@ import re
 import time
 from p4p.client.thread import Context, Disconnected
 from p4p.wrapper import Type, Value
+from p4p.nt import NTURI
 from .pva_codec import decompress
 from pydm.data_plugins import is_read_only
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
@@ -122,7 +123,24 @@ class Connection(PyDMConnection):
         # Assume arg is just a string if no other type works
         return "s", arg_value_string
 
-    def create_value_obj(self, rpc_function_name, rpc_arg_names, rpc_arg_values) -> Value:
+    def create_request(self, rpc_function_name, rpc_arg_names, rpc_arg_values) -> Value:
+ 
+        arg_datatypes = []
+        for i in range(len(rpc_arg_names)):
+            data_type, _ = self.get_arg_datatype(rpc_arg_values[i])
+            if data_type is None:
+                return None
+            arg_datatypes.append((rpc_arg_names[i], data_type))
+
+        print (rpc_function_name, arg_datatypes)
+        print (rpc_arg_values)
+        m = {key: value for (key, _), value in zip(arg_datatypes, rpc_arg_values)}
+        print(m)
+        nturi_obj = NTURI(arg_datatypes)
+        request = nturi_obj.wrap(rpc_function_name, scheme='pva', kws=m)
+        return request
+        
+        '''
         """
         Create the 'Value' object needed to call 'P4PPlugin.context.rpc',
         will contain info on the RPC function's args and value.
@@ -150,6 +168,12 @@ class Connection(PyDMConnection):
             args_values[rpc_arg_names[i]] = cast_value
         values["query"] = args_values
         return Value(Type(types), values)
+
+        '''
+
+
+
+
 
     def parse_rpc_channel(self, input_string) -> None:
         parsed_url = urlparse(input_string)
@@ -397,8 +421,10 @@ class Connection(PyDMConnection):
         if self.is_rpc:
             # In case of a RPC, we can just query the channel immediately and emit the value,
             # and let the pollrate dictate if/when we query and emit again.
-            self._value_obj = self.create_value_obj(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)
+            print ('!A')
+            self._value_obj = self.create_request(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)
             if self._value_obj is None:
+                logger.warning(f"failed to create request object for RPC to {self._rpc_function_name}")
                 return
 
             result = None
@@ -407,9 +433,10 @@ class Connection(PyDMConnection):
                 # and prevent a very slow load if many widgets are timing out.
                 # When polling-rate is set, subsequent RPC calls will be sent at the actual rate.
                 result = P4PPlugin.context.rpc(self._rpc_function_name, self._value_obj, timeout=0.1)
-            except Exception:
+            except Exception as e:
                 # So widget displays name of channel when can't connect to RPC channel
                 self.connection_state_signal.emit(False)
+                logger.warning(f"failed RPC to {self._rpc_function_name}, with exception '{e}' of type {type(e)}")
                 return
 
             if result:

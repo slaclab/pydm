@@ -408,7 +408,7 @@ def test_create_rpc_value_obj(
     monkeypatch.setattr(P4PPlugin, "context", MockContext())
     monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
     p4p_connection = Connection(mock_channel, address)
-    value_obj = p4p_connection.create_value_obj(
+    value_obj = p4p_connection.create_request(
         p4p_connection._rpc_function_name, p4p_connection._rpc_arg_names, p4p_connection._rpc_arg_values
     )
 
