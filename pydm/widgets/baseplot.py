@@ -407,6 +407,7 @@ class BasePlotAxisItem(AxisItem):
         Extra arguments for CSS style options for this axis
     """
 
+    log_mode_updated = Signal(str, bool)
     axis_orientations = OrderedDict([("Left", "left"), ("Right", "right")])
 
     def __init__(
@@ -572,6 +573,8 @@ class BasePlotAxisItem(AxisItem):
         log_mode: bool
         """
         self._log_mode = log_mode
+        self.setLogMode(x=False, y=log_mode)
+        self.log_mode_updated.emit(self.name, log_mode)
 
     def to_dict(self) -> OrderedDict:
         """
@@ -650,7 +653,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._redraw_rate = 1  # Redraw at 1 Hz by default.
         self.maxRedrawRate = self._redraw_rate
         self._axes = []
-        self._curves = []
+        self._curves: List[BasePlotCurveItem] = []
         self._x_labels = []
         self._y_labels = []
         self._title = None
@@ -799,6 +802,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if plot_data_item is not None:
             plot_data_item.setLogMode(False, log_mode)
         axis.setLogMode(log_mode)
+        axis.log_mode_updated.connect(self.setAxisLogMode)
         self._axes.append(axis)
         # If the x axis is just timestamps, we don't want autorange on the x axis
         setXLink = hasattr(self, "_plot_by_timestamps") and self._plot_by_timestamps
@@ -878,6 +882,13 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     @Slot()
     def redrawPlot(self) -> None:
         pass
+
+    @Slot(str, bool)
+    def setAxisLogMode(self, axis_name: str, log_mode: bool) -> None:
+        axis_curves = [c for c in self._curves if c.y_axis_name == axis_name]
+        for curve in axis_curves:
+            curve.setLogMode(False, log_mode)
+        self.plotItem.recomputeAverages()
 
     def getShowXGrid(self) -> bool:
         """True if showing x grid lines on the plot, False otherwise"""
