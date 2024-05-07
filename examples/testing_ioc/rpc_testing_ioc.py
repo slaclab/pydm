@@ -7,7 +7,7 @@ and then run 'pydm examples/rpc/rpc_lables.ui' from another terminal.
 """
 from p4p.rpc import rpc, quickRPCServer
 from p4p.nt import NTScalar
-
+import random
 
 class Demo(object):
     @rpc(NTScalar("i"))
@@ -27,6 +27,10 @@ class Demo(object):
     def take_return_string(self, a):
         return a + "!!"
 
+    @rpc(NTScalar("f"))
+    def no_args(self):
+        randomFloat = random.uniform(0, 10)
+        return randomFloat
 
 adder = Demo()
 quickRPCServer(provider="Example", prefix="pv:call:", target=adder)
