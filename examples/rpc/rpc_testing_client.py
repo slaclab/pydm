@@ -1,60 +1,20 @@
 """
-This is an example of a simple client for RPCs, along with a
-hard-coded example of how the Value object is constructed.
+This is an example of a simple client that sends RPCs.
 To demo, first run 'python examples/testing_ioc/rpc_testing_ioc.py'
 from another terminal,
 then run this file with 'python rpc_testing_client.py'
-(code adapted p4p docs: https://mdavidsaver.github.io/p4p/rpc.html)
 """
-from p4p import Type, Value
+
 from p4p.client.thread import Context
+from p4p.nt import NTURI
 
+ctx = Context('pva')
 
-ctxt = Context("pva")
-# Example of manually constructing "Value" obj
-V = Value(
-    Type(
-        [
-            ("schema", "s"),
-            ("path", "s"),
-            (
-                "query",
-                (
-                    "s",
-                    None,
-                    [
-                        ("a", "i"),
-                        ("b", "i"),
-                    ],
-                ),
-            ),
-        ]
-    ),
-    {
-        "schema": "pva",
-        "path": "pv:call:add_two_ints",
-        "query": {
-            "a": 1,
-            "b": 1,
-        },
-    },
-)
-print(ctxt.rpc("pv:call:add_two_ints", V, timeout=0.5))
+# NTURI() lets us wrap argument into Value type needed in rpc call
+# https://mdavidsaver.github.io/p4p/nt.html#p4p.nt.NTURI
+AidaBPMSURI = NTURI([('a', 'i'), ('b', 'i')])
 
+request = AidaBPMSURI.wrap("pv:call:add_two_ints", scheme="pva", kws={"a": 7, "b": 3})
+response = ctx.rpc("pv:call:add_two_ints", request, timeout=10)
 
-# You can also get same result as above if you define and use a proxy class,
-# but this is best if you know ahead-of-time the signature of the function RPC will call.
-
-"""
-from p4p.rpc import rpcproxy, rpccall
-from p4p.client.thread import Context
-@rpcproxy
-class MyProxy(object):
-    @rpccall('%sadd_two_ints')
-    def add_two_ints(a='i', b='i'):
-        pass
-
-ctxt = Context('pva')
-proxy = MyProxy(context=ctxt, format='pv:call:')
-print(proxy.add_two_ints(1, 1))
-"""
+print(response) # should print something like 'Wed Dec 31 16:00:00 1969 10'
