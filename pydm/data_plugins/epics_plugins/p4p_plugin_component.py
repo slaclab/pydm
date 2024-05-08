@@ -124,16 +124,20 @@ class Connection(PyDMConnection):
         return "s", arg_value_string
 
     def create_request(self, rpc_function_name, rpc_arg_names, rpc_arg_values) -> Value:
+        # example addr: pv:call:add_two_ints?a=2&b=7&
         arg_datatypes = []
         for i in range(len(rpc_arg_names)):
             data_type, _ = self.get_arg_datatype(rpc_arg_values[i])
             if data_type is None:
                 return None
             arg_datatypes.append((rpc_arg_names[i], data_type))
-
-        m = {key: value for (key, _), value in zip(arg_datatypes, rpc_arg_values)}
+        # example arg_datatypes: [('a', 'i'), ('b', 'i')]
+        arg_val_mapping = {key: value for (key, _), value in zip(arg_datatypes, rpc_arg_values)}
+        # example arg_val_mapping: {'a': '2', 'b': '7'}
+        
+        # https://mdavidsaver.github.io/p4p/nt.html#p4p.nt.NTURI
         nturi_obj = NTURI(arg_datatypes)
-        request = nturi_obj.wrap(rpc_function_name, scheme="pva", kws=m)
+        request = nturi_obj.wrap(rpc_function_name, scheme="pva", kws=arg_val_mapping)
         return request
 
     def parse_rpc_channel(self, input_string) -> None:
