@@ -6,7 +6,7 @@ import p4p
 import re
 import time
 from p4p.client.thread import Context, Disconnected
-from p4p.wrapper import Type, Value
+from p4p.wrapper import Value
 from p4p.nt import NTURI
 from .pva_codec import decompress
 from pydm.data_plugins import is_read_only
@@ -124,7 +124,6 @@ class Connection(PyDMConnection):
         return "s", arg_value_string
 
     def create_request(self, rpc_function_name, rpc_arg_names, rpc_arg_values) -> Value:
- 
         arg_datatypes = []
         for i in range(len(rpc_arg_names)):
             data_type, _ = self.get_arg_datatype(rpc_arg_values[i])
@@ -132,14 +131,12 @@ class Connection(PyDMConnection):
                 return None
             arg_datatypes.append((rpc_arg_names[i], data_type))
 
-        print (rpc_function_name, arg_datatypes)
-        print (rpc_arg_values)
         m = {key: value for (key, _), value in zip(arg_datatypes, rpc_arg_values)}
-        print(m)
         nturi_obj = NTURI(arg_datatypes)
-        request = nturi_obj.wrap(rpc_function_name, scheme='pva', kws=m)
+        request = nturi_obj.wrap(rpc_function_name, scheme="pva", kws=m)
+        print("!!request: ", request)
         return request
-        
+
         '''
         """
         Create the 'Value' object needed to call 'P4PPlugin.context.rpc',
@@ -171,10 +168,6 @@ class Connection(PyDMConnection):
 
         '''
 
-
-
-
-
     def parse_rpc_channel(self, input_string) -> None:
         # url parsing is close enough for us to use
         parsed_url = urlparse(input_string)
@@ -182,7 +175,7 @@ class Connection(PyDMConnection):
         parsed_args = parse_qs(raw_args)
         function_name = parsed_url.netloc
         # if RPC has no args, url parsing will leave ending char as '&', which needs to be removed
-        if function_name[-1] == '&':
+        if function_name[-1] == "&":
             function_name = function_name[:-1]
         pollrate = parsed_args.get("pydm_pollrate", "0.0")
         if "pydm_pollrate" in parsed_args:
@@ -196,14 +189,15 @@ class Connection(PyDMConnection):
         self._rpc_arg_values = list(parsed_args.values())
         self._rpc_poll_rate = float(pollrate[0])  # [0] takes value out of 1 item list
 
-
     def is_rpc_address(self, full_channel_name):
-        '''
+        """
         Lets keep this simple for now, say its an RPC just sif either ends with '&' or '&pydm_pollrate=<number>.
         This should be enough to differentiate between non-rpc requests,
         bad RPCs will just fail and log error when we try to connect latter.
-        '''
-        pattern = re.compile(r'(&|\&pydm_pollrate=\d+(\.\d+)?)$')
+        """
+        if full_channel_name is None:
+            return False
+        pattern = re.compile(r"(&|\&pydm_pollrate=\d+(\.\d+)?)$")
         return bool(pattern.search(full_channel_name))
 
     def clear_cache(self) -> None:
@@ -427,7 +421,6 @@ class Connection(PyDMConnection):
         if self.is_rpc:
             # In case of a RPC, we can just query the channel immediately and emit the value,
             # and let the pollrate dictate if/when we query and emit again.
-            print ('!A')
             self._value_obj = self.create_request(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)
             if self._value_obj is None:
                 logger.warning(f"failed to create request object for RPC to {self._rpc_function_name}")
@@ -447,8 +440,6 @@ class Connection(PyDMConnection):
 
             if result:
                 self.connection_state_signal.emit(True)
-                print (result)
-                print (result.value )
                 self.emit_for_type(result.value)
                 if self._rpc_poll_rate > 0:
                     # Use daemon threads so they will be stopped when all the non-daemon

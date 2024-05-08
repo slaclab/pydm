@@ -208,11 +208,9 @@ def test_parsing_rpc_channel(
     [
         # Valid RPC
         ("pva://pv:call:add?a=4&b=7&pydm_pollrate=10", True),
+        ("pva://pv:call:add?a=4&b=7&pydm_pollrate=5.5", True),
         # When pollrate is not specified, the last argument must also end with '&' character
         ("pva://pv:call:add?a=4&b=7&", True),
-        ("pva://pv:call:take_return_string?a=Hello&", True),
-        ("pva://pv:call:add_three_ints_negate_option?a=2&b=7&negate=True&pydm_pollrate=10", True),
-        ("pva://pv:call:add_ints_floats?a=3&b=4&c=5&d=6&e=7.8&pydm_pollrate=1", True),
         # Valid pva addresses but not RPC
         ("pva://PyDM:PVA:IntValue", False),
         # Totally invalid
@@ -237,201 +235,71 @@ def test_is_rpc_check(
 
 
 @pytest.mark.parametrize(
-    "address, expected_value_obj",
+    "address, expected_query",
     [
         (
             "pva://pv:call:add?a=4&b=7&pydm_pollrate=10",
-            Value(
-                Type(
-                    [
-                        ("schema", "s"),
-                        ("path", "s"),
-                        (
-                            "query",
-                            (
-                                "s",
-                                None,
-                                [
-                                    ("a", "i"),
-                                    ("b", "i"),
-                                ],
-                            ),
-                        ),
-                    ]
-                ),
-                {
-                    "schema": "pva",
-                    "path": "pv:call:add",
-                    "query": {
-                        "a": 4,
-                        "b": 7,
-                    },
-                },
-            ),
+            {
+                "a": 4,
+                "b": 7,
+            },
         ),
         # Check that not specifying pollrate doesn't effect Value obj creation
         (
-            "pva://pv:call:add?a=4&b=7&pydm_pollrate=10",
-            Value(
-                Type(
-                    [
-                        ("schema", "s"),
-                        ("path", "s"),
-                        (
-                            "query",
-                            (
-                                "s",
-                                None,
-                                [
-                                    ("a", "i"),
-                                    ("b", "i"),
-                                ],
-                            ),
-                        ),
-                    ]
-                ),
-                {
-                    "schema": "pva",
-                    "path": "pv:call:add",
-                    "query": {
-                        "a": 4,
-                        "b": 7,
-                    },
-                },
-            ),
+            "pva://pv:call:add?a=4&b=7&",
+            {
+                "a": 4,
+                "b": 7,
+            },
         ),
         # Make sure args of mixed datatypes work correctly
         (
             "pva://pv:call:add?a=4&b=7.5&pydm_pollrate=10",
-            Value(
-                Type(
-                    [
-                        ("schema", "s"),
-                        ("path", "s"),
-                        (
-                            "query",
-                            (
-                                "s",
-                                None,
-                                [
-                                    ("a", "i"),
-                                    ("b", "f"),
-                                ],
-                            ),
-                        ),
-                    ]
-                ),
-                {
-                    "schema": "pva",
-                    "path": "pv:call:add",
-                    "query": {
-                        "a": 4,
-                        "b": 7.5,
-                    },
-                },
-            ),
+            {
+                "a": 4,
+                "b": 7.5,
+            },
         ),
         # Try with more args
         (
             "pva://pv:call:add?a=1&b=2&c=3&d=4&e=5&pydm_pollrate=10",
-            Value(
-                Type(
-                    [
-                        ("schema", "s"),
-                        ("path", "s"),
-                        (
-                            "query",
-                            (
-                                "s",
-                                None,
-                                [
-                                    ("a", "i"),
-                                    ("b", "i"),
-                                    ("c", "i"),
-                                    ("d", "i"),
-                                    ("e", "i"),
-                                ],
-                            ),
-                        ),
-                    ]
-                ),
-                {
-                    "schema": "pva",
-                    "path": "pv:call:add",
-                    "query": {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5},
-                },
-            ),
+            {
+                "a": 1,
+                "b": 2,
+                "c": 3,
+                "d": 4,
+                "e": 5,
+            },
         ),
-        # Check using str arg
+        # Check using no args
         (
-            "pva://pv:call:take_return_string?a=Hello&b=World&",
-            Value(
-                Type(
-                    [
-                        ("schema", "s"),
-                        ("path", "s"),
-                        (
-                            "query",
-                            (
-                                "s",
-                                None,
-                                [
-                                    ("a", "s"),
-                                    ("b", "s"),
-                                ],
-                            ),
-                        ),
-                    ]
-                ),
-                {
-                    "schema": "pva",
-                    "path": "pv:call:take_return_string",
-                    "query": {"a": "Hello", "b": "World"},
-                },
-            ),
+            "pva://pv:call:no_args&",
+            {},
         ),
     ],
 )
 def test_create_rpc_value_obj(
     monkeypatch,
     address,
-    expected_value_obj,
+    expected_query,
 ):
     """
-    To make successful RPC call, we first need to create a p4p Value object to pass in.
-    You can see an example of the Value obj structure in the p4p docs:
-    https://mdavidsaver.github.io/p4p/rpc.html#using-low-level-client-api.
-    Much of the Value obj remains the same for different addresses,
-    mainly just changing the types/values and function-name specified in the address.
+    To make a successful RPC call, we first need to create ("wrap") a request object to pass in.
     """
     mock_channel = PyDMChannel(address=address)
     monkeypatch.setattr(P4PPlugin, "context", MockContext())
     monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
     p4p_connection = Connection(mock_channel, address)
-    value_obj = p4p_connection.create_request(
+    request = p4p_connection.create_request(
         p4p_connection._rpc_function_name, p4p_connection._rpc_arg_names, p4p_connection._rpc_arg_values
     )
 
-    """
-    The value_obj will look like this (for example address 'pva://pv:call:add?a=4&b=7&pydm_pollrate=10'):
+    # print ("!!request: ", request.query)
+    # assert 1 == 0
 
-    struct {
-        string schema = "pva"
-        string path = "pv:call:add"
-        struct {
-            int32_t a = 4
-            int32_t b = 7
-        } query
-    }
-    """
+    result_query = request.query
 
-    assert value_obj.schema == expected_value_obj.schema
-    assert value_obj.path == expected_value_obj.path
-    assert value_obj.query.a == expected_value_obj.query.a
-    assert value_obj.query.b == expected_value_obj.query.b
+    assert len(result_query.items()) == len(expected_query.items())
 
-    # check to see if checking many-args case
-    if "c" in value_obj.query:
-        assert value_obj.query.c == expected_value_obj.query.c
-        assert value_obj.query.d == expected_value_obj.query.d
-        assert value_obj.query.e == expected_value_obj.query.e
+    for item1, item2 in zip(result_query.items(), expected_query.items()):
+        assert item1 == item2

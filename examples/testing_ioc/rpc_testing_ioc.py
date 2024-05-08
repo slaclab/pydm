@@ -9,6 +9,7 @@ from p4p.rpc import rpc, quickRPCServer
 from p4p.nt import NTScalar
 import random
 
+
 class Demo(object):
     @rpc(NTScalar("i"))
     def add_two_ints(self, a, b):
@@ -31,6 +32,7 @@ class Demo(object):
     def no_args(self):
         randomFloat = random.uniform(0, 10)
         return randomFloat
+
 
 adder = Demo()
 quickRPCServer(provider="Example", prefix="pv:call:", target=adder)
