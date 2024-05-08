@@ -134,7 +134,7 @@ class Connection(PyDMConnection):
         # example arg_datatypes: [('a', 'i'), ('b', 'i')]
         arg_val_mapping = {key: value for (key, _), value in zip(arg_datatypes, rpc_arg_values)}
         # example arg_val_mapping: {'a': '2', 'b': '7'}
-        
+
         # https://mdavidsaver.github.io/p4p/nt.html#p4p.nt.NTURI
         nturi_obj = NTURI(arg_datatypes)
         request = nturi_obj.wrap(rpc_function_name, scheme="pva", kws=arg_val_mapping)

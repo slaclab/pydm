@@ -294,9 +294,6 @@ def test_create_rpc_value_obj(
         p4p_connection._rpc_function_name, p4p_connection._rpc_arg_names, p4p_connection._rpc_arg_values
     )
 
-    # print ("!!request: ", request.query)
-    # assert 1 == 0
-
     result_query = request.query
 
     assert len(result_query.items()) == len(expected_query.items())
