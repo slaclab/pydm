@@ -221,13 +221,13 @@
         <string/>
        </property>
        <property name="precision" stdset="0">
-        <number>0</number>
+        <number>2</number>
        </property>
        <property name="showUnits" stdset="0">
         <bool>false</bool>
        </property>
        <property name="precisionFromPV" stdset="0">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="alarmSensitiveContent" stdset="0">
         <bool>false</bool>
