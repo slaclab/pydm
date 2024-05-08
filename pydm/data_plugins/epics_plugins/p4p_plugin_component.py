@@ -176,10 +176,14 @@ class Connection(PyDMConnection):
 
 
     def parse_rpc_channel(self, input_string) -> None:
+        # url parsing is close enough for us to use
         parsed_url = urlparse(input_string)
         raw_args = parsed_url.query
         parsed_args = parse_qs(raw_args)
         function_name = parsed_url.netloc
+        # if RPC has no args, url parsing will leave ending char as '&', which needs to be removed
+        if function_name[-1] == '&':
+            function_name = function_name[:-1]
         pollrate = parsed_args.get("pydm_pollrate", "0.0")
         if "pydm_pollrate" in parsed_args:
             del parsed_args["pydm_pollrate"]
@@ -192,13 +196,15 @@ class Connection(PyDMConnection):
         self._rpc_arg_values = list(parsed_args.values())
         self._rpc_poll_rate = float(pollrate[0])  # [0] takes value out of 1 item list
 
-    def is_rpc_address(self, full_channel) -> bool:
-        # example of valid channel: pva://pv:call:add?lhs=4&rhs=7&pydm_pollrate=10
-        if full_channel is None:
-            return False
-        else:
-            pattern = re.compile(r"pva://([^?]+)\?(?:([^=]+)=([^&]+)&)*?(?:pydm_pollrate=([^&]+))?$")
-            return bool(pattern.match(full_channel))
+
+    def is_rpc_address(self, full_channel_name):
+        '''
+        Lets keep this simple for now, say its an RPC just sif either ends with '&' or '&pydm_pollrate=<number>.
+        This should be enough to differentiate between non-rpc requests,
+        bad RPCs will just fail and log error when we try to connect latter.
+        '''
+        pattern = re.compile(r'(&|\&pydm_pollrate=\d+(\.\d+)?)$')
+        return bool(pattern.search(full_channel_name))
 
     def clear_cache(self) -> None:
         """Clear out all the stored values of this connection."""
@@ -441,6 +447,8 @@ class Connection(PyDMConnection):
 
             if result:
                 self.connection_state_signal.emit(True)
+                print (result)
+                print (result.value )
                 self.emit_for_type(result.value)
                 if self._rpc_poll_rate > 0:
                     # Use daemon threads so they will be stopped when all the non-daemon
