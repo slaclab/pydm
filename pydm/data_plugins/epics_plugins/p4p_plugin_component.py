@@ -134,39 +134,7 @@ class Connection(PyDMConnection):
         m = {key: value for (key, _), value in zip(arg_datatypes, rpc_arg_values)}
         nturi_obj = NTURI(arg_datatypes)
         request = nturi_obj.wrap(rpc_function_name, scheme="pva", kws=m)
-        print("!!request: ", request)
         return request
-
-        '''
-        """
-        Create the 'Value' object needed to call 'P4PPlugin.context.rpc',
-        will contain info on the RPC function's args and value.
-        (see example object here: https://mdavidsaver.github.io/p4p/rpc.html#using-low-level-client-api,
-        or see object constructed in examples/rpc/rpc_testing_client.py)
-        Note: might be able to call '.rpc' with just a struct and it will construct the Value obj for us,
-        but currently doesn't seem to work (ex: 'ctxt.rpc('pv:name:add', {'A':5, 'B'; 6})' )
-        """
-        # Should be formatted as: [ (<arg1>, <arg1_type_string>), (<arg2>, <arg2_type_string>), ... ]
-        arg_datatypes = []
-        for i in range(len(rpc_arg_names)):
-            data_type, _ = self.get_arg_datatype(rpc_arg_values[i])
-            if data_type is None:
-                return None
-            arg_datatypes.append((rpc_arg_names[i], data_type))
-        # 's' means args have string type, this should always be the case
-        types = [("schema", "s"), ("path", "s"), ("query", ("s", None, arg_datatypes))]
-
-        values = {}
-        values["schema"] = "pva"
-        values["path"] = rpc_function_name
-        args_values = {}
-        for i in range(len(rpc_arg_names)):
-            _, cast_value = self.get_arg_datatype(rpc_arg_values[i])
-            args_values[rpc_arg_names[i]] = cast_value
-        values["query"] = args_values
-        return Value(Type(types), values)
-
-        '''
 
     def parse_rpc_channel(self, input_string) -> None:
         # url parsing is close enough for us to use
