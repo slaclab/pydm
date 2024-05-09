@@ -160,7 +160,7 @@ def test_convert_epics_nttable():
     "address, expected_function_name, expected_arg_names, expected_arg_values, expected_poll_rate",
     [
         ("pva://pv:call:add?a=4&b=7&pydm_pollrate=10", "pv:call:add", ["a", "b"], ["4", "7"], 10),
-        ("pva://pv:call:add?a=4&b=7&", "pv:call:add", ["a", "b"], ["4", "7"], 0),
+        ("pva://pv:call:add?a=4&b=7&", "pv:call:add", ["a", "b"], ["4", "7"], 5.0),
         (
             "pva://pv:call:add_three_ints_negate_option?a=2&b=7&negate=True&pydm_pollrate=10",
             "pv:call:add_three_ints_negate_option",
@@ -180,9 +180,9 @@ def test_convert_epics_nttable():
             "pv:call:take_return_string",
             ["a"],
             ["Hello"],
-            0,
+            5.0,
         ),
-        ("", "", [], [], 0),
+        ("", "", [], [], 0.0),  # poll-rate 0 because only set to DEFAULT_RPC_TIMEOUT (5) when have realistic address
     ],
 )
 def test_parsing_rpc_channel(

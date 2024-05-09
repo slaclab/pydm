@@ -18,6 +18,7 @@ from urllib.parse import urlparse, parse_qs
 
 logger = logging.getLogger(__name__)
 
+# arbitrary default for non-polled RPC
 DEFAULT_RPC_TIMEOUT = 5.0
 
 
@@ -104,7 +105,7 @@ class Connection(PyDMConnection):
                 result = P4PPlugin.context.rpc(
                     name=self._rpc_function_name, value=self._value_obj, timeout=self._rpc_poll_rate
                 )
-            except Exception as e:
+            except Exception:
                 # So widget displays name of channel when can't connect to RPC channel
                 self.connection_state_signal.emit(False)
 
