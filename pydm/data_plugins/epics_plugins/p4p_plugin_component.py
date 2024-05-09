@@ -87,24 +87,41 @@ class Connection(PyDMConnection):
 
     def poll_rpc_channel(self) -> None:
         # Keep executing this function at polling rate
+        only_poll_once = False
+        if self._rpc_poll_rate == 0:
+            self._rpc_poll_rate = 5
+            only_poll_once = True
+
         while True:
             start_time = time.process_time()
-            result = P4PPlugin.context.rpc(
+   
+            result = None            
+            try:
+                result = P4PPlugin.context.rpc(
                 name=self._rpc_function_name, value=self._value_obj, timeout=self._rpc_poll_rate
-            )
+                )
+            except Exception as e: 
+                # So widget displays name of channel when can't connect to RPC channel
+                self.connection_state_signal.emit(False)
+                logger.warning(f"failed RPC to {self._rpc_function_name}, with exception '{e}' of type {type(e)}")
+            
             rpc_call_time = time.process_time() - start_time
             # We want to call "rpc" every self._rpc_poll_rate seconds,
             # so wait when the call returns faster than the polling-rate.
             # The timeout arg makes sure a single call is never slower then the polling-rate.
-            poll_rate_and_rpc_call_time_dif = self._rpc_poll_rate - rpc_call_time
-            if poll_rate_and_rpc_call_time_dif > 0:
-                time.sleep(poll_rate_and_rpc_call_time_dif)
+            if not only_poll_once:
+                poll_rate_and_rpc_call_time_dif = self._rpc_poll_rate - rpc_call_time
+                if poll_rate_and_rpc_call_time_dif > 0:
+                    time.sleep(poll_rate_and_rpc_call_time_dif)
 
             if result:
                 self.connection_state_signal.emit(True)
                 self.emit_for_type(result.value)
             else:
                 self.connection_state_signal.emit(False)
+
+            if only_poll_once:
+                break
 
     def get_arg_datatype(self, arg_value_string):
         # Try to figure out the datatype of RPC request args
@@ -137,21 +154,36 @@ class Connection(PyDMConnection):
 
         # https://mdavidsaver.github.io/p4p/nt.html#p4p.nt.NTURI
         nturi_obj = NTURI(arg_datatypes)
+
         request = nturi_obj.wrap(rpc_function_name, scheme="pva", kws=arg_val_mapping)
         return request
 
     def parse_rpc_channel(self, input_string) -> None:
+
         # url parsing is close enough for us to use
         parsed_url = urlparse(input_string)
         raw_args = parsed_url.query
         parsed_args = parse_qs(raw_args)
         function_name = parsed_url.netloc
-        # if RPC has no args, url parsing will leave ending char as '&', which needs to be removed
+
+        # if RPC has no args and no polling, url parsing will leave ending char as '&', which needs to be removed
         if function_name[-1] == "&":
             function_name = function_name[:-1]
-        pollrate = parsed_args.get("pydm_pollrate", "0.0")
-        if "pydm_pollrate" in parsed_args:
-            del parsed_args["pydm_pollrate"]
+        # for case when no args but has polling        
+        pollrate = 0.0                
+        if 'pydm_pollrate' in function_name:
+            function_name = function_name.split("&")[0]
+            index = function_name.find("&pydm_pollrate=")
+            if index != -1:
+                value_str = function_name[index + len("&pydm_pollrate="):]
+                pollrate = value_str  
+        else:
+        
+            # because url-parsing funcs put value string in a 1 item list
+            pollrate = parsed_args.get("pydm_pollrate", "0.0")[0]
+            if "pydm_pollrate" in parsed_args:
+                # delete because we don't pass pollrate as argument to RPC
+                del parsed_args["pydm_pollrate"]
 
         for curr_arg_name, curr_arg_value in parsed_args.items():
             parsed_args[curr_arg_name] = curr_arg_value[0]  # [0] takes value out of 1 item list
@@ -159,8 +191,8 @@ class Connection(PyDMConnection):
         self._rpc_function_name = function_name
         self._rpc_arg_names = list(parsed_args.keys())
         self._rpc_arg_values = list(parsed_args.values())
-        self._rpc_poll_rate = float(pollrate[0])  # [0] takes value out of 1 item list
-
+        self._rpc_poll_rate = float(pollrate)
+  
     def is_rpc_address(self, full_channel_name):
         """
         Lets keep this simple for now, say its an RPC just sif either ends with '&' or '&pydm_pollrate=<number>.
@@ -367,7 +399,6 @@ class Connection(PyDMConnection):
             nttable = Connection.convert_epics_nttable(self._value)
             nttable = nttable["value"]
             Connection.set_value_by_keys(nttable, self.nttable_data_location, value)
-            value = {"value": nttable}
 
         if is_read_only():
             logger.warning(f"PyDM read-only mode is enabled, could not write value: {value} to {self.address}")
@@ -392,33 +423,17 @@ class Connection(PyDMConnection):
 
         if self.is_rpc:
             # In case of a RPC, we can just query the channel immediately and emit the value,
-            # and let the pollrate dictate if/when we query and emit again.
+            # and let the pollrate dictate if/when we query and emit again.f
             self._value_obj = self.create_request(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)
             if self._value_obj is None:
                 logger.warning(f"failed to create request object for RPC to {self._rpc_function_name}")
                 return
 
-            result = None
-            try:
-                # For first RPC use arbitrary small timeout (0.1) so we don't stall if are failing to connect,
-                # and prevent a very slow load if many widgets are timing out.
-                # When polling-rate is set, subsequent RPC calls will be sent at the actual rate.
-                result = P4PPlugin.context.rpc(self._rpc_function_name, self._value_obj, timeout=0.1)
-            except Exception as e:
-                # So widget displays name of channel when can't connect to RPC channel
-                self.connection_state_signal.emit(False)
-                logger.warning(f"failed RPC to {self._rpc_function_name}, with exception '{e}' of type {type(e)}")
-                return
 
-            if result:
-                self.connection_state_signal.emit(True)
-                self.emit_for_type(result.value)
-                if self._rpc_poll_rate > 0:
-                    # Use daemon threads so they will be stopped when all the non-daemon
-                    # threads (in our case just the main thread) are killed, preventing them from running forever.
-                    self._background_polling_thread = threading.Thread(target=self.poll_rpc_channel, daemon=True)
-                    # Start the thread
-                    self._background_polling_thread.start()
+            # Use daemon threads so they will be stopped when all the non-daemon
+            # threads (in our case just the main thread) are killed, preventing them from running forever.
+            self._background_polling_thread = threading.Thread(target=self.poll_rpc_channel, daemon=True)
+            self._background_polling_thread.start()
 
             return
 
