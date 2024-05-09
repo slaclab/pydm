@@ -18,6 +18,8 @@ from urllib.parse import urlparse, parse_qs
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_RPC_TIMEOUT = 5.0
+
 
 class Connection(PyDMConnection):
     def __init__(
@@ -86,33 +88,26 @@ class Connection(PyDMConnection):
             self.new_value_signal[str].emit(value)
 
     def poll_rpc_channel(self) -> None:
-        # Keep executing this function at polling rate
+        # Keep executing this function at the polling rate
+
+        # When polling-rate is not specified by user (is 0), just do a single RPC request
         only_poll_once = False
         if self._rpc_poll_rate == 0:
-            self._rpc_poll_rate = 5
+            self._rpc_poll_rate = DEFAULT_RPC_TIMEOUT
             only_poll_once = True
 
         while True:
             start_time = time.process_time()
-   
-            result = None            
+
+            result = None
             try:
                 result = P4PPlugin.context.rpc(
-                name=self._rpc_function_name, value=self._value_obj, timeout=self._rpc_poll_rate
+                    name=self._rpc_function_name, value=self._value_obj, timeout=self._rpc_poll_rate
                 )
-            except Exception as e: 
+            except Exception as e:
                 # So widget displays name of channel when can't connect to RPC channel
                 self.connection_state_signal.emit(False)
                 logger.warning(f"failed RPC to {self._rpc_function_name}, with exception '{e}' of type {type(e)}")
-            
-            rpc_call_time = time.process_time() - start_time
-            # We want to call "rpc" every self._rpc_poll_rate seconds,
-            # so wait when the call returns faster than the polling-rate.
-            # The timeout arg makes sure a single call is never slower then the polling-rate.
-            if not only_poll_once:
-                poll_rate_and_rpc_call_time_dif = self._rpc_poll_rate - rpc_call_time
-                if poll_rate_and_rpc_call_time_dif > 0:
-                    time.sleep(poll_rate_and_rpc_call_time_dif)
 
             if result:
                 self.connection_state_signal.emit(True)
@@ -122,6 +117,14 @@ class Connection(PyDMConnection):
 
             if only_poll_once:
                 break
+
+            rpc_call_time = time.process_time() - start_time
+            # We want to call "rpc" every self._rpc_poll_rate seconds,
+            # so wait when the call returns faster than the polling-rate.
+            # The timeout arg makes sure a single call is never slower then the polling-rate.
+            poll_rate_and_rpc_call_time_dif = self._rpc_poll_rate - rpc_call_time
+            if poll_rate_and_rpc_call_time_dif > 0:
+                time.sleep(poll_rate_and_rpc_call_time_dif)
 
     def get_arg_datatype(self, arg_value_string):
         # Try to figure out the datatype of RPC request args
@@ -159,27 +162,28 @@ class Connection(PyDMConnection):
         return request
 
     def parse_rpc_channel(self, input_string) -> None:
-
-        # url parsing is close enough for us to use
+        # url parsing is close to what we need, so use with some adjusting
         parsed_url = urlparse(input_string)
         raw_args = parsed_url.query
         parsed_args = parse_qs(raw_args)
         function_name = parsed_url.netloc
 
-        # if RPC has no args and no polling, url parsing will leave ending char as '&', which needs to be removed
-        if function_name[-1] == "&":
+        # if RPC has no args and no polling specified, url parsing will leave name with ending '&' char we need remove
+
+        if len(function_name) >= 1 and function_name[-1] == "&":
             function_name = function_name[:-1]
-        # for case when no args but has polling        
-        pollrate = 0.0                
-        if 'pydm_pollrate' in function_name:
-            function_name = function_name.split("&")[0]
+
+        # now handle case when no args givin but specified polling
+        pollrate = 0.0
+        if "pydm_pollrate" in function_name:
             index = function_name.find("&pydm_pollrate=")
             if index != -1:
-                value_str = function_name[index + len("&pydm_pollrate="):]
-                pollrate = value_str  
+                value_str = function_name[index + len("&pydm_pollrate=") :]
+                pollrate = value_str
+
+            function_name = function_name.split("&")[0]
         else:
-        
-            # because url-parsing funcs put value string in a 1 item list
+            # because url-parsing function put value-string in 1 item list
             pollrate = parsed_args.get("pydm_pollrate", "0.0")[0]
             if "pydm_pollrate" in parsed_args:
                 # delete because we don't pass pollrate as argument to RPC
@@ -192,7 +196,7 @@ class Connection(PyDMConnection):
         self._rpc_arg_names = list(parsed_args.keys())
         self._rpc_arg_values = list(parsed_args.values())
         self._rpc_poll_rate = float(pollrate)
-  
+
     def is_rpc_address(self, full_channel_name):
         """
         Lets keep this simple for now, say its an RPC just sif either ends with '&' or '&pydm_pollrate=<number>.
@@ -428,7 +432,6 @@ class Connection(PyDMConnection):
             if self._value_obj is None:
                 logger.warning(f"failed to create request object for RPC to {self._rpc_function_name}")
                 return
-
 
             # Use daemon threads so they will be stopped when all the non-daemon
             # threads (in our case just the main thread) are killed, preventing them from running forever.
