@@ -107,7 +107,6 @@ class Connection(PyDMConnection):
             except Exception as e:
                 # So widget displays name of channel when can't connect to RPC channel
                 self.connection_state_signal.emit(False)
-                logger.warning(f"failed RPC to {self._rpc_function_name}, with exception '{e}' of type {type(e)}")
 
             if result:
                 self.connection_state_signal.emit(True)
