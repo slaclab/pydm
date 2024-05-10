@@ -412,14 +412,14 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         self.rangeChanged.emit(self.minimum, self.maximum)
         # self.set_slider_to_closest_value(self.value)
         self._slider.setMinimum(0)
-        if self.allowMaxEmit:
-            self._slider.setMaximum(self._num_steps)
-        else:
-            self._slider.valueChanged.disconnect(self.internal_slider_value_changed)
-            self._slider.setMaximum(self._num_steps)
-            self._slider.valueChanged.connect(self.internal_slider_value_changed)
+        #if self.allowMaxEmit:
+            #self._slider.setMaximum(self._num_steps)
+        #else:
+        self._slider.valueChanged.disconnect(self.internal_slider_value_changed)
+        self._slider.setMaximum(self._num_steps)
+        self._slider.valueChanged.connect(self.internal_slider_value_changed)
 
-            self.allowMaxEmit = True
+        self.allowMaxEmit = True
 
         self.set_slider_to_closest_value(self.value)
 
@@ -456,33 +456,41 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         self._num_steps = int((self.maximum - self.minimum) / self.step_size) + 1
         forward_map = []
         backward_map = []
-        step_counter = 0
+        additional_steps = 0
         forward_map_value = self.value
         backward_map_value = self.value
-
+        # fix floating error
         while forward_map_value < self.maximum:
-            step_counter += 1
             forward_map.append(forward_map_value)
             forward_map_value += self._step_size
         # check if end points are less than or greater than correct vals,
         # if less add a new point, is greater set endpoint to max/min
-        if forward_map[-1] < self.maximum:
+
+        if len(forward_map) == 0:
+            # if len zero we are at or passed maximum. so all we need 
+            # is the max ele for the map
+            forward_map.append(self.maximum)
+        elif round(forward_map[-1],self.precision/10) < round(self.maximum,self.precision/10):
             forward_map.append(self.maximum)
         elif forward_map[-1] > self.maximum:
             forward_map[-1] = self.maximum
 
         while backward_map_value > self.minimum:
-            step_counter += 1
             backward_map_value -= self._step_size
             backward_map.append(backward_map_value)
-
-        if backward_map[-1] > self.minimum:
+        if len(backward_map) == 0:
+            pass
+        elif backward_map[-1] > self.minimum:
             backward_map.append(self.minimum)
         elif backward_map[-1] < self.minimum:
             backward_map[-1] = self.minimum
 
         backward_map = list(reversed(backward_map))
         slider_position_map = np.array(backward_map + forward_map)
+        print(slider_position_map)
+        print(f'num steps: {self._num_steps}, steps added: {additional_steps}, length map: {len(slider_position_map)}')
+        if self._num_steps + additional_steps < len(slider_position_map):
+            self._num_steps +=additional_steps
         return slider_position_map
 
     def calc_step_size(self):
@@ -571,11 +579,13 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         new_val : int or float
             The new value from the channel.
         """
+        print('can we pause here???????')
+        self.check_if_value_in_map(new_val)
         PyDMWritableWidget.value_changed(self, new_val)
         # Calls find_closest_slider_position_to_value twice.
         # Comment for the reviewer. I am aware this is not an elegant solution.
         # I need a way to know if something is an external change or an internal change
-        self.check_if_value_in_map(new_val)
+
         if hasattr(self, "value_label"):
             logger.debug("Setting text for value label.")
             self.value_label.setText(self.format_string.format(self.value))
