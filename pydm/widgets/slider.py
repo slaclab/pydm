@@ -410,11 +410,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
 
         self.update_labels()
         self.rangeChanged.emit(self.minimum, self.maximum)
-        # self.set_slider_to_closest_value(self.value)
         self._slider.setMinimum(0)
-        #if self.allowMaxEmit:
-            #self._slider.setMaximum(self._num_steps)
-        #else:
         self._slider.valueChanged.disconnect(self.internal_slider_value_changed)
         self._slider.setMaximum(self._num_steps)
         self._slider.valueChanged.connect(self.internal_slider_value_changed)
@@ -467,10 +463,10 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         # if less add a new point, is greater set endpoint to max/min
 
         if len(forward_map) == 0:
-            # if len zero we are at or passed maximum. so all we need 
+            # if len zero we are at or passed maximum. so all we need
             # is the max ele for the map
             forward_map.append(self.maximum)
-        elif round(forward_map[-1],self.precision/10) < round(self.maximum,self.precision/10):
+        elif forward_map[-1] < self.maximum:
             forward_map.append(self.maximum)
         elif forward_map[-1] > self.maximum:
             forward_map[-1] = self.maximum
@@ -487,10 +483,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
 
         backward_map = list(reversed(backward_map))
         slider_position_map = np.array(backward_map + forward_map)
-        print(slider_position_map)
-        print(f'num steps: {self._num_steps}, steps added: {additional_steps}, length map: {len(slider_position_map)}')
         if self._num_steps + additional_steps < len(slider_position_map):
-            self._num_steps +=additional_steps
+            self._num_steps += additional_steps
         return slider_position_map
 
     def calc_step_size(self):
@@ -579,7 +573,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         new_val : int or float
             The new value from the channel.
         """
-        print('can we pause here???????')
         self.check_if_value_in_map(new_val)
         PyDMWritableWidget.value_changed(self, new_val)
         # Calls find_closest_slider_position_to_value twice.
@@ -1008,4 +1001,3 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         if self.remap_flag:
             self.remap_flag = False
             self._slider_position_to_value_map = self.create_slider_positions_map()
-            # neeed logic in here for if step_size is set to zer0
