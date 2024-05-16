@@ -92,37 +92,7 @@ RPC addresses allow for calling methods on a target IOC, and receiving back the 
 RPC addresses must contain arguments matching the name and data-type of those defined in the target's method.
 These arguments are static and set in the widget's channel address.
 
-RPCs can be set using a pva address in the following formatRPC
----
-
-The P4P data plugin also supports **remote method calls** (RPC) addresses.
-
-RPC addresses allow for calling methods on a target IOC, and receiving back the method's result.
-RPC addresses must contain arguments matching the name and data-type of those defined in the target's method.
-These arguments are static and set in the widget's channel address.
-
 RPCs can be set using a pva address in the following format::
-
-    pva://<address>?<arg_1_name>=<arg_1_value>&<arg_2_name>=<arg_2_value>&...(pydm_pollrate=<poll_rate_float>)
-
-"pydm_pollrate" is an optional parameter, but when included must be placed after the arg name/value pairs in the address.
-When "pydm_pollrate" is not used, the last arg name/value pair must still end with a "&" character. 
-(when not used, the RPC will be called once and not be polled)
-
-Arguments are also optional. When not used, end the address with the "&" character (followed by the optional "pydm_pollrate")::
-
-    pva://<address>&(pydm_pollrate=<poll_rate_float>)
-
-Example RPC addresses:
-    
-    pva://my_address?arg1=value1&
-    pva://my_address?arg1=value1&arg2=value2&pydm_pollrate=10.5
-    pva://KLYS:LI12:11:ATTN_CUR&
-    pva://KLYS:LI12:11:ATTN_CUR&pydm_pollrate=2.0
-
-Additional examples of using RPCs with PyDMLabels are provided in ``examples/rpc/rpc_labels.py``.
-To run examples, first make sure ``python examples/testing_ioc/rpc_testing_ioc.py`` is actively
-running in another terminal.::
 
     pva://<address>?<arg_1_name>=<arg_1_value>&<arg_2_name>=<arg_2_value>&...(pydm_pollrate=<poll_rate_float>)
 
