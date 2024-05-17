@@ -455,7 +455,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         forward_map_value = self.value
         backward_map_value = self.value
         # fix floating error
-        
+
         while forward_map_value < self.maximum:
             forward_map.append(forward_map_value)
             forward_map_value += self._step_size
@@ -466,17 +466,17 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
             # if len zero we are at or passed maximum. so all we need
             # is the max ele for the map
             forward_map.append(self.maximum)
-        elif round(float(forward_map[-1]),self.precision+1) < round(float(self.maximum),self.precision+1):
+        elif round(float(forward_map[-1]), self.precision + 1) < round(float(self.maximum), self.precision + 1):
             forward_map.append(self.maximum)
         elif forward_map[-1] > self.maximum:
             forward_map[-1] = self.maximum
 
-        while backward_map_value> self.minimum:
+        while backward_map_value > self.minimum:
             backward_map_value -= self._step_size
             backward_map.append(backward_map_value)
         if len(backward_map) == 0:
             pass
-        elif round(float(backward_map[-1]),self.precision+1) > round(float(self.minimum),self.precision+1):
+        elif round(float(backward_map[-1]), self.precision + 1) > round(float(self.minimum), self.precision + 1):
             backward_map.append(self.minimum)
         elif backward_map[-1] < self.minimum:
             backward_map[-1] = self.minimum
