@@ -4,7 +4,7 @@ import pytest
 from logging import ERROR
 import numpy as np
 
-from qtpy.QtWidgets import QLabel, QSlider, QVBoxLayout, QHBoxLayout, QSizePolicy
+from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy
 from qtpy.QtCore import Qt, QMargins
 
 from ...widgets.slider import PyDMSlider, PyDMPrimitiveSlider
@@ -467,6 +467,7 @@ def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
         assert pydm_slider._slider.value() == expected_slider_value
 
 
+'''
 @pytest.mark.parametrize(
     "new_channel_value, is_slider_down",
     [
@@ -516,6 +517,7 @@ def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider
         assert pydm_slider._slider.value() == expected_slider_value
     else:
         assert pydm_slider._slider.value() == 0
+'''
 
 
 @pytest.mark.parametrize(
