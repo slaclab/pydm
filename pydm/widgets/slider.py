@@ -452,10 +452,10 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         self._num_steps = int((self.maximum - self.minimum) / self.step_size) + 1
         forward_map = []
         backward_map = []
-        additional_steps = 0
         forward_map_value = self.value
         backward_map_value = self.value
         # fix floating error
+        
         while forward_map_value < self.maximum:
             forward_map.append(forward_map_value)
             forward_map_value += self._step_size
@@ -466,25 +466,24 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
             # if len zero we are at or passed maximum. so all we need
             # is the max ele for the map
             forward_map.append(self.maximum)
-        elif forward_map[-1] < self.maximum:
+        elif round(float(forward_map[-1]),self.precision+1) < round(float(self.maximum),self.precision+1):
             forward_map.append(self.maximum)
         elif forward_map[-1] > self.maximum:
             forward_map[-1] = self.maximum
 
-        while backward_map_value > self.minimum:
+        while backward_map_value> self.minimum:
             backward_map_value -= self._step_size
             backward_map.append(backward_map_value)
         if len(backward_map) == 0:
             pass
-        elif backward_map[-1] > self.minimum:
+        elif round(float(backward_map[-1]),self.precision+1) > round(float(self.minimum),self.precision+1):
             backward_map.append(self.minimum)
         elif backward_map[-1] < self.minimum:
             backward_map[-1] = self.minimum
-
         backward_map = list(reversed(backward_map))
         slider_position_map = np.array(backward_map + forward_map)
-        if self._num_steps + additional_steps < len(slider_position_map):
-            self._num_steps += additional_steps
+        self._num_steps = len(slider_position_map) - 1
+
         return slider_position_map
 
     def calc_step_size(self):
