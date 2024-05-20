@@ -19,7 +19,6 @@ from pydm.widgets import PyDMLabel
 from .base import PyDMWritableWidget, TextFormatter, is_channel_valid
 from .channel import PyDMChannel
 
-
 logger = logging.getLogger(__name__)
 _step_size_properties = {
     "Set Step Size ": ["step_size", float],
@@ -29,12 +28,30 @@ _step_size_properties = {
 class PyDMPrimitiveSlider(QSlider):
     def mousePressEvent(self, event):
         if event.button() == Qt.MiddleButton:
-            # Ignore middle-click events
             return
-        else:
-            # Call the default mousePressEvent implementation for other mouse buttons
+
+        if event.button() == Qt.RightButton:
             super().mousePressEvent(event)
 
+        if event.button() == Qt.LeftButton:
+            if self.orientation() == Qt.Horizontal:
+                handle_pos = self.value() * (self.width() - self.handleWidth()) / (self.maximum() - self.minimum())
+                click_pos = event.pos().x()
+            else:
+                handle_pos = self.value() * (self.height() - self.handleWidth()) / (self.maximum() - self.minimum())
+                click_pos = event.pos().y()
+
+            if click_pos > handle_pos:
+                self.setValue(self.value() + self.singleStep())
+            else:
+                self.setValue(self.value() - self.singleStep())
+
+    def handleWidth(self):
+        if self.orientation() == Qt.Horizontal:
+            return self.style().pixelMetric(self.style().PM_SliderThickness, None, self)
+        else:
+            return self.style().pixelMetric(self.style().PM_SliderLength, None, self)
+        
 
 class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step_size_properties):
     """
