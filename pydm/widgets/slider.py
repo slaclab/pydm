@@ -235,8 +235,22 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         Method which attempts to set the user imputed data from the slider parameters menu.
         """
         # check
-        self.remap_flag = True
         try:
+            slider_value = float(self.slider_parameters_menu_input_widgets[0].text())
+
+            if slider_value < self.minimum or slider_value > self.maximum:
+                raise ValueError
+            if slider_value != self.value:
+                print('remap flag being made true in slider! self.value')
+                self.remap_flag = True
+                self.value_changed(slider_value)
+                self.send_value_signal[float].emit(self.value)
+        except ValueError:
+            logger.error("the given value is not a valid type or outside of the slider range")
+
+        try:
+            print('remap flag here in step_size apply ')
+            self.remap_flag = True
             # checks if input can be converted to a float if not connect to a new channel
             new_step_size = float(self.slider_parameters_menu_input_widgets[1].text())
             new_step_size_scaled = new_step_size * float(self.slider_parameters_menu_input_widgets[2].currentText())
@@ -269,16 +283,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
 
         except ValueError:
             logger.error("precision input is incorrect")
-        try:
-            slider_value = float(self.slider_parameters_menu_input_widgets[0].text())
-
-            if slider_value < self.minimum or slider_value > self.maximum:
-                raise ValueError
-            if slider_value != self.value:
-                self.value_changed(slider_value)
-                self.send_value_signal[float].emit(self.value)
-        except ValueError:
-            logger.error("the given value is not a valid type or outside of the slider range")
 
         format_type = self.slider_parameters_menu_input_widgets[5].currentText()
 
@@ -461,7 +465,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         elif self._step_size == 0:
             self.calc_step_size()
             positions_to_values_map = self.step_size_to_slider_positions_value_map()
-
+        print('map made setting remap to False')
+        self.remap_flag = False
         return positions_to_values_map
 
     def step_size_to_slider_positions_value_map(self):
@@ -500,6 +505,10 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
             backward_map.append(self.minimum)
         elif backward_map[-1] < self.minimum:
             backward_map[-1] = self.minimum
+        print(f'remade map with value {self.value} and slider value {self._slider.value()}')
+        print(f'forward map: {forward_map}')
+        print(f'backward map : {backward_map}')
+        print('\n')
         backward_map = list(reversed(backward_map))
         slider_position_map = np.array(backward_map + forward_map)
         self._num_steps = len(slider_position_map) - 1
@@ -551,7 +560,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         # the value of the channel.
         logger.debug("Setting slider to closest value.")
         self._mute_internal_slider_changes = True
-
+        print(f'setting slider to closest value which is position: {self.find_closest_slider_position_to_value(val)} / {self._num_steps}')
         self._slider.setValue(self.find_closest_slider_position_to_value(val))
         self._mute_internal_slider_changes = False
 
@@ -592,6 +601,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         new_val : int or float
             The new value from the channel.
         """
+        print('value change called')
         self.check_if_value_in_map(new_val)
 
         # Calls find_closest_slider_position_to_value twice.
@@ -612,6 +622,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
             arg_diff = self.find_closest_slider_position_to_value(val)
             smallest_diff = self._slider_position_to_value_map[arg_diff] - float(val)
             if smallest_diff != 0.0:
+                print('remap flag being made true in check if value in map')
                 self.remap_flag = True
 
     def ctrl_limit_changed(self, which, new_limit):
@@ -699,12 +710,13 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         val : int
         """
         # Avoid potential crash if limits are undefined
+        print('in internal slider value changed')
         if self._slider_position_to_value_map is None:
             return
         if not self._mute_internal_slider_changes:
             try:
                 self.value = self._slider_position_to_value_map[val]
-
+                print(f'new value {self.value} with position {val}')
                 self.send_value_signal[float].emit(self.value)
             except IndexError:
                 pass
@@ -1026,5 +1038,5 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
     def value(self, new_value):
         self._value = new_value
         if self.remap_flag:
-            self.remap_flag = False
+            print('called create positions from from value setter')
             self._slider_position_to_value_map = self.create_slider_positions_to_value_map()
