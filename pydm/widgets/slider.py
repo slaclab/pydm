@@ -51,7 +51,7 @@ class PyDMPrimitiveSlider(QSlider):
             return self.style().pixelMetric(self.style().PM_SliderThickness, None, self)
         else:
             return self.style().pixelMetric(self.style().PM_SliderLength, None, self)
-        
+
 
 class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step_size_properties):
     """
