@@ -199,7 +199,7 @@ class Connection(PyDMConnection):
 
     def is_rpc_address(self, full_channel_name):
         """
-        Lets keep this simple for now, say its an RPC just sif either ends with '&' or '&pydm_pollrate=<number>.
+        Keep this simple for now, say it's an RPC just if either ends with '&' or '&pydm_pollrate=<number>.
         This should be enough to differentiate between non-rpc requests,
         bad RPCs will just fail and log error when we try to connect latter.
         """
@@ -403,7 +403,7 @@ class Connection(PyDMConnection):
             nttable = Connection.convert_epics_nttable(self._value)
             nttable = nttable["value"]
             Connection.set_value_by_keys(nttable, self.nttable_data_location, value)
-
+            value = {"value": nttable}
         if is_read_only():
             logger.warning(f"PyDM read-only mode is enabled, could not write value: {value} to {self.address}")
             return

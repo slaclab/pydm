@@ -211,7 +211,7 @@
      <item>
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>(no polling, no args) random float [0,10] = </string>
+        <string>(pollrate=1 sec, no args) random float [0,10] = </string>
        </property>
       </widget>
      </item>
@@ -239,7 +239,7 @@
         <string/>
        </property>
        <property name="channel" stdset="0">
-        <string>pva://pv:call:no_args&amp;</string>
+        <string>pva://pv:call:no_args&amp;pydm_pollrate=1.0</string>
        </property>
        <property name="enableRichText" stdset="0">
         <bool>false</bool>
