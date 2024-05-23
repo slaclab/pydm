@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMDrawing Widgets &mdash; PyDM 1.22.1 documentation</title>
+  <title>PyDMDrawing Widgets &mdash; PyDM 1.23.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.22.1
+                1.23.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -148,9 +148,9 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingLine">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingLine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawingLineBase</span></code></p>
 <p>A widget with a line drawn in it.
-This class inherits from PyDMDrawing.</p>
+This class inherits from PyDMDrawingLineBase.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -159,51 +159,11 @@ This class inherits from PyDMDrawing.</p>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingLine.arrowEndPoint">
-<span class="sig-name descname"><span class="pre">arrowEndPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.arrowEndPoint" title="Permalink to this definition"></a></dt>
-<dd><p>If True, an arrow will be drawn at the end of the line.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingLine.arrowMidPoint">
-<span class="sig-name descname"><span class="pre">arrowMidPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.arrowMidPoint" title="Permalink to this definition"></a></dt>
-<dd><p>If True, an arrow will be drawn at the midpoint of the line.
-:rtype: bool</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingLine.arrowStartPoint">
-<span class="sig-name descname"><span class="pre">arrowStartPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.arrowStartPoint" title="Permalink to this definition"></a></dt>
-<dd><p>If True, an arrow will be drawn at the start of the line.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingLine.draw_item">
-<span class="sig-name descname"><span class="pre">draw_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">painter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingLine.draw_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.draw_item" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">draw_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">painter</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingLine.draw_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.draw_item" title="Permalink to this definition"></a></dt>
 <dd><p>Draws the line after setting up the canvas with a call to
 <code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingLine.flipMidPointArrow">
-<span class="sig-name descname"><span class="pre">flipMidPointArrow</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingLine.flipMidPointArrow" title="Permalink to this definition"></a></dt>
-<dd><p>Flips the direction of the midpoint arrow.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>
@@ -531,9 +491,9 @@ This class inherits from PyDMDrawing.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.drawing.</span></span><span class="sig-name descname"><span class="pre">PyDMDrawingPolyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPolyline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawing</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMDrawingLineBase</span></code></p>
 <p>A widget with a multi-segment, piecewise-linear line drawn in it.
-This class inherits from PyDMDrawing.</p>
+This class inherits from PyDMDrawingLineBase.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -542,56 +502,16 @@ This class inherits from PyDMDrawing.</p>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.arrowEndPoint">
-<span class="sig-name descname"><span class="pre">arrowEndPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.arrowEndPoint" title="Permalink to this definition"></a></dt>
-<dd><p>If True, an arrow will be drawn at the start of the last polyline segment.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.arrowMidPoint">
-<span class="sig-name descname"><span class="pre">arrowMidPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.arrowMidPoint" title="Permalink to this definition"></a></dt>
-<dd><p>If True, an arrows will be drawn at the midpoints of the segments of the polyline.
-:rtype: bool</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.arrowStartPoint">
-<span class="sig-name descname"><span class="pre">arrowStartPoint</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.arrowStartPoint" title="Permalink to this definition"></a></dt>
-<dd><p>If True, an arrow will be drawn at the start of the first polyline segment.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.draw_item">
-<span class="sig-name descname"><span class="pre">draw_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">painter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPolyline.draw_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.draw_item" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">draw_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">painter</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPolyline.draw_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.draw_item" title="Permalink to this definition"></a></dt>
 <dd><p>Draws the segmented line after setting up the canvas with a call to
 <code class="docutils literal notranslate"><span class="pre">PyDMDrawing.draw_item</span></code>.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.flipMidPointArrow">
-<span class="sig-name descname"><span class="pre">flipMidPointArrow</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.flipMidPointArrow" title="Permalink to this definition"></a></dt>
-<dd><p>Flips the direction of the midpoint arrows.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.getPoints">
-<span class="sig-name descname"><span class="pre">getPoints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPolyline.getPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.getPoints" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">getPoints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingPolyline.getPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.getPoints" title="Permalink to this definition"></a></dt>
 <dd><p>Convert internal points representation for use as QStringList.</p>
 </dd></dl>
 

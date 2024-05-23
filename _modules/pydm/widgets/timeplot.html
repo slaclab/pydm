@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.timeplot &mdash; PyDM 1.22.1 documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM 1.23.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.22.1
+                1.23.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -231,13 +231,22 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">address</span>
 
     <span class="nd">@address</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">new_address</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">new_address</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the channel for the input address for communicating with the address&#39; plugin.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">new_address</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">return</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="ow">and</span> <span class="n">new_address</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">address</span><span class="p">:</span>
+            <span class="k">return</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span>
             <span class="n">address</span><span class="o">=</span><span class="n">new_address</span><span class="p">,</span> <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveNewValue</span>
         <span class="p">)</span>
+
+        <span class="c1"># Clear the data from the previous channel and redraw the curve</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialize_buffer</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redrawCurve</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">plotByTimeStamps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -372,6 +381,39 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">!=</span> <span class="n">DEFAULT_BUFFER_SIZE</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_bufferSize</span> <span class="o">=</span> <span class="n">DEFAULT_BUFFER_SIZE</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initialize_buffer</span><span class="p">()</span>
+
+<div class="viewcode-block" id="TimePlotCurveItem.insert_live_data"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.insert_live_data">[docs]</a>    <span class="k">def</span> <span class="nf">insert_live_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inserts data directly into the live buffer.</span>
+
+<span class="sd">        Example use case would be pausing the gathering of data and</span>
+<span class="sd">        filling the buffer with missed data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : np.ndarray</span>
+<span class="sd">           A numpy array of shape (2, length_of_data). Index 0 contains</span>
+<span class="sd">           timestamps and index 1 contains the data observations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">live_data_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">min_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">max_x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">live_data_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Get the indices between which we want to insert the data</span>
+        <span class="n">min_insertion_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">min_x</span><span class="p">)</span>
+        <span class="n">max_insertion_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">max_x</span><span class="p">)</span>
+        <span class="c1"># Delete any non-raw data between the indices so we don&#39;t have multiple data points for the same timestamp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="n">min_insertion_index</span><span class="p">,</span> <span class="n">max_insertion_index</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">num_points_deleted</span> <span class="o">=</span> <span class="n">max_insertion_index</span> <span class="o">-</span> <span class="n">min_insertion_index</span>
+        <span class="n">delta_points</span> <span class="o">=</span> <span class="n">live_data_length</span> <span class="o">-</span> <span class="n">num_points_deleted</span>
+        <span class="k">if</span> <span class="n">live_data_length</span> <span class="o">&gt;</span> <span class="n">num_points_deleted</span><span class="p">:</span>
+            <span class="c1"># If the insertion will overflow the data buffer, need to delete the oldest points</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">delta_points</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">delta_points</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">min_insertion_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">min_x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">,</span> <span class="p">[</span><span class="n">min_insertion_index</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">+=</span> <span class="n">live_data_length</span> <span class="o">-</span> <span class="n">num_points_deleted</span></div>
 
 <div class="viewcode-block" id="TimePlotCurveItem.redrawCurve"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.redrawCurve">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_x</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_x</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -563,6 +605,9 @@
         <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">init_y_channels</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">addYChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_scroll_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_scroll_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_scroll</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">initialize_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># If we are in Qt Designer, don&#39;t update the plot continuously.</span>
         <span class="c1"># This function gets called by PyDMTimePlot&#39;s designer plugin.</span>
@@ -584,6 +629,7 @@
         <span class="n">thresholdColor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">yAxisName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">useArchiveData</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a new curve to the current plot</span>
@@ -632,6 +678,8 @@
             <span class="n">plot_opts</span><span class="p">[</span><span class="s2">&quot;lineStyle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineStyle</span>
         <span class="k">if</span> <span class="n">lineWidth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">plot_opts</span><span class="p">[</span><span class="s2">&quot;lineWidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineWidth</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">plot_opts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Add curve</span>
         <span class="n">new_curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createCurveItem</span><span class="p">(</span>
@@ -660,7 +708,6 @@
 
         <span class="n">new_curve</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_needs_redraw</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
         <span class="k">return</span> <span class="n">new_curve</span></div>
 
     <span class="k">def</span> <span class="nf">createCurveItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -725,7 +772,7 @@
 <span class="sd">            Update the axis range(s) immediately if True, or defer until the</span>
 <span class="sd">            next rendering.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_scroll_timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">():</span>
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span><span class="p">:</span>
@@ -854,6 +901,41 @@
                 <span class="n">thresholdColor</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">threshold_color</span><span class="p">,</span>
                 <span class="n">yAxisName</span><span class="o">=</span><span class="n">curve</span><span class="o">.</span><span class="n">y_axis_name</span><span class="p">,</span>
             <span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMTimePlot.setAutoScroll"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.setAutoScroll">[docs]</a>    <span class="k">def</span> <span class="nf">setAutoScroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">timespan</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="n">padding</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">refresh_rate</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Enable/Disable autoscrolling along the x-axis. This will (un)pause</span>
+<span class="sd">        the autoscrolling QTimer, which calls the auto_scroll slot when time is up.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        enable : bool, optional</span>
+<span class="sd">            Whether or not to start the autoscroll QTimer, by default False</span>
+<span class="sd">        timespan : float, optional</span>
+<span class="sd">            The timespan to set for autoscrolling along the x-axis in seconds, by default 60</span>
+<span class="sd">        padding : float, optional</span>
+<span class="sd">            The size of the empty space between the data and the sides of the plot, by default 0.1</span>
+<span class="sd">        refresh_rate : int, optional</span>
+<span class="sd">            How often the scroll should occur in milliseconds, by default 5000</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">enable</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_scroll_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAutoRangeX</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">timespan</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">viewRange</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">timespan</span> <span class="o">=</span> <span class="n">max_x</span> <span class="o">-</span> <span class="n">min_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_timespan</span> <span class="o">=</span> <span class="n">timespan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_padding</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">padding</span> <span class="o">*</span> <span class="n">timespan</span><span class="p">,</span> <span class="n">refresh_rate</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_scroll_timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">refresh_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_scroll</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyDMTimePlot.auto_scroll"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.auto_scroll">[docs]</a>    <span class="k">def</span> <span class="nf">auto_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Autoscrolling slot to be called by the autoscroll QTimer.&quot;&quot;&quot;</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="c1"># Only include padding on the right</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">setXRange</span><span class="p">(</span><span class="n">curr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_timespan</span><span class="p">,</span> <span class="n">curr</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">scroll_padding</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMTimePlot.addLegendItem"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.addLegendItem">[docs]</a>    <span class="k">def</span> <span class="nf">addLegendItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">pv_name</span><span class="p">,</span> <span class="n">force_show_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

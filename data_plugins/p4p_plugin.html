@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>P4P Plugin &mdash; PyDM 1.22.1 documentation</title>
+  <title>P4P Plugin &mdash; PyDM 1.23.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.22.1
+                1.23.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -83,6 +83,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nttables">NTTables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#image-decompression">Image decompression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rpc">RPC</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="external_plugins.html">External Data Plugins</a></li>
@@ -192,6 +193,34 @@ is available on both conda-forge and PyPI and may be installed from either.</p>
 <p>A small pva testing ioc is included under <code class="docutils literal notranslate"><span class="pre">examples/testing/pva_testing_ioc.py</span></code>. This can be run in order to
 generate a couple of test PVs, which can be connected to using the example .ui file under
 <code class="docutils literal notranslate"><span class="pre">examples/pva/pva.ui</span></code>.</p>
+</section>
+<section id="rpc">
+<h2>RPC<a class="headerlink" href="#rpc" title="Permalink to this heading"></a></h2>
+<p>The P4P data plugin also supports <strong>remote method calls</strong> (RPC) addresses.</p>
+<p>RPC addresses allow for calling methods on a target IOC, and receiving back the method’s result.
+RPC addresses must contain arguments matching the name and data-type of those defined in the target’s method.
+These arguments are static and set in the widget’s channel address.</p>
+<p>RPCs can be set using a pva address in the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pva://&lt;address&gt;?&lt;arg_1_name&gt;=&lt;arg_1_value&gt;&amp;&lt;arg_2_name&gt;=&lt;arg_2_value&gt;&amp;...(pydm_pollrate=&lt;poll_rate_float&gt;)
+</pre></div>
+</div>
+<p>“pydm_pollrate” is an optional parameter, but when included must be placed after the arg name/value pairs in the address.
+When “pydm_pollrate” is not used, the last arg name/value pair must still end with a “&amp;” character.
+(when not used, the RPC will be called once and not be polled)</p>
+<p>Arguments are also optional. When not used, end the address with the “&amp;” character (followed by the optional “pydm_pollrate”):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pva</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">address</span><span class="o">&gt;&amp;</span><span class="p">(</span><span class="n">pydm_pollrate</span><span class="o">=&lt;</span><span class="n">poll_rate_float</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Example RPC addresses:</p>
+<blockquote>
+<div><p>pva://my_address?arg1=value1&amp;
+pva://my_address?arg1=value1&amp;arg2=value2&amp;pydm_pollrate=10.5
+pva://KLYS:LI12:11:ATTN_CUR&amp;
+pva://KLYS:LI12:11:ATTN_CUR&amp;pydm_pollrate=2.0</p>
+</div></blockquote>
+<p>Additional examples of using RPCs with PyDMLabels are provided in <code class="docutils literal notranslate"><span class="pre">examples/rpc/rpc_labels.py</span></code>.
+To run examples, first make sure <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">examples/testing_ioc/rpc_testing_ioc.py</span></code> is actively
+running in another terminal.</p>
 </section>
 </section>
 

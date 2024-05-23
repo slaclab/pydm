@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Archiver Appliance Enabled Time Plots &mdash; PyDM 1.22.1 documentation</title>
+  <title>Archiver Appliance Enabled Time Plots &mdash; PyDM 1.23.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.22.1
+                1.23.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -207,6 +207,12 @@ pyqtgraph.mkColor will accept.</p></li>
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addYChannel">
+<span class="sig-name descname"><span class="pre">addYChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineStyle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineWidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barWidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upperThreshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowerThreshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdColor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yAxisName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useArchiveData</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">liveData</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem" title="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem"><span class="pre">ArchivePlotCurveItem</span></a></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#PyDMArchiverTimePlot.addYChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addYChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Overrides timeplot addYChannel method to be able to pass the liveData flag.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.archive_data_received">
 <span class="sig-name descname"><span class="pre">archive_data_received</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#PyDMArchiverTimePlot.archive_data_received"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.archive_data_received" title="Permalink to this definition"></a></dt>
 <dd><p>Take any action needed when this plot receives new data from archiver appliance</p>
@@ -262,6 +268,23 @@ recorded yet, then defaults to the timestamp at which the plot was first rendere
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setAutoScroll">
+<span class="sig-name descname"><span class="pre">setAutoScroll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timespan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refresh_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#PyDMArchiverTimePlot.setAutoScroll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setAutoScroll" title="Permalink to this definition"></a></dt>
+<dd><p>Enable/Disable autoscrolling along the x-axis. This will (un)pause
+the autoscrolling QTimer, which calls the auto_scroll slot when time is up.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>enable</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to start the autoscroll QTimer, by default False</p></li>
+<li><p><strong>timespan</strong> (<em>float</em><em>, </em><em>optional</em>) – The timespan to set for autoscrolling along the x-axis in seconds, by default 60</p></li>
+<li><p><strong>padding</strong> (<em>float</em><em>, </em><em>optional</em>) – The size of the empty space between the data and the sides of the plot, by default 0.1</p></li>
+<li><p><strong>refresh_rate</strong> (<em>int</em><em>, </em><em>optional</em>) – How often the scroll should occur in milliseconds, by default 5000</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setCurves">
 <span class="sig-name descname"><span class="pre">setCurves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#PyDMArchiverTimePlot.setCurves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.setCurves" title="Permalink to this definition"></a></dt>
 <dd><p>Add a list of curves into the graph.</p>
@@ -293,7 +316,7 @@ a request will be made for backfill data</p>
 <h1>ArchivePlotCurveItem<a class="headerlink" href="#archiveplotcurveitem" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.archiver_time_plot.</span></span><span class="sig-name descname"><span class="pre">ArchivePlotCurveItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_archive_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.archiver_time_plot.</span></span><span class="sig-name descname"><span class="pre">ArchivePlotCurveItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_archive_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">liveData</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem" title="pydm.widgets.timeplot.TimePlotCurveItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimePlotCurveItem</span></code></a></p>
 <p>ArchivePlotCurveItem is a TimePlotCurveItem with support for receiving data from
 the archiver appliance.</p>
@@ -341,6 +364,35 @@ timestamps and index 1 contains the data observations.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.max_archiver_x">
+<span class="sig-name descname"><span class="pre">max_archiver_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.max_archiver_x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.max_archiver_x" title="Permalink to this definition"></a></dt>
+<dd><p>Provide the the most recent timestamp from the archiver data buffer.
+This is useful for scaling the x-axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The timestamp of the most recent data point in the archiver data buffer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.min_archiver_x">
+<span class="sig-name descname"><span class="pre">min_archiver_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.min_archiver_x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.min_archiver_x" title="Permalink to this definition"></a></dt>
+<dd><p>Provide the the oldest valid timestamp from the archiver data buffer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The timestamp of the oldest data point in the archiver data buffer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.receiveArchiveData">
 <span class="sig-name descname"><span class="pre">receiveArchiveData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.receiveArchiveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.receiveArchiveData" title="Permalink to this definition"></a></dt>
 <dd><p>Receive data from archiver appliance and place it into the archive data buffer.
@@ -371,12 +423,6 @@ For example optimized data will include standard deviations, minimums, and maxim
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setArchiveBufferSize">
 <span class="sig-name descname"><span class="pre">setArchiveBufferSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.setArchiveBufferSize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setArchiveBufferSize" title="Permalink to this definition"></a></dt>
 <dd><p>Set the length of the archive data buffer and zero it out</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setArchiveChannel">
-<span class="sig-name descname"><span class="pre">setArchiveChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.setArchiveChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setArchiveChannel" title="Permalink to this definition"></a></dt>
-<dd><p>Creates the channel for the input address for communicating with the archiver appliance plugin.</p>
 </dd></dl>
 
 <dl class="py method">
