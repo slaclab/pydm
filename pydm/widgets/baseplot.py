@@ -5,7 +5,15 @@ from qtpy.QtGui import QColor, QBrush, QMouseEvent
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect
 from qtpy.QtWidgets import QToolTip, QWidget
 from .. import utilities
-from pyqtgraph import AxisItem, PlotWidget, PlotDataItem, mkPen, ViewBox, InfiniteLine, SignalProxy
+from pyqtgraph import (
+    AxisItem,
+    PlotWidget,
+    PlotDataItem,
+    mkPen,
+    ViewBox,
+    InfiniteLine,
+    SignalProxy,
+)
 from collections import OrderedDict
 from typing import Dict, List, Optional, Union
 from .base import PyDMPrimitiveWidget, widget_destroyed
@@ -34,7 +42,7 @@ class BasePlotCurveItem(PlotDataItem):
     ----------
     color : QColor, optional
         The color used to draw the curve line and the symbols.
-    lineStyle: int, optional
+    lineStyle: Qt.PenStyle, optional
         Style of the line connecting the data points.
         Must be a value from the Qt::PenStyle enum
         (see http://doc.qt.io/qt-5/qt.html#PenStyle-enum).
@@ -81,7 +89,7 @@ class BasePlotCurveItem(PlotDataItem):
         lineStyle: Optional[Qt.PenStyle] = None,
         lineWidth: Optional[int] = None,
         yAxisName: Optional[str] = None,
-        **kws
+        **kws,
     ) -> None:
         self._color = QColor("white")
         self._thresholdColor = QColor("white")
@@ -193,7 +201,7 @@ class BasePlotCurveItem(PlotDataItem):
         return self._thresholdColor
 
     @threshold_color.setter
-    def threshold_color(self, new_color: QColor):
+    def threshold_color(self, new_color: Union[QColor, str]):
         """
         Set the color used for bars exceeding either the upper or lower thresholds.
 
@@ -201,6 +209,8 @@ class BasePlotCurveItem(PlotDataItem):
         -------
         new_color: QColor
         """
+        if isinstance(new_color, str):
+            new_color = QColor(new_color)
         self._thresholdColor = new_color
 
     @property
@@ -407,6 +417,9 @@ class BasePlotAxisItem(AxisItem):
         Extra arguments for CSS style options for this axis
     """
 
+    log_mode_updated = Signal(str, bool)
+    sigXRangeChanged = Signal(object, object)
+    sigYRangeChanged = Signal(object, object)
     axis_orientations = OrderedDict([("Left", "left"), ("Right", "right")])
 
     def __init__(
@@ -418,17 +431,24 @@ class BasePlotAxisItem(AxisItem):
         maxRange: Optional[float] = 1.0,
         autoRange: Optional[bool] = True,
         logMode: Optional[bool] = False,
-        **kws
+        **kws,
     ) -> None:
         super(BasePlotAxisItem, self).__init__(orientation, **kws)
 
         self._name = name
         self._orientation = orientation
         self._label = label
-        self._min_range = minRange
-        self._max_range = maxRange
         self._auto_range = autoRange
         self._log_mode = logMode
+        self.setRange(minRange, maxRange)
+
+    def linkToView(self, view):
+        if oldView := self.linkedView():
+            oldView.sigXRangeChanged.disconnect(self.sigXRangeChanged.emit)
+            oldView.sigYRangeChanged.disconnect(self.sigYRangeChanged.emit)
+        view.sigXRangeChanged.connect(self.sigXRangeChanged.emit)
+        view.sigYRangeChanged.connect(self.sigYRangeChanged.emit)
+        super().linkToView(view)
 
     @property
     def name(self) -> str:
@@ -494,7 +514,7 @@ class BasePlotAxisItem(AxisItem):
         -------
         float
         """
-        return self._min_range
+        return self.range[0]
 
     @min_range.setter
     def min_range(self, min_range: float) -> None:
@@ -505,7 +525,7 @@ class BasePlotAxisItem(AxisItem):
         ----------
         min_range: float
         """
-        self._min_range = min_range
+        self.linkedView().setYRange(min_range, self.range[1], padding=0)
 
     @property
     def max_range(self) -> float:
@@ -516,7 +536,7 @@ class BasePlotAxisItem(AxisItem):
         -------
         float
         """
-        return self._max_range
+        return self.range[1]
 
     @max_range.setter
     def max_range(self, max_range: float) -> None:
@@ -527,7 +547,7 @@ class BasePlotAxisItem(AxisItem):
         ----------
         max_range: float
         """
-        self._max_range = max_range
+        self.linkedView().setYRange(self.range[0], max_range, padding=0)
 
     @property
     def auto_range(self) -> bool:
@@ -572,6 +592,8 @@ class BasePlotAxisItem(AxisItem):
         log_mode: bool
         """
         self._log_mode = log_mode
+        self.setLogMode(x=False, y=log_mode)
+        self.log_mode_updated.emit(self.name, log_mode)
 
     def to_dict(self) -> OrderedDict:
         """
@@ -587,8 +609,8 @@ class BasePlotAxisItem(AxisItem):
                 ("name", self._name),
                 ("orientation", self._orientation),
                 ("label", self._label),
-                ("minRange", self._min_range),
-                ("maxRange", self._max_range),
+                ("minRange", self.range[0]),
+                ("maxRange", self.range[1]),
                 ("autoRange", self._auto_range),
                 ("logMode", self._log_mode),
             ]
@@ -650,7 +672,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._redraw_rate = 1  # Redraw at 1 Hz by default.
         self.maxRedrawRate = self._redraw_rate
         self._axes = []
-        self._curves = []
+        self._curves: List[BasePlotCurveItem] = []
         self._x_labels = []
         self._y_labels = []
         self._title = None
@@ -694,7 +716,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         return ret
 
     def addCurve(
-        self, plot_data_item: BasePlotCurveItem, curve_color: Optional[QColor] = None, y_axis_name: Optional[str] = None
+        self,
+        plot_data_item: BasePlotCurveItem,
+        curve_color: Optional[QColor] = None,
+        y_axis_name: Optional[str] = None,
     ):
         """
         Adds a curve to this plot.
@@ -799,6 +824,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if plot_data_item is not None:
             plot_data_item.setLogMode(False, log_mode)
         axis.setLogMode(log_mode)
+        axis.log_mode_updated.connect(self.setAxisLogMode)
         self._axes.append(axis)
         # If the x axis is just timestamps, we don't want autorange on the x axis
         setXLink = hasattr(self, "_plot_by_timestamps") and self._plot_by_timestamps
@@ -879,6 +905,13 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def redrawPlot(self) -> None:
         pass
 
+    @Slot(str, bool)
+    def setAxisLogMode(self, axis_name: str, log_mode: bool) -> None:
+        axis_curves = [c for c in self._curves if c.y_axis_name == axis_name]
+        for curve in axis_curves:
+            curve.setLogMode(False, log_mode)
+        self.plotItem.recomputeAverages()
+
     def getShowXGrid(self) -> bool:
         """True if showing x grid lines on the plot, False otherwise"""
         return self._show_x_grid
@@ -954,6 +987,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             settings
         """
         return [json.dumps(axis.to_dict()) for axis in self._axes]
+
+    def getXAxis(self) -> BasePlotAxisItem:
+        """Return the plot's X-Axis item."""
+        return self.getAxis("bottom")
 
     def setYAxes(self, new_list: List[str]) -> None:
         """
@@ -1340,7 +1377,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.redraw_timer.setInterval(int((1.0 / self._redraw_rate) * 1000))
 
     def pausePlotting(self) -> bool:
-        self.redraw_timer.stop() if self.redraw_timer.isActive() else self.redraw_timer.start()
+        (self.redraw_timer.stop() if self.redraw_timer.isActive() else self.redraw_timer.start())
         return self.redraw_timer.isActive()
 
     def mouseMoved(self, evt: QMouseEvent) -> None:

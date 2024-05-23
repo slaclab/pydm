@@ -115,13 +115,22 @@ class TimePlotCurveItem(BasePlotCurveItem):
         return self.channel.address
 
     @address.setter
-    def address(self, new_address):
-        if new_address is None or len(str(new_address)) < 1:
+    def address(self, new_address: str):
+        """Creates the channel for the input address for communicating with the address' plugin."""
+        if not new_address:
             self.channel = None
             return
+        elif self.channel and new_address == self.channel.address:
+            return
+
         self.channel = PyDMChannel(
             address=new_address, connection_slot=self.connectionStateChanged, value_slot=self.receiveNewValue
         )
+
+        # Clear the data from the previous channel and redraw the curve
+        if self.points_accumulated:
+            self.initialize_buffer()
+            self.redrawCurve()
 
     @property
     def plotByTimeStamps(self):
@@ -256,6 +265,39 @@ class TimePlotCurveItem(BasePlotCurveItem):
         if self._bufferSize != DEFAULT_BUFFER_SIZE:
             self._bufferSize = DEFAULT_BUFFER_SIZE
             self.initialize_buffer()
+
+    def insert_live_data(self, data: np.ndarray) -> None:
+        """
+        Inserts data directly into the live buffer.
+
+        Example use case would be pausing the gathering of data and
+        filling the buffer with missed data.
+
+        Parameters
+        ----------
+        data : np.ndarray
+           A numpy array of shape (2, length_of_data). Index 0 contains
+           timestamps and index 1 contains the data observations.
+        """
+        live_data_length = len(data[0])
+        min_x = data[0][0]
+        max_x = data[0][live_data_length - 1]
+        # Get the indices between which we want to insert the data
+        min_insertion_index = np.searchsorted(self.data_buffer[0], min_x)
+        max_insertion_index = np.searchsorted(self.data_buffer[0], max_x)
+        # Delete any non-raw data between the indices so we don't have multiple data points for the same timestamp
+        self.data_buffer = np.delete(self.data_buffer, slice(min_insertion_index, max_insertion_index), axis=1)
+        num_points_deleted = max_insertion_index - min_insertion_index
+        delta_points = live_data_length - num_points_deleted
+        if live_data_length > num_points_deleted:
+            # If the insertion will overflow the data buffer, need to delete the oldest points
+            self.data_buffer = np.delete(self.data_buffer, slice(0, delta_points), axis=1)
+        else:
+            self.data_buffer = np.insert(self.data_buffer, [0], np.zeros((2, delta_points)), axis=1)
+        min_insertion_index = np.searchsorted(self.data_buffer[0], min_x)
+        self.data_buffer = np.insert(self.data_buffer, [min_insertion_index], data[0:2], axis=1)
+
+        self.points_accumulated += live_data_length - num_points_deleted
 
     @Slot()
     def redrawCurve(self, min_x: Optional[float] = None, max_x: Optional[float] = None):
@@ -447,6 +489,9 @@ class PyDMTimePlot(BasePlot, updateMode):
         for channel in init_y_channels:
             self.addYChannel(channel)
 
+        self.auto_scroll_timer = QTimer()
+        self.auto_scroll_timer.timeout.connect(self.auto_scroll)
+
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
         # This function gets called by PyDMTimePlot's designer plugin.
@@ -468,6 +513,7 @@ class PyDMTimePlot(BasePlot, updateMode):
         thresholdColor=None,
         yAxisName=None,
         useArchiveData=False,
+        **kwargs
     ):
         """
         Adds a new curve to the current plot
@@ -516,6 +562,8 @@ class PyDMTimePlot(BasePlot, updateMode):
             plot_opts["lineStyle"] = lineStyle
         if lineWidth is not None:
             plot_opts["lineWidth"] = lineWidth
+        if kwargs:
+            plot_opts.update(kwargs)
 
         # Add curve
         new_curve = self.createCurveItem(
@@ -544,7 +592,6 @@ class PyDMTimePlot(BasePlot, updateMode):
 
         new_curve.data_changed.connect(self.set_needs_redraw)
         self.redraw_timer.start()
-
         return new_curve
 
     def createCurveItem(self, *args, **kwargs):
@@ -609,7 +656,7 @@ class PyDMTimePlot(BasePlot, updateMode):
             Update the axis range(s) immediately if True, or defer until the
             next rendering.
         """
-        if len(self._curves) == 0:
+        if len(self._curves) == 0 or self.auto_scroll_timer.isActive():
             return
 
         if self._plot_by_timestamps:
@@ -738,6 +785,41 @@ class PyDMTimePlot(BasePlot, updateMode):
                 thresholdColor=curve.threshold_color,
                 yAxisName=curve.y_axis_name,
             )
+
+    def setAutoScroll(self, enable: bool = False, timespan: float = 60, padding: float = 0.1, refresh_rate: int = 5000):
+        """Enable/Disable autoscrolling along the x-axis. This will (un)pause
+        the autoscrolling QTimer, which calls the auto_scroll slot when time is up.
+
+        Parameters
+        ----------
+        enable : bool, optional
+            Whether or not to start the autoscroll QTimer, by default False
+        timespan : float, optional
+            The timespan to set for autoscrolling along the x-axis in seconds, by default 60
+        padding : float, optional
+            The size of the empty space between the data and the sides of the plot, by default 0.1
+        refresh_rate : int, optional
+            How often the scroll should occur in milliseconds, by default 5000
+        """
+        if not enable:
+            self.auto_scroll_timer.stop()
+            return
+
+        self.setAutoRangeX(False)
+        if timespan <= 0:
+            min_x, max_x = self.getViewBox().viewRange()[0]
+            timespan = max_x - min_x
+        self.scroll_timespan = timespan
+        self.scroll_padding = max(padding * timespan, refresh_rate / 1000)
+
+        self.auto_scroll_timer.start(refresh_rate)
+        self.auto_scroll()
+
+    def auto_scroll(self):
+        """Autoscrolling slot to be called by the autoscroll QTimer."""
+        curr = time.time()
+        # Only include padding on the right
+        self.plotItem.setXRange(curr - self.scroll_timespan, curr + self.scroll_padding)
 
     def addLegendItem(self, item, pv_name, force_show_legend=False):
         """

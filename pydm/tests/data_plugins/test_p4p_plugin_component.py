@@ -6,8 +6,7 @@ from pydm.data_plugins.epics_plugins.p4p_plugin_component import Connection, P4P
 from pydm.tests.conftest import ConnectionSignals
 from pydm.widgets.channel import PyDMChannel
 from pytest import MonkeyPatch
-from p4p.wrapper import Value
-from p4p import Type
+from p4p.wrapper import Type, Value
 
 
 class MockContext:
@@ -155,3 +154,149 @@ def test_convert_epics_nttable():
 
     result = Connection.convert_epics_nttable(epics_struct)
     assert result == solution
+
+
+@pytest.mark.parametrize(
+    "address, expected_function_name, expected_arg_names, expected_arg_values, expected_poll_rate",
+    [
+        ("pva://pv:call:add?a=4&b=7&pydm_pollrate=10", "pv:call:add", ["a", "b"], ["4", "7"], 10),
+        ("pva://pv:call:add?a=4&b=7&", "pv:call:add", ["a", "b"], ["4", "7"], 5.0),
+        (
+            "pva://pv:call:add_three_ints_negate_option?a=2&b=7&negate=True&pydm_pollrate=10",
+            "pv:call:add_three_ints_negate_option",
+            ["a", "b", "negate"],
+            ["2", "7", "True"],
+            10,
+        ),
+        (
+            "pva://pv:call:add_ints_floats?a=3&b=4&c=5&d=6&e=7.8&pydm_pollrate=1",
+            "pv:call:add_ints_floats",
+            ["a", "b", "c", "d", "e"],
+            ["3", "4", "5", "6", "7.8"],
+            1,
+        ),
+        (
+            "pva://pv:call:take_return_string?a=Hello&",
+            "pv:call:take_return_string",
+            ["a"],
+            ["Hello"],
+            5.0,
+        ),
+        ("", "", [], [], 0.0),  # poll-rate 0 because only set to DEFAULT_RPC_TIMEOUT (5) when have realistic address
+    ],
+)
+def test_parsing_rpc_channel(
+    monkeypatch, address, expected_function_name, expected_arg_names, expected_arg_values, expected_poll_rate
+):
+    """
+    Ensure we can tell when a pva channel is an RPC call or not,
+    and when it is make sure we are extracting its data correctly.
+    """
+    mock_channel = PyDMChannel(address=address)
+    monkeypatch.setattr(P4PPlugin, "context", MockContext())
+    monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
+    p4p_connection = Connection(mock_channel, address)
+
+    assert p4p_connection._rpc_function_name == expected_function_name
+    assert p4p_connection._rpc_arg_names == expected_arg_names
+    assert p4p_connection._rpc_arg_values == expected_arg_values
+    assert p4p_connection._rpc_poll_rate == expected_poll_rate
+
+
+@pytest.mark.parametrize(
+    "address, is_valid_rpc",
+    [
+        # Valid RPC
+        ("pva://pv:call:add?a=4&b=7&pydm_pollrate=10", True),
+        ("pva://pv:call:add?a=4&b=7&pydm_pollrate=5.5", True),
+        # When pollrate is not specified, the last argument must also end with '&' character
+        ("pva://pv:call:add?a=4&b=7&", True),
+        # Valid pva addresses but not RPC
+        ("pva://PyDM:PVA:IntValue", False),
+        # Totally invalid
+        ("this is not valid!! pva://&&==!!", False),
+        ("pva://", False),
+        ("", False),
+        (None, False),
+    ],
+)
+def test_is_rpc_check(
+    monkeypatch,
+    address,
+    is_valid_rpc,
+):
+    """Ensure that the regex is working for checking if a pva address is a RPC request or not"""
+    mock_channel = PyDMChannel(address=address)
+    monkeypatch.setattr(P4PPlugin, "context", MockContext())
+    monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
+    p4p_connection = Connection(mock_channel, address)
+
+    assert p4p_connection.is_rpc_address(address) == is_valid_rpc
+
+
+@pytest.mark.parametrize(
+    "address, expected_query",
+    [
+        (
+            "pva://pv:call:add?a=4&b=7&pydm_pollrate=10",
+            {
+                "a": 4,
+                "b": 7,
+            },
+        ),
+        # Check that not specifying pollrate doesn't effect Value obj creation
+        (
+            "pva://pv:call:add?a=4&b=7&",
+            {
+                "a": 4,
+                "b": 7,
+            },
+        ),
+        # Make sure args of mixed datatypes work correctly
+        (
+            "pva://pv:call:add?a=4&b=7.5&pydm_pollrate=10",
+            {
+                "a": 4,
+                "b": 7.5,
+            },
+        ),
+        # Try with more args
+        (
+            "pva://pv:call:add?a=1&b=2&c=3&d=4&e=5&pydm_pollrate=10",
+            {
+                "a": 1,
+                "b": 2,
+                "c": 3,
+                "d": 4,
+                "e": 5,
+            },
+        ),
+        # Check using no args
+        (
+            "pva://pv:call:no_args&",
+            {},
+        ),
+    ],
+)
+def test_create_rpc_value_obj(
+    monkeypatch,
+    address,
+    expected_query,
+):
+    """
+    To make a successful RPC call, we first need to create ("wrap") a request object to pass in.
+    """
+    mock_channel = PyDMChannel(address=address)
+    monkeypatch.setattr(P4PPlugin, "context", MockContext())
+    monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
+    p4p_connection = Connection(mock_channel, address)
+    request = p4p_connection.create_request(
+        p4p_connection._rpc_function_name, p4p_connection._rpc_arg_names, p4p_connection._rpc_arg_values
+    )
+
+    result_query = request.query
+
+    assert len(result_query.items()) == len(expected_query.items())
+
+    for item1, item2 in zip(result_query.items(), expected_query.items()):
+        assert item1 == item2
