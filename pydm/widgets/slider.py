@@ -38,19 +38,29 @@ class PyDMPrimitiveSlider(QSlider):
                 handle_pos = self.value() * (self.width() - self.handleWidth()) / (self.maximum() - self.minimum())
                 click_pos = event.pos().x()
             else:
-                handle_pos = self.value() * (self.height() - self.handleWidth()) / (self.maximum() - self.minimum())
+                handle_pos = (
+                    (self.maximum() - self.value())
+                    * (self.height() - self.handleWidth())
+                    / (self.maximum() - self.minimum())
+                )
                 click_pos = event.pos().y()
 
-            if click_pos > handle_pos:
-                self.setValue(self.value() + self.singleStep())
+            if self.orientation() == Qt.Horizontal:
+                if click_pos > handle_pos + self.handleWidth() / 2:
+                    self.setValue(self.value() + self.singleStep())
+                else:
+                    self.setValue(self.value() - self.singleStep())
             else:
-                self.setValue(self.value() - self.singleStep())
+                if click_pos < handle_pos + self.handleWidth() / 2:
+                    self.setValue(self.value() + self.singleStep())
+                else:
+                    self.setValue(self.value() - self.singleStep())
 
     def handleWidth(self):
         if self.orientation() == Qt.Horizontal:
-            return self.style().pixelMetric(self.style().PM_SliderThickness, None, self)
-        else:
             return self.style().pixelMetric(self.style().PM_SliderLength, None, self)
+        else:
+            return self.style().pixelMetric(self.style().PM_SliderThickness, None, self)
 
 
 class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step_size_properties):
