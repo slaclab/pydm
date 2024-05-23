@@ -159,46 +159,6 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
         assert signals.value is None
 
 
-'''
-@pytest.mark.parametrize(
-    "value, step_size, precision, precision_from_pv", [("0.5", "1", "5", False), ("1", "0.1", "3", False)]
-)
-def test_parameters_menu(qtbot, value, step_size, precision, precision_from_pv):
-    """
-    Tests the slider widgets parameters menu
-
-    Expectations:
-    The values passed from the menu will update the corresponding values of the widget.
-
-    Parameters
-    ----------
-    qtbot : fixture
-        pytest-qt window for widget test
-    """
-    pydm_slider = PyDMSlider()
-    qtbot.addWidget(pydm_slider)
-    pydm_slider.userDefinedLimits = True
-    pydm_slider.userMaximum = 10
-    pydm_slider.userMinimum = -10
-    # pydm_slider.value = 0
-    pydm_slider.slider_parameters_menu(QPoint(0, 0))
-
-    # value
-    pydm_slider.slider_parameters_menu_input_widgets[0].setText(value)
-    # step size
-    pydm_slider.slider_parameters_menu_input_widgets[1].setText(step_size)
-    # precision
-    pydm_slider.slider_parameters_menu_input_widgets[3].setText(precision)
-    # boolean precision from PV
-    pydm_slider.slider_parameters_menu_input_widgets[4].setChecked(precision_from_pv)
-    # apply changes
-    pydm_slider.apply_step_size_menu_changes()
-    assert pydm_slider.value == float(value)
-    assert pydm_slider.step_size == float(step_size)
-    assert pydm_slider.precision == float(precision)
-'''
-
-
 @pytest.mark.parametrize(
     "show_labels, tick_position",
     [
@@ -465,59 +425,6 @@ def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
     else:
         assert pydm_slider._mute_internal_slider_changes is False
         assert pydm_slider._slider.value() == expected_slider_value
-
-
-'''
-@pytest.mark.parametrize(
-    "new_channel_value, is_slider_down",
-    [
-        (15, False),
-        (15, True),
-    ],
-)
-def test_value_changed(qtbot, signals, monkeypatch, new_channel_value, is_slider_down):
-    """
-    Test the updating of the widget's slider component value when the channel value has changed.
-
-    Expectations:
-    The widget's text component will display the correct new value, and the widget's slider component will reflect
-    the right movement as calculated.
-
-    Parameters
-    ----------
-    qtbot : fixture
-        Window for widget testing
-    signals : fixture
-        The signals fixture, which provides access signals to be bound to the appropriate slots
-    monkeypatch : fixture
-        To override the default behavior of isSliderDown while simulating whether the widget's slider is being held down
-        by the user or not
-    new_channel_value : int
-        The new value coming from the channel
-    is_slider_down : bool
-        True if the slider is to be simulated as being held down by the user; False otherwise.
-    """
-    pydm_slider = PyDMSlider()
-    qtbot.addWidget(pydm_slider)
-
-    pydm_slider.userDefinedLimits = True
-    pydm_slider.userMinimum = 10
-    pydm_slider.userMaximum = 100
-
-    pydm_slider._slider.setValue(0)
-    assert pydm_slider._slider.value() == 0
-
-    monkeypatch.setattr(QSlider, "isSliderDown", lambda *args: is_slider_down)
-    signals.new_value_signal.connect(pydm_slider.channelValueChanged)
-    signals.new_value_signal.emit(new_channel_value)
-
-    assert pydm_slider.value_label.text() == pydm_slider.format_string.format(pydm_slider.value)
-    if not is_slider_down:
-        expected_slider_value = np.argmin(abs(pydm_slider._slider_position_to_value_map - float(new_channel_value)))
-        assert pydm_slider._slider.value() == expected_slider_value
-    else:
-        assert pydm_slider._slider.value() == 0
-'''
 
 
 @pytest.mark.parametrize(

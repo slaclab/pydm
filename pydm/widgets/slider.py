@@ -262,7 +262,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
                     self.step_size_channel = None
                 self.step_size = new_step_size_scaled
             else:
-                # calc step size and update?
                 logger.error("step input is incorrect or 0")
         except ValueError:
             # want all logic for receiving a string here
@@ -596,8 +595,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         self.check_if_value_in_map(new_val)
 
         # Calls find_closest_slider_position_to_value twice.
-        # Comment for the reviewer. I am aware this is not an elegant solution.
-        # I need a way to know if something is an external change or an internal change
+
         PyDMWritableWidget.value_changed(self, new_val)
         if hasattr(self, "value_label"):
             logger.debug("Setting text for value label.")
