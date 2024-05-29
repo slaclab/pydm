@@ -137,9 +137,9 @@ class QScaleAlarmed(QScale):
         pointer_width = self._pointer_width_rate * self._widget_width
         pointer_height = self._bg_size_rate * self._scale_height * 1.5
         points = [
-            QPoint(self.position + 0.5 * pointer_width, 0),
-            QPoint(self.position - 0.5 * pointer_width, 0),
-            QPoint(self.position, pointer_height),
+            QPoint(int(self.position + 0.5 * pointer_width), 0),
+            QPoint(int(self.position - 0.5 * pointer_width), 0),
+            QPoint(int(self.position), int(pointer_height)),
         ]
         self._painter.drawPolygon(QPolygon(points))
 
@@ -152,7 +152,7 @@ class QScaleAlarmed(QScale):
         pointer_height = self._bg_size_rate * self._scale_height
         bg_width = self._widget_width
         bg_height = self._bg_size_rate * self._widget_height - 2
-        self._painter.drawRect(0, pointer_height, bg_width, bg_height)
+        self._painter.drawRect(0, int(pointer_height), int(bg_width), int(bg_height))
 
     def draw_minor_alarm_region(self):
         """
@@ -176,7 +176,12 @@ class QScaleAlarmed(QScale):
         else:
             self._painter.setBrush(self._minor_alarm_region_color)
         if self._lower_minor_alarm > self._lower_limit:
-            self._painter.drawRect(0, pointer_height, lower_minor_alarm_width, minor_alarm_height)
+            self._painter.drawRect(
+                0,
+                int(pointer_height),
+                int(lower_minor_alarm_width),
+                int(minor_alarm_height),
+            )
         """
         sets the pen color to alarm if the value is in the upper minor alarm region
         """
@@ -185,7 +190,12 @@ class QScaleAlarmed(QScale):
         else:
             self._painter.setBrush(self._minor_alarm_region_color)
         if self._upper_minor_alarm < self._upper_limit:
-            self._painter.drawRect(upper_minor_alarm_start, pointer_height, upper_minor_alarm_width, minor_alarm_height)
+            self._painter.drawRect(
+                int(upper_minor_alarm_start),
+                int(pointer_height),
+                int(upper_minor_alarm_width),
+                int(minor_alarm_height),
+            )
 
     def draw_major_alarm_region(self):
         """
@@ -211,7 +221,12 @@ class QScaleAlarmed(QScale):
             self._painter.setBrush(self._major_alarm_region_color)
         # makes sure alarm value is in range
         if self._lower_major_alarm > self._lower_limit:
-            self._painter.drawRect(0, pointer_height, lower_major_alarm_width, major_alarm_height)
+            self._painter.drawRect(
+                0,
+                int(pointer_height),
+                int(lower_major_alarm_width),
+                int(major_alarm_height),
+            )
 
         """
         sets the pen color to alarm if the value is in the upper major alarm region
@@ -222,7 +237,12 @@ class QScaleAlarmed(QScale):
             self._painter.setBrush(self._major_alarm_region_color)
         # makes sure alarm value is in range
         if self._upper_major_alarm < self._upper_limit:
-            self._painter.drawRect(upper_major_alarm_start, pointer_height, upper_major_alarm_width, major_alarm_height)
+            self._painter.drawRect(
+                int(upper_major_alarm_start),
+                int(pointer_height),
+                int(upper_major_alarm_width),
+                int(major_alarm_height),
+            )
 
     def paintEvent(self, event):
         """
