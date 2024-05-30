@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.slider &mdash; PyDM 1.23.0 documentation</title>
+  <title>pydm.widgets.slider &mdash; PyDM 1.24.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.23.0
+                1.24.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -135,11 +135,51 @@
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">is_channel_valid</span>
 <span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
 
-
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">_step_size_properties</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Set Step Size &quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;step_size&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+<span class="p">}</span>
 
 
-<div class="viewcode-block" id="PyDMSlider"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider">[docs]</a><span class="k">class</span> <span class="nc">PyDMSlider</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PyDMPrimitiveSlider</span><span class="p">(</span><span class="n">QSlider</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MiddleButton</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">RightButton</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">mousePressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">LeftButton</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">:</span>
+                <span class="n">handle_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">handleWidth</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">())</span>
+                <span class="n">click_pos</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span><span class="o">.</span><span class="n">x</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">handle_pos</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+                    <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">handleWidth</span><span class="p">())</span>
+                    <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">())</span>
+                <span class="p">)</span>
+                <span class="n">click_pos</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">click_pos</span> <span class="o">&gt;</span> <span class="n">handle_pos</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">handleWidth</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">singleStep</span><span class="p">())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">singleStep</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">click_pos</span> <span class="o">&lt;</span> <span class="n">handle_pos</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">handleWidth</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">singleStep</span><span class="p">())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">singleStep</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">handleWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">pixelMetric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">PM_SliderLength</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">pixelMetric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">PM_SliderThickness</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PyDMSlider"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider">[docs]</a><span class="k">class</span> <span class="nc">PyDMSlider</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_step_size_properties</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QSlider with support for Channels and more from PyDM.</span>
 
@@ -160,6 +200,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remap_flag</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveContent</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveBorder</span> <span class="o">=</span> <span class="kc">False</span>
@@ -176,6 +217,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span> <span class="o">=</span> <span class="mi">101</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step_size_channel</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="c1"># Set up all the internal widgets that make up a PyDMSlider.</span>
         <span class="c1"># We&#39;ll add all these things to layouts when we call setup_widgets_for_orientation</span>
         <span class="n">label_size_policy</span> <span class="o">=</span> <span class="n">QSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Maximum</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">)</span>
@@ -190,7 +233,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">high_lim_label</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;highLimLabel&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">high_lim_label</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">label_size_policy</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">high_lim_label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignTrailing</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span> <span class="o">=</span> <span class="n">QSlider</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span> <span class="o">=</span> <span class="n">PyDMPrimitiveSlider</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setOrientation</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_orig_wheel_event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">wheelEvent</span>
@@ -214,7 +257,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">menu_layout</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_menu_flag</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">step_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step_size_channel</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="PyDMSlider.wheelEvent"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.wheelEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -333,22 +377,41 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method which attempts to set the user imputed data from the slider parameters menu.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="n">slider_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="n">slider_value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="ow">or</span> <span class="n">slider_value</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
+            <span class="k">if</span> <span class="n">slider_value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">remap_flag</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">slider_value</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;the given value is not a valid type or outside of the slider range&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remap_flag</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="c1"># checks if input can be converted to a float if not connect to a new channel</span>
             <span class="n">new_step_size</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
             <span class="n">new_step_size_scaled</span> <span class="o">=</span> <span class="n">new_step_size</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
             <span class="k">if</span> <span class="n">new_step_size_scaled</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">=</span> <span class="n">new_step_size_scaled</span>
+                <span class="c1"># if new step_size scaled greater than zero we want to</span>
+                <span class="c1"># disconnect the step size channel and reset step size</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">=</span> <span class="n">new_step_size_scaled</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;step input is incorrect or 0&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="c1"># want all logic for receiving a string here</span>
             <span class="k">if</span> <span class="n">is_channel_valid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">()):</span>
-                <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size_changed</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+                <span class="n">pv_address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">init_step_size_channel</span><span class="p">(</span><span class="n">pv_address</span><span class="o">=</span><span class="n">pv_address</span><span class="p">,</span> <span class="n">slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size_changed</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel</span> <span class="o">=</span> <span class="n">pv_address</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;step input is incorrect&quot;</span><span class="p">)</span>
 
@@ -360,18 +423,6 @@
 
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;precision input is incorrect&quot;</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">slider_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
-
-            <span class="k">if</span> <span class="n">slider_value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="ow">or</span> <span class="n">slider_value</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span>
-
-            <span class="k">if</span> <span class="n">slider_value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">slider_value</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;the given value is not a valid type or outside of the slider range&quot;</span><span class="p">)</span>
 
         <span class="n">format_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider_parameters_menu_input_widgets</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
 
@@ -482,7 +533,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reset the limits and adjust the labels properly for the slider.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running reset_slider_limits.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_needs_limit_info</span> <span class="o">=</span> <span class="kc">True</span>
@@ -491,40 +541,120 @@
             <span class="k">return</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Has both limits, proceeding.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_needs_limit_info</span> <span class="o">=</span> <span class="kc">False</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_menu_flag</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">float_range</span><span class="p">())</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span>
-
+            <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_slider_positions_to_value_map</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_menu_flag</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># if no defaults. create a linear space from min to max from default num_steps = 101,</span>
+            <span class="c1"># this means we cant step to max, but also cant call create map without a value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">is_channel_valid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">init_step_size_channel</span><span class="p">(</span><span class="n">pv_address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel</span><span class="p">,</span> <span class="n">slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size_changed</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rangeChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_slider_to_closest_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">internal_slider_value_changed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">internal_slider_value_changed</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_slider_to_closest_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setPageStep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setPageStep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_enable_state</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMSlider.float_range"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.float_range">[docs]</a>    <span class="k">def</span> <span class="nf">float_range</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.init_step_size_channel"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.init_step_size_channel">[docs]</a>    <span class="k">def</span> <span class="nf">init_step_size_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pv_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">slot</span><span class="p">:</span> <span class="nb">callable</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a range of numbers from the min, max and given step size.</span>
+<span class="sd">        Connects instance attribute self.step_size_channel_pv to a PyDMChannel</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ---------</span>
+<span class="sd">        pv_address: str</span>
+<span class="sd">            Channel name of PV that connection will be established too.</span>
+<span class="sd">        slot: callable</span>
+<span class="sd">            callback function to invoke when channel value changes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">pv_address</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="n">slot</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span><span class="o">.</span><span class="n">address</span> <span class="o">!=</span> <span class="n">pv_address</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span> <span class="o">=</span> <span class="n">PyDMChannel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">pv_address</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="n">slot</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyDMSlider.create_slider_positions_to_value_map"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.create_slider_positions_to_value_map">[docs]</a>    <span class="k">def</span> <span class="nf">create_slider_positions_to_value_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wrapper around step_size_to_slider_positions_value_map to ensure</span>
+<span class="sd">        the func is only called after a step_size has been set</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        new_indexes : list of floats</span>
+<span class="sd">        positions_to_value_map: list</span>
+<span class="sd">            list with all possible allowed slider readback values</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">))</span> <span class="o">-</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">new_indexes_scaled</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">*</span> <span class="n">scale</span><span class="p">))</span>
-        <span class="p">)</span>
-        <span class="n">new_indexes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">index</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">new_indexes_scaled</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">new_indexes</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">positions_to_values_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size_to_slider_positions_value_map</span><span class="p">()</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calc_step_size</span><span class="p">()</span>
+            <span class="n">positions_to_values_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size_to_slider_positions_value_map</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">remap_flag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">positions_to_values_map</span></div>
+
+<div class="viewcode-block" id="PyDMSlider.step_size_to_slider_positions_value_map"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.step_size_to_slider_positions_value_map">[docs]</a>    <span class="k">def</span> <span class="nf">step_size_to_slider_positions_value_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a value increment by step size and record allowed values until self.maximum,</span>
+<span class="sd">        Repeat with decrementer until self.minimum, take results and create a linear</span>
+<span class="sd">        array of allowed values where the length of the array is the number of slider positions.</span>
+<span class="sd">        and the slider position i has value array[i].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">forward_map</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">backward_map</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">forward_map_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">backward_map_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">while</span> <span class="n">forward_map_value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">:</span>
+            <span class="n">forward_map</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">forward_map_value</span><span class="p">)</span>
+            <span class="n">forward_map_value</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span>
+        <span class="c1"># check if end points are less than or greater than correct vals,</span>
+        <span class="c1"># if less add a new point, is greater set endpoint to max/min</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">forward_map</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># if len zero we are at or passed maximum. so all we need</span>
+            <span class="c1"># is the max ele for the map</span>
+            <span class="n">forward_map</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">forward_map</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">forward_map</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">forward_map</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">:</span>
+            <span class="n">forward_map</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span>
+
+        <span class="k">while</span> <span class="n">backward_map_value</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">:</span>
+            <span class="n">backward_map_value</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span>
+            <span class="n">backward_map</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">backward_map_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">backward_map</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">backward_map</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">backward_map</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">backward_map</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">:</span>
+            <span class="n">backward_map</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span>
+
+        <span class="n">backward_map</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">backward_map</span><span class="p">))</span>
+        <span class="n">slider_position_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">backward_map</span> <span class="o">+</span> <span class="n">forward_map</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">slider_position_map</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">slider_position_map</span></div>
+
+<div class="viewcode-block" id="PyDMSlider.calc_step_size"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.calc_step_size">[docs]</a>    <span class="k">def</span> <span class="nf">calc_step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given max, min, and num steps calculate step size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span></div>
+        <span class="c1"># maybe do callback to stepsize line edit  here?</span>
 
 <div class="viewcode-block" id="PyDMSlider.find_closest_slider_position_to_value"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.find_closest_slider_position_to_value">[docs]</a>    <span class="k">def</span> <span class="nf">find_closest_slider_position_to_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -533,7 +663,6 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        val : float</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -551,6 +680,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        val : float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_limit_info</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Not setting slider to closest value because we need limits.&quot;</span><span class="p">)</span>
             <span class="k">return</span>
@@ -604,13 +734,27 @@
 <span class="sd">        new_val : int or float</span>
 <span class="sd">            The new value from the channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_if_value_in_map</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+
+        <span class="c1"># Calls find_closest_slider_position_to_value twice.</span>
+
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value_label&quot;</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting text for value label.&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+        <span class="c1"># isSliderDown code is probably deprecable, if you want use it</span>
+        <span class="c1"># PyDMWritableWidget.value_changed(self, new_val) should be moved inside</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">isSliderDown</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_slider_to_closest_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">check_if_value_in_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">arg_diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_closest_slider_position_to_value</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="n">smallest_diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span><span class="p">[</span><span class="n">arg_diff</span><span class="p">]</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">smallest_diff</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">remap_flag</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="PyDMSlider.ctrl_limit_changed"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.ctrl_limit_changed">[docs]</a>    <span class="k">def</span> <span class="nf">ctrl_limit_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -696,13 +840,14 @@
 <span class="sd">        ----------</span>
 <span class="sd">        val : int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># Avoid potential crash if limits are undefined</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mute_internal_slider_changes</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span><span class="p">[</span><span class="n">val</span><span class="p">]</span>
+
                 <span class="bp">self</span><span class="o">.</span><span class="n">send_value_signal</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
                 <span class="k">pass</span></div>
@@ -950,10 +1095,11 @@
 <span class="sd">        ----------</span>
 <span class="sd">        new_steps : int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_steps</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of steps on the slider</span>
@@ -962,6 +1108,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span>
 
     <span class="nd">@step_size</span><span class="o">.</span><span class="n">setter</span>
@@ -979,10 +1126,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_step_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_menu_flag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span>
+
         <span class="k">return</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="PyDMSlider.step_size_changed"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.step_size_changed">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class="viewcode-block" id="PyDMSlider.step_size_changed"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.step_size_changed">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">step_size_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -993,8 +1141,35 @@
 <span class="sd">        ----------</span>
 <span class="sd">        new_val : int, float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">new_val</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">=</span> <span class="n">new_val</span></div></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;cannot cast PV value as float&quot;</span><span class="p">)</span></div>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">step_size_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        String to connect to pydm channel after initialization</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size_channel</span>
+
+    <span class="nd">@step_size_channel</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">step_size_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_size_channel</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step_size_channel</span> <span class="o">=</span> <span class="n">step_size_channel</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Channel readback value used to determine slider position</span>
+<span class="sd">        and generate a slider positions to value map</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+
+    <span class="nd">@value</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">new_value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remap_flag</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_slider_positions_to_value_map</span><span class="p">()</span></div>
 </pre></div>
 
            </div>
