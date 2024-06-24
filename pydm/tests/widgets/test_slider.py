@@ -377,28 +377,6 @@ def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, con
             pydm_slider._write_access and pydm_slider._connected and not pydm_slider._needs_limit_info
         )
 
-@pytest.mark.parametrize(
-    "new_value, minimum, maximum",
-    [
-        (10, 0, 0),
-        (-10, 10, 10)
-    ],
-)
-def test_slider_step_size_value_error(qtbot,new_value,minimum,maximum):
-    pydm_slider = PyDMSlider()
-    qtbot.addWidget(pydm_slider)
-
-    pydm_slider.userDefinedLimits = True
-    pydm_slider.userMinimum = minimum
-    pydm_slider.userMaximum = maximum
-    try:
-        pydm_slider.value = new_value
-    except:
-        ValueError
-    
-
-
-
 
 @pytest.mark.parametrize(
     "new_value, minimum, maximum",
