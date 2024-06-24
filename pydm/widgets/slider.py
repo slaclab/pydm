@@ -1059,6 +1059,5 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
     @value.setter
     def value(self, new_value):
         self._value = new_value
-        print("setting value")
         if self.remap_flag:
             self._slider_position_to_value_map = self.create_slider_positions_to_value_map()
