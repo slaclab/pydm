@@ -499,6 +499,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         """
         if self.value is not None and (self.value > self.maximum or self.value < self.minimum):
             logger.debug("Slider out of bounds.")
+            self._slider.setEnabled(False)
             raise ValueError('Slider is out of bounds either greater than max or less than min')
         
         forward_map = []
@@ -543,6 +544,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         """
         self.step_size = (self.maximum - self.minimum) / self.num_steps
         if self.step_size == 0:
+            self._slider.setEnabled(False)
             raise  ValueError('step size is zero afte calc step step size')
 
     def find_closest_slider_position_to_value(self, val):
@@ -1057,5 +1059,6 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
     @value.setter
     def value(self, new_value):
         self._value = new_value
+        print('setting value')
         if self.remap_flag:
             self._slider_position_to_value_map = self.create_slider_positions_to_value_map()
