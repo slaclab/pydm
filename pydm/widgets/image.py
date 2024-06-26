@@ -18,11 +18,12 @@ class ReadingOrder(object):
     Fortranlike = 0
     Clike = 1
 
+
 class DimensionOrder(object):
     """
     Class to build DimensionOrder ENUM property.
-    
-    This relates to how the pva image data is being sent. Included in this data are the dimensions of the 
+
+    This relates to how the pva image data is being sent. Included in this data are the dimensions of the
     image (width and height) as part of the array 'dimension_t[] dimension'.
     (https://github.com/epics-base/normativeTypesCPP/wiki/Normative+Types+Specification#ntndarray)
     But if the array should be ordered [height, width] or [width, height] does not seem to be specified.
@@ -39,7 +40,7 @@ class DimensionOrder(object):
     HeightFirst = 0
     WidthFirst = 1
 
-    
+
 class ImageUpdateThread(QThread):
     updateSignal = Signal(list)
 
@@ -49,12 +50,11 @@ class ImageUpdateThread(QThread):
 
     def run(self):
         img = self.image_view.image_waveform
-        
-        #print('dim order: ', self.image_view._dimension_order)
+
         if self.image_view._dimension_order == DimensionOrder.WidthFirst:
             shape = img.shape
             img = img.reshape(shape[1], shape[0])
-        
+
         needs_redraw = self.image_view.needs_redraw
         image_dimensions = len(img.shape)
         width = self.image_view.imageWidth
