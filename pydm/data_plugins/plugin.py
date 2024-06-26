@@ -5,6 +5,7 @@ import threading
 from typing import Optional, Callable
 
 from ..utilities.remove_protocol import parsed_address
+from qtpy import sip
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 from .. import config
@@ -317,5 +318,6 @@ class PyDMPlugin(object):
                 self.connections[connection_id].remove_listener(channel, destroying=destroying)
                 self.channels.remove(channel)
                 if self.connections[connection_id].listener_count < 1:
-                    self.connections[connection_id].deleteLater()
+                    if not sip.isdeleted(self.connections[connection_id]):
+                        self.connections[connection_id].deleteLater()
                     del self.connections[connection_id]
