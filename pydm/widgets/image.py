@@ -18,7 +18,13 @@ class ReadingOrder(object):
     Fortranlike = 0
     Clike = 1
 
+class DimensionOrder(object):
+    """Class to build ReadingOrder ENUM property."""
 
+    HeightFirst = 0
+    WidthFirst = 1
+
+    
 class ImageUpdateThread(QThread):
     updateSignal = Signal(list)
 
@@ -28,10 +34,12 @@ class ImageUpdateThread(QThread):
 
     def run(self):
         img = self.image_view.image_waveform
+        
         #print('dim order: ', self.image_view._dimension_order)
-        if self.image_view._dimension_order:
+        if self.image_view._dimension_order == DimensionOrder.WidthFirst:
             shape = img.shape
             img = img.reshape(shape[1], shape[0])
+        
         needs_redraw = self.image_view.needs_redraw
         image_dimensions = len(img.shape)
         width = self.image_view.imageWidth
@@ -72,7 +80,7 @@ class ImageUpdateThread(QThread):
         self.image_view.needs_redraw = False
 
 
-class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
+class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder, DimensionOrder):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM.
 
@@ -98,8 +106,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
     """
 
     ReadingOrder = ReadingOrder
+    DimensionOrder = DimensionOrder
 
     Q_ENUMS(ReadingOrder)
+    Q_ENUMS(DimensionOrder)
     Q_ENUMS(PyDMColorMap)
 
     color_maps = cmaps
@@ -119,7 +129,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
         # Set default reading order of numpy array data to Fortranlike.
         self._reading_order = ReadingOrder.Fortranlike
-        self._dimension_order = False
+        self._dimension_order = DimensionOrder.HeightFirst
 
         self._redraw_rate = 30
 
@@ -525,7 +535,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         if self._reading_order != new_order:
             self._reading_order = new_order
 
-    @Property(bool)
+    @Property(DimensionOrder)
     def dimensionOrder(self):
         """
         Return the reading order of the :attr:`imageChannel` array.
