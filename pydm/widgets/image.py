@@ -28,6 +28,10 @@ class ImageUpdateThread(QThread):
 
     def run(self):
         img = self.image_view.image_waveform
+        #print('dim order: ', self.image_view._dimension_order)
+        if self.image_view._dimension_order:
+            shape = img.shape
+            img = img.reshape(shape[1], shape[0])
         needs_redraw = self.image_view.needs_redraw
         image_dimensions = len(img.shape)
         width = self.image_view.imageWidth
@@ -115,6 +119,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
         # Set default reading order of numpy array data to Fortranlike.
         self._reading_order = ReadingOrder.Fortranlike
+        self._dimension_order = False
 
         self._redraw_rate = 30
 
@@ -519,6 +524,29 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """
         if self._reading_order != new_order:
             self._reading_order = new_order
+
+    @Property(bool)
+    def dimensionOrder(self):
+        """
+        Return the reading order of the :attr:`imageChannel` array.
+
+        Returns
+        -------
+        ReadingOrder
+        """
+        return self._dimension_order
+
+    @dimensionOrder.setter
+    def dimensionOrder(self, new_order):
+        """
+        Set reading order of the :attr:`imageChannel` array.
+
+        Parameters
+        ----------
+        new_order: ReadingOrder
+        """
+        if self._dimension_order != new_order:
+            self._dimension_order = new_order
 
     def keyPressEvent(self, ev):
         """Handle keypress events."""
