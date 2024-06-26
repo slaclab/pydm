@@ -31,7 +31,7 @@ class DimensionOrder(object):
 
     HeightFirst = [height, width]
     WidthFirst = [width, height]
-    (PyDM uses HeightFirst as default)
+    (PyDM assumes HeightFirst as default)
 
     If you are wondering what ordering a certain pva address is using, you can 'pvget' the address
     to see the ordering of values in its 'dimension' array.
@@ -53,6 +53,9 @@ class ImageUpdateThread(QThread):
 
         if self.image_view._dimension_order == DimensionOrder.WidthFirst:
             shape = img.shape
+            # numpy reshape asks for (height, width) as it's params,
+            # and if we know our 'img.shape' is ordered [width, height],
+            # we must pass reshape(height, width) which is (shape[1], shape[0])
             img = img.reshape(shape[1], shape[0])
 
         needs_redraw = self.image_view.needs_redraw
