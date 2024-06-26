@@ -470,6 +470,9 @@ class BasePlotAxisItem(AxisItem):
         ----------
         name: str
         """
+        if name == self._name:
+            return
+        self.parentItem().change_axis_name(self._name, name)
         self._name = name
 
     @property
