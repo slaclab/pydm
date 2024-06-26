@@ -19,7 +19,22 @@ class ReadingOrder(object):
     Clike = 1
 
 class DimensionOrder(object):
-    """Class to build ReadingOrder ENUM property."""
+    """
+    Class to build DimensionOrder ENUM property.
+    
+    This relates to how the pva image data is being sent. Included in this data are the dimensions of the 
+    image (width and height) as part of the array 'dimension_t[] dimension'.
+    (https://github.com/epics-base/normativeTypesCPP/wiki/Normative+Types+Specification#ntndarray)
+    But if the array should be ordered [height, width] or [width, height] does not seem to be specified.
+    This option lets the user set which ordering PyDM should interpret the 'dimension' array as having.
+
+    HeightFirst = [height, width]
+    WidthFirst = [width, height]
+    (PyDM uses HeightFirst as default)
+
+    If you are wondering what ordering a certain pva address using, you can 'pvget' the address
+    to see the values in its 'dimension' array.
+    """
 
     HeightFirst = 0
     WidthFirst = 1
@@ -538,22 +553,23 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder, Dimension
     @Property(DimensionOrder)
     def dimensionOrder(self):
         """
-        Return the reading order of the :attr:`imageChannel` array.
+        Return the dimension order of the :attr:`imageChannel` array.
+        (for more info see DimensionOrder class definition)
 
         Returns
         -------
-        ReadingOrder
+        DimensionOrder
         """
         return self._dimension_order
 
     @dimensionOrder.setter
     def dimensionOrder(self, new_order):
         """
-        Set reading order of the :attr:`imageChannel` array.
+        Set dimension order of the :attr:`imageChannel` array.
 
         Parameters
         ----------
-        new_order: ReadingOrder
+        new_order: DimensionOrder
         """
         if self._dimension_order != new_order:
             self._dimension_order = new_order
