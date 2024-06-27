@@ -497,6 +497,11 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         array of allowed values where the length of the array is the number of slider positions.
         and the slider position i has value array[i].
         """
+        if self.value is not None and (self.value > self.maximum or self.value < self.minimum):
+            logger.debug("Slider out of bounds.")
+            self._slider.setEnabled(False)
+            raise ValueError("Slider is out of bounds either greater than max or less than min")
+
         forward_map = []
         backward_map = []
         forward_map_value = self.value
@@ -538,7 +543,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         Given max, min, and num steps calculate step size
         """
         self.step_size = (self.maximum - self.minimum) / self.num_steps
-        # maybe do callback to stepsize line edit  here?
+        if self.step_size == 0:
+            self._slider.setEnabled(False)
+            raise ValueError("step size is zero afte calc step step size")
 
     def find_closest_slider_position_to_value(self, val):
         """
@@ -1011,6 +1018,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         self._step_size = float(new_step_size)
         self._parameters_menu_flag = True
         self.num_steps = (self.maximum - self.minimum) / self._step_size
+        if self.num_steps == 0:
+            raise ValueError("Num steps is set to zero")
 
         return True
 
