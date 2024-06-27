@@ -1018,6 +1018,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         self._step_size = float(new_step_size)
         self._parameters_menu_flag = True
         self.num_steps = (self.maximum - self.minimum) / self._step_size
+        if self.num_steps == 0:
+            raise ValueError("Num steps is set to zero")
 
         return True
 
