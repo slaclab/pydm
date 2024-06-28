@@ -1,8 +1,8 @@
 from typing import Any, Optional
 from qtpy.QtCore import Qt, QModelIndex, QObject, QVariant
 from qtpy.QtGui import QColor
-from .archiver_time_plot import ArchivePlotCurveItem
-from .baseplot import BasePlot
+from .archiver_time_plot import ArchivePlotCurveItem, FormulaCurveItem
+from .baseplot import BasePlot, BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate
 
@@ -32,12 +32,19 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
             return super().data(index, role)
         return None
 
-    def get_data(self, column_name: str, curve: ArchivePlotCurveItem) -> Any:
+    def get_data(self, column_name: str, curve: BasePlotCurveItem) -> Any:
         """Get data for the input column name"""
         if column_name == "Channel":
-            if curve.address is None:
-                return QVariant()
-            return str(curve.address)
+            if isinstance(curve,FormulaCurveItem):
+                if curve.formula is None:
+                    return QVariant()
+                return str(curve.formula)
+            elif isinstance(curve, ArchivePlotCurveItem):
+                if curve.address is None:
+                    return QVariant()
+                return str(curve.address)
+            else:
+                print("how did we get here")
         elif column_name == "Live Data":
             return bool(curve.liveData)
         elif column_name == "Archive Data":

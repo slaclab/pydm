@@ -13,6 +13,8 @@ from qtpy.QtGui import QColor
 
 import logging
 
+from pydm.widgets.baseplot import BasePlotCurveItem
+
 logger = logging.getLogger(__name__)
 
 DEFAULT_ARCHIVE_BUFFER_SIZE = 18000
@@ -286,6 +288,199 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             super().receiveNewValue(new_value)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class FormulaCurveItem(BasePlotCurveItem):
+    """
+    FormulaCurveItem is a BasePlotCurve that plots formulas of pvs
+
+    Parameters
+    ----------
+    formula : str
+        The formula that we are graphing
+    use_archive_data : bool
+        If True, requests will be made to archiver appliance for archived data when
+        the plot is zoomed or scrolled to the left.
+    pvs: dict[str: BasePlotCurveItem]
+        Has all the information for our FormulaCurveItem to evaluate the value at every timestep
+    **kws : dict[str: any]
+        Additional parameters supported by pyqtgraph.PlotDataItem.
+    """
+
+
+    def __init__(
+        self, formula:str= None, pvs:dict= None, use_archive_data: bool = True, liveData: bool = True, color:str = "green",**kws
+    ):
+        super(FormulaCurveItem, self).__init__(**kws)
+        self.color=color
+        self.use_archive_data = use_archive_data
+        self.archive_points_accumulated = 0
+        self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
+        self._bufferSize = 2
+        self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
+        self._liveData = liveData
+        self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
+        # When optimized or mean value data is requested, we can display error bars representing
+        # the full range of values retrieved
+        self.error_bar_item = ErrorBarItem()
+        self.error_bar_needs_set = True
+        self.formula = formula
+        self.minx = 0
+        self.maxx = 0
+        self.pvs = pvs
+        self.plot_style = "Line"
+    def to_dict(self) -> OrderedDict:
+        """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
+        dic_ = OrderedDict([("useArchiveData", self.use_archive_data), ("liveData", self.liveData)])
+        dic_.update(super(ArchivePlotCurveItem, self).to_dict())
+        return dic_
+    
+    @property
+    def liveData(self):
+        return self._liveData
+
+    @liveData.setter
+    def liveData(self, get_live: bool):
+        if not get_live:
+            self._liveData = False
+            return
+
+        min_x = self.data_buffer[0, self._bufferSize - 1]
+        max_x = time.time()
+
+        # Avoids noisy requests when first rendering the plot
+        if max_x - min_x > 5:
+            self.archive_data_request_signal.emit(min_x, max_x - 1, "")
+
+        self._liveData = True
+
+    @Slot(np.ndarray)
+    def evaluate(self) -> None:
+       for pv in self.pvs.keys():
+           self.archive_data_buffer = self.pvs[pv].archive_data_buffer
+           self.data_buffer = self.pvs[pv].data_buffer
+           self.archive_points_accumulated = self.pvs[pv].archive_points_accumulated
+           self.points_accumulated = self.pvs[pv].points_accumulated
+           self.minx = self.pvs[pv].min_x
+           self.maxx = self.pvs[pv].max_x
+       #set minx, maxx to the pv
+       return
+
+    @Slot()
+    def redrawCurve(self, min_x=None, max_x=None) -> None:
+        """
+        Redraw the curve with any new data added since the last draw call.
+        """
+        self.evaluate()
+        try:
+            x = np.concatenate(
+                (
+                    self.archive_data_buffer[0, -self.archive_points_accumulated :].astype(float),
+                    self.data_buffer[0, -self.points_accumulated :].astype(float),
+                )
+            )
+
+            y = np.concatenate(
+                (
+                    self.archive_data_buffer[1, -self.archive_points_accumulated :].astype(float),
+                    self.data_buffer[1, -self.points_accumulated :].astype(float),
+                )
+            )
+            
+            self.setData(y=y, x=x)
+        except (ZeroDivisionError, OverflowError, TypeError):
+            # Solve an issue with pyqtgraph and initial downsampling
+            pass
+
+    def initializeArchiveBuffer(self) -> None:
+        """
+        Initialize the archive data buffer used for this curve.
+        """
+        self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
+
+    def getArchiveBufferSize(self) -> int:
+        """Return the length of the archive buffer"""
+        return int(self._archiveBufferSize)
+
+    def setArchiveBufferSize(self, value: int) -> None:
+        """Set the length of the archive data buffer and zero it out"""
+        if self._archiveBufferSize != int(value):
+            self._archiveBufferSize = max(int(value), 2)
+            self.initializeArchiveBuffer()
+
+    def resetArchiveBufferSize(self) -> None:
+        """Reset the length of the archive buffer back to the default and zero it out"""
+        if self._archiveBufferSize != DEFAULT_ARCHIVE_BUFFER_SIZE:
+            self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
+            self.initializeArchiveBuffer()
+    
+    def max_x(self):
+        return self.data_buffer[0, -1]
+    def min_x(self):
+
+        return self.minx
+    def min_archiver_x(self):
+        """
+        Provide the the oldest valid timestamp from the archiver data buffer.
+
+        Returns
+        -------
+        float
+            The timestamp of the oldest data point in the archiver data buffer.
+        """
+        return self.minx
+
+    def max_archiver_x(self):
+        """
+        Provide the the most recent timestamp from the archiver data buffer.
+        This is useful for scaling the x-axis.
+
+        Returns
+        -------
+        float
+            The timestamp of the most recent data point in the archiver data buffer.
+        """
+        return self.maxx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class PyDMArchiverTimePlot(PyDMTimePlot):
     """
     PyDMArchiverTimePlot is a PyDMTimePlot with support for receiving data from
@@ -548,3 +743,12 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             useArchiveData=useArchiveData,
             liveData=liveData,
         )
+    def addFormulaChannel(
+        self,
+        color,
+        yAxisName,
+        **kwargs
+    ) -> FormulaCurveItem:
+        FormulaCurve = FormulaCurveItem(color=color, **kwargs)
+        self.plotItem.linkDataToAxis(FormulaCurve, yAxisName)
+        return FormulaCurve
