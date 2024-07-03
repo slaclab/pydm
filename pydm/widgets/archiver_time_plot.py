@@ -1,4 +1,5 @@
 import json
+import re
 import time
 import numpy as np
 from collections import OrderedDict
@@ -10,7 +11,7 @@ from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
 from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
 from qtpy.QtGui import QColor
-
+import math
 import logging
 
 from pydm.widgets.baseplot import BasePlotCurveItem
@@ -335,16 +336,16 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self._bufferSize = 2
-        self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
+        self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self._liveData = liveData
-        self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
+        self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
         self.error_bar_item = ErrorBarItem()
         self.error_bar_needs_set = True
         self.formula = formula
-        self.minx = 0
-        self.maxx = 0
+        self.minx = float("-inf")
+        self.maxx = float("inf")
         self.pvs = pvs
         self.plot_style = "Line"
         self.redrawCurve()
@@ -363,33 +364,83 @@ class FormulaCurveItem(BasePlotCurveItem):
         if not get_live:
             self._liveData = False
             return
-
-        min_x = self.data_buffer[0, self._bufferSize - 1]
-        max_x = time.time()
-
-        # Avoids noisy requests when first rendering the plot
-        if max_x - min_x > 5:
-            self.archive_data_request_signal.emit(min_x, max_x - 1, "")
-
         self._liveData = True
 
     @Slot(np.ndarray)
     def evaluate(self) -> None:
+        pvArchiveData = dict()
+        pvLiveData = dict()
+        pvIndices = dict()
+        pvValues = dict()
+        self.minx = float("-inf")
+        self.maxx = float("inf")
+        formula = re.sub("{(.+?)}", "pvValues[\"\g<1>\"]", self.formula)
+        formula = formula.replace("log", "math.log")
+        formula = formula.replace("sqrt", "math.sqrt")
+        self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
+        self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
+        self.points_accumulated = 0
+        self.archive_points_accumulated = 0
+
         for pv in self.pvs.keys():
-           self.archive_data_buffer = np.copy(self.pvs[pv].archive_data_buffer)
-           self.data_buffer = np.copy(self.pvs[pv].data_buffer)
-           self.archive_points_accumulated = self.pvs[pv].archive_points_accumulated
-           self.points_accumulated = self.pvs[pv].points_accumulated
-           self.minx = self.pvs[pv].min_x
-           self.maxx = self.pvs[pv].max_x
-        formula = self.formula.replace("{", "self.pvs[\"")
-        formula = formula.replace("}", "\"].archive_data_buffer[1][i]")
-        print(formula)
-        for i in range(len(self.archive_data_buffer[0])):
-            self.archive_data_buffer[1][i] = eval(formula)
-        formula = formula.replace("archive_data_buffer", "data_buffer")
-        for i in range(len(self.data_buffer[0])):
-            self.data_buffer[1][i] = eval(formula)
+            pvArchiveData[pv] = self.pvs[pv].archive_data_buffer
+            pvIndices[pv] = 0
+            self.minx = max(self.pvs[pv].min_archiver_x(), self.minx)
+            self.maxx = min(self.pvs[pv].max_archiver_x(), self.maxx)
+            #pvArchiveData[pv] = np.append(pvArchiveData[pv], np.array([[0],[0]]), axis = 1)
+        for pv in self.pvs.keys():
+            while pvIndices[pv] < len(pvArchiveData[pv][0]) - 1 and pvArchiveData[pv][0][pvIndices[pv]] < self.minx:
+                pvValues[pv] = pvArchiveData[pv][1][pvIndices[pv]]
+                pvIndices[pv] += 1
+        # prevx = 0
+        x = self.minx
+        while(True):
+            self.archive_points_accumulated += 1
+            minPV = None
+            prevx = x
+            for pv in self.pvs.keys():
+                if minPV == None or pvArchiveData[pv][0][pvIndices[pv]] < pvArchiveData[minPV][0][pvIndices[minPV]]:
+                    minPV = pv
+                    x = pvArchiveData[pv][0][pvIndices[pv]]
+            pvValues[minPV] = pvArchiveData[minPV][1][pvIndices[minPV]]
+            temp = np.array([[x], [eval(formula)]])
+            self.archive_data_buffer = np.append(self.archive_data_buffer, temp, axis = 1)
+            # if temp[1][0] == pvValues["B"]:
+            #     print("what the hell man")
+            pvIndices[minPV] += 1
+            if pvIndices[minPV] >= len(pvArchiveData[minPV][0]):
+                break
+        formula = formula.replace("Archive", "Live")
+        minx = float("-inf")
+        maxx = float("inf")
+        self.points_accumulated = 0
+        pvIndices = dict()
+        pvValues = dict()
+        for pv in self.pvs.keys():
+            pvLiveData[pv] = np.copy(self.pvs[pv].data_buffer)
+            pvIndices[pv] = 0
+            minx = max(self.pvs[pv].min_x(), minx)
+            maxx = min(self.pvs[pv].max_x(), maxx)
+            #pvLiveData[pv] = np.append(pvLiveData[pv], np.array([[0],[0]]), axis = 1)
+        for pv in self.pvs.keys():
+            while pvIndices[pv] < len(pvLiveData[pv][0]) - 1 and pvLiveData[pv][0][pvIndices[pv]] < minx:
+                pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
+                pvIndices[pv] += 1
+        
+        while(True):
+            self.points_accumulated += 1
+            minPV = None
+            x = 0
+            for pv in self.pvs.keys():
+                if minPV == None or pvLiveData[pv][0][pvIndices[pv]] < pvLiveData[minPV][0][pvIndices[minPV]]:
+                    minPV = pv
+                    x = pvLiveData[pv][0][pvIndices[pv]]
+            pvValues[minPV] = pvLiveData[minPV][1][pvIndices[minPV]]
+            temp = np.array([[x], [eval(formula)]])
+            self.data_buffer = np.append(self.data_buffer, temp, axis = 1)
+            pvIndices[minPV] += 1
+            if(pvIndices[minPV] >= len(pvLiveData[minPV][0])):
+                break
        #set minx, maxx to the pv
         return
     @Slot()
