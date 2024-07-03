@@ -347,6 +347,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.maxx = 0
         self.pvs = pvs
         self.plot_style = "Line"
+        self.redrawCurve()
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
         dic_ = OrderedDict([("useArchiveData", self.use_archive_data), ("liveData", self.liveData)])
@@ -374,16 +375,23 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     @Slot(np.ndarray)
     def evaluate(self) -> None:
-       for pv in self.pvs.keys():
-           self.archive_data_buffer = self.pvs[pv].archive_data_buffer
-           self.data_buffer = self.pvs[pv].data_buffer
+        for pv in self.pvs.keys():
+           self.archive_data_buffer = np.copy(self.pvs[pv].archive_data_buffer)
+           self.data_buffer = np.copy(self.pvs[pv].data_buffer)
            self.archive_points_accumulated = self.pvs[pv].archive_points_accumulated
            self.points_accumulated = self.pvs[pv].points_accumulated
            self.minx = self.pvs[pv].min_x
            self.maxx = self.pvs[pv].max_x
+        formula = self.formula.replace("{", "self.pvs[\"")
+        formula = formula.replace("}", "\"].archive_data_buffer[1][i]")
+        print(formula)
+        for i in range(len(self.archive_data_buffer[0])):
+            self.archive_data_buffer[1][i] = eval(formula)
+        formula = formula.replace("archive_data_buffer", "data_buffer")
+        for i in range(len(self.data_buffer[0])):
+            self.data_buffer[1][i] = eval(formula)
        #set minx, maxx to the pv
-       return
-
+        return
     @Slot()
     def redrawCurve(self, min_x=None, max_x=None) -> None:
         """
