@@ -27,10 +27,7 @@ def test_construct(qtbot):
     assert widget.minimumSizeHint() == QSize(50, 100)
 
 
-@pytest.mark.parametrize("widget_type", [
-    WidgetType.PushButton,
-    WidgetType.RadioButton
-])
+@pytest.mark.parametrize("widget_type", [WidgetType.PushButton, WidgetType.RadioButton])
 def test_widget_type(qtbot, widget_type):
     """
     Test the widget for a change in the widget type.
@@ -53,10 +50,7 @@ def test_widget_type(qtbot, widget_type):
     assert isinstance(widget._widgets[0], class_for_type[widget_type])
 
 
-@pytest.mark.parametrize("orientation", [
-    Qt.Horizontal,
-    Qt.Vertical
-])
+@pytest.mark.parametrize("orientation", [Qt.Horizontal, Qt.Vertical])
 def test_widget_orientation(qtbot, orientation):
     """
     Test the widget for a change in the orientation.
@@ -91,33 +85,28 @@ def test_widget_orientation(qtbot, orientation):
     assert isinstance(w, class_for_type[widget.widgetType])
 
 
-@pytest.mark.parametrize("connected, write_access, has_enum, is_app_read_only", [
-    (True, True, True, True),
-    (True, True, True, False),
-
-    (True, True, False, True),
-    (True, True, False, False),
-
-    (True, False, False, True),
-    (True, False, False, False),
-
-    (True, False, True, True),
-    (True, False, True, False),
-
-    (False, True, True, True),
-    (False, True, True, False),
-
-    (False, False, True, True),
-    (False, False, True, False),
-
-    (False, True, False, True),
-    (False, True, False, False),
-
-    (False, False, False, True),
-    (False, False, False, False),
-])
-def test_check_enable_state(qtbot, connected, write_access, has_enum,
-                            is_app_read_only):
+@pytest.mark.parametrize(
+    "connected, write_access, has_enum, is_app_read_only",
+    [
+        (True, True, True, True),
+        (True, True, True, False),
+        (True, True, False, True),
+        (True, True, False, False),
+        (True, False, False, True),
+        (True, False, False, False),
+        (True, False, True, True),
+        (True, False, True, False),
+        (False, True, True, True),
+        (False, True, True, False),
+        (False, False, True, True),
+        (False, False, True, False),
+        (False, True, False, True),
+        (False, True, False, False),
+        (False, False, False, True),
+        (False, False, False, False),
+    ],
+)
+def test_check_enable_state(qtbot, connected, write_access, has_enum, is_app_read_only):
     """
     Test the tooltip generated depending on the channel connection, write access,
     whether the widget has enum strings,
@@ -226,7 +215,7 @@ def test_enum_strings_signal_alters_items_prop(qtbot, signals):
     assert len(widget._btn_group.buttons()) == 2
     assert widget._btn_group.button(0).text() == "PLAY"
     assert widget._btn_group.button(1).text() == "PAUSE"
-    signals.enum_strings_signal[tuple].emit(("STOP", ))
+    signals.enum_strings_signal[tuple].emit(("STOP",))
     assert len(widget._btn_group.buttons()) == 1
     assert widget._btn_group.button(0).text() == "STOP"
 

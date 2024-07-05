@@ -36,8 +36,10 @@ def replace_macros_in_template(template, macros):
     expanded_text = ""
     # Escape any single or double quotes to ensure macro substitution results in valid python code
     # when replaced (e.g. xterm -e 'echo hi')
-    macros = {key: re.sub(r'(?<!\\)"', '\\"', re.sub(r"(?<!\\)'", "\\'", value)) if isinstance(value, str) else value
-              for key, value in macros.items()}
+    macros = {
+        key: re.sub(r'(?<!\\)"', '\\"', re.sub(r"(?<!\\)'", "\\'", value)) if isinstance(value, str) else value
+        for key, value in macros.items()
+    }
 
     for i in range(100):
         expanded_text = curr_template.safe_substitute(macros)
@@ -78,14 +80,14 @@ def parse_macro_string(macro_string):
         name_end = None
         val_start = None
         val_end = None
-        for (i,c) in enumerate(macro_string):
+        for i, c in enumerate(macro_string):
             if quote:
                 if c == quote:
                     quote = False
             elif c == "'" or c == '"':
                 quote = c
                 continue
-            escape = macro_string[i-1] == "\\"
+            escape = macro_string[i - 1] == "\\"
             if state == PRE_NAME:
                 if (not quote) and (not escape) and (c.isspace() or c == ","):
                     continue
@@ -102,22 +104,22 @@ def parse_macro_string(macro_string):
                     continue
                 val_start = i
                 state = IN_VAL
-                if i == len(macro_string)-1:
-                    val_end = i+1
+                if i == len(macro_string) - 1:
+                    val_end = i + 1
             elif state == IN_VAL:
                 if quote or escape:
                     continue
                 if c == ",":
                     val_end = i
                     state = PRE_NAME
-                elif i == len(macro_string)-1:
-                    val_end = i+1
+                elif i == len(macro_string) - 1:
+                    val_end = i + 1
                     state = PRE_NAME
                 else:
                     continue
-            if not (None in (name_start, name_end, val_start, val_end)):
+            if None not in (name_start, name_end, val_start, val_end):
                 key = macro_string[name_start:name_end].strip().replace("\\", "")
-                val = macro_string[val_start:val_end].strip('"\'').replace("\\", "")
+                val = macro_string[val_start:val_end].strip("\"'").replace("\\", "")
                 macros[key] = val
                 name_start = None
                 name_end = None
@@ -125,4 +127,3 @@ def parse_macro_string(macro_string):
                 val_end = None
                 state = PRE_NAME
         return macros
-    

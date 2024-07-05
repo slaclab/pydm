@@ -14,7 +14,7 @@ MINIMUM_BUFFER_SIZE = 2
 
 
 class ScatterPlotCurveItem(BasePlotCurveItem):
-    _channels = ('x_channel', 'y_channel')
+    _channels = ("x_channel", "y_channel")
 
     def __init__(self, y_addr, x_addr, redraw_mode=None, bufferSizeChannelAddress=None, **kws):
         self.x_channel = None
@@ -24,29 +24,27 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         self.x_connected = False
         self.y_connected = False
         # If a name wasn't specified, use the addresses to make one.
-        if kws.get('name') is None:
+        if kws.get("name") is None:
             if y_addr is None and x_addr is None:
-                kws['name'] = ""
+                kws["name"] = ""
             else:
                 y_name = remove_protocol(y_addr if y_addr is not None else "")
                 x_name = remove_protocol(x_addr if x_addr is not None else "")
-                kws['name'] = "{y} vs. {x}".format(y=y_name, x=x_name)
-        self.redraw_mode = (redraw_mode if redraw_mode is not None
-                            else self.REDRAW_ON_EITHER)
+                kws["name"] = "{y} vs. {x}".format(y=y_name, x=x_name)
+        self.redraw_mode = redraw_mode if redraw_mode is not None else self.REDRAW_ON_EITHER
         self.bufferSizeChannel = None
         self.bufferSizeChannel_connected = False
         self._bufferSize = DEFAULT_BUFFER_SIZE
-        self.data_buffer = np.zeros((2, self._bufferSize),
-                                    order='f', dtype=float)
+        self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
         self.points_accumulated = 0
         self.latest_x_value = None
         self.latest_y_value = None
         self.needs_new_x = True
         self.needs_new_y = True
-        if 'symbol' not in kws.keys():
-            kws['symbol'] = 'o'
-        if 'lineStyle' not in kws.keys():
-            kws['lineStyle'] = Qt.NoPen
+        if "symbol" not in kws.keys():
+            kws["symbol"] = "o"
+        if "lineStyle" not in kws.keys():
+            kws["lineStyle"] = Qt.NoPen
         super(ScatterPlotCurveItem, self).__init__(**kws)
         self.bufferSizeChannelAddress = bufferSizeChannelAddress
 
@@ -60,11 +58,10 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             Representation with values for all properties
             needed to recreate this curve.
         """
-        dic_ = OrderedDict([("y_channel", self.y_address),
-                            ("x_channel", self.x_address)])
+        dic_ = OrderedDict([("y_channel", self.y_address), ("x_channel", self.x_address)])
         dic_.update(super(ScatterPlotCurveItem, self).to_dict())
         dic_["redraw_mode"] = self.redraw_mode
-        dic_['buffer_size'] = self.getBufferSize()
+        dic_["buffer_size"] = self.getBufferSize()
         dic_["bufferSizeChannelAddress"] = self.bufferSizeChannelAddress
         return dic_
 
@@ -95,9 +92,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             self.x_channel = None
             return
         self.x_channel = PyDMChannel(
-            address=new_address,
-            connection_slot=self.xConnectionStateChanged,
-            value_slot=self.receiveXValue)
+            address=new_address, connection_slot=self.xConnectionStateChanged, value_slot=self.receiveXValue
+        )
 
     @property
     def y_address(self):
@@ -126,9 +122,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             self.y_channel = None
             return
         self.y_channel = PyDMChannel(
-            address=new_address,
-            connection_slot=self.yConnectionStateChanged,
-            value_slot=self.receiveYValue)
+            address=new_address, connection_slot=self.yConnectionStateChanged, value_slot=self.receiveYValue
+        )
 
     @Slot(bool)
     def xConnectionStateChanged(self, connected):
@@ -213,8 +208,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
 
     def initialize_buffer(self):
         self.points_accumulated = 0
-        self.data_buffer = np.zeros((2, self._bufferSize),
-                                    order='f', dtype=float)
+        self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
 
     def getBufferSize(self):
         return int(self._bufferSize)
@@ -260,7 +254,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         self.bufferSizeChannel = PyDMChannel(
             address=new_address,
             connection_slot=self.bufferSizeConnectionStateChanged,
-            value_slot=self.bufferSizeChannelValueReceiver)
+            value_slot=self.bufferSizeChannelValueReceiver,
+        )
         self.bufferSizeChannel.connect()
 
     @Slot(bool)
@@ -288,8 +283,10 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         Called by the curve's parent plot whenever the curve needs to be
         re-drawn with new data.
         """
-        self.setData(x=self.data_buffer[0, -self.points_accumulated:].astype(float),
-                     y=self.data_buffer[1, -self.points_accumulated:].astype(float))
+        self.setData(
+            x=self.data_buffer[0, -self.points_accumulated :].astype(float),
+            y=self.data_buffer[1, -self.points_accumulated :].astype(float),
+        )
         self.needs_new_x = True
         self.needs_new_y = True
 
@@ -304,10 +301,9 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         """
         if self.points_accumulated == 0:
             raise NoDataError("Curve has no data, cannot determine limits.")
-        x_data = self.data_buffer[0, -self.points_accumulated:]
-        y_data = self.data_buffer[1, -self.points_accumulated:]
-        return ((float(np.amin(x_data)), float(np.amax(x_data))),
-                (float(np.amin(y_data)), float(np.amax(y_data))))
+        x_data = self.data_buffer[0, -self.points_accumulated :]
+        y_data = self.data_buffer[1, -self.points_accumulated :]
+        return ((float(np.amin(x_data)), float(np.amax(x_data))), (float(np.amin(y_data)), float(np.amax(y_data))))
 
     def channels(self):
         return [self.y_channel, self.x_channel]
@@ -343,8 +339,8 @@ class PyDMScatterPlot(BasePlot):
         The background color for the plot. Accepts any arguments that
         pyqtgraph.mkColor will accept.
     """
-    def __init__(self, parent=None, init_x_channels=[], init_y_channels=[],
-                 background='default'):
+
+    def __init__(self, parent=None, init_x_channels=[], init_y_channels=[], background="default"):
         super(PyDMScatterPlot, self).__init__(parent, background)
         # If the user supplies a single string instead of a list,
         # wrap it in a list.
@@ -353,17 +349,15 @@ class PyDMScatterPlot(BasePlot):
         if isinstance(init_y_channels, str):
             init_y_channels = [init_y_channels]
         if len(init_x_channels) == 0:
-            init_x_channels = list(itertools.repeat(None,
-                                                    len(init_y_channels)))
+            init_x_channels = list(itertools.repeat(None, len(init_y_channels)))
         if len(init_x_channels) != len(init_y_channels):
-            raise ValueError("If lists are provided for both X and Y " +
-                             "channels, they must be the same length.")
+            raise ValueError("If lists are provided for both X and Y " + "channels, they must be the same length.")
         # self.channel_pairs is an ordered dictionary that is keyed on a
         # (x_channel, y_channel) tuple, with ScatterPlotCurveItem values.
         # It gets populated in self.addChannel().
         self.channel_pairs = OrderedDict()
         init_channel_pairs = zip(init_x_channels, init_y_channels)
-        for (x_chan, y_chan) in init_channel_pairs:
+        for x_chan, y_chan in init_channel_pairs:
             self.addChannel(y_channel=y_chan, x_channel=x_chan)
         self._needs_redraw = True
 
@@ -372,10 +366,21 @@ class PyDMScatterPlot(BasePlot):
         # This function gets called by PyDMTimePlot's designer plugin.
         pass
 
-    def addChannel(self, y_channel=None, x_channel=None, name=None,
-                   color=None, lineStyle=None, lineWidth=None,
-                   symbol=None, symbolSize=None, redraw_mode=None,
-                   buffer_size=None, yAxisName=None, bufferSizeChannelAddress=None):
+    def addChannel(
+        self,
+        y_channel=None,
+        x_channel=None,
+        name=None,
+        color=None,
+        lineStyle=None,
+        lineWidth=None,
+        symbol=None,
+        symbolSize=None,
+        redraw_mode=None,
+        buffer_size=None,
+        yAxisName=None,
+        bufferSizeChannelAddress=None,
+    ):
         """
         Add a new curve to the plot.  In addition to the arguments below,
         all other keyword arguments are passed to the underlying
@@ -419,27 +424,32 @@ class PyDMScatterPlot(BasePlot):
             doesn't yet exist
         """
         plot_opts = {}
-        plot_opts['symbol'] = symbol
+        plot_opts["symbol"] = symbol
         if symbolSize is not None:
-            plot_opts['symbolSize'] = symbolSize
+            plot_opts["symbolSize"] = symbolSize
         if lineStyle is not None:
-            plot_opts['lineStyle'] = lineStyle
+            plot_opts["lineStyle"] = lineStyle
         if lineWidth is not None:
-            plot_opts['lineWidth'] = lineWidth
+            plot_opts["lineWidth"] = lineWidth
         if redraw_mode is not None:
-            plot_opts['redraw_mode'] = redraw_mode
-        curve = ScatterPlotCurveItem(y_addr=y_channel,
-                                     x_addr=x_channel,
-                                     name=name,
-                                     color=color,
-                                     yAxisName=yAxisName,
-                                     bufferSizeChannelAddress=bufferSizeChannelAddress,
-                                     **plot_opts)
+            plot_opts["redraw_mode"] = redraw_mode
+        curve = self.createCurveItem(
+            y_addr=y_channel,
+            x_addr=x_channel,
+            name=name,
+            color=color,
+            yAxisName=yAxisName,
+            bufferSizeChannelAddress=bufferSizeChannelAddress,
+            **plot_opts
+        )
         if buffer_size is not None:
             curve.setBufferSize(buffer_size)
         self.channel_pairs[(x_channel, y_channel)] = curve
         self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         curve.data_changed.connect(self.set_needs_redraw)
+
+    def createCurveItem(self, *args, **kwargs):
+        return ScatterPlotCurveItem(*args, **kwargs)
 
     def removeChannel(self, curve):
         """
@@ -512,19 +522,23 @@ class PyDMScatterPlot(BasePlot):
             return
         self.clearCurves()
         for d in new_list:
-            color = d.get('color')
+            color = d.get("color")
             if color:
                 color = QColor(color)
-            self.addChannel(y_channel=d['y_channel'], x_channel=d['x_channel'],
-                            name=d.get('name'), color=color,
-                            lineStyle=d.get('lineStyle'),
-                            lineWidth=d.get('lineWidth'),
-                            symbol=d.get('symbol'),
-                            symbolSize=d.get('symbolSize'),
-                            redraw_mode=d.get('redraw_mode'),
-                            buffer_size=d.get('buffer_size'),
-                            bufferSizeChannelAddress=d.get('bufferSizeChannelAddress'),
-                            yAxisName=d.get('yAxisName'))
+            self.addChannel(
+                y_channel=d["y_channel"],
+                x_channel=d["x_channel"],
+                name=d.get("name"),
+                color=color,
+                lineStyle=d.get("lineStyle"),
+                lineWidth=d.get("lineWidth"),
+                symbol=d.get("symbol"),
+                symbolSize=d.get("symbolSize"),
+                redraw_mode=d.get("redraw_mode"),
+                buffer_size=d.get("buffer_size"),
+                bufferSizeChannelAddress=d.get("bufferSizeChannelAddress"),
+                yAxisName=d.get("yAxisName"),
+            )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
 
@@ -539,39 +553,61 @@ class PyDMScatterPlot(BasePlot):
         chans = []
         chans.extend([curve.y_channel for curve in self._curves])
         chans.extend([curve.x_channel for curve in self._curves])
-        chans.extend([curve.bufferSizeChannel
-                      for curve in self._curves
-                      if curve.bufferSizeChannel is not None])
+        chans.extend([curve.bufferSizeChannel for curve in self._curves if curve.bufferSizeChannel is not None])
         return chans
 
     # The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange,
     # and maxYRange are all defined in BasePlot, but we don't expose them as
     # properties there, because not all plot subclasses necessarily want
     # them to be user-configurable in Designer.
-    autoRangeX = Property(bool, BasePlot.getAutoRangeX,
-                          BasePlot.setAutoRangeX, BasePlot.resetAutoRangeX,
-                          doc="""
+    autoRangeX = Property(
+        bool,
+        BasePlot.getAutoRangeX,
+        BasePlot.setAutoRangeX,
+        BasePlot.resetAutoRangeX,
+        doc="""
 Whether or not the X-axis automatically rescales to fit the data.
-If true, the values in minXRange and maxXRange are ignored.""")
+If true, the values in minXRange and maxXRange are ignored.""",
+    )
 
-    minXRange = Property(float, BasePlot.getMinXRange,
-                         BasePlot.setMinXRange, doc="""
-Minimum X-axis value visible on the plot.""")
+    minXRange = Property(
+        float,
+        BasePlot.getMinXRange,
+        BasePlot.setMinXRange,
+        doc="""
+Minimum X-axis value visible on the plot.""",
+    )
 
-    maxXRange = Property(float, BasePlot.getMaxXRange,
-                         BasePlot.setMaxXRange, doc="""
-Maximum X-axis value visible on the plot.""")
+    maxXRange = Property(
+        float,
+        BasePlot.getMaxXRange,
+        BasePlot.setMaxXRange,
+        doc="""
+Maximum X-axis value visible on the plot.""",
+    )
 
-    autoRangeY = Property(bool, BasePlot.getAutoRangeY,
-                          BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY,
-                          doc="""
+    autoRangeY = Property(
+        bool,
+        BasePlot.getAutoRangeY,
+        BasePlot.setAutoRangeY,
+        BasePlot.resetAutoRangeY,
+        doc="""
 Whether or not the Y-axis automatically rescales to fit the data.
-If true, the values in minYRange and maxYRange are ignored.""")
+If true, the values in minYRange and maxYRange are ignored.""",
+    )
 
-    minYRange = Property(float, BasePlot.getMinYRange,
-                         BasePlot.setMinYRange, doc="""
-Minimum Y-axis value visible on the plot.""")
+    minYRange = Property(
+        float,
+        BasePlot.getMinYRange,
+        BasePlot.setMinYRange,
+        doc="""
+Minimum Y-axis value visible on the plot.""",
+    )
 
-    maxYRange = Property(float, BasePlot.getMaxYRange,
-                         BasePlot.setMaxYRange, doc="""
-Maximum Y-axis value visible on the plot.""")
+    maxYRange = Property(
+        float,
+        BasePlot.getMaxYRange,
+        BasePlot.setMaxYRange,
+        doc="""
+Maximum Y-axis value visible on the plot.""",
+    )

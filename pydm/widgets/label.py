@@ -6,18 +6,18 @@ from pydm.utilities import is_pydm_app, is_qt_designer
 from pydm import config
 from pydm.widgets.base import only_if_channel_set
 
-_labelRuleProperties = {'Text': ['value_changed', str]}
+_labelRuleProperties = {"Text": ["value_changed", str]}
+
 
 class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties=_labelRuleProperties):
-    Q_ENUMS(DisplayFormat)
-    DisplayFormat = DisplayFormat
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
-    
-    Note: If a PyDMLabel is configured to use a Channel, and also with a rule
-    which changes the 'Text' property, the behavior is undefined.  Use either
-    the Channel *or* a text rule, but not both.
+
+    .. note::
+        If a PyDMLabel is configured to use a Channel, and also with a rule which changes the 'Text' property,
+        the behavior is undefined.  Use either
+        the Channel *or* a text rule, but not both.
 
     Parameters
     ----------
@@ -26,6 +26,9 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
+    Q_ENUMS(DisplayFormat)
+    DisplayFormat = DisplayFormat
 
     def __init__(self, parent=None, init_channel=None):
         QLabel.__init__(self, parent)
@@ -36,11 +39,34 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
         self.setText("######")
         self._display_format_type = self.DisplayFormat.Default
         self._string_encoding = "utf_8"
+        self._enable_rich_text = False
         if is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
 
+    @Property(bool)
+    def enableRichText(self):
+        return self._enable_rich_text
+
+    @enableRichText.setter
+    def enableRichText(self, new_value):
+        if self._enable_rich_text == new_value:
+            return
+        self._enable_rich_text = new_value
+
+        if self._enable_rich_text:
+            self.setTextFormat(Qt.RichText)
+        else:
+            self.setTextFormat(Qt.PlainText)
+
     @Property(DisplayFormat)
     def displayFormat(self):
+        """
+        displayFormat property.
+
+        :getter: Returns the displayFormat
+        :setter: Sets the displayFormat
+        :type: int
+        """
         return self._display_format_type
 
     @displayFormat.setter
@@ -63,10 +89,13 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
             The new value from the channel. The type depends on the channel.
         """
         super(PyDMLabel, self).value_changed(new_value)
-        new_value = parse_value_for_display(value=new_value, precision=self.precision,
-                                            display_format_type=self._display_format_type,
-                                            string_encoding=self._string_encoding,
-                                            widget=self)
+        new_value = parse_value_for_display(
+            value=new_value,
+            precision=self.precision,
+            display_format_type=self._display_format_type,
+            string_encoding=self._string_encoding,
+            widget=self,
+        )
         # If the value is a string, just display it as-is, no formatting
         # needed.
         if isinstance(new_value, str_types):
@@ -93,7 +122,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
 
     @only_if_channel_set
     def check_enable_state(self):
-        """ If the channel this label is connected to becomes disconnected, display only the name of the channel. """
+        """If the channel this label is connected to becomes disconnected, display only the name of the channel."""
         if not self._connected:
             self.setText(self.channel)
         super().check_enable_state()

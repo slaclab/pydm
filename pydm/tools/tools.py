@@ -1,6 +1,4 @@
-
-
-class ExternalTool():
+class ExternalTool:
     """
     PyDM base class for External Tools hook-up.
     This class offers a boilerplate for tools to be added to PyDM.
@@ -28,8 +26,8 @@ class ExternalTool():
         Whether or not this action should be rendered at locations other than a
         widget Custom Context Menu.
     """
-    def __init__(self, icon, name, group, author="", use_with_widgets=True,
-                 use_without_widget=True):
+
+    def __init__(self, icon, name, group, author="", use_with_widgets=True, use_without_widget=True):
         self.icon = icon
         self.name = name
         self.group = group
@@ -84,12 +82,7 @@ class ExternalTool():
             `name` of the External Tool.
         """
 
-        return {
-            'author': self.author,
-            'file': "",
-            'group': self.group,
-            'name': self.name
-            }
+        return {"author": self.author, "file": "", "group": self.group, "name": self.name}
 
     def is_compatible_with(self, widget):
         """

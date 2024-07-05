@@ -6,7 +6,6 @@ from qtpy.QtGui import QColor
 from qtpy.QtCore import Slot, Property, Qt
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
-from ..utilities import remove_protocol
 
 
 DEFAULT_BUFFER_SIZE = 1200
@@ -14,7 +13,7 @@ MINIMUM_BUFFER_SIZE = 2
 
 
 class EventPlotCurveItem(BasePlotCurveItem):
-    _channels = ('channel')
+    _channels = "channel"
 
     def __init__(self, addr, y_idx, x_idx, bufferSizeChannelAddress=None, **kws):
         self.channel = None
@@ -22,18 +21,17 @@ class EventPlotCurveItem(BasePlotCurveItem):
         self.x_idx = x_idx
         self.y_idx = y_idx
         self.connected = False
-        if kws.get('name') is None:
-            kws['name'] = ""
+        if kws.get("name") is None:
+            kws["name"] = ""
         self.bufferSizeChannel = None
         self.bufferSizeChannel_connected = False
         self._bufferSize = DEFAULT_BUFFER_SIZE
-        self.data_buffer = np.zeros((2, self._bufferSize),
-                                    order='f', dtype=float)
+        self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
         self.points_accumulated = 0
-        if 'symbol' not in kws.keys():
-            kws['symbol'] = 'o'
-        if 'lineStyle' not in kws.keys():
-            kws['lineStyle'] = Qt.NoPen
+        if "symbol" not in kws.keys():
+            kws["symbol"] = "o"
+        if "lineStyle" not in kws.keys():
+            kws["lineStyle"] = Qt.NoPen
         super(EventPlotCurveItem, self).__init__(**kws)
         self.bufferSizeChannelAddress = bufferSizeChannelAddress
 
@@ -47,11 +45,9 @@ class EventPlotCurveItem(BasePlotCurveItem):
             Representation with values for all properties
             needed to recreate this curve.
         """
-        dic_ = OrderedDict([("channel", self.address),
-                            ("y_idx", self.y_idx),
-                            ("x_idx", self.x_idx)])
+        dic_ = OrderedDict([("channel", self.address), ("y_idx", self.y_idx), ("x_idx", self.x_idx)])
         dic_.update(super(EventPlotCurveItem, self).to_dict())
-        dic_['buffer_size'] = self.getBufferSize()
+        dic_["buffer_size"] = self.getBufferSize()
         dic_["bufferSizeChannelAddress"] = self.bufferSizeChannelAddress
         return dic_
 
@@ -82,9 +78,8 @@ class EventPlotCurveItem(BasePlotCurveItem):
             self.channel = None
             return
         self.channel = PyDMChannel(
-            address=new_address,
-            connection_slot=self.connectionStateChanged,
-            value_slot=self.receiveValue)
+            address=new_address, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue
+        )
 
     @Slot(bool)
     def connectionStateChanged(self, connected):
@@ -106,8 +101,8 @@ class EventPlotCurveItem(BasePlotCurveItem):
         if self.x_idx is None or self.y_idx is None:
             return
         if not isinstance(self.x_idx, int) or not isinstance(self.y_idx, int):
-            """ The x_idx and y_idx typing is made this late so that macros can
-            can be used alongside regular indexing. """
+            """The x_idx and y_idx typing is made this late so that macros can
+            can be used alongside regular indexing."""
             self.x_idx = int(self.x_idx)
             self.y_idx = int(self.y_idx)
         if len(new_data) <= self.x_idx or len(new_data) <= self.y_idx:
@@ -121,8 +116,7 @@ class EventPlotCurveItem(BasePlotCurveItem):
 
     def initialize_buffer(self):
         self.points_accumulated = 0
-        self.data_buffer = np.zeros((2, self._bufferSize),
-                                    order='f', dtype=float)
+        self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
 
     def getBufferSize(self):
         return int(self._bufferSize)
@@ -168,7 +162,8 @@ class EventPlotCurveItem(BasePlotCurveItem):
         self.bufferSizeChannel = PyDMChannel(
             address=new_address,
             connection_slot=self.bufferSizeConnectionStateChanged,
-            value_slot=self.bufferSizeChannelValueReceiver)
+            value_slot=self.bufferSizeChannelValueReceiver,
+        )
         self.bufferSizeChannel.connect()
 
     @Slot(bool)
@@ -196,8 +191,10 @@ class EventPlotCurveItem(BasePlotCurveItem):
         Called by the curve's parent plot whenever the curve needs to be
         re-drawn with new data.
         """
-        self.setData(x=self.data_buffer[0, -self.points_accumulated:].astype(float),
-                     y=self.data_buffer[1, -self.points_accumulated:].astype(float))
+        self.setData(
+            x=self.data_buffer[0, -self.points_accumulated :].astype(float),
+            y=self.data_buffer[1, -self.points_accumulated :].astype(float),
+        )
 
     def limits(self):
         """
@@ -210,10 +207,9 @@ class EventPlotCurveItem(BasePlotCurveItem):
         """
         if self.points_accumulated == 0:
             raise NoDataError("Curve has no data, cannot determine limits.")
-        x_data = self.data_buffer[0, -self.points_accumulated:]
-        y_data = self.data_buffer[1, -self.points_accumulated:]
-        return ((float(np.amin(x_data)), float(np.amax(x_data))),
-                (float(np.amin(y_data)), float(np.amax(y_data))))
+        x_data = self.data_buffer[0, -self.points_accumulated :]
+        y_data = self.data_buffer[1, -self.points_accumulated :]
+        return ((float(np.amin(x_data)), float(np.amax(x_data))), (float(np.amin(y_data)), float(np.amax(y_data))))
 
     def channels(self):
         return [self.channel]
@@ -223,7 +219,7 @@ class PyDMEventPlot(BasePlot):
     """
     PyDMEventPlot is a widget to plot one scalar value against another.
     All of the values arrive in a single event-built array, and indices are
-    used to identify which values to plot.  Multiple scalar pairs can be 
+    used to identify which values to plot.  Multiple scalar pairs can be
     plotted on the same plot.  Each pair has a buffer which stores previous
     values.  All values in the buffer are drawn.  The buffer size for each
     pair is user configurable.
@@ -258,8 +254,8 @@ class PyDMEventPlot(BasePlot):
         The background color for the plot. Accepts any arguments that
         pyqtgraph.mkColor will accept.
     """
-    def __init__(self, parent=None, channel=None, init_x_indices=[], init_y_indices=[],
-                 background='default'):
+
+    def __init__(self, parent=None, channel=None, init_x_indices=[], init_y_indices=[], background="default"):
         super(PyDMEventPlot, self).__init__(parent, background)
         # If the user supplies a single integer instead of a list,
         # wrap it in a list.
@@ -270,19 +266,17 @@ class PyDMEventPlot(BasePlot):
         if init_y_indices is None:
             init_y_indices = []
         if init_x_indices is None or len(init_x_indices) == 0:
-            init_x_indices = list(itertools.repeat(None,
-                                                   len(init_y_indices)))
+            init_x_indices = list(itertools.repeat(None, len(init_y_indices)))
         if len(init_x_indices) == 1:
-            init_x_indices = init_x_indices*len(init_y_indices)
+            init_x_indices = init_x_indices * len(init_y_indices)
         if len(init_x_indices) != len(init_y_indices):
-            raise ValueError("If lists are provided for both X and Y " +
-                             "indices, they must be the same length.")
+            raise ValueError("If lists are provided for both X and Y " + "indices, they must be the same length.")
         # self.index_pairs is an ordered dictionary that is keyed on a
         # (x_idx, y_idx) tuple, with EventPlotCurveItem values.
         # It gets populated in self.addChannel().
         self.index_pairs = OrderedDict()
         init_index_pairs = zip(init_x_indices, init_y_indices)
-        for (x_idx, y_idx) in init_index_pairs:
+        for x_idx, y_idx in init_index_pairs:
             self.addChannel(channel=channel, y_idx=y_idx, x_idx=x_idx)
         self._needs_redraw = True
 
@@ -291,10 +285,21 @@ class PyDMEventPlot(BasePlot):
         # This function gets called by PyDMTimePlot's designer plugin.
         pass
 
-    def addChannel(self, channel=None, y_idx=None, x_idx=None, name=None,
-                   color=None, lineStyle=None, lineWidth=None,
-                   symbol='o', symbolSize=5, buffer_size=None,
-                   yAxisName=None, bufferSizeChannelAddress=None):
+    def addChannel(
+        self,
+        channel=None,
+        y_idx=None,
+        x_idx=None,
+        name=None,
+        color=None,
+        lineStyle=None,
+        lineWidth=None,
+        symbol="o",
+        symbolSize=5,
+        buffer_size=None,
+        yAxisName=None,
+        bufferSizeChannelAddress=None,
+    ):
         """
         Add a new curve to the plot.  In addition to the arguments below,
         all other keyword arguments are passed to the underlying
@@ -331,26 +336,31 @@ class PyDMEventPlot(BasePlot):
             doesn't yet exist
         """
         plot_opts = {}
-        plot_opts['symbol'] = symbol
+        plot_opts["symbol"] = symbol
         if symbolSize is not None:
-            plot_opts['symbolSize'] = symbolSize
+            plot_opts["symbolSize"] = symbolSize
         if lineStyle is not None:
-            plot_opts['lineStyle'] = lineStyle
+            plot_opts["lineStyle"] = lineStyle
         if lineWidth is not None:
-            plot_opts['lineWidth'] = lineWidth
-        curve = EventPlotCurveItem(addr=channel,
-                                   y_idx=y_idx,
-                                   x_idx=x_idx,
-                                   name=name,
-                                   color=color,
-                                   yAxisName=yAxisName,
-                                   bufferSizeChannelAddress=bufferSizeChannelAddress,
-                                   **plot_opts)
+            plot_opts["lineWidth"] = lineWidth
+        curve = self.createCurveItem(
+            addr=channel,
+            y_idx=y_idx,
+            x_idx=x_idx,
+            name=name,
+            color=color,
+            yAxisName=yAxisName,
+            bufferSizeChannelAddress=bufferSizeChannelAddress,
+            **plot_opts
+        )
         if buffer_size is not None:
             curve.setBufferSize(buffer_size)
         self.index_pairs[(x_idx, y_idx)] = curve
         self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         curve.data_changed.connect(self.set_needs_redraw)
+
+    def createCurveItem(self, *args, **kwargs):
+        return EventPlotCurveItem(*args, **kwargs)
 
     def removeChannel(self, curve):
         """
@@ -423,19 +433,23 @@ class PyDMEventPlot(BasePlot):
             return
         self.clearCurves()
         for d in new_list:
-            color = d.get('color')
+            color = d.get("color")
             if color:
                 color = QColor(color)
-            self.addChannel(channel=d['channel'],
-                            y_idx=d['y_idx'], x_idx=d['x_idx'],
-                            name=d.get('name'), color=color,
-                            lineStyle=d.get('lineStyle'),
-                            lineWidth=d.get('lineWidth'),
-                            symbol=d.get('symbol'),
-                            symbolSize=d.get('symbolSize'),
-                            buffer_size=d.get('buffer_size'),
-                            bufferSizeChannelAddress=d.get('bufferSizeChannelAddress'),
-                            yAxisName=d.get('yAxisName'))
+            self.addChannel(
+                channel=d["channel"],
+                y_idx=d["y_idx"],
+                x_idx=d["x_idx"],
+                name=d.get("name"),
+                color=color,
+                lineStyle=d.get("lineStyle"),
+                lineWidth=d.get("lineWidth"),
+                symbol=d.get("symbol"),
+                symbolSize=d.get("symbolSize"),
+                buffer_size=d.get("buffer_size"),
+                bufferSizeChannelAddress=d.get("bufferSizeChannelAddress"),
+                yAxisName=d.get("yAxisName"),
+            )
 
     curves = Property("QStringList", getCurves, setCurves, designable=False)
 
@@ -449,39 +463,61 @@ class PyDMEventPlot(BasePlot):
         """
         chans = []
         chans.extend([curve.channel for curve in self._curves])
-        chans.extend([curve.bufferSizeChannel
-                      for curve in self._curves
-                      if curve.bufferSizeChannel is not None])
+        chans.extend([curve.bufferSizeChannel for curve in self._curves if curve.bufferSizeChannel is not None])
         return chans
 
     # The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange,
     # and maxYRange are all defined in BasePlot, but we don't expose them as
     # properties there, because not all plot subclasses necessarily want
     # them to be user-configurable in Designer.
-    autoRangeX = Property(bool, BasePlot.getAutoRangeX,
-                          BasePlot.setAutoRangeX, BasePlot.resetAutoRangeX,
-                          doc="""
+    autoRangeX = Property(
+        bool,
+        BasePlot.getAutoRangeX,
+        BasePlot.setAutoRangeX,
+        BasePlot.resetAutoRangeX,
+        doc="""
 Whether or not the X-axis automatically rescales to fit the data.
-If true, the values in minXRange and maxXRange are ignored.""")
+If true, the values in minXRange and maxXRange are ignored.""",
+    )
 
-    minXRange = Property(float, BasePlot.getMinXRange,
-                         BasePlot.setMinXRange, doc="""
-Minimum X-axis value visible on the plot.""")
+    minXRange = Property(
+        float,
+        BasePlot.getMinXRange,
+        BasePlot.setMinXRange,
+        doc="""
+Minimum X-axis value visible on the plot.""",
+    )
 
-    maxXRange = Property(float, BasePlot.getMaxXRange,
-                         BasePlot.setMaxXRange, doc="""
-Maximum X-axis value visible on the plot.""")
+    maxXRange = Property(
+        float,
+        BasePlot.getMaxXRange,
+        BasePlot.setMaxXRange,
+        doc="""
+Maximum X-axis value visible on the plot.""",
+    )
 
-    autoRangeY = Property(bool, BasePlot.getAutoRangeY,
-                          BasePlot.setAutoRangeY, BasePlot.resetAutoRangeY,
-                          doc="""
+    autoRangeY = Property(
+        bool,
+        BasePlot.getAutoRangeY,
+        BasePlot.setAutoRangeY,
+        BasePlot.resetAutoRangeY,
+        doc="""
 Whether or not the Y-axis automatically rescales to fit the data.
-If true, the values in minYRange and maxYRange are ignored.""")
+If true, the values in minYRange and maxYRange are ignored.""",
+    )
 
-    minYRange = Property(float, BasePlot.getMinYRange,
-                         BasePlot.setMinYRange, doc="""
-Minimum Y-axis value visible on the plot.""")
+    minYRange = Property(
+        float,
+        BasePlot.getMinYRange,
+        BasePlot.setMinYRange,
+        doc="""
+Minimum Y-axis value visible on the plot.""",
+    )
 
-    maxYRange = Property(float, BasePlot.getMaxYRange,
-                         BasePlot.setMaxYRange, doc="""
-Maximum Y-axis value visible on the plot.""")
+    maxYRange = Property(
+        float,
+        BasePlot.getMaxYRange,
+        BasePlot.setMaxYRange,
+        doc="""
+Maximum Y-axis value visible on the plot.""",
+    )

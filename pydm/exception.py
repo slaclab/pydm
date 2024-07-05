@@ -9,7 +9,7 @@ from qtpy import QtWidgets, QtCore
 from .utilities import only_main_thread
 
 """
-Utility functions which installs an exception hook and displays any global 
+Utility functions which installs an exception hook and displays any global
 uncaught exception to operators.
 
 excepthook is based on https://fman.io/blog/pyqt-excepthook/
@@ -22,14 +22,14 @@ class ExceptionDispatcher(QtCore.QThread):
     Singleton QTread class that receives and dispatch uncaught exceptions via
     the `newException` signal.
     """
+
     newException = QtCore.Signal(object)
 
     __instance = None
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
-            cls.__instance = QtCore.QThread.__new__(ExceptionDispatcher,
-                                                    *args, **kwargs)
+            cls.__instance = QtCore.QThread.__new__(ExceptionDispatcher, *args, **kwargs)
             cls.__instance.__initialized = False
         return cls.__instance
 
@@ -88,12 +88,12 @@ class DefaultExceptionNotifier(QtCore.QObject):
     and also calls `raise_to_operator` to display a dialog with the exception
     information.
     """
+
     __instance = None
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
-            cls.__instance = QtCore.QObject.__new__(DefaultExceptionNotifier,
-                                                    *args, **kwargs)
+            cls.__instance = QtCore.QObject.__new__(DefaultExceptionNotifier, *args, **kwargs)
             cls.__instance.__initialized = False
         return cls.__instance
 
@@ -113,9 +113,7 @@ class DefaultExceptionNotifier(QtCore.QObject):
 
 _old_excepthook = None
 
-fake_tb = namedtuple(
-    'fake_tb', ('tb_frame', 'tb_lasti', 'tb_lineno', 'tb_next')
-)
+fake_tb = namedtuple("fake_tb", ("tb_frame", "tb_lasti", "tb_lineno", "tb_next"))
 
 
 def excepthook(exc_type, exc_value, exc_tb):
@@ -139,12 +137,10 @@ def _add_missing_frames(tb):
     traceback. Finally, the default sys.__excepthook__(...) does not work with
     fake data, so we need to call traceback.print_exception(...) instead.
     """
-    result = fake_tb(tb.tb_frame, tb.tb_lasti,
-                     tb.tb_lineno, tb.tb_next)
+    result = fake_tb(tb.tb_frame, tb.tb_lasti, tb.tb_lineno, tb.tb_next)
     frame = tb.tb_frame.f_back
     while frame:
-        result = fake_tb(frame, frame.f_lasti,
-                         frame.f_lineno, result)
+        result = fake_tb(frame, frame.f_lasti, frame.f_lineno, result)
         frame = frame.f_back
     return result
 
@@ -169,7 +165,7 @@ def install(use_default_handler=True):
     if dispatcher.isRunning():
         return
     if use_default_handler:
-        handler = DefaultExceptionNotifier()
+        DefaultExceptionNotifier()
     dispatcher.start()
     sys.excepthook = excepthook
 
@@ -191,7 +187,7 @@ def uninstall():
 def raise_to_operator(exc):
     """Utility function to show an Exception to the operator"""
     err_msg = QtWidgets.QMessageBox()
-    err_msg.setText('{}: {}'.format(exc.__class__.__name__, exc))
+    err_msg.setText("{}: {}".format(exc.__class__.__name__, exc))
     err_msg.setWindowTitle(type(exc).__name__)
     err_msg.setIcon(QtWidgets.QMessageBox.Critical)
     handle = io.StringIO()

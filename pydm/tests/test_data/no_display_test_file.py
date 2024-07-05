@@ -3,6 +3,7 @@ from qtpy.QtCore import QObject
 
 
 class InvalidDisplayExample(QObject):
-    """ A simple class that inherits from QObject only """
+    """A simple class that inherits from QObject only"""
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)

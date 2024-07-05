@@ -1,5 +1,5 @@
 from pyqtgraph import GraphicsWidget, ViewBox
-from qtpy.QtCore import Qt, Signal
+from qtpy.QtCore import Qt, QRectF, Signal
 
 
 class MultiAxisViewBox(ViewBox):
@@ -16,6 +16,14 @@ class MultiAxisViewBox(ViewBox):
     sigMouseDraggedDone = Signal()
     sigMouseWheelZoomed = Signal(object, object, object)
     sigHistoryChanged = Signal(object)
+
+    def boundingRect(self) -> QRectF:
+        """Bypass the ViewBox implementation of boundingRect which gives us extra padding we don't want in pydm"""
+        return GraphicsWidget.boundingRect(self)
+
+    def sceneBoundingRect(self) -> QRectF:
+        """Bypass the ViewBox implementation of sceneBoundingRect which gives us extra padding we don't want in pydm"""
+        return GraphicsWidget.sceneBoundingRect(self)
 
     def wheelEvent(self, ev, axis=None, fromSignal=False):
         """
@@ -53,7 +61,7 @@ class MultiAxisViewBox(ViewBox):
         if axis != ViewBox.YAxis and not fromSignal:
             # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
             self.sigMouseDragged.emit(self, ev, axis)
-            if ev.isFinish() and self.state['mouseMode'] == ViewBox.RectMode and axis is None:
+            if ev.isFinish() and self.state["mouseMode"] == ViewBox.RectMode and axis is None:
                 self.sigMouseDraggedDone.emit()  # Indicates the end of a mouse drag event
         super(MultiAxisViewBox, self).mouseDragEvent(ev, axis)
 
@@ -72,9 +80,9 @@ class MultiAxisViewBox(ViewBox):
         """
 
         ev.accept()
-        if ev.text() == '-':
+        if ev.text() == "-":
             self.scaleHistory(-1)
-        elif ev.text() in ['+', '=']:
+        elif ev.text() in ["+", "="]:
             self.scaleHistory(1)
         elif ev.key() == Qt.Key.Key_Backspace:
             self.scaleHistory(0)

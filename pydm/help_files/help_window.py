@@ -13,17 +13,18 @@ class HelpWindow(QWidget):
     help_file_path : str
         The path to the help file to be displayed
     """
+
     def __init__(self, help_file_path: str, parent: Optional[QWidget] = None):
         super().__init__(parent, Qt.Window)
         self.resize(500, 400)
 
         path = Path(help_file_path)
-        self.setWindowTitle(f'Help for {path.stem}')
+        self.setWindowTitle(f"Help for {path.stem}")
 
         self.display_content = QTextBrowser()
 
         with open(help_file_path) as file:
-            if path.suffix == '.txt':
+            if path.suffix == ".txt":
                 self.display_content.setText(file.read())
             else:
                 self.display_content.setHtml(file.read())

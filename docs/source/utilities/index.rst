@@ -10,9 +10,6 @@ General
 .. automodule:: pydm.utilities
    :members:
 
-.. automodule:: pydm.utilities.remove_protocol
-   :members:
-
 --------
 Icons
 --------

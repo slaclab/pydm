@@ -6,10 +6,10 @@ class ImageMarker(ROI):
     """A crosshair ROI.  Returns the full image line-out for X and Y at the position of the crosshair."""
 
     def __init__(self, pos=None, size=None, **kargs):
-        if size == None:
+        if size is None:
             # size = [100e-6,100e-6]
             size = [20, 20]
-        if pos == None:
+        if pos is None:
             pos = [0, 0]
         self._shape = None
         ROI.__init__(self, pos, size, **kargs)
@@ -37,7 +37,7 @@ class ImageMarker(ROI):
 
     def shape(self):
         if self._shape is None:
-            radius = self.getState()['size'][1]
+            radius = self.getState()["size"][1]
             p = QtGui.QPainterPath()
             p.moveTo(Point(0, -radius))
             p.lineTo(Point(0, radius))
@@ -51,7 +51,7 @@ class ImageMarker(ROI):
         return self._shape
 
     def paint(self, p, *args):
-        radius = self.getState()['size'][1]
+        radius = self.getState()["size"][1]
         p.setRenderHint(QtGui.QPainter.Antialiasing)
         p.setPen(self.currentPen)
         p.drawLine(Point(0, -radius), Point(0, radius))

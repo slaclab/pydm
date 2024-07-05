@@ -1,11 +1,13 @@
-import os
 import hashlib
 
-from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit, QDialogButtonBox
+from qtpy.QtGui import QColor
+from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit, QStyle
 from qtpy.QtCore import Slot, Property
+from qtpy import QtDesigner
 from .base import PyDMWritableWidget
-
+from ..utilities import IconFont
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -49,9 +51,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
-    def __init__(self, parent=None, label=None, icon=None,
-                 pressValue=None, releaseValue=None, relative=False,
-                 init_channel=None):
+    def __init__(
+        self, parent=None, label=None, icon=None, pressValue=None, releaseValue=None, relative=False, init_channel=None
+    ):
         if icon:
             QPushButton.__init__(self, icon, label, parent)
         elif label:
@@ -72,6 +74,82 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         self._released = False
         self.clicked.connect(self.sendValue)
 
+        # Standard icons (which come with the qt install, and work cross-platform),
+        # and icons from the "Font Awesome" icon set (https://fontawesome.com/)
+        # can not be set with a widget's "icon" property in designer, only in python.
+        # so we provide our own property to specify standard icons and set them with python in the prop's setter.
+        self._pydm_icon_name = ""
+        # The color of "Font Awesome" icons can be set,
+        # but standard icons are already colored and can not be set.
+        self._pydm_icon_color = QColor(90, 90, 90)
+
+    @Property(str)
+    def PyDMIcon(self) -> str:
+        """
+        Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
+        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
+        See https://fontawesome.com/icons?d=gallery for list of usable fontawesome icons.
+
+        Returns
+        -------
+        str
+        """
+        return self._pydm_icon_name
+
+    @PyDMIcon.setter
+    def PyDMIcon(self, value: str) -> None:
+        """
+        Name of icon to be set from Qt provided standard icons or from the "Font Awesome" icon-set.
+        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
+        See https://fontawesome.com/icons?d=gallery for list of usable "Font Awesome" icons.
+
+        Parameters
+        ----------
+        value : str
+        """
+        if self._pydm_icon_name == value:
+            return
+
+        # We don't know if user is trying to use a standard icon or an icon from "Font Awesome",
+        # so 1st try to create a Font Awesome one, which hits exception if icon name is not valid.
+        try:
+            icon_f = IconFont()
+            i = icon_f.icon(value, color=self._pydm_icon_color)
+            self.setIcon(i)
+        except Exception:
+            icon = getattr(QStyle, value, None)
+            if icon:
+                self.setIcon(self.style().standardIcon(icon))
+
+        self._pydm_icon_name = value
+
+    @Property(QColor)
+    def PyDMIconColor(self) -> QColor:
+        """
+        The color of the icon (color is only applied if using icon from the "Font Awesome" set)
+        Returns
+        -------
+        QColor
+        """
+        return self._pydm_icon_color
+
+    @PyDMIconColor.setter
+    def PyDMIconColor(self, state_color: QColor) -> None:
+        """
+        The color of the icon (color is only applied if using icon from the "Font Awesome" set)
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if state_color != self._pydm_icon_color:
+            self._pydm_icon_color = state_color
+            # apply the new color
+            try:
+                icon_f = IconFont()
+                i = icon_f.icon(self._pydm_icon_name, color=self._pydm_icon_color)
+                self.setIcon(i)
+            except Exception:
+                return
 
     @Property(bool)
     def passwordProtected(self):
@@ -128,6 +206,11 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             # new one, and only updates if the new password is different
             self.protectedPassword = sha.hexdigest()
 
+            # Make sure designer knows it should save the protectedPassword field
+            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self)
+            if formWindow:
+                formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
+
     @Property(str)
     def protectedPassword(self):
         """
@@ -147,7 +230,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @Property(bool)
     def showConfirmDialog(self):
         """
-        Wether or not to display a confirmation dialog.
+        Whether or not to display a confirmation dialog.
 
         Returns
         -------
@@ -158,7 +241,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @showConfirmDialog.setter
     def showConfirmDialog(self, value):
         """
-        Wether or not to display a confirmation dialog.
+        Whether or not to display a confirmation dialog.
 
         Parameters
         ----------
@@ -221,7 +304,6 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if str(value) != self._pressValue:
             self._pressValue = str(value)
 
-
     @Property(str)
     def releaseValue(self):
         """
@@ -252,7 +334,6 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         if str(value) != self._releaseValue:
             self._releaseValue = str(value)
-
 
     @Property(bool)
     def relativeChange(self):
@@ -313,17 +394,13 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Question)
 
-            relative = "Yes" if self._relative else "No"
-            val = self._pressValue
-            op = "Press"
             if is_release:
-                val = self._releaseValue
-                op = "Release"
+                pass
 
             msg.setText(self._confirm_message)
 
             # Force "Yes" button to be on the right (as on macOS) to follow common design practice
-            msg.setStyleSheet("button-layout: 1")    # MacLayout
+            msg.setStyleSheet("button-layout: 1")  # MacLayout
 
             msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             msg.setDefaultButton(QMessageBox.No)
@@ -346,8 +423,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if not self._password_protected:
             return True
 
-        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:",
-                                         QLineEdit.Password, "")
+        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:", QLineEdit.Password, "")
         pwd = str(pwd)
         if not ok or pwd == "":
             return False
@@ -396,8 +472,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
         return val
 
-    def __execute_send(self, new_value, skip_confirm=False, skip_password=False,
-                       is_release=False):
+    def __execute_send(self, new_value, skip_confirm=False, skip_password=False, is_release=False):
         """
         Execute the send operation for push and release.
 
@@ -433,14 +508,11 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
         if not self._relative or self.channeltype == str:
             send_value = new_value
-            self.send_value_signal[self.channeltype].emit(
-                self.channeltype(send_value)
-            )
+            self.send_value_signal[self.channeltype].emit(self.channeltype(send_value))
         else:
             send_value = self.value + self.channeltype(new_value)
             self.send_value_signal[self.channeltype].emit(send_value)
         return send_value
-
 
     @Slot()
     def sendReleaseValue(self):
@@ -488,13 +560,13 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         try:
             self.pressValue = self.channeltype(value)
-        except(ValueError, TypeError):
+        except (ValueError, TypeError):
             logger.error("'{0}' is not a valid pressValue for '{1}'.".format(value, self.channel))
 
     @Property(bool)
     def writeWhenRelease(self):
         """
-        Wether or not to write releaseValue on release
+        Whether or not to write releaseValue on release
 
         Returns
         -------
@@ -505,7 +577,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     @writeWhenRelease.setter
     def writeWhenRelease(self, value):
         """
-        Wether or not to write releaseValue on release
+        Whether or not to write releaseValue on release
 
         Parameters
         ----------
@@ -519,7 +591,6 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             self.clicked.disconnect()
             self.pressed.connect(self.sendValue)
             self.released.connect(self.sendReleaseValue)
-
 
     @Slot(int)
     @Slot(float)
@@ -539,5 +610,5 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         try:
             self.releaseValue = self.channeltype(value)
-        except(ValueError, TypeError):
+        except (ValueError, TypeError):
             logger.error("'{0}' is not a valid releaseValue for '{1}'.".format(value, self.channel))

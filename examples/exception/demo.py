@@ -1,6 +1,6 @@
 import sys
 import functools
-from qtpy import QtCore, QtGui, QtWidgets
+from qtpy import QtWidgets
 from pydm import exception
 
 
@@ -36,11 +36,13 @@ class Screen(QtWidgets.QFrame):
     def raise_exception(self):
         raise Exception("This is an exception being raised...")
 
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
     screen = Screen()
     screen.show()
     sys.exit(app.exec_())
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

@@ -1,9 +1,8 @@
 import logging
 
-from qtpy.QtCore import (Qt, QSize, Property, Slot, Q_ENUMS, QMargins)
+from qtpy.QtCore import Qt, QSize, Property, Slot, Q_ENUMS, QMargins
 from qtpy.QtGui import QPainter
-from qtpy.QtWidgets import (QWidget, QButtonGroup, QGridLayout, QPushButton,
-                            QRadioButton, QStyleOption, QStyle)
+from qtpy.QtWidgets import QWidget, QButtonGroup, QGridLayout, QPushButton, QRadioButton, QStyleOption, QStyle
 
 from .base import PyDMWritableWidget
 from .. import data_plugins
@@ -17,6 +16,7 @@ class WidgetType(object):
 class_for_type = [QPushButton, QRadioButton]
 
 logger = logging.getLogger(__name__)
+
 
 class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     """
@@ -37,6 +37,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     send_value_signal : int, float, str, bool or np.ndarray
         Emitted when the user changes the value.
     """
+
     Q_ENUMS(WidgetType)
     WidgetType = WidgetType
 
@@ -139,9 +140,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
     def customOrder(self, value):
         if value != self._custom_order:
             try:
-                v = [int(v) for v in value]
+                [int(v) for v in value]
             except ValueError:
-                logger.error('customOrder values can only be integers.')
+                logger.error("customOrder values can only be integers.")
                 return
             self._custom_order = value
             if self.useCustomOrder and self._has_enums:
@@ -435,8 +436,11 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
             except IndexError:
                 if self._has_enums:
                     logger.error(
-                        'Invalid index for PyDMEnumButton %s. Index: %s, Range: 0 to %s',
-                        self.objectName(), idx, len(self._widgets) - 1)
+                        "Invalid index for PyDMEnumButton %s. Index: %s, Range: 0 to %s",
+                        self.objectName(),
+                        idx,
+                        len(self._widgets) - 1,
+                    )
                 continue
             if self.orientation == Qt.Vertical:
                 self.layout().addWidget(widget, i, 0)
@@ -491,8 +495,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         new_enum_strings : tuple
             The new list of values
         """
-        if new_enum_strings is not None \
-                and new_enum_strings != self.enum_strings:
+        if new_enum_strings is not None and new_enum_strings != self.enum_strings:
             super(PyDMEnumButton, self).enum_strings_changed(new_enum_strings)
             self._has_enums = True
             self.check_enable_state()

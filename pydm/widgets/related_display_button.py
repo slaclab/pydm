@@ -4,22 +4,20 @@ import logging
 import warnings
 from functools import partial
 import hashlib
-from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit, QWidget
-from qtpy.QtGui import QCursor, QIcon, QMouseEvent
+from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
+from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
+from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
 from ..utilities.stylesheet import merge_widget_stylesheet
-from ..display import (load_file, ScreenTarget)
+from ..display import load_file, ScreenTarget
 from typing import Optional, List
 
 logger = logging.getLogger(__name__)
 
-_relatedDisplayRuleProperties = {
-    'Text': ['setText', str],
-    'Filenames': ['filenames', list]
-    }
+_relatedDisplayRuleProperties = {"Text": ["setText", str], "Filenames": ["filenames", list]}
 
 
 class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedDisplayRuleProperties):
@@ -36,11 +34,14 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     init_channel : str, optional
         The channel to be used by the widget
     """
+
     # Constants for determining where to open the display.
     EXISTING_WINDOW = 0
     NEW_WINDOW = 1
 
-    def __init__(self,parent: Optional[QWidget] = None, filename: str = None, init_channel: Optional[str] = None) -> None:
+    def __init__(
+        self, parent: Optional[QWidget] = None, filename: str = None, init_channel: Optional[str] = None
+    ) -> None:
         QPushButton.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
 
@@ -64,8 +65,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         self._macro_string = None
         self._open_in_new_window = False
         self.open_in_new_window_action = QAction("Open in New Window", self)
-        self.open_in_new_window_action.triggered.connect(
-            self.handle_open_new_window_action)
+        self.open_in_new_window_action.triggered.connect(self.handle_open_new_window_action)
         self._show_icon = True
         self._menu_needs_rebuild = True
 
@@ -74,6 +74,15 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         self._protected_password = ""
 
         self._follow_symlinks = False
+
+        # Standard icons (which come with the qt install, and work cross-platform),
+        # and icons from the "Font Awesome" icon set (https://fontawesome.com/)
+        # can not be set with a widget's "icon" property in designer, only in python.
+        # so we provide our own property to specify standard icons and set them with python in the prop's setter.
+        self._pydm_icon_name = ""
+        # The color of "Font Awesome" icons can be set,
+        # but standard icons are already colored and can not be set.
+        self._pydm_icon_color = QColor(90, 90, 90)
 
     @only_if_channel_set
     def check_enable_state(self) -> None:
@@ -84,29 +93,97 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         status = self._connected
         tooltip = self.restore_original_tooltip()
         if not status:
-            if tooltip != '':
-                tooltip += '\n'
+            if tooltip != "":
+                tooltip += "\n"
             tooltip += "Alarm PV is disconnected."
-            tooltip += '\n'
+            tooltip += "\n"
             tooltip += self.get_address()
 
         self.setToolTip(tooltip)
 
-    @Property('QStringList')
+    @Property(str)
+    def PyDMIcon(self) -> str:
+        """
+        Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
+        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
+        See https://fontawesome.com/icons?d=gallery for list of usable fontawesome icons.
+
+        Returns
+        -------
+        str
+        """
+        return self._pydm_icon_name
+
+    @PyDMIcon.setter
+    def PyDMIcon(self, value: str) -> None:
+        """
+        Name of icon to be set from Qt provided standard icons or from the "Font Awesome" icon-set.
+        See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
+        See https://fontawesome.com/icons?d=gallery for list of usable "Font Awesome" icons.
+
+        Parameters
+        ----------
+        value : str
+        """
+        if self._pydm_icon_name == value:
+            return
+
+        # We don't know if user is trying to use a standard icon or an icon from "Font Awesome",
+        # so 1st try to create a Font Awesome one, which hits exception if icon name is not valid.
+        try:
+            icon_f = IconFont()
+            i = icon_f.icon(value, color=self._pydm_icon_color)
+            self.setIcon(i)
+        except Exception:
+            icon = getattr(QStyle, value, None)
+            if icon:
+                self.setIcon(self.style().standardIcon(icon))
+
+        self._pydm_icon_name = value
+
+    @Property(QColor)
+    def PyDMIconColor(self) -> QColor:
+        """
+        The color of the icon (color is only applied if using icon from the "Font Awesome" set)
+        Returns
+        -------
+        QColor
+        """
+        return self._pydm_icon_color
+
+    @PyDMIconColor.setter
+    def PyDMIconColor(self, state_color: QColor) -> None:
+        """
+        The color of the icon (color is only applied if using icon from the "Font Awesome" set)
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if state_color != self._pydm_icon_color:
+            self._pydm_icon_color = state_color
+            # apply the new color
+            try:
+                icon_f = IconFont()
+                i = icon_f.icon(self._pydm_icon_name, color=self._pydm_icon_color)
+                self.setIcon(i)
+            except Exception:
+                return
+
+    @Property("QStringList")
     def filenames(self) -> List[str]:
         return self._filenames
-    
+
     @filenames.setter
-    def filenames(self, val : List[str]) -> None:
+    def filenames(self, val: List[str]) -> None:
         self._filenames = val
         self._menu_needs_rebuild = True
-        
-    @Property('QStringList')
+
+    @Property("QStringList")
     def titles(self) -> List[str]:
         return self._titles
-    
+
     @titles.setter
-    def titles(self, val : List[str]) -> None:
+    def titles(self, val: List[str]) -> None:
         self._titles = val
         self._menu_needs_rebuild = True
 
@@ -124,15 +201,15 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         for i, filename in enumerate(self.filenames):
             if not filename:
                 continue
-            item = {'filename': filename}
+            item = {"filename": filename}
             if i >= len(self.titles):
-                item['title'] = filename
+                item["title"] = filename
             else:
-                item['title'] = self.titles[i]
+                item["title"] = self.titles[i]
             if i < len(self.macros):
-                item['macros'] = self.macros[i]
+                item["macros"] = self.macros[i]
             else:
-                item['macros'] = ""
+                item["macros"] = ""
             yield item
 
     def _rebuild_menu(self) -> None:
@@ -207,16 +284,18 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         ----------
         value : str
         """
-        warnings.warn("'PyDMRelatedDisplayButton.displayFilename' is deprecated, "
-                      "use 'PyDMRelatedDisplayButton.filenames' instead.")
+        warnings.warn(
+            "'PyDMRelatedDisplayButton.displayFilename' is deprecated, "
+            "use 'PyDMRelatedDisplayButton.filenames' instead."
+        )
         if value:
             if value in self.filenames:
                 return
             file_list = [value]
             self.filenames = self.filenames + file_list
         self._display_filename = ""
-            
-    @Property('QStringList')
+
+    @Property("QStringList")
     def macros(self) -> List[str]:
         """
         The macro substitutions to use when launching the display, in JSON object format.
@@ -236,7 +315,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         ----------
         new_macros : list of str
         """
-        #Handle the deprecated form of macros where it was a single string.
+        # Handle the deprecated form of macros where it was a single string.
         if isinstance(new_macros, str):
             new_macros = [new_macros]
         self._macros = new_macros
@@ -267,6 +346,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def passwordProtected(self) -> bool:
         """
         Whether or not this button is password protected.
+
         Returns
         -------
         bool
@@ -278,6 +358,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def passwordProtected(self, value: bool) -> None:
         """
         Whether or not this button is password protected.
+
         Parameters
         ----------
         value : bool
@@ -291,8 +372,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         Password to be encrypted using SHA256.
 
         .. warning::
-        To avoid issues exposing the password this method
-        always returns an empty string.
+          To avoid issues exposing the password this method always returns an empty string.
 
         Returns
         -------
@@ -317,6 +397,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
             # new one, and only updates if the new password is different
             self.protectedPassword = sha.hexdigest()
 
+            # Make sure designer knows it should save the protectedPassword field
+            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self)
+            if formWindow:
+                formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
+
     @Property(str)
     def protectedPassword(self) -> str:
         """
@@ -336,8 +421,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @Property(bool)
     def followSymlinks(self) -> bool:
         """
-        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it
-        will always use the canonical path. If False (default), the file will be searched without canonicalizing the path beforehand.
+        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed,
+        so that it will always use the canonical path. If False (default), the file will be searched without
+        canonicalizing the path beforehand.
 
         Note that it will not work on Windows if you're using a Python version prior to 3.8.
 
@@ -350,8 +436,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     @followSymlinks.setter
     def followSymlinks(self, follow_symlinks: bool) -> None:
         """
-        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed, so that it
-        will always use the canonical path. If False (default), the file will be searched using the non-canonical path.
+        If True, any symlinks in the path to filename (including the base path of the parent display)
+        will be followed, so that it will always use the canonical path.
+        If False (default), the file will be searched using the non-canonical path.
 
         Note that it will not work on Windows if you're using a Python version prior to 3.8.
 
@@ -392,14 +479,12 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
             return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
         try:
             for item in self._get_items():
-                self.open_display(item['filename'], item['macros'],
-                                  target=None)
+                self.open_display(item["filename"], item["macros"], target=None)
                 break
         except Exception:
             logger.exception("Failed to open display.")
         finally:
-            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(
-                mouse_event)
+            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
 
     def validate_password(self) -> bool:
         """
@@ -415,8 +500,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         if not self._password_protected:
             return True
 
-        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:",
-                                         QLineEdit.Password, "")
+        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:", QLineEdit.Password, "")
         pwd = str(pwd)
         if not ok or pwd == "":
             return False
@@ -448,18 +532,15 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         """
         for item in self._get_items():
             try:
-                self.open_display(item['filename'], item['macros'],
-                                  target=self.NEW_WINDOW)
+                self.open_display(item["filename"], item["macros"], target=self.NEW_WINDOW)
             except Exception:
                 logger.exception("Failed to open display.")
 
     def _assemble_menu(self, menu, target=None):
         for item in self._get_items():
             try:
-                action = menu.addAction(item['title'])
-                action.triggered.connect(
-                    partial(self.open_display, item['filename'],
-                            item['macros'], target=target))
+                action = menu.addAction(item["title"])
+                action.triggered.connect(partial(self.open_display, item["filename"], item["macros"], target=target))
             except Exception:
                 logger.exception("Failed to open display.")
 
@@ -526,7 +607,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def context_menu(self):
         try:
             menu = super(PyDMRelatedDisplayButton, self).context_menu()
-        except:
+        except Exception:
             menu = QMenu(self)
         if len(menu.findChildren(QAction)) > 0:
             menu.addSeparator()
@@ -541,4 +622,3 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
     def show_context_menu(self, pos: QPoint) -> None:
         menu = self.context_menu()
         menu.exec_(self.mapToGlobal(pos))
-

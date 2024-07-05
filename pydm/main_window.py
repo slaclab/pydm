@@ -1,14 +1,12 @@
 import os
 from os import path
 
-from qtpy.QtWidgets import (QApplication, QMainWindow, QFileDialog,
-                            QAction, QMessageBox)
+from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QAction, QMessageBox
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
 from qtpy.QtGui import QKeySequence
-from .utilities import (IconFont, find_file, establish_widget_connections,
-                        close_widget_connections)
+from .utilities import IconFont, find_file, establish_widget_connections, close_widget_connections
 from .pydm_ui import Ui_MainWindow
-from .display import Display, ScreenTarget, load_file
+from .display import Display, ScreenTarget, load_file, clear_compiled_ui_file_cache
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
 from .show_macros import MacroWindow
@@ -20,15 +18,21 @@ import subprocess
 import platform
 import logging
 
-from .utilities.stylesheet import apply_stylesheet, _get_style_data
 
 logger = logging.getLogger(__name__)
 
 
 class PyDMMainWindow(QMainWindow):
-
-    def __init__(self, parent=None, hide_nav_bar=False, hide_menu_bar=False, hide_status_bar=False,
-                 home_file=None, macros=None, command_line_args=None):
+    def __init__(
+        self,
+        parent=None,
+        hide_nav_bar=False,
+        hide_menu_bar=False,
+        hide_status_bar=False,
+        home_file=None,
+        macros=None,
+        command_line_args=None,
+    ):
         super(PyDMMainWindow, self).__init__(parent)
         self.app = QApplication.instance()
         self.font_factor = 1
@@ -100,14 +104,17 @@ class PyDMMainWindow(QMainWindow):
         # Try to find the designer binary.
         self.ui.actionEdit_in_Designer.setEnabled(False)
 
-        possible_designer_bin_paths = (QLibraryInfo.location(QLibraryInfo.BinariesPath), QLibraryInfo.location(QLibraryInfo.LibraryExecutablesPath))
+        possible_designer_bin_paths = (
+            QLibraryInfo.location(QLibraryInfo.BinariesPath),
+            QLibraryInfo.location(QLibraryInfo.LibraryExecutablesPath),
+        )
         for bin_path in possible_designer_bin_paths:
-            if platform.system() == 'Darwin':
-                designer_path = os.path.join(bin_path, 'Designer.app/Contents/MacOS/Designer')
-            elif platform.system() == 'Linux':
-                designer_path = os.path.join(bin_path, 'designer')
+            if platform.system() == "Darwin":
+                designer_path = os.path.join(bin_path, "Designer.app/Contents/MacOS/Designer")
+            elif platform.system() == "Linux":
+                designer_path = os.path.join(bin_path, "designer")
             else:
-                designer_path = os.path.join(bin_path, 'designer.exe')
+                designer_path = os.path.join(bin_path, "designer.exe")
             if os.path.isfile(designer_path):
                 self.designer_path = designer_path
                 break
@@ -158,14 +165,16 @@ class PyDMMainWindow(QMainWindow):
             prev_display = curr_display.previous_display
 
         if not prev_display:
-            logger.error('No display history to execute back navigation.')
+            logger.error("No display history to execute back navigation.")
             return
 
         if open_in_new_process:
-            load_file(prev_display.loaded_file(),
-                      macros=prev_display.macros,
-                      args=prev_display.args,
-                      target=ScreenTarget.NEW_PROCESS)
+            load_file(
+                prev_display.loaded_file(),
+                macros=prev_display.macros,
+                args=prev_display.args,
+                target=ScreenTarget.NEW_PROCESS,
+            )
         else:
             prev_display.next_display = curr_display
             establish_widget_connections(prev_display)
@@ -183,14 +192,16 @@ class PyDMMainWindow(QMainWindow):
             next_display = curr_display.next_display
 
         if not next_display:
-            logger.error('No display history to execute forward navigation.')
+            logger.error("No display history to execute forward navigation.")
             return
 
         if open_in_new_process:
-            load_file(next_display.loaded_file(),
-                      macros=next_display.macros,
-                      args=next_display.args,
-                      target=ScreenTarget.NEW_PROCESS)
+            load_file(
+                next_display.loaded_file(),
+                macros=next_display.macros,
+                args=next_display.args,
+                target=ScreenTarget.NEW_PROCESS,
+            )
         else:
             establish_widget_connections(next_display)
             register_widget_rules(next_display)
@@ -209,10 +220,7 @@ class PyDMMainWindow(QMainWindow):
             fname = self.home_widget.loaded_file()
             macros = self.home_widget.macros()
             args = self.home_widget.args()
-            load_file(fname,
-                      macros=macros,
-                      args=args,
-                      target=ScreenTarget.NEW_PROCESS)
+            load_file(fname, macros=macros, args=args, target=ScreenTarget.NEW_PROCESS)
         else:
             if self.home_widget != self.display_widget():
                 self.home_widget.previous_display = self.display_widget()
@@ -226,8 +234,7 @@ class PyDMMainWindow(QMainWindow):
             # We can't do much if it is not a Display and we don't have the
             # previous_display and next_display properties since we don't
             # have the navigation stack set.
-            nav_stack_methods = hasattr(w, 'previous_display') \
-                                and hasattr(w, 'next_display')
+            nav_stack_methods = hasattr(w, "previous_display") and hasattr(w, "next_display")
             if not nav_stack_methods:
                 return
         if not w:
@@ -295,7 +302,7 @@ class PyDMMainWindow(QMainWindow):
             return None, None
 
         _, extension = path.splitext(curr_file)
-        if extension == '.ui':
+        if extension == ".ui":
             return self.current_file(), None
         else:
             central_widget = self.centralWidget() if isinstance(self.centralWidget(), Display) else None
@@ -305,7 +312,6 @@ class PyDMMainWindow(QMainWindow):
 
     @Slot(bool)
     def edit_in_designer(self, checked):
-
         def open_editor_ui(fname):
             if self.designer_path is None or fname is None or fname == "":
                 return
@@ -314,9 +320,9 @@ class PyDMMainWindow(QMainWindow):
 
         def open_editor_generic(fname):
             if platform.system() == "Darwin":
-                subprocess.call(('open', fname))
+                subprocess.call(("open", fname))
             elif platform.system() == "Linux":
-                subprocess.call(('xdg-open', fname))
+                subprocess.call(("xdg-open", fname))
             elif platform.system() == "Windows":
                 os.startfile(fname)
 
@@ -335,7 +341,7 @@ class PyDMMainWindow(QMainWindow):
         except Exception:
             folder = os.getcwd()
 
-        filename = QFileDialog.getOpenFileName(self, 'Open File...', folder, 'PyDM Display Files (*.ui *.py)')
+        filename = QFileDialog.getOpenFileName(self, "Open File...", folder, "PyDM Display Files (*.ui *.py)")
         filename = filename[0] if isinstance(filename, (list, tuple)) else filename
 
         if filename:
@@ -358,14 +364,15 @@ class PyDMMainWindow(QMainWindow):
         except Exception:
             folder = os.getcwd()
 
-        ss_filename = QFileDialog.getOpenFileName(self, 'Change Stylesheet...',
-                folder, 'PyDM Stylesheets (*.qss *.css)')
-        
+        ss_filename = QFileDialog.getOpenFileName(
+            self, "Change Stylesheet...", folder, "PyDM Stylesheets (*.qss *.css)"
+        )
+
         if ss_filename:
             ss_filename = str(ss_filename)
             self.ss_path = ss_filename.split("'")
-            style= open(self.ss_path[1],"r")
-            style= style.read()
+            style = open(self.ss_path[1], "r")
+            style = style.read()
             self.setStyleSheet(style)
 
     def open(self, filename, macros=None, args=None, target=None):
@@ -375,10 +382,7 @@ class PyDMMainWindow(QMainWindow):
             if curr_display:
                 base_path = os.path.dirname(curr_display.loaded_file())
             filename = find_file(filename, base_path=base_path, raise_if_not_found=True)
-        new_widget = load_file(filename,
-                               macros=macros,
-                               args=args,
-                               target=target)
+        new_widget = load_file(filename, macros=macros, args=args, target=target)
         if new_widget:
             if self.home_widget is None:
                 self.home_widget = new_widget
@@ -392,7 +396,7 @@ class PyDMMainWindow(QMainWindow):
                 editors.append("Designer")
             if py_file:
                 editors.append("Text Editor")
-            edit_in_text = "Open in {}".format(' and '.join(editors))
+            edit_in_text = "Open in {}".format(" and ".join(editors))
             self.ui.actionEdit_in_Designer.setText(edit_in_text)
             if (self.designer_path and ui_file) or (py_file and not ui_file):
                 self.ui.actionEdit_in_Designer.setEnabled(True)
@@ -404,7 +408,7 @@ class PyDMMainWindow(QMainWindow):
         except Exception:
             curr_dir = os.getcwd()
             logger.error("The display manager does not have a display loaded. Suggesting current work directory.")
-        filename = QFileDialog.getOpenFileName(self, 'Load tool...', curr_dir, 'PyDM External Tool Files (*_tool.py)')
+        filename = QFileDialog.getOpenFileName(self, "Load tool...", curr_dir, "PyDM External Tool Files (*_tool.py)")
         filename = filename[0] if isinstance(filename, (list, tuple)) else filename
 
         if filename:
@@ -416,10 +420,8 @@ class PyDMMainWindow(QMainWindow):
         """
         Update the Main Window Tools menu.
         """
-        kwargs = {'channels': None, 'sender': self}
-        tools.assemble_tools_menu(self.ui.menuTools,
-                                  clear_menu=True,
-                                  **kwargs)
+        kwargs = {"channels": None, "sender": self}
+        tools.assemble_tools_menu(self.ui.menuTools, clear_menu=True, **kwargs)
 
         self.ui.menuTools.addSeparator()
         self.ui.menuTools.addAction(self.ui.actionLoadTool)
@@ -439,8 +441,8 @@ class PyDMMainWindow(QMainWindow):
         args = curr_display.args()
         loaded_file = curr_display.loaded_file()
 
-        self.statusBar().showMessage(
-            "Reloading '{0}'...".format(self.current_file()), 5000)
+        self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
+        clear_compiled_ui_file_cache()
         new_widget = self.open(loaded_file, macros=macros, args=args)
         new_widget.previous_display = prev_display
         new_widget.next_display = next_display
@@ -465,12 +467,12 @@ class PyDMMainWindow(QMainWindow):
 
     def set_font_size(self, old, new):
         current_font = self.app.font()
-        current_font.setPointSizeF(current_font.pointSizeF()/old*new)
+        current_font.setPointSizeF(current_font.pointSizeF() / old * new)
         QApplication.instance().setFont(current_font)
 
         for w in self.app.allWidgets():
             w_c_f = w.font()
-            w_c_f.setPointSizeF(w_c_f.pointSizeF()/old*new)
+            w_c_f.setPointSizeF(w_c_f.pointSizeF() / old * new)
             w.setFont(w_c_f)
 
         QTimer.singleShot(0, self.resizeForNewDisplayWidget)
@@ -488,7 +490,7 @@ class PyDMMainWindow(QMainWindow):
         c.show()
 
     def show_help(self):
-        """ Show the associated help file for this window """
+        """Show the associated help file for this window"""
         if self.display_widget() is not None:
             self.display_widget().show_help()
 
@@ -523,8 +525,8 @@ class PyDMMainWindow(QMainWindow):
             callback()
         else:
             quit_message = QMessageBox.question(
-                self, 'Quitting Application', 'Exit Application?',
-                QMessageBox.Yes | QMessageBox.No)
+                self, "Quitting Application", "Exit Application?", QMessageBox.Yes | QMessageBox.No
+            )
             if quit_message == QMessageBox.Yes:
                 callback()
 
@@ -550,7 +552,7 @@ class PyDMMainWindow(QMainWindow):
         # connect custom save, save as, and load functions
         file_menu_items = self.display_widget().file_menu_items()
         if len(file_menu_items) != 0:
-            valid_keys = ('save', 'save_as', 'load')
+            valid_keys = ("save", "save_as", "load")
             ui_actions = (self.ui.actionSave, self.ui.actionSave_As, self.ui.actionLoad)
             action_dict = dict(zip(valid_keys, ui_actions))
             # iterate through user given keys, which need to match the possible keys
@@ -580,7 +582,8 @@ class PyDMMainWindow(QMainWindow):
         # iterate through the items list and add to the menu
         for key in items.keys():
             val = items[key]
-            # if there is a dictionary nested in the primary dictionary, create a new submenu, and call create_menu with that submenu as the parent menu
+            # if there is a dictionary nested in the primary dictionary, create a new submenu, and call create_menu
+            # with that submenu as the parent menu
             if isinstance(val, dict):
                 new_menu = menu.addMenu(key)
                 PyDMMainWindow().create_menu(new_menu, val)

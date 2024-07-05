@@ -18,12 +18,16 @@ from ...utilities import IconFont
 # POSITIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("command, title", [
-    ("foo", None),
-    ("", None),
-    (None, None),
-    (["foo", "bar"], ["A", "B"]),
-])
+
+@pytest.mark.parametrize(
+    "command, title",
+    [
+        ("foo", None),
+        ("", None),
+        (None, None),
+        (["foo", "bar"], ["A", "B"]),
+    ],
+)
 def test_construct(qtbot, command, title):
     """
     Test the construct of the widget.
@@ -57,7 +61,7 @@ def test_construct(qtbot, command, title):
         assert pydm_shell_command._titles == title
     else:
         assert pydm_shell_command._titles == []
-    
+
     DEFAULT_ICON_NAME = "cog"
     DEFAULT_ICON_SIZE = QSize(16, 16)
 
@@ -69,11 +73,35 @@ def test_construct(qtbot, command, title):
     assert shell_cmd_icon_pixmap.toImage() == default_icon_pixmap.toImage()
     assert pydm_shell_command.cursor().pixmap().toImage() == default_icon_pixmap.toImage()
 
+    # verify that qt standard icons can be set through our custom property
+    style = pydm_shell_command.style()
+    test_icon = style.standardIcon(style.SP_DesktopIcon)
+    test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    pydm_shell_command.PyDMIcon = "SP_DesktopIcon"
+    shell_cmd_icon = pydm_shell_command.icon()
+    shell_cmd_icon_image = shell_cmd_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    assert test_icon_image == shell_cmd_icon_image
+
+    # verify that "Font Awesome" icons can be set through our custom property
+    icon_f = IconFont()
+    test_icon = icon_f.icon("eye-slash", color=None)
+    test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    pydm_shell_command.PyDMIcon = "eye-slash"
+    shell_cmd_icon = pydm_shell_command.icon()
+    shell_cmd_icon_image = shell_cmd_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
+
+    assert test_icon_image == shell_cmd_icon_image
+
+
 def test_deprecated_command_property_with_no_commands(qtbot):
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
     pydm_shell_command.command = "test"
     assert pydm_shell_command.commands == ["test"]
+
 
 def test_deprecated_command_property_with_commands(qtbot):
     pydm_shell_command = PyDMShellCommand()
@@ -83,46 +111,54 @@ def test_deprecated_command_property_with_commands(qtbot):
     pydm_shell_command.command = "This shouldn't work"
     assert pydm_shell_command.commands == existing_commands
 
+
 def test_no_crash_without_any_commands(qtbot):
-     pydm_shell_command = PyDMShellCommand()
-     qtbot.addWidget(pydm_shell_command)
-     pydm_shell_command.commands = None
-     qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
+    pydm_shell_command = PyDMShellCommand()
+    qtbot.addWidget(pydm_shell_command)
+    pydm_shell_command.commands = None
+    qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
+
 
 def test_no_crash_with_none_command(qtbot):
-     pydm_shell_command = PyDMShellCommand()
-     qtbot.addWidget(pydm_shell_command)
-     pydm_shell_command.command = None
-     qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
+    pydm_shell_command = PyDMShellCommand()
+    qtbot.addWidget(pydm_shell_command)
+    pydm_shell_command.command = None
+    qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
 
 
 def test_no_error_without_env_variable(qtbot, caplog):
-    """ Verify that the shell command works when the environment variable property is saved as an empty string """
+    """Verify that the shell command works when the environment variable property is saved as an empty string"""
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
     pydm_shell_command.command = "echo hello"
     pydm_shell_command.environmentVariables = ""
     qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
-    assert 'error' not in caplog.text.lower()
+    assert "error" not in caplog.text.lower()
 
 
-@pytest.mark.parametrize("cmd, retcode, stdout", [
-    (["choice /c yn /d n /t 0"] if platform.system() == "Windows" else ["sleep 0"],
-        [2] if platform.system() == "Windows" else [0], ["[Y,N]?N"] if platform.system() == "Windows" else [""]),
-    (["pydm_shell_invalid_command_test invalid command"], [None], [""]),
-    (["echo hello", "echo world"], [0, 0], ["hello", "world"])
-])
+@pytest.mark.parametrize(
+    "cmd, retcode, stdout",
+    [
+        (
+            ["choice /c yn /d n /t 0"] if platform.system() == "Windows" else ["sleep 0"],
+            [2] if platform.system() == "Windows" else [0],
+            ["[Y,N]?N"] if platform.system() == "Windows" else [""],
+        ),
+        (["pydm_shell_invalid_command_test invalid command"], [None], [""]),
+        (["echo hello", "echo world"], [0, 0], ["hello", "world"]),
+    ],
+)
 def test_mouse_release_event(qtbot, caplog, cmd, retcode, stdout):
     """
     Test to ensure the widget's triggering of the Mouse Release event.
-    
+
     Expectations if len(cmd) == 1:
     1. The mouse release will trigger the current shell command being assigned to the widget to execute
     2. If the command is not valid, there will be an error message in the log
     3. If the command is valid, there will be output in stdout (the result could be a success or failure, but at least
         the command will send out text to stdout)
     4. If the command is None or empty, there will be no output to stdout.
-    
+
     Expectations if len(cmd) > 1:
     1. The mouse press will cause the widget to set its 'menu' attribute to an instance of QMenu.
     2. Triggering each menu item runs the right command.
@@ -154,7 +190,7 @@ def test_mouse_release_event(qtbot, caplog, cmd, retcode, stdout):
             assert "Error in shell command" in caplog.text
 
     pydm_shell_command.commands = cmd
-    
+
     if len(cmd) > 1:
         for current_command, expected_retcode, expected_stdout in zip(cmd, retcode, stdout):
             # We can't actually do the click and show the menu - it halts the test and waits
@@ -174,10 +210,13 @@ def test_mouse_release_event(qtbot, caplog, cmd, retcode, stdout):
         assert pydm_shell_command.process is None
 
 
-@pytest.mark.parametrize("allow_multiple", [
-    True,
-    False,
-])
+@pytest.mark.parametrize(
+    "allow_multiple",
+    [
+        True,
+        False,
+    ],
+)
 def test_execute_multiple_commands(qtbot, signals, caplog, allow_multiple):
     """
     Test the widget's ability to execute multiple shell commands when this setting is enabled.
@@ -230,11 +269,11 @@ def test_env_var(qtbot):
 
     os.environ["PYDM_TEST_ENV_VAR"] = "this is a pydm test"
     cmd = "echo Test: $PYDM_TEST_ENV_VAR"
-    if platform.system() == 'Windows':
+    if platform.system() == "Windows":
         cmd = "echo Test: %PYDM_TEST_ENV_VAR%"
 
     pydm_shell_command.commands = [cmd]
     qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
     stdout, stderr = pydm_shell_command.process.communicate()
     assert pydm_shell_command.process.returncode == 0
-    assert stdout.decode('utf-8') == "Test: this is a pydm test\n"
+    assert stdout.decode("utf-8") == "Test: this is a pydm test\n"

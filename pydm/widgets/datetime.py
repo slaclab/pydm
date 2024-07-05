@@ -25,6 +25,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget, TimeBase):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
     def __init__(self, parent=None, init_channel=None):
         self._block_past_date = True
         self._relative = True
@@ -80,7 +81,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget, TimeBase):
         val = self.dateTime()
         now = QtCore.QDateTime.currentDateTime()
         if self._block_past_date and val < now:
-            logger.error('Selected date cannot be lower than current date.')
+            logger.error("Selected date cannot be lower than current date.")
             return
 
         if self.relative:

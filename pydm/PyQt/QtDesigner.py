@@ -1,1 +1,1 @@
-from qtpy.QtDesigner import *
+from qtpy.QtDesigner import *  # noqa: F403

@@ -54,8 +54,7 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     pydm.Display
     """
     if not is_pydm_app() and target == ScreenTarget.NEW_PROCESS:
-        logger.warning('New Process is only valid with PyDM Application. ' +
-                       'Falling back to ScreenTarget.DIALOG.')
+        logger.warning("New Process is only valid with PyDM Application. " + "Falling back to ScreenTarget.DIALOG.")
         target = ScreenTarget.DIALOG
 
     if target == ScreenTarget.NEW_PROCESS:
@@ -69,10 +68,10 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     logger.debug("Loading %s file by way of %s...", file, loader.__name__)
     loaded_display = loader(file, args=args, macros=macros)
 
-    if os.path.exists(base + '.txt'):
-        loaded_display.load_help_file(base + '.txt')
-    elif os.path.exists(base + '.html'):
-        loaded_display.load_help_file(base + '.html')
+    if os.path.exists(base + ".txt"):
+        loaded_display.load_help_file(base + ".txt")
+    elif os.path.exists(base + ".html"):
+        loaded_display.load_help_file(base + ".html")
 
     if target == ScreenTarget.DIALOG:
         loaded_display.show()
@@ -98,7 +97,7 @@ def _compile_ui_file(uifile: str) -> Tuple[str, str]:
     code_string = StringIO()
     uic.compileUi(uifile, code_string)
     # Grabs non-whitespace characters between class and the opening parenthesis
-    class_name = re.search(r'^class\s*(\S*)\(', code_string.getvalue(), re.MULTILINE).group(1)
+    class_name = re.search(r"^class\s*(\S*)\(", code_string.getvalue(), re.MULTILINE).group(1)
     return code_string.getvalue(), class_name
 
 
@@ -117,10 +116,17 @@ def _load_ui_into_display(uifile, display):
     display.ui = display
 
 
-def _load_compiled_ui_into_display(code_string: str,
-                                   class_name: str,
-                                   display: Display,
-                                   macros: Optional[Dict[str, str]] = None) -> None:
+def clear_compiled_ui_file_cache() -> None:
+    """
+    Clears the cache of compiled ui files. Needed if changes to the underlying ui files have been made on disk and
+    need to be picked up, such as the user choosing to reload the display.
+    """
+    _compile_ui_file.cache_clear()
+
+
+def _load_compiled_ui_into_display(
+    code_string: str, class_name: str, display: Display, macros: Optional[Dict[str, str]] = None
+) -> None:
     """
     Takes a ui file which has already been compiled by uic and loads it into the input display.
     Performs macro substitution within the input code_string if any macros supplied are
@@ -245,26 +251,32 @@ def load_py_file(pyfile, args=None, macros=None):
     # as real python modules.
     module = import_module_by_filename(os.path.abspath(pyfile))
 
-    if hasattr(module, 'intelclass'):
+    if hasattr(module, "intelclass"):
         cls = module.intelclass
         if not issubclass(cls, Display):
             raise ValueError(
                 "Invalid class definition at file {}. {} does not inherit from Display. "
-                "Nothing to open at this time.".format(
-                    pyfile, cls.__name__))
+                "Nothing to open at this time.".format(pyfile, cls.__name__)
+            )
     else:
-        classes = [obj for name, obj in inspect.getmembers(module) if
-                   inspect.isclass(obj) and issubclass(obj,
-                                                       Display) and obj != Display]
+        classes = [
+            obj
+            for name, obj in inspect.getmembers(module)
+            if inspect.isclass(obj) and issubclass(obj, Display) and obj != Display
+        ]
         if len(classes) == 0:
             raise ValueError(
                 "Invalid File Format. {} has no class inheriting from Display. Nothing to open at this time.".format(
-                    pyfile))
+                    pyfile
+                )
+            )
         if len(classes) > 1:
             warnings.warn(
                 "More than one Display class in file {}. "
-                "The first occurrence (in alphabetical order) will be opened: {}".format(
-                    pyfile, classes[0].__name__), RuntimeWarning, stacklevel=2)
+                "The first occurrence (in alphabetical order) will be opened: {}".format(pyfile, classes[0].__name__),
+                RuntimeWarning,
+                stacklevel=2,
+            )
         cls = classes[0]
 
     module_params = inspect.signature(cls).parameters
@@ -272,10 +284,10 @@ def load_py_file(pyfile, args=None, macros=None):
     # Because older versions of Display may not have the args parameter or the macros parameter, we check
     # to see if it does before trying to use them.
     kwargs = {}
-    if 'args' in module_params:
-        kwargs['args'] = args
-    if 'macros' in module_params:
-        kwargs['macros'] = macros
+    if "args" in module_params:
+        kwargs["args"] = args
+    if "macros" in module_params:
+        kwargs["macros"] = macros
     instance = cls(**kwargs)
     instance._loaded_file = pyfile
     return instance
@@ -289,7 +301,6 @@ _extension_to_loader = {
 
 
 class Display(QWidget):
-
     def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
         super(Display, self).__init__(parent=parent)
         self.ui = None
@@ -324,7 +335,7 @@ class Display(QWidget):
         self._next_display = display
 
     def menu_items(self):
-        """ Returns a dictionary where the keys are the names of the menu entries,
+        """Returns a dictionary where the keys are the names of the menu entries,
         and the values are callables, where the callable is the action performed
         when the menu item is selected.
 
@@ -344,7 +355,7 @@ class Display(QWidget):
         return {}
 
     def file_menu_items(self):
-        """ Returns a dictionary accepting a protected set of keys corresponding to one or more
+        """Returns a dictionary accepting a protected set of keys corresponding to one or more
         possible default actions in the "File" menu, with the values as callables, where the callable
         is the action performed when the menu item is selected.
 
@@ -364,7 +375,7 @@ class Display(QWidget):
         return {}
 
     def show_help(self) -> None:
-        """ Show the associated help file for this display """
+        """Show the associated help file for this display"""
         if self.help_window is not None:
             self.help_window.show()
 
@@ -383,16 +394,15 @@ class Display(QWidget):
         return self._args
 
     def ui_filepath(self):
-        """ Returns the path to the ui file relative to the file of the class
+        """Returns the path to the ui file relative to the file of the class
         calling this function."""
         if not self.ui_filename():
             return None
         path_to_class = sys.modules[self.__module__].__file__
-        return path.join(path.dirname(path.realpath(path_to_class)),
-                         self.ui_filename())
+        return path.join(path.dirname(path.realpath(path_to_class)), self.ui_filename())
 
     def ui_filename(self):
-        """ Returns the name of the ui file.  In modern PyDM, it is preferable
+        """Returns the name of the ui file.  In modern PyDM, it is preferable
         specify this via the ui_filename argument in Display's constructor,
         rather than reimplementing this in Display subclasses."""
         if self._ui_filename is None:
@@ -401,7 +411,7 @@ class Display(QWidget):
             return self._ui_filename
 
     def load_ui(self, macros=None):
-        """ Load and parse the ui file, and make the file's widgets available
+        """Load and parse the ui file, and make the file's widgets available
         in self.ui.  Called by the initializer."""
         if self.ui:
             return self.ui
@@ -409,13 +419,13 @@ class Display(QWidget):
             self.load_ui_from_file(self.ui_filepath(), macros)
 
     def load_ui_from_file(self, ui_file_path: str, macros: Optional[Dict[str, str]] = None):
-        """ Load the ui file from the input path, and make the file's widgets available in self.ui """
+        """Load the ui file from the input path, and make the file's widgets available in self.ui"""
         self._loaded_file = ui_file_path
         code_string, class_name = _compile_ui_file(ui_file_path)
         _load_compiled_ui_into_display(code_string, class_name, self, macros)
 
     def load_help_file(self, file_path: str) -> None:
-        """ Loads the input help file into a window for display """
+        """Loads the input help file into a window for display"""
         self.help_window = HelpWindow(file_path)
 
     def setStyleSheet(self, new_stylesheet):
@@ -429,7 +439,9 @@ class Display(QWidget):
                 stylesheet_filename = possible_stylesheet_filename
             # Second, check if the css file is specified relative to the display file.
             else:
-                rel_path = os.path.join(os.path.dirname(os.path.abspath(self._loaded_file)), possible_stylesheet_filename)
+                rel_path = os.path.join(
+                    os.path.dirname(os.path.abspath(self._loaded_file)), possible_stylesheet_filename
+                )
                 if os.path.isfile(rel_path):
                     stylesheet_filename = rel_path
         except Exception as e:

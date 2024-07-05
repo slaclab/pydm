@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 
-from qtpy import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtWidgets
 
 
 class Ui_MainWindow(object):
@@ -106,13 +106,13 @@ class Ui_MainWindow(object):
         self.actionQuit.setEnabled(True)
         self.actionQuit.setObjectName("actionQuit")
         self.actionSave = QtWidgets.QAction(MainWindow)
-        self.actionSave.setObjectName('actionSave')
+        self.actionSave.setObjectName("actionSave")
         self.actionSave.setVisible(False)
         self.actionSave_As = QtWidgets.QAction(MainWindow)
-        self.actionSave_As.setObjectName('actionSave_As')
+        self.actionSave_As.setObjectName("actionSave_As")
         self.actionSave_As.setVisible(False)
         self.actionLoad = QtWidgets.QAction(MainWindow)
-        self.actionLoad.setObjectName('actionLoad')
+        self.actionLoad.setObjectName("actionLoad")
         self.actionLoad.setVisible(False)
         self.actionChange_Stylesheet = QtWidgets.QAction(MainWindow)
         self.actionChange_Stylesheet.setObjectName("actionChange_Stylesheet")

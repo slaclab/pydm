@@ -7,11 +7,10 @@ API Documentation
 
 .. autoclass:: pydm.widgets.base.PyDMWidget
    :members:
-   :inherited-members:
    :show-inheritance:
 
 PyDMToolTip Instructions
-=================
+========================
 The PyDMToolTip property field takes a string. In the PyDMToolTip property field, the user can include the tag $(pv_value) to get the value of the
 channel displayed on the tool tip.
 

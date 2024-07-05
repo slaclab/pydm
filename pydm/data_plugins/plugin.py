@@ -2,14 +2,13 @@ import functools
 import weakref
 import threading
 
-from numpy import ndarray
 from typing import Optional, Callable
 
 from ..utilities.remove_protocol import parsed_address
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
 from .. import config
-import re
+
 
 class PyDMConnection(QObject):
     new_value_signal = Signal([float], [int], [str], [bool], [object])
@@ -62,7 +61,7 @@ class PyDMConnection(QObject):
                 self.new_value_signal[object].connect(channel.value_slot, Qt.QueuedConnection)
             except TypeError:
                 pass
-        
+
         if channel.severity_slot is not None:
             self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
 
@@ -141,7 +140,7 @@ class PyDMConnection(QObject):
                 self.new_value_signal[object].disconnect(channel.value_slot)
             except TypeError:
                 pass
-        
+
         if self._should_disconnect(channel.severity_slot, destroying):
             try:
                 self.new_severity_signal.disconnect(channel.severity_slot)
@@ -220,7 +219,7 @@ class PyDMConnection(QObject):
 
     @staticmethod
     def _should_disconnect(slot: Callable, destroying: bool):
-        """ Return True if the signal/slot should be disconnected, False otherwise """
+        """Return True if the signal/slot should be disconnected, False otherwise"""
         if slot is None:
             # Nothing to do if the slot does not exist
             return False
@@ -261,7 +260,7 @@ class PyDMPlugin(object):
 
         if parsed_addr:
             full_addr = parsed_addr.netloc + parsed_addr.path
-        else: 
+        else:
             full_addr = None
 
         return full_addr
@@ -270,9 +269,9 @@ class PyDMPlugin(object):
     def get_address(channel):
         parsed_addr = parsed_address(channel.address)
         addr = parsed_addr.netloc
-        
+
         return addr
-    
+
     @staticmethod
     def get_subfield(channel):
         parsed_addr = parsed_address(channel.address)
@@ -280,11 +279,11 @@ class PyDMPlugin(object):
         if parsed_addr:
             subfield = parsed_addr.path
 
-            if subfield != '':
-                subfield = subfield[1:].split('/')
+            if subfield != "":
+                subfield = subfield[1:].split("/")
         else:
             subfield = None
-        
+
         return subfield
 
     @staticmethod
@@ -293,6 +292,7 @@ class PyDMPlugin(object):
 
     def add_connection(self, channel):
         from pydm.utilities import is_qt_designer
+
         with self.lock:
             connection_id = self.get_connection_id(channel)
             address = self.get_address(channel)
@@ -301,25 +301,21 @@ class PyDMPlugin(object):
             if channel in self.channels:
                 return
 
-            if (is_qt_designer() and not config.DESIGNER_ONLINE and
-                    not self.designer_online_by_default):
+            if is_qt_designer() and not config.DESIGNER_ONLINE and not self.designer_online_by_default:
                 return
 
             self.channels.add(channel)
             if connection_id in self.connections:
                 self.connections[connection_id].add_listener(channel)
             else:
-                self.connections[connection_id] = self.connection_class(
-                    channel, address, self.protocol)
+                self.connections[connection_id] = self.connection_class(channel, address, self.protocol)
 
     def remove_connection(self, channel, destroying=False):
         with self.lock:
             connection_id = self.get_connection_id(channel)
             if connection_id in self.connections and channel in self.channels:
-                self.connections[connection_id].remove_listener(
-                    channel, destroying=destroying)
+                self.connections[connection_id].remove_listener(channel, destroying=destroying)
                 self.channels.remove(channel)
                 if self.connections[connection_id].listener_count < 1:
                     self.connections[connection_id].deleteLater()
                     del self.connections[connection_id]
-

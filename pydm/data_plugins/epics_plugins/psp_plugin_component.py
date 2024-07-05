@@ -111,7 +111,10 @@ def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mo
     pv = Pv(pvname, use_numpy=True, control=control)
 
     if signal is None:
-        default_mon_cb = lambda e: None
+
+        def default_mon_cb(e):
+            return None
+
     else:
         default_mon_cb = generic_mon_cb(pv, signal)
 
@@ -142,11 +145,9 @@ class Connection(PyDMConnection):
         """
         super(Connection, self).__init__(channel, pv, protocol, parent)
         self.python_type = None
-        self.pv = setup_pv(pv,
-                           con_cb=self.connected_cb,
-                           mon_cb=self.monitor_cb,
-                           rwaccess_cb=self.rwaccess_cb,
-                           control=True)
+        self.pv = setup_pv(
+            pv, con_cb=self.connected_cb, mon_cb=self.monitor_cb, rwaccess_cb=self.rwaccess_cb, control=True
+        )
         self.enums = None
         self.sevr = None
         self.ctrl_llim = None
@@ -164,8 +165,7 @@ class Connection(PyDMConnection):
         self.read_access = False
         self.write_access = False
         # Auxilliary info to help with throttling
-        self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb,
-                                mon_cb_once=True)
+        self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb, mon_cb_once=True)
         self.throttle = QTimer(self)
         self.throttle.timeout.connect(self.throttle_cb)
 
@@ -193,8 +193,7 @@ class Connection(PyDMConnection):
                 self.pv.monitor()
             self.python_type = type_map.get(self.epics_type)
             if self.python_type is None:
-                raise Exception("Unsupported EPICS type {0} for pv {1}".format(
-                    self.epics_type, self.pv.name))
+                raise Exception("Unsupported EPICS type {0} for pv {1}".format(self.epics_type, self.pv.name))
 
     def monitor_cb(self, e=None):
         """
@@ -251,7 +250,7 @@ class Connection(PyDMConnection):
             self.new_severity_signal.emit(self.sevr)
 
         try:
-            prec = self.pv.data['precision']
+            prec = self.pv.data["precision"]
         except KeyError:
             pass
         else:
@@ -260,13 +259,15 @@ class Connection(PyDMConnection):
                 self.prec_signal.emit(int(self.prec))
 
         try:
-            units = self.pv.data['units']
+            units = self.pv.data["units"]
         except KeyError:
             pass
         else:
             if self.units != units:
                 self.units = units
-                self.unit_signal.emit(self.units.decode(encoding='ascii') if isinstance(self.units, bytes) else self.units)
+                self.unit_signal.emit(
+                    self.units.decode(encoding="ascii") if isinstance(self.units, bytes) else self.units
+                )
 
         time = self.timestamp()
 
@@ -275,7 +276,7 @@ class Connection(PyDMConnection):
             self.timestamp_signal.emit(self.time)
 
         try:
-            ctrl_llim = self.pv.data['ctrl_llim']
+            ctrl_llim = self.pv.data["ctrl_llim"]
         except KeyError:
             pass
         else:
@@ -284,7 +285,7 @@ class Connection(PyDMConnection):
                 self.lower_ctrl_limit_signal.emit(self.ctrl_llim)
 
         try:
-            ctrl_hlim = self.pv.data['ctrl_hlim']
+            ctrl_hlim = self.pv.data["ctrl_hlim"]
         except KeyError:
             pass
         else:
@@ -293,7 +294,7 @@ class Connection(PyDMConnection):
                 self.upper_ctrl_limit_signal.emit(self.ctrl_hlim)
 
         try:
-            alarm_hlim = self.pv.data['alarm_hlim']
+            alarm_hlim = self.pv.data["alarm_hlim"]
         except KeyError:
             pass
         else:
@@ -302,7 +303,7 @@ class Connection(PyDMConnection):
                 self.upper_alarm_limit_signal.emit(self.alarm_hlim)
 
         try:
-            alarm_llim = self.pv.data['alarm_llim']
+            alarm_llim = self.pv.data["alarm_llim"]
         except KeyError:
             pass
         else:
@@ -311,7 +312,7 @@ class Connection(PyDMConnection):
                 self.lower_alarm_limit_signal.emit(self.alarm_llim)
 
         try:
-            warn_hlim = self.pv.data['warn_hlim']
+            warn_hlim = self.pv.data["warn_hlim"]
         except KeyError:
             pass
         else:
@@ -320,7 +321,7 @@ class Connection(PyDMConnection):
                 self.upper_warning_limit_signal.emit(self.warn_hlim)
 
         try:
-            warn_llim = self.pv.data['warn_llim']
+            warn_llim = self.pv.data["warn_llim"]
         except KeyError:
             pass
         else:
@@ -348,7 +349,7 @@ class Connection(PyDMConnection):
 
         if self.prec is None:
             try:
-                self.prec = self.pv.data['precision']
+                self.prec = self.pv.data["precision"]
             except KeyError:
                 pass
         if self.prec is not None:
@@ -362,17 +363,17 @@ class Connection(PyDMConnection):
 
         if self.units is None:
             try:
-                self.units = self.pv.data['units']
+                self.units = self.pv.data["units"]
             except KeyError:
                 pass
         if self.units:
             if isinstance(self.units, bytes):
-                self.units = self.units.decode(encoding='ascii')
+                self.units = self.units.decode(encoding="ascii")
             self.unit_signal.emit(self.units)
 
         if self.ctrl_llim is None:
             try:
-                self.ctrl_llim = self.pv.data['ctrl_llim']
+                self.ctrl_llim = self.pv.data["ctrl_llim"]
             except KeyError:
                 pass
         if self.ctrl_llim is not None:
@@ -380,7 +381,7 @@ class Connection(PyDMConnection):
 
         if self.ctrl_hlim is None:
             try:
-                self.ctrl_hlim = self.pv.data['ctrl_hlim']
+                self.ctrl_hlim = self.pv.data["ctrl_hlim"]
             except KeyError:
                 pass
         if self.ctrl_hlim is not None:
@@ -388,7 +389,7 @@ class Connection(PyDMConnection):
 
         if self.alarm_hlim is None:
             try:
-                self.alarm_hlim = self.pv.data['alarm_hlim']
+                self.alarm_hlim = self.pv.data["alarm_hlim"]
             except KeyError:
                 pass
         if self.alarm_hlim is not None:
@@ -396,7 +397,7 @@ class Connection(PyDMConnection):
 
         if self.alarm_llim is None:
             try:
-                self.alarm_llim = self.pv.data['alarm_llim']
+                self.alarm_llim = self.pv.data["alarm_llim"]
             except KeyError:
                 pass
         if self.alarm_llim is not None:
@@ -404,7 +405,7 @@ class Connection(PyDMConnection):
 
         if self.warn_hlim is None:
             try:
-                self.warn_hlim = self.pv.data['warn_hlim']
+                self.warn_hlim = self.pv.data["warn_hlim"]
             except KeyError:
                 pass
         if self.warn_hlim is not None:
@@ -412,7 +413,7 @@ class Connection(PyDMConnection):
 
         if self.warn_llim is None:
             try:
-                self.warn_llim = self.pv.data['warn_llim']
+                self.warn_llim = self.pv.data["warn_llim"]
             except KeyError:
                 pass
         if self.warn_llim is not None:
@@ -440,7 +441,9 @@ class Connection(PyDMConnection):
         """
         if self.epics_type == "DBF_ENUM":
             if self.enums is None:
-                self.enums = tuple(b.decode(encoding='ascii') if isinstance(b, bytes) else b for b in self.pv.data["enum_set"])
+                self.enums = tuple(
+                    b.decode(encoding="ascii") if isinstance(b, bytes) else b for b in self.pv.data["enum_set"]
+                )
             self.enum_strings_signal.emit(self.enums)
 
     @Slot(int)
@@ -485,7 +488,7 @@ class Connection(PyDMConnection):
             self.pv.wait_ready()
             count = self.pv.count or 1
             if count > 1:
-                max_data_rate = 1000000.  # bytes/s
+                max_data_rate = 1000000.0  # bytes/s
                 bytes = self.pv.value.itemsize  # bytes
                 throttle = max_data_rate / (bytes * count)  # Hz
                 if throttle < 120:
@@ -567,6 +570,7 @@ class PSPPlugin(PyDMPlugin):
     """
     Class to define our protocol and point to our :class:`Connection` Class
     """
+
     # NOTE: protocol is intentionally "None" to keep this plugin from getting directly imported.
     # If this plugin is chosen as the One True EPICS Plugin in epics_plugin.py, the protocol will
     # be properly set before it is used.

@@ -10,7 +10,7 @@ from qtpy.QtCore import QEvent, Qt
 from qtpy.QtGui import QFocusEvent
 from qtpy.QtWidgets import QMenu
 from ...widgets.line_edit import PyDMLineEdit
-from ...data_plugins import set_read_only, is_read_only
+from ...data_plugins import set_read_only
 from ...utilities import is_pydm_app, find_unit_options
 from ...widgets.display_format import DisplayFormat, parse_value_for_display
 
@@ -19,11 +19,15 @@ from ...widgets.display_format import DisplayFormat, parse_value_for_display
 # POSITIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("init_channel", [
-    "CA://MTEST",
-    "",
-    None,
-])
+
+@pytest.mark.parametrize(
+    "init_channel",
+    [
+        "CA://MTEST",
+        "",
+        None,
+    ],
+)
 def test_construct(qtbot, init_channel):
     """
     Test the widget construct.
@@ -48,23 +52,29 @@ def test_construct(qtbot, init_channel):
     assert pydm_lineedit._display is None
     assert pydm_lineedit._scale == 1
     assert pydm_lineedit._prec == 0
-    assert pydm_lineedit.showUnits == False
+    assert pydm_lineedit.showUnits is False
+
+    assert pydm_lineedit.unitMenu is None
+    pydm_lineedit.widget_ctx_menu()
+
     assert isinstance(pydm_lineedit.unitMenu, QMenu) and pydm_lineedit.unitMenu.title() == "Convert Units"
     assert pydm_lineedit.displayFormat == pydm_lineedit.DisplayFormat.Default
-    assert (pydm_lineedit._string_encoding == pydm_lineedit.app.get_string_encoding()
-            if is_pydm_app() else "utf_8")
+    assert pydm_lineedit._string_encoding == pydm_lineedit.app.get_string_encoding() if is_pydm_app() else "utf_8"
 
     assert find_action_from_menu(pydm_lineedit.unitMenu, "No Unit Conversions found")
 
 
-@pytest.mark.parametrize("display_format", [
-    (DisplayFormat.Default),
-    (DisplayFormat.Exponential),
-    (DisplayFormat.String),
-    (DisplayFormat.Binary),
-    (DisplayFormat.Decimal),
-    (DisplayFormat.Hex),
-])
+@pytest.mark.parametrize(
+    "display_format",
+    [
+        (DisplayFormat.Default),
+        (DisplayFormat.Exponential),
+        (DisplayFormat.String),
+        (DisplayFormat.Binary),
+        (DisplayFormat.Decimal),
+        (DisplayFormat.Hex),
+    ],
+)
 def test_change_display_format_type(qtbot, display_format):
     """
     Test the widget's DisplayFormat property and setter.
@@ -86,16 +96,19 @@ def test_change_display_format_type(qtbot, display_format):
     assert pydm_lineedit.displayFormat == display_format
 
 
-@pytest.mark.parametrize("value, display_format, precision, scale, unit, show_unit, expected_display", [
-    (123, DisplayFormat.Default, 3, 1, "s", True, "123.000 s"),
-    (123.47, DisplayFormat.Decimal, 3, 2, "seconds", False, "246.940"),
-    (123.4567, DisplayFormat.String, 2, 1, "", False, "123.46"),
-    (123.4567, DisplayFormat.Decimal, 1, 1, "", False, "123.5"),
-    (1e2, DisplayFormat.Exponential, 2, 2, "light years", True, "2.00e+02 light years"),
-    (0x1FF, DisplayFormat.Hex, 0, 1, "Me", True, "0x1ff Me"),
-    (0b100, DisplayFormat.Binary, 0, 1, "KB", True, "0b100 KB"),
-    (np.array([123, 456]), DisplayFormat.Default, 3, 2, "light years", True, "[123 456] light years"),
-])
+@pytest.mark.parametrize(
+    "value, display_format, precision, scale, unit, show_unit, expected_display",
+    [
+        (123, DisplayFormat.Default, 3, 1, "s", True, "123.000 s"),
+        (123.47, DisplayFormat.Decimal, 3, 2, "seconds", False, "246.940"),
+        (123.4567, DisplayFormat.String, 2, 1, "", False, "123.46"),
+        (123.4567, DisplayFormat.Decimal, 1, 1, "", False, "123.5"),
+        (1e2, DisplayFormat.Exponential, 2, 2, "light years", True, "2.00e+02 light years"),
+        (0x1FF, DisplayFormat.Hex, 0, 1, "Me", True, "0x1ff Me"),
+        (0b100, DisplayFormat.Binary, 0, 1, "KB", True, "0b100 KB"),
+        (np.array([123, 456]), DisplayFormat.Default, 3, 2, "light years", True, "[123 456] light years"),
+    ],
+)
 def test_value_change(qtbot, signals, value, display_format, precision, scale, unit, show_unit, expected_display):
     """
     Test changing the value to be displayed by the widget, given the value's display format, precision, scale, and unit.
@@ -141,19 +154,52 @@ def test_value_change(qtbot, signals, value, display_format, precision, scale, u
     assert pydm_lineedit._display == expected_display
 
 
-@pytest.mark.parametrize("init_value, user_typed_value, display_format, precision, scale, unit,"
-                         "show_units, expected_received_value, expected_display_value", [
-    ("abc", "cdf", DisplayFormat.Default, 3, 5, "s", True, "abc", "cdf s"),
-    ("abc", "cdf", DisplayFormat.String, 3, 5, "s", False, "abc", "cdf"),
-    (np.array([65, 66]), "[C D]", DisplayFormat.Default, 0, 10, "light years", True, "[C D]",
-    "[C D] light years"),
-    (np.array(["A", "B"]), "[C D]", DisplayFormat.String, 0, 10, "ms", True, "[C D]", "[C D] ms"),
-    (np.array(["A", "B"]), np.array(["C", "D"]), DisplayFormat.String, 0, 10, "ms", True, "C   D    ", "C   D    ms"),
-    (np.array(["A", "B"]), np.array(["C", "D"]), DisplayFormat.Default, 0, 10, "ms", True, "['C' 'D']", "['C' 'D'] ms"),
-    (0, 10, DisplayFormat.Default, 0, 1.0, "V", True, 10, "10 V"),
-])
-def test_send_value(qtbot, signals, init_value, user_typed_value, display_format, precision, scale, unit,
-                    show_units, expected_received_value, expected_display_value):
+@pytest.mark.parametrize(
+    "init_value, user_typed_value, display_format, precision, scale, unit,"
+    "show_units, expected_received_value, expected_display_value",
+    [
+        ("abc", "cdf", DisplayFormat.Default, 3, 5, "s", True, "abc", "cdf s"),
+        ("abc", "cdf", DisplayFormat.String, 3, 5, "s", False, "abc", "cdf"),
+        (np.array([65, 66]), "[C D]", DisplayFormat.Default, 0, 10, "light years", True, "[C D]", "[C D] light years"),
+        (np.array(["A", "B"]), "[C D]", DisplayFormat.String, 0, 10, "ms", True, "[C D]", "[C D] ms"),
+        (
+            np.array(["A", "B"]),
+            np.array(["C", "D"]),
+            DisplayFormat.String,
+            0,
+            10,
+            "ms",
+            True,
+            "C   D    ",
+            "C   D    ms",
+        ),
+        (
+            np.array(["A", "B"]),
+            np.array(["C", "D"]),
+            DisplayFormat.Default,
+            0,
+            10,
+            "ms",
+            True,
+            "['C' 'D']",
+            "['C' 'D'] ms",
+        ),
+        (0, 10, DisplayFormat.Default, 0, 1.0, "V", True, 10, "10 V"),
+    ],
+)
+def test_send_value(
+    qtbot,
+    signals,
+    init_value,
+    user_typed_value,
+    display_format,
+    precision,
+    scale,
+    unit,
+    show_units,
+    expected_received_value,
+    expected_display_value,
+):
     """
     Test sending the value to the channel, and the displayed value by the widget.
 
@@ -214,26 +260,27 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, display_format
     # compare just the characters (in the right order)
     assert pydm_lineedit.displayText().replace(" ", "") == expected_display_value.replace(" ", "")
 
-    if all(x in (int, float) for x in (type(expected_received_value), type(signals.value))) :
+    if all(x in (int, float) for x in (type(expected_received_value), type(signals.value))):
         # Testing the actual value sent to the data channel and the expected value using a tolerance due to floating
         # point arithmetic
         assert abs(signals.value - expected_received_value) < 0.00001
 
 
-@pytest.mark.parametrize("new_write_access, is_channel_connected, tooltip, is_app_read_only", [
-    (True, True, "Write Access and Connected Channel", False),
-    (False, True, "Only Connected Channel", False),
-    (True, False, "Only Write Access", False),
-    (False, False, "No Write Access and No Connected Channel", False),
-
-    (True, True, "Write Access and Connected Channel", True),
-    (False, True, "Only Connected Channel", True),
-    (True, False, "Only Write Access", True),
-    (False, False, "No Write Access and No Connected Channel", True),
-
-    (True, True, "", False),
-    (True, True, "", True),
-])
+@pytest.mark.parametrize(
+    "new_write_access, is_channel_connected, tooltip, is_app_read_only",
+    [
+        (True, True, "Write Access and Connected Channel", False),
+        (False, True, "Only Connected Channel", False),
+        (True, False, "Only Write Access", False),
+        (False, False, "No Write Access and No Connected Channel", False),
+        (True, True, "Write Access and Connected Channel", True),
+        (False, True, "Only Connected Channel", True),
+        (True, False, "Only Write Access", True),
+        (False, False, "No Write Access and No Connected Channel", True),
+        (True, True, "", False),
+        (True, True, "", True),
+    ],
+)
 def test_write_access_changed(qapp, qtbot, signals, new_write_access, is_channel_connected, tooltip, is_app_read_only):
     """
     Test the widget's write access status and tooltip, which depends on the connection status of the data channel and
@@ -292,13 +339,16 @@ def test_write_access_changed(qapp, qtbot, signals, new_write_access, is_channel
             assert "Access denied by Channel Access Security." in actual_tooltip
 
 
-@pytest.mark.parametrize("is_precision_from_pv, pv_precision, non_pv_precision", [
-    (True, 1, 3),
-    (False, 5, 3),
-    (True, 6, 0),
-    (True, 3, None),
-    (False, 3, None),
-])
+@pytest.mark.parametrize(
+    "is_precision_from_pv, pv_precision, non_pv_precision",
+    [
+        (True, 1, 3),
+        (False, 5, 3),
+        (True, 6, 0),
+        (True, 3, None),
+        (False, 3, None),
+    ],
+)
 def test_precision_change(qtbot, signals, is_precision_from_pv, pv_precision, non_pv_precision):
     """
     Test setting the precision for the widget's value.
@@ -336,11 +386,14 @@ def test_precision_change(qtbot, signals, is_precision_from_pv, pv_precision, no
         assert pydm_lineedit.precision == (non_pv_precision if non_pv_precision is not None else 0)
 
 
-@pytest.mark.parametrize("new_unit", [
-    "s",
-    "light years",
-    "",
-])
+@pytest.mark.parametrize(
+    "new_unit",
+    [
+        "s",
+        "light years",
+        "",
+    ],
+)
 def test_unit_change(qtbot, signals, new_unit):
     """
     Test setting the widget's unit.
@@ -388,15 +441,18 @@ def find_action_from_menu(menu, action_name):
     return status
 
 
-@pytest.mark.parametrize("unit, show_units", [
-    ("ms", True),
-    ("s", False),
-    ("MHz", True),
-    ("V", True),
-    ("in", True),
-    ("mrad", True),
-    ("MA", True),
-])
+@pytest.mark.parametrize(
+    "unit, show_units",
+    [
+        ("ms", True),
+        ("s", False),
+        ("MHz", True),
+        ("V", True),
+        ("in", True),
+        ("mrad", True),
+        ("MA", True),
+    ],
+)
 def test_create_unit_options(qtbot, unit, show_units):
     """
     Test to ensure the context menu contains all applicable units that can be converted to from a given unit.
@@ -437,10 +493,13 @@ def test_create_unit_options(qtbot, unit, show_units):
         assert find_action_from_menu(action_menu, "No Unit Conversions found")
 
 
-@pytest.mark.parametrize("value, precision, unit, show_unit, expected_format_string", [
-    (123, 0, "s", True, "{:.0f} s"),
-    (123.456, 3, "mV", True, "{:.3f} mV"),
-])
+@pytest.mark.parametrize(
+    "value, precision, unit, show_unit, expected_format_string",
+    [
+        (123, 0, "s", True, "{:.0f} s"),
+        (123.456, 3, "mV", True, "{:.3f} mV"),
+    ],
+)
 def test_apply_conversion(qtbot, value, precision, unit, show_unit, expected_format_string):
     """
     Test the unit conversion by examining the resulted format string.
@@ -477,17 +536,20 @@ def test_apply_conversion(qtbot, value, precision, unit, show_unit, expected_for
     assert pydm_lineedit.format_string == expected_format_string
 
 
-@pytest.mark.parametrize("value, has_focus, channel_type, display_format, precision, scale, unit, show_units", [
-    (123, True, int, DisplayFormat.Default, 3, 1, "s", True),
-    (123, False, int, DisplayFormat.Default, 3, 1, "s", True),
-    (123, True, int, DisplayFormat.Default, 3, 1, "s", False),
-    (123, False, int, DisplayFormat.Default, 3, 1, "s", False),
-    (123.45, True, float, DisplayFormat.Decimal, 3, 2, "m", True),
-    (1e3, True, int, DisplayFormat.Exponential, 2, 2, "GHz", True),
-    (0x1FF, True, int, DisplayFormat.Hex, 0, 1, "Me", True),
-    (0b100, True, int, DisplayFormat.Binary, 0, 1, "KB", True),
-    (np.array([123, 456]), str, True, DisplayFormat.Default, 3, 2, "degree", True),
-])
+@pytest.mark.parametrize(
+    "value, has_focus, channel_type, display_format, precision, scale, unit, show_units",
+    [
+        (123, True, int, DisplayFormat.Default, 3, 1, "s", True),
+        (123, False, int, DisplayFormat.Default, 3, 1, "s", True),
+        (123, True, int, DisplayFormat.Default, 3, 1, "s", False),
+        (123, False, int, DisplayFormat.Default, 3, 1, "s", False),
+        (123.45, True, float, DisplayFormat.Decimal, 3, 2, "m", True),
+        (1e3, True, int, DisplayFormat.Exponential, 2, 2, "GHz", True),
+        (0x1FF, True, int, DisplayFormat.Hex, 0, 1, "Me", True),
+        (0b100, True, int, DisplayFormat.Binary, 0, 1, "KB", True),
+        (np.array([123, 456]), str, True, DisplayFormat.Default, 3, 2, "degree", True),
+    ],
+)
 def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format, precision, scale, unit, show_units):
     """
     Test the widget's displayed value.
@@ -535,6 +597,7 @@ def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format
     pydm_lineedit.check_enable_state()
 
     if has_focus:
+
         def wait_focus():
             pydm_lineedit.setFocus()
             qapp.processEvents()
@@ -548,7 +611,9 @@ def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format
         assert pydm_lineedit._display == "Empty"
     else:
         pydm_lineedit.clearFocus()
+
         def wait_nofocus():
+            pydm_lineedit.clearFocus()
             return not pydm_lineedit.hasFocus()
 
         qtbot.waitUntil(wait_nofocus, timeout=5000)
@@ -558,8 +623,9 @@ def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format
         if not isinstance(value, (str, np.ndarray)):
             new_value *= pydm_lineedit.channeltype(pydm_lineedit._scale)
 
-        new_value = parse_value_for_display(value=new_value, precision=precision, display_format_type=display_format,
-                                            widget=pydm_lineedit)
+        new_value = parse_value_for_display(
+            value=new_value, precision=precision, display_format_type=display_format, widget=pydm_lineedit
+        )
 
         expected_display = str(new_value)
         if display_format == DisplayFormat.Default and not isinstance(value, np.ndarray):
@@ -571,12 +637,16 @@ def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format
         assert pydm_lineedit._display == expected_display
 
 
-@pytest.mark.parametrize("displayed_value, focus_reason, expected_focus", [
-    (True, Qt.TabFocusReason, True),
-    (True, Qt.ActiveWindowFocusReason, True),
-    (False, Qt.TabFocusReason, False),
-    (False, Qt.ActiveWindowFocusReason, False),
-    (False, Qt.MouseFocusReason, True)])
+@pytest.mark.parametrize(
+    "displayed_value, focus_reason, expected_focus",
+    [
+        (True, Qt.TabFocusReason, True),
+        (True, Qt.ActiveWindowFocusReason, True),
+        (False, Qt.TabFocusReason, False),
+        (False, Qt.ActiveWindowFocusReason, False),
+        (False, Qt.MouseFocusReason, True),
+    ],
+)
 def test_focus_in_event(qtbot, qapp, displayed_value, focus_reason, expected_focus):
     """
     Ensure that the line edit's focusInEvent() override works as expected. When the widget has not yet been connected
@@ -589,10 +659,12 @@ def test_focus_in_event(qtbot, qapp, displayed_value, focus_reason, expected_foc
     with qtbot.waitExposed(pydm_lineedit):
         pydm_lineedit.show()
 
-    def wait_focus(focus_state):
-        """ Verify the current focus state of the line edit """
+    def wait_focus(focus_state, wait_on_clear):
+        """Verify the current focus state of the line edit"""
         if focus_state:
             pydm_lineedit.setFocus(Qt.OtherFocusReason)
+        elif wait_on_clear:
+            pydm_lineedit.clearFocus()
         qapp.processEvents()
         return pydm_lineedit.hasFocus() == focus_state
 
@@ -600,10 +672,10 @@ def test_focus_in_event(qtbot, qapp, displayed_value, focus_reason, expected_foc
     # measuring the correct end state
     if expected_focus:
         pydm_lineedit.clearFocus()
-        qtbot.waitUntil(functools.partial(wait_focus, False), timeout=5000)
+        qtbot.waitUntil(functools.partial(wait_focus, False, True), timeout=5000)
     else:
         pydm_lineedit.setFocus(Qt.OtherFocusReason)
-        qtbot.waitUntil(functools.partial(wait_focus, True), timeout=5000)
+        qtbot.waitUntil(functools.partial(wait_focus, True, False), timeout=5000)
 
     # Set the focus, verify the result is what we are expecting
     if expected_focus:
@@ -611,14 +683,17 @@ def test_focus_in_event(qtbot, qapp, displayed_value, focus_reason, expected_foc
     else:
         event_to_send = QFocusEvent(QEvent.FocusIn, reason=focus_reason)
         pydm_lineedit.focusInEvent(event_to_send)
-    qtbot.waitUntil(functools.partial(wait_focus, expected_focus), timeout=5000)
+    qtbot.waitUntil(functools.partial(wait_focus, expected_focus, False), timeout=5000)
 
 
-@pytest.mark.parametrize("display_value", [
-    "123",
-    "123.456",
-    "",
-])
+@pytest.mark.parametrize(
+    "display_value",
+    [
+        "123",
+        "123.456",
+        "",
+    ],
+)
 def test_focus_out_event(qtbot, qapp, display_value):
     """
     Test the widget's value revert capability if the user doesn't commit the value change.
@@ -647,6 +722,7 @@ def test_focus_out_event(qtbot, qapp, display_value):
     pydm_lineedit.check_enable_state()
 
     pydm_lineedit._display = display_value
+
     def wait_focus():
         pydm_lineedit.setFocus()
         qapp.processEvents()
@@ -655,9 +731,9 @@ def test_focus_out_event(qtbot, qapp, display_value):
     qtbot.waitUntil(wait_focus, timeout=5000)
 
     pydm_lineedit.setText("Canceled after the focusOut event")
-    pydm_lineedit.clearFocus()
 
     def wait_nofocus():
+        pydm_lineedit.clearFocus()
         qapp.processEvents()
         return not pydm_lineedit.hasFocus()
 
@@ -666,20 +742,48 @@ def test_focus_out_event(qtbot, qapp, display_value):
     # Make sure the widget still retains the previously set value after the focusOut event
     assert pydm_lineedit.text() == display_value
 
+
 # --------------------
 # NEGATIVE TEST CASES
 # --------------------
 
-@pytest.mark.parametrize("value, precision, initial_unit, unit, show_unit, expected", [
-    (123, 0, None, int, True,
-     ("Warning: Attempting to convert PyDMLineEdit unit, but no initial units supplied",)),
-    (123.456, 3, float, int, True,
-     ("Warning: Attempting to convert PyDMLineEdit unit, but ", "'float'>' can not be converted to ", "'int'>'.")),
-    (123.456, 3, float, "foo", True,
-     ("Warning: Attempting to convert PyDMLineEdit unit, but ", "'float'>' can not be converted to 'foo'.")),
-    ("123.456", 3, "light years", "light years", False,
-     ("Warning: Attempting to convert PyDMLineEdit unit, but 'light years' can not be converted to 'light years'.",)),
-])
+
+@pytest.mark.parametrize(
+    "value, precision, initial_unit, unit, show_unit, expected",
+    [
+        (123, 0, None, int, True, ("Warning: Attempting to convert PyDMLineEdit unit, but no initial units supplied",)),
+        (
+            123.456,
+            3,
+            float,
+            int,
+            True,
+            (
+                "Warning: Attempting to convert PyDMLineEdit unit, but ",
+                "'float'>' can not be converted to ",
+                "'int'>'.",
+            ),
+        ),
+        (
+            123.456,
+            3,
+            float,
+            "foo",
+            True,
+            ("Warning: Attempting to convert PyDMLineEdit unit, but ", "'float'>' can not be converted to 'foo'."),
+        ),
+        (
+            "123.456",
+            3,
+            "light years",
+            "light years",
+            False,
+            (
+                "Warning: Attempting to convert PyDMLineEdit unit, but 'light years' can not be converted to 'light years'.",  # noqa E501
+            ),
+        ),
+    ],
+)
 def test_apply_conversion_wrong_unit(qtbot, caplog, value, precision, initial_unit, unit, show_unit, expected):
     """
     Test the unit conversion error logging.
@@ -717,12 +821,25 @@ def test_apply_conversion_wrong_unit(qtbot, caplog, value, precision, initial_un
     assert all(x in caplog.text for x in expected)
 
 
-@pytest.mark.parametrize("init_value, user_typed_value, display_format, precision, scale, unit,"
-                         "show_units, expected_errors", [
-    (123, 345.678, DisplayFormat.Default, 0, 1, "s", True, ("Error trying to set data ", "with type ", "int'>")),
-])
-def test_send_value_neg(qtbot, caplog, signals, init_value, user_typed_value, display_format, precision, scale, unit,
-                        show_units, expected_errors):
+@pytest.mark.parametrize(
+    "init_value, user_typed_value, display_format, precision, scale, unit," "show_units, expected_errors",
+    [
+        (123, 345.678, DisplayFormat.Default, 0, 1, "s", True, ("Error trying to set data ", "with type ", "int'>")),
+    ],
+)
+def test_send_value_neg(
+    qtbot,
+    caplog,
+    signals,
+    init_value,
+    user_typed_value,
+    display_format,
+    precision,
+    scale,
+    unit,
+    show_units,
+    expected_errors,
+):
     """
     Test sending the value to the channel error logging.
 

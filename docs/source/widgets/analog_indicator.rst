@@ -25,6 +25,7 @@ backgroundSizeRate = 0.4.
     :align: center
 
 * Suggested Orientations
+
 Horizontal with value displayed on the right.
 Vertical with value displayed on bottom.
 
@@ -39,6 +40,7 @@ There are a few methods of not drawing alarm regions.
   1. Set the alarm to the corresponding limit. Do not set the alarm to outside of the limits, this will cause drawing errors.
   2. Set userUpperMajorAlarm = userLowerMajorAlarm = 0.  Or set userUpperMinorAlarm = userLowerMinorAlarm = 0.
   3. If any alarm value is set to nan (not a number), those regions won't draw.  Setting an alarm value to nan is not possible in designer.
+
 .. figure:: /_static/widgets/analog_indicator/no_upper_minor.png
     :scale: 100%
     :align: center

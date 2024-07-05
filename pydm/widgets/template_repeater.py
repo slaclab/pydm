@@ -2,15 +2,14 @@ import os
 import json
 import copy
 import logging
-from qtpy.QtWidgets import (QFrame, QApplication, QLabel, QVBoxLayout,
-                           QHBoxLayout, QWidget, QStyle, QSizePolicy,
-                           QLayout)
+from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QHBoxLayout, QWidget, QStyle, QSizePolicy, QLayout
 from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint, Q_ENUMS
 from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer
 import pydm.data_plugins
-from ..utilities import macro, find_file
+from ..utilities import find_file
 from ..display import load_file
+
 logger = logging.getLogger(__name__)
 
 
@@ -21,61 +20,61 @@ class FlowLayout(QLayout):
         self.m_h_space = h_spacing
         self.m_v_space = v_spacing
         self.item_list = []
-    
+
     def addItem(self, item):
         self.item_list.append(item)
-    
+
     def horizontalSpacing(self):
         if self.m_h_space >= 0:
             return self.m_h_space
         else:
             return self.smart_spacing(QStyle.PM_LayoutHorizontalSpacing)
-    
+
     def verticalSpacing(self):
         if self.m_v_space >= 0:
             return self.m_v_space
         else:
             return self.smart_spacing(QStyle.PM_LayoutVerticalSpacing)
-    
+
     def count(self):
         return len(self.item_list)
-    
+
     def itemAt(self, index):
         if index >= 0 and index < len(self.item_list):
             return self.item_list[index]
         else:
             return None
-    
+
     def takeAt(self, index):
         if index >= 0 and index < len(self.item_list):
             return self.item_list.pop(index)
         else:
             return None
-    
+
     def expandingDirections(self):
         return Qt.Orientations(0)
-    
+
     def hasHeightForWidth(self):
         return True
-    
+
     def heightForWidth(self, width):
-        return self.do_layout(QRect(0,0, width, 0), True)
-    
+        return self.do_layout(QRect(0, 0, width, 0), True)
+
     def setGeometry(self, rect):
         super(FlowLayout, self).setGeometry(rect)
         self.do_layout(rect, False)
-    
+
     def sizeHint(self):
         return self.minimumSize()
-    
+
     def minimumSize(self):
         size = QSize()
         for item in self.item_list:
             size = size.expandedTo(item.minimumSize())
-        #size += QSize(2*self.margin(), 2*self.margin())
-        size += QSize(2*8, 2*8)
+        # size += QSize(2*self.margin(), 2*self.margin())
+        size += QSize(2 * 8, 2 * 8)
         return size
-    
+
     def do_layout(self, rect, test_only):
         (left, top, right, bottom) = self.getContentsMargins()
         effective_rect = rect.adjusted(left, top, -right, -bottom)
@@ -101,7 +100,7 @@ class FlowLayout(QLayout):
             x = next_x
             line_height = max(line_height, item.sizeHint().height())
         return y + line_height - rect.y() + bottom
-    
+
     def smart_spacing(self, pm):
         parent = self.parent()
         if not parent:
@@ -140,6 +139,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     parent : optional
         The parent of this widget.
     """
+
     Q_ENUMS(LayoutType)
     LayoutType = LayoutType
 
@@ -157,7 +157,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         self._temp_layout_spacing = 4
         self.app = QApplication.instance()
         self.rebuild()
-    
+
     @Property(LayoutType)
     def layoutType(self):
         """
@@ -176,7 +176,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         Options are:
         - **Vertical**: Instances of the template are laid out vertically, in rows.
         - **Horizontal**: Instances of the template are laid out horizontally, in columns.
-        - **Flow**: Instances of the template are laid out horizontally until they reach the edge of the template, at which point they "wrap" into a new row.
+        - **Flow**: Instances of the template are laid out horizontally until they reach the edge of the template,
+        at which point they "wrap" into a new row.
 
         Parameters
         ----------
@@ -191,31 +192,31 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         if self.layout():
             return self.layout().spacing()
         return self._temp_layout_spacing
-    
+
     @layoutSpacing.setter
     def layoutSpacing(self, new_spacing):
         self._temp_layout_spacing = new_spacing
         if self.layout():
             self.layout().setSpacing(new_spacing)
-    
+
     @Property(int)
     def countShownInDesigner(self):
         """
         The number of instances to show in Qt Designer.  This property has no
         effect outside of Designer.
-        
+
         Returns
         -------
         int
         """
         return self._count_shown_in_designer
-    
+
     @countShownInDesigner.setter
     def countShownInDesigner(self, new_count):
         """
         The number of instances to show in Qt Designer.  This property has no
         effect outside of Designer.
-        
+
         Parameters
         ----------
         new_count : int
@@ -231,23 +232,23 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         if new_count != self._count_shown_in_designer:
             self._count_shown_in_designer = new_count
             self.rebuild()
-    
+
     @Property(str)
     def templateFilename(self):
         """
         The path to the .ui file to use as a template.
-        
+
         Returns
         -------
         str
         """
         return self._template_filename
-    
+
     @templateFilename.setter
     def templateFilename(self, new_filename):
         """
         The path to the .ui file to use as a template.
-        
+
         Parameters
         ----------
         new_filename : str
@@ -286,25 +287,25 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         """
         The path to the JSON file or a valid JSON string to fill in each
         instance of the template.
-        
+
         Returns
         -------
         str
         """
         return self._data_source
-    
+
     @dataSource.setter
     def dataSource(self, data_source):
         """
         Sets the path to the JSON file or a valid JSON string to fill in each
         instance of the template.
-        
+
         For example, if you build a template that contains two macro variables,
         ${NAME} and ${UNIT}, your JSON file should be a list of dictionaries,
         each with keys for NAME and UNIT, like this:
-        
+
         [{"NAME": "First Device", "UNIT": 1}, {"NAME": "Second Device", "UNIT": 2}]
-        
+
         Parameters
         -------
         data_source : str
@@ -314,30 +315,35 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             if self._data_source:
                 is_json, data = self._is_json(data_source)
                 if is_json:
-                    logger.debug('TemplateRepeater dataSource is a valid JSON.')
+                    logger.debug("TemplateRepeater dataSource is a valid JSON.")
                     self.data = data
                 else:
-                    logger.debug('TemplateRepeater dataSource is not a valid JSON. Assuming it is a file path.')
+                    logger.debug("TemplateRepeater dataSource is not a valid JSON. Assuming it is a file path.")
                     try:
                         parent_display = self.find_parent_display()
                         base_path = None
                         if parent_display:
-                            base_path = os.path.dirname(
-                                parent_display.loaded_file())
+                            base_path = os.path.dirname(parent_display.loaded_file())
                         fname = find_file(self._data_source, base_path=base_path, raise_if_not_found=True)
 
                         if not fname:
                             if not is_qt_designer():
-                                logger.error('Cannot locate data source file {} for PyDMTemplateRepeater.'.format(self._data_source))
+                                logger.error(
+                                    "Cannot locate data source file {} for PyDMTemplateRepeater.".format(
+                                        self._data_source
+                                    )
+                                )
                             self.data = []
                         else:
                             with open(fname) as f:
                                 try:
                                     self.data = json.load(f)
                                 except ValueError:
-                                    logger.error('Failed to parse data source file {} for PyDMTemplateRepeater.'.format(fname))
+                                    logger.error(
+                                        "Failed to parse data source file {} for PyDMTemplateRepeater.".format(fname)
+                                    )
                                     self.data = []
-                    except IOError as e:
+                    except IOError:
                         self.data = []
             else:
                 self.clear()
@@ -345,7 +351,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
     def open_template_file(self, variables=None):
         """
         Opens the widget specified in the templateFilename property.
-        
+
         Parameters
         ----------
         variables : dict
@@ -361,8 +367,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         parent_display = self.find_parent_display()
         base_path = None
         if parent_display:
-            base_path = os.path.dirname(
-                parent_display.loaded_file())
+            base_path = os.path.dirname(parent_display.loaded_file())
         fname = find_file(self.templateFilename, base_path=base_path, raise_if_not_found=True)
 
         if self._parent_macros is None:
@@ -375,24 +380,24 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         try:
             w = load_file(fname, macros=parent_macros, target=None)
         except Exception as ex:
-            w = QLabel('Error: could not load template: ' + str(ex))
+            w = QLabel("Error: could not load template: " + str(ex))
         return w
 
     def rebuild(self):
-        """ Clear out all existing widgets, and populate the list using the
+        """Clear out all existing widgets, and populate the list using the
         template file and data source."""
         self.clear()
         if (not self.templateFilename) or (not self.data):
             return
         self.setUpdatesEnabled(False)
-        
+
         layout_class = layout_class_for_type[self.layoutType]
         if type(self.layout()) != layout_class:
             if self.layout() is not None:
                 # Trick to remove the existing layout by re-parenting it in an empty widget.
                 QWidget().setLayout(self.layout())
-            l = layout_class(self)
-            self.setLayout(l)
+            currLayoutClass = layout_class(self)
+            self.setLayout(currLayoutClass)
             self.layout().setSpacing(self._temp_layout_spacing)
         try:
             with pydm.data_plugins.connection_queue(defer_connections=True):
@@ -405,8 +410,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
                         w.setText("No Template Loaded.  Data: {}".format(variables))
                     w.setParent(self)
                     self.layout().addWidget(w)
-        except:
-            logger.exception('Template repeater failed to rebuild.')
+        except Exception:
+            logger.exception("Template repeater failed to rebuild.")
         finally:
             # If issues happen during the rebuild we should still enable
             # updates and establish connection for the widgets added.
@@ -415,9 +420,9 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             # staled.
             self.setUpdatesEnabled(True)
             pydm.data_plugins.establish_queued_connections()
-    
+
     def clear(self):
-        """ Clear out any existing instances of the template inside
+        """Clear out any existing instances of the template inside
         the widget."""
         if not self.layout():
             return
@@ -425,13 +430,13 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             item = self.layout().takeAt(0)
             item.widget().deleteLater()
             del item
-    
+
     def count(self):
         if not self.layout():
             return 0
         return self.layout().count()
-    
-    @property    
+
+    @property
     def data(self):
         """
         The dictionary used by the widget to fill in each instance of the template.
@@ -439,13 +444,13 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         property.
         """
         return self._data
-    
+
     @data.setter
     def data(self, new_data):
         """
-        Sets the dictionary used by the widget to fill in each instance of 
+        Sets the dictionary used by the widget to fill in each instance of
         the template.  This property will be overwritten if the user changes
-        the dataSource property.  After setting this property, `rebuild` 
+        the dataSource property.  After setting this property, `rebuild`
         is automatically called to refresh the widget.
         """
         self._data = new_data

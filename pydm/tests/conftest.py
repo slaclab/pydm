@@ -28,6 +28,7 @@ class ConnectionSignals(QObject):
     """
     An assortment of signals, to which a unit test can choose from and bind an appropriate slot
     """
+
     new_value_signal = Signal([float], [int], [str], [np.ndarray])
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
@@ -112,7 +113,7 @@ def signals():
     return ConnectionSignals()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def qapp(qapp_args):
     """
     Fixture for a PyDMApplication app instance.
@@ -125,13 +126,17 @@ def qapp(qapp_args):
     -------
     An instance of PyDMApplication.
     """
+    # Don't pass along the default app name we get from pytest-qt otherwise PyDM will misinterpret it as a ui file name
+    if "pytest-qt-qapp" == qapp_args[0]:
+        qapp_args.remove("pytest-qt-qapp")
+
     yield PyDMApplication(use_main_window=False, *qapp_args)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def test_plugin():
     # Create test PyDMPlugin with mock protocol
     test_plug = PyDMPlugin
-    test_plug.protocol = 'tst'
+    test_plug.protocol = "tst"
     add_plugin(test_plug)
     return test_plug

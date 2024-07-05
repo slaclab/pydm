@@ -10,6 +10,7 @@ Display Widgets
    :maxdepth: 1
 
    byte.rst
+   multistate.rst
    datetime_label.rst
    image.rst
    label.rst
@@ -17,6 +18,8 @@ Display Widgets
    related_display_button.rst
    scale.rst
    symbol.rst
+   analog_indicator.rst
+   nt_table.rst
 
 Input Widgets
 -------------
@@ -42,6 +45,7 @@ Plot Widgets
    curve_editor.rst
    scatterplot.rst
    timeplot.rst
+   event_plot.rst
    archiver_timeplot.rst
    waveformplot.rst
 
@@ -62,9 +66,15 @@ Drawing Widgets
 
    drawing.rst
 
+Base Widgets
+------------
+.. toctree::
+   :maxdepth: 1
+
+   PyDMWidget.rst
+
 Utilities
 ---------
-
 .. toctree::
    :maxdepth: 1
 

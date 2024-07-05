@@ -1,25 +1,30 @@
 [![Build Status](https://github.com/slaclab/pydm/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/slaclab/pydm/actions/workflows/run-tests.yml)
 
-<p align="center">
-  <h1 align="center">PyDM: Python Display Manager</h1>
+![PyDM: Python Display Manager](pydm_banner_full.png)
 
-  <p align="center">
-    PyDM is a PyQt-based framework for building user interfaces for control systems.
-    The goal is to provide a no-code, drag-and-drop system to make simple screens,
-    as well as a straightforward Python framework to build complex applications.
-    <br>
-    <br>
-    <strong>« Explore PyDM <a href="https://slaclab.github.io/pydm/">docs</a> and <a href="https://slaclab.github.io/pydm-tutorial">tutorials</a> »</strong>
-    <br>
-    <br>
-    <a href="https://github.com/slaclab/pydm/issues/new?template=bug-report.md">Report bug</a>
-    ·
-    <a href="https://github.com/slaclab/pydm/issues/new?template=feature-request.md&labels=request">Request feature</a>
-    ·
-    <a href="https://github.com/slaclab/pydm/blob/master/.github/CONTRIBUTING.md">How to Contribute</a>
-    ·
-    <a href="https://github.com/slaclab/pydm/blob/master/.github/SUPPORT.md">Support</a>
-  </p>
+<p>
+  <img src="pydm_launcher/icons/pydm_128.png" width="128" height="128" align="right"/>
+  <h1>PyDM: Python Display Manager</h1>
+</p>
+
+<p align="left">
+  PyDM is a PyQt-based framework for building user interfaces for control systems.
+  The goal is to provide a no-code, drag-and-drop system to make simple screens,
+  as well as a straightforward Python framework to build complex applications.
+  <br>
+  <br>
+</p>
+<p align="center">
+  <strong>« Explore PyDM <a href="https://slaclab.github.io/pydm/">docs</a> and <a href="https://slaclab.github.io/pydm/tutorials/index.html">tutorials</a> »</strong>
+  <br>
+  <br>
+  <a href="https://github.com/slaclab/pydm/issues/new?template=bug-report.md">Report bug</a>
+  ·
+  <a href="https://github.com/slaclab/pydm/issues/new?template=feature-request.md&labels=request">Request feature</a>
+  ·
+  <a href="https://github.com/slaclab/pydm/blob/master/.github/CONTRIBUTING.md">How to Contribute</a>
+  ·
+  <a href="https://github.com/slaclab/pydm/blob/master/.github/SUPPORT.md">Support</a>
 </p>
 
 <br>
@@ -71,7 +76,7 @@ python scripts/pydm examples/home.ui
 ```
 
 # Building the Documentation Locally
-In order to build the documentation you will need to instll some dependencies
+In order to build the documentation you will need to install some dependencies
 that are not part of the runtime dependencies of PyDM.
 
 Assuming that you have cloned this repository do:
@@ -111,27 +116,5 @@ pip install .[all]
 When using Anaconda to install PyDM at a Linux Environment it will automatically
 define the PYQTDESIGNERPATH environment variable pointing to /etc/pydm which
 will have a file named designer_plugin.py which will make all the PyDM widgets
-available to the Qt Designer.
-
-### Most Recent Development Build
-
-[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/installer/conda.svg)](https://conda.anaconda.org/pydm-dev)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/platforms.svg)](https://anaconda.org/pydm-dev/pydm)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/version.svg)](https://anaconda.org/pydm-dev/pydm)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-dev/pydm/badges/downloads.svg)](https://anaconda.org/pydm-dev/pydm)
-
-
-```sh
-conda install -c pydm-dev -c conda-forge pydm
-```
-### Most Recent Tagged Build
-
-[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/installer/conda.svg)](https://conda.anaconda.org/pydm-tag)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/platforms.svg)](https://anaconda.org/pydm-tag/pydm)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/version.svg)](https://anaconda.org/pydm-tag/pydm)
-[![Anaconda-Server Badge](https://anaconda.org/pydm-tag/pydm/badges/downloads.svg)](https://anaconda.org/pydm-tag/pydm)
-
-
-```sh
-conda install -c pydm-tag -c conda-forge pydm
-```
+available to the Qt Designer. For more information please see
+our <a href="https://slaclab.github.io/pydm/installation.html">installation guide</a>.

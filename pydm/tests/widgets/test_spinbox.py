@@ -15,6 +15,7 @@ from ...tests.widgets.test_lineedit import find_action_from_menu
 # POSITIVE TEST CASES
 # --------------------
 
+
 def test_construct(qtbot):
     """
     Test the construction of the widget.
@@ -40,12 +41,16 @@ def test_construct(qtbot):
     assert pydm_spinbox._write_on_press is False
 
 
-@pytest.mark.parametrize("first_key_pressed, second_key_pressed, keys_pressed_expected_results", [
-    (Qt.Key_Left, Qt.Key_Right, (2, 1)),
-    (Qt.Key_Right, Qt.Key_Left, (-2, -1)),
-])
-def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_key_pressed,
-                         keys_pressed_expected_results):
+@pytest.mark.parametrize(
+    "first_key_pressed, second_key_pressed, keys_pressed_expected_results",
+    [
+        (Qt.Key_Left, Qt.Key_Right, (2, 1)),
+        (Qt.Key_Right, Qt.Key_Left, (-2, -1)),
+    ],
+)
+def test_key_press_event(
+    qtbot, signals, monkeypatch, first_key_pressed, second_key_pressed, keys_pressed_expected_results
+):
     """
     Test the widget's handling of the key press events.
 
@@ -87,6 +92,7 @@ def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_
 
     def wait_focus():
         return pydm_spinbox.hasFocus()
+
     qtbot.waitUntil(wait_focus, timeout=5000)
 
     def press_key_and_verify(key_pressed, key_mod, key_press_count, expected_exp, expected_value):
@@ -108,12 +114,12 @@ def test_key_press_event(qtbot, signals, monkeypatch, first_key_pressed, second_
         assert pydm_spinbox.value == expected_value
 
     # Send out the first key event to effect the change of the step exponent
-    press_key_and_verify(first_key_pressed, Qt.ControlModifier, 2, keys_pressed_expected_results[0],
-                         INIT_SPINBOX_VALUE)
+    press_key_and_verify(first_key_pressed, Qt.ControlModifier, 2, keys_pressed_expected_results[0], INIT_SPINBOX_VALUE)
 
     # Send out the second key press event once to check if it can change the step exponent
-    press_key_and_verify(second_key_pressed, Qt.ControlModifier, 1, keys_pressed_expected_results[1],
-                         INIT_SPINBOX_VALUE)
+    press_key_and_verify(
+        second_key_pressed, Qt.ControlModifier, 1, keys_pressed_expected_results[1], INIT_SPINBOX_VALUE
+    )
 
     # Make sure the widget can process the UpArrow, DownArrow, PageUp, and PageDown keys
     pydm_spinbox.keyPressEvent(QKeyEvent(QEvent.KeyPress, Qt.Key_Up, Qt.ControlModifier))
@@ -142,14 +148,7 @@ def test_widget_ctx_menu(qtbot):
     assert find_action_from_menu(action_menu, "Toggle Show Step Size")
 
 
-@pytest.mark.parametrize("step_exp", [
-    10,
-    1,
-    0.01,
-    0,
-    -10,
-    -0.001
-])
+@pytest.mark.parametrize("step_exp", [10, 1, 0.01, 0, -10, -0.001])
 def test_update_step_size(qtbot, step_exp):
     """
     Test the incrementing of the widget's step exponent.
@@ -171,17 +170,20 @@ def test_update_step_size(qtbot, step_exp):
     pydm_spinbox.step_exponent = step_exp
     pydm_spinbox.update_step_size()
 
-    assert pydm_spinbox.singleStep() == 10 ** step_exp
+    assert pydm_spinbox.singleStep() == 10**step_exp
 
 
-@pytest.mark.parametrize("show_unit, new_unit, step_exp, show_step_exp", [
-    (True, "mJ", 0.01, True),
-    (True, "light years", 10, True),
-    (True, "s", -0.001, True),
-    (True, "ms", 1, False),
-    (False, "ns", 0.01, True),
-    (False, "light years", 1, False),
-])
+@pytest.mark.parametrize(
+    "show_unit, new_unit, step_exp, show_step_exp",
+    [
+        (True, "mJ", 0.01, True),
+        (True, "light years", 10, True),
+        (True, "s", -0.001, True),
+        (True, "ms", 1, False),
+        (False, "ns", 0.01, True),
+        (False, "light years", 1, False),
+    ],
+)
 def test_update_format_string(qtbot, signals, show_unit, new_unit, step_exp, show_step_exp):
     """
     Test the widget's capability of updating the format string when various unit and step exponent paramaters are
@@ -240,13 +242,10 @@ def test_update_format_string(qtbot, signals, show_unit, new_unit, step_exp, sho
         assert pydm_spinbox.lineEdit().toolTip() == expected_tooltip
 
 
-@pytest.mark.parametrize("init_value, user_typed_value, precision", [
-    (123, 456, 3),
-    (1.23, 4.56, 2),
-    (1.23, 5, 0),
-    (0, 12.3, 2),
-    (-1.23, 4.6, 1)
-])
+@pytest.mark.parametrize(
+    "init_value, user_typed_value, precision",
+    [(123, 456, 3), (1.23, 4.56, 2), (1.23, 5, 0), (0, 12.3, 2), (-1.23, 4.6, 1)],
+)
 def test_send_value(qtbot, signals, init_value, user_typed_value, precision):
     """
     Test sending the value from the widget to the channel. This method tests value_changed() and precision_changed().
@@ -289,12 +288,10 @@ def test_send_value(qtbot, signals, init_value, user_typed_value, precision):
     assert pydm_spinbox.value == user_typed_value
 
 
-@pytest.mark.parametrize("which_limit, new_limit, user_defined_limits", [
-    ("UPPER", 123.456, False),
-    ("LOWER", 12.345, False),
-    ("UPPER", 987.654, True),
-    ("LOWER", 9.321, True)
-])
+@pytest.mark.parametrize(
+    "which_limit, new_limit, user_defined_limits",
+    [("UPPER", 123.456, False), ("LOWER", 12.345, False), ("UPPER", 987.654, True), ("LOWER", 9.321, True)],
+)
 def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined_limits):
     """
     Test the upper and lower limit settings.
@@ -380,14 +377,18 @@ def test_reset_limits(qtbot):
     assert pydm_spinbox.maximum() == 10.5
 
 
-@pytest.mark.parametrize("key_pressed, initial_spinbox_value, expected_result, write_on_press", [
-    (Qt.Key_Up, 1, 2, True),
-    (Qt.Key_Down, 1, 0, True),
-    (Qt.Key_Up, 1, 1, False),
-    (Qt.Key_Down, 1, 1, False),
-])
-def test_write_on_press(qtbot, signals, monkeypatch, key_pressed, initial_spinbox_value,
-                        expected_result, write_on_press):
+@pytest.mark.parametrize(
+    "key_pressed, initial_spinbox_value, expected_result, write_on_press",
+    [
+        (Qt.Key_Up, 1, 2, True),
+        (Qt.Key_Down, 1, 0, True),
+        (Qt.Key_Up, 1, 1, False),
+        (Qt.Key_Down, 1, 1, False),
+    ],
+)
+def test_write_on_press(
+    qtbot, signals, monkeypatch, key_pressed, initial_spinbox_value, expected_result, write_on_press
+):
     """
     Test sending the value from the widget to the channel on key press when writeOnPress enabled.
 
