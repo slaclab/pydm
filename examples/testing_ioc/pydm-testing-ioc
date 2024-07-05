@@ -65,7 +65,7 @@ pvdb = {
         "prec": 3,
         "asg": "default",
     },
-    "StatusBits": {"type": "int", "value": 0b101010, "lolim": 0, "hilim": 32, "asg": "default"},
+    "StatusBits": {"type": "int", "value": 0b101010, "lolim": -32, "hilim": 32, "asg": "default"},
     "SinVal": {"type": "float", "value": 0.0, "asg": "default"},
     "CosVal": {"type": "float", "value": 0.0, "asg": "default"},
     "Normal": {"type": "float", "value": 0.0, "asg": "default"},
