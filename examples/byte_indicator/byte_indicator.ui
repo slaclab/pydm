@@ -116,7 +116,7 @@
       <bool>false</bool>
      </property>
      <property name="numBits" stdset="0">
-      <number>5</number>
+      <number>8</number>
      </property>
      <property name="shift" stdset="0">
       <number>0</number>
@@ -128,6 +128,9 @@
        <string>Bit 2</string>
        <string>Bit 3</string>
        <string>Bit 4</string>
+       <string>Bit 5</string>
+       <string>Bit 6</string>
+       <string>Bit 7</string>
       </stringlist>
      </property>
     </widget>
