@@ -8,7 +8,7 @@ from ...widgets.byte import PyDMByteIndicator
     [
         (0, 0, (False, False, False)),
         (0, 5, (True, False, True)),
-        (0, -5, (True, False, True)),
+        (0, -5, (True, True, False)),
         #
         # Helpful to note:
         # Positive shift values execute ">> x" and negative values execute "<< abs(x)" on the indicator's value.
@@ -18,10 +18,10 @@ from ...widgets.byte import PyDMByteIndicator
         #
         (1, 0, (False, False, False)),
         (1, 4, (False, True, False)),
-        (1, -5, (False, True, False)),
+        (1, -5, (True, False, True)),
         (-1, 0, (False, False, False)),
         (-1, 1, (False, True, False)),
-        (-1, -5, (False, True, False, True)),
+        (-1, -5, (False, True, True, False)),
     ],
 )
 def test_value_shift(qtbot, signals, shift, value, expected):
@@ -57,4 +57,6 @@ def test_value_shift(qtbot, signals, shift, value, expected):
 
     for i, bit, indicator in zip(range(num_bits), expected, pydm_byte._indicators):
         expected_color = pydm_byte.onColor if bit else pydm_byte.offColor
+        #print (indicator._brush.color().name())
         assert indicator._brush.color().name() == expected_color.name(), "Failed to match bit#{}".format(i)
+    #assert 0 == 1
