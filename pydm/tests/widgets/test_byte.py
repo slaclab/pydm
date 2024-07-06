@@ -57,6 +57,6 @@ def test_value_shift(qtbot, signals, shift, value, expected):
 
     for i, bit, indicator in zip(range(num_bits), expected, pydm_byte._indicators):
         expected_color = pydm_byte.onColor if bit else pydm_byte.offColor
-        #print (indicator._brush.color().name())
+        # print (indicator._brush.color().name())
         assert indicator._brush.color().name() == expected_color.name(), "Failed to match bit#{}".format(i)
-    #assert 0 == 1
+    # assert 0 == 1
