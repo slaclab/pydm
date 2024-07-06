@@ -9,14 +9,13 @@ from ...widgets.byte import PyDMByteIndicator
         (0, 0, (False, False, False)),
         (0, 5, (True, False, True)),
         (0, -5, (True, False, True)),
+        #
         # Helpful to note:
         # Positive shift values execute ">> x" and negative values execute "<< abs(x)" on the indicator's value.
         #
         # Bit shifting in python is defined as follows (https://wiki.python.org/moin/BitwiseOperators):
         #   x << y is same as x * (2**y) and x >> y is same as x / (2**y)
         #
-        # Doing an example shifting on paper: can do so in big-endian (ex: 4 = 000100, 4 >> 1 = 000010),
-        # and write expected out in little-endian order (ex: 4 >> 1 = 010000)
         (1, 0, (False, False, False)),
         (1, 4, (False, True, False)),
         (1, -5, (False, True, False)),
