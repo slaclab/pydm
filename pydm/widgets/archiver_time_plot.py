@@ -90,6 +90,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         )
 
         # Clear the archive data of the previous channel and redraw the curve
+        min_x = self.min_archiver_x()
+        max_x = self.max_x()
         if self.archive_points_accumulated:
             self.initializeArchiveBuffer()
             self.redrawCurve()
@@ -327,15 +329,16 @@ class FormulaCurveItem(BasePlotCurveItem):
     """
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
+    formula_invalid_signal = Signal()
     def __init__(
-        self, formula:str= None, pvs:dict= None, use_archive_data: bool = True, liveData: bool = True, color:str = "green",**kws
+        self, formula:str= None, pvs:dict= None, use_archive_data: bool = True, liveData: bool = True, color:str = "green", **kws
     ):
         super(FormulaCurveItem, self).__init__(**kws)
         self.color=color
         self.use_archive_data = use_archive_data
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
-        self._bufferSize = 2
+        self._bufferSize = 0
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self._liveData = liveData
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
@@ -348,7 +351,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.maxx = float("inf")
         self.pvs = pvs
         self.plot_style = "Line"
-        self.redrawCurve()
+        
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
         dic_ = OrderedDict([("useArchiveData", self.use_archive_data), ("liveData", self.liveData)])
@@ -365,16 +368,25 @@ class FormulaCurveItem(BasePlotCurveItem):
             self._liveData = False
             return
         self._liveData = True
-
+    def checkFormula(self) -> bool:
+        for pv in self.pvs.keys():
+            if not self.pvs[pv].exists:
+                print(pv + " is no longer a valid PV name")
+                return False
+        return True
     @Slot(np.ndarray)
     def evaluate(self) -> None:
+        if not self.checkFormula():
+            self.formula_invalid_signal.emit()
+            return
+        formula = self.formula[4:]
         pvArchiveData = dict()
         pvLiveData = dict()
         pvIndices = dict()
         pvValues = dict()
         self.minx = float("-inf")
         self.maxx = float("inf")
-        formula = re.sub("{(.+?)}", "pvValues[\"\g<1>\"]", self.formula)
+        formula = re.sub("{(.+?)}", "pvValues[\"\g<1>\"]", formula)
         formula = formula.replace("log", "math.log")
         formula = formula.replace("sqrt", "math.sqrt")
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
@@ -392,7 +404,6 @@ class FormulaCurveItem(BasePlotCurveItem):
             while pvIndices[pv] < len(pvArchiveData[pv][0]) - 1 and pvArchiveData[pv][0][pvIndices[pv]] < self.minx:
                 pvValues[pv] = pvArchiveData[pv][1][pvIndices[pv]]
                 pvIndices[pv] += 1
-        # prevx = 0
         x = self.minx
         while(True):
             self.archive_points_accumulated += 1
@@ -405,8 +416,6 @@ class FormulaCurveItem(BasePlotCurveItem):
             pvValues[minPV] = pvArchiveData[minPV][1][pvIndices[minPV]]
             temp = np.array([[x], [eval(formula)]])
             self.archive_data_buffer = np.append(self.archive_data_buffer, temp, axis = 1)
-            # if temp[1][0] == pvValues["B"]:
-            #     print("what the hell man")
             pvIndices[minPV] += 1
             if pvIndices[minPV] >= len(pvArchiveData[minPV][0]):
                 break
@@ -468,7 +477,8 @@ class FormulaCurveItem(BasePlotCurveItem):
         except (ZeroDivisionError, OverflowError, TypeError):
             # Solve an issue with pyqtgraph and initial downsampling
             pass
-
+    def getBufferSize(self):
+        return self._bufferSize
     def initializeArchiveBuffer(self) -> None:
         """
         Initialize the archive data buffer used for this curve.
@@ -643,10 +653,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             processing_command = ""
             if curve.use_archive_data:
                 if max_x is None:
-                    if curve.points_accumulated > 0:
-                        max_x = curve.data_buffer[0][curve.getBufferSize() - curve.points_accumulated]
-                    else:
-                        max_x = self._starting_timestamp
+                    max_x = curve.min_x()
+                    # if curve.points_accumulated > 0:
+                    #     max_x = curve.data_buffer[0][curve.getBufferSize() - curve.points_accumulated]
+                    # else:
+                    #     max_x = self._starting_timestamp
                 requested_seconds = max_x - min_x
                 if requested_seconds <= 5:
                     continue  # Avoids noisy requests when first rendering the plot
@@ -810,4 +821,5 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     ) -> FormulaCurveItem:
         FormulaCurve = FormulaCurveItem(color=color, **kwargs)
         self.plotItem.linkDataToAxis(FormulaCurve, yAxisName)
+        FormulaCurve.redrawCurve()
         return FormulaCurve

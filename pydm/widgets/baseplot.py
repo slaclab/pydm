@@ -89,10 +89,12 @@ class BasePlotCurveItem(PlotDataItem):
         lineStyle: Optional[Qt.PenStyle] = None,
         lineWidth: Optional[int] = None,
         yAxisName: Optional[str] = None,
+        exists: bool = True,
         **kws,
     ) -> None:
         self._color = QColor("white")
         self._thresholdColor = QColor("white")
+        self.exists = exists
         self._pen = mkPen(self._color)
         if lineWidth is not None:
             self._pen.setWidth(lineWidth)
@@ -848,9 +850,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         plot_item : BasePlotCurveItem
             The cureve to be removed from this plot
         """
+        plot_item.exists = False
         if plot_item.y_axis_name in self.plotItem.axes:
             self.plotItem.unlinkDataFromAxis(plot_item.y_axis_name)
-
         self.removeItem(plot_item)
         self._curves.remove(plot_item)
         if len(self._curves) < 1:
