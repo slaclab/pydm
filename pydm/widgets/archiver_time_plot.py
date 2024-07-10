@@ -393,7 +393,6 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self.points_accumulated = 0
         self.archive_points_accumulated = 0
-
         for pv in self.pvs.keys():
             pvArchiveData[pv] = self.pvs[pv].archive_data_buffer
             pvIndices[pv] = 0
@@ -408,7 +407,6 @@ class FormulaCurveItem(BasePlotCurveItem):
         while(True):
             self.archive_points_accumulated += 1
             minPV = None
-            prevx = x
             for pv in self.pvs.keys():
                 if minPV == None or pvArchiveData[pv][0][pvIndices[pv]] < pvArchiveData[minPV][0][pvIndices[minPV]]:
                     minPV = pv
@@ -457,6 +455,11 @@ class FormulaCurveItem(BasePlotCurveItem):
         """
         Redraw the curve with any new data added since the last draw call.
         """
+        if not self.pvs:
+            y = [eval(self.formula[4:]), eval(self.formula[4:])]
+            x = [0, 10000000000]
+            self.setData(y=y, x=x)
+            return
         self.evaluate()
         try:
             x = np.concatenate(
@@ -502,9 +505,12 @@ class FormulaCurveItem(BasePlotCurveItem):
             self.initializeArchiveBuffer()
     
     def max_x(self):
+        if not self.pvs:
+            return 10000000000
         return self.data_buffer[0, -1]
     def min_x(self):
-
+        if not self.pvs:
+            return 0
         return self.minx
     def min_archiver_x(self):
         """
@@ -815,7 +821,6 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         )
     def replaceToArchivePlot(self,
         address,
-        yAxisName,
         **kwargs) -> ArchivePlotCurveItem:
         ArchiveCurve = ArchivePlotCurveItem(**kwargs)
         [ch.disconnect() for ch in ArchiveCurve.channels() if ch]
