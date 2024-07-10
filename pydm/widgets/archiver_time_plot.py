@@ -813,13 +813,21 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             useArchiveData=useArchiveData,
             liveData=liveData,
         )
+    def replaceToArchivePlot(self,
+        address,
+        yAxisName,
+        **kwargs) -> ArchivePlotCurveItem:
+        ArchiveCurve = ArchivePlotCurveItem(**kwargs)
+        [ch.disconnect() for ch in ArchiveCurve.channels() if ch]
+        ArchiveCurve.address = address
+        [ch.connect() for ch in ArchiveCurve.channels() if ch]
+        return ArchiveCurve
     def addFormulaChannel(
         self,
-        color,
         yAxisName,
         **kwargs
     ) -> FormulaCurveItem:
-        FormulaCurve = FormulaCurveItem(color=color, **kwargs)
+        FormulaCurve = FormulaCurveItem(**kwargs)
         self.plotItem.linkDataToAxis(FormulaCurve, yAxisName)
         FormulaCurve.redrawCurve()
         return FormulaCurve
