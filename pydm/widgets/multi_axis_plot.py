@@ -111,6 +111,11 @@ class MultiAxisPlot(PlotItem):
         # Rebuilding the layout of the plot item will put the new axis in the correct place
         self.rebuildLayout()
 
+    def change_axis_name(self, old_name: str, new_name: str):
+        """Change the name of the axis by changing the item's key in the axes dictionary."""
+        self.axes[new_name] = self.axes[old_name]
+        del self.axes[old_name]
+
     def addStackedView(self, view):
         """
         Add a view that will be stacked underneath the top level view box. Any mouse or key events handled by any of the
@@ -176,6 +181,8 @@ class MultiAxisPlot(PlotItem):
         if plotDataItem is None:
             return
 
+        if axisName not in self.axes:
+            return
         axisToLink = self.axes.get(axisName)["item"]
 
         # If this data is being moved from an existing view box, unlink that view box first

@@ -470,6 +470,9 @@ class BasePlotAxisItem(AxisItem):
         ----------
         name: str
         """
+        if name == self._name:
+            return
+        self.parentItem().change_axis_name(self._name, name)
         self._name = name
 
     @property
@@ -504,6 +507,7 @@ class BasePlotAxisItem(AxisItem):
     def label_text(self, label: str):
         """Set the label to be displayed along this axis"""
         self._label = label
+        self.setLabel(self._label)
 
     @property
     def min_range(self) -> float:
