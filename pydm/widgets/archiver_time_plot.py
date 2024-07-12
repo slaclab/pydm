@@ -11,7 +11,7 @@ from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
 from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
 from qtpy.QtGui import QColor
-from math import *
+from math import e, pi, sqrt, log, sin, cos, tan, asin, acos, atan
 from statistics import mean
 import logging
 
@@ -91,8 +91,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         )
 
         # Clear the archive data of the previous channel and redraw the curve
-        min_x = self.min_archiver_x()
-        max_x = self.max_x()
         if self.archive_points_accumulated:
             self.initializeArchiveBuffer()
             self.redrawCurve()
@@ -379,7 +377,8 @@ class FormulaCurveItem(BasePlotCurveItem):
         for pv in self.pvs.keys():
             if not self.pvs[pv].exists:
                 print(pv + " is no longer a valid row name")
-                #If one of the rows we rely on is gone, not only are we no longer a valid formula, but all rows that rely on us are also invalid.
+                #If one of the rows we rely on is gone, not only are we no longer a valid formula, 
+                # but all rows that rely on us are also invalid.
                 self.exists = False
                 return False
         return True
@@ -429,7 +428,8 @@ class FormulaCurveItem(BasePlotCurveItem):
         while(True):
             self.archive_points_accumulated += 1
             minPV = None
-            #Find the next x point out of all of our rows. Update only that row's value, use the previous value of other rows for calcs.
+            #Find the next x point out of all of our rows. 
+            # Update only that row's value, use the previous value of other rows for calcs.
             for pv in self.pvs.keys():
                 
                 if minPV == None or pvArchiveData[pv][0][pvIndices[pv]] < pvArchiveData[minPV][0][pvIndices[minPV]]:
