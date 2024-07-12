@@ -338,16 +338,19 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.color=color
         self.use_archive_data = use_archive_data
         self.archive_points_accumulated = 0
+        #Start with empty buffers because we don't calculate anything until we try to draw the curve
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self._bufferSize = 0
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self._liveData = liveData
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
+        
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
         self.error_bar_item = ErrorBarItem()
         self.error_bar_needs_set = True
         self.formula = formula
+        #Have a formula for internal calculations, that the user does not see
         self.trueFormula = self.createTrueFormula()
         self.minx = float("-inf")
         self.maxx = float("inf")
@@ -375,16 +378,21 @@ class FormulaCurveItem(BasePlotCurveItem):
     def checkFormula(self) -> bool:
         for pv in self.pvs.keys():
             if not self.pvs[pv].exists:
-                print(pv + " is no longer a valid PV name")
+                print(pv + " is no longer a valid row name")
+                #If one of the rows we rely on is gone, not only are we no longer a valid formula, but all rows that rely on us are also invalid.
+                self.exists = False
                 return False
         return True
     def createTrueFormula(self) -> str:
         formula = self.formula[4:]
+        #custom function to clean up the formula. First thing replace rows with data entries
         formula = re.sub("{(.+?)}", "pvValues[\"\g<1>\"]", formula)
         formula = re.sub("\^", "**", formula)
         formula = re.sub("mean\((.+?)\)", "mean([\g<1>])", formula)
+        #mean() requires a list of values, so just put brackets around the item
         formula = re.sub("ln\((.+?)\)", "log(\g<1>)", formula)
-        print(formula)
+        #ln is more intuitive than log
+        #print(formula)
         return formula
     @Slot(np.ndarray)
     def evaluate(self) -> None:
@@ -401,30 +409,38 @@ class FormulaCurveItem(BasePlotCurveItem):
         formula = self.trueFormula
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
+        #Reset buffers
         self.points_accumulated = 0
         self.archive_points_accumulated = 0
+        #Populate new dictionaries, simply for ease of access and readability
         for pv in self.pvs.keys():
             pvArchiveData[pv] = self.pvs[pv].archive_data_buffer
             pvIndices[pv] = 0
+            #Of all the rows we are relying on, we want our min to be the largest of their mins. Opposite for maxes.
+            #Only want to attempt to draw the curve where we have all required data for it.
             self.minx = max(self.pvs[pv].min_archiver_x(), self.minx)
             self.maxx = min(self.pvs[pv].max_archiver_x(), self.maxx)
-            #pvArchiveData[pv] = np.append(pvArchiveData[pv], np.array([[0],[0]]), axis = 1)
         for pv in self.pvs.keys():
             while pvIndices[pv] < len(pvArchiveData[pv][0]) - 1 and pvArchiveData[pv][0][pvIndices[pv]] < self.minx:
                 pvValues[pv] = pvArchiveData[pv][1][pvIndices[pv]]
                 pvIndices[pv] += 1
+                #Shift starting indices for each row to our minimum
         x = self.minx
         while(True):
             self.archive_points_accumulated += 1
             minPV = None
+            #Find the next x point out of all of our rows. Update only that row's value, use the previous value of other rows for calcs.
             for pv in self.pvs.keys():
+                
                 if minPV == None or pvArchiveData[pv][0][pvIndices[pv]] < pvArchiveData[minPV][0][pvIndices[minPV]]:
                     minPV = pv
                     x = pvArchiveData[pv][0][pvIndices[pv]]
+
             pvValues[minPV] = pvArchiveData[minPV][1][pvIndices[minPV]]
             temp = np.array([[x], [eval(formula)]])
             self.archive_data_buffer = np.append(self.archive_data_buffer, temp, axis = 1)
             pvIndices[minPV] += 1
+            #If we are out of data for this row, stop!
             if pvIndices[minPV] >= len(pvArchiveData[minPV][0]):
                 break
         formula = formula.replace("Archive", "Live")
@@ -433,6 +449,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.points_accumulated = 0
         pvIndices = dict()
         pvValues = dict()
+        #Do literally the exact same thing for live data
         for pv in self.pvs.keys():
             pvLiveData[pv] = np.copy(self.pvs[pv].data_buffer)
             pvIndices[pv] = 0
@@ -458,7 +475,6 @@ class FormulaCurveItem(BasePlotCurveItem):
             pvIndices[minPV] += 1
             if(pvIndices[minPV] >= len(pvLiveData[minPV][0])):
                 break
-       #set minx, maxx to the pv
         return
     @Slot()
     def redrawCurve(self, min_x=None, max_x=None) -> None:
@@ -466,6 +482,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         Redraw the curve with any new data added since the last draw call.
         """
         if not self.pvs:
+            #If we are just a constant, then forget about data just draw a straight line from 1970 to 300 years or so in the future
             y = [eval(self.trueFormula), eval(self.trueFormula)]
             x = [0, 10000000000]
             self.setData(y=y, x=x)
@@ -516,11 +533,12 @@ class FormulaCurveItem(BasePlotCurveItem):
     
     def max_x(self):
         if not self.pvs:
-            return 10000000000
+            #We don't want our constants to affect the x axis at all, let them draw as required
+            return 0
         return self.data_buffer[0, -1]
     def min_x(self):
         if not self.pvs:
-            return 0
+            return 10000000000
         return self.minx
     def min_archiver_x(self):
         """
@@ -832,6 +850,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     def replaceToArchivePlot(self,
         address,
         **kwargs) -> ArchivePlotCurveItem:
+        #This is specifically in order to create an ArchivePlotCurveItem without changing axes or appending to the row.
         ArchiveCurve = ArchivePlotCurveItem(**kwargs)
         [ch.disconnect() for ch in ArchiveCurve.channels() if ch]
         ArchiveCurve.address = address
@@ -842,6 +861,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         yAxisName,
         **kwargs
     ) -> FormulaCurveItem:
+        #Create a formula curve to replace the archive plot curve item in place.
         FormulaCurve = FormulaCurveItem(**kwargs)
         self.plotItem.linkDataToAxis(FormulaCurve, yAxisName)
         FormulaCurve.redrawCurve()
