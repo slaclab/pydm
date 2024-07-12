@@ -11,7 +11,8 @@ from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
 from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
 from qtpy.QtGui import QColor
-import math
+from math import *
+from statistics import mean
 import logging
 
 from pydm.widgets.baseplot import BasePlotCurveItem
@@ -347,10 +348,13 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.error_bar_item = ErrorBarItem()
         self.error_bar_needs_set = True
         self.formula = formula
+        self.trueFormula = self.createTrueFormula()
         self.minx = float("-inf")
         self.maxx = float("inf")
         self.pvs = pvs
         self.plot_style = "Line"
+        
+
         
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
@@ -374,21 +378,27 @@ class FormulaCurveItem(BasePlotCurveItem):
                 print(pv + " is no longer a valid PV name")
                 return False
         return True
+    def createTrueFormula(self) -> str:
+        formula = self.formula[4:]
+        formula = re.sub("{(.+?)}", "pvValues[\"\g<1>\"]", formula)
+        formula = re.sub("\^", "**", formula)
+        formula = re.sub("mean\((.+?)\)", "mean([\g<1>])", formula)
+        formula = re.sub("ln\((.+?)\)", "log(\g<1>)", formula)
+        print(formula)
+        return formula
     @Slot(np.ndarray)
     def evaluate(self) -> None:
         if not self.checkFormula():
             self.formula_invalid_signal.emit()
             return
-        formula = self.formula[4:]
+        
         pvArchiveData = dict()
         pvLiveData = dict()
         pvIndices = dict()
         pvValues = dict()
         self.minx = float("-inf")
         self.maxx = float("inf")
-        formula = re.sub("{(.+?)}", "pvValues[\"\g<1>\"]", formula)
-        formula = formula.replace("log", "math.log")
-        formula = formula.replace("sqrt", "math.sqrt")
+        formula = self.trueFormula
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self.points_accumulated = 0
@@ -456,7 +466,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         Redraw the curve with any new data added since the last draw call.
         """
         if not self.pvs:
-            y = [eval(self.formula[4:]), eval(self.formula[4:])]
+            y = [eval(self.trueFormula), eval(self.trueFormula)]
             x = [0, 10000000000]
             self.setData(y=y, x=x)
             return
