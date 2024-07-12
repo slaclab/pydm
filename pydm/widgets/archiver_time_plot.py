@@ -336,7 +336,8 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.color=color
         self.use_archive_data = use_archive_data
         self.archive_points_accumulated = 0
-        #Start with empty buffers because we don't calculate anything until we try to draw the curve
+        #Start with empty buffers because we don't 
+        # calculate anything until we try to draw the curve
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self._bufferSize = 0
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
@@ -482,9 +483,12 @@ class FormulaCurveItem(BasePlotCurveItem):
         Redraw the curve with any new data added since the last draw call.
         """
         if not self.pvs:
-            #If we are just a constant, then forget about data just draw a straight line from 1970 to 300 years or so in the future
+            #If we are just a constant, then forget about data 
+            # just draw a straight line from 1970 to 300 years or so in the future
             y = [eval(self.trueFormula), eval(self.trueFormula)]
             x = [0, 10000000000]
+            #There is a known bug that this won't graph a constant with an x axis 
+            # of between 30 minutes and 1hr 30 minutes in range. Unknown reason
             self.setData(y=y, x=x)
             return
         self.evaluate()
@@ -850,7 +854,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     def replaceToArchivePlot(self,
         address,
         **kwargs) -> ArchivePlotCurveItem:
-        #This is specifically in order to create an ArchivePlotCurveItem without changing axes or appending to the row.
+        #This is specifically in order to create an ArchivePlotCurveItem 
+        # without changing axes or appending to the row.
         ArchiveCurve = ArchivePlotCurveItem(**kwargs)
         [ch.disconnect() for ch in ArchiveCurve.channels() if ch]
         ArchiveCurve.address = address
