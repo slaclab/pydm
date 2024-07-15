@@ -306,9 +306,11 @@ class FormulaCurveItem(BasePlotCurveItem):
     **kws : dict[str: any]
         Additional parameters supported by pyqtgraph.PlotDataItem.
     """
+
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
     formula_invalid_signal = Signal()
+
     def __init__(
         self,
         formula: str = None,
