@@ -11,8 +11,6 @@ from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
 from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
 from qtpy.QtGui import QColor
-from math import e, pi, sqrt, log, sin, cos, tan, asin, acos, atan
-from statistics import mean
 import logging
 
 from pydm.widgets.baseplot import BasePlotCurveItem
