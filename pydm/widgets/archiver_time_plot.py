@@ -310,10 +310,16 @@ class FormulaCurveItem(BasePlotCurveItem):
     archive_data_received_signal = Signal()
     formula_invalid_signal = Signal()
     def __init__(
-        self, formula:str= None, pvs:dict= None, use_archive_data: bool = True, liveData: bool = True, color:str = "green", **kws
+        self,
+        formula:str= None,
+        pvs:dict= None,
+        use_archive_data: bool = True,
+        liveData: bool = True,
+        color: str = "green",
+        **kws
     ):
         super(FormulaCurveItem, self).__init__(**kws)
-        self.color=color
+        self.color = color
         self.use_archive_data = use_archive_data
         self.archive_points_accumulated = 0
         # Start with empty buffers because we don't
@@ -366,11 +372,11 @@ class FormulaCurveItem(BasePlotCurveItem):
     def createTrueFormula(self) -> str:
         formula = self.formula[4:]
         # custom function to clean up the formula. First thing replace rows with data entries
-        formula = re.sub("{(.+?)}", 'pvValues["g<1>"]', formula)
-        formula = re.sub("\^", "**", formula)
-        formula = re.sub("mean\((.+?)\)", "mean([\g<1>])", formula)
+        formula = re.sub(r"{(.+?)}", r'pvValues["\g<1>"]', formula)
+        formula = re.sub(r"\^", r"**", formula)
+        formula = re.sub(r"mean\((.+?)\)", r"mean([\g<1>])", formula)
         # mean() requires a list of values, so just put brackets around the item
-        formula = re.sub("ln\((.+?)\)", "log(\g<1>)", formula)
+        formula = re.sub(r"ln\((.+?)\)", r"log(\g<1>)", formula)
         # ln is more intuitive than log
         return formula
 
@@ -412,7 +418,6 @@ class FormulaCurveItem(BasePlotCurveItem):
             # Find the next x point out of all of our rows.
             # Update only that row's value, use the previous value of other rows for calcs.
             for pv in self.pvs.keys():
-
                 if minPV is None or pvArchiveData[pv][0][pvIndices[pv]] < pvArchiveData[minPV][0][pvIndices[minPV]]:
                     minPV = pv
                     x = pvArchiveData[pv][0][pvIndices[pv]]
