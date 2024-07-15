@@ -12,8 +12,8 @@ from pydm.widgets import PyDMTimePlot
 from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
 from qtpy.QtGui import QColor
 import logging
-from math import e, pi, sqrt, log, sin, cos, tan, asin, acos, atan # noqa
-from statistics import mean # noqa
+from math import e, pi, sqrt, log, sin, cos, tan, asin, acos, atan  # noqa
+from statistics import mean  # noqa
 from pydm.widgets.baseplot import BasePlotCurveItem
 
 logger = logging.getLogger(__name__)
