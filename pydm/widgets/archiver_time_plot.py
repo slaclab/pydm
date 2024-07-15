@@ -14,6 +14,7 @@ from qtpy.QtGui import QColor
 import logging
 from math import e, pi, sqrt, log, sin, cos, tan, asin, acos, atan  # noqa
 from statistics import mean  # noqa
+
 # We noqa those two because those functions/vars are useful in eval() but
 # are never explicitly called by us, only in the background.
 from pydm.widgets.baseplot import BasePlotCurveItem
