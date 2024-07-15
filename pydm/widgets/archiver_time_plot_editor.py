@@ -3,6 +3,8 @@ from qtpy.QtCore import Qt, QModelIndex, QObject, QVariant
 from qtpy.QtGui import QColor
 from .archiver_time_plot import ArchivePlotCurveItem, FormulaCurveItem
 from .baseplot import BasePlot, BasePlotCurveItem
+from .archiver_time_plot import ArchivePlotCurveItem, FormulaCurveItem
+from .baseplot import BasePlot, BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate
 
