@@ -311,8 +311,8 @@ class FormulaCurveItem(BasePlotCurveItem):
     formula_invalid_signal = Signal()
     def __init__(
         self,
-        formula:str= None,
-        pvs:dict= None,
+        formula: str = None,
+        pvs: dict = None,
         use_archive_data: bool = True,
         liveData: bool = True,
         color: str = "green",
@@ -451,7 +451,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             minPV = None
             x = 0
             for pv in self.pvs.keys():
-                if minPV == None or pvLiveData[pv][0][pvIndices[pv]] < pvLiveData[minPV][0][pvIndices[minPV]]:
+                if minPV is None or pvLiveData[pv][0][pvIndices[pv]] < pvLiveData[minPV][0][pvIndices[minPV]]:
                     minPV = pv
                     x = pvLiveData[pv][0][pvIndices[pv]]
             pvValues[minPV] = pvLiveData[minPV][1][pvIndices[minPV]]
