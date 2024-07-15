@@ -1042,7 +1042,7 @@ class PyDMTimePlot(BasePlot, updateMode):
 
     def channels(self):
         if not isinstance(self, TimePlotCurveItem):
-            #Only TimePlotCurves have channels
+            # Only TimePlotCurves have channels
             return None
         return [curve.channel for curve in self._curves]
 

@@ -850,7 +850,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         plot_item : BasePlotCurveItem
             The cureve to be removed from this plot
         """
-        #Mark it as not existing so all curves that rely on this curve get destroyed as well
+        # Mark it as not existing so all curves that rely on this curve get destroyed as well
         plot_item.exists = False
         if plot_item.y_axis_name in self.plotItem.axes:
             self.plotItem.unlinkDataFromAxis(plot_item.y_axis_name)

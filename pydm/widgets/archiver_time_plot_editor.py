@@ -35,7 +35,7 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
     def get_data(self, column_name: str, curve: BasePlotCurveItem) -> Any:
         """Get data for the input column name"""
         if column_name == "Channel":
-            if isinstance(curve,FormulaCurveItem):
+            if isinstance(curve, FormulaCurveItem):
                 if curve.formula is None:
                     return QVariant()
                 return str(curve.formula)

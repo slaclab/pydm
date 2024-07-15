@@ -289,6 +289,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         if self._liveData:
             super().receiveNewValue(new_value)
 
+
 class FormulaCurveItem(BasePlotCurveItem):
     """
     FormulaCurveItem is a BasePlotCurve that plots formulas of pvs
@@ -315,14 +316,14 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.color=color
         self.use_archive_data = use_archive_data
         self.archive_points_accumulated = 0
-        # Start with empty buffers because we don't 
+        # Start with empty buffers because we don't
         # calculate anything until we try to draw the curve
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self._bufferSize = 0
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self._liveData = liveData
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
-        
+
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
         self.error_bar_item = ErrorBarItem()
@@ -334,15 +335,13 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.maxx = float("inf")
         self.pvs = pvs
         self.plot_style = "Line"
-        
 
-        
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
         dic_ = OrderedDict([("useArchiveData", self.use_archive_data), ("liveData", self.liveData)])
         dic_.update(super(ArchivePlotCurveItem, self).to_dict())
         return dic_
-    
+
     @property
     def liveData(self):
         return self._liveData
@@ -353,31 +352,34 @@ class FormulaCurveItem(BasePlotCurveItem):
             self._liveData = False
             return
         self._liveData = True
+
     def checkFormula(self) -> bool:
         for pv in self.pvs.keys():
             if not self.pvs[pv].exists:
                 print(pv + " is no longer a valid row name")
-                # If one of the rows we rely on is gone, not only are we no longer a valid formula, 
+                # If one of the rows we rely on is gone, not only are we no longer a valid formula,
                 # but all rows that rely on us are also invalid.
                 self.exists = False
                 return False
         return True
+
     def createTrueFormula(self) -> str:
         formula = self.formula[4:]
         # custom function to clean up the formula. First thing replace rows with data entries
-        formula = re.sub("{(.+?)}", "pvValues[\"\g<1>\"]", formula)
+        formula = re.sub("{(.+?)}", 'pvValues["g<1>"]', formula)
         formula = re.sub("\^", "**", formula)
         formula = re.sub("mean\((.+?)\)", "mean([\g<1>])", formula)
         # mean() requires a list of values, so just put brackets around the item
         formula = re.sub("ln\((.+?)\)", "log(\g<1>)", formula)
         # ln is more intuitive than log
         return formula
+
     @Slot(np.ndarray)
     def evaluate(self) -> None:
         if not self.checkFormula():
             self.formula_invalid_signal.emit()
             return
-        
+
         pvArchiveData = dict()
         pvLiveData = dict()
         pvIndices = dict()
@@ -404,20 +406,20 @@ class FormulaCurveItem(BasePlotCurveItem):
                 pvIndices[pv] += 1
                 # Shift starting indices for each row to our minimum
         x = self.minx
-        while(True):
+        while True:
             self.archive_points_accumulated += 1
             minPV = None
-            # Find the next x point out of all of our rows. 
+            # Find the next x point out of all of our rows.
             # Update only that row's value, use the previous value of other rows for calcs.
             for pv in self.pvs.keys():
-                
-                if minPV == None or pvArchiveData[pv][0][pvIndices[pv]] < pvArchiveData[minPV][0][pvIndices[minPV]]:
+
+                if minPV is None or pvArchiveData[pv][0][pvIndices[pv]] < pvArchiveData[minPV][0][pvIndices[minPV]]:
                     minPV = pv
                     x = pvArchiveData[pv][0][pvIndices[pv]]
 
             pvValues[minPV] = pvArchiveData[minPV][1][pvIndices[minPV]]
             temp = np.array([[x], [eval(formula)]])
-            self.archive_data_buffer = np.append(self.archive_data_buffer, temp, axis = 1)
+            self.archive_data_buffer = np.append(self.archive_data_buffer, temp, axis=1)
             pvIndices[minPV] += 1
             # If we are out of data for this row, stop!
             if pvIndices[minPV] >= len(pvArchiveData[minPV][0]):
@@ -439,8 +441,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             while pvIndices[pv] < len(pvLiveData[pv][0]) - 1 and pvLiveData[pv][0][pvIndices[pv]] < minx:
                 pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
                 pvIndices[pv] += 1
-        
-        while(True):
+        while True:
             self.points_accumulated += 1
             minPV = None
             x = 0
@@ -450,22 +451,23 @@ class FormulaCurveItem(BasePlotCurveItem):
                     x = pvLiveData[pv][0][pvIndices[pv]]
             pvValues[minPV] = pvLiveData[minPV][1][pvIndices[minPV]]
             temp = np.array([[x], [eval(formula)]])
-            self.data_buffer = np.append(self.data_buffer, temp, axis = 1)
+            self.data_buffer = np.append(self.data_buffer, temp, axis=1)
             pvIndices[minPV] += 1
-            if(pvIndices[minPV] >= len(pvLiveData[minPV][0])):
+            if pvIndices[minPV] >= len(pvLiveData[minPV][0]):
                 break
         return
+
     @Slot()
     def redrawCurve(self, min_x=None, max_x=None) -> None:
         """
         Redraw the curve with any new data added since the last draw call.
         """
         if not self.pvs:
-            # If we are just a constant, then forget about data 
+            # If we are just a constant, then forget about data
             # just draw a straight line from 1970 to 300 years or so in the future
             y = [eval(self.trueFormula), eval(self.trueFormula)]
             x = [0, 10000000000]
-            # There is a known bug that this won't graph a constant with an x axis 
+            # There is a known bug that this won't graph a constant with an x axis
             # of between 30 minutes and 1hr 30 minutes in range. Unknown reason
             self.setData(y=y, x=x)
             return
@@ -484,13 +486,15 @@ class FormulaCurveItem(BasePlotCurveItem):
                     self.data_buffer[1, -self.points_accumulated :].astype(float),
                 )
             )
-            
+
             self.setData(y=y, x=x)
         except (ZeroDivisionError, OverflowError, TypeError):
             # Solve an issue with pyqtgraph and initial downsampling
             pass
+
     def getBufferSize(self):
         return self._bufferSize
+
     def initializeArchiveBuffer(self) -> None:
         """
         Initialize the archive data buffer used for this curve.
@@ -512,16 +516,18 @@ class FormulaCurveItem(BasePlotCurveItem):
         if self._archiveBufferSize != DEFAULT_ARCHIVE_BUFFER_SIZE:
             self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
             self.initializeArchiveBuffer()
-    
+
     def max_x(self):
         if not self.pvs:
             # We don't want our constants to affect the x axis at all, let them draw as required
             return 0
         return self.data_buffer[0, -1]
+
     def min_x(self):
         if not self.pvs:
             return 10000000000
         return self.minx
+
     def min_archiver_x(self):
         """
         Provide the the oldest valid timestamp from the archiver data buffer.
@@ -544,6 +550,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             The timestamp of the most recent data point in the archiver data buffer.
         """
         return self.maxx
+
 
 class PyDMArchiverTimePlot(PyDMTimePlot):
     """
@@ -808,21 +815,17 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             useArchiveData=useArchiveData,
             liveData=liveData,
         )
-    def replaceToArchivePlot(self,
-        address,
-        **kwargs) -> ArchivePlotCurveItem:
-        # This is specifically in order to create an ArchivePlotCurveItem 
+
+    def replaceToArchivePlot(self, address: str, **kwargs) -> ArchivePlotCurveItem:
+        # This is specifically in order to create an ArchivePlotCurveItem
         # without changing axes or appending to the row.
         ArchiveCurve = ArchivePlotCurveItem(**kwargs)
         [ch.disconnect() for ch in ArchiveCurve.channels() if ch]
         ArchiveCurve.address = address
         [ch.connect() for ch in ArchiveCurve.channels() if ch]
         return ArchiveCurve
-    def addFormulaChannel(
-        self,
-        yAxisName,
-        **kwargs
-    ) -> FormulaCurveItem:
+
+    def addFormulaChannel(self, yAxisName: str, **kwargs) -> FormulaCurveItem:
         # Create a formula curve to replace the archive plot curve item in place.
         FormulaCurve = FormulaCurveItem(**kwargs)
         self.plotItem.linkDataToAxis(FormulaCurve, yAxisName)
