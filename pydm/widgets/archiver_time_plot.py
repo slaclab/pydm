@@ -760,8 +760,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         """
         try:
             new_list = [json.loads(str(i)) for i in new_list]
-        except ValueError as e:
-            logger.exception("Error parsing curve json data: {}".format(e))
+        except ValueError as error:
+            logger.exception("Error parsing curve json data: {}".format(error))
             return
         self.clearCurves()
         for d in new_list:
