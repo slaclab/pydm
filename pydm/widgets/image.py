@@ -19,6 +19,28 @@ class ReadingOrder(object):
     Clike = 1
 
 
+class DimensionOrder(object):
+    """
+    Class to build DimensionOrder ENUM property.
+
+    This relates to how the pva image data is being sent. Included in this data are the dimensions of the
+    image (width and height) as part of the array 'dimension_t[] dimension'.
+    (https://github.com/epics-base/normativeTypesCPP/wiki/Normative+Types+Specification#ntndarray)
+    But if the array should be ordered [height, width] or [width, height] does not seem to be specified.
+    This option lets the user set which ordering PyDM should interpret this 'dimension' array as having.
+
+    HeightFirst = [height, width]
+    WidthFirst = [width, height]
+    (PyDM assumes HeightFirst as default)
+
+    If you are wondering what ordering a certain pva address is using, you can 'pvget' the address
+    to see the ordering of values in its 'dimension' array.
+    """
+
+    HeightFirst = 0
+    WidthFirst = 1
+
+
 class ImageUpdateThread(QThread):
     updateSignal = Signal(list)
 
@@ -28,6 +50,14 @@ class ImageUpdateThread(QThread):
 
     def run(self):
         img = self.image_view.image_waveform
+
+        if self.image_view._dimension_order == DimensionOrder.WidthFirst:
+            shape = img.shape
+            # numpy reshape asks for (height, width) as it's params,
+            # and if we know our 'img.shape' is ordered [width, height],
+            # we must pass reshape(height, width) which is (shape[1], shape[0])
+            img = img.reshape(shape[1], shape[0])
+
         needs_redraw = self.image_view.needs_redraw
         image_dimensions = len(img.shape)
         width = self.image_view.imageWidth
@@ -68,7 +98,7 @@ class ImageUpdateThread(QThread):
         self.image_view.needs_redraw = False
 
 
-class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
+class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder, DimensionOrder):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM.
 
@@ -94,8 +124,10 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
     """
 
     ReadingOrder = ReadingOrder
+    DimensionOrder = DimensionOrder
 
     Q_ENUMS(ReadingOrder)
+    Q_ENUMS(DimensionOrder)
     Q_ENUMS(PyDMColorMap)
 
     color_maps = cmaps
@@ -115,6 +147,7 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
 
         # Set default reading order of numpy array data to Fortranlike.
         self._reading_order = ReadingOrder.Fortranlike
+        self._dimension_order = DimensionOrder.HeightFirst
 
         self._redraw_rate = 30
 
@@ -519,6 +552,30 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder):
         """
         if self._reading_order != new_order:
             self._reading_order = new_order
+
+    @Property(DimensionOrder)
+    def dimensionOrder(self):
+        """
+        Return the dimension order of the :attr:`imageChannel` array.
+        (for more info see DimensionOrder class definition)
+
+        Returns
+        -------
+        DimensionOrder
+        """
+        return self._dimension_order
+
+    @dimensionOrder.setter
+    def dimensionOrder(self, new_order):
+        """
+        Set dimension order of the :attr:`imageChannel` array.
+
+        Parameters
+        ----------
+        new_order: DimensionOrder
+        """
+        if self._dimension_order != new_order:
+            self._dimension_order = new_order
 
     def keyPressEvent(self, ev):
         """Handle keypress events."""
