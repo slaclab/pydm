@@ -317,9 +317,9 @@ class FormulaCurveItem(BasePlotCurveItem):
         self,
         formula: str = None,
         pvs: dict = None,
-        use_archive_data: bool = True,
-        liveData: bool = True,
-        color: str = "green",
+        use_archive_data: Optional[bool] = True,
+        liveData: Optional[bool] = True,
+        color: Optional[str] = "green",
         **kws
     ):
         super(FormulaCurveItem, self).__init__(**kws)
