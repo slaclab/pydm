@@ -1,6 +1,7 @@
 import functools
 import json
 import warnings
+from abc import abstractmethod
 from qtpy.QtGui import QColor, QBrush, QMouseEvent
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect
 from qtpy.QtWidgets import QToolTip, QWidget
@@ -235,6 +236,38 @@ class BasePlotCurveItem(PlotDataItem):
         self._y_axis_name = axis_name
 
     @property
+    def stepMode(self) -> str:
+        """
+        Returns the stepMode of the curve.
+
+        Returns
+        -------
+        str
+            The stepMode for the curve, one of ["left", "right", None]
+        """
+        return self.opts.get("stepMode", None)
+
+    @stepMode.setter
+    def stepMode(self, new_step: str) -> None:
+        """
+        Set a new stepMode for the curve. Options are below:
+        - None or "": Draw lines directly from y-value to y-value.
+        - "left" or "right": Draw the step with the associated y-value
+        to the left or right. Ensure that `len(x) == len(y)`
+        - "center": Draw the step with the associated y-value in the center
+        of the step. Ensure that `len(x) == len(y) + 1`
+
+        Parameters
+        ----------
+        new_step : str
+            The new stepMode for the curve, can be one of ["left", "right", None]
+        """
+        if new_step == self.stepMode:
+            return
+        self.setData(stepMode = new_step)
+        self.redrawCurve()
+
+    @property
     def lineStyle(self) -> Qt.PenStyle:
         """
         Return the style of the line connecting the data points.
@@ -388,6 +421,11 @@ class BasePlotCurveItem(PlotDataItem):
             ]
         )
 
+    @abstractmethod
+    def redrawCurve(self) -> None:
+        pass
+
+    @abstractmethod
     def close(self) -> None:
         pass
 
