@@ -243,7 +243,7 @@ class BasePlotCurveItem(PlotDataItem):
         Returns
         -------
         str
-            The stepMode for the curve, one of ["left", "right", None]
+            The stepMode for the curve, one of ["center", "left", "right", None]
         """
         return self.opts.get("stepMode", None)
 
@@ -251,7 +251,7 @@ class BasePlotCurveItem(PlotDataItem):
     def stepMode(self, new_step: str) -> None:
         """
         Set a new stepMode for the curve. Options are below:
-        - None or "": Draw lines directly from y-value to y-value.
+        - "" or None: Draw lines directly from y-value to y-value.
         - "left" or "right": Draw the step with the associated y-value
         to the left or right. Ensure that `len(x) == len(y)`
         - "center": Draw the step with the associated y-value in the center
@@ -260,7 +260,8 @@ class BasePlotCurveItem(PlotDataItem):
         Parameters
         ----------
         new_step : str
-            The new stepMode for the curve, can be one of ["left", "right", None]
+            The new stepMode for the curve, can be one of
+            ["center", "left", "right", None]
         """
         if new_step == self.stepMode:
             return
