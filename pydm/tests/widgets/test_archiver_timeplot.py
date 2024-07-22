@@ -170,7 +170,7 @@ def test_formula_curve_item():
     curves2["B"] = curve_item2
 
     formula1 = r"f://5*{A}"
-    formula2 = r"f://log{A}"
+    formula2 = r"f://log({A})"
     formula3 = r"f://{A}+{B}"
     formula4 = r"f://{A}*{B}"
 
