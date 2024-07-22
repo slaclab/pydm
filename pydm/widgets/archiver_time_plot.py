@@ -331,19 +331,20 @@ class FormulaCurveItem(BasePlotCurveItem):
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self._bufferSize = 0
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
-        self._liveData = liveData
+
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
 
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
         self.error_bar_item = ErrorBarItem()
         self.error_bar_needs_set = True
-        self.formula = formula
+        self._formula = formula
         # Have a formula for internal calculations, that the user does not see
-        self.trueFormula = self.createTrueFormula()
+        self._trueFormula = self.createTrueFormula()
         self.minx = float("-inf")
         self.maxx = float("inf")
         self.pvs = pvs
+        self._liveData = liveData
         self.plot_style = "Line"
 
     def to_dict(self) -> OrderedDict:
@@ -354,7 +355,10 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     @property
     def liveData(self):
-        return self._liveData
+        for pv in self.pvs.keys():
+            if not self.pvs[pv].liveData:
+                return False
+        return True
 
     @liveData.setter
     def liveData(self, get_live: bool):
@@ -362,6 +366,15 @@ class FormulaCurveItem(BasePlotCurveItem):
             self._liveData = False
             return
         self._liveData = True
+
+    @property
+    def formula(self):
+        return self._formula
+
+    @formula.setter
+    def formula(self, formula: str):
+        self._formula = formula
+        self._trueFormula = self.createTrueFormula()
 
     def checkFormula(self) -> bool:
         for pv in self.pvs.keys():
@@ -396,7 +409,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         pvValues = dict()
         self.minx = float("-inf")
         self.maxx = float("inf")
-        formula = self.trueFormula
+        formula = self._trueFormula
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
         # Reset buffers
@@ -411,6 +424,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             self.minx = max(self.pvs[pv].min_archiver_x(), self.minx)
             self.maxx = min(self.pvs[pv].max_archiver_x(), self.maxx)
         for pv in self.pvs.keys():
+            pvValues[pv] = pvArchiveData[pv][1][pvIndices[pv]]
             while pvIndices[pv] < len(pvArchiveData[pv][0]) - 1 and pvArchiveData[pv][0][pvIndices[pv]] < self.minx:
                 pvValues[pv] = pvArchiveData[pv][1][pvIndices[pv]]
                 pvIndices[pv] += 1
@@ -447,6 +461,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             maxx = min(self.pvs[pv].max_x(), maxx)
             # pvLiveData[pv] = np.append(pvLiveData[pv], np.array([[0],[0]]), axis = 1)
         for pv in self.pvs.keys():
+            pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
             while pvIndices[pv] < len(pvLiveData[pv][0]) - 1 and pvLiveData[pv][0][pvIndices[pv]] < minx:
                 pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
                 pvIndices[pv] += 1
@@ -474,7 +489,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         if not self.pvs:
             # If we are just a constant, then forget about data
             # just draw a straight line from 1970 to 300 years or so in the future
-            y = [eval(self.trueFormula), eval(self.trueFormula)]
+            y = [eval(self._trueFormula), eval(self._trueFormula)]
             x = [0, 10000000000]
             # There is a known bug that this won't graph a constant with an x axis
             # of between 30 minutes and 1hr 30 minutes in range. Unknown reason
