@@ -182,8 +182,12 @@ def test_formula_curve_item():
 
     expected1 = np.array([[100, 105, 110, 115, 120, 125], [10, 15, 20, 25, 30, 35]], dtype=float)
     expected2 = np.array([[100, 105, 110, 115, 120, 125], np.log([2, 3, 4, 5, 6, 7])], dtype=float)
-    expected3 = np.array([[100, 105, 110, 115, 120, 125], [3, 5, 7, 9, 11, 13]], dtype=float)
-    expected4 = np.array([[100, 105, 110, 115, 120, 125], [2, 6, 12, 20, 30, 42]], dtype=float)
+    expected3 = np.array(
+        [[100, 100, 105, 105, 110, 110, 115, 115, 120, 120, 125], [3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], dtype=float
+    )
+    expected4 = np.array(
+        [[100, 100, 105, 105, 110, 110, 115, 115, 120, 120, 125], [2, 2, 3, 6, 8, 12, 15, 20, 24, 30, 35]], dtype=float
+    )
 
     # Evaluate them all
     formula_curve_1.evaluate()
@@ -192,7 +196,7 @@ def test_formula_curve_item():
     formula_curve_4.evaluate()
 
     # They should match our precalculated outcomes
-    assert formula_curve_1.archive_data_buffer == expected1
-    assert formula_curve_2.archive_data_buffer == expected2
-    assert formula_curve_3.archive_data_buffer == expected3
-    assert formula_curve_4.archive_data_buffer == expected4
+    assert np.array_equal(formula_curve_1.archive_data_buffer, expected1)
+    assert np.array_equal(formula_curve_2.archive_data_buffer, expected2)
+    assert np.array_equal(formula_curve_3.archive_data_buffer, expected3)
+    assert np.array_equal(formula_curve_4.archive_data_buffer, expected4)

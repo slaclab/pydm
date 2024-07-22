@@ -441,44 +441,53 @@ class FormulaCurveItem(BasePlotCurveItem):
                     x = pvArchiveData[pv][0][pvIndices[pv]]
 
             pvValues[minPV] = pvArchiveData[minPV][1][pvIndices[minPV]]
-            temp = np.array([[x], [eval(formula)]])
+            try:
+                temp = np.array([[x], [eval(formula)]])
+            except ValueError:
+                print("Evaluate failed (domain errors? unknown function?)")
+                temp = np.array([[x], [0]])
             self.archive_data_buffer = np.append(self.archive_data_buffer, temp, axis=1)
             pvIndices[minPV] += 1
             # If we are out of data for this row, stop!
             if pvIndices[minPV] >= len(pvArchiveData[minPV][0]):
                 break
-        formula = formula.replace("Archive", "Live")
-        minx = float("-inf")
-        maxx = float("inf")
-        self.points_accumulated = 0
-        pvIndices = dict()
-        pvValues = dict()
-        # Do literally the exact same thing for live data
-        for pv in self.pvs.keys():
-            pvLiveData[pv] = np.copy(self.pvs[pv].data_buffer)
-            pvIndices[pv] = 0
-            minx = max(self.pvs[pv].min_x(), minx)
-            maxx = min(self.pvs[pv].max_x(), maxx)
-            # pvLiveData[pv] = np.append(pvLiveData[pv], np.array([[0],[0]]), axis = 1)
-        for pv in self.pvs.keys():
-            pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
-            while pvIndices[pv] < len(pvLiveData[pv][0]) - 1 and pvLiveData[pv][0][pvIndices[pv]] < minx:
-                pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
-                pvIndices[pv] += 1
-        while True:
-            self.points_accumulated += 1
-            minPV = None
-            x = 0
+        if self.liveData:
+            formula = formula.replace("Archive", "Live")
+            minx = float("-inf")
+            maxx = float("inf")
+            self.points_accumulated = 0
+            pvIndices = dict()
+            pvValues = dict()
+            # Do literally the exact same thing for live data
             for pv in self.pvs.keys():
-                if minPV is None or pvLiveData[pv][0][pvIndices[pv]] < pvLiveData[minPV][0][pvIndices[minPV]]:
-                    minPV = pv
-                    x = pvLiveData[pv][0][pvIndices[pv]]
-            pvValues[minPV] = pvLiveData[minPV][1][pvIndices[minPV]]
-            temp = np.array([[x], [eval(formula)]])
-            self.data_buffer = np.append(self.data_buffer, temp, axis=1)
-            pvIndices[minPV] += 1
-            if pvIndices[minPV] >= len(pvLiveData[minPV][0]):
-                break
+                pvLiveData[pv] = np.copy(self.pvs[pv].data_buffer)
+                pvIndices[pv] = 0
+                minx = max(self.pvs[pv].min_x(), minx)
+                maxx = min(self.pvs[pv].max_x(), maxx)
+                # pvLiveData[pv] = np.append(pvLiveData[pv], np.array([[0],[0]]), axis = 1)
+            for pv in self.pvs.keys():
+                pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
+                while pvIndices[pv] < len(pvLiveData[pv][0]) - 1 and pvLiveData[pv][0][pvIndices[pv]] < minx:
+                    pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
+                    pvIndices[pv] += 1
+            while True:
+                self.points_accumulated += 1
+                minPV = None
+                x = 0
+                for pv in self.pvs.keys():
+                    if minPV is None or pvLiveData[pv][0][pvIndices[pv]] < pvLiveData[minPV][0][pvIndices[minPV]]:
+                        minPV = pv
+                        x = pvLiveData[pv][0][pvIndices[pv]]
+                pvValues[minPV] = pvLiveData[minPV][1][pvIndices[minPV]]
+                try:
+                    temp = np.array([[x], [eval(formula)]])
+                except ValueError:
+                    print("Evaluate failed (domain errors? unknown function?)")
+                    temp = np.array([[x], [0]])
+                self.data_buffer = np.append(self.data_buffer, temp, axis=1)
+                pvIndices[minPV] += 1
+                if pvIndices[minPV] >= len(pvLiveData[minPV][0]):
+                    break
         return
 
     @Slot()
