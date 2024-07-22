@@ -264,7 +264,7 @@ class BasePlotCurveItem(PlotDataItem):
         """
         if new_step == self.stepMode:
             return
-        self.setData(stepMode = new_step)
+        self.setData(stepMode=new_step)
         self.redrawCurve()
 
     @property
