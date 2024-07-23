@@ -159,7 +159,7 @@ def test_formula_curve_item():
     curve_item1.archive_points_accumulated = 6
 
     curve_item2 = ArchivePlotCurveItem()
-    curve_item2.archive_data_buffer = np.array([[100, 105, 110, 115, 120, 125], [1, 2, 3, 4, 5, 6]], dtype=float)
+    curve_item2.archive_data_buffer = np.array([[101, 106, 111, 116, 121, 126], [1, 2, 3, 4, 5, 6]], dtype=float)
     curve_item2.archive_points_accumulated = 6
 
     # Dictionary of PVS
@@ -183,10 +183,10 @@ def test_formula_curve_item():
     expected1 = np.array([[100, 105, 110, 115, 120, 125], [10, 15, 20, 25, 30, 35]], dtype=float)
     expected2 = np.array([[100, 105, 110, 115, 120, 125], np.log([2, 3, 4, 5, 6, 7])], dtype=float)
     expected3 = np.array(
-        [[100, 100, 105, 105, 110, 110, 115, 115, 120, 120, 125], [3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], dtype=float
+        [[101, 105, 106, 110, 111, 115, 116, 120, 121, 125], [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], dtype=float
     )
     expected4 = np.array(
-        [[100, 100, 105, 105, 110, 110, 115, 115, 120, 120, 125], [2, 2, 3, 6, 8, 12, 15, 20, 24, 30, 35]], dtype=float
+        [[101, 105, 106, 110, 111, 115, 116, 120, 121, 125], [2, 3, 6, 8, 12, 15, 20, 24, 30, 35]], dtype=float
     )
 
     # Evaluate them all
