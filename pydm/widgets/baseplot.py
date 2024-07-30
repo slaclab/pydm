@@ -473,7 +473,7 @@ class BasePlotAxisItem(AxisItem):
         **kws,
     ) -> None:
         super(BasePlotAxisItem, self).__init__(orientation, **kws)
-
+        self._curves: List[BasePlotCurveItem] = []
         self._name = name
         self._orientation = orientation
         self._label = label
@@ -637,6 +637,18 @@ class BasePlotAxisItem(AxisItem):
         self._log_mode = log_mode
         self.setLogMode(x=False, y=log_mode)
         self.log_mode_updated.emit(self.name, log_mode)
+
+    def setHidden(self, shouldHide: bool):
+        if shouldHide:
+            self.hide()
+            for curve in self._curves:
+                curve.hide
+
+        else:
+            self.show()
+            for curve in self._curves:
+                curve.show()
+                # Potentially can be fixed to not show curves previously marked hidden
 
     def to_dict(self) -> OrderedDict:
         """
@@ -892,7 +904,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             The cureve to be removed from this plot
         """
         if plot_item.y_axis_name in self.plotItem.axes:
-            self.plotItem.unlinkDataFromAxis(plot_item.y_axis_name)
+            self.plotItem.unlinkDataFromAxis(plot_item)
 
         self.removeItem(plot_item)
         self._curves.remove(plot_item)
