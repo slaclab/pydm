@@ -221,6 +221,8 @@ class MultiAxisPlot(PlotItem):
         self.items.append(plotDataItem)
         axisToLink._curves.append(plotDataItem)
         axisToLink.show()
+        for otherAxisName in self.axes.keys():
+            self.autoVisible(otherAxisName)
 
     def removeAxis(self, axisName):
         if axisName not in self.axes:
@@ -230,8 +232,8 @@ class MultiAxisPlot(PlotItem):
         self.layout.removeItem(oldAxis)
         if oldAxis.scene() is not None:
             oldAxis.scene().removeItem(oldAxis)
-        oldAxis.unlinkFromView()
         stackedView = oldAxis.linkedView()
+        oldAxis.unlinkFromView()
         if stackedView and stackedView is not self.vb:
             self.stackedViews.remove(stackedView)
         del self.axes[axisName]
@@ -250,22 +252,23 @@ class MultiAxisPlot(PlotItem):
             self.autoVisible(curve.y_axis_name)
 
     def autoVisible(self, axisName):
-
         # Do we have any visible curves?
         axis = self.axes[axisName]["item"]
-        for curve in axis._curves:
-            if curve.isVisible():
-                axis.show()
-                return
+        if hasattr(axis,"_curves"):
+            for curve in axis._curves:
+                if curve.isVisible():
+                    axis.show()
+                    return
 
-        # We don't have any visible curves, but are we the only curve being shown?
-        for otherAxis in self.axes.keys():
-            otherItem = self.axes[otherAxis]["item"]
-            if otherItem is not axis and otherItem.isVisible:
-                axis.hide()
-                return
-        # No other axis is visible.
-        axis.show()
+            # We don't have any visible curves, but are we the only curve being shown?
+            for otherAxis in self.axes.keys():
+                otherItem = self.axes[otherAxis]["item"]
+                if otherItem is not axis and otherAxis not in ["bottom", "top"] and otherItem.isVisible():
+
+                    axis.hide()
+                    return
+            # No other axis is visible.
+            axis.show()
 
     def setXRange(self, minX, maxX, padding=0, update=True):
         """
