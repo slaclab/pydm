@@ -389,10 +389,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             processing_command = ""
             if curve.use_archive_data:
                 if max_x is None:
-                    if curve.points_accumulated > 0:
-                        max_x = curve.data_buffer[0][curve.getBufferSize() - curve.points_accumulated]
-                    else:
-                        max_x = self._starting_timestamp
+                    max_x = curve.min_x()
+                    # if curve.points_accumulated > 0:
+                    #     max_x = curve.data_buffer[0][curve.getBufferSize() - curve.points_accumulated]
+                    # else:
+                    #     max_x = self._starting_timestamp
                 requested_seconds = max_x - min_x
                 if requested_seconds <= 5:
                     continue  # Avoids noisy requests when first rendering the plot
