@@ -4,6 +4,7 @@ import numpy as np
 from collections import OrderedDict
 from typing import List, Optional
 from pyqtgraph import DateAxisItem, ErrorBarItem
+from datetime import datetime
 from pydm.utilities import remove_protocol
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
@@ -286,6 +287,27 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             super().receiveNewValue(new_value)
 
 
+class DateTimeAxisItem(DateAxisItem):
+    def __init__(self, orientation="bottom", utcOffset=None, **kwargs):
+        super(DateTimeAxisItem, self).__init__(orientation, utcOffset, **kwargs)
+        self.minSpacing = 0
+
+    def tickStrings(self, values, scale, spacing):
+        strings = []
+        DateAxisData = super(DateTimeAxisItem, self).tickStrings(values, scale, spacing)
+        for i in range(len(values)):
+            val = values[i]
+            try:
+                date = datetime.fromtimestamp(val)
+                if i == 0:
+                    strings.append(date.strftime("%H:%M:%S\n%m/%d/%Y"))
+                else:
+                    strings.append(DateAxisData[i])
+            except ValueError:
+                strings.append("")
+        return strings
+
+
 class PyDMArchiverTimePlot(PyDMTimePlot):
     """
     PyDMArchiverTimePlot is a PyDMTimePlot with support for receiving data from
@@ -316,9 +338,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             init_y_channels=init_y_channels,
             plot_by_timestamps=True,
             background=background,
-            bottom_axis=DateAxisItem("bottom"),
+            bottom_axis=DateTimeAxisItem("bottom"),
         )
         self.optimized_data_bins = optimized_data_bins
+        self._bottom_axis.setStyle(autoExpandTextSpace=True, hideOverlappingLabels=50)
+        self._bottom_axis.setLabel("Time")
         self._min_x = None
         self._prev_x = None  # Holds the minimum x-value of the previous update of the plot
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
