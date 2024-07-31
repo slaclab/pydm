@@ -299,10 +299,16 @@ class DateTimeAxisItem(DateAxisItem):
             val = values[i]
             try:
                 date = datetime.fromtimestamp(val)
+                # Option 1:
                 if i == 0:
                     strings.append(date.strftime("%H:%M:%S\n%m/%d/%Y"))
                 else:
                     strings.append(DateAxisData[i])
+                # Option 2:
+                # if i % 2 == 0:
+                #     strings.append(date.strftime("%H:%M:%S\n%m/%d/%Y"))
+                # else:
+                #     strings.append("")
             except ValueError:
                 strings.append("")
         return strings
