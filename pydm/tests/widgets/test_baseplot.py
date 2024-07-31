@@ -132,9 +132,9 @@ def test_baseplot_multiple_y_axes(qtbot):
     assert base_plot.plotItem.axes["Test Axis 3"]["item"].orientation == "left"
 
     # Verify the curves got assigned to the correct axes
-    assert base_plot.plotItem.curvesPerAxis["Test Axis 1"] == 2
-    assert base_plot.plotItem.curvesPerAxis["Test Axis 2"] == 1
-    assert base_plot.plotItem.curvesPerAxis["Test Axis 3"] == 1
+    assert len(base_plot.plotItem.axes["Test Axis 1"]["item"]._curves) == 2
+    assert len(base_plot.plotItem.axes["Test Axis 2"]["item"]._curves) == 1
+    assert len(base_plot.plotItem.axes["Test Axis 3"]["item"]._curves) == 1
 
 
 def test_baseplot_no_added_y_axes(qtbot):
@@ -224,10 +224,10 @@ def test_timeplot_add_multiple_axes(qtbot):
 
     # Verify the curves got assigned to the correct axes
     assert len(time_plot.curves) == 5
-    assert time_plot.plotItem.curvesPerAxis["Axis 1"] == 2
-    assert time_plot.plotItem.curvesPerAxis["Axis 2"] == 1
-    assert time_plot.plotItem.curvesPerAxis["Axis 3"] == 1
-    assert time_plot.plotItem.curvesPerAxis["Axis 4"] == 1
+    assert len(time_plot.plotItem.axes["Axis 1"]["item"]._curves) == 2
+    assert len(time_plot.plotItem.axes["Axis 2"]["item"]._curves) == 1
+    assert len(time_plot.plotItem.axes["Axis 3"]["item"]._curves) == 1
+    assert len(time_plot.plotItem.axes["Axis 4"]["item"]._curves) == 1
 
 
 def test_multiaxis_plot_no_designer_flow(qtbot):
@@ -249,8 +249,8 @@ def test_multiaxis_plot_no_designer_flow(qtbot):
     assert "Axis 2" in plot.plotItem.axes
     assert "right" in plot.plotItem.axes
     assert "top" in plot.plotItem.axes
-    assert plot.plotItem.curvesPerAxis["Axis 1"] == 2
-    assert plot.plotItem.curvesPerAxis["Axis 2"] == 1
+    assert len(plot.plotItem.axes["Axis 1"]["item"]._curves) == 2
+    assert len(plot.plotItem.axes["Axis 2"]["item"]._curves) == 1
 
     # Now check the case where no new y-axis name is specified for any of the new channels.
     plot = PyDMTimePlot()

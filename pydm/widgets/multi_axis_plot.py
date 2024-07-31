@@ -1,5 +1,4 @@
 import weakref
-from collections import Counter
 from pyqtgraph import AxisItem, PlotDataItem, PlotItem, ViewBox
 from typing import List, Optional
 from qtpy.QtCore import Qt
@@ -219,7 +218,8 @@ class MultiAxisPlot(PlotItem):
         # pyqtgraph expects data items on plots to be added to both the list of curves and items to function properly
         self.curves.append(plotDataItem)
         self.items.append(plotDataItem)
-        axisToLink._curves.append(plotDataItem)
+        if hasattr(axisToLink, "_curves"):
+            axisToLink._curves.append(plotDataItem)
         axisToLink.show()
         for otherAxisName in self.axes.keys():
             self.autoVisible(otherAxisName)
@@ -254,7 +254,7 @@ class MultiAxisPlot(PlotItem):
     def autoVisible(self, axisName):
         # Do we have any visible curves?
         axis = self.axes[axisName]["item"]
-        if hasattr(axis,"_curves"):
+        if hasattr(axis, "_curves"):
             for curve in axis._curves:
                 if curve.isVisible():
                     axis.show()
@@ -264,7 +264,6 @@ class MultiAxisPlot(PlotItem):
             for otherAxis in self.axes.keys():
                 otherItem = self.axes[otherAxis]["item"]
                 if otherItem is not axis and otherAxis not in ["bottom", "top"] and otherItem.isVisible():
-
                     axis.hide()
                     return
             # No other axis is visible.
