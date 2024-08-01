@@ -261,10 +261,10 @@ class MultiAxisPlot(PlotItem):
         axis = self.axes[axisName]["item"]
         shouldShow = False
         if hasattr(axis, "_curves"):
-            label = axisName+": "
+            label = axisName + ": "
             for curve in axis._curves:
                 if curve.isVisible():
-                    label += curve.name()+", "
+                    label += str(curve.name()) + ", "
                     shouldShow = True
             axis.setLabel(label[:-2])
             if shouldShow:
