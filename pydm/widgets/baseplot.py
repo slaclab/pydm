@@ -640,15 +640,13 @@ class BasePlotAxisItem(AxisItem):
 
     def setHidden(self, shouldHide: bool):
         if shouldHide:
-            self.hide()
             for curve in self._curves:
-                curve.hide
-
+                curve.hide()
+            self.hide()
         else:
-            self.show()
             for curve in self._curves:
                 curve.show()
-                # Potentially can be fixed to not show curves previously marked hidden
+            self.show()
 
     def to_dict(self) -> OrderedDict:
         """
