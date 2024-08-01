@@ -1,5 +1,4 @@
 import weakref
-from collections import Counter
 from pyqtgraph import AxisItem, PlotDataItem, PlotItem, ViewBox
 from typing import List, Optional
 from qtpy.QtCore import Qt
@@ -30,7 +29,6 @@ class MultiAxisPlot(PlotItem):
         viewBox.menu = MultiAxisViewBoxMenu(viewBox)
         super(MultiAxisPlot, self).__init__(viewBox=viewBox, axisItems=axisItems, **kargs)
 
-        self.curvesPerAxis = Counter()  # A simple mapping of AxisName to a count of curves that using that axis
         self.axesOriginalRanges = {}  # Dict from axis name to floats (x, y) representing original range of the axis
 
         # A set containing view boxes which are stacked underneath the top level view. These views will be needed
@@ -113,7 +111,11 @@ class MultiAxisPlot(PlotItem):
 
     def change_axis_name(self, old_name: str, new_name: str):
         """Change the name of the axis by changing the item's key in the axes dictionary."""
+        axis = self.axes[old_name]["item"]
         self.axes[new_name] = self.axes[old_name]
+        if hasattr(axis, "_curves"):
+            for curve in axis._curves:
+                curve.y_axis_name = new_name
         del self.axes[old_name]
 
     def addStackedView(self, view):
@@ -220,22 +222,27 @@ class MultiAxisPlot(PlotItem):
         # pyqtgraph expects data items on plots to be added to both the list of curves and items to function properly
         self.curves.append(plotDataItem)
         self.items.append(plotDataItem)
-        self.curvesPerAxis[axisName] += 1
+        if hasattr(axisToLink, "_curves"):
+            axisToLink._curves.append(plotDataItem)
+        axisToLink.show()
+        for otherAxisName in self.axes.keys():
+            self.autoVisible(otherAxisName)
 
     def removeAxis(self, axisName):
         if axisName not in self.axes:
             return
 
-        self.curvesPerAxis[axisName] = 0
-
         oldAxis = self.axes[axisName]["item"]
         self.layout.removeItem(oldAxis)
         if oldAxis.scene() is not None:
             oldAxis.scene().removeItem(oldAxis)
+        stackedView = oldAxis.linkedView()
         oldAxis.unlinkFromView()
+        if stackedView and stackedView is not self.vb:
+            self.stackedViews.remove(stackedView)
         del self.axes[axisName]
 
-    def unlinkDataFromAxis(self, axisName):
+    def unlinkDataFromAxis(self, curve: PlotDataItem):
         """
         Lets the plot know that this axis is now associated with one less curve. If there are no
         longer any curves linked with this axis, then removes it from the scene and cleans it up.
@@ -244,10 +251,27 @@ class MultiAxisPlot(PlotItem):
         axisName: str
             The name of the axis that a curve is being removed from
         """
+        if hasattr(curve, "y_axis_name"):
+            self.axes[curve.y_axis_name]["item"]._curves.remove(curve)
+            self.autoVisible(curve.y_axis_name)
 
-        self.curvesPerAxis[axisName] -= 1
-        if self.curvesPerAxis[axisName] == 0:
-            self.removeAxis(axisName)
+    def autoVisible(self, axisName):
+        # Do we have any visible curves?
+        axis = self.axes[axisName]["item"]
+        if hasattr(axis, "_curves"):
+            for curve in axis._curves:
+                if curve.isVisible():
+                    axis.show()
+                    return
+
+            # We don't have any visible curves, but are we the only curve being shown?
+            for otherAxis in self.axes.keys():
+                otherItem = self.axes[otherAxis]["item"]
+                if otherItem is not axis and otherAxis not in ["bottom", "top"] and otherItem.isVisible():
+                    axis.hide()
+                    return
+            # No other axis is visible.
+            axis.show()
 
     def setXRange(self, minX, maxX, padding=0, update=True):
         """
