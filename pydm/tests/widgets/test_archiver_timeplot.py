@@ -3,7 +3,7 @@ import pytest
 from qtpy.QtCore import Slot
 
 from ..conftest import ConnectionSignals
-from ...widgets.archiver_time_plot import ArchivePlotCurveItem, PyDMArchiverTimePlot
+from ...widgets.archiver_time_plot import ArchivePlotCurveItem, PyDMArchiverTimePlot, FormulaCurveItem
 
 
 @pytest.mark.parametrize("address", ["ca://LINAC:PV1", "pva://LINAC:PV1", "LINAC:PV1"])
@@ -150,3 +150,53 @@ def test_request_data_from_archiver(qtbot):
     # Because the oldest live timestamp in the data buffer was 300, the ending timestamp for the request should
     # be one less than that.
     assert inspect_data_request.max_x == 299
+
+
+def test_formula_curve_item():
+    # Create two ArchivePlotCurveItems which we will make a few formulas out of
+    curve_item1 = ArchivePlotCurveItem()
+    curve_item1.archive_data_buffer = np.array([[100, 105, 110, 115, 120, 125], [2, 3, 4, 5, 6, 7]], dtype=float)
+    curve_item1.archive_points_accumulated = 6
+
+    curve_item2 = ArchivePlotCurveItem()
+    curve_item2.archive_data_buffer = np.array([[101, 106, 111, 116, 121, 126], [1, 2, 3, 4, 5, 6]], dtype=float)
+    curve_item2.archive_points_accumulated = 6
+
+    # Dictionary of PVS
+    curves1 = dict()
+    curves1["A"] = curve_item1
+    curves2 = dict()
+    curves2["A"] = curve_item1
+    curves2["B"] = curve_item2
+
+    formula1 = r"f://5*{A}"
+    formula2 = r"f://log({A})"
+    formula3 = r"f://{A}+{B}"
+    formula4 = r"f://{A}*{B}"
+
+    # Create the curves with the correct inputs
+    formula_curve_1 = FormulaCurveItem(formula=formula1, pvs=curves1)
+    formula_curve_2 = FormulaCurveItem(formula=formula2, pvs=curves1)
+    formula_curve_3 = FormulaCurveItem(formula=formula3, pvs=curves2)
+    formula_curve_4 = FormulaCurveItem(formula=formula4, pvs=curves2)
+
+    expected1 = np.array([[100, 105, 110, 115, 120, 125], [10, 15, 20, 25, 30, 35]], dtype=float)
+    expected2 = np.array([[100, 105, 110, 115, 120, 125], np.log([2, 3, 4, 5, 6, 7])], dtype=float)
+    expected3 = np.array(
+        [[101, 105, 106, 110, 111, 115, 116, 120, 121, 125], [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], dtype=float
+    )
+    expected4 = np.array(
+        [[101, 105, 106, 110, 111, 115, 116, 120, 121, 125], [2, 3, 6, 8, 12, 15, 20, 24, 30, 35]], dtype=float
+    )
+
+    # Evaluate them all
+    formula_curve_1.evaluate()
+    formula_curve_2.evaluate()
+    formula_curve_3.evaluate()
+    formula_curve_4.evaluate()
+
+    # They should match our precalculated outcomes
+    assert np.array_equal(formula_curve_1.archive_data_buffer, expected1)
+    assert np.array_equal(formula_curve_2.archive_data_buffer, expected2)
+    assert np.array_equal(formula_curve_3.archive_data_buffer, expected3)
+    assert np.array_equal(formula_curve_4.archive_data_buffer, expected4)

@@ -67,3 +67,11 @@ ArchivePlotCurveItem
 .. autoclass:: pydm.widgets.archiver_time_plot.ArchivePlotCurveItem
    :members:
    :show-inheritance:
+
+#######################
+FormulaCurveItem
+#######################
+
+.. autoclass:: pydm.widgets.archiver_time_plot.FormulaCurveItem
+   :members:
+   :show-inheritance:
