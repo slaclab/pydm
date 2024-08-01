@@ -294,7 +294,14 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
 class FormulaCurveItem(BasePlotCurveItem):
     """
-    FormulaCurveItem is a BasePlotCurve that plots formulas of pvs
+    FormulaCurveItem is a BasePlotCurve that takes in a formula of curves and evaluates to graph a function.
+
+    To use, instead of typing in a PV channel, this takes in the prefix 'f://' to indicate a function, then
+    uses curly braces '{<PV row header>}' to find which curves to use as inputs. Other than that, FormulaCurveItems
+    have the capacity to handle basic arithmetic functions and also special functions like log() and trigonometry.
+
+    Finally, when populating its data buffers, it uses the union of the timesteps for each of its input curves, and uses
+    last seen data to fill in the gaps when calculating.
 
     Parameters
     ----------
@@ -377,6 +384,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         self._trueFormula = self.createTrueFormula()
 
     def checkFormula(self) -> bool:
+        """Confirm that our formula is still valid. Namely, all of the curves we depend on are still in use"""
         for pv in self.pvs.keys():
             if not self.pvs[pv].exists:
                 print(pv + " is no longer a valid row name")
@@ -387,6 +395,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         return True
 
     def createTrueFormula(self) -> str:
+        """Convert our human-readable formula to something easier to use for the computer, in the background only"""
         formula = self.formula[4:]
         # custom function to clean up the formula. First thing replace rows with data entries
         formula = re.sub(r"{(.+?)}", r'pvValues["\g<1>"]', formula)
@@ -399,6 +408,11 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     @Slot(np.ndarray)
     def evaluate(self) -> None:
+        """
+        Use our formula and input curves to calculate our value at each timestep.
+        If one curve updates at a certain timestep and another does not, it uses the previously
+        seen data of the second curve, and assumes it is accurate at the current timestep.
+        """
         if not self.checkFormula():
             self.formula_invalid_signal.emit()
             return
