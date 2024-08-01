@@ -111,7 +111,11 @@ class MultiAxisPlot(PlotItem):
 
     def change_axis_name(self, old_name: str, new_name: str):
         """Change the name of the axis by changing the item's key in the axes dictionary."""
+        axis = self.axes[old_name]["item"]
         self.axes[new_name] = self.axes[old_name]
+        if hasattr(axis, "_curves"):
+            for curve in axis._curves:
+                curve.y_axis_name = new_name
         del self.axes[old_name]
 
     def addStackedView(self, view):
