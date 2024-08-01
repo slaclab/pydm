@@ -225,6 +225,7 @@ class MultiAxisPlot(PlotItem):
         if hasattr(axisToLink, "_curves"):
             axisToLink._curves.append(plotDataItem)
         axisToLink.show()
+
         for otherAxisName in self.axes.keys():
             self.autoVisible(otherAxisName)
 
@@ -258,12 +259,17 @@ class MultiAxisPlot(PlotItem):
     def autoVisible(self, axisName):
         # Do we have any visible curves?
         axis = self.axes[axisName]["item"]
+        shouldShow = False
         if hasattr(axis, "_curves"):
+            label = axisName+": "
             for curve in axis._curves:
                 if curve.isVisible():
-                    axis.show()
-                    return
-
+                    label += curve.name()+", "
+                    shouldShow = True
+            axis.setLabel(label[:-2])
+            if shouldShow:
+                axis.show()
+                return
             # We don't have any visible curves, but are we the only curve being shown?
             for otherAxis in self.axes.keys():
                 otherItem = self.axes[otherAxis]["item"]
