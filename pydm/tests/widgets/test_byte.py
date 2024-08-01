@@ -8,13 +8,20 @@ from ...widgets.byte import PyDMByteIndicator
     [
         (0, 0, (False, False, False)),
         (0, 5, (True, False, True)),
-        (0, -5, (False, False, False)),
+        (0, -5, (True, True, False)),
+        #
+        # Helpful to note:
+        # Positive shift values execute ">> x" and negative values execute "<< abs(x)" on the indicator's value.
+        #
+        # Bit shifting in python is defined as follows (https://wiki.python.org/moin/BitwiseOperators):
+        #   x << y is same as x * (2**y) and x >> y is same as x / (2**y)
+        #
         (1, 0, (False, False, False)),
         (1, 4, (False, True, False)),
-        (1, -5, (False, False, False)),
+        (1, -5, (True, False, True)),
         (-1, 0, (False, False, False)),
         (-1, 1, (False, True, False)),
-        (-1, -5, (False, False, False)),
+        (-1, -5, (False, True, True, False)),
     ],
 )
 def test_value_shift(qtbot, signals, shift, value, expected):
@@ -31,10 +38,10 @@ def test_value_shift(qtbot, signals, shift, value, expected):
         pytest-qt window for widget testing
     signals : fixture
         The signals fixture, which provides access signals to be bound to the appropriate slots
-    value : int
-        The value to be displayed by the widget
     shift : int
         The value's bit shift
+    value : int
+        The value to be displayed by the widget
     expected : int
         Expected resulting value
     """
