@@ -69,6 +69,8 @@ class BasePlotAxesModel(QAbstractTableModel):
             return axis.auto_range
         elif column_name == "Log Mode":
             return axis.log_mode
+        elif column_name == "Hidden":
+            return not axis.isVisible()
 
     def setData(self, index, value, role=Qt.EditRole):
         if not index.isValid():
