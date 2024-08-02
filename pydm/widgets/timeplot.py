@@ -9,6 +9,7 @@ from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
+from epics import caget
 
 import logging
 
@@ -101,6 +102,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.latest_value = None
         self.channel = None
         self.address = channel_address
+        self.units = caget(self.address + ".EGU") if self.address else None
         super(TimePlotCurveItem, self).__init__(**kws)
 
     def to_dict(self):
@@ -117,6 +119,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @address.setter
     def address(self, new_address: str):
         """Creates the channel for the input address for communicating with the address' plugin."""
+        self.units = caget(new_address + ".EGU") if new_address else None
         if not new_address:
             self.channel = None
             return
