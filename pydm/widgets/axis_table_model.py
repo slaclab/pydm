@@ -98,7 +98,8 @@ class BasePlotAxesModel(QAbstractTableModel):
             else:
                 axis.orientation = str(value)
             self.plot.plotItem.rebuildLayout()
-            axis.show()
+            if axis.isVisible():
+                axis.show()
         elif column_name == "Y-Axis Label":
             axis.label_text = str(value)
         elif column_name == "Min Y Range":
