@@ -12,7 +12,7 @@ from pydm.widgets import PyDMTimePlot
 from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
 from qtpy.QtGui import QColor
 import logging
-from math import e, pi, sqrt, log, sin, cos, tan, asin, acos, atan  # noqa
+from math import *  # noqa
 from statistics import mean  # noqa
 
 # We noqa those two because those functions/vars are useful in eval() but
@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 DEFAULT_ARCHIVE_BUFFER_SIZE = 18000
 DEFAULT_TIME_SPAN = 3600.0
 MIN_TIME_SPAN = 5.0
+APPROX_SECONDS_300_YEARS = 10000000000
 
 
 class ArchivePlotCurveItem(TimePlotCurveItem):
@@ -387,7 +388,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         """Confirm that our formula is still valid. Namely, all of the curves we depend on are still in use"""
         for pv in self.pvs.keys():
             if not self.pvs[pv].exists:
-                print(pv + " is no longer a valid row name")
+                logger.warning(pv + " is no longer a valid row name")
                 # If one of the rows we rely on is gone, not only are we no longer a valid formula,
                 # but all rows that rely on us are also invalid.
                 self.exists = False
@@ -396,7 +397,11 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def createTrueFormula(self) -> str:
         """Convert our human-readable formula to something easier to use for the computer, in the background only"""
-        formula = self.formula[4:]
+        prefix = "f://"
+        if not self.formula.startswith(prefix):
+            logger.warning("Invalid Formula")
+            return None
+        formula = self.formula[len(prefix) :]
         # custom function to clean up the formula. First thing replace rows with data entries
         formula = re.sub(r"{(.+?)}", r'pvValues["\g<1>"]', formula)
         formula = re.sub(r"\^", r"**", formula)
@@ -424,11 +429,16 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.minx = float("-inf")
         self.maxx = float("inf")
         formula = self._trueFormula
+        if not formula:
+            logger.error("invalid formula")
+            return
+
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
         # Reset buffers
         self.points_accumulated = 0
         self.archive_points_accumulated = 0
+
         # Populate new dictionaries, simply for ease of access and readability
         for pv in self.pvs.keys():
             pvArchiveData[pv] = self.pvs[pv].archive_data_buffer
@@ -437,34 +447,46 @@ class FormulaCurveItem(BasePlotCurveItem):
             # Only want to attempt to draw the curve where we have all required data for it.
             self.minx = max(self.pvs[pv].min_archiver_x(), self.minx)
             self.maxx = min(self.pvs[pv].max_archiver_x(), self.maxx)
+
         for pv in self.pvs.keys():
-            pvValues[pv] = pvArchiveData[pv][1][pvIndices[pv]]
-            while pvIndices[pv] < len(pvArchiveData[pv][0]) - 1 and pvArchiveData[pv][0][pvIndices[pv]] < self.minx:
-                pvValues[pv] = pvArchiveData[pv][1][pvIndices[pv]]
-                pvIndices[pv] += 1
+            pv_archive_times = pvArchiveData[pv][0]
+            pv_archive_values = pvArchiveData[pv][1]
+            pv_current_index = pvIndices[pv]
+            pvValues[pv] = pv_archive_values[pv_current_index]
+            while pv_current_index < len(pv_archive_times) - 1 and pv_archive_times[pv_current_index] < self.minx:
+                pvValues[pv] = pv_archive_values[pv_current_index]
+                pv_current_index += 1
                 # Shift starting indices for each row to our minimum
-        x = self.minx
+            pvIndices[pv] = pv_current_index
+
+        current_time = self.minx
         while True:
             self.archive_points_accumulated += 1
             minPV = None
             # Find the next x point out of all of our rows.
             # Update only that row's value, use the previous value of other rows for calcs.
+            current_time = 0
+            min_pv_current_index = 0
             for pv in self.pvs.keys():
-                if minPV is None or pvArchiveData[pv][0][pvIndices[pv]] < pvArchiveData[minPV][0][pvIndices[minPV]]:
+                pv_archive_times = pvArchiveData[pv][0]
+                pv_current_index = pvIndices[pv]
+                if minPV is None or pv_archive_times[pv_current_index] < current_time:
                     minPV = pv
-                    x = pvArchiveData[pv][0][pvIndices[pv]]
+                    current_time = pv_archive_times[pv_current_index]
+                    min_pv_current_index = pv_current_index
 
-            pvValues[minPV] = pvArchiveData[minPV][1][pvIndices[minPV]]
+            pvValues[minPV] = pvArchiveData[minPV][1][min_pv_current_index]
             try:
-                temp = np.array([[x], [eval(formula)]])
+                temp = np.array([[current_time], [eval(formula)]])
             except ValueError:
-                print("Evaluate failed (domain errors? unknown function?)")
-                temp = np.array([[x], [0]])
+                logger.warning("Evaluate failed (domain errors? unknown function?)")
+                temp = np.array([[current_time], [0]])
             self.archive_data_buffer = np.append(self.archive_data_buffer, temp, axis=1)
             pvIndices[minPV] += 1
             # If we are out of data for this row, stop!
             if pvIndices[minPV] >= len(pvArchiveData[minPV][0]):
                 break
+
         if self.liveData:
             formula = formula.replace("Archive", "Live")
             minx = float("-inf")
@@ -478,26 +500,35 @@ class FormulaCurveItem(BasePlotCurveItem):
                 pvIndices[pv] = 0
                 minx = max(self.pvs[pv].min_x(), minx)
                 maxx = min(self.pvs[pv].max_x(), maxx)
-                # pvLiveData[pv] = np.append(pvLiveData[pv], np.array([[0],[0]]), axis = 1)
+
             for pv in self.pvs.keys():
-                pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
-                while pvIndices[pv] < len(pvLiveData[pv][0]) - 1 and pvLiveData[pv][0][pvIndices[pv]] < minx:
-                    pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
-                    pvIndices[pv] += 1
+                pv_live_times = pvLiveData[pv][0]
+                pv_live_values = pvLiveData[pv][1]
+                pv_current_index = pvIndices[pv]
+                pvValues[pv] = pv_live_values[pv_current_index]
+                while pv_current_index < len(pv_live_times) - 1 and pv_live_times[pv_current_index] < minx:
+                    pvValues[pv] = pv_live_values[pv_current_index]
+                    pv_current_index += 1
+
+                pvIndices[pv] = pv_current_index
             while True:
                 self.points_accumulated += 1
                 minPV = None
-                x = 0
+                current_time = 0
+                min_pv_current_index = 0
                 for pv in self.pvs.keys():
-                    if minPV is None or pvLiveData[pv][0][pvIndices[pv]] < pvLiveData[minPV][0][pvIndices[minPV]]:
+                    pv_live_times = pvLiveData[pv][0]
+                    pv_current_index = pvIndices[pv]
+                    if minPV is None or pv_live_times[pv_current_index] < current_time:
                         minPV = pv
-                        x = pvLiveData[pv][0][pvIndices[pv]]
-                pvValues[minPV] = pvLiveData[minPV][1][pvIndices[minPV]]
+                        current_time = pv_live_times[pv_current_index]
+                        min_pv_current_index = pv_current_index
+                pvValues[minPV] = pvLiveData[minPV][1][min_pv_current_index]
                 try:
-                    temp = np.array([[x], [eval(formula)]])
+                    temp = np.array([[current_time], [eval(formula)]])
                 except ValueError:
-                    print("Evaluate failed (domain errors? unknown function?)")
-                    temp = np.array([[x], [0]])
+                    logger.warning("Evaluate failed (domain errors? unknown function?)")
+                    temp = np.array([[current_time], [0]])
                 self.data_buffer = np.append(self.data_buffer, temp, axis=1)
                 pvIndices[minPV] += 1
                 if pvIndices[minPV] >= len(pvLiveData[minPV][0]):
@@ -513,7 +544,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             # If we are just a constant, then forget about data
             # just draw a straight line from 1970 to 300 years or so in the future
             y = [eval(self._trueFormula), eval(self._trueFormula)]
-            x = [0, 10000000000]
+            x = [0, APPROX_SECONDS_300_YEARS]
             # There is a known bug that this won't graph a constant with an x axis
             # of between 30 minutes and 1hr 30 minutes in range. Unknown reason
             self.setData(y=y, x=x)
@@ -703,10 +734,6 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             if curve.use_archive_data:
                 if max_x is None:
                     max_x = curve.min_x()
-                    # if curve.points_accumulated > 0:
-                    #     max_x = curve.data_buffer[0][curve.getBufferSize() - curve.points_accumulated]
-                    # else:
-                    #     max_x = self._starting_timestamp
                 requested_seconds = max_x - min_x
                 if requested_seconds <= 5:
                     continue  # Avoids noisy requests when first rendering the plot

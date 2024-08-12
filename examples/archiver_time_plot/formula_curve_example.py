@@ -25,14 +25,14 @@ class archiver_time_plot_example(Display):
         self.chkbx_live.setChecked(True)
         self.formula_box = QLineEdit(self)
         self.formula_box.setText("f://{A}")
-        self.ok_button = ok_button = QPushButton("OK", self)
+        self.ok_button = QPushButton("OK", self)
         self.ok_button.clicked.connect(self.set_formula)
         self.main_layout.addWidget(self.formula_box)
         self.main_layout.addWidget(self.ok_button)
         self.main_layout.addWidget(self.chkbx_live)
         self.main_layout.addWidget(self.plot)
         self.curve = self.plot.addYChannel(
-            y_channel="ca://XCOR:LI29:302:IACT",
+            y_channel="ca://MTEST:Float from ’testing_ioc/pydm-testing-ioc",
             name="name",
             color="red",
             yAxisName="Axis",
@@ -50,13 +50,12 @@ class archiver_time_plot_example(Display):
             useArchiveData=True,
             liveData=True,
         )
-        ok_button.clicked.connect(self.set_formula)
         self.chkbx_live.stateChanged.connect(lambda x: self.set_live(self.curve, self.formula_curve, x))
 
     @staticmethod
     def set_live(curve, formula_curve, live):
         curve.liveData = live
-        formula_curve.liveData = False
+        formula_curve.liveData = live
 
     def set_formula(self):
         print("assuming formula is valid, attempting to use formula")

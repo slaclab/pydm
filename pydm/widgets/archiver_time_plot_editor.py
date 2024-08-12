@@ -39,12 +39,12 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
                 if curve.formula is None:
                     return QVariant()
                 return str(curve.formula)
-            elif isinstance(curve, ArchivePlotCurveItem):
+            # We are either a Formula or a PV (for now at leasts)
+            else:
                 if curve.address is None:
                     return QVariant()
                 return str(curve.address)
-            else:
-                print("how did we get here")
+
         elif column_name == "Live Data":
             return bool(curve.liveData)
         elif column_name == "Archive Data":
