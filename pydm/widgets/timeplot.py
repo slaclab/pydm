@@ -492,6 +492,10 @@ class PyDMTimePlot(BasePlot, updateMode):
         self.auto_scroll_timer = QTimer()
         self.auto_scroll_timer.timeout.connect(self.auto_scroll)
 
+    def to_dict(self) -> OrderedDict:
+        dic_ = OrderedDict([("refreshInterval", self.auto_scroll_timer.interval()/1000)])
+        dic_.update(super(PyDMTimePlot, self).to_dict())
+        return dic_
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
         # This function gets called by PyDMTimePlot's designer plugin.
