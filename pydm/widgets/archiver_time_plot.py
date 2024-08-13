@@ -356,8 +356,14 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
-        dic_ = OrderedDict([("useArchiveData", self.use_archive_data), ("liveData", self.liveData),
-                            ("plot_style", self.plot_style), ("formula", self.formula)])
+        dic_ = OrderedDict(
+            [
+                ("useArchiveData", self.use_archive_data),
+                ("liveData", self.liveData),
+                ("plot_style", self.plot_style),
+                ("formula", self.formula),
+            ]
+        )
         curveDict = dict()
         for header, curve in self.pvs.items():
             if isinstance(curve, ArchivePlotCurveItem):
