@@ -200,8 +200,8 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             value = int(self.value) << abs(self._shift)
         else:
             value = int(self.value) >> self._shift
-        if value < 0:
-            value = 0
+
+        # also display value when negative (these values are repesented by bits in Two's Complement form)
 
         bits = [(value >> i) & 1 for i in range(self._num_bits)]
         for bit, indicator in zip(bits, self._indicators):
