@@ -438,102 +438,82 @@ class FormulaCurveItem(BasePlotCurveItem):
         # Reset buffers
         self.points_accumulated = 0
         self.archive_points_accumulated = 0
-
         # Populate new dictionaries, simply for ease of access and readability
+        pvIndices = self.set_up_eval(archive=True)
         for pv in self.pvs.keys():
             pvArchiveData[pv] = self.pvs[pv].archive_data_buffer
-            pvIndices[pv] = 0
+            pvValues[pv] = pvArchiveData[pv][1][pvIndices[pv]]
             # Of all the rows we are relying on, we want our min to be the largest of their mins. Opposite for maxes.
             # Only want to attempt to draw the curve where we have all required data for it.
             self.minx = max(self.pvs[pv].min_archiver_x(), self.minx)
             self.maxx = min(self.pvs[pv].max_archiver_x(), self.maxx)
 
-        for pv in self.pvs.keys():
-            pv_archive_times = pvArchiveData[pv][0]
-            pv_archive_values = pvArchiveData[pv][1]
-            pv_current_index = pvIndices[pv]
-            pvValues[pv] = pv_archive_values[pv_current_index]
-            while pv_current_index < len(pv_archive_times) - 1 and pv_archive_times[pv_current_index] < self.minx:
-                pvValues[pv] = pv_archive_values[pv_current_index]
-                pv_current_index += 1
-                # Shift starting indices for each row to our minimum
-            pvIndices[pv] = pv_current_index
+        self.archive_data_buffer = self.compute_evaluation(
+            formula=formula, pvData=pvArchiveData, pvValues=pvValues, pvIndices=pvIndices, archive=True
+        )
+        if self.liveData:
+            self.points_accumulated = 0
+            pvIndices = self.set_up_eval(archive=False)
+            pvValues = dict()
+            # Do literally the exact same thing for live data
+            for pv in self.pvs.keys():
+                pvLiveData[pv] = self.pvs[pv].data_buffer
+                pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
+            self.data_buffer = self.compute_evaluation(
+                formula=formula, pvData=pvLiveData, pvValues=pvValues, pvIndices=pvIndices, archive=False
+            )
 
+    def set_up_eval(self, archive: bool) -> dict:
+        pvIndices = dict()
+        for pv in self.pvs.keys():
+            pv_current_index = 0
+            if archive:
+                pv_times = self.pvs[pv].archive_data_buffer[0]
+                while pv_current_index < len(pv_times) - 1 and pv_times[pv_current_index] < self.min_x():
+                    pv_current_index += 1
+                # Shift starting indices for each row to our minimum
+            else:
+                pv_times = self.pvs[pv].data_buffer[0]
+                while pv_current_index < len(pv_times) - 1 and pv_times[pv_current_index] < self.pvs[pv].min_x():
+                    pv_current_index += 1
+            pvIndices[pv] = pv_current_index
+        return pvIndices
+
+    def compute_evaluation(
+        self, formula: str, pvData: dict, pvValues: dict, pvIndices: dict, archive: bool
+    ) -> np.ndarray:
         current_time = self.minx
+        output = np.zeros((2, 0), order="f", dtype=float)
         while True:
-            self.archive_points_accumulated += 1
+            if archive:
+                self.archive_points_accumulated += 1
+            else:
+                self.points_accumulated += 1
             minPV = None
             # Find the next x point out of all of our rows.
             # Update only that row's value, use the previous value of other rows for calcs.
             current_time = 0
             min_pv_current_index = 0
             for pv in self.pvs.keys():
-                pv_archive_times = pvArchiveData[pv][0]
+                pv_times = pvData[pv][0]
                 pv_current_index = pvIndices[pv]
-                if minPV is None or pv_archive_times[pv_current_index] < current_time:
+                if minPV is None or pv_times[pv_current_index] < current_time:
                     minPV = pv
-                    current_time = pv_archive_times[pv_current_index]
+                    current_time = pv_times[pv_current_index]
                     min_pv_current_index = pv_current_index
 
-            pvValues[minPV] = pvArchiveData[minPV][1][min_pv_current_index]
+            pvValues[minPV] = pvData[minPV][1][min_pv_current_index]
             try:
                 temp = np.array([[current_time], [eval(formula)]])
             except ValueError:
                 logger.warning("Evaluate failed (domain errors? unknown function?)")
                 temp = np.array([[current_time], [0]])
-            self.archive_data_buffer = np.append(self.archive_data_buffer, temp, axis=1)
+            output = np.append(output, temp, axis=1)
             pvIndices[minPV] += 1
             # If we are out of data for this row, stop!
-            if pvIndices[minPV] >= len(pvArchiveData[minPV][0]):
+            if pvIndices[minPV] >= len(pvData[minPV][0]):
                 break
-
-        if self.liveData:
-            formula = formula.replace("Archive", "Live")
-            minx = float("-inf")
-            maxx = float("inf")
-            self.points_accumulated = 0
-            pvIndices = dict()
-            pvValues = dict()
-            # Do literally the exact same thing for live data
-            for pv in self.pvs.keys():
-                pvLiveData[pv] = np.copy(self.pvs[pv].data_buffer)
-                pvIndices[pv] = 0
-                minx = max(self.pvs[pv].min_x(), minx)
-                maxx = min(self.pvs[pv].max_x(), maxx)
-
-            for pv in self.pvs.keys():
-                pv_live_times = pvLiveData[pv][0]
-                pv_live_values = pvLiveData[pv][1]
-                pv_current_index = pvIndices[pv]
-                pvValues[pv] = pv_live_values[pv_current_index]
-                while pv_current_index < len(pv_live_times) - 1 and pv_live_times[pv_current_index] < minx:
-                    pvValues[pv] = pv_live_values[pv_current_index]
-                    pv_current_index += 1
-
-                pvIndices[pv] = pv_current_index
-            while True:
-                self.points_accumulated += 1
-                minPV = None
-                current_time = 0
-                min_pv_current_index = 0
-                for pv in self.pvs.keys():
-                    pv_live_times = pvLiveData[pv][0]
-                    pv_current_index = pvIndices[pv]
-                    if minPV is None or pv_live_times[pv_current_index] < current_time:
-                        minPV = pv
-                        current_time = pv_live_times[pv_current_index]
-                        min_pv_current_index = pv_current_index
-                pvValues[minPV] = pvLiveData[minPV][1][min_pv_current_index]
-                try:
-                    temp = np.array([[current_time], [eval(formula)]])
-                except ValueError:
-                    logger.warning("Evaluate failed (domain errors? unknown function?)")
-                    temp = np.array([[current_time], [0]])
-                self.data_buffer = np.append(self.data_buffer, temp, axis=1)
-                pvIndices[minPV] += 1
-                if pvIndices[minPV] >= len(pvLiveData[minPV][0]):
-                    break
-        return
+        return output
 
     @Slot()
     def redrawCurve(self, min_x=None, max_x=None) -> None:
@@ -603,7 +583,7 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def min_x(self):
         if not self.pvs:
-            return 10000000000
+            return APPROX_SECONDS_300_YEARS
         return self.minx
 
     def min_archiver_x(self):

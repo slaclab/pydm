@@ -32,7 +32,7 @@ class archiver_time_plot_example(Display):
         self.main_layout.addWidget(self.chkbx_live)
         self.main_layout.addWidget(self.plot)
         self.curve = self.plot.addYChannel(
-            y_channel="ca://MTEST:Float from ’testing_ioc/pydm-testing-ioc",
+            y_channel="ca://MTEST:Float",
             name="name",
             color="red",
             yAxisName="Axis",
@@ -43,7 +43,7 @@ class archiver_time_plot_example(Display):
         pvdict = dict()
         pvdict["A"] = self.curve
         self.formula_curve = self.plot.addFormulaChannel(
-            formula=r"f://{A}",
+            formula=r"f://2*{A}",
             pvs=pvdict,
             yAxisName="Axis",
             color="green",
