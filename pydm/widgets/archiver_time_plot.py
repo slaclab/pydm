@@ -349,8 +349,6 @@ class FormulaCurveItem(BasePlotCurveItem):
         self._formula = formula
         # Have a formula for internal calculations, that the user does not see
         self._trueFormula = self.createTrueFormula()
-        self.minx = float("-inf")
-        self.maxx = float("inf")
         self.pvs = pvs
         self._liveData = liveData
         self.plot_style = "Line"
@@ -426,8 +424,6 @@ class FormulaCurveItem(BasePlotCurveItem):
         pvLiveData = dict()
         pvIndices = dict()
         pvValues = dict()
-        self.minx = float("-inf")
-        self.maxx = float("inf")
         formula = self._trueFormula
         if not formula:
             logger.error("invalid formula")
@@ -442,11 +438,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         pvIndices = self.set_up_eval(archive=True)
         for pv in self.pvs.keys():
             pvArchiveData[pv] = self.pvs[pv].archive_data_buffer
-            pvValues[pv] = pvArchiveData[pv][1][pvIndices[pv]]
-            # Of all the rows we are relying on, we want our min to be the largest of their mins. Opposite for maxes.
-            # Only want to attempt to draw the curve where we have all required data for it.
-            self.minx = max(self.pvs[pv].min_archiver_x(), self.minx)
-            self.maxx = min(self.pvs[pv].max_archiver_x(), self.maxx)
+            pvValues[pv] = pvArchiveData[pv][1][pvIndices[pv] - 1]
 
         self.archive_data_buffer = self.compute_evaluation(
             formula=formula, pvData=pvArchiveData, pvValues=pvValues, pvIndices=pvIndices, archive=True
@@ -458,7 +450,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             # Do literally the exact same thing for live data
             for pv in self.pvs.keys():
                 pvLiveData[pv] = self.pvs[pv].data_buffer
-                pvValues[pv] = pvLiveData[pv][1][pvIndices[pv]]
+                pvValues[pv] = pvLiveData[pv][1][pvIndices[pv] - 1]
             self.data_buffer = self.compute_evaluation(
                 formula=formula, pvData=pvLiveData, pvValues=pvValues, pvIndices=pvIndices, archive=False
             )
@@ -469,12 +461,12 @@ class FormulaCurveItem(BasePlotCurveItem):
             pv_current_index = 0
             if archive:
                 pv_times = self.pvs[pv].archive_data_buffer[0]
-                while pv_current_index < len(pv_times) - 1 and pv_times[pv_current_index] < self.min_x():
+                while pv_current_index < len(pv_times) - 1 and pv_times[pv_current_index] < self.min_archiver_x():
                     pv_current_index += 1
                 # Shift starting indices for each row to our minimum
             else:
                 pv_times = self.pvs[pv].data_buffer[0]
-                while pv_current_index < len(pv_times) - 1 and pv_times[pv_current_index] < self.pvs[pv].min_x():
+                while pv_current_index < len(pv_times) - 1 and pv_times[pv_current_index] < self.min_x():
                     pv_current_index += 1
             pvIndices[pv] = pv_current_index
         return pvIndices
@@ -482,7 +474,7 @@ class FormulaCurveItem(BasePlotCurveItem):
     def compute_evaluation(
         self, formula: str, pvData: dict, pvValues: dict, pvIndices: dict, archive: bool
     ) -> np.ndarray:
-        current_time = self.minx
+        current_time = self.min_archiver_x
         output = np.zeros((2, 0), order="f", dtype=float)
         while True:
             if archive:
@@ -579,12 +571,18 @@ class FormulaCurveItem(BasePlotCurveItem):
         if not self.pvs:
             # We don't want our constants to affect the x axis at all, let them draw as required
             return 0
-        return self.data_buffer[0, -1]
+        maxx = APPROX_SECONDS_300_YEARS
+        for curve in self.pvs.keys():
+            maxx = min(self.pvs[curve].min_x(), maxx)
+        return maxx
 
     def min_x(self):
         if not self.pvs:
             return APPROX_SECONDS_300_YEARS
-        return self.minx
+        minx = 0
+        for curve in self.pvs.keys():
+            minx = max(self.pvs[curve].min_x(), minx)
+        return minx
 
     def min_archiver_x(self):
         """
@@ -595,7 +593,12 @@ class FormulaCurveItem(BasePlotCurveItem):
         float
             The timestamp of the oldest data point in the archiver data buffer.
         """
-        return self.minx
+        if not self.pvs:
+            return APPROX_SECONDS_300_YEARS
+        minx = 0
+        for curve in self.pvs.keys():
+            minx = max(self.pvs[curve].min_archiver_x(), minx)
+        return minx
 
     def max_archiver_x(self):
         """
@@ -607,7 +610,12 @@ class FormulaCurveItem(BasePlotCurveItem):
         float
             The timestamp of the most recent data point in the archiver data buffer.
         """
-        return self.maxx
+        if not self.pvs:
+            return 0
+        maxx = APPROX_SECONDS_300_YEARS
+        for curve in self.pvs.keys():
+            maxx = min(self.pvs[curve].min_archiver_x(), maxx)
+        return maxx
 
 
 class PyDMArchiverTimePlot(PyDMTimePlot):
