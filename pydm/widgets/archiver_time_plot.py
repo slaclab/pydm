@@ -22,6 +22,7 @@ from pydm.widgets.baseplot import BasePlotCurveItem
 logger = logging.getLogger(__name__)
 
 DEFAULT_ARCHIVE_BUFFER_SIZE = 18000
+DEFAULT_VALIDITY_TIMEOUT = 7500
 DEFAULT_TIME_SPAN = 3600.0
 MIN_TIME_SPAN = 5.0
 APPROX_SECONDS_300_YEARS = 10000000000
@@ -40,6 +41,11 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     use_archive_data : bool
         If True, requests will be made to archiver appliance for archived data when
         the plot is zoomed or scrolled to the left.
+    liveData : bool
+        If True, the curve will gather data in real time.
+    validity_timeout : int
+        The time waited between setting a new address and determining if the
+        address is in the archiver. Measured in milliseconds. Default is 7500.
     **kws : dict[str: any]
         Additional parameters supported by pyqtgraph.PlotDataItem.
     """
@@ -47,9 +53,15 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     # Used to request data from archiver appliance (starting timestamp, ending timestamp, processing command)
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
+    invalid_archive_channel = Signal()
 
     def __init__(
-        self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws
+        self,
+        channel_address: Optional[str] = None,
+        use_archive_data: bool = True,
+        liveData: bool = True,
+        validity_timeout: int = DEFAULT_VALIDITY_TIMEOUT,
+        **kws
     ):
         super(ArchivePlotCurveItem, self).__init__(**kws)
         self.use_archive_data = use_archive_data
@@ -63,6 +75,12 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # the full range of values retrieved
         self.error_bar_item = ErrorBarItem()
         self.error_bar_needs_set = True
+
+        # Create a timer for checking if the channel is accessible
+        self.validity_timer = QTimer(self)
+        self.validity_timer.setInterval(validity_timeout)
+        self.validity_timer.setSingleShot(True)
+        self.validity_timer.timeout.connect(self.invalid_archive_channel.emit)
 
         self.address = channel_address
 
@@ -92,6 +110,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.archive_channel = PyDMChannel(
             address=archive_address, value_slot=self.receiveArchiveData, value_signal=self.archive_data_request_signal
         )
+        self.validity_timer.start()
 
         # Clear the archive data of the previous channel and redraw the curve
         if self.archive_points_accumulated:
@@ -130,6 +149,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             Additional indices may be used as well based on the type of request made to the archiver appliance.
             For example optimized data will include standard deviations, minimums, and maximums
         """
+        self.validity_timer.stop()
         archive_data_length = len(data[0])
         max_x = data[0][archive_data_length - 1]
 
