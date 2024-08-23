@@ -382,6 +382,10 @@ class FormulaCurveItem(BasePlotCurveItem):
         self._formula = formula
         self._trueFormula = self.createTrueFormula()
 
+    @property
+    def channel(self):
+        return None
+
     def checkFormula(self) -> bool:
         """Confirm that our formula is still valid. Namely, all of the curves we depend on are still in use"""
         for pv in self.pvs.keys():

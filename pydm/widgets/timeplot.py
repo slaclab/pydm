@@ -1041,9 +1041,6 @@ class PyDMTimePlot(BasePlot, updateMode):
             super(PyDMTimePlot, self).setAutoRangeX(value)
 
     def channels(self):
-        if not isinstance(self, TimePlotCurveItem):
-            # Only TimePlotCurves have channels
-            return None
         return [curve.channel for curve in self._curves]
 
     # The methods for autoRangeY, minYRange, and maxYRange are
