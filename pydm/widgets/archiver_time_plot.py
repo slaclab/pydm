@@ -882,15 +882,6 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             liveData=liveData,
         )
 
-    def replaceToArchivePlot(self, address: str, **kwargs) -> ArchivePlotCurveItem:
-        # This is specifically in order to create an ArchivePlotCurveItem
-        # without changing axes or appending to the row.
-        ArchiveCurve = ArchivePlotCurveItem(**kwargs)
-        [ch.disconnect() for ch in ArchiveCurve.channels() if ch]
-        ArchiveCurve.address = address
-        [ch.connect() for ch in ArchiveCurve.channels() if ch]
-        return ArchiveCurve
-
     def addFormulaChannel(self, yAxisName: str, **kwargs) -> FormulaCurveItem:
         # Create a formula curve to replace the archive plot curve item in place.
         FormulaCurve = FormulaCurveItem(**kwargs)
