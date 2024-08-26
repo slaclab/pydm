@@ -740,6 +740,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.installEventFilter(self)
 
     def to_dict(self) -> OrderedDict:
+        """Converts this plot into a dict that can then be read to recreate
+        all of the configurations preferred for this plot"""
+
         dic_ = OrderedDict(
             [
                 ("title", self.getPlotTitle()),
