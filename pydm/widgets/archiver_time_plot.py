@@ -53,14 +53,13 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     # Used to request data from archiver appliance (starting timestamp, ending timestamp, processing command)
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
-    invalid_archive_channel = Signal()
+    archive_channel_connection = Signal(bool)
 
     def __init__(
         self,
         channel_address: Optional[str] = None,
         use_archive_data: bool = True,
         liveData: bool = True,
-        validity_timeout: int = DEFAULT_VALIDITY_TIMEOUT,
         **kws
     ):
         super(ArchivePlotCurveItem, self).__init__(**kws)
@@ -75,12 +74,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # the full range of values retrieved
         self.error_bar_item = ErrorBarItem()
         self.error_bar_needs_set = True
-
-        # Create a timer for checking if the channel is accessible
-        self.validity_timer = QTimer(self)
-        self.validity_timer.setInterval(validity_timeout)
-        self.validity_timer.setSingleShot(True)
-        self.validity_timer.timeout.connect(self.invalid_archive_channel.emit)
 
         self.address = channel_address
 
@@ -108,7 +101,10 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # Prepare new address to use the archiver plugin and create the new channel
         archive_address = "archiver://pv=" + remove_protocol(new_address.strip())
         self.archive_channel = PyDMChannel(
-            address=archive_address, value_slot=self.receiveArchiveData, value_signal=self.archive_data_request_signal
+            address=archive_address,
+            value_slot=self.receiveArchiveData,
+            value_signal=self.archive_data_request_signal,
+            connection_slot=self.archive_channel_connection.emit
         )
         self.validity_timer.start()
 
@@ -149,7 +145,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             Additional indices may be used as well based on the type of request made to the archiver appliance.
             For example optimized data will include standard deviations, minimums, and maximums
         """
-        self.validity_timer.stop()
         archive_data_length = len(data[0])
         max_x = data[0][archive_data_length - 1]
 

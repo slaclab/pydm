@@ -65,6 +65,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     _channels = ("channel",)
     unitSignal = Signal(str)
+    live_channel_connection = Signal(bool)
 
     def __init__(self, channel_address=None, plot_by_timestamps=True, plot_style="Line", **kws):
         """
@@ -181,6 +182,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @Slot(bool)
     def connectionStateChanged(self, connected):
         # Maybe change pen stroke?
+        self.live_channel_connection.emit(connected)
         self.connected = connected
         if not self.connected:
             self.latest_value = np.nan
