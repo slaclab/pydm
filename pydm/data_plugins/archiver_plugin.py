@@ -78,6 +78,7 @@ class Connection(PyDMConnection):
                 "Environment variable: PYDM_ARCHIVER_URL must be defined to use the archiver plugin, for "
                 "example: http://lcls-archapp.slac.stanford.edu"
             )
+            self.connection_state_signal.emit(False)
             return
 
         url_string = f"{base_url}/retrieval/data/getData.json?{self.address}&from={from_date_str}&to={to_date_str}"
@@ -100,10 +101,10 @@ class Connection(PyDMConnection):
         ----------
         reply: The response from the archiver appliance
         """
-        if (
-            reply.error() == QNetworkReply.NoError
-            and reply.header(QNetworkRequest.ContentTypeHeader) == "application/json"
-        ):
+        success = (reply.error() == QNetworkReply.NoError
+                   and reply.header(QNetworkRequest.ContentTypeHeader) == "application/json")
+        self.connection_state_signal.emit(success)
+        if success:
             bytes_str = reply.readAll()
             data_dict = json.loads(str(bytes_str, "utf-8"))
 
