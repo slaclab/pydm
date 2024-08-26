@@ -22,7 +22,6 @@ from pydm.widgets.baseplot import BasePlotCurveItem
 logger = logging.getLogger(__name__)
 
 DEFAULT_ARCHIVE_BUFFER_SIZE = 18000
-DEFAULT_VALIDITY_TIMEOUT = 7500
 DEFAULT_TIME_SPAN = 3600.0
 MIN_TIME_SPAN = 5.0
 APPROX_SECONDS_300_YEARS = 10000000000
@@ -43,9 +42,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         the plot is zoomed or scrolled to the left.
     liveData : bool
         If True, the curve will gather data in real time.
-    validity_timeout : int
-        The time waited between setting a new address and determining if the
-        address is in the archiver. Measured in milliseconds. Default is 7500.
     **kws : dict[str: any]
         Additional parameters supported by pyqtgraph.PlotDataItem.
     """
@@ -54,17 +50,14 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
     archive_channel_connection = Signal(bool)
+    prompt_archive_request = Signal()
 
     def __init__(
-        self,
-        channel_address: Optional[str] = None,
-        use_archive_data: bool = True,
-        liveData: bool = True,
-        **kws
+        self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws
     ):
+        self.archive_channel = None
         super(ArchivePlotCurveItem, self).__init__(**kws)
         self.use_archive_data = use_archive_data
-        self.archive_channel = None
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
@@ -92,10 +85,13 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         """Creates the channel for the input address for communicating with the archiver appliance plugin."""
         TimePlotCurveItem.address.__set__(self, new_address)
 
+        if self.archive_channel:
+            if new_address == self.archive_channel.address:
+                return
+            self.archive_channel.disconnect()
+
         if not new_address:
             self.archive_channel = None
-            return
-        elif self.archive_channel and new_address == self.archive_channel.address:
             return
 
         # Prepare new address to use the archiver plugin and create the new channel
@@ -104,14 +100,17 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             address=archive_address,
             value_slot=self.receiveArchiveData,
             value_signal=self.archive_data_request_signal,
-            connection_slot=self.archive_channel_connection.emit
+            connection_slot=self.archive_channel_connection.emit,
         )
-        self.validity_timer.start()
+        self.archive_channel.connect()
 
         # Clear the archive data of the previous channel and redraw the curve
         if self.archive_points_accumulated:
             self.initializeArchiveBuffer()
             self.redrawCurve()
+
+        # Prompt the curve's associated plot to fetch archive data
+        self.prompt_archive_request.emit()
 
     @property
     def liveData(self):
@@ -719,6 +718,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         self._prev_x = None  # Holds the minimum x-value of the previous update of the plot
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
         self._archive_request_queued = False
+        self.setTimeSpan(DEFAULT_TIME_SPAN)
 
     def updateXAxis(self, update_immediately: bool = False) -> None:
         """Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,
@@ -730,9 +730,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         max_x = self.plotItem.getAxis("bottom").range[1]
         max_point = max([curve.max_x() for curve in self._curves])
         if min_x == 0:  # This is zero when the plot first renders
-            min_x = time.time()
-            self._min_x = min_x
-            self._starting_timestamp = min_x - DEFAULT_TIME_SPAN  # A bit of a buffer so we don't overwrite live data
+            self._max_x = time.time()
+            self._min_x = self._max_x - DEFAULT_TIME_SPAN
+            self._starting_timestamp = self._max_x
             if self.getTimeSpan() != DEFAULT_TIME_SPAN:
                 # Initialize x-axis based on the time span as well as trigger a call to the archiver below
                 self._min_x = self._min_x - self.getTimeSpan()
@@ -831,6 +831,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         """Create and return a curve item to be plotted"""
         curve_item = ArchivePlotCurveItem(*args, **kwargs)
         curve_item.archive_data_received_signal.connect(self.archive_data_received)
+        curve_item.prompt_archive_request.connect(self.requestDataFromArchiver)
         return curve_item
 
     @Slot()

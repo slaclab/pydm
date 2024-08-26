@@ -120,10 +120,13 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @address.setter
     def address(self, new_address: str):
         """Creates the channel for the input address for communicating with the address' plugin."""
+        if self.channel:
+            if new_address == self.channel.address:
+                return
+            self.channel.disconnect()
+
         if not new_address:
             self.channel = None
-            return
-        elif self.channel and new_address == self.channel.address:
             return
 
         self.channel = PyDMChannel(
@@ -132,6 +135,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             value_slot=self.receiveNewValue,
             unit_slot=self.unitsChanged,
         )
+        self.channel.connect()
 
         # Clear the data from the previous channel and redraw the curve
         if self.points_accumulated:

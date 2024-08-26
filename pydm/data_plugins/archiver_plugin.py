@@ -101,8 +101,10 @@ class Connection(PyDMConnection):
         ----------
         reply: The response from the archiver appliance
         """
-        success = (reply.error() == QNetworkReply.NoError
-                   and reply.header(QNetworkRequest.ContentTypeHeader) == "application/json")
+        success = (
+            reply.error() == QNetworkReply.NoError
+            and reply.header(QNetworkRequest.ContentTypeHeader) == "application/json"
+        )
         self.connection_state_signal.emit(success)
         if success:
             bytes_str = reply.readAll()
