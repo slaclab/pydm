@@ -460,6 +460,15 @@ class FormulaCurveItem(BasePlotCurveItem):
             )
 
     def set_up_eval(self, archive: bool) -> dict:
+        """Because we are doing very similar evaluations for Archive and Live Data,
+        we are going to set up our data structures such that we can compute our evaluation
+        more easily. This function will (generally) be called twice, once with archive = True,
+        once with False
+
+        Parameters
+        ----------------
+        archive: bool
+            Whether this is setting up for Archive Data or Live Data"""
         pvIndices = dict()
         for pv in self.pvs.keys():
             pv_current_index = 0
@@ -478,6 +487,28 @@ class FormulaCurveItem(BasePlotCurveItem):
     def compute_evaluation(
         self, formula: str, pvData: dict, pvValues: dict, pvIndices: dict, archive: bool
     ) -> np.ndarray:
+        """This is where the actual computation takes place. We are going to go through
+        the data step by step and calculate our formula at each timestamp available
+
+        Parameters
+        ----------------
+        formula: str
+            The formula to compute
+
+        pvData: dict
+            A dictionary containing all of the Archive or Live data for each curve
+
+        pvValues: dict
+            The value of each curve at the current timestep. At the start of this function,
+            each is set to their respective last seen values when the time is equal to the
+            latest start time of all of the curves.
+
+        pvIndices: dict
+            A dictionary storing where in each curve's data buffer we are currently at while calculating
+
+        archive: bool
+            Whether or not this is computing for the Archive or for Live"""
+
         current_time = self.min_archiver_x
         output = np.zeros((2, 0), order="f", dtype=float)
         while True:
@@ -883,8 +914,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         )
 
     def addFormulaChannel(self, yAxisName: str, **kwargs) -> FormulaCurveItem:
-        # Create a formula curve to replace the archive plot curve item in place.
-        FormulaCurve = FormulaCurveItem(**kwargs)
+        """Creates a FormulaCurveItem and links it to the given y axis"""
+        FormulaCurve = FormulaCurveItem(yAxisName=yAxisName, **kwargs)
         self.plotItem.linkDataToAxis(FormulaCurve, yAxisName)
-        FormulaCurve.redrawCurve()
         return FormulaCurve
