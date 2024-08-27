@@ -251,7 +251,11 @@ class MultiAxisPlot(PlotItem):
         axisName: str
             The name of the axis that a curve is being removed from
         """
-        if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.axes:
+        if (
+            hasattr(curve, "y_axis_name")
+            and curve.y_axis_name in self.axes
+            and curve in self.axes[curve.y_axis_name]["item"]._curves
+        ):
             self.axes[curve.y_axis_name]["item"]._curves.remove(curve)
             self.autoVisible(curve.y_axis_name)
 
