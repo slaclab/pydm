@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import Optional
 
 from pydm.widgets.channel import PyDMChannel
-from qtpy.QtCore import Slot, QObject, QUrl
+from qtpy.QtCore import Slot, QObject, QUrl, QTimer
 from qtpy.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
@@ -89,7 +89,9 @@ class Connection(PyDMConnection):
         request = QNetworkRequest(QUrl(url_string))
         # This get call is non-blocking, can be made in parallel with others, and when the results are ready they
         # will be delivered to the data_request_finished method below via the "finished" signal
-        self.network_manager.get(request)
+        self.connection_state_signal.emit(False)
+        reply = self.network_manager.get(request)
+        QTimer.singleShot(7500, reply.abort)
 
     @Slot(QNetworkReply)
     def data_request_finished(self, reply: QNetworkReply) -> None:
