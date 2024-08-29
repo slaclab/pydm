@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMImageView &mdash; PyDM 1.24.0 documentation</title>
+  <title>PyDMImageView &mdash; PyDM 1.24.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.24.0
+                1.24.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -147,7 +147,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.image.</span></span><span class="sig-name descname"><span class="pre">PyDMImageView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageView</span></code>, <a class="reference internal" href="PyDMWidget.html#pydm.widgets.base.PyDMWidget" title="pydm.widgets.base.PyDMWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMWidget</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMColorMap</span></code>, <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.ReadingOrder" title="pydm.widgets.image.ReadingOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadingOrder</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageView</span></code>, <a class="reference internal" href="PyDMWidget.html#pydm.widgets.base.PyDMWidget" title="pydm.widgets.base.PyDMWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMWidget</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMColorMap</span></code>, <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.ReadingOrder" title="pydm.widgets.image.ReadingOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReadingOrder</span></code></a>, <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.DimensionOrder" title="pydm.widgets.image.DimensionOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">DimensionOrder</span></code></a></p>
 <p>A PyQtGraph ImageView with support for Channels and more from PyDM.</p>
 <p>If there is no <code class="xref py py-attr docutils literal notranslate"><span class="pre">channelWidth</span></code> it is possible to define the width of
 the image with the <code class="xref py py-attr docutils literal notranslate"><span class="pre">width</span></code> property.</p>
@@ -166,6 +166,23 @@ information</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.DimensionOrder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DimensionOrder</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.DimensionOrder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to build DimensionOrder ENUM property.</p>
+<p>This relates to how the pva image data is being sent. Included in this data are the dimensions of the
+image (width and height) as part of the array ‘dimension_t[] dimension’.
+(<a class="reference external" href="https://github.com/epics-base/normativeTypesCPP/wiki/Normative+Types+Specification#ntndarray">https://github.com/epics-base/normativeTypesCPP/wiki/Normative+Types+Specification#ntndarray</a>)
+But if the array should be ordered [height, width] or [width, height] does not seem to be specified.
+This option lets the user set which ordering PyDM should interpret this ‘dimension’ array as having.</p>
+<p>HeightFirst = [height, width]
+WidthFirst = [width, height]
+(PyDM assumes HeightFirst as default)</p>
+<p>If you are wondering what ordering a certain pva address is using, you can ‘pvget’ the address
+to see the ordering of values in its ‘dimension’ array.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.ReadingOrder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReadingOrder</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.ReadingOrder" title="Permalink to this definition"></a></dt>
@@ -239,6 +256,18 @@ autoDownsample option to PyQtGraph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.dimensionOrder">
+<span class="sig-name descname"><span class="pre">dimensionOrder</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.dimensionOrder" title="Permalink to this definition"></a></dt>
+<dd><p>Return the dimension order of the <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.imageChannel" title="pydm.widgets.image.PyDMImageView.imageChannel"><code class="xref py py-attr docutils literal notranslate"><span class="pre">imageChannel</span></code></a> array.
+(for more info see DimensionOrder class definition)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pydm.widgets.image.PyDMImageView.DimensionOrder" title="pydm.widgets.image.PyDMImageView.DimensionOrder">DimensionOrder</a></p>
 </dd>
 </dl>
 </dd></dl>

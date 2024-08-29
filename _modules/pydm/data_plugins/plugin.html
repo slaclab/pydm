@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.data_plugins.plugin &mdash; PyDM 1.24.0 documentation</title>
+  <title>pydm.data_plugins.plugin &mdash; PyDM 1.24.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.24.0
+                1.24.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -122,6 +122,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span>
 
 <span class="kn">from</span> <span class="nn">..utilities.remove_protocol</span> <span class="kn">import</span> <span class="n">parsed_address</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="kn">import</span> <span class="n">sip</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">QObject</span><span class="p">,</span> <span class="n">Qt</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">config</span>
@@ -434,7 +435,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">connection_id</span><span class="p">]</span><span class="o">.</span><span class="n">remove_listener</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">destroying</span><span class="o">=</span><span class="n">destroying</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">connection_id</span><span class="p">]</span><span class="o">.</span><span class="n">listener_count</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">connection_id</span><span class="p">]</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">sip</span><span class="o">.</span><span class="n">isdeleted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">connection_id</span><span class="p">]):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">connection_id</span><span class="p">]</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">connection_id</span><span class="p">]</span></div>
 </pre></div>
 
