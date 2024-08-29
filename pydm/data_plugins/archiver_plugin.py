@@ -91,7 +91,12 @@ class Connection(PyDMConnection):
         # will be delivered to the data_request_finished method below via the "finished" signal
         self.connection_state_signal.emit(False)
         reply = self.network_manager.get(request)
-        QTimer.singleShot(7500, reply.abort)
+
+        def timeout():
+            if isinstance(reply, QNetworkReply):
+                reply.abort()
+
+        QTimer.singleShot(7500, timeout)
 
     @Slot(QNetworkReply)
     def data_request_finished(self, reply: QNetworkReply) -> None:
