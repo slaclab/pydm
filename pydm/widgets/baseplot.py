@@ -641,6 +641,7 @@ class BasePlotAxisItem(AxisItem):
         self.log_mode_updated.emit(self.name, log_mode)
 
     def setHidden(self, shouldHide: bool):
+        """Set an axis to hide/show and do the same for all of its connected curves"""
         if shouldHide:
             for curve in self._curves:
                 curve.hide()

@@ -260,6 +260,14 @@ class MultiAxisPlot(PlotItem):
             self.autoVisible(curve.y_axis_name)
 
     def autoVisible(self, axisName):
+        """Handle automatically hiding or showing an axis based on whether it has
+        visible curves attached and/or if it's the last visible axis
+        (don't automatically hide the last axis, even if all of it's curves are hidden)
+
+        Parameters
+        -------------
+        axisName: str
+            The name of the axis we are going to try to hide if possible, or show if not"""
         # Do we have any visible curves?
         axis = self.axes[axisName]["item"]
         if hasattr(axis, "_curves"):
