@@ -355,8 +355,22 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
-        dic_ = OrderedDict([("useArchiveData", self.use_archive_data), ("liveData", self.liveData)])
-        dic_.update(super(ArchivePlotCurveItem, self).to_dict())
+        dic_ = OrderedDict(
+            [
+                ("useArchiveData", self.use_archive_data),
+                ("liveData", self.liveData),
+                ("plot_style", self.plot_style),
+                ("formula", self.formula),
+            ]
+        )
+        curveDict = dict()
+        for header, curve in self.pvs.items():
+            if isinstance(curve, ArchivePlotCurveItem):
+                curveDict[header] = curve.address
+            else:
+                curveDict[header] = curve.formula
+        dic_.update({"curveDict": curveDict})
+        dic_.update(super(FormulaCurveItem, self).to_dict())
         return dic_
 
     @property
@@ -387,7 +401,8 @@ class FormulaCurveItem(BasePlotCurveItem):
         return None
 
     def checkFormula(self) -> bool:
-        """Confirm that our formula is still valid. Namely, all of the curves we depend on are still in use"""
+        """Make sure that our formula is still valid.
+        Namely, all of the input curves need to still exist in the viewer"""
         for pv in self.pvs.keys():
             if not self.pvs[pv].exists:
                 logger.warning(pv + " is no longer a valid row name")
@@ -423,7 +438,6 @@ class FormulaCurveItem(BasePlotCurveItem):
         if not self.checkFormula():
             self.formula_invalid_signal.emit()
             return
-
         pvArchiveData = dict()
         pvLiveData = dict()
         pvIndices = dict()
