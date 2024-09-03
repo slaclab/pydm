@@ -90,10 +90,12 @@ class BasePlotCurveItem(PlotDataItem):
         lineStyle: Optional[Qt.PenStyle] = None,
         lineWidth: Optional[int] = None,
         yAxisName: Optional[str] = None,
+        exists: bool = True,
         **kws,
     ) -> None:
         self._color = QColor("white")
         self._thresholdColor = QColor("white")
+        self.exists = exists
         self._pen = mkPen(self._color)
         if lineWidth is not None:
             self._pen.setWidth(lineWidth)
@@ -639,6 +641,7 @@ class BasePlotAxisItem(AxisItem):
         self.log_mode_updated.emit(self.name, log_mode)
 
     def setHidden(self, shouldHide: bool):
+        """Set an axis to hide/show and do the same for all of its connected curves"""
         if shouldHide:
             for curve in self._curves:
                 curve.hide()
@@ -901,6 +904,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         plot_item : BasePlotCurveItem
             The cureve to be removed from this plot
         """
+        # Mark it as not existing so all curves that rely on this curve get destroyed as well
+        plot_item.exists = False
         if plot_item.y_axis_name in self.plotItem.axes:
             self.plotItem.unlinkDataFromAxis(plot_item)
 

@@ -69,8 +69,6 @@ class BasePlotAxesModel(QAbstractTableModel):
             return axis.auto_range
         elif column_name == "Log Mode":
             return axis.log_mode
-        elif column_name == "Hidden":
-            return not axis.isVisible()
 
     def setData(self, index, value, role=Qt.EditRole):
         if not index.isValid():
@@ -99,6 +97,9 @@ class BasePlotAxesModel(QAbstractTableModel):
                 axis.orientation = "left"  # The PyQtGraph default is the left axis
             else:
                 axis.orientation = str(value)
+            self.plot.plotItem.rebuildLayout()
+            if axis.isVisible():
+                axis.show()
         elif column_name == "Y-Axis Label":
             axis.label_text = str(value)
         elif column_name == "Min Y Range":
