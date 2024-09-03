@@ -475,7 +475,7 @@ class BasePlotAxisItem(AxisItem):
         **kws,
     ) -> None:
         super(BasePlotAxisItem, self).__init__(orientation, **kws)
-
+        self._curves: List[BasePlotCurveItem] = []
         self._name = name
         self._orientation = orientation
         self._label = label
@@ -639,6 +639,17 @@ class BasePlotAxisItem(AxisItem):
         self._log_mode = log_mode
         self.setLogMode(x=False, y=log_mode)
         self.log_mode_updated.emit(self.name, log_mode)
+
+    def setHidden(self, shouldHide: bool):
+        """Set an axis to hide/show and do the same for all of its connected curves"""
+        if shouldHide:
+            for curve in self._curves:
+                curve.hide()
+            self.hide()
+        else:
+            for curve in self._curves:
+                curve.show()
+            self.show()
 
     def to_dict(self) -> OrderedDict:
         """
@@ -896,7 +907,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         # Mark it as not existing so all curves that rely on this curve get destroyed as well
         plot_item.exists = False
         if plot_item.y_axis_name in self.plotItem.axes:
-            self.plotItem.unlinkDataFromAxis(plot_item.y_axis_name)
+            self.plotItem.unlinkDataFromAxis(plot_item)
+
         self.removeItem(plot_item)
         self._curves.remove(plot_item)
         if len(self._curves) < 1:
