@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Optional
 
 from pydm.widgets.channel import PyDMChannel
+from qtpy import sip
 from qtpy.QtCore import Slot, QObject, QUrl, QTimer
 from qtpy.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
@@ -89,12 +90,12 @@ class Connection(PyDMConnection):
         request = QNetworkRequest(QUrl(url_string))
         # This get call is non-blocking, can be made in parallel with others, and when the results are ready they
         # will be delivered to the data_request_finished method below via the "finished" signal
-        self.connection_state_signal.emit(False)
         reply = self.network_manager.get(request)
 
         def timeout():
-            if isinstance(reply, QNetworkReply):
-                reply.abort()
+            if not isinstance(reply, QNetworkReply) or sip.isdeleted(reply):
+                return
+            reply.abort()
 
         QTimer.singleShot(7500, timeout)
 
