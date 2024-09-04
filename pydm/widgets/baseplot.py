@@ -752,6 +752,24 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if utilities.is_qt_designer():
             self.installEventFilter(self)
 
+    def to_dict(self) -> OrderedDict:
+        """Converts this plot into a dict that can then be read to recreate
+        all of the configurations preferred for this plot"""
+
+        dic_ = OrderedDict(
+            [
+                ("title", self.getPlotTitle()),
+                ("xGrid", self.getShowXGrid()),
+                ("yGrid", self.getShowYGrid()),
+                ("opacity", self.getPlotItem().ctrl.gridAlphaSlider.value()),
+                ("backgroundColor", self.getBackgroundColor().name()),
+                ("legend", self.getShowLegend()),
+                ("crosshair", self.vertical_crosshair_line),
+                ("mouseMode", self.plotItem.getViewBox().state["mouseMode"]),
+            ]
+        )
+        return dic_
+
     def eventFilter(self, obj: QObject, event: QEvent) -> bool:
         """Display a tool tip upon mousing over the plot in Qt designer explaining how to edit curves on it"""
         ret = super(BasePlot, self).eventFilter(obj, event)
