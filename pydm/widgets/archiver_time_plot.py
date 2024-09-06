@@ -90,6 +90,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
                 return
             self.archive_channel.disconnect()
 
+        self.arch_connected = False
         if not new_address:
             self.archive_channel = None
             return
@@ -100,7 +101,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             address=archive_address,
             value_slot=self.receiveArchiveData,
             value_signal=self.archive_data_request_signal,
-            connection_slot=self.archive_channel_connection.emit,
+            connection_slot=self.archiveConnectionStateChanged,
         )
         self.archive_channel.connect()
 
@@ -267,6 +268,20 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         if self._archiveBufferSize != DEFAULT_ARCHIVE_BUFFER_SIZE:
             self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
             self.initializeArchiveBuffer()
+
+    Slot(bool)
+    def archiveConnectionStateChanged(self, connected: bool) -> None:
+        """Capture the archive channel connection status and emit changes
+
+        Parameters
+        ----------
+        connected : bool
+            The new connection status of the archive channel
+        """
+        if self.arch_connected == connected:
+            return
+        self.arch_connected = connected
+        self.archive_channel_connection.emit(connected)
 
     def channels(self) -> List[PyDMChannel]:
         """Return the list of channels this curve is connected to"""
