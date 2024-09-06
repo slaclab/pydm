@@ -65,6 +65,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     _channels = ("channel",)
     unitSignal = Signal(str)
+
     def __init__(self, channel_address=None, plot_by_timestamps=True, plot_style="Line", **kws):
         """
         Parameters
@@ -125,7 +126,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
             return
 
         self.channel = PyDMChannel(
-            address=new_address, connection_slot=self.connectionStateChanged, value_slot=self.receiveNewValue, unit_slot=self.unitsChanged
+            address=new_address,
+            connection_slot=self.connectionStateChanged,
+            value_slot=self.receiveNewValue,
+            unit_slot=self.unitsChanged,
         )
 
         # Clear the data from the previous channel and redraw the curve
@@ -170,9 +174,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     @Slot(str)
     def unitsChanged(self, units: str):
+        """Slot to handle when units are received from the PyDMChannel."""
         self.units = units
         self.unitSignal.emit(units)
-
 
     @Slot(bool)
     def connectionStateChanged(self, connected):
