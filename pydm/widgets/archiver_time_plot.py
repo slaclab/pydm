@@ -269,7 +269,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
             self.initializeArchiveBuffer()
 
-    Slot(bool)
+    @Slot(bool)
     def archiveConnectionStateChanged(self, connected: bool) -> None:
         """Capture the archive channel connection status and emit changes
 
