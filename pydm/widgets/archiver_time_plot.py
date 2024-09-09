@@ -278,8 +278,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         connected : bool
             The new connection status of the archive channel
         """
-        if self.arch_connected == connected:
-            return
         self.arch_connected = connected
         self.archive_channel_connection.emit(connected)
 
@@ -359,11 +357,13 @@ class FormulaCurveItem(BasePlotCurveItem):
         use_archive_data: Optional[bool] = True,
         liveData: Optional[bool] = True,
         color: Optional[str] = "green",
+        plot_style: str = "Line",
         **kws
     ):
         super(FormulaCurveItem, self).__init__(**kws)
         self.color = color
         self.use_archive_data = use_archive_data
+        self.points_accumulated = 0
         self.archive_points_accumulated = 0
         # Start with empty buffers because we don't
         # calculate anything until we try to draw the curve
@@ -382,7 +382,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         self._trueFormula = self.createTrueFormula()
         self.pvs = pvs
         self._liveData = liveData
-        self.plot_style = "Line"
+        self.plot_style = plot_style
 
         self.connected, self.arch_connected = None, None
         self.live_connections, self.arch_connections = {}, {}
@@ -392,6 +392,7 @@ class FormulaCurveItem(BasePlotCurveItem):
 
             curve.live_channel_connection.connect(self.live_conn_change)
             curve.archive_channel_connection.connect(self.arch_conn_change)
+        self.connection_status_check()
 
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
@@ -477,6 +478,8 @@ class FormulaCurveItem(BasePlotCurveItem):
         """
         if not self.checkFormula():
             self.formula_invalid_signal.emit()
+            return
+        if not (self.connected and self.arch_connected):
             return
         pvArchiveData = dict()
         pvLiveData = dict()
@@ -636,14 +639,12 @@ class FormulaCurveItem(BasePlotCurveItem):
         emit any changes.
         """
         connected = all(self.live_connections.values())
-        if self.connected != connected:
-            self.connected = connected
-            self.live_channel_connection.emit(self.connected)
+        self.connected = connected
+        self.live_channel_connection.emit(self.connected)
 
         connected = all(self.arch_connections.values())
-        if self.arch_connected != connected:
-            self.arch_connected = connected
-            self.archive_channel_connection.emit(self.arch_connected)
+        self.arch_connected = connected
+        self.archive_channel_connection.emit(self.arch_connected)
 
     @Slot(bool)
     def live_conn_change(self, status: bool) -> None:
