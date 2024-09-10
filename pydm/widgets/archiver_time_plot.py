@@ -380,7 +380,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         self._formula = formula
         # Have a formula for internal calculations, that the user does not see
         self._trueFormula = self.createTrueFormula()
-        self.pvs = pvs
+        self.pvs = pvs if pvs else {}
         self._liveData = liveData
         self.plot_style = plot_style
 
