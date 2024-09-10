@@ -256,6 +256,7 @@ class MultiAxisPlot(PlotItem):
             and curve.y_axis_name in self.axes
             and curve in self.axes[curve.y_axis_name]["item"]._curves
         ):
+            self.legend.removeItem(curve.name())
             self.axes[curve.y_axis_name]["item"]._curves.remove(curve)
             self.autoVisible(curve.y_axis_name)
 
