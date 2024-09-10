@@ -206,6 +206,7 @@ def test_formula_curve_item():
     assert np.array_equal(formula_curve_3.archive_data_buffer, expected3)
     assert np.array_equal(formula_curve_4.archive_data_buffer, expected4)
 
+
 def test_disconnected_formula_curve_item():
     # Create a connected ArchivePlotCurveItem
     connected_curve = ArchivePlotCurveItem()
@@ -223,7 +224,9 @@ def test_disconnected_formula_curve_item():
 
     # Create a disconnected FormulaCurveItem
     disconnected_formula = FormulaCurveItem(formula="")
-    disconnected_formula.archive_data_buffer = np.array([[101, 106, 111, 116, 121, 126], [1, 2, 3, 4, 5, 6]], dtype=float)
+    disconnected_formula.archive_data_buffer = np.array(
+        [[101, 106, 111, 116, 121, 126], [1, 2, 3, 4, 5, 6]], dtype=float
+    )
     disconnected_formula.archive_points_accumulated = 6
     disconnected_formula.connected = False
     disconnected_formula.arch_connected = False
