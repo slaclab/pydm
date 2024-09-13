@@ -102,9 +102,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.points_accumulated = 0
         self.latest_value = None
         self.channel = None
-        self.address = channel_address
         self.units = ""
+
         super(TimePlotCurveItem, self).__init__(**kws)
+        self.address = channel_address
 
     def to_dict(self):
         dic_ = OrderedDict([("channel", self.address), ("plot_style", self.plot_style)])

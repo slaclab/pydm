@@ -925,7 +925,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         """
         Overrides timeplot addYChannel method to be able to pass the liveData flag.
         """
-        return super().addYChannel(
+        curve = super().addYChannel(
             y_channel=y_channel,
             plot_style=plot_style,
             name=name,
@@ -942,6 +942,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             useArchiveData=useArchiveData,
             liveData=liveData,
         )
+        self.requestDataFromArchiver()
+        return curve
 
     def addFormulaChannel(self, yAxisName: str, **kwargs) -> FormulaCurveItem:
         """Creates a FormulaCurveItem and links it to the given y axis"""
