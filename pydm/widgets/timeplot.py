@@ -64,6 +64,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
     """
 
     _channels = ("channel",)
+    unitSignal = Signal(str)
 
     def __init__(self, channel_address=None, plot_by_timestamps=True, plot_style="Line", **kws):
         """
@@ -101,6 +102,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.latest_value = None
         self.channel = None
         self.address = channel_address
+        self.units = ""
         super(TimePlotCurveItem, self).__init__(**kws)
 
     def to_dict(self):
@@ -124,7 +126,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
             return
 
         self.channel = PyDMChannel(
-            address=new_address, connection_slot=self.connectionStateChanged, value_slot=self.receiveNewValue
+            address=new_address,
+            connection_slot=self.connectionStateChanged,
+            value_slot=self.receiveNewValue,
+            unit_slot=self.unitsChanged,
         )
 
         # Clear the data from the previous channel and redraw the curve
@@ -166,6 +171,12 @@ class TimePlotCurveItem(BasePlotCurveItem):
             The maximum y-value collected so far for this current curve.
         """
         return self._max_y_value
+
+    @Slot(str)
+    def unitsChanged(self, units: str):
+        """Slot to handle when units are received from the PyDMChannel."""
+        self.units = units
+        self.unitSignal.emit(units)
 
     @Slot(bool)
     def connectionStateChanged(self, connected):
