@@ -5,7 +5,7 @@ import numpy as np
 from collections import OrderedDict
 from typing import List, Optional
 from pyqtgraph import DateAxisItem, ErrorBarItem
-from pydm.utilities import remove_protocol
+from pydm.utilities import remove_protocol, is_qt_designer
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
@@ -714,9 +714,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             bottom_axis=DateAxisItem("bottom"),
         )
         self.optimized_data_bins = optimized_data_bins
-        self._min_x = None
-        self._prev_x = None  # Holds the minimum x-value of the previous update of the plot
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
+        self._min_x = self._starting_timestamp - DEFAULT_TIME_SPAN
+        self._prev_x = self._min_x  # Holds the minimum x-value of the previous update of the plot
         self._archive_request_queued = False
         self.setTimeSpan(DEFAULT_TIME_SPAN)
 
@@ -733,7 +733,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             self._max_x = time.time()
             self._min_x = self._max_x - DEFAULT_TIME_SPAN
             self._starting_timestamp = self._max_x
-            if self.getTimeSpan() != DEFAULT_TIME_SPAN:
+            if self.getTimeSpan() != MIN_TIME_SPAN:
                 # Initialize x-axis based on the time span as well as trigger a call to the archiver below
                 self._min_x = self._min_x - self.getTimeSpan()
                 self._archive_request_queued = True
@@ -942,7 +942,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             useArchiveData=useArchiveData,
             liveData=liveData,
         )
-        self.requestDataFromArchiver()
+        if not is_qt_designer():
+            self.requestDataFromArchiver()
         return curve
 
     def addFormulaChannel(self, yAxisName: str, **kwargs) -> FormulaCurveItem:
