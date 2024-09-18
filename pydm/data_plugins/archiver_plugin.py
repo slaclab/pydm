@@ -7,7 +7,8 @@ from datetime import datetime
 from typing import Optional
 
 from pydm.widgets.channel import PyDMChannel
-from qtpy.QtCore import Slot, QObject, QUrl
+from qtpy import sip
+from qtpy.QtCore import Slot, QObject, QUrl, QTimer
 from qtpy.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 
@@ -78,6 +79,7 @@ class Connection(PyDMConnection):
                 "Environment variable: PYDM_ARCHIVER_URL must be defined to use the archiver plugin, for "
                 "example: http://lcls-archapp.slac.stanford.edu"
             )
+            self.connection_state_signal.emit(False)
             return
 
         url_string = f"{base_url}/retrieval/data/getData.json?{self.address}&from={from_date_str}&to={to_date_str}"
@@ -88,7 +90,14 @@ class Connection(PyDMConnection):
         request = QNetworkRequest(QUrl(url_string))
         # This get call is non-blocking, can be made in parallel with others, and when the results are ready they
         # will be delivered to the data_request_finished method below via the "finished" signal
-        self.network_manager.get(request)
+        reply = self.network_manager.get(request)
+
+        def timeout():
+            if not isinstance(reply, QNetworkReply) or sip.isdeleted(reply):
+                return
+            reply.abort()
+
+        QTimer.singleShot(7500, timeout)
 
     @Slot(QNetworkReply)
     def data_request_finished(self, reply: QNetworkReply) -> None:
@@ -100,10 +109,12 @@ class Connection(PyDMConnection):
         ----------
         reply: The response from the archiver appliance
         """
-        if (
+        success = (
             reply.error() == QNetworkReply.NoError
             and reply.header(QNetworkRequest.ContentTypeHeader) == "application/json"
-        ):
+        )
+        self.connection_state_signal.emit(success)
+        if success:
             bytes_str = reply.readAll()
             data_dict = json.loads(str(bytes_str, "utf-8"))
 

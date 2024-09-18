@@ -5,7 +5,7 @@ import numpy as np
 from collections import OrderedDict
 from typing import List, Optional
 from pyqtgraph import DateAxisItem, ErrorBarItem
-from pydm.utilities import remove_protocol
+from pydm.utilities import remove_protocol, is_qt_designer
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
@@ -40,6 +40,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     use_archive_data : bool
         If True, requests will be made to archiver appliance for archived data when
         the plot is zoomed or scrolled to the left.
+    liveData : bool
+        If True, the curve will gather data in real time.
     **kws : dict[str: any]
         Additional parameters supported by pyqtgraph.PlotDataItem.
     """
@@ -47,13 +49,15 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     # Used to request data from archiver appliance (starting timestamp, ending timestamp, processing command)
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
+    archive_channel_connection = Signal(bool)
+    prompt_archive_request = Signal()
 
     def __init__(
         self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws
     ):
+        self.archive_channel = None
         super(ArchivePlotCurveItem, self).__init__(**kws)
         self.use_archive_data = use_archive_data
-        self.archive_channel = None
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
@@ -81,22 +85,32 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         """Creates the channel for the input address for communicating with the archiver appliance plugin."""
         TimePlotCurveItem.address.__set__(self, new_address)
 
+        if self.archive_channel:
+            if new_address == self.archive_channel.address:
+                return
+            self.archive_channel.disconnect()
+
         if not new_address:
             self.archive_channel = None
-            return
-        elif self.archive_channel and new_address == self.archive_channel.address:
             return
 
         # Prepare new address to use the archiver plugin and create the new channel
         archive_address = "archiver://pv=" + remove_protocol(new_address.strip())
         self.archive_channel = PyDMChannel(
-            address=archive_address, value_slot=self.receiveArchiveData, value_signal=self.archive_data_request_signal
+            address=archive_address,
+            value_slot=self.receiveArchiveData,
+            value_signal=self.archive_data_request_signal,
+            connection_slot=self.archive_channel_connection.emit,
         )
+        self.archive_channel.connect()
 
         # Clear the archive data of the previous channel and redraw the curve
         if self.archive_points_accumulated:
             self.initializeArchiveBuffer()
             self.redrawCurve()
+
+        # Prompt the curve's associated plot to fetch archive data
+        self.prompt_archive_request.emit()
 
     @property
     def liveData(self):
@@ -700,10 +714,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             bottom_axis=DateAxisItem("bottom"),
         )
         self.optimized_data_bins = optimized_data_bins
-        self._min_x = None
-        self._prev_x = None  # Holds the minimum x-value of the previous update of the plot
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
+        self._min_x = self._starting_timestamp - DEFAULT_TIME_SPAN
+        self._prev_x = self._min_x  # Holds the minimum x-value of the previous update of the plot
         self._archive_request_queued = False
+        self.setTimeSpan(DEFAULT_TIME_SPAN)
 
     def updateXAxis(self, update_immediately: bool = False) -> None:
         """Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,
@@ -715,10 +730,10 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         max_x = self.plotItem.getAxis("bottom").range[1]
         max_point = max([curve.max_x() for curve in self._curves])
         if min_x == 0:  # This is zero when the plot first renders
-            min_x = time.time()
-            self._min_x = min_x
-            self._starting_timestamp = min_x - DEFAULT_TIME_SPAN  # A bit of a buffer so we don't overwrite live data
-            if self.getTimeSpan() != DEFAULT_TIME_SPAN:
+            self._max_x = time.time()
+            self._min_x = self._max_x - DEFAULT_TIME_SPAN
+            self._starting_timestamp = self._max_x
+            if self.getTimeSpan() != MIN_TIME_SPAN:
                 # Initialize x-axis based on the time span as well as trigger a call to the archiver below
                 self._min_x = self._min_x - self.getTimeSpan()
                 self._archive_request_queued = True
@@ -816,6 +831,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         """Create and return a curve item to be plotted"""
         curve_item = ArchivePlotCurveItem(*args, **kwargs)
         curve_item.archive_data_received_signal.connect(self.archive_data_received)
+        curve_item.prompt_archive_request.connect(self.requestDataFromArchiver)
         return curve_item
 
     @Slot()
@@ -909,7 +925,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         """
         Overrides timeplot addYChannel method to be able to pass the liveData flag.
         """
-        return super().addYChannel(
+        curve = super().addYChannel(
             y_channel=y_channel,
             plot_style=plot_style,
             name=name,
@@ -926,6 +942,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             useArchiveData=useArchiveData,
             liveData=liveData,
         )
+        if not is_qt_designer():
+            self.requestDataFromArchiver()
+        return curve
 
     def addFormulaChannel(self, yAxisName: str, **kwargs) -> FormulaCurveItem:
         """Creates a FormulaCurveItem and links it to the given y axis"""

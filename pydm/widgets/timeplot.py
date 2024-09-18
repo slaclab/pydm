@@ -65,6 +65,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     _channels = ("channel",)
     unitSignal = Signal(str)
+    live_channel_connection = Signal(bool)
 
     def __init__(self, channel_address=None, plot_by_timestamps=True, plot_style="Line", **kws):
         """
@@ -101,9 +102,10 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.points_accumulated = 0
         self.latest_value = None
         self.channel = None
-        self.address = channel_address
         self.units = ""
+
         super(TimePlotCurveItem, self).__init__(**kws)
+        self.address = channel_address
 
     def to_dict(self):
         dic_ = OrderedDict([("channel", self.address), ("plot_style", self.plot_style)])
@@ -119,10 +121,13 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @address.setter
     def address(self, new_address: str):
         """Creates the channel for the input address for communicating with the address' plugin."""
+        if self.channel:
+            if new_address == self.channel.address:
+                return
+            self.channel.disconnect()
+
         if not new_address:
             self.channel = None
-            return
-        elif self.channel and new_address == self.channel.address:
             return
 
         self.channel = PyDMChannel(
@@ -131,6 +136,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             value_slot=self.receiveNewValue,
             unit_slot=self.unitsChanged,
         )
+        self.channel.connect()
 
         # Clear the data from the previous channel and redraw the curve
         if self.points_accumulated:
@@ -181,6 +187,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @Slot(bool)
     def connectionStateChanged(self, connected):
         # Maybe change pen stroke?
+        self.live_channel_connection.emit(connected)
         self.connected = connected
         if not self.connected:
             self.latest_value = np.nan
