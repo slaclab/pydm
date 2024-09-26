@@ -26,8 +26,6 @@ _step_size_properties = {
 
 
 class PyDMPrimitiveSlider(QSlider):
-    # middleClicked = pyqtSignal()
-
     def __init__(self, orientation=Qt.Horizontal, parent=None):
         super().__init__(orientation, parent)
         self.isDraggingHandle = False
