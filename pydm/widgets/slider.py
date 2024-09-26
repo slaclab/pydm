@@ -1,7 +1,7 @@
 import logging
 import numpy as np
 from decimal import Decimal
-from qtpy.QtCore import Qt, Signal, Slot, Property
+from qtpy.QtCore import Qt, Signal, Slot, Property, QRect, QPoint, QSize
 from qtpy.QtWidgets import (
     QFrame,
     QLabel,
@@ -26,41 +26,211 @@ _step_size_properties = {
 
 
 class PyDMPrimitiveSlider(QSlider):
+    # middleClicked = pyqtSignal()
+
+    def __init__(self, orientation=Qt.Horizontal, parent=None):
+        super().__init__(orientation, parent)
+        self.isDraggingHandle = False
+        self.dragStartPos = None
+        self.dragStartValue = None
+
     def mousePressEvent(self, event):
+        """
+        Handle mouse press events on the slider.
+
+        Parameters
+        ----------
+        event : QMouseEvent
+            The mouse event containing information about the press.
+        """
         if event.button() == Qt.MiddleButton:
             return
 
         if event.button() == Qt.RightButton:
             super().mousePressEvent(event)
+            return
 
         if event.button() == Qt.LeftButton:
-            if self.orientation() == Qt.Horizontal:
-                handle_pos = self.value() * (self.width() - self.handleWidth()) / (self.maximum() - self.minimum())
-                click_pos = event.pos().x()
-            else:
-                handle_pos = (
-                    (self.maximum() - self.value())
-                    * (self.height() - self.handleWidth())
-                    / (self.maximum() - self.minimum())
-                )
-                click_pos = event.pos().y()
+            handle_rect = self.getHandleRect()
 
-            if self.orientation() == Qt.Horizontal:
-                if click_pos > handle_pos + self.handleWidth() / 2:
-                    self.setValue(self.value() + self.singleStep())
-                else:
-                    self.setValue(self.value() - self.singleStep())
+            if handle_rect.contains(event.pos()):
+                self.isDraggingHandle = True
+                self.dragStartPos = event.pos()
+                self.dragStartValue = self.value()
+                self.setCursor(Qt.ClosedHandCursor)
+                event.accept()
             else:
-                if click_pos < handle_pos + self.handleWidth() / 2:
+                handle_pos, click_pos = self.getPositions(event)
+
+                if self.shouldIncrement(handle_pos, click_pos):
                     self.setValue(self.value() + self.singleStep())
                 else:
                     self.setValue(self.value() - self.singleStep())
 
-    def handleWidth(self):
-        if self.orientation() == Qt.Horizontal:
-            return self.style().pixelMetric(self.style().PM_SliderLength, None, self)
+    def mouseMoveEvent(self, event):
+        """
+        Handle mouse move events to update the slider value during dragging.
+
+        Parameters
+        ----------
+        event : QMouseEvent
+            The mouse event containing information about the movement.
+        """
+        if self.isDraggingHandle:
+            delta = event.pos() - self.dragStartPos
+
+            if self.orientation() == Qt.Horizontal:
+                delta_value = (delta.x() / self.getSliderLength()) * (self.maximum() - self.minimum())
+            else:
+                delta_value = (-delta.y() / self.getSliderLength()) * (self.maximum() - self.minimum())
+
+            new_value = self.dragStartValue + delta_value
+            new_value = min(max(self.minimum(), new_value), self.maximum())
+            self.setValue(new_value)
+            event.accept()
         else:
-            return self.style().pixelMetric(self.style().PM_SliderThickness, None, self)
+            super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        """
+        Handle mouse release events to stop dragging.
+
+        Parameters
+        ----------
+        event : QMouseEvent
+            The mouse event containing information about the release.
+        """
+        if event.button() == Qt.LeftButton and self.isDraggingHandle:
+            self.isDraggingHandle = False
+            self.setCursor(Qt.ArrowCursor)
+            event.accept()
+        else:
+            super().mouseReleaseEvent(event)
+
+    def getHandleRect(self):
+        """
+        Calculate the rectangle representing the slider handle's position and size.
+
+        Returns
+        -------
+        QRect
+            The rectangle of the slider handle.
+        """
+        handle_size = self.getHandleSize()
+        slider_pos = self.getSliderPosition()
+
+        if self.orientation() == Qt.Horizontal:
+            x = slider_pos - handle_size.width() / 2
+            y = (self.height() - handle_size.height()) / 2
+            rect = QRect(QPoint(int(x), int(y)), handle_size)
+        else:
+            x = (self.width() - handle_size.width()) / 2
+            y = slider_pos - handle_size.height() / 2
+            rect = QRect(QPoint(int(x), int(y)), handle_size)
+
+        return rect
+
+    def getPositions(self, event):
+        """
+        Retrieve the handle position and the click position based on the orientation.
+
+        Parameters
+        ----------
+        event : QMouseEvent
+            The mouse event containing information about the press.
+
+        Returns
+        -------
+        tuple of float
+            A tuple containing the handle position and the click position.
+        """
+        slider_pos = self.getSliderPosition()
+
+        if self.orientation() == Qt.Horizontal:
+            handle_pos = slider_pos
+            click_pos = event.pos().x()
+        else:
+            handle_pos = slider_pos
+            click_pos = event.pos().y()
+
+        return handle_pos, click_pos
+
+    def shouldIncrement(self, handle_pos, click_pos):
+        """
+        Determine whether the slider value should be incremented based on positions.
+
+        Parameters
+        ----------
+        handle_pos : float
+            The position of the slider handle.
+        click_pos : float
+            The position where the user clicked.
+
+        Returns
+        -------
+        bool
+            True if the slider value should be incremented, False otherwise.
+        """
+        if self.orientation() == Qt.Horizontal:
+            return click_pos > handle_pos
+        else:
+            return click_pos < handle_pos
+
+    def getHandleSize(self):
+        """
+        Compute the size of the slider handle.
+
+        Returns
+        -------
+        QSize
+            The size of the slider handle.
+        """
+        handle_length = 20  # Fixed length for the handle
+        if self.orientation() == Qt.Horizontal:
+            return QSize(handle_length, self.height() / 2)
+        else:
+            return QSize(self.width() / 2, handle_length)
+
+    def getSliderLength(self):
+        """
+        Calculate the usable length of the slider track excluding the handle size.
+
+        Returns
+        -------
+        float
+            The length of the slider track.
+        """
+        handle_size = self.getHandleSize()
+        if self.orientation() == Qt.Horizontal:
+            return self.width() - handle_size.width()
+        else:
+            return self.height() - handle_size.height()
+
+    def getSliderPosition(self):
+        """
+        Compute the position of the slider handle along the track.
+
+        Returns
+        -------
+        float
+            The position of the slider handle along the slider track.
+        """
+        slider_min = self.minimum()
+        slider_max = self.maximum()
+        slider_range = slider_max - slider_min
+        slider_value = self.value() - slider_min
+
+        if slider_range == 0:
+            proportion = 0
+        else:
+            proportion = slider_value / slider_range
+
+        if self.orientation() == Qt.Horizontal:
+            slider_length = self.getSliderLength()
+            return proportion * slider_length + self.getHandleSize().width() / 2
+        else:
+            slider_length = self.getSliderLength()
+            return (1 - proportion) * slider_length + self.getHandleSize().height() / 2
 
 
 class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step_size_properties):
@@ -118,6 +288,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         self.high_lim_label.setSizePolicy(label_size_policy)
         self.high_lim_label.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
         self._slider = PyDMPrimitiveSlider(parent=self)
+        self._slider.installEventFilter(self)
+        # self._slider.middleClicked.connect()
         self._slider.setOrientation(Qt.Horizontal)
 
         self._orig_wheel_event = self._slider.wheelEvent
