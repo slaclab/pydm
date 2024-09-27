@@ -1,19 +1,140 @@
-# Unit Tests for the PyDMSlider Widget
-
 import pytest
 from logging import ERROR
 import numpy as np
 
-from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy
-from qtpy.QtCore import Qt, QMargins
-
+from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QApplication
+from qtpy.QtCore import Qt, QMargins, QPoint, QEvent, QRect
+from qtpy.QtGui import QMouseEvent
 from ...widgets.slider import PyDMSlider, PyDMPrimitiveSlider
 from ...widgets.base import PyDMWidget
 
+# Unit Tests for the PyDMPrimitiveSlider class
 
-# --------------------
-# POSITIVE TEST CASES
-# --------------------
+
+@pytest.fixture(scope="module")
+def app():
+    """Fixture to create a QApplication instance."""
+    app = QApplication.instance()
+    if app is None:
+        app = QApplication([])
+    return app
+
+
+@pytest.fixture
+def test_slider(app):
+    """Fixture to create a PyDMPrimitiveSlider instance for each test."""
+    test_slider = PyDMPrimitiveSlider(Qt.Horizontal)
+    test_slider.setMinimum(0)
+    test_slider.setMaximum(100)
+    test_slider.setValue(50)
+    test_slider.setSingleStep(1)
+    test_slider.resize(200, 30)
+    test_slider.show()
+    return test_slider
+
+
+def test_mousePressEvent(test_slider, qtbot):
+    """Test mousePressEvent when clicking off and on the handle"""
+    handle_rect = test_slider.getHandleRect()
+    pos_off_handle = QPoint(handle_rect.right() + 10, handle_rect.center().y())
+    qtbot.mouseClick(test_slider, Qt.LeftButton, pos=pos_off_handle)
+    assert not test_slider.isDraggingHandle
+    assert test_slider.value() == 51
+
+    pos_on_handle = handle_rect.center()
+    qtbot.mousePress(test_slider, Qt.LeftButton, pos=pos_on_handle)
+    assert test_slider.isDraggingHandle
+    assert test_slider.dragStartValue == 51
+
+
+def test_mouseMoveEvent(test_slider, qtbot):
+    """Test the mouseMoveEvent method by posting QMouseEvent instances."""
+    handle_rect = test_slider.getHandleRect()
+    start_pos = handle_rect.center()
+    drag_distance = 100
+    end_pos = QPoint(start_pos.x() + drag_distance, start_pos.y())
+
+    initial_value = test_slider.value()
+
+    press_event = QMouseEvent(QEvent.MouseButtonPress, start_pos, Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+    QApplication.postEvent(test_slider, press_event)
+    QApplication.processEvents()
+
+    move_event = QMouseEvent(QEvent.MouseMove, end_pos, Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+    QApplication.postEvent(test_slider, move_event)
+    QApplication.processEvents()
+
+    release_event = QMouseEvent(QEvent.MouseButtonRelease, end_pos, Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+    QApplication.postEvent(test_slider, release_event)
+    QApplication.processEvents()
+
+    actual_value = test_slider.value()
+
+    assert actual_value != initial_value
+
+
+def test_mouseReleaseEvent(test_slider, qtbot):
+    """Test mouseReleaseEvent to stop dragging."""
+    handle_rect = test_slider.getHandleRect()
+    pos_on_handle = handle_rect.center()
+    qtbot.mousePress(test_slider, Qt.LeftButton, pos=pos_on_handle)
+    assert test_slider.isDraggingHandle
+
+    qtbot.mouseRelease(test_slider, Qt.LeftButton, pos=pos_on_handle)
+
+    assert not test_slider.isDraggingHandle
+    assert test_slider.cursor().shape() == Qt.ArrowCursor
+
+
+def test_getHandleRect(test_slider):
+    """Test getHandleRect method."""
+    handle_rect = test_slider.getHandleRect()
+    assert isinstance(handle_rect, QRect)
+    assert test_slider.rect().contains(handle_rect)
+
+
+def test_getPositions(test_slider):
+    """Test getPositions method."""
+    event = QMouseEvent(QEvent.MouseButtonPress, QPoint(50, 10), Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+    handle_pos, click_pos = test_slider.getPositions(event)
+    assert isinstance(handle_pos, float)
+    assert isinstance(click_pos, int)
+    assert 0 <= click_pos <= test_slider.width()
+
+
+def test_shouldIncrement(test_slider):
+    """Test shouldIncrement method."""
+
+    # Click is to the right of the handle
+    assert test_slider.shouldIncrement(50, 70) is True
+
+    # Click is to the left of the handle
+    assert test_slider.shouldIncrement(70, 50) is False
+
+
+def test_getHandleSize(test_slider):
+    """Test getHandleSize method."""
+    handle_size = test_slider.getHandleSize()
+    assert handle_size is not None
+    assert isinstance(handle_size.width(), int)
+    assert isinstance(handle_size.height(), int)
+
+
+def test_getSliderLength(test_slider):
+    """Test getSliderLength method."""
+    slider_length = test_slider.getSliderLength()
+    assert isinstance(slider_length, int)
+    assert slider_length < test_slider.width()
+
+
+def test_getSliderPosition(test_slider):
+    """Test getSliderPosition method."""
+    slider_position = test_slider.getSliderPosition()
+    assert isinstance(slider_position, float)
+    assert 0 <= slider_position <= test_slider.width()
+
+
+# Unit Tests for the PyDMSlider Widget
 
 
 def test_construct(qtbot):
