@@ -185,9 +185,9 @@ class PyDMPrimitiveSlider(QSlider):
         """
         handle_length = 20  # Fixed length for the handle
         if self.orientation() == Qt.Horizontal:
-            return QSize(handle_length, self.height() / 2)
+            return QSize(handle_length, self.height() // 2)
         else:
-            return QSize(self.width() / 2, handle_length)
+            return QSize(self.width() // 2, handle_length)
 
     def getSliderLength(self):
         """
