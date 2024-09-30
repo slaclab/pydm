@@ -154,13 +154,18 @@ def test_request_data_from_archiver(qtbot):
 
 def test_formula_curve_item():
     # Create two ArchivePlotCurveItems which we will make a few formulas out of
+    # Assume the curves have live and archive connections
     curve_item1 = ArchivePlotCurveItem()
     curve_item1.archive_data_buffer = np.array([[100, 105, 110, 115, 120, 125], [2, 3, 4, 5, 6, 7]], dtype=float)
     curve_item1.archive_points_accumulated = 6
+    curve_item1.connected = True
+    curve_item1.arch_connected = True
 
     curve_item2 = ArchivePlotCurveItem()
     curve_item2.archive_data_buffer = np.array([[101, 106, 111, 116, 121, 126], [1, 2, 3, 4, 5, 6]], dtype=float)
     curve_item2.archive_points_accumulated = 6
+    curve_item2.connected = True
+    curve_item2.arch_connected = True
 
     # Dictionary of PVS
     curves1 = dict()
@@ -200,3 +205,53 @@ def test_formula_curve_item():
     assert np.array_equal(formula_curve_2.archive_data_buffer, expected2)
     assert np.array_equal(formula_curve_3.archive_data_buffer, expected3)
     assert np.array_equal(formula_curve_4.archive_data_buffer, expected4)
+
+
+def test_disconnected_formula_curve_item():
+    # Create a connected ArchivePlotCurveItem
+    connected_curve = ArchivePlotCurveItem()
+    connected_curve.archive_data_buffer = np.array([[100, 105, 110, 115, 120, 125], [2, 3, 4, 5, 6, 7]], dtype=float)
+    connected_curve.archive_points_accumulated = 6
+    connected_curve.connected = True
+    connected_curve.arch_connected = True
+
+    # Create a disconnected ArchivePlotCurveItem
+    disconnected_curve = ArchivePlotCurveItem()
+    disconnected_curve.archive_data_buffer = np.array([[101, 106, 111, 116, 121, 126], [1, 2, 3, 4, 5, 6]], dtype=float)
+    disconnected_curve.archive_points_accumulated = 6
+    disconnected_curve.connected = False
+    disconnected_curve.arch_connected = False
+
+    # Create a disconnected FormulaCurveItem
+    disconnected_formula = FormulaCurveItem(formula="")
+    disconnected_formula.archive_data_buffer = np.array(
+        [[101, 106, 111, 116, 121, 126], [1, 2, 3, 4, 5, 6]], dtype=float
+    )
+    disconnected_formula.archive_points_accumulated = 6
+    disconnected_formula.connected = False
+    disconnected_formula.arch_connected = False
+
+    formula = r"f://{A}+{B}"
+
+    # Create FormulaCurve using the 2 curves
+    # This formula curve should be disconnected
+    pv_dict = dict()
+    pv_dict["A"] = connected_curve
+    pv_dict["B"] = disconnected_curve
+
+    formula_curve_1 = FormulaCurveItem(formula=formula, pvs=pv_dict)
+
+    # Create FormulaCurve using the connected curve and the disconnected formula curve
+    # This formula curve should be disconnected
+    pv_dict = dict()
+    pv_dict["A"] = connected_curve
+    pv_dict["B"] = disconnected_formula
+
+    formula_curve_2 = FormulaCurveItem(formula=formula, pvs=pv_dict)
+
+    formula_curve_1.evaluate()
+    formula_curve_2.evaluate()
+
+    # Both curves should have no data
+    assert np.array_equal(formula_curve_1.archive_data_buffer, np.zeros((2, 0), dtype=float))
+    assert np.array_equal(formula_curve_2.archive_data_buffer, np.zeros((2, 0), dtype=float))

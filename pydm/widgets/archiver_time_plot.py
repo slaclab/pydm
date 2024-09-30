@@ -90,6 +90,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
                 return
             self.archive_channel.disconnect()
 
+        self.arch_connected = False
         if not new_address:
             self.archive_channel = None
             return
@@ -100,7 +101,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             address=archive_address,
             value_slot=self.receiveArchiveData,
             value_signal=self.archive_data_request_signal,
-            connection_slot=self.archive_channel_connection.emit,
+            connection_slot=self.archiveConnectionStateChanged,
         )
         self.archive_channel.connect()
 
@@ -268,6 +269,18 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
             self.initializeArchiveBuffer()
 
+    @Slot(bool)
+    def archiveConnectionStateChanged(self, connected: bool) -> None:
+        """Capture the archive channel connection status and emit changes
+
+        Parameters
+        ----------
+        connected : bool
+            The new connection status of the archive channel
+        """
+        self.arch_connected = connected
+        self.archive_channel_connection.emit(connected)
+
     def channels(self) -> List[PyDMChannel]:
         """Return the list of channels this curve is connected to"""
         return [self.channel, self.archive_channel]
@@ -333,6 +346,8 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
+    live_channel_connection = Signal(bool)
+    archive_channel_connection = Signal(bool)
     formula_invalid_signal = Signal()
 
     def __init__(
@@ -342,11 +357,13 @@ class FormulaCurveItem(BasePlotCurveItem):
         use_archive_data: Optional[bool] = True,
         liveData: Optional[bool] = True,
         color: Optional[str] = "green",
+        plot_style: str = "Line",
         **kws
     ):
         super(FormulaCurveItem, self).__init__(**kws)
         self.color = color
         self.use_archive_data = use_archive_data
+        self.points_accumulated = 0
         self.archive_points_accumulated = 0
         # Start with empty buffers because we don't
         # calculate anything until we try to draw the curve
@@ -363,9 +380,19 @@ class FormulaCurveItem(BasePlotCurveItem):
         self._formula = formula
         # Have a formula for internal calculations, that the user does not see
         self._trueFormula = self.createTrueFormula()
-        self.pvs = pvs
+        self.pvs = pvs if pvs else {}
         self._liveData = liveData
-        self.plot_style = "Line"
+        self.plot_style = plot_style
+
+        self.connected, self.arch_connected = None, None
+        self.live_connections, self.arch_connections = {}, {}
+        for curve in self.pvs.values():
+            self.live_connections[curve] = curve.connected
+            self.arch_connections[curve] = curve.arch_connected
+
+            curve.live_channel_connection.connect(self.live_conn_change)
+            curve.archive_channel_connection.connect(self.arch_conn_change)
+        self.connection_status_check()
 
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
@@ -451,6 +478,8 @@ class FormulaCurveItem(BasePlotCurveItem):
         """
         if not self.checkFormula():
             self.formula_invalid_signal.emit()
+            return
+        if not (self.connected and self.arch_connected):
             return
         pvArchiveData = dict()
         pvLiveData = dict()
@@ -604,6 +633,46 @@ class FormulaCurveItem(BasePlotCurveItem):
         except (ZeroDivisionError, OverflowError, TypeError):
             # Solve an issue with pyqtgraph and initial downsampling
             pass
+
+    def connection_status_check(self):
+        """Check the connection status of all live and archive curves. Save and
+        emit any changes.
+        """
+        connected = all(self.live_connections.values())
+        self.connected = connected
+        self.live_channel_connection.emit(self.connected)
+
+        connected = all(self.arch_connections.values())
+        self.arch_connected = connected
+        self.archive_channel_connection.emit(self.arch_connected)
+
+    @Slot(bool)
+    def live_conn_change(self, status: bool) -> None:
+        """Capture the live channel connection status of a given curve and
+        check connection status
+
+        Parameters
+        ----------
+        status : bool
+            Live connection status for a given curve
+        """
+        curve = self.sender()
+        self.live_connections[curve] = status
+        self.connection_status_check()
+
+    @Slot(bool)
+    def arch_conn_change(self, status: bool) -> None:
+        """Capture the archive channel connection status of a given curve and
+        check connection status
+
+        Parameters
+        ----------
+        status : bool
+            Archive connection status for a given curve
+        """
+        curve = self.sender()
+        self.arch_connections[curve] = status
+        self.connection_status_check()
 
     def getBufferSize(self):
         return self._bufferSize
