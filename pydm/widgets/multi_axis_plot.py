@@ -548,8 +548,7 @@ class MultiAxisPlot(PlotItem):
         for stackedView in self.stackedViews:
             if stackedView is not view:
                 stackedView.wheelEvent(ev, axis, fromSignal=True)
-        if axis != MultiAxisViewBox.YAxis:
-            self.sigXRangeChangedManually.emit()
+        self.sigXRangeChangedManually.emit()
 
     def handleMouseDragEvent(self, view, ev, axis):
         """
@@ -567,8 +566,7 @@ class MultiAxisPlot(PlotItem):
         for stackedView in self.stackedViews:
             if stackedView is not view:
                 stackedView.mouseDragEvent(ev, axis, fromSignal=True)
-        if axis != MultiAxisViewBox.YAxis:
-            self.sigXRangeChangedManually.emit()
+        self.sigXRangeChangedManually.emit()
 
     def changeMouseMode(self, mode):
         """
