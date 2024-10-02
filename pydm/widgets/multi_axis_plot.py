@@ -1,7 +1,7 @@
 import weakref
 from pyqtgraph import AxisItem, PlotDataItem, PlotItem, ViewBox
 from typing import List, Optional
-from qtpy.QtCore import Qt
+from qtpy.QtCore import Qt, Signal
 from .multi_axis_viewbox import MultiAxisViewBox
 from .multi_axis_viewbox_menu import MultiAxisViewBoxMenu
 from ..utilities import is_qt_designer
@@ -22,6 +22,8 @@ class MultiAxisPlot(PlotItem):
     **kargs: optional
         PlotItem keyword arguments
     """
+
+    sigXRangeChangedManually = Signal()
 
     def __init__(self, parent=None, axisItems=None, **kargs):
         # Create a view box that will support multiple axes to pass to the PyQtGraph PlotItem
@@ -546,6 +548,8 @@ class MultiAxisPlot(PlotItem):
         for stackedView in self.stackedViews:
             if stackedView is not view:
                 stackedView.wheelEvent(ev, axis, fromSignal=True)
+        if axis != MultiAxisViewBox.YAxis:
+            self.sigXRangeChangedManually.emit()
 
     def handleMouseDragEvent(self, view, ev, axis):
         """
@@ -563,6 +567,8 @@ class MultiAxisPlot(PlotItem):
         for stackedView in self.stackedViews:
             if stackedView is not view:
                 stackedView.mouseDragEvent(ev, axis, fromSignal=True)
+        if axis != MultiAxisViewBox.YAxis:
+            self.sigXRangeChangedManually.emit()
 
     def changeMouseMode(self, mode):
         """
