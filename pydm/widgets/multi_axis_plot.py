@@ -535,7 +535,7 @@ class MultiAxisPlot(PlotItem):
     def handleWheelEvent(self, view, ev, axis):
         """
         A simple slot for propagating a mouse wheel event to all the stacked view boxes (except for the one
-        one emitting the signal)
+        one emitting the signal). Only called once per X-Axis wheel event.
         Parameters
         ----------
         view: ViewBox
@@ -548,12 +548,14 @@ class MultiAxisPlot(PlotItem):
         for stackedView in self.stackedViews:
             if stackedView is not view:
                 stackedView.wheelEvent(ev, axis, fromSignal=True)
+
+        # Manual changes to X-Axis signal. Function is called once per X-Axis wheel event
         self.sigXRangeChangedManually.emit()
 
     def handleMouseDragEvent(self, view, ev, axis):
         """
         A simple slot for propagating a mouse drag event to all the stacked view boxes (except for the one
-        one emitting the signal)
+        one emitting the signal). Only called once per X-Axis drag event.
         Parameters
         ----------
         view: ViewBox
@@ -566,6 +568,8 @@ class MultiAxisPlot(PlotItem):
         for stackedView in self.stackedViews:
             if stackedView is not view:
                 stackedView.mouseDragEvent(ev, axis, fromSignal=True)
+
+        # Manual changes to X-Axis signal. Function is called once per X-Axis drag event
         self.sigXRangeChangedManually.emit()
 
     def changeMouseMode(self, mode):
