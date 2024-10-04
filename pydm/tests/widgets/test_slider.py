@@ -10,6 +10,7 @@ from ...widgets.base import PyDMWidget
 
 # Unit Tests for the PyDMPrimitiveSlider class
 
+
 @pytest.fixture(scope="module")
 def app():
     """Fixture to create a QApplication instance."""
@@ -31,6 +32,7 @@ def horizontal_slider(app):
     test_slider.show()
     return test_slider
 
+
 @pytest.fixture
 def vertical_slider(app):
     """Fixture to create a vertical PyDMPrimitiveSlider instance for each test."""
@@ -43,7 +45,8 @@ def vertical_slider(app):
     test_slider.show()
     return test_slider
 
-@pytest.mark.parametrize("slider_fixture", ['horizontal_slider', 'vertical_slider'])
+
+@pytest.mark.parametrize("slider_fixture", ["horizontal_slider", "vertical_slider"])
 def test_mousePressEvent(slider_fixture, qtbot, request):
     """Test mousePressEvent when clicking off and on the handle"""
     test_slider = request.getfixturevalue(slider_fixture)
@@ -65,7 +68,8 @@ def test_mousePressEvent(slider_fixture, qtbot, request):
     assert test_slider.isDraggingHandle
     assert test_slider.dragStartValue == test_slider.value()
 
-@pytest.mark.parametrize("slider_fixture", ['horizontal_slider', 'vertical_slider'])
+
+@pytest.mark.parametrize("slider_fixture", ["horizontal_slider", "vertical_slider"])
 def test_mouseMoveEvent(slider_fixture, qtbot, request):
     """Test the mouseMoveEvent method by posting QMouseEvent instances."""
     test_slider = request.getfixturevalue(slider_fixture)
@@ -77,7 +81,7 @@ def test_mouseMoveEvent(slider_fixture, qtbot, request):
         end_pos = QPoint(start_pos.x() + drag_distance, start_pos.y())
     else:
         end_pos = QPoint(start_pos.x(), start_pos.y() - drag_distance)
-   
+
     initial_value = test_slider.value()
 
     press_event = QMouseEvent(QEvent.MouseButtonPress, start_pos, Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
@@ -97,7 +101,8 @@ def test_mouseMoveEvent(slider_fixture, qtbot, request):
     assert actual_value != initial_value
     assert actual_value == 100
 
-@pytest.mark.parametrize("slider_fixture", ['horizontal_slider', 'vertical_slider'])
+
+@pytest.mark.parametrize("slider_fixture", ["horizontal_slider", "vertical_slider"])
 def test_mouseReleaseEvent(slider_fixture, qtbot, request):
     """Test mouseReleaseEvent to stop dragging."""
     test_slider = request.getfixturevalue(slider_fixture)
@@ -111,7 +116,8 @@ def test_mouseReleaseEvent(slider_fixture, qtbot, request):
     assert not test_slider.isDraggingHandle
     assert test_slider.cursor().shape() == Qt.ArrowCursor
 
-@pytest.mark.parametrize("slider_fixture", ['horizontal_slider', 'vertical_slider'])
+
+@pytest.mark.parametrize("slider_fixture", ["horizontal_slider", "vertical_slider"])
 def test_getHandleRect(slider_fixture, request):
     """Test getHandleRect method."""
     test_slider = request.getfixturevalue(slider_fixture)
@@ -119,7 +125,8 @@ def test_getHandleRect(slider_fixture, request):
     assert isinstance(handle_rect, QRect)
     assert test_slider.rect().contains(handle_rect)
 
-@pytest.mark.parametrize("slider_fixture", ['horizontal_slider', 'vertical_slider'])
+
+@pytest.mark.parametrize("slider_fixture", ["horizontal_slider", "vertical_slider"])
 def test_getPositions(slider_fixture, request):
     """Test getPositions method."""
     test_slider = request.getfixturevalue(slider_fixture)
@@ -132,7 +139,8 @@ def test_getPositions(slider_fixture, request):
     else:
         assert 0 <= click_pos <= test_slider.height()
 
-@pytest.mark.parametrize("slider_fixture", ['horizontal_slider', 'vertical_slider'])
+
+@pytest.mark.parametrize("slider_fixture", ["horizontal_slider", "vertical_slider"])
 def test_shouldIncrement(slider_fixture, request):
     """Test shouldIncrement method."""
     test_slider = request.getfixturevalue(slider_fixture)
@@ -149,7 +157,7 @@ def test_shouldIncrement(slider_fixture, request):
         assert test_slider.shouldIncrement(50, 70) is False
 
 
-@pytest.mark.parametrize("slider_fixture", ['horizontal_slider', 'vertical_slider'])
+@pytest.mark.parametrize("slider_fixture", ["horizontal_slider", "vertical_slider"])
 def test_getHandleSize(slider_fixture, request):
     """Test getHandleSize method."""
     test_slider = request.getfixturevalue(slider_fixture)
@@ -157,13 +165,14 @@ def test_getHandleSize(slider_fixture, request):
     assert handle_size is not None
     assert isinstance(handle_size.width(), int)
     assert isinstance(handle_size.height(), int)
-    
+
     if test_slider.orientation() == Qt.Horizontal:
         assert handle_size == QSize(20, test_slider.height() // 2)
     else:
         assert handle_size == QSize(test_slider.width() // 2, 20)
 
-@pytest.mark.parametrize("slider_fixture", ['horizontal_slider', 'vertical_slider'])
+
+@pytest.mark.parametrize("slider_fixture", ["horizontal_slider", "vertical_slider"])
 def test_getSliderLength(slider_fixture, request):
     """Test getSliderLength method."""
     test_slider = request.getfixturevalue(slider_fixture)
@@ -174,7 +183,8 @@ def test_getSliderLength(slider_fixture, request):
     else:
         assert slider_length <= test_slider.height()
 
-@pytest.mark.parametrize("slider_fixture", ['horizontal_slider', 'vertical_slider'])
+
+@pytest.mark.parametrize("slider_fixture", ["horizontal_slider", "vertical_slider"])
 def test_getSliderPosition(slider_fixture, request):
     """Test getSliderPosition method."""
     test_slider = request.getfixturevalue(slider_fixture)
@@ -184,6 +194,7 @@ def test_getSliderPosition(slider_fixture, request):
         assert 0 <= slider_position <= test_slider.width()
     else:
         assert 0 <= slider_position <= test_slider.height()
+
 
 # Unit Tests for the PyDMSlider Widget
 
