@@ -144,8 +144,8 @@ class PyDMPrimitiveSlider(QSlider):
         """
         slider_pos = self.getSliderPosition()
         handle_pos = slider_pos
-        
-        if self.orientation() == Qt.Horizontal:            
+
+        if self.orientation() == Qt.Horizontal:
             click_pos = event.pos().x()
         else:
             click_pos = event.pos().y()
@@ -227,7 +227,7 @@ class PyDMPrimitiveSlider(QSlider):
             return proportion * slider_length + self.getHandleSize().width() / 2
         else:
             slider_length = self.getSliderLength()
-            # 1 - proportion, because the largest positional value is at the bottom of the slider.  
+            # 1 - proportion, because the largest positional value is at the bottom of the slider.
             return (1 - proportion) * slider_length + self.getHandleSize().height() / 2
 
 
@@ -287,10 +287,10 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         self.high_lim_label.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
         self._slider = PyDMPrimitiveSlider(parent=self)
 
-        # Pass PyDMPrimitiveWidget eventfilter to self._slider so it will have the tooltip display 
+        # Pass PyDMPrimitiveWidget eventfilter to self._slider so it will have the tooltip display
         # the address name from middle clicking on the widget
         self._slider.installEventFilter(self)
-        
+
         self._slider.setOrientation(Qt.Horizontal)
 
         self._orig_wheel_event = self._slider.wheelEvent
