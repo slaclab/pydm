@@ -143,12 +143,11 @@ class PyDMPrimitiveSlider(QSlider):
             A tuple containing the handle position and the click position.
         """
         slider_pos = self.getSliderPosition()
-
-        if self.orientation() == Qt.Horizontal:
-            handle_pos = slider_pos
+        handle_pos = slider_pos
+        
+        if self.orientation() == Qt.Horizontal:            
             click_pos = event.pos().x()
         else:
-            handle_pos = slider_pos
             click_pos = event.pos().y()
 
         return handle_pos, click_pos
@@ -228,6 +227,7 @@ class PyDMPrimitiveSlider(QSlider):
             return proportion * slider_length + self.getHandleSize().width() / 2
         else:
             slider_length = self.getSliderLength()
+            # 1 - proportion, because the largest positional value is at the bottom of the slider.  
             return (1 - proportion) * slider_length + self.getHandleSize().height() / 2
 
 
@@ -286,8 +286,11 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         self.high_lim_label.setSizePolicy(label_size_policy)
         self.high_lim_label.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
         self._slider = PyDMPrimitiveSlider(parent=self)
+
+        # Pass PyDMPrimitiveWidget eventfilter to self._slider so it will have the tooltip display 
+        # the address name from middle clicking on the widget
         self._slider.installEventFilter(self)
-        # self._slider.middleClicked.connect()
+        
         self._slider.setOrientation(Qt.Horizontal)
 
         self._orig_wheel_event = self._slider.wheelEvent
@@ -297,7 +300,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
         self._slider.sliderPressed.connect(self.internal_slider_pressed)
         self._slider.sliderReleased.connect(self.internal_slider_released)
         self._slider.valueChanged.connect(self.internal_slider_value_changed)
-        # self.vertical_layout.addWidget(self._slider)
+
         # Other internal variables and final setup steps
         self._slider_position_to_value_map = None
         self._mute_internal_slider_changes = False
