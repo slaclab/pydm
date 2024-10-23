@@ -8,7 +8,10 @@ from ...widgets.baseplot_curve_editor import (
     RedrawModeColumnDelegate,
     PlotStyleColumnDelegate,
 )
+from ...widgets import PyDMArchiverTimePlot
+from ...widgets.axis_table_model import BasePlotAxesModel
 from ...widgets.baseplot_table_model import BasePlotCurvesModel
+from ...widgets.archiver_time_plot_editor import PyDMArchiverTimePlotCurvesModel
 from ...widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
 from ...widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
 from ...widgets.waveformplot import WaveformCurveItem
@@ -118,6 +121,33 @@ def test_axis_editor(qtbot):
     # Verify the column count is correct, and the axis column delegate is placed correctly
     axis_orientation_index = axis_model._column_names.index("Y-Axis Orientation")
     assert type(axis_view.itemDelegateForColumn(axis_orientation_index)) is AxisColumnDelegate
+
+
+def test_axis_table_model(qtmodeltester):
+    "Check the validity of the BasePlotAxesModel with pytest-qt"
+    base_plot = BasePlot()
+    axis_model = BasePlotAxesModel(plot=base_plot)
+    axis_model.append("FooBar")
+
+    qtmodeltester.check(axis_model, force_py=True)
+
+
+def test_curves_table_model(qtmodeltester):
+    "Check the validity of the BasePlotCurvesModel with pytest-qt"
+    base_plot = BasePlot()
+    curves_model = BasePlotCurvesModel(plot=base_plot)
+    curves_model.append()
+
+    qtmodeltester.check(curves_model, force_py=True)
+
+
+def test_archive_table_model(qtmodeltester):
+    "Check the validity of the PyDMArchiverTimePlotCurvesModel with pytest-qt"
+    archiver_plot = PyDMArchiverTimePlot()
+    archive_model = PyDMArchiverTimePlotCurvesModel(plot=archiver_plot)
+    archive_model.append()
+
+    qtmodeltester.check(archive_model, force_py=True)
 
 
 def test_plot_style_column_delegate(qtbot):
