@@ -124,7 +124,7 @@ def test_axis_editor(qtbot):
 
 
 def test_axis_table_model(qtmodeltester):
-    "Check the validity of the BasePlotAxesModel with pytest-qt"
+    """Check the validity of the BasePlotAxesModel with pytest-qt"""
     base_plot = BasePlot()
     axis_model = BasePlotAxesModel(plot=base_plot)
     axis_model.append("FooBar")
@@ -133,7 +133,7 @@ def test_axis_table_model(qtmodeltester):
 
 
 def test_curves_table_model(qtmodeltester):
-    "Check the validity of the BasePlotCurvesModel with pytest-qt"
+    """Check the validity of the BasePlotCurvesModel with pytest-qt"""
     base_plot = BasePlot()
     curves_model = BasePlotCurvesModel(plot=base_plot)
     curves_model.append()
@@ -142,7 +142,7 @@ def test_curves_table_model(qtmodeltester):
 
 
 def test_archive_table_model(qtmodeltester):
-    "Check the validity of the PyDMArchiverTimePlotCurvesModel with pytest-qt"
+    """Check the validity of the PyDMArchiverTimePlotCurvesModel with pytest-qt"""
     archiver_plot = PyDMArchiverTimePlot()
     archive_model = PyDMArchiverTimePlotCurvesModel(plot=archiver_plot)
     archive_model.append()
