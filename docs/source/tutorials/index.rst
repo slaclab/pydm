@@ -29,6 +29,7 @@ tasks, and data plugins for multiple control systems.
    intro/macros.rst
    intro/widgets.rst
    intro/datasource.rst
+   intro/features.rst
 
 .. toctree::
    :maxdepth: 2
