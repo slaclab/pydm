@@ -479,6 +479,12 @@ class FormulaCurveItem(BasePlotCurveItem):
         if not self.checkFormula():
             self.formula_invalid_signal.emit()
             return
+        if not self.pvs:
+            self.archive_data_buffer = np.array([[0], [eval(self._trueFormula)]])
+            self.archive_points_accumulated = 1
+            self.data_buffer = np.array([[APPROX_SECONDS_300_YEARS], [eval(self._trueFormula)]])
+            self.points_accumulated = 1
+            return
         if not (self.connected and self.arch_connected):
             return
         pvArchiveData = dict()
@@ -604,15 +610,6 @@ class FormulaCurveItem(BasePlotCurveItem):
         """
         Redraw the curve with any new data added since the last draw call.
         """
-        if not self.pvs:
-            # If we are just a constant, then forget about data
-            # just draw a straight line from 1970 to 300 years or so in the future
-            y = [eval(self._trueFormula), eval(self._trueFormula)]
-            x = [0, APPROX_SECONDS_300_YEARS]
-            # There is a known bug that this won't graph a constant with an x axis
-            # of between 30 minutes and 1hr 30 minutes in range. Unknown reason
-            self.setData(y=y, x=x)
-            return
         self.evaluate()
         try:
             x = np.concatenate(
