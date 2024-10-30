@@ -476,7 +476,9 @@ class FormulaCurveItem(BasePlotCurveItem):
         If one curve updates at a certain timestep and another does not, it uses the previously
         seen data of the second curve, and assumes it is accurate at the current timestep.
         """
-        if not self.checkFormula():
+        formula = self._trueFormula
+        if not formula or not self.checkFormula():
+            logger.error("invalid formula")
             self.formula_invalid_signal.emit()
             return
         if not self.pvs:
@@ -491,10 +493,6 @@ class FormulaCurveItem(BasePlotCurveItem):
         pvLiveData = dict()
         pvIndices = dict()
         pvValues = dict()
-        formula = self._trueFormula
-        if not formula:
-            logger.error("invalid formula")
-            return
 
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
