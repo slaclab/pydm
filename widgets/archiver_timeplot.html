@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Archiver Appliance Enabled Time Plots &mdash; PyDM 1.24.1 documentation</title>
+  <title>Archiver Appliance Enabled Time Plots &mdash; PyDM 1.25.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.24.1
+                1.25.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -83,7 +83,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem"><code class="docutils literal notranslate"><span class="pre">ArchivePlotCurveItem</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#formulacurveitem">FormulaCurveItem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#formulacurveitem">FormulaCurveItem</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem"><code class="docutils literal notranslate"><span class="pre">FormulaCurveItem</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="waveformplot.html">PyDMWaveformPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="waveformplot.html#waveformcurveitem">WaveformCurveItem</a></li>
 </ul>
@@ -208,6 +211,12 @@ pyqtgraph.mkColor will accept.</p></li>
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addFormulaChannel">
+<span class="sig-name descname"><span class="pre">addFormulaChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yAxisName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem" title="pydm.widgets.archiver_time_plot.FormulaCurveItem"><span class="pre">FormulaCurveItem</span></a></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#PyDMArchiverTimePlot.addFormulaChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addFormulaChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a FormulaCurveItem and links it to the given y axis</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addYChannel">
 <span class="sig-name descname"><span class="pre">addYChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineStyle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineWidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barWidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upperThreshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowerThreshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdColor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yAxisName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useArchiveData</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">liveData</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem" title="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem"><span class="pre">ArchivePlotCurveItem</span></a></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#PyDMArchiverTimePlot.addYChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.addYChannel" title="Permalink to this definition"></a></dt>
 <dd><p>Overrides timeplot addYChannel method to be able to pass the liveData flag.</p>
@@ -328,10 +337,22 @@ the archiver appliance.</p>
 from archiver appliance if requested.</p></li>
 <li><p><strong>use_archive_data</strong> (<em>bool</em>) – If True, requests will be made to archiver appliance for archived data when
 the plot is zoomed or scrolled to the left.</p></li>
+<li><p><strong>liveData</strong> (<em>bool</em>) – If True, the curve will gather data in real time.</p></li>
 <li><p><strong>**kws</strong> (<em>dict</em><em>[</em><em>str: any</em><em>]</em>) – Additional parameters supported by pyqtgraph.PlotDataItem.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.archiveConnectionStateChanged">
+<span class="sig-name descname"><span class="pre">archiveConnectionStateChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.archiveConnectionStateChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.archiveConnectionStateChanged" title="Permalink to this definition"></a></dt>
+<dd><p>Capture the archive channel connection status and emit changes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>connected</strong> (<em>bool</em>) – The new connection status of the archive channel</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.channels">
 <span class="sig-name descname"><span class="pre">channels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">PyDMChannel</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.channels" title="Permalink to this definition"></a></dt>
@@ -437,6 +458,180 @@ For example optimized data will include standard deviations, minimums, and maxim
 </section>
 <section id="formulacurveitem">
 <h1>FormulaCurveItem<a class="headerlink" href="#formulacurveitem" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.archiver_time_plot.</span></span><span class="sig-name descname"><span class="pre">FormulaCurveItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pvs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_archive_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">liveData</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'green'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Line'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BasePlotCurveItem</span></code></p>
+<p>FormulaCurveItem is a BasePlotCurve that takes in a formula of curves and evaluates to graph a function.</p>
+<p>To use, instead of typing in a PV channel, this takes in the prefix ‘f://’ to indicate a function, then
+uses curly braces ‘{&lt;PV row header&gt;}’ to find which curves to use as inputs. Other than that, FormulaCurveItems
+have the capacity to handle basic arithmetic functions and also special functions like log() and trigonometry.</p>
+<p>Finally, when populating its data buffers, it uses the union of the timesteps for each of its input curves, and uses
+last seen data to fill in the gaps when calculating.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>formula</strong> (<em>str</em>) – The formula that we are graphing</p></li>
+<li><p><strong>use_archive_data</strong> (<em>bool</em>) – If True, requests will be made to archiver appliance for archived data when
+the plot is zoomed or scrolled to the left.</p></li>
+<li><p><strong>pvs</strong> (<em>dict</em><em>[</em><em>str: BasePlotCurveItem</em><em>]</em>) – Has all the information for our FormulaCurveItem to evaluate the value at every timestep</p></li>
+<li><p><strong>**kws</strong> (<em>dict</em><em>[</em><em>str: any</em><em>]</em>) – Additional parameters supported by pyqtgraph.PlotDataItem.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.arch_conn_change">
+<span class="sig-name descname"><span class="pre">arch_conn_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.arch_conn_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.arch_conn_change" title="Permalink to this definition"></a></dt>
+<dd><p>Capture the archive channel connection status of a given curve and
+check connection status</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>status</strong> (<em>bool</em>) – Archive connection status for a given curve</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.checkFormula">
+<span class="sig-name descname"><span class="pre">checkFormula</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.checkFormula"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.checkFormula" title="Permalink to this definition"></a></dt>
+<dd><p>Make sure that our formula is still valid.
+Namely, all of the input curves need to still exist in the viewer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.compute_evaluation">
+<span class="sig-name descname"><span class="pre">compute_evaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pvData</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pvValues</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pvIndices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.compute_evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.compute_evaluation" title="Permalink to this definition"></a></dt>
+<dd><p>This is where the actual computation takes place. We are going to go through
+the data step by step and calculate our formula at each timestamp available</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>formula</strong> (<em>str</em>) – The formula to compute</p></li>
+<li><p><strong>pvData</strong> (<em>dict</em>) – A dictionary containing all of the Archive or Live data for each curve</p></li>
+<li><p><strong>pvValues</strong> (<em>dict</em>) – The value of each curve at the current timestep. At the start of this function,
+each is set to their respective last seen values when the time is equal to the
+latest start time of all of the curves.</p></li>
+<li><p><strong>pvIndices</strong> (<em>dict</em>) – A dictionary storing where in each curve’s data buffer we are currently at while calculating</p></li>
+<li><p><strong>archive</strong> (<em>bool</em>) – Whether or not this is computing for the Archive or for Live</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.connection_status_check">
+<span class="sig-name descname"><span class="pre">connection_status_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.connection_status_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.connection_status_check" title="Permalink to this definition"></a></dt>
+<dd><p>Check the connection status of all live and archive curves. Save and
+emit any changes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.createTrueFormula">
+<span class="sig-name descname"><span class="pre">createTrueFormula</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.createTrueFormula"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.createTrueFormula" title="Permalink to this definition"></a></dt>
+<dd><p>Convert our human-readable formula to something easier to use for the computer, in the background only</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.evaluate" title="Permalink to this definition"></a></dt>
+<dd><p>Use our formula and input curves to calculate our value at each timestep.
+If one curve updates at a certain timestep and another does not, it uses the previously
+seen data of the second curve, and assumes it is accurate at the current timestep.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.getArchiveBufferSize">
+<span class="sig-name descname"><span class="pre">getArchiveBufferSize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.getArchiveBufferSize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.getArchiveBufferSize" title="Permalink to this definition"></a></dt>
+<dd><p>Return the length of the archive buffer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.initializeArchiveBuffer">
+<span class="sig-name descname"><span class="pre">initializeArchiveBuffer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.initializeArchiveBuffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.initializeArchiveBuffer" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the archive data buffer used for this curve.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.live_conn_change">
+<span class="sig-name descname"><span class="pre">live_conn_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.live_conn_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.live_conn_change" title="Permalink to this definition"></a></dt>
+<dd><p>Capture the live channel connection status of a given curve and
+check connection status</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>status</strong> (<em>bool</em>) – Live connection status for a given curve</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.max_archiver_x">
+<span class="sig-name descname"><span class="pre">max_archiver_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.max_archiver_x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.max_archiver_x" title="Permalink to this definition"></a></dt>
+<dd><p>Provide the the most recent timestamp from the archiver data buffer.
+This is useful for scaling the x-axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The timestamp of the most recent data point in the archiver data buffer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.min_archiver_x">
+<span class="sig-name descname"><span class="pre">min_archiver_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.min_archiver_x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.min_archiver_x" title="Permalink to this definition"></a></dt>
+<dd><p>Provide the the oldest valid timestamp from the archiver data buffer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The timestamp of the oldest data point in the archiver data buffer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.redrawCurve">
+<span class="sig-name descname"><span class="pre">redrawCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.redrawCurve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.redrawCurve" title="Permalink to this definition"></a></dt>
+<dd><p>Redraw the curve with any new data added since the last draw call.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.resetArchiveBufferSize">
+<span class="sig-name descname"><span class="pre">resetArchiveBufferSize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.resetArchiveBufferSize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.resetArchiveBufferSize" title="Permalink to this definition"></a></dt>
+<dd><p>Reset the length of the archive buffer back to the default and zero it out</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.setArchiveBufferSize">
+<span class="sig-name descname"><span class="pre">setArchiveBufferSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.setArchiveBufferSize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.setArchiveBufferSize" title="Permalink to this definition"></a></dt>
+<dd><p>Set the length of the archive data buffer and zero it out</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.set_up_eval">
+<span class="sig-name descname"><span class="pre">set_up_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.set_up_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.set_up_eval" title="Permalink to this definition"></a></dt>
+<dd><p>Because we are doing very similar evaluations for Archive and Live Data,
+we are going to set up our data structures such that we can compute our evaluation
+more easily. This function will (generally) be called twice, once with archive = True,
+once with False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>archive</strong> (<em>bool</em>) – Whether this is setting up for Archive Data or Live Data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.FormulaCurveItem.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OrderedDict</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#FormulaCurveItem.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.FormulaCurveItem.to_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Returns an OrderedDict representation with values for all properties needed to recreate this curve.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

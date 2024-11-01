@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMTimePlot &mdash; PyDM 1.24.1 documentation</title>
+  <title>PyDMTimePlot &mdash; PyDM 1.25.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.24.1
+                1.25.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -552,6 +552,13 @@ edge.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OrderedDict</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.to_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Adds attribute specific to TimePlot to add onto BasePlot’s to_dict.
+This helps to recreate the Plot Config if we import a save file of it</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.updateInterval">
 <span class="sig-name descname"><span class="pre">updateInterval</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.updateInterval" title="Permalink to this definition"></a></dt>
@@ -760,6 +767,12 @@ needed to recreate this curve.</p>
 <dd class="field-odd"><p>OrderedDict</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.unitsChanged">
+<span class="sig-name descname"><span class="pre">unitsChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.unitsChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.unitsChanged" title="Permalink to this definition"></a></dt>
+<dd><p>Slot to handle when units are received from the PyDMChannel.</p>
 </dd></dl>
 
 <dl class="py method">

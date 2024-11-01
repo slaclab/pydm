@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Sources &mdash; PyDM 1.25.1 documentation</title>
+  <title>Features &mdash; PyDM 1.25.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
 
@@ -22,8 +22,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Features" href="features.html" />
-    <link rel="prev" title="Widgets" href="widgets.html" /> 
+    <link rel="next" title="About the Application" href="../action/tutorial.html" />
+    <link rel="prev" title="Data Sources" href="datasource.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -65,12 +65,11 @@
 <li class="toctree-l2"><a class="reference internal" href="data_arch.html">Data Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="macros.html">Macro Substitution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="widgets.html">Widgets</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Data Sources</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#epics">EPICS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#archiver">Archiver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasource.html">Data Sources</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-menu-actions">Adding Menu Actions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../action/tutorial.html">About the Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../action/intro_designer.html">Introduction to Qt Designer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../action/designer.html">Building Your First Display with Qt Designer</a></li>
@@ -129,9 +128,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Tutorial</a></li>
-      <li class="breadcrumb-item active">Data Sources</li>
+      <li class="breadcrumb-item active">Features</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/tutorials/intro/datasource.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/tutorials/intro/features.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -139,71 +138,55 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="data-sources">
-<h1>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this heading"></a></h1>
-<p>PyDM is shipped with a couple of data plugins:</p>
+  <section id="features">
+<h1>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h1>
+<section id="adding-menu-actions">
+<h2>Adding Menu Actions<a class="headerlink" href="#adding-menu-actions" title="Permalink to this heading"></a></h2>
+<p>You can add actions to the default menu bar in 2 ways:</p>
 <ul class="simple">
-<li><p>EPICS</p></li>
-<li><p>Archiver</p></li>
+<li><p>Add any custom action to the “Actions” drop down</p></li>
+<li><p>Add a “save”, “save as”, and/or “load” function to the “File” drop down</p></li>
 </ul>
-<section id="epics">
-<h2>EPICS<a class="headerlink" href="#epics" title="Permalink to this heading"></a></h2>
-<p>This plugin is used to allow PyDM Widgets to access to Channel Access process variables and interact with them.</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Protocol</p></th>
-<th class="head"><p>Address Format</p></th>
-<th class="head"><p>Example</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>ca</p></td>
-<td><p>ca://&lt;PV NAME&gt;</p></td>
-<td><p>ca://MTEST:Float</p></td>
-</tr>
-</tbody>
-</table>
-<p>For this particular data plugin, three options are available for the Python interface to Channel Access.</p>
+<p>To add to the menu bar, overload the <code class="docutils literal notranslate"><span class="pre">menu_items()</span></code> and <code class="docutils literal notranslate"><span class="pre">file_menu_items()</span></code>
+functions in your <code class="docutils literal notranslate"><span class="pre">Display</span></code> subclass. These functions should return dictionaries,
+where the keys are the action names, and the values one of the following:</p>
 <ul class="simple">
-<li><p>PyEpics: <a class="reference external" href="http://pyepics.github.io/pyepics/">http://pyepics.github.io/pyepics/</a></p></li>
-<li><p>pyca: <a class="reference external" href="https://github.com/slaclab/pyca">https://github.com/slaclab/pyca</a></p></li>
-<li><p>caproto: <a class="reference external" href="https://nsls-ii.github.io/caproto/">https://nsls-ii.github.io/caproto/</a></p></li>
+<li><p>A callable</p></li>
+<li><p>A two element tuple, where the first item is a callable and the second is a keyboard shortcut</p></li>
+<li><p>A dictionary corresponding to a sub menu, with the same key-value format so far described. This is only available for the “Actions” menu, not for the “File” menu</p></li>
 </ul>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>By default, PyEpics is selected unless configured through the <code class="docutils literal notranslate"><span class="pre">PYDM_EPICS_LIB</span></code> environment variable.</p>
-<p>Possible values are <code class="docutils literal notranslate"><span class="pre">PYEPICS</span></code>,  <code class="docutils literal notranslate"><span class="pre">PYCA</span></code>, and <code class="docutils literal notranslate"><span class="pre">CAPROTO</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The only accepted keys for the “File” menu are: “save”, “save_as”, and “load”</p>
 </div>
-</section>
-<section id="archiver">
-<h2>Archiver<a class="headerlink" href="#archiver" title="Permalink to this heading"></a></h2>
-<p>This plugin is used to allow PyDM Widgets to read data from Archiver Appliance.</p>
-<p>While still crude, this data plugin works and has been tested against a real instance of the Archiver.</p>
-<p>Basically a HTTP request is sent to the archiver appliance and the address is used to form the parameters for the data
-retrieval.  Warning: The request is sent synchronously, meaning it will block your application until the request is
-complete.  This limitation will be removed in a future version.</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Protocol</p></th>
-<th class="head"><p>Address Format</p></th>
-<th class="head"><p>Example</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>archiver</p></td>
-<td><p>archiver://&lt;PARAMS&gt;</p></td>
-<td><p>archiver://pv=test:pv:123&amp;donotchunk</p></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Different facilities must set the <code class="docutils literal notranslate"><span class="pre">PYDM_ARCHIVER_URL</span></code> environment variable to point to their Archiver Appliance
-location or the retrieval application. If not set, this variable will point to SLAC’s Archiver Appliance URL, which
-is almost certainly not what you want.</p>
-<p>If your Archiver Retrieval is hosted under the following address <code class="docutils literal notranslate"><span class="pre">http://lcls-archapp.slac.stanford.edu/retrieval/...</span></code>
-set the variable to <code class="docutils literal notranslate"><span class="pre">http://lcls-archapp.slac.stanford.edu</span></code>.</p>
-<p>The remaining parts of the URL will be dealt with at the Data Plugin level and should not be a concern.</p>
+<p>An example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydm</span> <span class="kn">import</span> <span class="n">Display</span>
+<span class="k">class</span> <span class="nc">MyDisplay</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MyDisplay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">file_menu_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;save&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_function</span><span class="p">,</span> <span class="s2">&quot;load&quot;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_function</span><span class="p">,</span> <span class="s2">&quot;Ctrl+L&quot;</span><span class="p">)}</span>
+
+    <span class="k">def</span> <span class="nf">menu_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Action1&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">action1_function</span><span class="p">,</span> <span class="s2">&quot;submenu&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Action2&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">action2_function</span><span class="p">,</span> <span class="s2">&quot;Action3&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">action3_function</span><span class="p">}}</span>
+
+    <span class="k">def</span> <span class="nf">save_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># do something to save your data</span>
+
+    <span class="k">def</span> <span class="nf">load_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># do something to load your data</span>
+
+    <span class="k">def</span> <span class="nf">action1_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># do action 1</span>
+
+    <span class="k">def</span> <span class="nf">action2_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># do action 2</span>
+
+    <span class="k">def</span> <span class="nf">action3_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># do action 3</span>
+</pre></div>
 </div>
 </section>
 </section>
@@ -212,8 +195,8 @@ set the variable to <code class="docutils literal notranslate"><span class="pre"
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="widgets.html" class="btn btn-neutral float-left" title="Widgets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="features.html" class="btn btn-neutral float-right" title="Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="datasource.html" class="btn btn-neutral float-left" title="Data Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../action/tutorial.html" class="btn btn-neutral float-right" title="About the Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
