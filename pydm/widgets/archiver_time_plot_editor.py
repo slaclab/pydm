@@ -1,5 +1,5 @@
 from typing import Any, Optional
-from qtpy.QtCore import Qt, QModelIndex, QObject, QVariant
+from qtpy.QtCore import Qt, QModelIndex, QObject
 from qtpy.QtGui import QColor
 from .archiver_time_plot import ArchivePlotCurveItem, FormulaCurveItem
 from .baseplot import BasePlot, BasePlotCurveItem
@@ -16,7 +16,11 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
 
         self.checkable_cols = {self.getColumnIndex("Live Data"), self.getColumnIndex("Archive Data")}
 
-    def flags(self, index):
+    def flags(self, index: QModelIndex) -> Qt.ItemFlags:
+        """Return flags that determine how users can interact with the items in the table"""
+        if not index.isValid():
+            return Qt.NoItemFlags
+
         flags = super().flags(index)
         if index.column() in self.checkable_cols:
             flags = Qt.ItemIsEnabled | Qt.ItemIsUserCheckable | Qt.ItemIsSelectable
@@ -24,7 +28,7 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if not index.isValid():
-            return QVariant()
+            return None
         if role == Qt.CheckStateRole and index.column() in self.checkable_cols:
             value = super().data(index, Qt.DisplayRole)
             return Qt.Checked if value else Qt.Unchecked
@@ -37,12 +41,12 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
         if column_name == "Channel":
             if isinstance(curve, FormulaCurveItem):
                 if curve.formula is None:
-                    return QVariant()
+                    return ""
                 return str(curve.formula)
             # We are either a Formula or a PV (for now at leasts)
             else:
                 if curve.address is None:
-                    return QVariant()
+                    return ""
                 return str(curve.address)
 
         elif column_name == "Live Data":
@@ -53,7 +57,7 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
 
     def setData(self, index, value, role=Qt.DisplayRole):
         if not index.isValid():
-            return QVariant()
+            return None
         elif role == Qt.CheckStateRole and index.column() in self.checkable_cols:
             return super().setData(index, value, Qt.EditRole)
         elif index.column() not in self.checkable_cols:
