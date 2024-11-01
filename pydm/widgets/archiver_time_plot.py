@@ -482,10 +482,11 @@ class FormulaCurveItem(BasePlotCurveItem):
             self.formula_invalid_signal.emit()
             return
         if not self.pvs:
+            # If we are just a constant, then store a straight line from 1970 to ~2200
+            # Known Bug: Constants are hidden if the plot's x-axis range is between 30m and 1.5hr
             self.archive_data_buffer = np.array([[0], [eval(self._trueFormula)]])
-            self.archive_points_accumulated = 1
             self.data_buffer = np.array([[APPROX_SECONDS_300_YEARS], [eval(self._trueFormula)]])
-            self.points_accumulated = 1
+            self.points_accumulated = self.archive_points_accumulated = 1
             return
         if not (self.connected and self.arch_connected):
             return
