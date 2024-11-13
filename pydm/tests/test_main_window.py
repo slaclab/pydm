@@ -29,8 +29,9 @@ def test_reload_display(wrapped_compile_ui: MagicMock, qapp: PyDMApplication) ->
     finally:
         clear_compiled_ui_file_cache()
 
+
 def test_menubar_text(qapp: PyDMApplication) -> None:
-    """Verify the main-window displays expected text in the dropdown menu-items"""
+    """Verify main-window displays expected text in its menubar dropdown items"""
     # only testing text update of "Enter/Exit Fullscreen" menu-item for now, this can be expanded later
     display = Display(parent=None)
 
