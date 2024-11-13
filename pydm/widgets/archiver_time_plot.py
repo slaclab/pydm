@@ -76,14 +76,10 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         dic_.update(super(ArchivePlotCurveItem, self).to_dict())
         return dic_
 
-    @property
-    def address(self):
-        return super().address
-
-    @address.setter
+    @TimePlotCurveItem.address.setter
     def address(self, new_address: str) -> None:
         """Creates the channel for the input address for communicating with the archiver appliance plugin."""
-        TimePlotCurveItem.address.__set__(self, new_address)
+        TimePlotCurveItem.address.fset(self, new_address)
 
         if self.archive_channel:
             if new_address == self.archive_channel.address:
@@ -112,6 +108,20 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
         # Prompt the curve's associated plot to fetch archive data
         self.prompt_archive_request.emit()
+
+    @BasePlotCurveItem.y_axis_name.setter
+    def y_axis_name(self, axis_name: str) -> None:
+        """
+        Set the name of the y-axis that should be associated with this curve.
+        Also move's the curve's error bar item.
+        Parameters
+        ----------
+        axis_name: str
+        """
+        BasePlotCurveItem.y_axis_name.fset(self, axis_name)
+        if vb := self.error_bar_item.getViewBox():
+            vb.removeItem(self.error_bar_item)
+        self.getViewBox().addItem(self.error_bar_item)
 
     @property
     def liveData(self):
@@ -176,9 +186,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
                 beam=0.5,
                 pen={"color": self.color},
             )
-            if self.error_bar_needs_set:
-                self.getViewBox().addItem(self.error_bar_item)
-                self.error_bar_needs_set = False
 
         self.data_changed.emit()
         self.archive_data_received_signal.emit()
@@ -358,7 +365,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         liveData: Optional[bool] = True,
         color: Optional[str] = "green",
         plot_style: str = "Line",
-        **kws
+        **kws,
     ):
         super(FormulaCurveItem, self).__init__(**kws)
         self.color = color
