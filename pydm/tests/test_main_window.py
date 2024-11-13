@@ -28,3 +28,19 @@ def test_reload_display(wrapped_compile_ui: MagicMock, qapp: PyDMApplication) ->
         assert wrapped_compile_ui.call_count == 2
     finally:
         clear_compiled_ui_file_cache()
+
+def test_menubar_text(qapp: PyDMApplication) -> None:
+    """Verify the main-window displays expected text in the dropdown menu-items"""
+    # only testing text update of "Enter/Exit Fullscreen" menu-item for now, this can be expanded later
+    display = Display(parent=None)
+
+    qapp.make_main_window()
+    qapp.main_window.set_display_widget(display)
+
+    action = qapp.main_window.ui.actionEnter_Fullscreen
+    # make sure we start in not fullscreen view
+    qapp.main_window.showNormal()
+    assert action.text() == "Enter Fullscreen"
+    # click the menu-item to go into fullscreen view
+    action.trigger()
+    assert action.text() == "Exit Fullscreen"
