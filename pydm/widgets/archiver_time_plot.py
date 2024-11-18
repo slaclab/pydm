@@ -380,12 +380,8 @@ class FormulaCurveItem(BasePlotCurveItem):
 
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
 
-        # When optimized or mean value data is requested, we can display error bars representing
-        # the full range of values retrieved
-        self.error_bar_item = ErrorBarItem()
-        self.error_bar_needs_set = True
-        self._formula = formula
         # Have a formula for internal calculations, that the user does not see
+        self._formula = formula
         self._trueFormula = self.createTrueFormula()
         self.pvs = pvs if pvs else {}
         self._liveData = liveData
