@@ -922,9 +922,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     def clearCurves(self) -> None:
         """Clear all curves from the plot"""
         for curve in self._curves:
-            # Need to clear out any bars from optimized data, then super() can handle the rest
-            if not curve.error_bar_needs_set:
-                curve.getViewBox().removeItem(curve.error_bar_item)
+            # Need to clear out any bars from optimized data; only applicable to ArchivePlotCurveItems
+            if not isinstance(curve, ArchivePlotCurveItem):
+                continue
+            vb = curve.error_bar_item.getViewBox()
+            vb.removeItem(curve.error_bar_item)
 
         # reset _min_x to let updateXAxis make requests anew
         self._min_x = self._starting_timestamp
