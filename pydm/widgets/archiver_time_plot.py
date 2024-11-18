@@ -10,7 +10,7 @@ from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
 from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
-from qtpy.QtGui import QColor
+from qtpy.QtGui import QColor, QPen
 import logging
 from math import *  # noqa
 from statistics import mean  # noqa
@@ -65,8 +65,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
-        self.error_bar_item = ErrorBarItem()
-        self.error_bar_needs_set = True
+        self.error_bar = ErrorBarItem()
+        self.archive_bin_size = None
 
         self.address = channel_address
 
@@ -119,9 +119,9 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         axis_name: str
         """
         BasePlotCurveItem.y_axis_name.fset(self, axis_name)
-        if vb := self.error_bar_item.getViewBox():
-            vb.removeItem(self.error_bar_item)
-        self.getViewBox().addItem(self.error_bar_item)
+        if vb := self.error_bar.getViewBox():
+            vb.removeItem(self.error_bar)
+        self.getViewBox().addItem(self.error_bar)
 
     @property
     def liveData(self):
@@ -178,14 +178,9 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
         # Error bars
         if data.shape[0] == 5:  # 5 indicates optimized data was requested from the archiver
-            self.error_bar_item.setData(
-                x=self.archive_data_buffer[0, -self.archive_points_accumulated :],
-                y=self.archive_data_buffer[1, -self.archive_points_accumulated :],
-                top=data[4] - data[1],
-                bottom=data[1] - data[3],
-                beam=0.5,
-                pen={"color": self.color},
-            )
+            self.error_bar_data = data
+            self.archive_bin_size = data[0, -1] - data[0, -2]
+            self.set_error_bar()
 
         self.data_changed.emit()
         self.archive_data_received_signal.emit()
@@ -275,6 +270,49 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         if self._archiveBufferSize != DEFAULT_ARCHIVE_BUFFER_SIZE:
             self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
             self.initializeArchiveBuffer()
+
+    def set_error_bar(self):
+        """Update the data in the ErrorBarItem. Applies log10 to the ErrorBarItem
+        based on the curve's log mode.
+        """
+        x_val = self.error_bar_data[0]
+
+        # Calculate y-value and range for error bars
+        logMode = self.opts["logMode"][1]
+        if logMode:
+            # If the curve's log mode is enabled, then apply numpy.log10 to all y-values
+            with np.errstate(divide="ignore"):
+                y_val = np.log10(self.error_bar_data[1])
+                bot_val = y_val - np.log10(self.error_bar_data[3])
+                top_val = np.log10(self.error_bar_data[4]) - y_val
+        else:
+            y_val = self.error_bar_data[1]
+            bot_val = y_val - self.error_bar_data[3]
+            top_val = self.error_bar_data[4] - y_val
+
+        # Set the error bar's beam length based on the size of bins
+        beam_len = self.archive_bin_size / 3
+
+        # Set the error bar's pen to be the same as the curve, but solid
+        solid_pen = QPen(self._pen)
+        solid_pen.setStyle(1)
+
+        self.error_bar.setData(x=x_val, y=y_val, top=top_val, bottom=bot_val, beam=beam_len, pen=solid_pen)
+
+    def setLogMode(self, xState: bool, yState: bool) -> None:
+        """When log mode is enabled for the respective axis by setting xState or
+        yState to True, a mapping according to mapped = np.log10( value ) is applied
+        to the data. For negative or zero values, this results in a NaN value.
+
+        Parameters
+        ----------
+        xState : bool
+            Set log mode for the x-axis
+        yState : bool
+            Set log mode for the y-axis
+        """
+        super().setLogMode(xState, yState)
+        self.set_error_bar()
 
     @Slot(bool)
     def archiveConnectionStateChanged(self, connected: bool) -> None:
