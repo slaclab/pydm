@@ -290,14 +290,11 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             bot_val = y_val - self.error_bar_data[3]
             top_val = self.error_bar_data[4] - y_val
 
-        # Set the error bar's beam length based on the size of bins
-        beam_len = self.archive_bin_size / 3
-
         # Set the error bar's pen to be the same as the curve, but solid
         solid_pen = QPen(self._pen)
         solid_pen.setStyle(1)
 
-        self.error_bar.setData(x=x_val, y=y_val, top=top_val, bottom=bot_val, beam=beam_len, pen=solid_pen)
+        self.error_bar.setData(x=x_val, y=y_val, top=top_val, bottom=bot_val, beam=0.5, pen=solid_pen)
 
     def setLogMode(self, xState: bool, yState: bool) -> None:
         """When log mode is enabled for the respective axis by setting xState or
