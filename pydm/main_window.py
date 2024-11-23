@@ -1,9 +1,8 @@
 import os
 from os import path
 
-from qtpy import QtCore
 from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QAction, QMessageBox
-from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo
+from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo, QCoreApplication
 from qtpy.QtGui import QKeySequence
 from .utilities import IconFont, find_file, establish_widget_connections, close_widget_connections
 from .pydm_ui import Ui_MainWindow
@@ -481,7 +480,7 @@ class PyDMMainWindow(QMainWindow):
     @Slot(bool)
     def enter_fullscreen(self, checked=False):
         # for supporting localization (the main window menu-items all support this)
-        _translate = QtCore.QCoreApplication.translate
+        _translate = QCoreApplication.translate
         if self.isFullScreen():
             self.showNormal()
             self.ui.actionEnter_Fullscreen.setText(_translate("MainWindow", "Enter Fullscreen"))
