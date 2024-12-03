@@ -72,7 +72,7 @@ To launch a particular display run 'python scripts/pydm <filename>'.
 There is a 'home' display in the examples directory with buttons to launch all
 the examples:
 ```python
-python scripts/pydm examples/home.ui
+pydm examples/home.ui
 ```
 
 # Building the Documentation Locally
