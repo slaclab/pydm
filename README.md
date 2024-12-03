@@ -22,9 +22,9 @@
   ·
   <a href="https://github.com/slaclab/pydm/issues/new?template=feature-request.md&labels=request">Request feature</a>
   ·
-  <a href="https://github.com/slaclab/pydm/blob/master/.github/CONTRIBUTING.md">How to Contribute</a>
+  <a href="https://github.com/slaclab/pydm/blob/master/CONTRIBUTING.md">How to Contribute</a>
   ·
-  <a href="https://github.com/slaclab/pydm/blob/master/.github/SUPPORT.md">Support</a>
+  <a href="https://github.com/slaclab/pydm/blob/master/SUPPORT.md">Support</a>
 </p>
 
 <br>
