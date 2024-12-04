@@ -20,8 +20,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
         pyqt-version: [5.12.3, 5.15.9]
+        exclude:
+          - pyqt-version: 5.12.3
+            python-version: 3.11
+          - pyqt-version: 5.12.3
+            python-version: 3.12
     env:
       DISPLAY: ':99.0'
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
