@@ -42,7 +42,7 @@ jobs:
           mamba install pyqt=${{ matrix.pyqt-version }}
           mamba install --file requirements.txt --file windows-dev-requirements.txt
         else
-          mamba install pyqt=${{ matrix.pyqt-version }} $(cat requirements.txt dev-requirements.txt)
+          mamba install pyqt=${{ matrix.pyqt-version }} pyca $(cat requirements.txt dev-requirements.txt)
         fi
     - name: Install packages for testing a pyqt app on linux
       shell: bash -el {0}

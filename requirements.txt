@@ -5,3 +5,4 @@ pyqtgraph>=0.12.0
 qtpy
 scipy>=0.12.0
 six
+epicscorelibs==7.0.7.99.0.2
