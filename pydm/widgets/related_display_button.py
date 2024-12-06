@@ -602,6 +602,10 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
             # Not a pydm app: need to give our new display proper pydm styling
             # Usually done in PyDMApplication
             merge_widget_stylesheet(widget=display)
+            # Parent the display to avoid garbage collection
+            display.setParent(self)
+            display.setWindowFlags(Qt.Window)
+            display.show()
             return display
 
     def context_menu(self):
