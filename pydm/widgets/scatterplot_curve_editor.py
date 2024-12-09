@@ -1,4 +1,4 @@
-from qtpy.QtCore import QModelIndex, QVariant
+from qtpy.QtCore import QModelIndex
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate, RedrawModeColumnDelegate
 
@@ -17,11 +17,11 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
     def get_data(self, column_name, curve):
         if column_name == "Y Channel":
             if curve.y_address is None:
-                return QVariant()
+                return None
             return str(curve.y_address)
         elif column_name == "X Channel":
             if curve.x_address is None:
-                return QVariant()
+                return None
             return str(curve.x_address)
         elif column_name == "Redraw Mode":
             return curve.redraw_mode

@@ -1,4 +1,4 @@
-from qtpy.QtCore import QAbstractTableModel, Qt, QVariant
+from qtpy.QtCore import QAbstractTableModel, Qt
 from qtpy.QtGui import QBrush
 from .baseplot import BasePlotCurveItem
 
@@ -58,11 +58,11 @@ class BasePlotCurvesModel(QAbstractTableModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if not index.isValid():
-            return QVariant()
+            return None
         if index.row() >= self.rowCount():
-            return QVariant()
+            return None
         if index.column() >= self.columnCount():
-            return QVariant()
+            return None
         column_name = self._column_names[index.column()]
         curve = self.plot._curves[index.row()]
         if role == Qt.DisplayRole or role == Qt.EditRole:
@@ -72,12 +72,12 @@ class BasePlotCurvesModel(QAbstractTableModel):
         elif role == Qt.BackgroundRole and column_name == "Limit Color":
             return QBrush(curve.threshold_color)
         else:
-            return QVariant()
+            return None
 
     def get_data(self, column_name, curve):
         if column_name == "Label":
             if curve.name() is None:
-                return QVariant()
+                return None
             return str(curve.name())
         elif column_name == "Y-Axis Name":
             return curve.y_axis_name
@@ -110,7 +110,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
         column_name = self._column_names[index.column()]
         curve = self.plot._curves[index.row()]
         if role == Qt.EditRole:
-            if isinstance(value, QVariant):
+            if value is not None:
                 value = value.toString()
             if not self.set_data(column_name, curve, value):
                 return False

@@ -1,4 +1,4 @@
-from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
+from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex
 from .baseplot import BasePlotAxisItem
 
 
@@ -42,17 +42,17 @@ class BasePlotAxesModel(QAbstractTableModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if not index.isValid():
-            return QVariant()
+            return None
         if index.row() >= self.rowCount():
-            return QVariant()
+            return None
         if index.column() >= self.columnCount():
-            return QVariant()
+            return None
         column_name = self._column_names[index.column()]
         axis = self.plot._axes[index.row()]
         if role == Qt.DisplayRole or role == Qt.EditRole:
             return self.get_data(column_name, axis)
         else:
-            return QVariant()
+            return None
 
     def get_data(self, column_name, axis):
         if column_name == "Y-Axis Name":
@@ -80,7 +80,7 @@ class BasePlotAxesModel(QAbstractTableModel):
         column_name = self._column_names[index.column()]
         axis = self.plot._axes[index.row()]
         if role == Qt.EditRole:
-            if isinstance(value, QVariant):
+            if value is not None:
                 value = value.toString()
             if not self.set_data(column_name, axis, value):
                 return False

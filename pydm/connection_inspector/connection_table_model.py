@@ -1,4 +1,4 @@
-from qtpy.QtCore import QAbstractTableModel, Qt, QVariant, QTimer, Slot
+from qtpy.QtCore import QAbstractTableModel, Qt, QTimer, Slot
 from operator import attrgetter
 
 
@@ -47,17 +47,17 @@ class ConnectionTableModel(QAbstractTableModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if not index.isValid():
-            return QVariant()
+            return None
         if index.row() >= self.rowCount():
-            return QVariant()
+            return None
         if index.column() >= self.columnCount():
-            return QVariant()
+            return None
         column_name = self._column_names[index.column()]
         conn = self.connections[index.row()]
         if role == Qt.DisplayRole or role == Qt.EditRole:
             return str(getattr(conn, column_name))
         else:
-            return QVariant()
+            return None
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
