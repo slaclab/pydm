@@ -29,6 +29,7 @@ requirements:
     - pyqtgraph
     - qtpy
     - entrypoints
+    - pyca
 
 test:
   imports:
