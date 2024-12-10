@@ -141,18 +141,19 @@ with pip.</p>
 <p>Please note, this guide is written with Unix in mind, so there are probably some differences when installing on Windows.</p>
 <section id="installing-pydm-and-prerequisites-with-anaconda">
 <h2>Installing PyDM and Prerequisites with Anaconda<a class="headerlink" href="#installing-pydm-and-prerequisites-with-anaconda" title="Permalink to this heading"></a></h2>
-<p>After installing Anaconda (see <a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>), create a new
-environment for PyDM:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create -n pydm-environment python=3.8 pyqt=5 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
-$ source activate pydm-environment
-</pre></div>
-</div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>There is currently no PyQt 5.15+ build available on conda or PyPI that has
-designer support for python plugins.</p>
+designer support for python plugins. PyDM widgets will not load in these designer versions.</p>
 <p>In order to use PyDM widgets in designer, please make sure to pin the PyQt version to 5.12.3 or lower
 until this is resolved.</p>
+<p>$ conda create -n pydm-environment python=3.10 pyqt=5.12.3 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge</p>
+</div>
+<p>After installing Anaconda (see <a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>), create a new
+environment for PyDM:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create -n pydm-environment python=3.10 pyqt=5 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
+$ source activate pydm-environment
+</pre></div>
 </div>
 <p>Once you’ve installed and activated the environment, you should be able to run ‘pydm’ to launch PyDM, or run ‘designer’ to launch Qt Designer.  If you are on Windows, run these commands from the Anaconda Prompt.</p>
 <p>On MacOS, launching Qt Designer is a little more annoying:
