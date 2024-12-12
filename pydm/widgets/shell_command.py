@@ -634,7 +634,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
                 args = cmd
             try:
                 logger.debug("Launching process: %s", repr(args))
-                stdout = subprocess.PIPE
+                stdout = subprocess.DEVNULL
 
                 if self.env_var:
                     env_var = literal_eval(self.env_var)
@@ -644,7 +644,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
                 if self._redirect_output:
                     stdout = None
                 self.process = subprocess.Popen(
-                    args, stdout=stdout, stderr=subprocess.PIPE, env=env_var, shell=self._run_commands_in_full_shell
+                    args, stdout=stdout, stderr=subprocess.DEVNULL, env=env_var, shell=self._run_commands_in_full_shell
                 )
 
             except Exception as exc:
