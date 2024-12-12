@@ -84,6 +84,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         # but standard icons are already colored and can not be set.
         self._pydm_icon_color = QColor(90, 90, 90)
 
+        # Retain references to subdisplays to avoid garbage collection
+        self._subdisplays = []
+
     @only_if_channel_set
     def check_enable_state(self) -> None:
         """
@@ -602,10 +605,13 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
             # Not a pydm app: need to give our new display proper pydm styling
             # Usually done in PyDMApplication
             merge_widget_stylesheet(widget=display)
-            # Parent the display to avoid garbage collection
-            display.setParent(self)
-            display.setWindowFlags(Qt.Window)
-            display.show()
+            # Clean up references to closed subdisplays
+            for old_display in list(self._subdisplays):
+                # isVisible only goes False after clicking "close"
+                if not old_display.isVisible():
+                    self._subdisplays.remove(old_display)
+            # Retain a reference to avoid garbage collection
+            self._subdisplays.append(display)
             return display
 
     def context_menu(self):
