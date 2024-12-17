@@ -1,7 +1,7 @@
 from typing import Any, Optional
 from qtpy.QtCore import Qt, QModelIndex, QObject
 from qtpy.QtGui import QColor
-from .archiver_time_plot import ArchivePlotCurveItem, FormulaCurveItem
+from .archiver_time_plot import ArchivePlotCurveItem
 from .baseplot import BasePlot, BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate
@@ -39,15 +39,13 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
     def get_data(self, column_name: str, curve: BasePlotCurveItem) -> Any:
         """Get data for the input column name"""
         if column_name == "Channel":
-            if isinstance(curve, FormulaCurveItem):
-                if curve.formula is None:
-                    return ""
-                return str(curve.formula)
+            if hasattr(curve, "address"):
+                return curve.address
+            elif hasattr(curve, "formula"):
+                return curve.formula
             # We are either a Formula or a PV (for now at leasts)
             else:
-                if curve.address is None:
-                    return ""
-                return str(curve.address)
+                return None
 
         elif column_name == "Live Data":
             return bool(curve.liveData)
