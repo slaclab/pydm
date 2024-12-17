@@ -29,7 +29,10 @@ class BasePlotAxesModel(QAbstractTableModel):
     def plot(self, new_plot):
         self._plot = new_plot
 
-    def flags(self, index):
+    def flags(self, index: QModelIndex) -> Qt.ItemFlags:
+        """Return flags that determine how users can interact with the items in the table"""
+        if not index.isValid():
+            return Qt.NoItemFlags
         return Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable
 
     def rowCount(self, parent=None):

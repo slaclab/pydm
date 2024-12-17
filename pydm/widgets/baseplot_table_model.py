@@ -1,4 +1,4 @@
-from qtpy.QtCore import QAbstractTableModel, Qt
+from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex
 from qtpy.QtGui import QBrush
 from .baseplot import BasePlotCurveItem
 
@@ -42,7 +42,10 @@ class BasePlotCurvesModel(QAbstractTableModel):
     def clear(self):
         self.plot.clearCurves()
 
-    def flags(self, index):
+    def flags(self, index: QModelIndex) -> Qt.ItemFlags:
+        """Return flags that determine how users can interact with the items in the table"""
+        if not index.isValid():
+            return None
         column_name = self._column_names[index.column()]
         if column_name == "Color" or column_name == "Limit Color":
             return Qt.ItemIsSelectable | Qt.ItemIsEnabled
@@ -77,7 +80,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
     def get_data(self, column_name, curve):
         if column_name == "Label":
             if curve.name() is None:
-                return None
+                return ""
             return str(curve.name())
         elif column_name == "Y-Axis Name":
             return curve.y_axis_name
