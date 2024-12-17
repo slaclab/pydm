@@ -1,4 +1,4 @@
-from qtpy.QtCore import QModelIndex, QObject, QVariant
+from qtpy.QtCore import QModelIndex, QObject
 from typing import Optional
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog, ColorColumnDelegate, PlotStyleColumnDelegate
@@ -12,9 +12,7 @@ class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
 
     def get_data(self, column_name, curve):
         if column_name == "Channel":
-            if curve.address is None:
-                return QVariant()
-            return str(curve.address)
+            return curve.address
         elif column_name == "Style":
             return curve.plot_style
         return super(PyDMTimePlotCurvesModel, self).get_data(column_name, curve)
