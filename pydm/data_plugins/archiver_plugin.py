@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import Optional
 
 from pydm.widgets.channel import PyDMChannel
-from qtpy import sip
+from qtpy.compat import isalive
 from qtpy.QtCore import Slot, QObject, QUrl, QTimer
 from qtpy.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
@@ -93,7 +93,7 @@ class Connection(PyDMConnection):
         reply = self.network_manager.get(request)
 
         def timeout():
-            if not isinstance(reply, QNetworkReply) or sip.isdeleted(reply):
+            if not isinstance(reply, QNetworkReply) or not isalive(reply):
                 return
             reply.abort()
 
