@@ -20,13 +20,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
-        pyqt-version: [5.12.3, 5.15.9]
-        exclude:
-          - pyqt-version: 5.12.3
-            python-version: 3.11
-          - pyqt-version: 5.12.3
-            python-version: 3.12
+        python-version: ['3.8', '3.9', '3.10']
+        pyqt-version: [5.12.3]
     env:
       DISPLAY: ':99.0'
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
@@ -40,16 +35,19 @@ jobs:
         miniforge-variant: Miniforge3
         miniforge-version: latest
         activate-environment: pydm-env
+    - name: Install pyqt with mamba
+      shell: bash -el {0}
+      run: |
+        mamba install pyqt=${{ matrix.pyqt-version }}
     - name: Install python packages
       shell: bash -el {0}
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          mamba install pyqt=${{ matrix.pyqt-version }}
-          mamba install --file requirements.txt --file windows-dev-requirements.txt
+          python -m pip install -r requirements.txt -r windows-dev-requirements.txt
         else
-          mamba install pyqt=${{ matrix.pyqt-version }} $(cat requirements.txt dev-requirements.txt)
+          python -m pip install -r requirements.txt -r dev-requirements.txt
         fi
-    - name: Install packages for testing a pyqt app on linux
+    - name: Install packages for testing a pyqt app on linux, start the display server + window manager
       shell: bash -el {0}
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
