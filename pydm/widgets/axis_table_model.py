@@ -1,4 +1,4 @@
-from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
+from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex
 from .baseplot import BasePlotAxisItem
 
 
@@ -83,7 +83,7 @@ class BasePlotAxesModel(QAbstractTableModel):
         column_name = self._column_names[index.column()]
         axis = self.plot._axes[index.row()]
         if role == Qt.EditRole:
-            if isinstance(value, QVariant):
+            if value is not None:
                 value = value.toString()
             if not self.set_data(column_name, axis, value):
                 return False

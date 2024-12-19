@@ -1,4 +1,4 @@
-from qtpy.QtCore import QAbstractTableModel, Qt, QVariant, QModelIndex
+from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex
 from qtpy.QtGui import QBrush
 from .baseplot import BasePlotCurveItem
 
@@ -113,7 +113,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
         column_name = self._column_names[index.column()]
         curve = self.plot._curves[index.row()]
         if role == Qt.EditRole:
-            if isinstance(value, QVariant):
+            if value is not None:
                 value = value.toString()
             if not self.set_data(column_name, curve, value):
                 return False
