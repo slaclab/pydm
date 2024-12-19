@@ -59,7 +59,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         ----------
         text : str
             Title of the item
-        userData : QVariant
+        userData : object
             Arbitrary user data that is stored in the Qt.UserRole
         """
         super(PyDMEnumComboBox, self).addItem(text, userData)

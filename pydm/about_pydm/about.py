@@ -1,5 +1,5 @@
 from qtpy.QtWidgets import QWidget, QTableWidgetItem
-from qtpy.QtCore import Qt, PYQT_VERSION_STR, qVersion
+from qtpy.QtCore import Qt, qVersion
 from .about_ui import Ui_Form
 from numpy import __version__ as numpyver
 from pyqtgraph import __version__ as pyqtgraphver
@@ -7,6 +7,16 @@ import pydm
 import sys
 from os import path
 import inspect
+import qtpy
+
+# get Qt binding and version
+PYQT_VERSION = ""
+if "PyQt" in qtpy.API_NAME:
+    PYQT_VERSION = qtpy.QtCore.PYQT_VERSION_STR
+elif "PySide" in qtpy.API_NAME:
+    PYQT_VERSION = qtpy.QtCore.__version__
+else:
+    PYQT_VERSION = "Unknown version"
 
 
 class AboutWindow(QWidget):
@@ -18,7 +28,7 @@ class AboutWindow(QWidget):
         pyver = ".".join([str(v) for v in sys.version_info[0:3]])
         self.ui.modulesVersionLabel.setText(
             str(self.ui.modulesVersionLabel.text()).format(
-                pyver=pyver, numpyver=numpyver, pyqtgraphver=pyqtgraphver, pyqtver=PYQT_VERSION_STR, qtver=qVersion()
+                pyver=pyver, numpyver=numpyver, pyqtgraphver=pyqtgraphver, pyqtver=PYQT_VERSION, qtver=qVersion()
             )
         )
         self.populate_external_tools_list()

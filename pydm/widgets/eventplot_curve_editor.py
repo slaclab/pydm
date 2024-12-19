@@ -1,4 +1,4 @@
-from qtpy.QtCore import QModelIndex, QVariant
+from qtpy.QtCore import QModelIndex
 from .baseplot_table_model import BasePlotCurvesModel
 from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate
 
@@ -17,15 +17,15 @@ class PyDMEventPlotCurvesModel(BasePlotCurvesModel):
     def get_data(self, column_name, curve):
         if column_name == "Channel":
             if curve.address is None:
-                return QVariant()
+                return None
             return str(curve.address)
         elif column_name == "Y Index":
             if curve.y_idx is None:
-                return QVariant()
+                return None
             return curve.y_idx
         elif column_name == "X Index":
             if curve.x_idx is None:
-                return QVariant()
+                return None
             return curve.x_idx
         elif column_name == "Buffer Size":
             return curve.getBufferSize()

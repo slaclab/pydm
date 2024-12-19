@@ -9,7 +9,7 @@ import sys
 from typing import Optional
 
 from qtpy import QtGui, QtWidgets
-from qtpy.QtCore import QPoint, QRect, Qt, qRound
+from qtpy.QtCore import QPoint, QRect, Qt
 from qtpy.QtGui import QColor, QFont, QFontDatabase, QIcon, QIconEngine, QPainter, QPixmap
 
 if sys.version_info[0] == 3:
@@ -182,7 +182,7 @@ class CharIconEngine(QIconEngine):
             color = self._base_color
         painter.setPen(color)
         scale_factor = 1.0
-        draw_size = 0.875 * qRound(rect.height() * scale_factor)
+        draw_size = 0.875 * round(rect.height() * scale_factor)
         painter.setFont(self.icon_font.font(draw_size))
         painter.setOpacity(1.0)
         painter.drawText(rect, int(Qt.AlignCenter | Qt.AlignVCenter), self.char)

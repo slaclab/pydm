@@ -53,11 +53,11 @@ class PythonTableModel(QtCore.QAbstractTableModel):
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
         if index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         if index.column() >= self.columnCount():
-            return QtCore.QVariant()
+            return None
         if role == QtCore.Qt.DisplayRole:
             try:
                 item = str(self._list[index.row()][index.column()])
@@ -65,7 +65,7 @@ class PythonTableModel(QtCore.QAbstractTableModel):
                 item = ""
             return item
         else:
-            return QtCore.QVariant()
+            return None
 
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         if self.edit_method is None:
