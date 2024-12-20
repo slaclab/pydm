@@ -3,7 +3,8 @@ import functools
 
 from collections import OrderedDict
 
-from qtpy.QtCore import QObject, Slot, Signal, Property, Q_ENUMS, QSize
+from qtpy.QtCore import QObject, Slot, Signal, Property, QSize
+from PyQt5.QtCore import Q_ENUM
 from qtpy.QtWidgets import (
     QWidget,
     QPlainTextEdit,
@@ -16,6 +17,7 @@ from qtpy.QtWidgets import (
     QStyle,
 )
 from qtpy.QtGui import QPainter
+from ..utilities import create_enum
 
 logger = logging.getLogger(__name__)
 
@@ -81,34 +83,28 @@ class GuiHandler(QObject, logging.Handler):
             logger.debug("Handler was destroyed at the C++ level.")
 
 
-class LogLevels(object):
-    NOTSET = 0
-    DEBUG = 10
-    INFO = 20
-    WARNING = 30
-    ERROR = 40
-    CRITICAL = 50
-
-    @staticmethod
-    def as_dict():
-        """
-        Returns an ordered dict of LogLevels ordered by value.
-
-        Returns
-        -------
-        OrderedDict
-        """
-        # First let's remove the internals
-        entries = [
-            (k, v)
-            for k, v in LogLevels.__dict__.items()
-            if not k.startswith("__") and not callable(v) and not isinstance(v, staticmethod)
-        ]
-
-        return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
+LogLevels = create_enum("LogLevels", {"NOTSET": 0, "DEBUG": 10, "INFO": 20, "WARNING": 30, "ERROR": 40, "CRITICAL": 50})
 
 
-class PyDMLogDisplay(QWidget, LogLevels):
+# add this as static function of the enum, do it this way since using 'create_enum' utility
+# so enums work with both pyqt and pyside6.
+@staticmethod
+def as_dict():
+    """
+    Returns an ordered dict of LogLevels ordered by value.
+
+    Returns
+    -------
+    OrderedDict
+    """
+    entries = [(k, v.value) for k, v in LogLevels.__members__.items()]
+    return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
+
+
+LogLevels.as_dict = as_dict
+
+
+class PyDMLogDisplay(QWidget):
     """
     Standard display for Log Output
 
@@ -129,7 +125,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
 
     """
 
-    Q_ENUMS(LogLevels)
+    Q_ENUM(LogLevels)
     LogLevels = LogLevels
     terminator = "\n"
     default_format = "%(asctime)s %(message)s"

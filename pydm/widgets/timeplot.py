@@ -5,10 +5,12 @@ from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS
+from qtpy.QtCore import Signal, Slot, Property, QTimer
+from PyQt5.QtCore import Q_ENUM
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
+from ..utilities import create_enum
 
 import logging
 
@@ -23,12 +25,8 @@ DEFAULT_Y_MIN = 0
 DEFAULT_TIME_SPAN = 5.0
 DEFAULT_UPDATE_INTERVAL = 1000  # Plot update rate for fixed rate mode in milliseconds
 
-
-class updateMode(object):
-    """updateMode as new type for plot update"""
-
-    OnValueChange = 1
-    AtFixedRate = 2
+# updateMode as new type for plot update
+updateMode = create_enum("updateMode", {"OnValueChange": 1, "AtFixedRate": 2})
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
@@ -376,7 +374,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
         if isinstance(value, int) and value == updateMode.AtFixedRate or isinstance(value, bool) and value is True:
-            self._update_mode = PyDMTimePlot.AtFixedRate
+            self._update_mode = PyDMTimePlot.AtFixedRated
         else:
             self._update_mode = PyDMTimePlot.OnValueChange
         self.initialize_buffer()
@@ -412,7 +410,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         return [self.channel]
 
 
-class PyDMTimePlot(BasePlot, updateMode):
+class PyDMTimePlot(BasePlot):
     """
     PyDMTimePlot is a widget to plot one or more channels vs. time.
 
@@ -440,7 +438,7 @@ class PyDMTimePlot(BasePlot, updateMode):
     OnValueChange = 1
     AtFixedRated = 2
 
-    Q_ENUMS(updateMode)
+    Q_ENUM(updateMode)
     updateMode = updateMode
 
     plot_redrawn_signal = Signal(TimePlotCurveItem)
