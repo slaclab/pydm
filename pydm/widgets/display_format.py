@@ -4,11 +4,12 @@ from typing import Any
 
 import logging
 import warnings
+from enum import Enum
 
 logger = logging.getLogger(__name__)
 
 
-class DisplayFormat(object):
+class DisplayFormat(Enum):
     """Display format for showing data in a PyDM widget."""
 
     #: The default display format.

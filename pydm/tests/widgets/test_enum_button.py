@@ -43,11 +43,11 @@ def test_widget_type(qtbot, widget_type):
     qtbot.addWidget(widget)
 
     assert widget.widgetType == WidgetType.PushButton
-    assert isinstance(widget._widgets[0], class_for_type[WidgetType.PushButton])
+    assert isinstance(widget._widgets[0], class_for_type[WidgetType.PushButton.value])
 
     widget.widgetType = widget_type
     assert widget.widgetType == widget_type
-    assert isinstance(widget._widgets[0], class_for_type[widget_type])
+    assert isinstance(widget._widgets[0], class_for_type[widget_type.value])
 
 
 @pytest.mark.parametrize("orientation", [Qt.Horizontal, Qt.Vertical])
@@ -82,7 +82,7 @@ def test_widget_orientation(qtbot, orientation):
     w = item.widget()
     qtbot.addWidget(w)
     assert w is not None
-    assert isinstance(w, class_for_type[widget.widgetType])
+    assert isinstance(w, class_for_type[widget.widgetType.value])
 
 
 @pytest.mark.parametrize(
