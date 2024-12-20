@@ -21,6 +21,16 @@ from .iconfont import IconFont
 from .remove_protocol import protocol_and_address, remove_protocol, parsed_address
 from .units import convert, find_unit_options, find_unittype
 
+
+# if no wrapper is installed or QT_API environemnt var is set wrong,
+# pydm will fail b4 we even get here, in the launcher.
+QT_WRAPPER = ""
+if importlib.util.find_spec("PySide6"):
+    QT_WRAPPER = "pyside6"
+elif importlib.util.find_spec("PyQt5"):
+    QT_WRAPPER = "pyqt5"
+
+
 __all__ = [
     "colors",
     "macro",
