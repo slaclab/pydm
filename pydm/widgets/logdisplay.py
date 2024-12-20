@@ -2,8 +2,10 @@ import logging
 import functools
 
 from collections import OrderedDict
+from enum import Enum
 
-from qtpy.QtCore import QObject, Slot, Signal, Property, Q_ENUMS, QSize
+from qtpy.QtCore import QObject, Slot, Signal, Property, QSize
+from PyQt5.QtCore import Q_ENUM
 from qtpy.QtWidgets import (
     QWidget,
     QPlainTextEdit,
@@ -81,7 +83,7 @@ class GuiHandler(QObject, logging.Handler):
             logger.debug("Handler was destroyed at the C++ level.")
 
 
-class LogLevels(object):
+class LogLevels(Enum):
     NOTSET = 0
     DEBUG = 10
     INFO = 20
@@ -99,16 +101,11 @@ class LogLevels(object):
         OrderedDict
         """
         # First let's remove the internals
-        entries = [
-            (k, v)
-            for k, v in LogLevels.__dict__.items()
-            if not k.startswith("__") and not callable(v) and not isinstance(v, staticmethod)
-        ]
-
+        entries = [(k, v.value) for k, v in LogLevels.__members__.items()]
         return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
 
 
-class PyDMLogDisplay(QWidget, LogLevels):
+class PyDMLogDisplay(QWidget):
     """
     Standard display for Log Output
 
@@ -129,7 +126,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
 
     """
 
-    Q_ENUMS(LogLevels)
+    Q_ENUM(LogLevels)
     LogLevels = LogLevels
     terminator = "\n"
     default_format = "%(asctime)s %(message)s"
