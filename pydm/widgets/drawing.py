@@ -59,7 +59,7 @@ def qt_to_deg(deg):
     return deg / 16.0
 
 
-class PyDMDrawing(QWidget, PyDMWidget, new_properties=_penRuleProperties):
+class PyDMDrawing(QWidget, PyDMWidget):
     """
     Base class to be used for all PyDM Drawing Widgets.
     This class inherits from QWidget and PyDMWidget.
@@ -90,6 +90,9 @@ class PyDMDrawing(QWidget, PyDMWidget, new_properties=_penRuleProperties):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.alarmSensitiveBorder = False
+
+    def __init_subclass__(cls, new_properties=_penRuleProperties):
+        super().__init_subclass__(new_properties=new_properties)
 
     def sizeHint(self):
         return QSize(100, 100)
@@ -623,7 +626,7 @@ class PyDMDrawingLineBase(PyDMDrawing):
         return QPolygonF([left, endpoint, right])
 
 
-class PyDMDrawingLine(PyDMDrawingLineBase, new_properties=_penRuleProperties):
+class PyDMDrawingLine(PyDMDrawingLineBase):
     """
     A widget with a line drawn in it.
     This class inherits from PyDMDrawingLineBase.

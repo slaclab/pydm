@@ -131,7 +131,7 @@ def refresh_style(widget):
             logger.debug("Error while refreshing stylesheet. %s ", ex)
 
 
-class PyDMPrimitiveWidget(object):
+class PyDMPrimitiveWidget:
     """
     Primitive class that determines that a given widget is a PyDMWidget.
     All Widget classes from PyDMWidget will be True for
@@ -157,8 +157,7 @@ class PyDMPrimitiveWidget(object):
     def __init_subclass__(cls, new_properties={}):
         """
         Adds or redefines rule-triggered property configuration for derivative
-        classes.
-
+        classes. 'cls' is like 'self' but for the class object instead of an instance of the class.
         Parameters
         ----------
         new_properties: dict
@@ -172,6 +171,8 @@ class PyDMPrimitiveWidget(object):
             receive from the PV value.
         """
         if new_properties:
+            # need to copy to preserve base class original state, since without changes would be
+            # shared by all objects of class.
             cls.RULE_PROPERTIES = cls.RULE_PROPERTIES.copy()
             cls.RULE_PROPERTIES.update(new_properties)
 
