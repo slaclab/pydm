@@ -1,6 +1,8 @@
 import logging
+from enum import Enum
 
-from qtpy.QtCore import Qt, QSize, Property, Slot, Q_ENUMS, QMargins
+from qtpy.QtCore import Qt, QSize, Property, Slot, QMargins
+from PyQt5.QtCore import Q_ENUM
 from qtpy.QtGui import QPainter
 from qtpy.QtWidgets import QWidget, QButtonGroup, QGridLayout, QPushButton, QRadioButton, QStyleOption, QStyle
 
@@ -8,7 +10,7 @@ from .base import PyDMWritableWidget
 from .. import data_plugins
 
 
-class WidgetType(object):
+class WidgetType(Enum):
     PushButton = 0
     RadioButton = 1
 
@@ -18,7 +20,7 @@ class_for_type = [QPushButton, QRadioButton]
 logger = logging.getLogger(__name__)
 
 
-class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
+class PyDMEnumButton(QWidget, PyDMWritableWidget):
     """
     A QWidget that renders buttons for every option of Enum Items.
     For now, two types of buttons can be rendered:
@@ -38,7 +40,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
         Emitted when the user changes the value.
     """
 
-    Q_ENUMS(WidgetType)
+    Q_ENUM(WidgetType)
     WidgetType = WidgetType
 
     def __init__(self, parent=None, init_channel=None):
@@ -399,7 +401,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
                 w.deleteLater()
 
             for idx, entry in enumerate(items):
-                w = class_for_type[self._widget_type](parent=self)
+                w = class_for_type[self._widget_type.value](parent=self)
                 w.setCheckable(self.checkable)
                 w.setText(entry)
                 w.setVisible(False)
