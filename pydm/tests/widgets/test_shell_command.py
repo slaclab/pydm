@@ -96,6 +96,7 @@ def test_construct(qtbot, command, title):
     assert test_icon_image == shell_cmd_icon_image
 
 
+@pytest.mark.filterwarnings("ignore:'PyDMShellCommand.command' is deprecated")
 def test_deprecated_command_property_with_no_commands(qtbot):
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
@@ -103,6 +104,7 @@ def test_deprecated_command_property_with_no_commands(qtbot):
     assert pydm_shell_command.commands == ["test"]
 
 
+@pytest.mark.filterwarnings("ignore:'PyDMShellCommand.command' is deprecated")
 def test_deprecated_command_property_with_commands(qtbot):
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
@@ -122,7 +124,7 @@ def test_no_crash_without_any_commands(qtbot):
 def test_no_crash_with_none_command(qtbot):
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
-    pydm_shell_command.command = None
+    pydm_shell_command.commands = None
     qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
 
 
@@ -130,7 +132,7 @@ def test_no_error_without_env_variable(qtbot, caplog):
     """Verify that the shell command works when the environment variable property is saved as an empty string"""
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
-    pydm_shell_command.command = "echo hello"
+    pydm_shell_command.commands = ["echo hello"]
     pydm_shell_command.environmentVariables = ""
     qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
     assert "error" not in caplog.text.lower()
