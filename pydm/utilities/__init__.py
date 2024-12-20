@@ -10,6 +10,7 @@ import sys
 import types
 import uuid
 import errno
+from enum import Enum
 
 from typing import List, Optional
 
@@ -20,15 +21,6 @@ from .connection import close_widget_connections, establish_widget_connections
 from .iconfont import IconFont
 from .remove_protocol import protocol_and_address, remove_protocol, parsed_address
 from .units import convert, find_unit_options, find_unittype
-
-
-# if no wrapper is installed or QT_API environemnt var is set wrong,
-# pydm will fail b4 we even get here, in the launcher.
-QT_WRAPPER = ""
-if importlib.util.find_spec("PySide6"):
-    QT_WRAPPER = "pyside6"
-elif importlib.util.find_spec("PyQt5"):
-    QT_WRAPPER = "pyqt5"
 
 
 __all__ = [
@@ -47,6 +39,46 @@ __all__ = [
 ]
 
 logger = logging.getLogger(__name__)
+
+
+# if no wrapper is installed or QT_API environemnt var is set wrong,
+# pydm will fail b4 we even get here, in the launcher.
+QT_WRAPPER = ""
+if importlib.util.find_spec("PySide6"):
+    QT_WRAPPER = "pyside6"
+elif importlib.util.find_spec("PyQt5"):
+    QT_WRAPPER = "pyqt5"
+
+
+def create_enum(enum_name, enum_members):
+    """
+    Creates an Enum class compatible with either PyQt5(using 'Q_ENUM')
+    or PySide6 (using 'QEnum'). Which enum macro to use is determined
+    automatically by which Qt wrapper PyDm is running with currently.
+
+    Parameters
+    ----------
+    enum_name : str
+        The name of the Enum class to create.
+    enum_members: dict
+        Dictionary with enum members and corresponding values.
+
+    Returns
+    -------
+    Enum
+        A created Enum class.
+    """
+    EnumClass = Enum(enum_name, enum_members)
+    if QT_WRAPPER == "pyside6":
+        from qtpy.QtCore import QEnum
+
+        QEnum(EnumClass)
+    else:  # pyqt5
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(EnumClass)
+
+    return EnumClass
 
 
 def is_ssh_session():

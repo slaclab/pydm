@@ -2,7 +2,6 @@ import os
 import json
 import copy
 import logging
-from enum import Enum
 from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QHBoxLayout, QWidget, QStyle, QSizePolicy, QLayout
 from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint
 from PyQt5.QtCore import Q_ENUM
@@ -10,6 +9,7 @@ from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer
 import pydm.data_plugins
 from ..utilities import find_file
+from ..utilities import create_enum
 from ..display import load_file
 
 logger = logging.getLogger(__name__)
@@ -113,10 +113,7 @@ class FlowLayout(QLayout):
             return parent.spacing()
 
 
-class LayoutType(Enum):
-    Vertical = 0
-    Horizontal = 1
-    Flow = 2
+LayoutType = create_enum("LayoutType", {"Vertical": 0, "Horizontal": 1, "Flow": 2})
 
 
 layout_class_for_type = (QVBoxLayout, QHBoxLayout, FlowLayout)

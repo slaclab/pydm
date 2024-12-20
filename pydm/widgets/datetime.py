@@ -1,15 +1,13 @@
 import logging
 from qtpy import QtWidgets, QtCore
-from enum import Enum
 
 from .base import PyDMWritableWidget, PyDMWidget
+from ..utilities import create_enum
 
 logger = logging.getLogger(__name__)
 
 
-class TimeBase(Enum):
-    Milliseconds = 0
-    Seconds = 1
+TimeBase = create_enum("TimeBase", {"Milliseconds": 0, "Seconds": 1})
 
 
 class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):

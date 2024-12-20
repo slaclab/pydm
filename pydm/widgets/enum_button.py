@@ -1,5 +1,4 @@
 import logging
-from enum import Enum
 
 from qtpy.QtCore import Qt, QSize, Property, Slot, QMargins
 from PyQt5.QtCore import Q_ENUM
@@ -8,11 +7,10 @@ from qtpy.QtWidgets import QWidget, QButtonGroup, QGridLayout, QPushButton, QRad
 
 from .base import PyDMWritableWidget
 from .. import data_plugins
+from ..utilities import create_enum
 
 
-class WidgetType(Enum):
-    PushButton = 0
-    RadioButton = 1
+WidgetType = create_enum("WidgetType", {"PushButton": 0, "RadioButton": 1})
 
 
 class_for_type = [QPushButton, QRadioButton]

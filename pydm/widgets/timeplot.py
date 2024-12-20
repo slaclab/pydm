@@ -10,9 +10,9 @@ from PyQt5.QtCore import Q_ENUM
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
+from ..utilities import create_enum
 
 import logging
-from enum import Enum
 
 logger = logging.getLogger(__name__)
 
@@ -25,12 +25,8 @@ DEFAULT_Y_MIN = 0
 DEFAULT_TIME_SPAN = 5.0
 DEFAULT_UPDATE_INTERVAL = 1000  # Plot update rate for fixed rate mode in milliseconds
 
-
-class updateMode(Enum):
-    """updateMode as new type for plot update"""
-
-    OnValueChange = 1
-    AtFixedRate = 2
+# updateMode as new type for plot update
+updateMode = create_enum("updateMode", {"OnValueChange": 1, "AtFixedRate": 2})
 
 
 class TimePlotCurveItem(BasePlotCurveItem):

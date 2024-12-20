@@ -6,41 +6,35 @@ from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 import numpy as np
 import logging
-from enum import Enum
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget
+from ..utilities import create_enum
 
 logger = logging.getLogger(__name__)
 
 
-class ReadingOrder(Enum):
-    """Class to build ReadingOrder ENUM property."""
-
-    Fortranlike = 0
-    Clike = 1
+# Class to build ReadingOrder ENUM property.
+ReadingOrder = create_enum("ReadingOrder", {"Fortranlike": 0, "Clike": 1})
 
 
-class DimensionOrder(Enum):
-    """
-    Class to build DimensionOrder ENUM property.
+"""
+Class to build DimensionOrder ENUM property.
 
-    This relates to how the pva image data is being sent. Included in this data are the dimensions of the
-    image (width and height) as part of the array 'dimension_t[] dimension'.
-    (https://github.com/epics-base/normativeTypesCPP/wiki/Normative+Types+Specification#ntndarray)
-    But if the array should be ordered [height, width] or [width, height] does not seem to be specified.
-    This option lets the user set which ordering PyDM should interpret this 'dimension' array as having.
+This relates to how the pva image data is being sent. Included in this data are the dimensions of the
+image (width and height) as part of the array 'dimension_t[] dimension'.
+(https://github.com/epics-base/normativeTypesCPP/wiki/Normative+Types+Specification#ntndarray)
+But if the array should be ordered [height, width] or [width, height] does not seem to be specified.
+This option lets the user set which ordering PyDM should interpret this 'dimension' array as having.
 
-    HeightFirst = [height, width]
-    WidthFirst = [width, height]
-    (PyDM assumes HeightFirst as default)
+HeightFirst = [height, width]
+WidthFirst = [width, height]
+(PyDM assumes HeightFirst as default)
 
-    If you are wondering what ordering a certain pva address is using, you can 'pvget' the address
-    to see the ordering of values in its 'dimension' array.
-    """
-
-    HeightFirst = 0
-    WidthFirst = 1
+If you are wondering what ordering a certain pva address is using, you can 'pvget' the address
+to see the ordering of values in its 'dimension' array.
+"""
+DimensionOrder = create_enum("DimensionOrder", {"HeightFirst": 0, "WidthFirst": 1})
 
 
 class ImageUpdateThread(QThread):

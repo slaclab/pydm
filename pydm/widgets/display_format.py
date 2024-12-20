@@ -4,26 +4,29 @@ from typing import Any
 
 import logging
 import warnings
-from enum import Enum
+
+from ..utilities import create_enum
 
 logger = logging.getLogger(__name__)
 
 
-class DisplayFormat(Enum):
-    """Display format for showing data in a PyDM widget."""
-
-    #: The default display format.
-    Default = 0
-    #: Show the data as a string.
-    String = 1
-    #: Show numerical values as floating point (base 10, decimal) values.
-    Decimal = 2
-    #: Show numerical values in scientific / exponential notation.
-    Exponential = 3
-    #: Show numerical values in base 16 (hexadecimal) notation.
-    Hex = 4
-    #: Show numerical values in base 2 (binary) notation.
-    Binary = 5
+# Display format for showing data in a PyDM widget.
+DisplayFormat = create_enum(
+    "DisplayFormat",
+    {
+        #: The default display format.
+        "Default": 0,
+        #: Show the data as a string.
+        "String": 1,
+        #: Show numerical values in scientific / exponential notation.
+        "Decimal": 2,
+        #: Show numerical values in base 16 (hexadecimal) notation.
+        "Exponential": 3,
+        "Hex": 4,
+        #: Show numerical values in base 2 (binary) notation.
+        "Binary": 5,
+    },
+)
 
 
 def parse_value_for_display(
