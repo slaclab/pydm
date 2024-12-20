@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 _embeddedDisplayRuleProperties = {"Filename": ["filename", str]}
 
 
-class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedDisplayRuleProperties):
+class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     """
     A QFrame capable of rendering a PyDM Display
 
@@ -58,6 +58,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         self.layout.addWidget(self.err_label)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.err_label.hide()
+
+    def __init_subclass__(cls, new_properties=_embeddedDisplayRuleProperties):
+        super().__init_subclass__(new_properties=new_properties)
 
     def init_for_designer(self):
         self.setFrameShape(QFrame.Box)
