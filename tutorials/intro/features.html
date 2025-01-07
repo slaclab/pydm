@@ -160,31 +160,31 @@ where the keys are the action names, and the values one of the following:</p>
 <p>The only accepted keys for the “File” menu are: “save”, “save_as”, and “load”</p>
 </div>
 <p>An example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydm</span> <span class="kn">import</span> <span class="n">Display</span>
-<span class="k">class</span> <span class="nc">MyDisplay</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydm</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MyDisplay</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MyDisplay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="n">macros</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">file_menu_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file_menu_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;save&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_function</span><span class="p">,</span> <span class="s2">&quot;load&quot;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_function</span><span class="p">,</span> <span class="s2">&quot;Ctrl+L&quot;</span><span class="p">)}</span>
 
-    <span class="k">def</span> <span class="nf">menu_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">menu_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Action1&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">action1_function</span><span class="p">,</span> <span class="s2">&quot;submenu&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Action2&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">action2_function</span><span class="p">,</span> <span class="s2">&quot;Action3&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">action3_function</span><span class="p">}}</span>
 
-    <span class="k">def</span> <span class="nf">save_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># do something to save your data</span>
 
-    <span class="k">def</span> <span class="nf">load_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># do something to load your data</span>
 
-    <span class="k">def</span> <span class="nf">action1_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">action1_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># do action 1</span>
 
-    <span class="k">def</span> <span class="nf">action2_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">action2_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># do action 2</span>
 
-    <span class="k">def</span> <span class="nf">action3_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">action3_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># do action 3</span>
 </pre></div>
 </div>

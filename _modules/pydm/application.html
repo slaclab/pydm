@@ -120,26 +120,26 @@
 <span class="sd">Contains our PyDMApplication class with core connection and loading logic and</span>
 <span class="sd">our PyDMMainWindow class with navigation logic.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">signal</span>
-<span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">signal</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Slot</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QApplication</span>
-<span class="kn">from</span> <span class="nn">.main_window</span> <span class="kn">import</span> <span class="n">PyDMMainWindow</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Slot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QApplication</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.main_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMMainWindow</span>
 
-<span class="kn">from</span> <span class="nn">.utilities</span> <span class="kn">import</span> <span class="n">which</span><span class="p">,</span> <span class="n">path_info</span>
-<span class="kn">from</span> <span class="nn">.utilities.stylesheet</span> <span class="kn">import</span> <span class="n">apply_stylesheet</span>
-<span class="kn">from</span> <span class="nn">.utilities</span> <span class="kn">import</span> <span class="n">connection</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">data_plugins</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">which</span><span class="p">,</span> <span class="n">path_info</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utilities.stylesheet</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_stylesheet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">connection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">data_plugins</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="PyDMApplication"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication">[docs]</a><span class="k">class</span> <span class="nc">PyDMApplication</span><span class="p">(</span><span class="n">QApplication</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMApplication</span><span class="p">(</span><span class="n">QApplication</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PyDMApplication handles loading PyDM display files, opening</span>
 <span class="sd">    new windows, and most importantly, establishing and managing</span>
@@ -189,7 +189,7 @@
     <span class="c1"># Instantiate our plugins.</span>
     <span class="n">plugins</span> <span class="o">=</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">plugin_modules</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ui_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">command_line_args</span><span class="o">=</span><span class="p">[],</span>
@@ -250,7 +250,7 @@
 
         <span class="c1"># Performance monitoring</span>
         <span class="k">if</span> <span class="n">perfmon</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">psutil</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">psutil</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">perf</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">perf_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
@@ -258,21 +258,21 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">perf_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_CPU_usage</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">perf_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">get_string_encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_string_encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PYDM_STRING_ENCODING&quot;</span><span class="p">,</span> <span class="s2">&quot;utf_8&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMApplication.exec_"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.exec_">[docs]</a>    <span class="k">def</span> <span class="nf">exec_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.exec_"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.exec_">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">exec_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Execute the QApplication.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMApplication</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">is_read_only</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_read_only</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.is_read_only&#39; is deprecated, &quot;</span> <span class="s2">&quot;use &#39;pydm.data_plugins.is_read_only&#39; instead.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">is_read_only</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PyDMApplication.get_CPU_usage"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.get_CPU_usage">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">get_CPU_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_CPU_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prints total CPU usage (in percent), as well as per-thread usage, to the terminal.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -282,7 +282,7 @@
             <span class="n">usage</span> <span class="o">=</span> <span class="p">[</span><span class="n">total_percent</span> <span class="o">*</span> <span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">system_time</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">user_time</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_time</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">perf</span><span class="o">.</span><span class="n">threads</span><span class="p">()]</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total: </span><span class="si">{tot}</span><span class="s2">, Per Thread: </span><span class="si">{percpu}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tot</span><span class="o">=</span><span class="n">total_percent</span><span class="p">,</span> <span class="n">percpu</span><span class="o">=</span><span class="n">usage</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.new_pydm_process"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.new_pydm_process">[docs]</a>    <span class="k">def</span> <span class="nf">new_pydm_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.new_pydm_process"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.new_pydm_process">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">new_pydm_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_file</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn a new PyDM process and open the supplied file.  Commands to open</span>
 <span class="sd">        new windows in PyDM typically actually spawn an entirely new PyDM process.</span>
@@ -346,7 +346,7 @@
             <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">command_line_args</span><span class="p">)</span>
         <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.make_main_window"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.make_main_window">[docs]</a>    <span class="k">def</span> <span class="nf">make_main_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stylesheet_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">home_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.make_main_window"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.make_main_window">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">make_main_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stylesheet_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">home_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">command_line_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Instantiate a new PyDMMainWindow, add it to the application&#39;s</span>
 <span class="sd">        list of windows. Typically, this function is only called as part</span>
@@ -371,7 +371,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">main_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.plugin_for_channel"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.plugin_for_channel">[docs]</a>    <span class="k">def</span> <span class="nf">plugin_for_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.plugin_for_channel"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.plugin_for_channel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">plugin_for_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Given a PyDMChannel object, determine the appropriate plugin to use.</span>
 
@@ -390,7 +390,7 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">data_plugins</span><span class="o">.</span><span class="n">plugin_for_address</span><span class="p">(</span><span class="n">channel</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.add_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.add_connection">[docs]</a>    <span class="k">def</span> <span class="nf">add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.add_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.add_connection">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a new connection to a channel.</span>
 
@@ -401,7 +401,7 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.add_connection&#39; is deprecated, &quot;</span> <span class="s2">&quot;use PyDMConnection.connect()&quot;</span><span class="p">)</span>
         <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.remove_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.remove_connection">[docs]</a>    <span class="k">def</span> <span class="nf">remove_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.remove_connection"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.remove_connection">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">remove_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a connection to a channel.</span>
 
@@ -412,17 +412,17 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.remove_connection&#39; is deprecated, &quot;</span> <span class="s2">&quot;use PyDMConnection.disconnect()&quot;</span><span class="p">)</span>
         <span class="n">channel</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.eventFilter"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.eventFilter">[docs]</a>    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.eventFilter"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.eventFilter">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMApplication.eventFilter&#39; is deprecated, &quot;</span> <span class="s2">&quot; this function is now found on PyDMWidget&quot;</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">show_address_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_address_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;&#39;PyDMApplication.show_address_tooltip&#39; is deprecated, &quot;</span> <span class="s2">&quot; this function is now found on PyDMWidget&quot;</span>
         <span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">show_address_tooltip</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMApplication.establish_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.establish_widget_connections">[docs]</a>    <span class="k">def</span> <span class="nf">establish_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.establish_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.establish_widget_connections">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">establish_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Given a widget to start from, traverse the tree of child widgets,</span>
 <span class="sd">        and try to establish connections to any widgets with channels.</span>
@@ -440,7 +440,7 @@
         <span class="p">)</span>
         <span class="n">connection</span><span class="o">.</span><span class="n">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMApplication.close_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.close_widget_connections">[docs]</a>    <span class="k">def</span> <span class="nf">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMApplication.close_widget_connections"><a class="viewcode-back" href="../../application.html#pydm.PyDMApplication.close_widget_connections">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Given a widget to start from, traverse the tree of child widgets,</span>
 <span class="sd">        and try to close connections to any widgets with channels.</span>

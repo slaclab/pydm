@@ -114,14 +114,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for channel</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">pydm.data_plugins</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pydm.data_plugins</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">clear_channel_address</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">clear_channel_address</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
     <span class="c1"># We must remove spaces, \n, \t and other crap from</span>
     <span class="c1"># channel address</span>
     <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -129,7 +129,7 @@
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="PyDMChannel"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel">[docs]</a><span class="k">class</span> <span class="nc">PyDMChannel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMChannel"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMChannel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Object to hold signals and slots for a PyDM Widget interface to an</span>
 <span class="sd">    external plugin</span>
@@ -208,7 +208,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">connection_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -249,14 +249,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="o">=</span> <span class="n">value_signal</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_address</span>
 
     <span class="nd">@address</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">clear_channel_address</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMChannel.connect"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMChannel.connect"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel.connect">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Connect a PyDMChannel to the proper PyDMPlugin</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -269,7 +269,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to make proper connection &quot;</span> <span class="s2">&quot;for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMChannel.disconnect"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destroying</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMChannel.disconnect"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel.disconnect">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destroying</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disconnect a PyDMChannel</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -281,7 +281,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to remove connection &quot;</span> <span class="s2">&quot;for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
             <span class="n">address_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">address</span>
             <span class="n">connection_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">connection_slot</span>
@@ -324,16 +324,16 @@
 
         <span class="k">return</span> <span class="bp">NotImplemented</span>
 
-    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="n">equality_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">equality_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">NotImplemented</span><span class="p">:</span>
             <span class="k">return</span> <span class="ow">not</span> <span class="n">equality_result</span>
         <span class="k">return</span> <span class="bp">NotImplemented</span>
 
-    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;PyDMChannel (</span><span class="si">{:}</span><span class="s2">)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
 </pre></div>
 

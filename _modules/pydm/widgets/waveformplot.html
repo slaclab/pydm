@@ -114,19 +114,19 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pydm.widgets.waveformplot</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pyqtgraph</span> <span class="kn">import</span> <span class="n">BarGraphItem</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">.baseplot</span> <span class="kn">import</span> <span class="n">BasePlot</span><span class="p">,</span> <span class="n">NoDataError</span><span class="p">,</span> <span class="n">BasePlotCurveItem</span>
-<span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">PyDMChannel</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">remove_protocol</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyqtgraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">BarGraphItem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.baseplot</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePlot</span><span class="p">,</span> <span class="n">NoDataError</span><span class="p">,</span> <span class="n">BasePlotCurveItem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.channel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMChannel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">remove_protocol</span>
 
 
-<div class="viewcode-block" id="WaveformCurveItem"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem">[docs]</a><span class="k">class</span> <span class="nc">WaveformCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
+<div class="viewcode-block" id="WaveformCurveItem"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">WaveformCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    WaveformCurveItem represents a single curve in a waveform plot.</span>
 
@@ -164,7 +164,7 @@
 
     <span class="n">_channels</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;x_channel&quot;</span><span class="p">,</span> <span class="s2">&quot;y_channel&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="s2">&quot;Line&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_addr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">redraw_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="s2">&quot;Line&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
         <span class="n">y_addr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">y_addr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">y_addr</span>
         <span class="k">if</span> <span class="n">kws</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">y_name</span> <span class="o">=</span> <span class="n">remove_protocol</span><span class="p">(</span><span class="n">y_addr</span><span class="p">)</span>
@@ -193,7 +193,7 @@
 
         <span class="nb">super</span><span class="p">(</span><span class="n">WaveformCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
 
-<div class="viewcode-block" id="WaveformCurveItem.to_dict"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="WaveformCurveItem.to_dict"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.to_dict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns an OrderedDict representation with values for all properties</span>
 <span class="sd">        needed to recreate this curve.</span>
@@ -210,7 +210,7 @@
         <span class="k">return</span> <span class="n">dic_</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">x_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">x_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The address of the channel used to get the x axis waveform data.</span>
 
@@ -223,7 +223,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span><span class="o">.</span><span class="n">address</span>
 
     <span class="nd">@x_address</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">x_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">x_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The address of the channel used to get the x axis waveform data.</span>
 
@@ -239,7 +239,7 @@
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">y_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">y_address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The address of the channel used to get the y axis waveform data.</span>
 
@@ -252,7 +252,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span><span class="o">.</span><span class="n">address</span>
 
     <span class="nd">@y_address</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">y_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">y_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The address of the channel used to get the y axis waveform data.</span>
 
@@ -267,7 +267,7 @@
             <span class="n">address</span><span class="o">=</span><span class="n">new_address</span><span class="p">,</span> <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">yConnectionStateChanged</span><span class="p">,</span> <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveYWaveform</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="WaveformCurveItem.update_waveforms_if_ready"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.update_waveforms_if_ready">[docs]</a>    <span class="k">def</span> <span class="nf">update_waveforms_if_ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="WaveformCurveItem.update_waveforms_if_ready"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.update_waveforms_if_ready">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_waveforms_if_ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called whenever new waveform data is received for X or Y.</span>
 <span class="sd">        Based on the value of the redraw_mode attribute, it decides whether</span>
@@ -295,15 +295,15 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
 
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">xConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">xConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
         <span class="k">pass</span>
 
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">yConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">yConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="WaveformCurveItem.receiveXWaveform"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.receiveXWaveform">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">receiveXWaveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">receiveXWaveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handler for new x waveform data.  This method is usually called by a</span>
 <span class="sd">        PyDMChannel when it updates.  You can call this yourself to inject data</span>
@@ -325,7 +325,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update_waveforms_if_ready</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="WaveformCurveItem.receiveYWaveform"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.receiveYWaveform">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">receiveYWaveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">receiveYWaveform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_waveform</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handler for new y waveform data.  This method is usually called by a</span>
 <span class="sd">        PyDMChannel when it updates.  You can call this yourself to inject data</span>
@@ -345,7 +345,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_waveforms_if_ready</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="WaveformCurveItem.redrawCurve"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.redrawCurve">[docs]</a>    <span class="k">def</span> <span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="WaveformCurveItem.redrawCurve"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.redrawCurve">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">redrawCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called by the curve&#39;s parent plot whenever the curve needs to be</span>
 <span class="sd">        re-drawn with new data.</span>
@@ -369,14 +369,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_x</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">needs_new_y</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">_setCurveData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setCurveData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the most recently received waveform data for display as a line graph.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">_setBarGraphItem</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setBarGraphItem</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the most recently received waveform data for display as a bar graph.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
@@ -394,7 +394,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">bar_graph_item</span><span class="o">.</span><span class="n">setOpts</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x_waveform</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="p">,</span> <span class="n">brushes</span><span class="o">=</span><span class="n">brushes</span><span class="p">)</span>
 
-<div class="viewcode-block" id="WaveformCurveItem.limits"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.limits">[docs]</a>    <span class="k">def</span> <span class="nf">limits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="WaveformCurveItem.limits"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.WaveformCurveItem.limits">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">limits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Limits of the data for this curve.</span>
 <span class="sd">        Returns a nested tuple of limits: ((xmin, xmax), (ymin, ymax))</span>
@@ -417,11 +417,11 @@
                 <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_waveform</span><span class="p">))),</span>
             <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y_channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_channel</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="PyDMWaveformPlot"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot">[docs]</a><span class="k">class</span> <span class="nc">PyDMWaveformPlot</span><span class="p">(</span><span class="n">BasePlot</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMWaveformPlot"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMWaveformPlot</span><span class="p">(</span><span class="n">BasePlot</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PyDMWaveformPlot is a widget to plot one or more waveforms.</span>
 
@@ -452,7 +452,7 @@
 <span class="sd">        pyqtgraph.mkColor will accept.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_x_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">init_y_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_x_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">init_y_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMWaveformPlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="p">)</span>
         <span class="c1"># If the user supplies a single string instead of a list,</span>
         <span class="c1"># wrap it in a list.</span>
@@ -472,12 +472,12 @@
         <span class="k">for</span> <span class="n">x_chan</span><span class="p">,</span> <span class="n">y_chan</span> <span class="ow">in</span> <span class="n">init_channel_pairs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">addChannel</span><span class="p">(</span><span class="n">y_chan</span><span class="p">,</span> <span class="n">x_channel</span><span class="o">=</span><span class="n">x_chan</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">initialize_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># If we are in Qt Designer, don&#39;t update the plot continuously.</span>
         <span class="c1"># This function gets called by PyDMTimePlot&#39;s designer plugin.</span>
         <span class="k">pass</span>
 
-<div class="viewcode-block" id="PyDMWaveformPlot.addChannel"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel">[docs]</a>    <span class="k">def</span> <span class="nf">addChannel</span><span class="p">(</span>
+<div class="viewcode-block" id="PyDMWaveformPlot.addChannel"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.addChannel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">addChannel</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">y_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">x_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -573,10 +573,10 @@
             <span class="n">curve</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">bar_graph_item</span><span class="p">)</span>
         <span class="n">curve</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_needs_redraw</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">createCurveItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">createCurveItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">WaveformCurveItem</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMWaveformPlot.removeChannel"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel">[docs]</a>    <span class="k">def</span> <span class="nf">removeChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMWaveformPlot.removeChannel"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">removeChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curve</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a curve from the plot.</span>
 
@@ -587,7 +587,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">removeCurve</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMWaveformPlot.removeChannelAtIndex"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannelAtIndex">[docs]</a>    <span class="k">def</span> <span class="nf">removeChannelAtIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMWaveformPlot.removeChannelAtIndex"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.removeChannelAtIndex">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">removeChannelAtIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a curve from the plot, given an index</span>
 <span class="sd">        for a curve.</span>
@@ -601,11 +601,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">removeChannel</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span></div>
 
     <span class="nd">@Slot</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">set_needs_redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_needs_redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="PyDMWaveformPlot.redrawPlot"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.redrawPlot">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">redrawPlot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">redrawPlot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Request a redraw from each curve in the plot.</span>
 <span class="sd">        Called by curves when they get new data.</span>
@@ -616,19 +616,19 @@
             <span class="n">curve</span><span class="o">.</span><span class="n">redrawCurve</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="PyDMWaveformPlot.clearCurves"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.clearCurves">[docs]</a>    <span class="k">def</span> <span class="nf">clearCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMWaveformPlot.clearCurves"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.clearCurves">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">clearCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove all curves from the plot.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMWaveformPlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMWaveformPlot.getCurves"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.getCurves">[docs]</a>    <span class="k">def</span> <span class="nf">getCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMWaveformPlot.getCurves"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.getCurves">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">getCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a list of json representations for each curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="PyDMWaveformPlot.setCurves"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.setCurves">[docs]</a>    <span class="k">def</span> <span class="nf">setCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_list</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMWaveformPlot.setCurves"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.setCurves">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Replace all existing curves with new ones.  This function</span>
 <span class="sd">        is mostly used as a way to load curves from a .ui file, and</span>
@@ -673,7 +673,7 @@
 
     <span class="n">curves</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getCurves</span><span class="p">,</span> <span class="n">setCurves</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMWaveformPlot.channels"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.channels">[docs]</a>    <span class="k">def</span> <span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMWaveformPlot.channels"><a class="viewcode-back" href="../../../widgets/waveformplot.html#pydm.widgets.waveformplot.PyDMWaveformPlot.channels">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the list of channels used by all curves in the plot.</span>
 

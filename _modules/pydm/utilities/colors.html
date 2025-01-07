@@ -114,8 +114,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pydm.utilities.colors</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
 
@@ -127,7 +127,7 @@
     <span class="n">svg_color_to_hex_map</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="svg_color_from_hex"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.colors.svg_color_from_hex">[docs]</a><span class="k">def</span> <span class="nf">svg_color_from_hex</span><span class="p">(</span><span class="n">hex_string</span><span class="p">,</span> <span class="n">hex_on_fail</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="svg_color_from_hex"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.colors.svg_color_from_hex">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">svg_color_from_hex</span><span class="p">(</span><span class="n">hex_string</span><span class="p">,</span> <span class="n">hex_on_fail</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the SVG color based on its HEX equivalent.</span>
 
@@ -153,7 +153,7 @@
         <span class="k">return</span> <span class="n">hex_string</span></div>
 
 
-<div class="viewcode-block" id="hex_from_svg_color"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.colors.hex_from_svg_color">[docs]</a><span class="k">def</span> <span class="nf">hex_from_svg_color</span><span class="p">(</span><span class="n">color_string</span><span class="p">):</span>
+<div class="viewcode-block" id="hex_from_svg_color"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.colors.hex_from_svg_color">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">hex_from_svg_color</span><span class="p">(</span><span class="n">color_string</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the HEX color based on its SVG equivalent.</span>
 

@@ -114,11 +114,11 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pydm.utilities.macro</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">six</span>
-<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">Template</span>
-<span class="kn">import</span> <span class="nn">json</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">six</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">string</span><span class="w"> </span><span class="kn">import</span> <span class="n">Template</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="c1"># Macro parsing states</span>
 <span class="n">PRE_NAME</span> <span class="o">=</span> <span class="mi">0</span>
@@ -127,7 +127,7 @@
 <span class="n">IN_VAL</span> <span class="o">=</span> <span class="mi">3</span>
 
 
-<div class="viewcode-block" id="substitute_in_file"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.macro.substitute_in_file">[docs]</a><span class="k">def</span> <span class="nf">substitute_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">macros</span><span class="p">):</span>
+<div class="viewcode-block" id="substitute_in_file"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.macro.substitute_in_file">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">substitute_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">macros</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Substitute the macros given by ${name} at the given file with the entries on the `macros` dictionary.</span>
 
@@ -146,7 +146,7 @@
     <span class="k">return</span> <span class="n">replace_macros_in_template</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">macros</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">replace_macros_in_template</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">macros</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">replace_macros_in_template</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">macros</span><span class="p">):</span>
     <span class="n">curr_template</span> <span class="o">=</span> <span class="n">template</span>
     <span class="n">prev_template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">expanded_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -166,13 +166,13 @@
     <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">(</span><span class="n">expanded_text</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">template_for_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">template_for_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">orig_file</span><span class="p">:</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">orig_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">text</span>
 
 
-<div class="viewcode-block" id="parse_macro_string"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.macro.parse_macro_string">[docs]</a><span class="k">def</span> <span class="nf">parse_macro_string</span><span class="p">(</span><span class="n">macro_string</span><span class="p">):</span>
+<div class="viewcode-block" id="parse_macro_string"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.macro.parse_macro_string">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">parse_macro_string</span><span class="p">(</span><span class="n">macro_string</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses a macro string and returns a dictionary.</span>
 <span class="sd">    First, this method attempts to parse the string as JSON.</span>
 <span class="sd">    If that fails, it attempts to parse it as an EPICS-style</span>

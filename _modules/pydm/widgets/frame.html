@@ -114,12 +114,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pydm.widgets.frame</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QFrame</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Property</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWidget</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QFrame</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span>
 
 
-<div class="viewcode-block" id="PyDMFrame"><a class="viewcode-back" href="../../../widgets/frame.html#pydm.widgets.frame.PyDMFrame">[docs]</a><span class="k">class</span> <span class="nc">PyDMFrame</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMFrame"><a class="viewcode-back" href="../../../widgets/frame.html#pydm.widgets.frame.PyDMFrame">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMFrame</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    QFrame with support for alarms</span>
 <span class="sd">    This class inherits from QFrame and PyDMWidget.</span>
@@ -132,7 +132,7 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
 
@@ -140,7 +140,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveBorder</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">disableOnDisconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disableOnDisconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the PyDMFrame should be disabled in case the</span>
 <span class="sd">        channel is disconnected.</span>
@@ -153,7 +153,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disable_on_disconnect</span>
 
     <span class="nd">@disableOnDisconnect</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">disableOnDisconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disableOnDisconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the PyDMFrame should be disabled in case the</span>
 <span class="sd">        channel is disconnected.</span>
@@ -167,7 +167,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_disable_on_disconnect</span> <span class="o">=</span> <span class="n">new_val</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PyDMFrame.check_enable_state"><a class="viewcode-back" href="../../../widgets/frame.html#pydm.widgets.frame.PyDMFrame.check_enable_state">[docs]</a>    <span class="k">def</span> <span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMFrame.check_enable_state"><a class="viewcode-back" href="../../../widgets/frame.html#pydm.widgets.frame.PyDMFrame.check_enable_state">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks whether or not the widget should be disable.</span>
 <span class="sd">        This method also disables the widget and add a Tool Tip</span>

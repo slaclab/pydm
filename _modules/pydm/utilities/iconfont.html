@@ -119,26 +119,26 @@
 <span class="sd">The inspiration and methodology come from the &#39;QtAwesome&#39; module, which does exactly this, but</span>
 <span class="sd">is a little too big, complicated, and flexible for PyDM&#39;s needs.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">qtpy</span> <span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">qRound</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QFont</span><span class="p">,</span> <span class="n">QFontDatabase</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QIconEngine</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPixmap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">qRound</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QFont</span><span class="p">,</span> <span class="n">QFontDatabase</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QIconEngine</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPixmap</span>
 
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
     <span class="n">unichr</span> <span class="o">=</span> <span class="nb">chr</span>
 
 
-<div class="viewcode-block" id="IconFont"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.IconFont">[docs]</a><span class="k">class</span> <span class="nc">IconFont</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="IconFont"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.IconFont">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">IconFont</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;IconFont represents an icon font.  Users will generally want</span>
 <span class="sd">    to use IconFont.icon() to get a QIcon object for the character they want.&quot;&quot;&quot;</span>
 
     <span class="n">__instance</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__initialized</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">font_file</span> <span class="o">=</span> <span class="s2">&quot;fontawesome.otf&quot;</span>  <span class="c1"># specify these relative to this file.</span>
@@ -148,19 +148,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">loaded_fonts</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__initialized</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">__instance</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">IconFont</span><span class="p">)</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">__instance</span><span class="o">.</span><span class="n">__initialized</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__instance</span>
 
-<div class="viewcode-block" id="IconFont.load_font"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.IconFont.load_font">[docs]</a>    <span class="k">def</span> <span class="nf">load_font</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ttf_filename</span><span class="p">,</span> <span class="n">charmap_filename</span><span class="p">):</span>
+<div class="viewcode-block" id="IconFont.load_font"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.IconFont.load_font">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_font</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ttf_filename</span><span class="p">,</span> <span class="n">charmap_filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load font from ``ttf_filename`` with a mapping defined in</span>
 <span class="sd">        ``charmap_filename``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">hook</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">hook</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
             <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
                 <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">unichr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="mi">16</span><span class="p">))</span>
@@ -193,7 +193,7 @@
             <span class="s2">&quot;font_name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">font_name</span><span class="p">,</span>
         <span class="p">}</span></div>
 
-<div class="viewcode-block" id="IconFont.get_char_for_name"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.IconFont.get_char_for_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_char_for_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="IconFont.get_char_for_name"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.IconFont.get_char_for_name">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_char_for_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a character icon for the given name from the character map.</span>
 
@@ -211,7 +211,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">char_map</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid icon name for font.&quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_load_font_if_needed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_font_if_needed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load the configured font if a QApplication is available</span>
 <span class="sd">        and the font was not already loaded.</span>
@@ -230,7 +230,7 @@
         <span class="c1"># If it was loaded correctly, the char map will be populated:</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char_map</span><span class="p">)</span>
 
-<div class="viewcode-block" id="IconFont.font"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.IconFont.font">[docs]</a>    <span class="k">def</span> <span class="nf">font</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFont</span><span class="p">]:</span>
+<div class="viewcode-block" id="IconFont.font"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.IconFont.font">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">font</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QFont</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load the font at a given pixel size.</span>
 
@@ -247,7 +247,7 @@
         <span class="n">font</span><span class="o">.</span><span class="n">setPixelSize</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">font</span></div>
 
-<div class="viewcode-block" id="IconFont.icon"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.IconFont.icon">[docs]</a>    <span class="k">def</span> <span class="nf">icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">]:</span>
+<div class="viewcode-block" id="IconFont.icon"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.IconFont.icon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve the icon given a name and color.</span>
 
@@ -273,10 +273,10 @@
         <span class="k">return</span> <span class="n">QIcon</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span></div></div>
 
 
-<span class="k">class</span> <span class="nc">CharIconEngine</span><span class="p">(</span><span class="n">QIconEngine</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CharIconEngine</span><span class="p">(</span><span class="n">QIconEngine</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of QIconEngine that is designed to draw characters from icon fonts.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon_font</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon_font</span><span class="p">,</span> <span class="n">char</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">CharIconEngine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">icon_font</span> <span class="o">=</span> <span class="n">icon_font</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">char</span> <span class="o">=</span> <span class="n">char</span>
@@ -290,7 +290,7 @@
             <span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_color</span><span class="o">.</span><span class="n">lightnessF</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">),</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">paint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">paint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="n">painter</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">Disabled</span><span class="p">:</span>
             <span class="n">color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disabled_color</span>
@@ -304,7 +304,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">drawText</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">char</span><span class="p">)</span>
         <span class="n">painter</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">pixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pixmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="n">pm</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
         <span class="n">pm</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">transparent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">paint</span><span class="p">(</span><span class="n">QPainter</span><span class="p">(</span><span class="n">pm</span><span class="p">),</span> <span class="n">QRect</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="p">),</span> <span class="n">mode</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>

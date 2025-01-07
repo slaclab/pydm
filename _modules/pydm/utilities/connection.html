@@ -114,14 +114,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pydm.utilities.connection</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QWidget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QWidget</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_change_connection_status</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_change_connection_status</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Connect or disconnect the inner channels of widgets on the</span>
 <span class="sd">    given widget based on the status parameter.</span>
@@ -153,7 +153,7 @@
             <span class="k">continue</span>
 
 
-<div class="viewcode-block" id="establish_widget_connections"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.establish_widget_connections">[docs]</a><span class="k">def</span> <span class="nf">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+<div class="viewcode-block" id="establish_widget_connections"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.establish_widget_connections">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">establish_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Connect the inner channels of widgets on the given widget.</span>
 
@@ -165,7 +165,7 @@
     <span class="n">_change_connection_status</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="close_widget_connections"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.close_widget_connections">[docs]</a><span class="k">def</span> <span class="nf">close_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+<div class="viewcode-block" id="close_widget_connections"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.close_widget_connections">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">close_widget_connections</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Disconnect the inner channels of widgets on the given widget.</span>
 

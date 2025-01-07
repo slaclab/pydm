@@ -114,14 +114,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pydm.widgets.byte</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QFontMetrics</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPaintEvent</span><span class="p">,</span> <span class="n">QBrush</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QPoint</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWidget</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QFontMetrics</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPaintEvent</span><span class="p">,</span> <span class="n">QBrush</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QPoint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span>
 
 
-<span class="k">class</span> <span class="nc">PyDMBitIndicator</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyDMBitIndicator</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QWidget which draws a colored circle or rectangle</span>
 
@@ -132,14 +132,14 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QWidget</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">circle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QWidget</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">circle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMBitIndicator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">circle</span> <span class="o">=</span> <span class="n">circle</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span> <span class="o">=</span> <span class="n">QBrush</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">SolidPattern</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span> <span class="o">=</span> <span class="n">QPen</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">QPaintEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">QPaintEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Paint events are sent to widgets that need to update themselves,</span>
 <span class="sd">        for instance when part of a widget is exposed because a covering</span>
@@ -166,7 +166,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">drawRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">setColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Property for the color to be used when drawing</span>
 
@@ -177,12 +177,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">minimumSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QSize</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">minimumSizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QSize</span><span class="p">:</span>
         <span class="n">fm</span> <span class="o">=</span> <span class="n">QFontMetrics</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">fm</span><span class="o">.</span><span class="n">height</span><span class="p">())</span>
 
 
-<div class="viewcode-block" id="PyDMByteIndicator"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator">[docs]</a><span class="k">class</span> <span class="nc">PyDMByteIndicator</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMByteIndicator"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMByteIndicator</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Widget for graphical representation of bits from an integer number</span>
 <span class="sd">    with support for Channels and more from PyDM</span>
@@ -195,7 +195,7 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QWidget</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QWidget</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
@@ -230,7 +230,7 @@
         <span class="c1"># _labels and _indicators setting numBits there also performs</span>
         <span class="c1"># the first rebuild_layout.</span>
 
-<div class="viewcode-block" id="PyDMByteIndicator.init_for_designer"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.init_for_designer">[docs]</a>    <span class="k">def</span> <span class="nf">init_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.init_for_designer"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.init_for_designer">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">init_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method called after the constructor to tweak configurations for</span>
 <span class="sd">        when using the widget with the Qt Designer</span>
@@ -239,7 +239,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMByteIndicator.connection_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.connection_changed">[docs]</a>    <span class="k">def</span> <span class="nf">connection_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.connection_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.connection_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">connection_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the connection state of the Channel is changed.</span>
 <span class="sd">        This callback acts on the connection state to enable/disable the widget</span>
@@ -253,7 +253,7 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMByteIndicator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">connection_changed</span><span class="p">(</span><span class="n">connected</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMByteIndicator.rebuild_layout"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.rebuild_layout">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.rebuild_layout"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.rebuild_layout">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">rebuild_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to reorganize the top-level widget and its contents</span>
 <span class="sd">        according to the layout property values.</span>
@@ -296,7 +296,7 @@
                     <span class="c1"># we don&#39;t reset label visibility here.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMByteIndicator.clear"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.clear"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.clear">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove all inner widgets from the layout</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -308,7 +308,7 @@
                     <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">removeWidget</span><span class="p">(</span><span class="n">w</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMByteIndicator.update_indicators"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.update_indicators">[docs]</a>    <span class="k">def</span> <span class="nf">update_indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.update_indicators"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.update_indicators">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_indicators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the inner bit indicators accordingly with the new value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -331,7 +331,7 @@
             <span class="n">indicator</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">onColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">onColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;on&#39; state.</span>
 
@@ -342,7 +342,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_color</span>
 
     <span class="nd">@onColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">onColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">onColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;on&#39; state.</span>
 
@@ -355,7 +355,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">offColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">offColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;off&#39; state.</span>
 
@@ -366,7 +366,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span>
 
     <span class="nd">@offColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">offColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">offColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;off&#39; state.</span>
 
@@ -379,7 +379,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to lay out the bit indicators vertically or horizontally.</span>
 
@@ -390,7 +390,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span>
 
     <span class="nd">@orientation</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to lay out the bit indicators vertically or horizontally.</span>
 
@@ -402,7 +402,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_spacing</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PyDMByteIndicator.set_spacing"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.set_spacing">[docs]</a>    <span class="k">def</span> <span class="nf">set_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.set_spacing"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.set_spacing">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Configures the correct spacing given the selected orientation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -422,7 +422,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setVerticalSpacing</span><span class="p">(</span><span class="n">indicator_spacing</span><span class="p">)</span></div>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">showLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">showLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to show labels next to each bit indicator.</span>
 
@@ -433,7 +433,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_labels</span>
 
     <span class="nd">@showLabels</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">showLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">showLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to show labels next to each bit indicator.</span>
 
@@ -447,7 +447,7 @@
             <span class="n">label</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="n">show</span><span class="p">)</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">bigEndian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bigEndian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether the most significant bit is at the start or end of the widget.</span>
 
@@ -458,7 +458,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_big_endian</span>
 
     <span class="nd">@bigEndian</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">bigEndian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_big_endian</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bigEndian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_big_endian</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether the most significant bit is at the start or end of the widget.</span>
 
@@ -481,7 +481,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">circles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">circles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw indicators as circles, rather than rectangles.</span>
 
@@ -492,7 +492,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_circles</span>
 
     <span class="nd">@circles</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">circles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">draw_circles</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">circles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">draw_circles</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw indicators as circles, rather than rectangles.</span>
 
@@ -508,7 +508,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">labelPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">labelPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The side of the widget to display labels on.</span>
 
@@ -519,7 +519,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_position</span>
 
     <span class="nd">@labelPosition</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">labelPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_pos</span><span class="p">:</span> <span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">labelPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_pos</span><span class="p">:</span> <span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The side of the widget to display labels on.</span>
 
@@ -531,7 +531,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">numBits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">numBits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Number of bits to interpret.</span>
 
@@ -542,7 +542,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_bits</span>
 
     <span class="nd">@numBits</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">numBits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_num_bits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">numBits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_num_bits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Number of bits to interpret.</span>
 
@@ -565,7 +565,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">new_labels</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Bit shift.</span>
 
@@ -576,7 +576,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span>
 
     <span class="nd">@shift</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Bit shift.</span>
 
@@ -588,7 +588,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Labels for each bit.</span>
 
@@ -599,7 +599,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">currLabel</span><span class="o">.</span><span class="n">text</span><span class="p">())</span> <span class="k">for</span> <span class="n">currLabel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">]</span>
 
     <span class="nd">@labels</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Labels for each bit.</span>
 
@@ -615,7 +615,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">showLabels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_labels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PyDMByteIndicator.value_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.value_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.value_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
 
@@ -631,7 +631,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="PyDMByteIndicator.paintEvent"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.paintEvent"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.paintEvent">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Paint events are sent to widgets that need to update themselves,</span>
 <span class="sd">        for instance when part of a widget is exposed because a covering</span>
@@ -651,7 +651,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">drawPrimitive</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">PE_Widget</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">painter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="n">painter</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMByteIndicator.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.alarm_severity_changed">[docs]</a>    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.alarm_severity_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel alarm severity is changed.</span>
 
@@ -673,7 +673,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMMultiStateIndicator"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator">[docs]</a><span class="k">class</span> <span class="nc">PyDMMultiStateIndicator</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMMultiStateIndicator</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Widget with 16 available states that are set by the connected channel.</span>
 <span class="sd">    Each state represents a different color that can be configured.</span>
@@ -686,7 +686,7 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QWidget</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QWidget</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">QColor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">black</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">16</span>
@@ -699,15 +699,15 @@
 
     <span class="c1"># whether or not we render the widget as a circle (default) or a rectangle</span>
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">renderAsRectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">renderAsRectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_render_as_rectangle</span>
 
     <span class="nd">@renderAsRectangle</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">renderAsRectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">renderAsRectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">new_val</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_render_as_rectangle</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_render_as_rectangle</span> <span class="o">=</span> <span class="n">new_val</span>
 
-<div class="viewcode-block" id="PyDMMultiStateIndicator.value_changed"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.value_changed">[docs]</a>    <span class="k">def</span> <span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.value_changed"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.value_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback invoked when the Channel value is changed.</span>
 <span class="sd">        Parameters</span>
@@ -725,7 +725,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="PyDMMultiStateIndicator.paintEvent"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.paintEvent">[docs]</a>    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">QPaintEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.paintEvent"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.paintEvent">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">QPaintEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Paint events are sent to widgets that need to update themselves,</span>
 <span class="sd">        for instance when part of a widget is exposed because a covering</span>
@@ -756,7 +756,7 @@
 
     <span class="c1"># color state setters/getters</span>
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">currentValue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">currentValue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 0</span>
 <span class="sd">        Returns</span>
@@ -766,7 +766,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curr_state</span>
 
     <span class="nd">@currentValue</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">currentValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_state</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">currentValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_state</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 0</span>
 <span class="sd">        Parameters</span>
@@ -779,7 +779,7 @@
 
     <span class="c1"># color state setters/getters</span>
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state0Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state0Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 0</span>
 <span class="sd">        Returns</span>
@@ -789,7 +789,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@state0Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state0Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state0Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 0</span>
 <span class="sd">        Parameters</span>
@@ -800,7 +800,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state1Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state1Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 1</span>
 <span class="sd">        Returns</span>
@@ -810,7 +810,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@state1Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state1Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state1Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 1</span>
 <span class="sd">        Parameters</span>
@@ -821,7 +821,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state2Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state2Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 2</span>
 <span class="sd">        Returns</span>
@@ -831,7 +831,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
     <span class="nd">@state2Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state2Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state2Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 2</span>
 <span class="sd">        Parameters</span>
@@ -842,7 +842,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state3Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state3Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 3</span>
 <span class="sd">        Returns</span>
@@ -852,7 +852,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 
     <span class="nd">@state3Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state3Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state3Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 3</span>
 <span class="sd">        Parameters</span>
@@ -863,7 +863,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state4Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state4Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 4</span>
 <span class="sd">        Returns</span>
@@ -873,7 +873,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 
     <span class="nd">@state4Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state4Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state4Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 4</span>
 <span class="sd">        Parameters</span>
@@ -884,7 +884,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state5Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state5Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 5</span>
 <span class="sd">        Returns</span>
@@ -894,7 +894,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
 
     <span class="nd">@state5Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state5Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state5Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 5</span>
 <span class="sd">        Parameters</span>
@@ -905,7 +905,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state6Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state6Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 6</span>
 <span class="sd">        Returns</span>
@@ -915,7 +915,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
 
     <span class="nd">@state6Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state6Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state6Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 6</span>
 <span class="sd">        Parameters</span>
@@ -926,7 +926,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state7Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state7Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 7</span>
 <span class="sd">        Returns</span>
@@ -936,7 +936,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
 
     <span class="nd">@state7Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state7Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state7Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 7</span>
 <span class="sd">        Parameters</span>
@@ -947,7 +947,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state8Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state8Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 8</span>
 <span class="sd">        Returns</span>
@@ -957,7 +957,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
 
     <span class="nd">@state8Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state8Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state8Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 8</span>
 <span class="sd">        Parameters</span>
@@ -968,7 +968,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state9Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state9Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 9</span>
 <span class="sd">        Returns</span>
@@ -978,7 +978,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
 
     <span class="nd">@state9Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state9Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state9Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 9</span>
 <span class="sd">        Parameters</span>
@@ -989,7 +989,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state10Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state10Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 10</span>
 <span class="sd">        Returns</span>
@@ -999,7 +999,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
 
     <span class="nd">@state10Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state10Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state10Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 10</span>
 <span class="sd">        Parameters</span>
@@ -1010,7 +1010,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state11Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state11Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 11</span>
 <span class="sd">        Returns</span>
@@ -1020,7 +1020,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span>
 
     <span class="nd">@state11Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state11Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state11Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 11</span>
 <span class="sd">        Parameters</span>
@@ -1031,7 +1031,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state12Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state12Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 12</span>
 <span class="sd">        Returns</span>
@@ -1041,7 +1041,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span>
 
     <span class="nd">@state12Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state12Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state12Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 12</span>
 <span class="sd">        Parameters</span>
@@ -1052,7 +1052,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state13Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state13Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 13</span>
 <span class="sd">        Returns</span>
@@ -1062,7 +1062,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span>
 
     <span class="nd">@state13Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state13Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state13Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 13</span>
 <span class="sd">        Parameters</span>
@@ -1073,7 +1073,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state14Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state14Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 14</span>
 <span class="sd">        Returns</span>
@@ -1083,7 +1083,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span>
 
     <span class="nd">@state14Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state14Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state14Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 14</span>
 <span class="sd">        Parameters</span>
@@ -1094,7 +1094,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">state15Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state15Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 15</span>
 <span class="sd">        Returns</span>
@@ -1104,7 +1104,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span>
 
     <span class="nd">@state15Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">state15Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state15Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 15</span>
 <span class="sd">        Parameters</span>

@@ -156,19 +156,19 @@ our Python-based display, and hook up code to interact with widgets.</p>
 <blockquote>
 <div><p>Open a new text file.  The first thing that we will do is add the imports
 needed for the code that will follow.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
-<span class="kn">from</span> <span class="nn">pydm</span> <span class="kn">import</span> <span class="n">Display</span>
-<span class="kn">from</span> <span class="nn">scipy.ndimage.measurements</span> <span class="kn">import</span> <span class="n">maximum_position</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.ndimage.measurements</span><span class="w"> </span><span class="kn">import</span> <span class="n">maximum_position</span>
 </pre></div>
 </div>
 </div></blockquote>
 </li>
 <li><p><strong>Step 2.</strong></p>
 <p>Let’s create our Python class that will inherit from <code class="docutils literal notranslate"><span class="pre">Display</span></code> (See <a class="reference internal" href="intro_python.html#display"><span class="std std-ref">Subclassing Display</span></a>).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BeamPositioning</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BeamPositioning</span><span class="p">(</span><span class="n">Display</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BeamPositioning</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="c1"># Attach our custom process_image method</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">imageView</span><span class="o">.</span><span class="n">process_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_image</span>
@@ -178,11 +178,11 @@ needed for the code that will follow.</p>
         <span class="c1"># Store blob coordinate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">ui_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ui_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Point to our UI file</span>
         <span class="k">return</span> <span class="s1">&#39;main.ui&#39;</span>
 
-    <span class="k">def</span> <span class="nf">ui_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ui_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Return the full path to the UI file</span>
         <span class="k">return</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui_filename</span><span class="p">())</span>
 </pre></div>
@@ -212,7 +212,7 @@ and more information about it can be found at the
 manipulate widgets in this method, since this code runs outside of the
 <strong>Qt Main Thread</strong>.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_image</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">process_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_image</span><span class="p">):</span>
     <span class="c1"># Consider the maximum as the Blob since we have only</span>
     <span class="c1"># one.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">blob</span> <span class="o">=</span> <span class="n">maximum_position</span><span class="p">(</span><span class="n">new_image</span><span class="p">)</span>
@@ -229,7 +229,7 @@ you can do so in this method, and return the manipulated version.</p>
 <li><p><strong>Step 2.2.</strong></p>
 <p>Add code to the <code class="docutils literal notranslate"><span class="pre">show_blob</span></code> method so we update the <code class="docutils literal notranslate"><span class="pre">QLabel</span></code> with the
 new blob position calculated in <code class="docutils literal notranslate"><span class="pre">process_image</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">show_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">show_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="c1"># If we have a blob, present the coordinates in label</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
         <span class="n">blob_txt</span> <span class="o">=</span> <span class="s2">&quot;Blob Found:&quot;</span>

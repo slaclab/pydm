@@ -114,18 +114,18 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pydm.widgets.drawing</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QPolygonF</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QMovie</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QPointF</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">QRectF</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtDesigner</span> <span class="kn">import</span> <span class="n">QDesignerFormWindowInterface</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PyDMWidget</span>
-<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">is_qt_designer</span><span class="p">,</span> <span class="n">find_file</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QPolygonF</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QMovie</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QPointF</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">QRectF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtDesigner</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDesignerFormWindowInterface</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_qt_designer</span><span class="p">,</span> <span class="n">find_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -137,7 +137,7 @@
 <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">deg_to_qt</span><span class="p">(</span><span class="n">deg</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">deg_to_qt</span><span class="p">(</span><span class="n">deg</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts from degrees to QT degrees.</span>
 <span class="sd">    16 deg = 1 QTdeg</span>
@@ -156,7 +156,7 @@
     <span class="k">return</span> <span class="n">deg</span> <span class="o">*</span> <span class="mi">16</span>
 
 
-<span class="k">def</span> <span class="nf">qt_to_deg</span><span class="p">(</span><span class="n">deg</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">qt_to_deg</span><span class="p">(</span><span class="n">deg</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts from QT degrees to degrees.</span>
 <span class="sd">    16 deg = 1 QTdeg</span>
@@ -175,7 +175,7 @@
     <span class="k">return</span> <span class="n">deg</span> <span class="o">/</span> <span class="mf">16.0</span>
 
 
-<span class="k">class</span> <span class="nc">PyDMDrawing</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_penRuleProperties</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawing</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_penRuleProperties</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class to be used for all PyDM Drawing Widgets.</span>
 <span class="sd">    This class inherits from QWidget and PyDMWidget.</span>
@@ -188,7 +188,7 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span> <span class="o">=</span> <span class="n">QBrush</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">SolidPattern</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_original_brush</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span>
@@ -207,10 +207,10 @@
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alarmSensitiveBorder</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Paint events are sent to widgets that need to update themselves,</span>
 <span class="sd">        for instance when part of a widget is exposed because a covering</span>
@@ -235,7 +235,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_item</span><span class="p">(</span><span class="n">painter</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The classes inheriting from PyDMDrawing must overwrite this method.</span>
 <span class="sd">        This method translate the painter to the center point given by</span>
@@ -246,7 +246,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">)</span>
         <span class="n">painter</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Simple calculation of the canvas&#39; center point.</span>
 
@@ -257,7 +257,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.5</span>
 
-    <span class="k">def</span> <span class="nf">get_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">force_no_pen</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">force_no_pen</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a tuple containing the useful area for the drawing.</span>
 
@@ -295,7 +295,7 @@
             <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">xc</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">yc</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span>
 
-    <span class="k">def</span> <span class="nf">has_border</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_border</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check whether or not the drawing have a border based on the</span>
 <span class="sd">        Pen Style and Pen width.</span>
@@ -310,7 +310,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">is_square</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_square</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check if the widget has the same width and height values.</span>
 
@@ -321,7 +321,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">get_inner_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_inner_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates the largest inner rectangle in a rotated rectangle.</span>
 <span class="sd">        This implementation was based on https://stackoverflow.com/a/18402507</span>
@@ -369,7 +369,7 @@
         <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QBrush</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">brush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">brush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the brush object to be used when coloring the</span>
 <span class="sd">        drawing</span>
@@ -381,7 +381,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span>
 
     <span class="nd">@brush</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">brush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_brush</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">brush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_brush</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the brush object to be used when coloring the</span>
 <span class="sd">        drawing</span>
@@ -397,7 +397,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PenStyle</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">penStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">penStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen style to be used when drawing the border</span>
 
@@ -409,7 +409,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_style</span>
 
     <span class="nd">@penStyle</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">penStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_style</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">penStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_style</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen style to be used when drawing the border</span>
 
@@ -426,7 +426,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PenCapStyle</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">penCapStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">penCapStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen cap to be used when drawing the border</span>
 
@@ -438,7 +438,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_cap_style</span>
 
     <span class="nd">@penCapStyle</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">penCapStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_style</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">penCapStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_style</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen cap style to be used when drawing the border</span>
 
@@ -453,7 +453,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PenJoinStyle</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">penJoinStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">penJoinStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen join style to be used when drawing the border</span>
 
@@ -465,7 +465,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_join_style</span>
 
     <span class="nd">@penJoinStyle</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">penJoinStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_style</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">penJoinStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_style</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen join style to be used when drawing the border</span>
 
@@ -480,7 +480,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">penColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">penColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen color to be used when drawing the border</span>
 
@@ -491,7 +491,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_color</span>
 
     <span class="nd">@penColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">penColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">penColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen color to be used when drawing the border</span>
 
@@ -508,7 +508,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">penWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">penWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen width to be used when drawing the border</span>
 
@@ -519,7 +519,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_width</span>
 
     <span class="nd">@penWidth</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">penWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_width</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">penWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_width</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the pen width to be used when drawing the border</span>
 
@@ -535,7 +535,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the counter-clockwise rotation in degrees</span>
 <span class="sd">        to be applied to the drawing.</span>
@@ -547,7 +547,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span>
 
     <span class="nd">@rotation</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_angle</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_angle</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the counter-clockwise rotation in degrees</span>
 <span class="sd">        to be applied to the drawing.</span>
@@ -560,7 +560,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span> <span class="o">=</span> <span class="n">new_angle</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">new_alarm_severity</span> <span class="o">==</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">ALARM_NONE</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_brush</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -571,7 +571,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">penStyle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_pen_style</span>
 
 
-<span class="k">class</span> <span class="nc">PyDMDrawingLineBase</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingLineBase</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A base class for single and poly line widgets.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
@@ -584,7 +584,7 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingLineBase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">penStyle</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">penWidth</span> <span class="o">=</span> <span class="mi">1</span>
@@ -595,7 +595,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_mid_point_flipped</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">arrowSize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">arrowSize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Size to render line arrows.</span>
 
@@ -606,7 +606,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_size</span>
 
     <span class="nd">@arrowSize</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">arrowSize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">arrowSize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Size to render line arrows.</span>
 
@@ -619,7 +619,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">arrowEndPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">arrowEndPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, an arrow will be drawn at the end of the line.</span>
 
@@ -630,7 +630,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_end_point_selection</span>
 
     <span class="nd">@arrowEndPoint</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">arrowEndPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">arrowEndPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, an arrow will be drawn at the end of the line.</span>
 
@@ -643,7 +643,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">arrowStartPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">arrowStartPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, an arrow will be drawn at the start of the line.</span>
 
@@ -654,7 +654,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_start_point_selection</span>
 
     <span class="nd">@arrowStartPoint</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">arrowStartPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">arrowStartPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, an arrow will be drawn at the start of the line.</span>
 
@@ -667,7 +667,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">arrowMidPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">arrowMidPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, an arrow will be drawn at the midpoint of the line.</span>
 <span class="sd">        Returns</span>
@@ -677,7 +677,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_mid_point_selection</span>
 
     <span class="nd">@arrowMidPoint</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">arrowMidPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">arrowMidPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, an arrow will be drawn at the midpoint of the line.</span>
 <span class="sd">        Parameters</span>
@@ -689,7 +689,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">flipMidPointArrow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flipMidPointArrow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Flips the direction of the midpoint arrow.</span>
 
@@ -700,7 +700,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arrow_mid_point_flipped</span>
 
     <span class="nd">@flipMidPointArrow</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">flipMidPointArrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flipMidPointArrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_selection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Flips the direction of the midpoint arrow.</span>
 
@@ -713,7 +713,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_arrow_points</span><span class="p">(</span><span class="n">startpoint</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QPolygonF</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_arrow_points</span><span class="p">(</span><span class="n">startpoint</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QPolygonF</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the three points needed to make a triangle with .drawPolygon</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -739,7 +739,7 @@
         <span class="k">return</span> <span class="n">QPolygonF</span><span class="p">([</span><span class="n">left</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">right</span><span class="p">])</span>
 
 
-<div class="viewcode-block" id="PyDMDrawingLine"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingLine">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingLine</span><span class="p">(</span><span class="n">PyDMDrawingLineBase</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_penRuleProperties</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingLine"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingLine">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingLine</span><span class="p">(</span><span class="n">PyDMDrawingLineBase</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_penRuleProperties</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with a line drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawingLineBase.</span>
@@ -752,10 +752,10 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMDrawingLine.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingLine.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMDrawingLine.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingLine.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the line after setting up the canvas with a call to</span>
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
@@ -821,7 +821,7 @@
             <span class="n">painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingPolyline"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolyline">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingPolyline</span><span class="p">(</span><span class="n">PyDMDrawingLineBase</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingPolyline"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolyline">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingPolyline</span><span class="p">(</span><span class="n">PyDMDrawingLineBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with a multi-segment, piecewise-linear line drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawingLineBase.</span>
@@ -834,11 +834,11 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingPolyline</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="PyDMDrawingPolyline.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolyline.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMDrawingPolyline.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolyline.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the segmented line after setting up the canvas with a call to</span>
 <span class="sd">        ``PyDMDrawing.draw_item``.</span>
@@ -846,7 +846,7 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingPolyline</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_item</span><span class="p">(</span><span class="n">painter</span><span class="p">)</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">()</span>
 
-        <span class="k">def</span> <span class="nf">p2d</span><span class="p">(</span><span class="n">pt</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">p2d</span><span class="p">(</span><span class="n">pt</span><span class="p">):</span>
             <span class="s2">&quot;convert point to drawing coordinates&quot;</span>
             <span class="c1"># drawing coordinates are centered: (0,0) is in center</span>
             <span class="c1"># our points are absolute: (0,0) is upper-left corner</span>
@@ -892,12 +892,12 @@
             <span class="p">)</span>
             <span class="n">painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMDrawingPolyline.getPoints"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolyline.getPoints">[docs]</a>    <span class="k">def</span> <span class="nf">getPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="PyDMDrawingPolyline.getPoints"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolyline.getPoints">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">getPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert internal points representation for use as QStringList.&quot;&quot;&quot;</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">points</span></div>
 
-    <span class="k">def</span> <span class="nf">_validator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        ensure that `value` has correct form</span>
 
@@ -915,7 +915,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">isfloat</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">isfloat</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
@@ -924,7 +924,7 @@
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">def</span> <span class="nf">validate_point</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">validate_point</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Ignore (instead of fail on) any of these pathologies.&quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -959,7 +959,7 @@
 
         <span class="k">return</span> <span class="n">verified</span>
 
-    <span class="k">def</span> <span class="nf">setPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">verified</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verified</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">verified</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -969,14 +969,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">verified</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">resetPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resetPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="n">points</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getPoints</span><span class="p">,</span> <span class="n">setPoints</span><span class="p">,</span> <span class="n">resetPoints</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingImage"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingImage</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingImage"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingImage</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Renders an image given by the ``filename`` property.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
@@ -996,7 +996,7 @@
 
     <span class="n">null_color</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">gray</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
         <span class="n">hint</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span>
@@ -1016,7 +1016,7 @@
                 <span class="n">designer_window</span><span class="o">.</span><span class="n">fileNameChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designer_form_saved</span><span class="p">)</span>
                 <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload_image</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_designer_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_designer_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
         <span class="c1"># Internal function to find the designer window that owns this widget.</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
         <span class="k">while</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1026,14 +1026,14 @@
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">designer_form_saved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">designer_form_saved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span>
 
-    <span class="k">def</span> <span class="nf">reload_image</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reload_image</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The filename of the image to be displayed.</span>
 <span class="sd">        This can be an absolute or relative path to the display file.</span>
@@ -1046,7 +1046,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span>
 
     <span class="nd">@filename</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The filename of the image to be displayed.</span>
 
@@ -1103,13 +1103,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">pixmap</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PyDMDrawingImage.sizeHint"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.sizeHint">[docs]</a>    <span class="k">def</span> <span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingImage.sizeHint"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.sizeHint">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">isEmpty</span><span class="p">():</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">sizeHint</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span><span class="o">.</span><span class="n">size</span><span class="p">()</span></div>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AspectRatioMode</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">aspectRatioMode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">aspectRatioMode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for aspect ratio mode to be used when rendering</span>
 <span class="sd">        the image</span>
@@ -1122,7 +1122,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span>
 
     <span class="nd">@aspectRatioMode</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">aspectRatioMode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_mode</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">aspectRatioMode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_mode</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for aspect ratio mode to be used when rendering</span>
 <span class="sd">        the image</span>
@@ -1136,7 +1136,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span> <span class="o">=</span> <span class="n">new_mode</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PyDMDrawingImage.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingImage.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the image after setting up the canvas with a call to</span>
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
@@ -1154,7 +1154,7 @@
                 <span class="n">y</span> <span class="o">+=</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="n">_scaled</span><span class="o">.</span><span class="n">height</span><span class="p">())</span> <span class="o">/</span> <span class="mi">2</span>
             <span class="n">painter</span><span class="o">.</span><span class="n">drawPixmap</span><span class="p">(</span><span class="n">QPointF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">_scaled</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyDMDrawingImage.movie_frame_changed"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.movie_frame_changed">[docs]</a>    <span class="k">def</span> <span class="nf">movie_frame_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_no</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingImage.movie_frame_changed"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.movie_frame_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">movie_frame_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_no</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback executed when a new frame is available at the QMovie.</span>
 
@@ -1174,7 +1174,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_pixmap</span> <span class="o">=</span> <span class="n">curr_pixmap</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyDMDrawingImage.movie_finished"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.movie_finished">[docs]</a>    <span class="k">def</span> <span class="nf">movie_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingImage.movie_finished"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingImage.movie_finished">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">movie_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback executed when the movie is finished.</span>
 
@@ -1188,7 +1188,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingRectangle"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingRectangle">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingRectangle</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingRectangle"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingRectangle">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingRectangle</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with a rectangle drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
@@ -1201,10 +1201,10 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingRectangle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMDrawingRectangle.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingRectangle.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingRectangle.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingRectangle.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the rectangle after setting up the canvas with a call to</span>
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
@@ -1214,7 +1214,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">drawRect</span><span class="p">(</span><span class="n">QRectF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingTriangle"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingTriangle">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingTriangle</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingTriangle"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingTriangle">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingTriangle</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with a triangle drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
@@ -1227,13 +1227,13 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingTriangle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_drawing_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_drawing_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">QPointF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span>
 
-<div class="viewcode-block" id="PyDMDrawingTriangle.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingTriangle.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingTriangle.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingTriangle.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the triangle after setting up the canvas with a call to</span>
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
@@ -1245,7 +1245,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">QPolygonF</span><span class="p">(</span><span class="n">points</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingEllipse"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingEllipse">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingEllipse</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingEllipse"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingEllipse">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingEllipse</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with an ellipse drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
@@ -1258,10 +1258,10 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingEllipse</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMDrawingEllipse.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingEllipse.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingEllipse.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingEllipse.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the ellipse after setting up the canvas with a call to</span>
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
@@ -1272,7 +1272,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">drawEllipse</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">w</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingCircle"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingCircle">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingCircle</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingCircle"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingCircle">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingCircle</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with a circle drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
@@ -1285,13 +1285,13 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingCircle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
 
-<div class="viewcode-block" id="PyDMDrawingCircle.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingCircle.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingCircle.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingCircle.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the circle after setting up the canvas with a call to</span>
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
@@ -1302,7 +1302,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">drawEllipse</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingArc"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingArc">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingArc</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingArc"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingArc">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingArc</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with an arc drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
@@ -1315,7 +1315,7 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingArc</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">penStyle</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">penWidth</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -1323,7 +1323,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span> <span class="o">=</span> <span class="n">deg_to_qt</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">startAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the start angle in degrees</span>
 
@@ -1335,7 +1335,7 @@
         <span class="k">return</span> <span class="n">qt_to_deg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">)</span>
 
     <span class="nd">@startAngle</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">startAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_angle</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_angle</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the start angle in degrees</span>
 
@@ -1349,7 +1349,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">spanAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spanAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the span angle in degrees</span>
 
@@ -1361,7 +1361,7 @@
         <span class="k">return</span> <span class="n">qt_to_deg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">)</span>
 
     <span class="nd">@spanAngle</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">spanAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_angle</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spanAngle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_angle</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the span angle in degrees</span>
 
@@ -1374,7 +1374,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span> <span class="o">=</span> <span class="n">deg_to_qt</span><span class="p">(</span><span class="n">new_angle</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-<div class="viewcode-block" id="PyDMDrawingArc.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingArc.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingArc.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingArc.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the arc after setting up the canvas with a call to</span>
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
@@ -1385,7 +1385,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">drawArc</span><span class="p">(</span><span class="n">QRectF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingPie"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPie">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingPie</span><span class="p">(</span><span class="n">PyDMDrawingArc</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingPie"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPie">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingPie</span><span class="p">(</span><span class="n">PyDMDrawingArc</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with a pie drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
@@ -1398,10 +1398,10 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingPie</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMDrawingPie.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPie.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingPie.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPie.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the pie after setting up the canvas with a call to</span>
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
@@ -1412,7 +1412,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">drawPie</span><span class="p">(</span><span class="n">QRectF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingChord"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingChord">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingChord</span><span class="p">(</span><span class="n">PyDMDrawingArc</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingChord"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingChord">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingChord</span><span class="p">(</span><span class="n">PyDMDrawingArc</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with a chord drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
@@ -1425,10 +1425,10 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingChord</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PyDMDrawingChord.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingChord.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingChord.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingChord.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the chord after setting up the canvas with a call to</span>
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
@@ -1439,7 +1439,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">drawChord</span><span class="p">(</span><span class="n">QRectF</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_angle</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_span_angle</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingPolygon"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolygon">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingPolygon</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingPolygon"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolygon">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingPolygon</span><span class="p">(</span><span class="n">PyDMDrawing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with a polygon drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawing.</span>
@@ -1452,12 +1452,12 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingPolygon</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">=</span> <span class="mi">3</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">numberOfPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">numberOfPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        PyQT Property for the number of points</span>
 
@@ -1469,12 +1469,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span>
 
     <span class="nd">@numberOfPoints</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">numberOfPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">numberOfPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">points</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span> <span class="o">=</span> <span class="n">points</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_calculate_drawing_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_drawing_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
         <span class="c1"># (x + r*cos(theta), y + r*sin(theta))</span>
         <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
         <span class="n">deg_step</span> <span class="o">=</span> <span class="mf">360.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_points</span>
@@ -1487,7 +1487,7 @@
 
         <span class="k">return</span> <span class="n">points</span>
 
-<div class="viewcode-block" id="PyDMDrawingPolygon.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolygon.draw_item">[docs]</a>    <span class="k">def</span> <span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingPolygon.draw_item"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingPolygon.draw_item">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">draw_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">painter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draws the Polygon after setting up the canvas with a call to</span>
 <span class="sd">        ```PyDMDrawing.draw_item```.</span>
@@ -1499,7 +1499,7 @@
         <span class="n">painter</span><span class="o">.</span><span class="n">drawPolygon</span><span class="p">(</span><span class="n">QPolygonF</span><span class="p">(</span><span class="n">poly</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="PyDMDrawingIrregularPolygon"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingIrregularPolygon">[docs]</a><span class="k">class</span> <span class="nc">PyDMDrawingIrregularPolygon</span><span class="p">(</span><span class="n">PyDMDrawingPolyline</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingIrregularPolygon"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingIrregularPolygon">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingIrregularPolygon</span><span class="p">(</span><span class="n">PyDMDrawingPolyline</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget contains an irregular polygon (arbitrary number of vertices, arbitrary lengths).</span>
 
@@ -1516,13 +1516,13 @@
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PyDMDrawingIrregularPolygon.getPoints"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.getPoints">[docs]</a>    <span class="k">def</span> <span class="nf">getPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingIrregularPolygon.getPoints"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.getPoints">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">getPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingIrregularPolygon</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">getPoints</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">resetPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resetPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingIrregularPolygon</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">resetPoints</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">setPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="n">verified</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verified</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">verified</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
