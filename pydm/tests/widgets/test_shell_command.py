@@ -280,3 +280,66 @@ def test_env_var(qtbot):
     stdout, stderr = pydm_shell_command.process.communicate()
     assert pydm_shell_command.process.returncode == 0
     assert stdout.decode("utf-8") == "Test: this is a pydm test\n"
+
+
+options = (
+    PyDMShellCommand.TermOutputMode.HIDE,
+    PyDMShellCommand.TermOutputMode.SHOW,
+    PyDMShellCommand.TermOutputMode.STORE,
+)
+
+
+@pytest.mark.parametrize("stdout_setting, stderr_setting", [(first, second) for first in options for second in options])
+def test_output_options(qtbot, capfd, stdout_setting, stderr_setting):
+    """
+    Test that the stdout and stderr options work properly.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Ensures clean up of the shell command button
+    capfd : fixture
+        Captures output to the stdout and stderr file descriptors.
+        We need to use capfd instead of capsys because capsys
+        doesn't catch the stdout from the subprocess called.
+    stdout_setting : TermOutputMode
+        The stdout setting to test
+    stderr_setting : TermOutputMode
+        The stderr setting to test
+    """
+    pydm_shell_command = PyDMShellCommand()
+    pydm_shell_command.stdout = stdout_setting
+    pydm_shell_command.stderr = stderr_setting
+    pydm_shell_command.runCommandsInFullShell = True
+
+    qtbot.addWidget(pydm_shell_command)
+
+    capfd.readouterr()
+    pydm_shell_command.execute_command("echo stdout; echo stderr 1>&2")
+    pydm_shell_command.process.wait()
+    out_show, err_show = capfd.readouterr()
+    out_store, err_store = pydm_shell_command.process.communicate()
+
+    if stdout_setting == PyDMShellCommand.TermOutputMode.HIDE:
+        assert out_show == ""
+        assert out_store is None
+    elif stdout_setting == PyDMShellCommand.TermOutputMode.SHOW:
+        assert out_show == "stdout\n"
+        assert out_store is None
+    elif stdout_setting == PyDMShellCommand.TermOutputMode.STORE:
+        assert out_show == ""
+        assert out_store == b"stdout\n"
+    else:
+        raise RuntimeError("Test written wrong, invalid stdout_setting")
+
+    if stderr_setting == PyDMShellCommand.TermOutputMode.HIDE:
+        assert err_show == ""
+        assert err_store is None
+    elif stderr_setting == PyDMShellCommand.TermOutputMode.SHOW:
+        assert err_show == "stderr\n"
+        assert err_store is None
+    elif stderr_setting == PyDMShellCommand.TermOutputMode.STORE:
+        assert err_show == ""
+        assert err_store == b"stderr\n"
+    else:
+        raise RuntimeError("Test written wrong, invalid stderr_setting")
