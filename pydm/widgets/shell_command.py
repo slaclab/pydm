@@ -11,6 +11,7 @@ from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineE
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
+from PyQt5.QtCore import Q_ENUMS
 from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont
 from typing import Optional, Union, List
@@ -18,7 +19,18 @@ from typing import Optional, Union, List
 logger = logging.getLogger(__name__)
 
 
-class PyDMShellCommand(QPushButton, PyDMWidget):
+class TermOutputMode:
+    """
+    Enum to select the behavior of the stdout/stderr output from a subprocess.
+    """
+
+    HIDE = 0
+    SHOW = 1
+    STORE = 2
+
+
+class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
+    Q_ENUMS(TermOutputMode)
     """
     A QPushButton capable of execute shell commands.
 
@@ -35,6 +47,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     """
 
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
+    TermOutputMode = TermOutputMode
 
     def __init__(
         self,
@@ -67,7 +80,10 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self._allow_multiple = False
         self.process = None
         self._show_icon = True
-        self._redirect_output = False
+        self._stdout = TermOutputMode.HIDE
+        self._stderr = TermOutputMode.HIDE
+        self._uses_stdout_intf = False
+        self._uses_redirect_intf = False
         # shell allows for more options such as command chaining ("cmd1;cmd2", "cmd1 && cmd2", etc ...),
         # use of environment variables, glob expansion ('ls *.txt'), etc...
         self._run_commands_in_full_shell = False
@@ -326,27 +342,69 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         Whether or not we should redirect the output of command to the shell.
 
-        Returns
-        -------
-        bool
+        This is deprecated in favor of the `stdout` property.
         """
-        return self._redirect_output
+        return self._stdout == TermOutputMode.SHOW
 
     @redirectCommandOutput.setter
     def redirectCommandOutput(self, value: bool) -> None:
-        """
-        Whether or not we should redirect the output of command to the shell.
+        self._uses_redirect_intf = True
+        if self._uses_stdout_intf:
+            logger.warning(
+                f"In PydmShellCommand widget with commands {self.commands}, "
+                'using deprecated "redirectCommandOutput" propery to override '
+                '"stdout" property.'
+            )
+        if value:
+            self._stdout = TermOutputMode.SHOW
+        else:
+            self._stdout = TermOutputMode.HIDE
 
-        Parameters
-        ----------
-        value : bool
-
-        Returns
-        -------
-        None.
+    @Property(TermOutputMode)
+    def stdout(self) -> TermOutputMode:
         """
-        if self._redirect_output != value:
-            self._redirect_output = value
+        The behavior of the subprocess's standard output stream.
+
+        The options are:
+
+        - `HIDE` (default): hide the stdout
+        - `SHOW`: print stdout to terminal
+        - `STORE`: capture stdout for programmatic retrieval
+
+        This is implicitly linked to the older, soft deprecated
+        parameter `redirectCommandOutput`, which can still be
+        set to `False` to `HIDE` the stdout or `True` to `SHOW`
+        the stdout.
+        """
+        return self._stdout
+
+    @stdout.setter
+    def stdout(self, value: TermOutputMode) -> None:
+        self._uses_stdout_intf = True
+        if self._uses_redirect_intf:
+            logger.warning(
+                f"In PydmShellCommand widget with commands {self.commands}, "
+                'using "stdout" property to override deprecated '
+                '"redirectCommandOutput" propery.'
+            )
+        self._stdout = value
+
+    @Property(TermOutputMode)
+    def stderr(self) -> TermOutputMode:
+        """
+        The behavior of the subprocess's standard error stream.
+
+        The options are:
+
+        - `HIDE` (default): hide the stderr
+        - `SHOW`: print stderr to terminal
+        - `STORE`: capture stderr for programmatic retrieval
+        """
+        return self._stderr
+
+    @stderr.setter
+    def stderr(self, value: TermOutputMode) -> None:
+        self._stderr = value
 
     @Property(bool)
     def allowMultipleExecutions(self) -> bool:
@@ -634,17 +692,32 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
                 args = cmd
             try:
                 logger.debug("Launching process: %s", repr(args))
-                stdout = subprocess.PIPE
+
+                if self._stdout == TermOutputMode.HIDE:
+                    stdout = subprocess.DEVNULL
+                elif self._stdout == TermOutputMode.SHOW:
+                    stdout = None
+                elif self._stdout == TermOutputMode.STORE:
+                    stdout = subprocess.PIPE
+                else:
+                    raise ValueError(f"Invalid stdout configuration {self._stdout}")
+
+                if self._stderr == TermOutputMode.HIDE:
+                    stderr = subprocess.DEVNULL
+                elif self._stderr == TermOutputMode.SHOW:
+                    stderr = None
+                elif self._stderr == TermOutputMode.STORE:
+                    stderr = subprocess.PIPE
+                else:
+                    raise ValueError(f"Invalid stderr configuration {self._stderr}")
 
                 if self.env_var:
                     env_var = literal_eval(self.env_var)
                 else:
                     env_var = None
 
-                if self._redirect_output:
-                    stdout = None
                 self.process = subprocess.Popen(
-                    args, stdout=stdout, stderr=subprocess.PIPE, env=env_var, shell=self._run_commands_in_full_shell
+                    args, stdout=stdout, stderr=stderr, env=env_var, shell=self._run_commands_in_full_shell
                 )
 
             except Exception as exc:
