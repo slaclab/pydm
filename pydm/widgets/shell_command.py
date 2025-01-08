@@ -84,6 +84,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self._stdout = TermOutputMode.HIDE
         self._stderr = TermOutputMode.HIDE
         self._uses_stdout_intf = False
+        self._uses_redirect_intf = False
         # shell allows for more options such as command chaining ("cmd1;cmd2", "cmd1 && cmd2", etc ...),
         # use of environment variables, glob expansion ('ls *.txt'), etc...
         self._run_commands_in_full_shell = False
@@ -348,6 +349,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
     @redirectCommandOutput.setter
     def redirectCommandOutput(self, value: bool) -> None:
+        self._uses_redirect_intf = True
         if self._uses_stdout_intf:
             logger.warning(
                 f"In PydmShellCommand widget with commands {self.commands}, "
@@ -380,6 +382,12 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     @stdout.setter
     def stdout(self, value: TermOutputMode) -> None:
         self._uses_stdout_intf = True
+        if self._uses_redirect_intf:
+            logger.warning(
+                f"In PydmShellCommand widget with commands {self.commands}, "
+                'using "stdout" property to override deprecated '
+                '"redirectCommandOutput" propery.'
+            )
         self._stdout = value
 
     @Property(TermOutputMode)

@@ -343,3 +343,85 @@ def test_output_options(qtbot, capfd, stdout_setting, stderr_setting):
         assert err_store == b"stderr\n"
     else:
         raise RuntimeError("Test written wrong, invalid stderr_setting")
+
+
+def test_output_options_backcompat(qtbot, caplog):
+    """
+    Test that existing screens that use redirectCommandOutput will still work.
+
+    redirectCommandOutput is soft deprecated but should still be functional.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        Ensures clean up of the shell command button
+    caplog : fixture
+        Used to capture and verify log warnings
+    """
+    pydm_shell_command = PyDMShellCommand()
+    qtbot.addWidget(pydm_shell_command)
+
+    # Defaults
+    assert not pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
+
+    # Changing redirectCommandOutput should also change stdout. No warnings here.
+    caplog.clear()
+    pydm_shell_command.redirectCommandOutput = True
+    assert "WARNING" not in caplog.text
+    assert pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.SHOW
+    caplog.clear()
+    pydm_shell_command.redirectCommandOutput = False
+    assert "WARNING" not in caplog.text
+    assert not pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
+
+    # Changing stdout now should give a warning and also update redirectCommandOutput
+    caplog.clear()
+    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.SHOW
+    assert "WARNING" in caplog.text
+    assert pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.SHOW
+    caplog.clear()
+    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.HIDE
+    assert "WARNING" in caplog.text
+    assert not pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
+    caplog.clear()
+    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.STORE
+    assert "WARNING" in caplog.text
+    assert not pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.STORE
+
+    # Now that we've changed stdout, changing redirectCommandOutput is also a warning
+    caplog.clear()
+    pydm_shell_command.redirectCommandOutput = True
+    assert "WARNING" in caplog.text
+    assert pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.SHOW
+    caplog.clear()
+    pydm_shell_command.redirectCommandOutput = False
+    assert "WARNING" in caplog.text
+    assert not pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
+
+    # A fresh widget should not have warnings from changing stdout
+    pydm_shell_command = PyDMShellCommand()
+    qtbot.addWidget(pydm_shell_command)
+
+    caplog.clear()
+    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.SHOW
+    assert "WARNING" not in caplog.text
+    assert pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.SHOW
+    caplog.clear()
+    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.HIDE
+    assert "WARNING" not in caplog.text
+    assert not pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
+    caplog.clear()
+    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.STORE
+    assert "WARNING" not in caplog.text
+    assert not pydm_shell_command.redirectCommandOutput
+    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.STORE
