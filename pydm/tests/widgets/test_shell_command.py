@@ -327,25 +327,25 @@ def test_output_options(qtbot, capfd, stdout_setting, stderr_setting):
     out_show, err_show = capfd.readouterr()
     out_store, err_store = pydm_shell_command.process.communicate()
 
-    if stdout_setting == PyDMShellCommand.TermOutputMode.HIDE:
+    if stdout_setting == TermOutputMode.HIDE:
         assert out_show == ""
         assert out_store is None
-    elif stdout_setting == PyDMShellCommand.TermOutputMode.SHOW:
+    elif stdout_setting == TermOutputMode.SHOW:
         assert out_show == "stdout\n"
         assert out_store is None
-    elif stdout_setting == PyDMShellCommand.TermOutputMode.STORE:
+    elif stdout_setting == TermOutputMode.STORE:
         assert out_show == ""
         assert out_store == b"stdout\n"
     else:
         raise RuntimeError("Test written wrong, invalid stdout_setting")
 
-    if stderr_setting == PyDMShellCommand.TermOutputMode.HIDE:
+    if stderr_setting == TermOutputMode.HIDE:
         assert err_show == ""
         assert err_store is None
-    elif stderr_setting == PyDMShellCommand.TermOutputMode.SHOW:
+    elif stderr_setting == TermOutputMode.SHOW:
         assert err_show == "stderr\n"
         assert err_store is None
-    elif stderr_setting == PyDMShellCommand.TermOutputMode.STORE:
+    elif stderr_setting == TermOutputMode.STORE:
         assert err_show == ""
         assert err_store == b"stderr\n"
     else:
@@ -370,7 +370,7 @@ def test_output_options_backcompat(qtbot, caplog):
 
     # Defaults
     assert not pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
+    assert pydm_shell_command.stdout == TermOutputMode.HIDE
 
     def assert_backcompat(value: bool | TermOutputMode, expect_warning: bool):
         """Helper for repeated assert checks in this unit test."""
