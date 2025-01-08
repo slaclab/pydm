@@ -322,7 +322,11 @@ def test_output_options(qtbot, capfd, stdout_setting, stderr_setting):
     qtbot.addWidget(pydm_shell_command)
 
     capfd.readouterr()
-    pydm_shell_command.execute_command("echo stdout; echo stderr 1>&2")
+    if platform.system() == "Windows":
+        cmdsep = " & "
+    else:
+        cmdsep = "; "
+    pydm_shell_command.execute_command(f"echo stdout{cmdsep}echo stderr 1>&2")
     pydm_shell_command.process.wait()
     out_show, err_show = capfd.readouterr()
     out_store, err_store = pydm_shell_command.process.communicate()
