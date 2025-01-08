@@ -6,7 +6,7 @@ from qtpy.QtCore import Qt, QSize
 from qtpy.QtWidgets import QApplication
 from ...utilities.stylesheet import global_style
 from ...widgets.related_display_button import PyDMRelatedDisplayButton
-from ...utilities import IconFont
+from ...utilities import IconFont, checkObjectProperties
 
 test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../test_data", "test.ui")
 test_ui_path_with_stylesheet = os.path.join(
@@ -17,6 +17,10 @@ test_ui_path_with_relative_path = os.path.join(
 )
 
 
+# additional props we expect to get added to PyDMRelatedDisplayButton class RULE_PROPERTIES
+expected_related_display_button_properties = {"Text": ["setText", str], "Filenames": ["filenames", list]}
+
+
 def test_old_display_filename_property(qtbot):
     # This test is mostly only checking that the related display button
     # doesn't totally explode when the old 'displayFilename' property is used.
@@ -25,6 +29,7 @@ def test_old_display_filename_property(qtbot):
     main_window.setWindowTitle("Related Display Button Test")
     qtbot.addWidget(main_window)
     button = PyDMRelatedDisplayButton(parent=main_window)
+    assert checkObjectProperties(button, expected_related_display_button_properties) is True
     with warnings.catch_warnings(record=True) as record:
         button.displayFilename = test_ui_path
     assert len(record) >= 1

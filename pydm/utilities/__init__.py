@@ -560,3 +560,45 @@ def get_clipboard_text() -> str:
         if text:
             return text
     return ""
+
+
+def checkObjectProperties(class_object, extra_properties):
+    """
+    Check that an object has the expected RULE_PROPERTIES map.
+    This function should only be used on objects derived from PyDMWidget and
+    therefore PyDMPrimitiveWidget (which defines the RULE_PROPERTIES).
+    The expected properties are the base properties of PyDMWidget and any extra ones applied to the subclass.
+
+    Parameters
+    ----------
+    class_object : Type[PyDMWidget]
+        The object to check the properties of.
+
+    extra_properties : dict
+        Map of the additional properties we expect applied to the class_object.
+        These should be only the extra props applied to the derived class itself,
+        not including the props applied to PyDMWidget and PyDMPrimitiveWidget.
+    """
+
+    # Properties that all PyDMWidget derived objects should all have, since they are applied
+    # at the definition of PyDMWidget and PyDMPrimitiveWidget classes.
+    pydm_widget_props = {
+        "Enable": ["setEnabled", bool],
+        "Visible": ["setVisible", bool],
+        "Opacity": ["set_opacity", float],
+        "Position - X": ["setX", int],
+        "Position - Y": ["setY", int],
+    }
+
+    # Combine the properties into one map
+    pydm_widget_props.update(extra_properties)
+
+    # Check if object's properties are as expected
+    for key, value in pydm_widget_props.items():
+        if key not in class_object.RULE_PROPERTIES:
+            print("Missing property: ", key)
+            return False
+        if class_object.RULE_PROPERTIES[key] != value:
+            print(f"Mismatch for property '{key}': expected {value}, got {class_object.RULE_PROPERTIES[key]}")
+            return False
+    return True

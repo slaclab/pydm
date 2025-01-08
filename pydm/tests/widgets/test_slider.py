@@ -7,6 +7,7 @@ from qtpy.QtCore import Qt, QMargins, QPoint, QEvent, QRect, QSize
 from qtpy.QtGui import QMouseEvent
 from ...widgets.slider import PyDMSlider, PyDMPrimitiveSlider
 from ...widgets.base import PyDMWidget
+from ...utilities import checkObjectProperties
 
 # Unit Tests for the PyDMPrimitiveSlider class
 
@@ -199,6 +200,10 @@ def test_getSliderPosition(slider_fixture, request):
 # Unit Tests for the PyDMSlider Widget
 
 
+# additional props we expect to get added to PyDMSlider class RULE_PROPERTIES
+expected_slider_properties = {"Set Step Size ": ["step_size", float]}
+
+
 def test_construct(qtbot):
     """
     Test the construction of the widget.
@@ -212,6 +217,7 @@ def test_construct(qtbot):
         Window for widget testing
     """
     pydm_slider = PyDMSlider()
+    assert checkObjectProperties(pydm_slider, expected_slider_properties) is True
     qtbot.addWidget(pydm_slider)
 
     assert pydm_slider.alarmSensitiveContent is True
