@@ -1,6 +1,7 @@
 import logging
 from qtpy import QtWidgets, QtCore
 from enum import Enum
+from PyQt5.QtCore import Q_ENUM
 
 from .base import PyDMWritableWidget, PyDMWidget
 
@@ -13,7 +14,7 @@ class TimeBase(Enum):
 
 
 class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
-    QtCore.Q_ENUM(TimeBase)
+    Q_ENUM(TimeBase)
     returnPressed = QtCore.Signal()
     """
     A QDateTimeEdit with support for setting the text via a PyDM Channel, or
@@ -109,7 +110,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
 
 
 class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
-    QtCore.Q_ENUM(TimeBase)
+    Q_ENUM(TimeBase)
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
