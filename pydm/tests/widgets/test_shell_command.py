@@ -98,6 +98,7 @@ def test_construct(qtbot, command, title):
     assert test_icon_image == shell_cmd_icon_image
 
 
+@pytest.mark.filterwarnings("ignore:'PyDMShellCommand.command' is deprecated")
 def test_deprecated_command_property_with_no_commands(qtbot):
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
@@ -106,6 +107,7 @@ def test_deprecated_command_property_with_no_commands(qtbot):
     assert pydm_shell_command.commands == ["test"]
 
 
+@pytest.mark.filterwarnings("ignore:'PyDMShellCommand.command' is deprecated")
 def test_deprecated_command_property_with_commands(qtbot):
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)

@@ -12,7 +12,7 @@ ScalarType = (
     np.int8,
     np.int16,
     np.int32,
-    np.compat.long,
+    np.int64,  # same as np.long
     np.uint8,
     np.uint16,
     np.uint32,
