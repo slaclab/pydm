@@ -1,5 +1,7 @@
 # Unit Tests for the Shell Command widget class
 
+from __future__ import annotations
+
 import os
 import pytest
 
@@ -10,7 +12,7 @@ from qtpy import QtCore
 from qtpy.QtCore import QSize
 from qtpy.QtWidgets import QMenu, QAction
 
-from ...widgets.shell_command import PyDMShellCommand
+from ...widgets.shell_command import PyDMShellCommand, TermOutputMode
 from ...utilities import IconFont
 
 
@@ -177,7 +179,7 @@ def test_mouse_release_event(qtbot, caplog, cmd, retcode, stdout):
         The expected stdout for the command.
     """
     pydm_shell_command = PyDMShellCommand()
-    pydm_shell_command.stdout = pydm_shell_command.TermOutputMode.STORE
+    pydm_shell_command.stdout = TermOutputMode.STORE
     qtbot.addWidget(pydm_shell_command)
 
     def check_command_output(command, expected_retcode, expected_stdout):
@@ -266,7 +268,7 @@ def test_env_var(qtbot):
         Window for widget testing
     """
     pydm_shell_command = PyDMShellCommand()
-    pydm_shell_command.stdout = pydm_shell_command.TermOutputMode.STORE
+    pydm_shell_command.stdout = TermOutputMode.STORE
 
     qtbot.addWidget(pydm_shell_command)
 
@@ -283,9 +285,9 @@ def test_env_var(qtbot):
 
 
 options = (
-    PyDMShellCommand.TermOutputMode.HIDE,
-    PyDMShellCommand.TermOutputMode.SHOW,
-    PyDMShellCommand.TermOutputMode.STORE,
+    TermOutputMode.HIDE,
+    TermOutputMode.SHOW,
+    TermOutputMode.STORE,
 )
 
 
@@ -365,63 +367,54 @@ def test_output_options_backcompat(qtbot, caplog):
     assert not pydm_shell_command.redirectCommandOutput
     assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
 
+    def assert_backcompat(value: bool | TermOutputMode, expect_warning: bool):
+        """Helper for repeated assert checks in this unit test."""
+        # Clear any stored logs from previous calls
+        caplog.clear()
+        # Set the new state
+        if isinstance(value, bool):
+            pydm_shell_command.redirectCommandOutput = value
+        else:
+            pydm_shell_command.stdout = value
+        # Ensure we did or did not have a warning message
+        if expect_warning:
+            assert "WARNING" in caplog.text
+        else:
+            assert "WARNING" not in caplog.text
+        # Depending on the input, verify the widget state is as expected
+        # show == redirect command output (to the terminal)
+        # other states do not redirect command output (to the terminal)
+        # Setting redirect itself (bool) should flip between show and hide
+        if value == TermOutputMode.SHOW:
+            assert pydm_shell_command.redirectCommandOutput
+            assert pydm_shell_command.stdout == value
+        elif value in (TermOutputMode.HIDE, TermOutputMode.STORE):
+            assert not pydm_shell_command.redirectCommandOutput
+            assert pydm_shell_command.stdout == value
+        elif value:
+            assert pydm_shell_command.redirectCommandOutput
+            assert pydm_shell_command.stdout == TermOutputMode.SHOW
+        else:
+            assert not pydm_shell_command.redirectCommandOutput
+            assert pydm_shell_command.stdout == TermOutputMode.HIDE
+
     # Changing redirectCommandOutput should also change stdout. No warnings here.
-    caplog.clear()
-    pydm_shell_command.redirectCommandOutput = True
-    assert "WARNING" not in caplog.text
-    assert pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.SHOW
-    caplog.clear()
-    pydm_shell_command.redirectCommandOutput = False
-    assert "WARNING" not in caplog.text
-    assert not pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
+    assert_backcompat(value=True, expect_warning=False)
+    assert_backcompat(value=False, expect_warning=False)
 
     # Changing stdout now should give a warning and also update redirectCommandOutput
-    caplog.clear()
-    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.SHOW
-    assert "WARNING" in caplog.text
-    assert pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.SHOW
-    caplog.clear()
-    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.HIDE
-    assert "WARNING" in caplog.text
-    assert not pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
-    caplog.clear()
-    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.STORE
-    assert "WARNING" in caplog.text
-    assert not pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.STORE
+    assert_backcompat(value=TermOutputMode.SHOW, expect_warning=True)
+    assert_backcompat(value=TermOutputMode.HIDE, expect_warning=True)
+    assert_backcompat(value=TermOutputMode.STORE, expect_warning=True)
 
     # Now that we've changed stdout, changing redirectCommandOutput is also a warning
-    caplog.clear()
-    pydm_shell_command.redirectCommandOutput = True
-    assert "WARNING" in caplog.text
-    assert pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.SHOW
-    caplog.clear()
-    pydm_shell_command.redirectCommandOutput = False
-    assert "WARNING" in caplog.text
-    assert not pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
+    assert_backcompat(value=True, expect_warning=True)
+    assert_backcompat(value=False, expect_warning=True)
 
     # A fresh widget should not have warnings from changing stdout
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
 
-    caplog.clear()
-    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.SHOW
-    assert "WARNING" not in caplog.text
-    assert pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.SHOW
-    caplog.clear()
-    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.HIDE
-    assert "WARNING" not in caplog.text
-    assert not pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.HIDE
-    caplog.clear()
-    pydm_shell_command.stdout = PyDMShellCommand.TermOutputMode.STORE
-    assert "WARNING" not in caplog.text
-    assert not pydm_shell_command.redirectCommandOutput
-    assert pydm_shell_command.stdout == PyDMShellCommand.TermOutputMode.STORE
+    assert_backcompat(value=TermOutputMode.SHOW, expect_warning=False)
+    assert_backcompat(value=TermOutputMode.HIDE, expect_warning=False)
+    assert_backcompat(value=TermOutputMode.STORE, expect_warning=False)
