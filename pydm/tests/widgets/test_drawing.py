@@ -27,6 +27,7 @@ from ...widgets.drawing import (
     PyDMDrawingPolyline,
     PyDMDrawingIrregularPolygon,
 )
+from ...utilities import checkPyDMWidgetDerivedObjectProperties
 
 
 # --------------------
@@ -37,6 +38,8 @@ from ...widgets.drawing import (
 # # -------------
 # # PyDMDrawing
 # # -------------
+
+
 @pytest.mark.parametrize(
     "deg, expected_qt_deg",
     [
@@ -84,6 +87,14 @@ def test_qt_to_deg(qt_deg, expected_deg):
     assert qt_to_deg(qt_deg) == expected_deg
 
 
+expected_drawing_properties = {
+    "Set Pen Color": ["penColor", QColor],
+    "Set Pen Style": ["penStyle", int],
+    "Set Pen Width": ["penWidth", float],
+    "Set Brush Color": ["brush", QBrush],
+}
+
+
 def test_pydmdrawing_construct(qtbot):
     """
     Test the construction of a PyDM base object.
@@ -97,6 +108,8 @@ def test_pydmdrawing_construct(qtbot):
         Window for widget testing
     """
     pydm_drawing = PyDMDrawing()
+    # should be ok to just test this on a single instance of the created object
+    assert checkPyDMWidgetDerivedObjectProperties(pydm_drawing, expected_drawing_properties)
     qtbot.addWidget(pydm_drawing)
 
     assert pydm_drawing.alarmSensitiveBorder is False
@@ -482,6 +495,7 @@ def test_pydmdrawingline_draw_item(qtbot, signals, alarm_sensitive_content):
         True if the widget will be redraw with a different color if an alarm is triggered; False otherwise
     """
     pydm_drawingline = PyDMDrawingLine(init_channel="fake://tst")
+    assert checkPyDMWidgetDerivedObjectProperties(pydm_drawingline, expected_drawing_properties)
     qtbot.addWidget(pydm_drawingline)
 
     pydm_drawingline.alarmSensitiveContent = alarm_sensitive_content

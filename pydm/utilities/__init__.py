@@ -560,3 +560,40 @@ def get_clipboard_text() -> str:
         if text:
             return text
     return ""
+
+
+def checkPyDMWidgetDerivedObjectProperties(class_object, extra_properties):
+    """
+    Check that an object derived from PyDMWidget has the expected properties,
+    these being the base properties applied to PyDMWidget and any extra ones applied to the subclass.
+
+    Parameters
+    ----------
+    class_object : Type[PyDMWidget]
+        The object to check the properties of.
+
+    extra_properties : dict
+        Map of the additional properties applied to the class_object.
+    """
+
+    # properties that all PyDMWidget derived objects should all have
+    pydm_widget_props = {
+        "Enable": ["setEnabled", bool],
+        "Visible": ["setVisible", bool],
+        "Opacity": ["set_opacity", float],
+        "Position - X": ["setX", int],
+        "Position - Y": ["setY", int],
+    }
+
+    # combine the properties into one map
+    pydm_widget_props.update(extra_properties)
+
+    # check if object's properties are as expected
+    for key, value in pydm_widget_props.items():
+        if key not in class_object.RULE_PROPERTIES:
+            print("Missing property: ", key)
+            return False
+        if class_object.RULE_PROPERTIES[key] != value:
+            print(f"Mismatch for property '{key}': expected {value}, got {class_object.RULE_PROPERTIES[key]}")
+            return False
+    return True
