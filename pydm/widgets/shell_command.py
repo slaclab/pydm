@@ -11,16 +11,15 @@ from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineE
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
-from PyQt5.QtCore import Q_ENUM
+from PyQt5.QtCore import Q_ENUMS
 from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont
 from typing import Optional, Union, List
-from enum import Enum
 
 logger = logging.getLogger(__name__)
 
 
-class TermOutputMode(Enum):
+class TermOutputMode:
     """
     Enum to select the behavior of the stdout/stderr output from a subprocess.
     """
@@ -30,8 +29,8 @@ class TermOutputMode(Enum):
     STORE = 2
 
 
-class PyDMShellCommand(QPushButton, PyDMWidget):
-    Q_ENUM(TermOutputMode)
+class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
+    Q_ENUMS(TermOutputMode)
     """
     A QPushButton capable of execute shell commands.
 
