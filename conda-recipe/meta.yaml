@@ -14,13 +14,13 @@ build:
 
 requirements:
   host:
-    - python
+    - python >=3.9
     - pip
     - setuptools
     - pyqt =5
     - qtpy
   run:
-    - python
+    - python >=3.9
     - six
     - numpy
     - scipy
