@@ -177,6 +177,7 @@ def test_mouse_release_event(qtbot, caplog, cmd, retcode, stdout):
         The expected stdout for the command.
     """
     pydm_shell_command = PyDMShellCommand()
+    pydm_shell_command.stdout = pydm_shell_command.TermOutputMode.STORE
     qtbot.addWidget(pydm_shell_command)
 
     def check_command_output(command, expected_retcode, expected_stdout):
@@ -265,6 +266,8 @@ def test_env_var(qtbot):
         Window for widget testing
     """
     pydm_shell_command = PyDMShellCommand()
+    pydm_shell_command.stdout = pydm_shell_command.TermOutputMode.STORE
+
     qtbot.addWidget(pydm_shell_command)
 
     os.environ["PYDM_TEST_ENV_VAR"] = "this is a pydm test"
