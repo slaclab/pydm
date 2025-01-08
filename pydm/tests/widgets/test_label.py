@@ -9,7 +9,7 @@ from ...utilities import is_pydm_app
 from ...widgets.label import PyDMLabel
 from ...widgets.base import PyDMWidget
 from ...widgets.display_format import parse_value_for_display, DisplayFormat
-from ...utilities import checkPyDMWidgetDerivedObjectProperties
+from ...utilities import checkObjectProperties
 
 from qtpy.QtWidgets import QApplication, QStyleOption
 from qtpy.QtCore import Qt
@@ -19,6 +19,7 @@ from qtpy.QtCore import Qt
 # --------------------
 
 
+# additional props we expect to get added to PyDMLabel class RULE_PROPERTIES
 expected_label_properties = {"Text": ["value_changed", str]}
 
 
@@ -37,7 +38,7 @@ def test_construct(qtbot):
         Window for widget testing
     """
     pydm_label = PyDMLabel()
-    assert checkPyDMWidgetDerivedObjectProperties(pydm_label, expected_label_properties)
+    assert checkObjectProperties(pydm_label, expected_label_properties) is True
 
     qtbot.addWidget(pydm_label)
 

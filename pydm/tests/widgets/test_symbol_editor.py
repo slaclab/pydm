@@ -6,9 +6,10 @@ from qtpy.QtWidgets import QMessageBox, QTableWidgetSelectionRange
 
 from ...widgets.symbol import PyDMSymbol
 from ...widgets.symbol_editor import SymbolEditor
-from ...utilities import checkPyDMWidgetDerivedObjectProperties
+from ...utilities import checkObjectProperties
 
 
+# additional props we expect to get added to PyDMSymbol class RULE_PROPERTIES
 expected_symbol_properties = {"Index": ["set_current_key", int]}
 
 
@@ -25,7 +26,7 @@ def test_symbol_editor(qtbot, monkeypatch):
     """
     # Create the base widget
     widget = PyDMSymbol()
-    assert checkPyDMWidgetDerivedObjectProperties(widget, expected_symbol_properties)
+    assert checkObjectProperties(widget, expected_symbol_properties) is True
 
     qtbot.addWidget(widget)
 

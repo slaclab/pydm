@@ -562,10 +562,12 @@ def get_clipboard_text() -> str:
     return ""
 
 
-def checkPyDMWidgetDerivedObjectProperties(class_object, extra_properties):
+def checkObjectProperties(class_object, extra_properties):
     """
-    Check that an object derived from PyDMWidget has the expected properties,
-    these being the base properties applied to PyDMWidget and any extra ones applied to the subclass.
+    Check that an object has the expected RULE_PROPERTIES map.
+    This function should only be used on objects derived from PyDMWidget and
+    therefore PyDMPrimitiveWidget (which defines the RULE_PROPERTIES).
+    The expected properties are the base properties of PyDMWidget and any extra ones applied to the subclass.
 
     Parameters
     ----------
@@ -573,10 +575,13 @@ def checkPyDMWidgetDerivedObjectProperties(class_object, extra_properties):
         The object to check the properties of.
 
     extra_properties : dict
-        Map of the additional properties applied to the class_object.
+        Map of the additional properties we expect applied to the class_object.
+        These should be only the extra props applied to the derived class itself,
+        not including the props applied to PyDMWidget and PyDMPrimitiveWidget.
     """
 
-    # properties that all PyDMWidget derived objects should all have
+    # Properties that all PyDMWidget derived objects should all have, since they are applied
+    # at the definition of PyDMWidget and PyDMPrimitiveWidget classes.
     pydm_widget_props = {
         "Enable": ["setEnabled", bool],
         "Visible": ["setVisible", bool],
@@ -585,10 +590,10 @@ def checkPyDMWidgetDerivedObjectProperties(class_object, extra_properties):
         "Position - Y": ["setY", int],
     }
 
-    # combine the properties into one map
+    # Combine the properties into one map
     pydm_widget_props.update(extra_properties)
 
-    # check if object's properties are as expected
+    # Check if object's properties are as expected
     for key, value in pydm_widget_props.items():
         if key not in class_object.RULE_PROPERTIES:
             print("Missing property: ", key)
