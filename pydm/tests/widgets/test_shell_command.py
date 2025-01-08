@@ -321,11 +321,14 @@ def test_output_options(qtbot, capfd, stdout_setting, stderr_setting):
 
     qtbot.addWidget(pydm_shell_command)
 
-    capfd.readouterr()
     if platform.system() == "Windows":
         cmdsep = " & "
+        outterm = " \r\n"
     else:
         cmdsep = "; "
+        outterm = "\n"
+
+    capfd.readouterr()
     pydm_shell_command.execute_command(f"echo stdout{cmdsep}echo stderr 1>&2")
     pydm_shell_command.process.wait()
     out_show, err_show = capfd.readouterr()
@@ -335,11 +338,11 @@ def test_output_options(qtbot, capfd, stdout_setting, stderr_setting):
         assert out_show == ""
         assert out_store is None
     elif stdout_setting == TermOutputMode.SHOW:
-        assert out_show == "stdout\n"
+        assert out_show == f"stdout{outterm}"
         assert out_store is None
     elif stdout_setting == TermOutputMode.STORE:
         assert out_show == ""
-        assert out_store == b"stdout\n"
+        assert out_store.decode("utf-8") == f"stdout{outterm}"
     else:
         raise RuntimeError("Test written wrong, invalid stdout_setting")
 
@@ -347,11 +350,11 @@ def test_output_options(qtbot, capfd, stdout_setting, stderr_setting):
         assert err_show == ""
         assert err_store is None
     elif stderr_setting == TermOutputMode.SHOW:
-        assert err_show == "stderr\n"
+        assert err_show == f"stderr{outterm}"
         assert err_store is None
     elif stderr_setting == TermOutputMode.STORE:
         assert err_show == ""
-        assert err_store == b"stderr\n"
+        assert err_store.decode("utf-8") == f"stderr{outterm}"
     else:
         raise RuntimeError("Test written wrong, invalid stderr_setting")
 
