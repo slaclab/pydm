@@ -5,10 +5,12 @@ from typing import Any
 import logging
 import warnings
 from enum import Enum
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
 
+# works with pyside6
 class DisplayFormat(Enum):
     """Display format for showing data in a PyDM widget."""
 
@@ -24,6 +26,17 @@ class DisplayFormat(Enum):
     Hex = 4
     #: Show numerical values in base 2 (binary) notation.
     Binary = 5
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+
+    class DisplayFormat(object):  # noqa F811
+        Default = 0
+        String = 1
+        Decimal = 2
+        Exponential = 3
+        Hex = 4
+        Binary = 5
 
 
 def parse_value_for_display(

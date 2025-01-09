@@ -4,6 +4,7 @@ from qtpy.QtCore import Qt, QSize
 
 from ...widgets.enum_button import PyDMEnumButton, WidgetType, class_for_type
 from ... import data_plugins
+from ...utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 
 def test_construct(qtbot):
@@ -43,11 +44,15 @@ def test_widget_type(qtbot, widget_type):
     qtbot.addWidget(widget)
 
     assert widget.widgetType == WidgetType.PushButton
-    assert isinstance(widget._widgets[0], class_for_type[WidgetType.PushButton.value])
+    # Support both pyqt enums (inherit from 'object') and pyside6 enums (inherit from python 'Enum' and
+    # therefore require '.value')
+    index = WidgetType.PushButton if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5 else WidgetType.PushButton.value
+    assert isinstance(widget._widgets[0], class_for_type[index])
 
     widget.widgetType = widget_type
     assert widget.widgetType == widget_type
-    assert isinstance(widget._widgets[0], class_for_type[widget_type.value])
+    index = widget_type if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5 else widget_type.value
+    assert isinstance(widget._widgets[0], class_for_type[index])
 
 
 @pytest.mark.parametrize("orientation", [Qt.Horizontal, Qt.Vertical])
@@ -82,7 +87,8 @@ def test_widget_orientation(qtbot, orientation):
     w = item.widget()
     qtbot.addWidget(w)
     assert w is not None
-    assert isinstance(w, class_for_type[widget.widgetType.value])
+    index = widget.widgetType if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5 else widget.widgetType.value
+    assert isinstance(w, class_for_type[index])
 
 
 @pytest.mark.parametrize(

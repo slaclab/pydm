@@ -6,17 +6,18 @@ from pydm.utilities import is_pydm_app, is_qt_designer
 from pydm import config
 from pydm.widgets.base import only_if_channel_set
 from PyQt5.QtCore import Q_ENUM
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 _labelRuleProperties = {"Text": ["value_changed", str]}
 
 
-class PyDMLabel(QLabel, TextFormatter, PyDMWidget, new_properties=_labelRuleProperties):
+class PyDMLabelBase(QLabel, TextFormatter, PyDMWidget, new_properties=_labelRuleProperties):
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
 
     .. note::
-        If a PyDMLabel is configured to use a Channel, and also with a rule which changes the 'Text' property,
+        If a PyDMLabelBase is configured to use a Channel, and also with a rule which changes the 'Text' property,
         the behavior is undefined.  Use either
         the Channel *or* a text rule, but not both.
 
@@ -27,9 +28,6 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, new_properties=_labelRuleProp
     init_channel : str, optional
         The channel to be used by the widget.
     """
-
-    Q_ENUM(DisplayFormat)
-    DisplayFormat = DisplayFormat
 
     def __init__(self, parent=None, init_channel=None):
         QLabel.__init__(self, parent)
@@ -89,7 +87,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, new_properties=_labelRuleProp
         new_value : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
-        super(PyDMLabel, self).value_changed(new_value)
+        super(PyDMLabelBase, self).value_changed(new_value)
         new_value = parse_value_for_display(
             value=new_value,
             precision=self.precision,
@@ -127,3 +125,18 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, new_properties=_labelRuleProp
         if not self._connected:
             self.setText(self.channel)
         super().check_enable_state()
+
+
+# works with pyside6
+class PyDMLabel(PyDMLabelBase):
+    pass
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    # Overrides the previous class defintion
+    class PyDMLabel(PyDMLabelBase, DisplayFormat):  # noqa F811
+        DisplayFormat = DisplayFormat
+        Q_ENUM(DisplayFormat)
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)

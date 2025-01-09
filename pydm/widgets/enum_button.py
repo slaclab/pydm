@@ -8,11 +8,20 @@ from qtpy.QtWidgets import QWidget, QButtonGroup, QGridLayout, QPushButton, QRad
 
 from .base import PyDMWritableWidget
 from .. import data_plugins
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 
+# works with pyside6
 class WidgetType(Enum):
     PushButton = 0
     RadioButton = 1
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+
+    class WidgetType(object):  # noqa F811
+        PushButton = 0
+        RadioButton = 1
 
 
 class_for_type = [QPushButton, QRadioButton]
@@ -20,7 +29,7 @@ class_for_type = [QPushButton, QRadioButton]
 logger = logging.getLogger(__name__)
 
 
-class PyDMEnumButton(QWidget, PyDMWritableWidget):
+class PyDMEnumButtonBase(QWidget, PyDMWritableWidget):
     """
     A QWidget that renders buttons for every option of Enum Items.
     For now, two types of buttons can be rendered:
@@ -39,9 +48,6 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
     send_value_signal : int, float, str, bool or np.ndarray
         Emitted when the user changes the value.
     """
-
-    Q_ENUM(WidgetType)
-    WidgetType = WidgetType
 
     def __init__(self, parent=None, init_channel=None):
         QWidget.__init__(self, parent)
@@ -401,7 +407,10 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
                 w.deleteLater()
 
             for idx, entry in enumerate(items):
-                w = class_for_type[self._widget_type.value](parent=self)
+                # Support both pyqt enums (inherit from 'object') and pyside6 enums (inherit from python 'Enum' and
+                # therefore require '.value')
+                index = self._widget_type if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5 else self._widget_type.value
+                w = class_for_type[index](parent=self)
                 w.setCheckable(self.checkable)
                 w.setText(entry)
                 w.setVisible(False)
@@ -481,7 +490,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             The new value from the channel.
         """
         if new_val is not None and new_val != self.value:
-            super(PyDMEnumButton, self).value_changed(new_val)
+            super(PyDMEnumButtonBase, self).value_changed(new_val)
             btn = self._btn_group.button(new_val)
             if btn:
                 btn.setChecked(True)
@@ -498,7 +507,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             The new list of values
         """
         if new_enum_strings is not None and new_enum_strings != self.enum_strings:
-            super(PyDMEnumButton, self).enum_strings_changed(new_enum_strings)
+            super(PyDMEnumButtonBase, self).enum_strings_changed(new_enum_strings)
             self._has_enums = True
             self.check_enable_state()
             self.rebuild_widgets()
@@ -522,3 +531,18 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         opt.initFrom(self)
         self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
         painter.setRenderHint(QPainter.Antialiasing)
+
+
+# works with pyside6
+class PyDMEnumButton(PyDMEnumButtonBase):
+    pass
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    # Overrides the previous class defintion
+    class PyDMEnumButton(PyDMEnumButtonBase, WidgetType):  # noqa F811
+        WidgetType = WidgetType
+        Q_ENUM(WidgetType)
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
