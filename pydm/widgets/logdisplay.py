@@ -2,8 +2,10 @@ import logging
 import functools
 
 from collections import OrderedDict
+from enum import Enum
 
-from qtpy.QtCore import QObject, Slot, Signal, Property, Q_ENUMS, QSize
+from qtpy.QtCore import QObject, Slot, Signal, Property, QSize
+from PyQt5.QtCore import Q_ENUM
 from qtpy.QtWidgets import (
     QWidget,
     QPlainTextEdit,
@@ -16,6 +18,7 @@ from qtpy.QtWidgets import (
     QStyle,
 )
 from qtpy.QtGui import QPainter
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +84,8 @@ class GuiHandler(QObject, logging.Handler):
             logger.debug("Handler was destroyed at the C++ level.")
 
 
-class LogLevels(object):
+# works with pyside6
+class LogLevels(Enum):
     NOTSET = 0
     DEBUG = 10
     INFO = 20
@@ -99,16 +103,39 @@ class LogLevels(object):
         OrderedDict
         """
         # First let's remove the internals
-        entries = [
-            (k, v)
-            for k, v in LogLevels.__dict__.items()
-            if not k.startswith("__") and not callable(v) and not isinstance(v, staticmethod)
-        ]
-
+        entries = [(k, v.value) for k, v in LogLevels.__members__.items()]
         return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
 
 
-class PyDMLogDisplay(QWidget, LogLevels):
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+
+    class LogLevels(object):  # noqa F811
+        NOTSET = 0
+        DEBUG = 10
+        INFO = 20
+        WARNING = 30
+        ERROR = 40
+        CRITICAL = 50
+
+        @staticmethod
+        def as_dict():
+            """
+            Returns an ordered dict of LogLevels ordered by value.
+            Returns
+            -------
+            OrderedDict
+            """
+            # First let's remove the internals
+            entries = [
+                (k, v)
+                for k, v in LogLevels.__dict__.items()
+                if not k.startswith("__") and not callable(v) and not isinstance(v, staticmethod)
+            ]
+
+            return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
+
+
+class PyDMLogDisplayBase(QWidget):
     """
     Standard display for Log Output
 
@@ -129,7 +156,7 @@ class PyDMLogDisplay(QWidget, LogLevels):
 
     """
 
-    Q_ENUMS(LogLevels)
+    Q_ENUM(LogLevels)
     LogLevels = LogLevels
     terminator = "\n"
     default_format = "%(asctime)s %(message)s"
@@ -258,3 +285,14 @@ class PyDMLogDisplay(QWidget, LogLevels):
         opt.initFrom(self)
         self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
         painter.setRenderHint(QPainter.Antialiasing)
+
+
+# works with pyside6
+class PyDMLogDisplay(PyDMLogDisplayBase):
+    pass
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    # Overrides the previous class defintion
+    class PyDMLogDisplay(PyDMLogDisplayBase, LogLevels):  # noqa F811
+        pass

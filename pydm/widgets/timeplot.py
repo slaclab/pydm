@@ -5,12 +5,14 @@ from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS
+from qtpy.QtCore import Signal, Slot, Property, QTimer
+from PyQt5.QtCore import Q_ENUM
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
-from ..utilities import remove_protocol
+from ..utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 import logging
+from enum import Enum
 
 logger = logging.getLogger(__name__)
 
@@ -24,11 +26,21 @@ DEFAULT_TIME_SPAN = 5.0
 DEFAULT_UPDATE_INTERVAL = 1000  # Plot update rate for fixed rate mode in milliseconds
 
 
-class updateMode(object):
+# works with pyside6
+class updateMode(Enum):
     """updateMode as new type for plot update"""
 
     OnValueChange = 1
     AtFixedRate = 2
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+
+    class updateMode(object):  # noqa F811
+        """updateMode as new type for plot update"""
+
+        OnValueChange = 1
+        AtFixedRate = 2
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
@@ -376,7 +388,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
         if isinstance(value, int) and value == updateMode.AtFixedRate or isinstance(value, bool) and value is True:
-            self._update_mode = PyDMTimePlot.AtFixedRate
+            self._update_mode = PyDMTimePlot.AtFixedRated
         else:
             self._update_mode = PyDMTimePlot.OnValueChange
         self.initialize_buffer()
@@ -412,9 +424,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
         return [self.channel]
 
 
-class PyDMTimePlot(BasePlot, updateMode):
+class PyDMTimePlotBase(BasePlot):
     """
-    PyDMTimePlot is a widget to plot one or more channels vs. time.
+    PyDMTimePlotBase is a widget to plot one or more channels vs. time.
 
     Each curve can plot either a Y-axis waveform vs. its indices,
     or a Y-axis waveform against an X-axis waveform.
@@ -440,7 +452,7 @@ class PyDMTimePlot(BasePlot, updateMode):
     OnValueChange = 1
     AtFixedRated = 2
 
-    Q_ENUMS(updateMode)
+    Q_ENUM(updateMode)
     updateMode = updateMode
 
     plot_redrawn_signal = Signal(TimePlotCurveItem)
@@ -475,7 +487,7 @@ class PyDMTimePlot(BasePlot, updateMode):
             self.starting_epoch_time = time.time()
             self._bottom_axis = AxisItem("bottom")
 
-        super(PyDMTimePlot, self).__init__(
+        super(PyDMTimePlotBase, self).__init__(
             parent=parent, background=background, axisItems={"bottom": self._bottom_axis}
         )
 
@@ -497,7 +509,7 @@ class PyDMTimePlot(BasePlot, updateMode):
 
         self.update_timer = QTimer(self)
         self.update_timer.setInterval(self._update_interval)
-        self._update_mode = PyDMTimePlot.OnValueChange
+        self._update_mode = PyDMTimePlotBase.OnValueChange
         self._needs_redraw = True
 
         self.labels = {"left": None, "right": None, "bottom": None}
@@ -514,12 +526,12 @@ class PyDMTimePlot(BasePlot, updateMode):
         """Adds attribute specific to TimePlot to add onto BasePlot's to_dict.
         This helps to recreate the Plot Config if we import a save file of it"""
         dic_ = OrderedDict([("refreshInterval", self.auto_scroll_timer.interval() / 1000)])
-        dic_.update(super(PyDMTimePlot, self).to_dict())
+        dic_.update(super(PyDMTimePlotBase, self).to_dict())
         return dic_
 
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
-        # This function gets called by PyDMTimePlot's designer plugin.
+        # This function gets called by PyDMTimePlotBase's designer plugin.
         self.redraw_timer.setSingleShot(True)
 
     def addYChannel(
@@ -685,7 +697,7 @@ class PyDMTimePlot(BasePlot, updateMode):
             return
 
         if self._plot_by_timestamps:
-            if self._update_mode == PyDMTimePlot.OnValueChange:
+            if self._update_mode == PyDMTimePlotBase.OnValueChange:
                 maxrange = max([curve.max_x() for curve in self._curves])
             else:
                 maxrange = time.time()
@@ -707,7 +719,7 @@ class PyDMTimePlot(BasePlot, updateMode):
         """
         Remove all curves from the graph.
         """
-        super(PyDMTimePlot, self).clear()
+        super(PyDMTimePlotBase, self).clear()
 
     def getCurves(self):
         """
@@ -918,7 +930,7 @@ class PyDMTimePlot(BasePlot, updateMode):
     bufferSize = Property("int", getBufferSize, setBufferSize, resetBufferSize)
 
     def getUpdatesAsynchronously(self):
-        return self._update_mode == PyDMTimePlot.AtFixedRated
+        return self._update_mode == PyDMTimePlotBase.AtFixedRated
 
     def setUpdatesAsynchronously(self, value):
         for curve in self._curves:
@@ -927,14 +939,14 @@ class PyDMTimePlot(BasePlot, updateMode):
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
         if isinstance(value, int) and value == updateMode.AtFixedRate or isinstance(value, bool) and value is True:
-            self._update_mode = PyDMTimePlot.AtFixedRate
+            self._update_mode = PyDMTimePlotBase.AtFixedRate
             self.update_timer.start()
         else:
-            self._update_mode = PyDMTimePlot.OnValueChange
+            self._update_mode = PyDMTimePlotBase.OnValueChange
             self.update_timer.stop()
 
     def resetUpdatesAsynchronously(self):
-        self._update_mode = PyDMTimePlot.OnValueChange
+        self._update_mode = PyDMTimePlotBase.OnValueChange
         self.update_timer.stop()
         for curve in self._curves:
             curve.resetUpdatesAsynchronously()
@@ -1056,14 +1068,14 @@ class PyDMTimePlot(BasePlot, updateMode):
     def getAutoRangeX(self):
         if self._plot_by_timestamps:
             return False
-        return super(PyDMTimePlot, self).getAutoRangeX()
+        return super(PyDMTimePlotBase, self).getAutoRangeX()
 
     def setAutoRangeX(self, value):
         if self._plot_by_timestamps:
             self._auto_range_x = False
             self.plotItem.enableAutoRange(ViewBox.XAxis, enable=self._auto_range_x)
         else:
-            super(PyDMTimePlot, self).setAutoRangeX(value)
+            super(PyDMTimePlotBase, self).setAutoRangeX(value)
 
     def channels(self):
         return [curve.channel for curve in self._curves]
@@ -1128,7 +1140,7 @@ class PyDMTimePlot(BasePlot, updateMode):
         horizontal_movable : bool
             True if the user can move the horizontal line; False if not
         """
-        super(PyDMTimePlot, self).enableCrosshair(
+        super(PyDMTimePlotBase, self).enableCrosshair(
             is_enabled,
             starting_x_pos,
             starting_y_pos,
@@ -1137,6 +1149,17 @@ class PyDMTimePlot(BasePlot, updateMode):
             vertical_movable,
             horizontal_movable,
         )
+
+
+# works with pyside6
+class PyDMTimePlot(PyDMTimePlotBase):
+    pass
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    # Overrides the previous class defintion
+    class PyDMTimePlot(PyDMTimePlotBase, updateMode):  # noqa F811
+        pass
 
 
 class TimeAxisItem(AxisItem):

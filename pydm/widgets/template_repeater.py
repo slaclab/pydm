@@ -2,12 +2,14 @@ import os
 import json
 import copy
 import logging
+from enum import Enum
 from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QHBoxLayout, QWidget, QStyle, QSizePolicy, QLayout
-from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint, Q_ENUMS
+from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint
+from PyQt5.QtCore import Q_ENUM
 from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer
 import pydm.data_plugins
-from ..utilities import find_file
+from ..utilities import find_file, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from ..display import load_file
 
 logger = logging.getLogger(__name__)
@@ -111,18 +113,27 @@ class FlowLayout(QLayout):
             return parent.spacing()
 
 
-class LayoutType(object):
+# works with pyside6
+class LayoutType(Enum):
     Vertical = 0
     Horizontal = 1
     Flow = 2
 
 
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+
+    class LayoutType(object):  # noqa F811
+        Vertical = 0
+        Horizontal = 1
+        Flow = 2
+
+
 layout_class_for_type = (QVBoxLayout, QHBoxLayout, FlowLayout)
 
 
-class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
+class PyDMTemplateRepeaterBase(QFrame, PyDMPrimitiveWidget):
     """
-    PyDMTemplateRepeater takes a .ui file with macro variables as a template, and a JSON
+    PyDMTemplateRepeaterBase takes a .ui file with macro variables as a template, and a JSON
     file (or a list of dictionaries) with a list of values to use to fill in
     the macro variables, then creates a layout with one instance of the
     template for each item in the list.
@@ -140,7 +151,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         The parent of this widget.
     """
 
-    Q_ENUMS(LayoutType)
+    Q_ENUM(LayoutType)
     LayoutType = LayoutType
 
     def __init__(self, parent=None):
@@ -391,7 +402,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
             return
         self.setUpdatesEnabled(False)
 
-        layout_class = layout_class_for_type[self.layoutType]
+        layout_index = self.layoutType if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5 else self.layoutType.value
+        layout_class = layout_class_for_type[layout_index]
         if type(self.layout()) != layout_class:
             if self.layout() is not None:
                 # Trick to remove the existing layout by re-parenting it in an empty widget.
@@ -455,3 +467,14 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
         """
         self._data = new_data
         self.rebuild()
+
+
+# works with pyside6
+class PyDMTemplateRepeater(PyDMTemplateRepeaterBase):
+    pass
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    # Overrides the previous class defintion
+    class PyDMTemplateRepeater(PyDMTemplateRepeaterBase, LayoutType):  # noqa F811
+        pass

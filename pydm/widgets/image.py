@@ -1,25 +1,37 @@
 from qtpy.QtWidgets import QActionGroup
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
+from qtpy.QtCore import Signal, Slot, Property, QTimer, QThread
+from PyQt5.QtCore import Q_ENUM
 from pyqtgraph import ImageView, PlotItem
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 import numpy as np
 import logging
+from enum import Enum
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
 
-class ReadingOrder(object):
+# works with pyside6
+class ReadingOrder(Enum):
     """Class to build ReadingOrder ENUM property."""
 
     Fortranlike = 0
     Clike = 1
 
 
-class DimensionOrder(object):
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+
+    class ReadingOrder(object):  # noqa F811
+        Fortranlike = 0
+        Clike = 1
+
+
+# works with pyside6
+class DimensionOrder(Enum):
     """
     Class to build DimensionOrder ENUM property.
 
@@ -39,6 +51,13 @@ class DimensionOrder(object):
 
     HeightFirst = 0
     WidthFirst = 1
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+
+    class DimensionOrder(object):  # noqa F811
+        HeightFirst = 0
+        WidthFirst = 1
 
 
 class ImageUpdateThread(QThread):
@@ -98,7 +117,11 @@ class ImageUpdateThread(QThread):
         self.image_view.needs_redraw = False
 
 
-class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder, DimensionOrder):
+class PyDMImageViewBase(
+    ImageView,
+    PyDMWidget,
+    PyDMColorMap,
+):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM.
 
@@ -126,9 +149,9 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder, Dimension
     ReadingOrder = ReadingOrder
     DimensionOrder = DimensionOrder
 
-    Q_ENUMS(ReadingOrder)
-    Q_ENUMS(DimensionOrder)
-    Q_ENUMS(PyDMColorMap)
+    Q_ENUM(ReadingOrder)
+    Q_ENUM(DimensionOrder)
+    Q_ENUM(PyDMColorMap)
 
     color_maps = cmaps
 
@@ -747,3 +770,14 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder, Dimension
     @scaleYAxis.setter
     def scaleYAxis(self, new_scale):
         self.getView().getAxis("left").setScale(new_scale)
+
+
+# works with pyside6
+class PyDMImageView(PyDMImageViewBase):
+    pass
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    # Overrides the previous class defintion
+    class PyDMImageView(PyDMImageViewBase, ReadingOrder, DimensionOrder):  # noqa F811
+        pass

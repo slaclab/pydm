@@ -5,7 +5,8 @@ import shlex
 import logging
 from functools import partial
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
-from qtpy.QtCore import Property, Q_ENUMS, Qt
+from qtpy.QtCore import Property, Qt
+from PyQt5.QtCore import Q_ENUM
 from qtpy.QtGui import QFocusEvent
 from .. import utilities
 from .base import PyDMWritableWidget, TextFormatter, str_types
@@ -14,7 +15,7 @@ from .display_format import DisplayFormat, parse_value_for_display
 logger = logging.getLogger(__name__)
 
 
-class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
+class PyDMLineEditBase(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
     """
     A QLineEdit (writable text field) with support for Channels and more
     from PyDM.
@@ -29,7 +30,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         The channel to be used by the widget.
     """
 
-    Q_ENUMS(DisplayFormat)
+    Q_ENUM(DisplayFormat)
     DisplayFormat = DisplayFormat
 
     def __init__(self, parent=None, init_channel=None):
@@ -42,7 +43,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
         self.returnPressed.connect(self.send_value)
         self.unitMenu = None
-        self._display_format_type = self.DisplayFormat.Default
+        self._display_format_type = DisplayFormat.Default
         self._string_encoding = "utf_8"
         self._user_set_read_only = False  # Are we *really* read only?
         if utilities.is_pydm_app():
@@ -61,10 +62,10 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
     def value_changed(self, new_val):
         """
-        Receive and update the PyDMLineEdit for a new channel value
+        Receive and update the PyDMLineEditBase for a new channel value
 
         The actual value of the input is saved as well as the type received.
-        This also resets the PyDMLineEdit display text using
+        This also resets the PyDMLineEditBase display text using
         :meth:`.set_display`
 
         Parameters
@@ -72,7 +73,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         value: str, float or int
             The new value of the channel
         """
-        super(PyDMLineEdit, self).value_changed(new_val)
+        super(PyDMLineEditBase, self).value_changed(new_val)
         self.set_display()
 
     def send_value(self):
@@ -81,7 +82,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
         The text is cleaned of all units, user-formatting and scale values
         before being sent back to the channel. This function is attached the
-        ReturnPressed signal of the PyDMLineEdit
+        ReturnPressed signal of the PyDMLineEditBase
         """
         send_value = str(self.text())
         # Clean text of unit string
@@ -120,7 +121,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
                     self.send_value_signal[np.ndarray].emit(arr_value)
             elif self.channeltype == bool:
                 try:
-                    val = bool(PyDMLineEdit.strtobool(send_value))
+                    val = bool(PyDMLineEditBase.strtobool(send_value))
                     self.send_value_signal[bool].emit(val)
                     # might want to add error to application screen
                 except ValueError:
@@ -141,15 +142,15 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
     def setReadOnly(self, readOnly):
         self._user_set_read_only = readOnly
-        super(PyDMLineEdit, self).setReadOnly(True if self._user_set_read_only else not self._write_access)
+        super(PyDMLineEditBase, self).setReadOnly(True if self._user_set_read_only else not self._write_access)
 
     def write_access_changed(self, new_write_access):
         """
-        Change the PyDMLineEdit to read only if write access is denied
+        Change the PyDMLineEditBase to read only if write access is denied
         """
-        super(PyDMLineEdit, self).write_access_changed(new_write_access)
+        super(PyDMLineEditBase, self).write_access_changed(new_write_access)
         if not self._user_set_read_only:
-            super(PyDMLineEdit, self).setReadOnly(not new_write_access)
+            super(PyDMLineEditBase, self).setReadOnly(not new_write_access)
 
     def unit_changed(self, new_unit):
         """
@@ -159,7 +160,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         attribute. Receiving a new value for the unit causes the display to
         reset.
         """
-        super(PyDMLineEdit, self).unit_changed(new_unit)
+        super(PyDMLineEditBase, self).unit_changed(new_unit)
         self._scale = 1
 
     def create_unit_options(self):
@@ -167,7 +168,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         Create the menu for displaying possible unit values
 
         The menu is filled with possible unit conversions based on the
-        current PyDMLineEdit. If either the unit is not found in the by
+        current PyDMLineEditBase. If either the unit is not found in the by
         the :func:`utilities.find_unit_options` function, or, the
         :attr:`.showUnits` attribute is set to False, the menu will tell
         the user that there are no available conversions
@@ -233,12 +234,12 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
     def set_display(self):
         """
-        Set the text display of the PyDMLineEdit.
+        Set the text display of the PyDMLineEditBase.
 
         The original value given by the PV is converted to a text entry based
         on the current settings for scale value, precision, a user-defined
         format, and the current units. If the user is currently entering a
-        value in the PyDMLineEdit the text will not be changed.
+        value in the PyDMLineEditBase the text will not be changed.
         """
         if self.value is None:
             return
@@ -306,13 +307,13 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
     def focusOutEvent(self, event):
         """
-        Overwrites the function called when a user leaves a PyDMLineEdit
+        Overwrites the function called when a user leaves a PyDMLineEditBase
         without pressing return.  Resets the value of the text field to the
         current channel value.
         """
         if self._display is not None:
             self.setText(self._display)
-        super(PyDMLineEdit, self).focusOutEvent(event)
+        super(PyDMLineEditBase, self).focusOutEvent(event)
 
     @staticmethod
     def strtobool(val):
@@ -325,3 +326,14 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
             return 0
         else:
             raise ValueError("invalid boolean input")
+
+
+# works with pyside6
+class PyDMLineEdit(PyDMLineEditBase):
+    pass
+
+
+if utilities.ACTIVE_QT_WRAPPER == utilities.QtWrapperTypes.PYQT5:
+    # Overrides the previous class defintion
+    class PyDMLineEdit(PyDMLineEditBase, DisplayFormat):  # noqa F811
+        pass
