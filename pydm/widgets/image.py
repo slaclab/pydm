@@ -98,7 +98,7 @@ class ImageUpdateThread(QThread):
         self.image_view.needs_redraw = False
 
 
-class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder, DimensionOrder):
+class PyDMImageView(ImageView, PyDMWidget):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM.
 
@@ -129,6 +129,21 @@ class PyDMImageView(ImageView, PyDMWidget, PyDMColorMap, ReadingOrder, Dimension
     Q_ENUMS(ReadingOrder)
     Q_ENUMS(DimensionOrder)
     Q_ENUMS(PyDMColorMap)
+
+    # Make enum definitions known to this class
+    Fortranlike = ReadingOrder.Fortranlike
+    Clike = ReadingOrder.Clike
+
+    HeightFirst = DimensionOrder.HeightFirst
+    WidthFirst = DimensionOrder.WidthFirst
+
+    Magma = PyDMColorMap.Magma
+    Inferno = PyDMColorMap.Inferno
+    Plasma = PyDMColorMap.Plasma
+    Viridis = PyDMColorMap.Viridis
+    Jet = PyDMColorMap.Jet
+    Monochrome = PyDMColorMap.Monochrome
+    Hot = PyDMColorMap.Hot
 
     color_maps = cmaps
 
