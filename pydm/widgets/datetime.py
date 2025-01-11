@@ -11,8 +11,13 @@ class TimeBase(object):
     Seconds = 1
 
 
-class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget, TimeBase):
+class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
     QtCore.Q_ENUMS(TimeBase)
+
+    # Make enum definitions known to this class
+    Milliseconds = TimeBase.Milliseconds
+    Seconds = TimeBase.Seconds
+
     returnPressed = QtCore.Signal()
     """
     A QDateTimeEdit with support for setting the text via a PyDM Channel, or
@@ -107,8 +112,13 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget, TimeBase):
         self.setDateTime(val)
 
 
-class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget, TimeBase):
+class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
     QtCore.Q_ENUMS(TimeBase)
+
+    # Make enum definitions known to this class
+    Milliseconds = TimeBase.Milliseconds
+    Seconds = TimeBase.Seconds
+
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.

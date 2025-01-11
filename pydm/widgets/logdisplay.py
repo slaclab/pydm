@@ -108,7 +108,7 @@ class LogLevels(object):
         return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
 
 
-class PyDMLogDisplay(QWidget, LogLevels):
+class PyDMLogDisplay(QWidget):
     """
     Standard display for Log Output
 
@@ -131,6 +131,15 @@ class PyDMLogDisplay(QWidget, LogLevels):
 
     Q_ENUMS(LogLevels)
     LogLevels = LogLevels
+
+    # Make enum definitions known to this class
+    NOTSET = LogLevels.NOTSET
+    DEBUG = LogLevels.DEBUG
+    INFO = LogLevels.INFO
+    WARNING = LogLevels.WARNING
+    ERROR = LogLevels.ERROR
+    CRITICAL = LogLevels.CRITICAL
+
     terminator = "\n"
     default_format = "%(asctime)s %(message)s"
     default_level = logging.INFO

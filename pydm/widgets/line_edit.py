@@ -14,7 +14,7 @@ from .display_format import DisplayFormat, parse_value_for_display
 logger = logging.getLogger(__name__)
 
 
-class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
+class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
     """
     A QLineEdit (writable text field) with support for Channels and more
     from PyDM.
@@ -31,6 +31,14 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
 
     Q_ENUMS(DisplayFormat)
     DisplayFormat = DisplayFormat
+
+    # Make enum definitions known to this class
+    Default = DisplayFormat.Default
+    String = DisplayFormat.String
+    Decimal = DisplayFormat.Decimal
+    Exponential = DisplayFormat.Exponential
+    Hex = DisplayFormat.Hex
+    Binary = DisplayFormat.Binary
 
     def __init__(self, parent=None, init_channel=None):
         QLineEdit.__init__(self, parent)
