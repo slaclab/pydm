@@ -2,7 +2,7 @@
 Contributing
 ============
 
-Contributions are welcome, and they are greatly appreciated! Every little bit
+Contributions are welcome, and are greatly appreciated! Every little bit
 helps, and credit will always be given.
 
 You can contribute in many ways:
@@ -35,7 +35,7 @@ is open to whoever wants to implement it.
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
-pydm could always use more documentation, whether
+PyDM could always use more documentation, whether
 as part of the official docs, in docstrings,
 or even on the web in blog posts, articles, and such.
 
@@ -87,7 +87,7 @@ Ready to contribute? Here's how to set up `pydm` for local development.
 
     $ python run_tests.py
 
-8. Add documentation for any new features and algorithms, into the .rst files of the /docs directory. Create a local build of the docs by running::
+8. Add documentation for any new features and algorithms into the .rst files of the /docs directory. Create a local build of the docs by running::
 
     $ cd docs
     $ make html
@@ -106,11 +106,11 @@ Pull Request Guidelines
 When you submit a pull request, check that it meets these guidelines:
 
 1. Try to keep pull requests small.
-2. Make frequent but logical commits, and follow the commit-message guidlines below.
-3. Fix any formatting/linting issues that pre-commit finds. (pre-commit should prevent you from commiting if you don't)
+2. Make frequent but logical commits, and follow the commit-message guidelines below.
+3. Fix any formatting/linting issues that pre-commit finds. (pre-commit should prevent you from committing if you don't)
 4. New features and algorithms need documentation! Don't forget the .rst files in the /docs directory.
-5. Most pull requests should include tests.
-6. Check the GitHub Actions status and make sure that the tests pass for all supported Python versions and platforms.
+5. Most pull requests should include new tests.
+6. Check the GitHub Actions status and make sure that the tests have passed for all supported platforms and Python versions.
 7. Don't take requests to change your code personally!
 
 Commit Message Guidelines
