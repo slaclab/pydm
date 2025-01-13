@@ -9,9 +9,8 @@ import hashlib
 from ast import literal_eval
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
-from qtpy.QtCore import Property, QSize, Qt, QTimer
+from qtpy.QtCore import Property, QSize, Qt, QTimer, Q_ENUMS
 from qtpy import QtDesigner
-from PyQt5.QtCore import Q_ENUMS
 from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont
 from typing import Optional, Union, List
