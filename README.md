@@ -22,9 +22,9 @@
   ·
   <a href="https://github.com/slaclab/pydm/issues/new?template=feature-request.md&labels=request">Request feature</a>
   ·
-  <a href="https://github.com/slaclab/pydm/blob/master/.github/CONTRIBUTING.md">How to Contribute</a>
+  <a href="https://github.com/slaclab/pydm/blob/master/CONTRIBUTING.md">How to Contribute</a>
   ·
-  <a href="https://github.com/slaclab/pydm/blob/master/.github/SUPPORT.md">Support</a>
+  <a href="https://github.com/slaclab/pydm/blob/master/SUPPORT.md">Support</a>
 </p>
 
 <br>
@@ -72,7 +72,7 @@ To launch a particular display run 'python scripts/pydm <filename>'.
 There is a 'home' display in the examples directory with buttons to launch all
 the examples:
 ```python
-python scripts/pydm examples/home.ui
+pydm examples/home.ui
 ```
 
 # Building the Documentation Locally
