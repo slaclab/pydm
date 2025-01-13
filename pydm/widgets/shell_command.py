@@ -350,7 +350,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
         self._uses_redirect_intf = True
         if self._uses_stdout_intf:
             logger.warning(
-                f"In PydmShellCommand widget with commands {self.commands}, "
+                f"In PydmShellCommand named {self.objectName()}, "
                 'using deprecated "redirectCommandOutput" property to override '
                 '"stdout" property.'
             )
@@ -382,7 +382,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
         self._uses_stdout_intf = True
         if self._uses_redirect_intf:
             logger.warning(
-                f"In PydmShellCommand widget with commands {self.commands}, "
+                f"In PydmShellCommand named {self.objectName()}, "
                 'using "stdout" property to override deprecated '
                 '"redirectCommandOutput" property.'
             )
