@@ -118,15 +118,15 @@ Commit Message Guidelines
 
 Commit messages should be clear and follow a few basic rules. Example:
 
-```
-ENH: add functionality X to pydm.<submodule>.
+.. code-block::
 
-The first line of the commit message starts with a capitalized acronym
-(options listed below) indicating what type of commit this is.  Then a blank
-line, then more text if needed.  Lines shouldn't be longer than 72
-characters.  If the commit is related to a ticket, indicate that with
-"See #3456", "See ticket 3456", "Closes #3456" or similar.
-```
+    ENH: add functionality X to pydm.<submodule>.
+
+    The first line of the commit message starts with a capitalized acronym
+    (options listed below) indicating what type of commit this is.  Then a blank
+    line, then more text if needed.  Lines shouldn't be longer than 72
+    characters.  If the commit is related to a ticket, indicate that with
+    "See #3456", "See ticket 3456", "Closes #3456" or similar.
 
 Describing the motivation for a change, the nature of a bug for bug fixes 
 or some details on what an enhancement does are also good to include in a 
@@ -136,18 +136,32 @@ changes.
 Standard acronyms to start the commit message with are:
 
 
-|Code| Description                                        |
-|----|----------------------------------------------------|
-|API | an (incompatible) API change                       |
-|BLD | change related to building                         |
-|BUG | bug fix                                            |
-|DEP | deprecate something, or remove a deprecated object |
-|DEV | development tool or utility                        |
-|DOC | documentation                                      |
-|ENH | enhancement                                        |
-|MNT | maintenance commit (refactoring, typos, etc.)      |
-|REV | revert an earlier commit                           |
-|STY | style fix (whitespace, PEP8)                       |
-|TST | addition or modification of tests                  |
-|REL | related to releasing numpy                         |
-|WIP | Commit that is a work in progress                  |
++------+------------------------------------------------------------+
+| Code | Description                                                |
++======+============================================================+
+| API  | An (incompatible) API change                               |
++------+------------------------------------------------------------+
+| BLD  | Change related to building                                 |
++------+------------------------------------------------------------+
+| BUG  | Bug fix                                                    |
++------+------------------------------------------------------------+
+| DEP  | Deprecate something, or remove a deprecated object         |
++------+------------------------------------------------------------+
+| DEV  | Development tool or utility                                |
++------+------------------------------------------------------------+
+| DOC  | Documentation                                              |
++------+------------------------------------------------------------+
+| ENH  | Enhancement                                                |
++------+------------------------------------------------------------+
+| MNT  | Maintenance commit (refactoring, typos, etc.)              |
++------+------------------------------------------------------------+
+| REV  | Revert an earlier commit                                   |
++------+------------------------------------------------------------+
+| STY  | Style fix (whitespace, PEP8)                               |
++------+------------------------------------------------------------+
+| TST  | Addition or modification of tests                          |
++------+------------------------------------------------------------+
+| REL  | Related to releasing numpy                                 |
++------+------------------------------------------------------------+
+| WIP  | Commit that is a work in progress                          |
++------+------------------------------------------------------------+
