@@ -22,8 +22,7 @@ _relatedDisplayRuleProperties = {"Text": ["setText", str], "Filenames": ["filena
 
 class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedDisplayRuleProperties):
     """
-    A QPushButton capable of opening a new Display at the same of at a
-    new window.
+    A QPushButton capable of opening a new Display in the same or a new window.
 
     Parameters
     ----------
