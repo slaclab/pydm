@@ -35,6 +35,8 @@ jobs:
         miniforge-variant: Miniforge3
         miniforge-version: latest
         activate-environment: pydm-env
+        conda-remove-defaults: true
+        architecture: x64  # Ensure macOS finds PyQt 5.12.3 which isn't available with osx-arm64
 
     - name: Install PyDM with Mamba
       shell: bash -el {0}
