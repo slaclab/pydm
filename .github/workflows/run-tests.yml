@@ -41,7 +41,11 @@ jobs:
     - name: Install PyDM with Mamba
       shell: bash -el {0}
       run: |
-        mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+        else
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+        fi
 
     - name: Install additional Python dependencies with pip
       shell: bash -el {0}
