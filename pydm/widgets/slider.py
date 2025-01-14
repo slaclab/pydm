@@ -78,10 +78,9 @@ class PyDMPrimitiveSlider(QSlider):
             delta = event.pos() - self.dragStartPos
 
             if self.orientation() == Qt.Horizontal:
-                delta_value = (delta.x() / self.getSliderLength()) * (self.maximum() - self.minimum())
+                delta_value = round((delta.x() / self.getSliderLength()) * (self.maximum() - self.minimum()))
             else:
-                delta_value = (-delta.y() / self.getSliderLength()) * (self.maximum() - self.minimum())
-
+                delta_value = round((-delta.y() / self.getSliderLength()) * (self.maximum() - self.minimum()))
             new_value = self.dragStartValue + delta_value
             new_value = min(max(self.minimum(), new_value), self.maximum())
             self.setValue(new_value)
