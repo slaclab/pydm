@@ -373,6 +373,7 @@ def test_output_options_backcompat(qtbot, caplog):
         Used to capture and verify log warnings
     """
     pydm_shell_command = PyDMShellCommand()
+    pydm_shell_command.setObjectName("testShellCommand")
     qtbot.addWidget(pydm_shell_command)
 
     # Defaults
@@ -381,6 +382,8 @@ def test_output_options_backcompat(qtbot, caplog):
 
     def assert_backcompat(value: bool | TermOutputMode, expect_warning: bool):
         """Helper for repeated assert checks in this unit test."""
+        # Cache old value in case this isn't supposed to change the value
+        orig_stdout = pydm_shell_command.stdout
         # Clear any stored logs from previous calls
         caplog.clear()
         # Set the new state
@@ -397,33 +400,45 @@ def test_output_options_backcompat(qtbot, caplog):
         # show == redirect command output (to the terminal)
         # other states do not redirect command output (to the terminal)
         # Setting redirect itself (bool) should flip between show and hide
-        if value == TermOutputMode.SHOW:
-            assert pydm_shell_command.redirectCommandOutput
-            assert pydm_shell_command.stdout == value
-        elif value in (TermOutputMode.HIDE, TermOutputMode.STORE):
-            assert not pydm_shell_command.redirectCommandOutput
-            assert pydm_shell_command.stdout == value
-        elif value:
-            assert pydm_shell_command.redirectCommandOutput
-            assert pydm_shell_command.stdout == TermOutputMode.SHOW
+        if isinstance(value, bool):
+            if value:
+                if expect_warning:
+                    # Don't override the new property with the old one
+                    assert pydm_shell_command.stdout == orig_stdout
+                else:
+                    assert pydm_shell_command.redirectCommandOutput
+                    assert pydm_shell_command.stdout == TermOutputMode.SHOW
+            else:
+                if expect_warning:
+                    # Don't override the new property with the old one
+                    assert pydm_shell_command.stdout == orig_stdout
+                else:
+                    assert not pydm_shell_command.redirectCommandOutput
+                    assert pydm_shell_command.stdout == TermOutputMode.HIDE
         else:
-            assert not pydm_shell_command.redirectCommandOutput
-            assert pydm_shell_command.stdout == TermOutputMode.HIDE
+            if value == TermOutputMode.SHOW:
+                assert pydm_shell_command.redirectCommandOutput
+                assert pydm_shell_command.stdout == value
+            elif value in (TermOutputMode.HIDE, TermOutputMode.STORE):
+                assert not pydm_shell_command.redirectCommandOutput
+                assert pydm_shell_command.stdout == value
+            else:
+                raise ValueError("Invalid value used in test suite")
 
     # Changing redirectCommandOutput should also change stdout. No warnings here.
     assert_backcompat(value=True, expect_warning=False)
     assert_backcompat(value=False, expect_warning=False)
 
-    # Changing stdout now should give a warning and also update redirectCommandOutput
-    assert_backcompat(value=TermOutputMode.SHOW, expect_warning=True)
-    assert_backcompat(value=TermOutputMode.HIDE, expect_warning=True)
-    assert_backcompat(value=TermOutputMode.STORE, expect_warning=True)
+    # Changing stdout should update the values without any warnings.
+    assert_backcompat(value=TermOutputMode.SHOW, expect_warning=False)
+    assert_backcompat(value=TermOutputMode.HIDE, expect_warning=False)
+    assert_backcompat(value=TermOutputMode.STORE, expect_warning=False)
 
-    # Now that we've changed stdout, changing redirectCommandOutput is also a warning
+    # Now that we've changed stdout, changing redirectCommandOutput is a warning and a no-op.
     assert_backcompat(value=True, expect_warning=True)
     assert_backcompat(value=False, expect_warning=True)
 
-    # A fresh widget should not have warnings from changing stdout
+    # A fresh widget should also not have warnings from changing stdout
     pydm_shell_command = PyDMShellCommand()
     qtbot.addWidget(pydm_shell_command)
 
