@@ -82,7 +82,6 @@ class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
         self._stdout = TermOutputMode.HIDE
         self._stderr = TermOutputMode.HIDE
         self._uses_stdout_intf = False
-        self._uses_redirect_intf = False
         # shell allows for more options such as command chaining ("cmd1;cmd2", "cmd1 && cmd2", etc ...),
         # use of environment variables, glob expansion ('ls *.txt'), etc...
         self._run_commands_in_full_shell = False
@@ -336,24 +335,30 @@ class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
                 self._icon = self.icon()
                 self.setIcon(QIcon())
 
-    @Property(bool)
+    @Property(bool, designable=False)
     def redirectCommandOutput(self) -> bool:
         """
         Whether or not we should redirect the output of command to the shell.
 
         This is deprecated in favor of the `stdout` property.
+        If `stdout` has already been set, this property will be ignored
+        and will log a warning when changed.
+
+        If the `stdout` property has not been changed, setting and checking
+        this property will still work as it always had for backwards
+        compatibility.
         """
         return self._stdout == TermOutputMode.SHOW
 
     @redirectCommandOutput.setter
     def redirectCommandOutput(self, value: bool) -> None:
-        self._uses_redirect_intf = True
         if self._uses_stdout_intf:
             logger.warning(
                 f"In PydmShellCommand named {self.objectName()}, "
-                'using deprecated "redirectCommandOutput" property to override '
-                '"stdout" property.'
+                'tried to use deprecated "redirectCommandOutput" property to '
+                'override "stdout" property. This has been ignored.'
             )
+            return
         if value:
             self._stdout = TermOutputMode.SHOW
         else:
@@ -373,19 +378,14 @@ class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
         This is implicitly linked to the older, soft deprecated
         parameter `redirectCommandOutput`, which can still be
         set to `False` to `HIDE` the stdout or `True` to `SHOW`
-        the stdout.
+        the stdout, provided that stdout itself has not yet been
+        set.
         """
         return self._stdout
 
     @stdout.setter
     def stdout(self, value: TermOutputMode) -> None:
         self._uses_stdout_intf = True
-        if self._uses_redirect_intf:
-            logger.warning(
-                f"In PydmShellCommand named {self.objectName()}, "
-                'using "stdout" property to override deprecated '
-                '"redirectCommandOutput" property.'
-            )
         self._stdout = value
 
     @Property(TermOutputMode)
