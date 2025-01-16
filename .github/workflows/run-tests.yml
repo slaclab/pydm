@@ -71,5 +71,6 @@ jobs:
 
     - name: Test with pytest
       shell: bash -el {0}
+      timeout-minutes: 30 # timeout applies to single run of run_tests.py, not all os/python combos
       run: |
         python run_tests.py
