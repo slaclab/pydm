@@ -27,19 +27,25 @@ jobs:
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup conda
-      uses: conda-incubator/setup-miniconda@v2
+      uses: conda-incubator/setup-miniconda@v3
       with:
         python-version: ${{ matrix.python-version }}
         miniforge-variant: Miniforge3
         miniforge-version: latest
         activate-environment: pydm-env
+        conda-remove-defaults: true
+        architecture: x64  # Ensure macOS finds PyQt 5.12.3 which isn't available with osx-arm64
 
     - name: Install PyDM with Mamba
       shell: bash -el {0}
       run: |
-        mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+        else
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+        fi
 
     - name: Install additional Python dependencies with pip
       shell: bash -el {0}
