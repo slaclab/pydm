@@ -21,10 +21,10 @@ class ReadingOrder(object):
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-    from PyQt6.QtCore import pyqtEnum
+    from PySide6.QtCore import QEnum
     from enum import Enum
 
-    @pyqtEnum
+    @QEnum
     # overrides prev enum def
     class ReadingOrder(Enum):  # noqa F811
         Fortranlike = 0
@@ -54,10 +54,10 @@ class DimensionOrder(object):
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-    from PyQt6.QtCore import pyqtEnum
+    from PySide6.QtCore import QEnum
     from enum import Enum
 
-    @pyqtEnum
+    @QEnum
     # overrides prev enum def
     class DimensionOrder(Enum):  # noqa F811
         HeightFirst = 0

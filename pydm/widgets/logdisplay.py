@@ -111,10 +111,10 @@ class LogLevels(object):
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-    from PyQt6.QtCore import pyqtEnum
+    from PySide6.QtCore import QEnum
     from enum import Enum
 
-    @pyqtEnum
+    @QEnum
     class LogLevels(Enum):  # noqa F811
         NOTSET = 0
         DEBUG = 10

@@ -13,10 +13,10 @@ class TimeBase(object):
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-    from PyQt6.QtCore import pyqtEnum
+    from PySide6.QtCore import QEnum
     from enum import Enum
 
-    @pyqtEnum
+    @QEnum
     # overrides prev enum def
     class TimeBase(Enum):  # noqa F811
         Milliseconds = 0
