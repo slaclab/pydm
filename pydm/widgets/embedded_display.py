@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 _embeddedDisplayRuleProperties = {"Filename": ["filename", str]}
 
 
-class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedDisplayRuleProperties):
+class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
     """
     A QFrame capable of rendering a PyDM Display
 
@@ -32,6 +32,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget, new_properties=_embeddedD
         The parent widget for the Label
 
     """
+
+    new_properties = _embeddedDisplayRuleProperties
 
     def __init__(self, parent=None):
         QFrame.__init__(self, parent)

@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 _symbolRuleProperties = {"Index": ["set_current_key", int]}
 
 
-class PyDMSymbol(QWidget, PyDMWidget, new_properties=_symbolRuleProperties):
+class PyDMSymbol(QWidget, PyDMWidget):
     """
     PyDMSymbol will render an image (symbol) for each value of a channel.
 
@@ -24,6 +24,8 @@ class PyDMSymbol(QWidget, PyDMWidget, new_properties=_symbolRuleProperties):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
+    new_properties = _symbolRuleProperties
 
     def __init__(self, parent=None, init_channel=None):
         QWidget.__init__(self, parent)
