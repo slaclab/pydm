@@ -20,41 +20,57 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.9', '3.10']
         pyqt-version: [5.12.3, 5.15.9]
     env:
       DISPLAY: ':99.0'
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup conda
-      uses: conda-incubator/setup-miniconda@v2
+      uses: conda-incubator/setup-miniconda@v3
       with:
         python-version: ${{ matrix.python-version }}
         miniforge-variant: Miniforge3
         miniforge-version: latest
         activate-environment: pydm-env
-    - name: Install python packages
+        conda-remove-defaults: true
+        architecture: x64  # Ensure macOS finds PyQt 5.12.3 which isn't available with osx-arm64
+
+    - name: Install PyDM with Mamba
       shell: bash -el {0}
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          mamba install pyqt=${{ matrix.pyqt-version }}
-          mamba install --file requirements.txt --file windows-dev-requirements.txt
+          conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
         else
-          mamba install pyqt=${{ matrix.pyqt-version }} $(cat requirements.txt dev-requirements.txt)
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
         fi
-    - name: Install packages for testing a pyqt app on linux
+
+    - name: Install additional Python dependencies with pip
+      shell: bash -el {0}
+      run: |
+        pip install -r requirements.txt
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          pip install -r windows-dev-requirements.txt
+        else
+          pip install -r dev-requirements.txt
+        fi
+
+    - name: Install packages for testing a PyQt app on Linux
       shell: bash -el {0}
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo apt install xvfb herbstluftwm libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 x11-utils
+          sudo apt update
+          sudo apt install -y xvfb herbstluftwm libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 x11-utils
           sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1024x768x24 -ac +extension GLX +render -noreset
           sleep 3
           sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_herbstluftwm_99.pid --make-pidfile --background --exec /usr/bin/herbstluftwm
           sleep 1
         fi
+
     - name: Test with pytest
       shell: bash -el {0}
+      timeout-minutes: 30 # timeout applies to single run of run_tests.py, not all os/python combos
       run: |
         python run_tests.py

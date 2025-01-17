@@ -83,8 +83,6 @@ class BasePlotAxesModel(QAbstractTableModel):
         column_name = self._column_names[index.column()]
         axis = self.plot._axes[index.row()]
         if role == Qt.EditRole:
-            if value is not None:
-                value = value.toString()
             if not self.set_data(column_name, axis, value):
                 return False
         else:
