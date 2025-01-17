@@ -14,8 +14,31 @@ from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set
 from ..utilities import IconFont
 from typing import Optional, Union, List
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
+
+
+class TermOutputMode:
+    """
+    Enum to select the behavior of the stdout/stderr output from a subprocess.
+    """
+
+    HIDE = 0
+    SHOW = 1
+    STORE = 2
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class TermOutputMode(Enum):  # noqa: F811
+        HIDE = 0
+        SHOW = 1
+        STORE = 2
 
 
 class PyDMShellCommand(QPushButton, PyDMWidget):
@@ -33,6 +56,12 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     init_channel : str, optional
         The channel to be used by the widget
     """
+
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(TermOutputMode)
+    TermOutputMode = TermOutputMode
 
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
