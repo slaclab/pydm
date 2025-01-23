@@ -161,7 +161,7 @@ Standard acronyms to start the commit message with are:
 +------+------------------------------------------------------------+
 | TST  | Addition or modification of tests                          |
 +------+------------------------------------------------------------+
-| REL  | Related to releasing numpy                                 |
+| REL  | Related to releasing PyDM                                  |
 +------+------------------------------------------------------------+
 | WIP  | Commit that is a work in progress                          |
 +------+------------------------------------------------------------+
