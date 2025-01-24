@@ -12,19 +12,19 @@ from .. import config
 
 
 class PyDMConnection(QObject):
-    new_value_signal = Signal([float], [int], [str], [bool], [object])
+    new_value_signal = Signal((float,), (int,), (str,), (bool,), (object,))
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
     write_access_signal = Signal(bool)
     enum_strings_signal = Signal(tuple)
     unit_signal = Signal(str)
     prec_signal = Signal(int)
-    upper_ctrl_limit_signal = Signal([float], [int])
-    lower_ctrl_limit_signal = Signal([float], [int])
-    upper_alarm_limit_signal = Signal([float], [int])
-    lower_alarm_limit_signal = Signal([float], [int])
-    upper_warning_limit_signal = Signal([float], [int])
-    lower_warning_limit_signal = Signal([float], [int])
+    upper_ctrl_limit_signal = Signal((float,), (int,))
+    lower_ctrl_limit_signal = Signal((float,), (int,))
+    upper_alarm_limit_signal = Signal((float,), (int,))
+    lower_alarm_limit_signal = Signal((float,), (int,))
+    upper_warning_limit_signal = Signal((float,), (int,))
+    lower_warning_limit_signal = Signal((float,), (int,))
     timestamp_signal = Signal(float)
 
     def __init__(self, channel, address, protocol=None, parent=None):
