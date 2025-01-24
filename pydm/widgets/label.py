@@ -9,7 +9,7 @@ from pydm.widgets.base import only_if_channel_set
 _labelRuleProperties = {"Text": ["value_changed", str]}
 
 
-class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties=_labelRuleProperties):
+class PyDMLabel(QLabel, TextFormatter, PyDMWidget, new_properties=_labelRuleProperties):
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
@@ -26,6 +26,13 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, DisplayFormat, new_properties
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
+    Default = DisplayFormat.Default
+    String = DisplayFormat.String
+    Decimal = DisplayFormat.Decimal
+    Exponential = DisplayFormat.Exponential
+    Hex = DisplayFormat.Hex
+    Binary = DisplayFormat.Binary
 
     Q_ENUMS(DisplayFormat)
     DisplayFormat = DisplayFormat
