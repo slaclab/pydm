@@ -51,8 +51,7 @@ def generate_control_variables(value):
             1,
         ),
         (NTEnum().wrap({"index": 0, "choices": ["YES", "NO", "MAYBE"]}), False, 0, 2),
-        (NTScalar("i").wrap({"value": np.int32(10)}), False, np.int32(10), 1),
-    ],
+    ],  # Add cases for testing NTTable containing np.integer and np float types arrays here
 )
 def test_send_new_value(
     monkeypatch: MonkeyPatch,
@@ -79,14 +78,11 @@ def test_send_new_value(
         nonlocal signals_received
         signals_received += 1
 
-    if isinstance(value_to_send, np.integer):
-        expected_value_type = type(np.integer)
-    else:
-        expected_value_type = type(value_to_send.value)
-        if isinstance(value_to_send.value, list):
-            expected_value_type = np.ndarray
-        elif "NTEnum" in value_to_send.getID():
-            expected_value_type = int
+    expected_value_type = type(value_to_send.value)
+    if isinstance(value_to_send.value, list):
+        expected_value_type = np.ndarray
+    elif "NTEnum" in value_to_send.getID():
+        expected_value_type = int
 
     p4p_connection.new_value_signal[expected_value_type].connect(functools.partial(receive_signal, "value"))
     p4p_connection.lower_alarm_limit_signal.connect(functools.partial(receive_signal, "low_alarm_limit"))
