@@ -12,9 +12,8 @@ from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set
-from ..utilities import IconFont
+from ..utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from typing import Optional, Union, List
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +40,7 @@ if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         STORE = 2
 
 
-class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
+class PyDMShellCommand(QPushButton, PyDMWidget):
     """
     A QPushButton capable of execute shell commands.
 
@@ -133,7 +132,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
         Returns
         -------
         bool
-            True if the message was confirmed or if ```showCofirmMessage```
+            True if the message was confirmed or if ```showConfirmMessage```
             is False.
         """
         if self._show_confirm_dialog:
@@ -653,7 +652,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
 
     def validate_password(self) -> bool:
         """
-        If the widget is ```passwordProtected```, this method will propmt
+        If the widget is ```passwordProtected```, this method will prompt
         the user for the correct password.
 
         Returns
