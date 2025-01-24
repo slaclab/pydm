@@ -9,10 +9,10 @@ import hashlib
 from ast import literal_eval
 from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
-from qtpy.QtCore import Property, QSize, Qt, QTimer, Q_ENUMS
+from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set
-from ..utilities import IconFont
+from ..utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from typing import Optional, Union, List
 
 logger = logging.getLogger(__name__)
@@ -28,8 +28,19 @@ class TermOutputMode:
     STORE = 2
 
 
-class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
-    Q_ENUMS(TermOutputMode)
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class TermOutputMode(Enum):  # noqa: F811
+        HIDE = 0
+        SHOW = 1
+        STORE = 2
+
+
+class PyDMShellCommand(QPushButton, PyDMWidget):
     """
     A QPushButton capable of execute shell commands.
 
@@ -45,8 +56,18 @@ class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
         The channel to be used by the widget
     """
 
-    DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(TermOutputMode)
     TermOutputMode = TermOutputMode
+
+    # Make enum definitions known to this class
+    HIDE = TermOutputMode.HIDE
+    SHOW = TermOutputMode.SHOW
+    STORE = TermOutputMode.STORE
+
+    DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
     def __init__(
         self,
@@ -111,7 +132,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
         Returns
         -------
         bool
-            True if the message was confirmed or if ```showCofirmMessage```
+            True if the message was confirmed or if ```showConfirmMessage```
             is False.
         """
         if self._show_confirm_dialog:
@@ -631,7 +652,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget, TermOutputMode):
 
     def validate_password(self) -> bool:
         """
-        If the widget is ```passwordProtected```, this method will propmt
+        If the widget is ```passwordProtected```, this method will prompt
         the user for the correct password.
 
         Returns
