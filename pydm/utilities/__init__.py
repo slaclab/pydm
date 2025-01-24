@@ -12,6 +12,7 @@ import uuid
 import errno
 
 from typing import List, Optional
+from enum import IntEnum
 
 from qtpy import QtCore, QtGui, QtWidgets
 
@@ -37,6 +38,34 @@ __all__ = [
 ]
 
 logger = logging.getLogger(__name__)
+
+
+# The qtpy abstraction layer decides which qt python wrapper to use by the QT_API environment variable.
+# Currently, we only intend for PyDM to support PyQt5 (legacy) and PySide6.
+# ACTIVE_QT_WRAPPER is implemented for easier access to the QT_API env variable,
+# since we need to know which wrapper is currently being used to support both pyqt5 and pyside6.
+class QtWrapperTypes(IntEnum):
+    UNSUPPORTED = 0
+    PYSIDE6 = 1
+    PYQT5 = 2
+
+
+ACTIVE_QT_WRAPPER = QtWrapperTypes.UNSUPPORTED
+
+# QT_API should be set according to the qtpy docs: https://github.com/spyder-ide/qtpy?tab=readme-ov-file#requirements
+qt_api = os.getenv("QT_API", "").lower()
+if qt_api == "pyside6":
+    ACTIVE_QT_WRAPPER = QtWrapperTypes.PYSIDE6
+elif qt_api == "pyqt5":
+    ACTIVE_QT_WRAPPER = QtWrapperTypes.PYQT5
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.UNSUPPORTED:
+    error_message = (
+        "The QT_API variable is not set to a supported Qt Python wrapper "
+        "(PySide6 or PyQt5). Please set QT_API to 'pyside6' or 'pyqt5'."
+    )
+    logger.error(error_message)
+    raise RuntimeError(error_message)
 
 
 def is_ssh_session():
