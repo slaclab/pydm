@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.archiver_time_plot &mdash; PyDM 1.25.1 documentation</title>
+  <title>pydm.widgets.archiver_time_plot &mdash; PyDM 1.25.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.1
+                1.25.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -592,8 +592,17 @@
 <span class="sd">        If one curve updates at a certain timestep and another does not, it uses the previously</span>
 <span class="sd">        seen data of the second curve, and assumes it is accurate at the current timestep.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkFormula</span><span class="p">():</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">formula</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkFormula</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;invalid formula&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">formula_invalid_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">:</span>
+            <span class="c1"># If we are just a constant, then store a straight line from 1970 to ~2200</span>
+            <span class="c1"># Known Bug: Constants are hidden if the plot&#39;s x-axis range is between 30m and 1.5hr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span><span class="p">)]])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">APPROX_SECONDS_300_YEARS</span><span class="p">],</span> <span class="p">[</span><span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span><span class="p">)]])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch_connected</span><span class="p">):</span>
             <span class="k">return</span>
@@ -601,10 +610,6 @@
         <span class="n">pvLiveData</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">pvIndices</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">pvValues</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">formula</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">formula</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;invalid formula&quot;</span><span class="p">)</span>
-            <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -720,15 +725,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Redraw the curve with any new data added since the last draw call.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">:</span>
-            <span class="c1"># If we are just a constant, then forget about data</span>
-            <span class="c1"># just draw a straight line from 1970 to 300 years or so in the future</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span><span class="p">),</span> <span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span><span class="p">)]</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">APPROX_SECONDS_300_YEARS</span><span class="p">]</span>
-            <span class="c1"># There is a known bug that this won&#39;t graph a constant with an x axis</span>
-            <span class="c1"># of between 30 minutes and 1hr 30 minutes in range. Unknown reason</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
-            <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>

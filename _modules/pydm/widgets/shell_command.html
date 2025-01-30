@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.shell_command &mdash; PyDM 1.25.1 documentation</title>
+  <title>pydm.widgets.shell_command &mdash; PyDM 1.25.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.1
+                1.25.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -125,7 +125,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">ast</span><span class="w"> </span><span class="kn">import</span> <span class="n">literal_eval</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QMouseEvent</span><span class="p">,</span> <span class="n">QColor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtDesigner</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">only_if_channel_set</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">IconFont</span>
@@ -134,7 +134,18 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="PyDMShellCommand"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMShellCommand</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TermOutputMode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Enum to select the behavior of the stdout/stderr output from a subprocess.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">HIDE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">SHOW</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">STORE</span> <span class="o">=</span> <span class="mi">2</span>
+
+
+<div class="viewcode-block" id="PyDMShellCommand"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMShellCommand</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">TermOutputMode</span><span class="p">):</span>
+    <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">TermOutputMode</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QPushButton capable of execute shell commands.</span>
 
@@ -151,6 +162,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">DEFAULT_CONFIRM_MESSAGE</span> <span class="o">=</span> <span class="s2">&quot;Are you sure you want to proceed?&quot;</span>
+    <span class="n">TermOutputMode</span> <span class="o">=</span> <span class="n">TermOutputMode</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -183,7 +195,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_icon</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_redirect_output</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">=</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">HIDE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stderr</span> <span class="o">=</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">HIDE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uses_stdout_intf</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1"># shell allows for more options such as command chaining (&quot;cmd1;cmd2&quot;, &quot;cmd1 &amp;&amp; cmd2&quot;, etc ...),</span>
         <span class="c1"># use of environment variables, glob expansion (&#39;ls *.txt&#39;), etc...</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_run_commands_in_full_shell</span> <span class="o">=</span> <span class="kc">False</span>
@@ -437,32 +451,75 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_icon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">icon</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">redirectCommandOutput</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not we should redirect the output of command to the shell.</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        bool</span>
+<span class="sd">        This is deprecated in favor of the `stdout` property.</span>
+<span class="sd">        If `stdout` has already been set, this property will be ignored</span>
+<span class="sd">        and will log a warning when changed.</span>
+
+<span class="sd">        If the `stdout` property has not been changed, setting and checking</span>
+<span class="sd">        this property will still work as it always had for backwards</span>
+<span class="sd">        compatibility.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redirect_output</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">==</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">SHOW</span>
 
     <span class="nd">@redirectCommandOutput</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">redirectCommandOutput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uses_stdout_intf</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;In PydmShellCommand named </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">objectName</span><span class="p">()</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="s1">&#39;tried to use deprecated &quot;redirectCommandOutput&quot; property to &#39;</span>
+                <span class="s1">&#39;override &quot;stdout&quot; property. This has been ignored.&#39;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">=</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">SHOW</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">=</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">HIDE</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">TermOutputMode</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TermOutputMode</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Whether or not we should redirect the output of command to the shell.</span>
+<span class="sd">        The behavior of the subprocess&#39;s standard output stream.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        value : bool</span>
+<span class="sd">        The options are:</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        None.</span>
+<span class="sd">        - `HIDE` (default): hide the stdout</span>
+<span class="sd">        - `SHOW`: print stdout to terminal</span>
+<span class="sd">        - `STORE`: capture stdout for programmatic retrieval</span>
+
+<span class="sd">        This is implicitly linked to the older, soft deprecated</span>
+<span class="sd">        parameter `redirectCommandOutput`, which can still be</span>
+<span class="sd">        set to `False` to `HIDE` the stdout or `True` to `SHOW`</span>
+<span class="sd">        the stdout, provided that stdout itself has not yet been</span>
+<span class="sd">        set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redirect_output</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_redirect_output</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span>
+
+    <span class="nd">@stdout</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">TermOutputMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uses_stdout_intf</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">TermOutputMode</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stderr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TermOutputMode</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The behavior of the subprocess&#39;s standard error stream.</span>
+
+<span class="sd">        The options are:</span>
+
+<span class="sd">        - `HIDE` (default): hide the stderr</span>
+<span class="sd">        - `SHOW`: print stderr to terminal</span>
+<span class="sd">        - `STORE`: capture stderr for programmatic retrieval</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stderr</span>
+
+    <span class="nd">@stderr</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stderr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">TermOutputMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stderr</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">allowMultipleExecutions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -750,17 +807,32 @@
                 <span class="n">args</span> <span class="o">=</span> <span class="n">cmd</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Launching process: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
-                <span class="n">stdout</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">==</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">HIDE</span><span class="p">:</span>
+                    <span class="n">stdout</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">==</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">SHOW</span><span class="p">:</span>
+                    <span class="n">stdout</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">==</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">STORE</span><span class="p">:</span>
+                    <span class="n">stdout</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid stdout configuration </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stderr</span> <span class="o">==</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">HIDE</span><span class="p">:</span>
+                    <span class="n">stderr</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stderr</span> <span class="o">==</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">SHOW</span><span class="p">:</span>
+                    <span class="n">stderr</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stderr</span> <span class="o">==</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">STORE</span><span class="p">:</span>
+                    <span class="n">stderr</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid stderr configuration </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_stderr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env_var</span><span class="p">:</span>
                     <span class="n">env_var</span> <span class="o">=</span> <span class="n">literal_eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env_var</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">env_var</span> <span class="o">=</span> <span class="kc">None</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_redirect_output</span><span class="p">:</span>
-                    <span class="n">stdout</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
-                    <span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env_var</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_commands_in_full_shell</span>
+                    <span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">stderr</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env_var</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_commands_in_full_shell</span>
                 <span class="p">)</span>
 
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
