@@ -18,7 +18,7 @@ class_for_type = [QPushButton, QRadioButton]
 logger = logging.getLogger(__name__)
 
 
-class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
+class PyDMEnumButton(QWidget, PyDMWritableWidget):
     """
     A QWidget that renders buttons for every option of Enum Items.
     For now, two types of buttons can be rendered:
@@ -40,6 +40,10 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget, WidgetType):
 
     Q_ENUMS(WidgetType)
     WidgetType = WidgetType
+
+    # Make enum definitions known to this class
+    PushButton = WidgetType.PushButton
+    RadioButton = WidgetType.RadioButton
 
     def __init__(self, parent=None, init_channel=None):
         QWidget.__init__(self, parent)

@@ -120,7 +120,7 @@ class LayoutType(object):
 layout_class_for_type = (QVBoxLayout, QHBoxLayout, FlowLayout)
 
 
-class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
+class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
     """
     PyDMTemplateRepeater takes a .ui file with macro variables as a template, and a JSON
     file (or a list of dictionaries) with a list of values to use to fill in
@@ -142,6 +142,11 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget, LayoutType):
 
     Q_ENUMS(LayoutType)
     LayoutType = LayoutType
+
+    # Make enum definitions known to this class
+    Vertical = LayoutType.Vertical
+    Horizontal = LayoutType.Horizontal
+    Flow = LayoutType.Flow
 
     def __init__(self, parent=None):
         pydm.data_plugins.initialize_plugins_if_needed()

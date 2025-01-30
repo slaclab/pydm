@@ -117,7 +117,7 @@ def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data)
     pydm_timeplot_curve_item.setUpdatesAsynchronously(async_update)
     if async_update:
         assert (
-            pydm_timeplot_curve_item._update_mode == PyDMTimePlot.AtFixedRated
+            pydm_timeplot_curve_item._update_mode == PyDMTimePlot.AtFixedRate
             if async_update
             else pydm_timeplot_curve_item._update_mode == PyDMTimePlot.OnValueChange
         )
