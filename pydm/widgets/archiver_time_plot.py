@@ -66,7 +66,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
         self.error_bar = ErrorBarItem()
-        self.archive_bin_size = None
 
         self.address = channel_address
 
@@ -179,7 +178,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # Error bars
         if data.shape[0] == 5:  # 5 indicates optimized data was requested from the archiver
             self.error_bar_data = data
-            self.archive_bin_size = data[0, -1] - data[0, -2]
             self.set_error_bar()
 
         self.data_changed.emit()
@@ -309,7 +307,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             Set log mode for the y-axis
         """
         super().setLogMode(xState, yState)
-        self.set_error_bar()
+        if self.error_bar_data:
+            self.set_error_bar()
 
     @Slot(bool)
     def archiveConnectionStateChanged(self, connected: bool) -> None:
@@ -357,20 +356,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             return self.min_x()
 
     def receiveNewValue(self, new_value: float) -> None:
-        """Rotate and fill the data buffer when a new value is available.
-
-        For Synchronous mode, write the new value into the data buffer
-        immediately, and increment the accumulated point counter.
-        For Asynchronous, write the new value into a temporary (buffered)
-        variable, which will be written to the data buffer when asyncUpdate
-        is called.
-
-        This method is usually called by a PyDMChannel when it updates.  You
-        can call it yourself to inject data into the curve.
-
-        Live data buffer overflows into the archive buffer. If the archive
-        buffer is already binned, then a chunk of live data will be binned and
-        appended to the archive buffer.
+        """Fill incoming live data if requested by user.
 
         Parameters
         ----------
@@ -378,42 +364,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             The new y-value to append to the live data buffer
         """
         # Ignore incoming live data depending on user request
-        if not self._liveData:
-            return
-
-        if (self._update_mode == PyDMTimePlot.OnValueChange) and (self.points_accumulated >= self._bufferSize):
-            new_point = self.data_buffer[:, 0]
-
-            # If the curve has recieved optimized archive data before, then bin a set of live data for archiver buffer
-            if self.archive_bin_size:
-                # Get index of last datapoint to bin (leaves at least 20% of live data)
-                next_ts = self.data_buffer[0, 0] + self.archive_bin_size
-                ind = np.searchsorted(self.data_buffer[0], next_ts)
-                ind = min(ind, int(self._bufferSize * 0.8))
-
-                # Get new data point and error bar data
-                new_point = np.mean(self.data_buffer[:, 0:ind], axis=1)
-                error_bar_array = [
-                    [new_point[0]],
-                    [new_point[1]],
-                    [0],  # Place holder for unused Stddev value
-                    [np.min(self.data_buffer[1, 0:ind])],
-                    [np.max(self.data_buffer[1, 0:ind])],
-                ]
-                self.error_bar_data = np.append(self.error_bar_data, error_bar_array, axis=1)
-
-                # Set new bin size and decrease number of live points shown
-                self.archive_bin_size = new_point[0] - self.archive_data_buffer[0, -1]
-                self.points_accumulated -= ind
-
-                self.set_error_bar()
-
-            # Add new point to end of archive buffer
-            self.archive_data_buffer = np.roll(self.archive_data_buffer, -1)
-            self.archive_data_buffer[:, -1] = new_point
-            self.archive_points_accumulated = min(self._archiveBufferSize, self.archive_points_accumulated + 1)
-
-        super().receiveNewValue(new_value)
+        if self._liveData:
+            super().receiveNewValue(new_value)
 
 
 class FormulaCurveItem(BasePlotCurveItem):
