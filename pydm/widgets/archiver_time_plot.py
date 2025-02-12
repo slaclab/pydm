@@ -4,12 +4,12 @@ import time
 import numpy as np
 from collections import OrderedDict
 from typing import List, Optional
-from pyqtgraph import DateAxisItem, ErrorBarItem
+from pyqtgraph import DateAxisItem, ErrorBarItem, mkPen
 from pydm.utilities import remove_protocol, is_qt_designer
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
-from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
+from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot, Qt
 from qtpy.QtGui import QColor
 import logging
 from math import *  # noqa
@@ -51,9 +51,15 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     archive_data_received_signal = Signal()
     archive_channel_connection = Signal(bool)
     prompt_archive_request = Signal()
+    axis_time_plot = Signal(str)
 
     def __init__(
-        self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws
+        self,
+        channel_address: Optional[str] = None,
+        use_archive_data: bool = True,
+        liveData: bool = True,
+        current_point_always_vis: bool = False,
+        **kws
     ):
         self.archive_channel = None
         super(ArchivePlotCurveItem, self).__init__(**kws)
@@ -62,6 +68,11 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
         self._liveData = liveData
+        self.current_point_always_vis = current_point_always_vis
+        self._extension_line = BasePlotCurveItem()
+
+        if not self.current_point_always_vis:
+            self._extension_line.hide()
 
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
@@ -242,9 +253,45 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
                 )
 
                 self.setData(y=y, x=x)
+
+                if self.current_point_always_vis:
+                    self.add_infinite_line()
+                else:
+                    self._extension_line.hide()
+
             except (ZeroDivisionError, OverflowError, TypeError):
                 # Solve an issue with pyqtgraph and initial downsampling
                 pass
+
+    def add_infinite_line(self) -> None:
+        """
+        Creates a dotted line from the lastest point in the buffer
+        (live or archived depending on if live data is active).
+        """
+        if self._liveData:
+            if self.data_buffer.size == 0:
+                return
+            x_last = self.data_buffer[:, -1]
+            y_last = self.data_buffer[:, -1]
+        else:
+            if self.archive_data_buffer.size == 0:
+                return
+            x_last = self.archive_data_buffer[:, -1]
+            y_last = self.archive_data_buffer[:, -1]
+
+        x_infinity = x_last[0] + APPROX_SECONDS_300_YEARS
+
+        x_line = np.array([x_last[0], x_infinity])
+        y_line = np.array([y_last[1], y_last[1]])
+
+        dotted_pen = mkPen(self._pen.color(), width=self._pen.width(), style=Qt.DotLine)
+
+        self._extension_line.setFillLevel = None
+        self._extension_line.setBrush = None
+        self._extension_line.setPen(dotted_pen)
+        self._extension_line.setData(x_line, y_line)
+
+        self._extension_line.show()
 
     def initializeArchiveBuffer(self) -> None:
         """
@@ -318,6 +365,18 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         """ """
         if self._liveData:
             super().receiveNewValue(new_value)
+
+    @BasePlotCurveItem.y_axis_name.setter
+    def y_axis_name(self, axis_name: str) -> None:
+        """
+        Set the name of the y-axis that should be associated with this curve.
+        Also move's the curve's error bar item.
+        Parameters
+        ----------
+        axis_name: str
+        """
+        BasePlotCurveItem.y_axis_name.fset(self, axis_name)
+        self.axis_time_plot.emit(axis_name)
 
 
 class FormulaCurveItem(BasePlotCurveItem):
@@ -1009,6 +1068,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         )
         if not is_qt_designer():
             self.requestDataFromArchiver()
+
+        if yAxisName is not None:
+            self.plotItem.linkDataToAxis(curve._extension_line, yAxisName)
+            curve.axis_time_plot.connect(self.moveExtensionLine)
+
         return curve
 
     def addFormulaChannel(self, yAxisName: str, **kwargs) -> FormulaCurveItem:
@@ -1016,3 +1080,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         FormulaCurve = FormulaCurveItem(yAxisName=yAxisName, **kwargs)
         self.plotItem.linkDataToAxis(FormulaCurve, yAxisName)
         return FormulaCurve
+
+    @Slot(str)
+    def moveExtensionLine(self, name: str) -> None:
+        curve = self.sender()
+        self.plotItem.linkDataToAxis(curve._extension_line, name)
