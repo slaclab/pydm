@@ -66,6 +66,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
         self.error_bar = ErrorBarItem()
+        self.error_bar_data = None
 
         self.address = channel_address
 
@@ -307,7 +308,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             Set log mode for the y-axis
         """
         super().setLogMode(xState, yState)
-        if self.error_bar_data:
+        if self.error_bar_data is not None:
             self.set_error_bar()
 
     @Slot(bool)
