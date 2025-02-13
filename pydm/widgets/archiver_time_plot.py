@@ -68,6 +68,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.error_bar = ErrorBarItem()
         self.error_bar_data = None
 
+        self.destroyed.connect(lambda: self.remove_error_bar())
         self.address = channel_address
 
     def to_dict(self) -> OrderedDict:
@@ -294,6 +295,14 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         solid_pen.setStyle(1)
 
         self.error_bar.setData(x=x_val, y=y_val, top=top_val, bottom=bot_val, beam=0.5, pen=solid_pen)
+
+    @Slot()
+    def remove_error_bar(self):
+        """Remove the curve's error bar when the curve is deleted."""
+        if self.error_bar is None:
+            return
+        vb = self.error_bar.getViewBox()
+        vb.removeItem(self.error_bar)
 
     def setLogMode(self, xState: bool, yState: bool) -> None:
         """When log mode is enabled for the respective axis by setting xState or
@@ -967,8 +976,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             # Need to clear out any bars from optimized data; only applicable to ArchivePlotCurveItems
             if not isinstance(curve, ArchivePlotCurveItem):
                 continue
-            vb = curve.error_bar_item.getViewBox()
-            vb.removeItem(curve.error_bar_item)
+            vb = curve.error_bar.getViewBox()
+            vb.removeItem(curve.error_bar)
 
         # reset _min_x to let updateXAxis make requests anew
         self._min_x = self._starting_timestamp
