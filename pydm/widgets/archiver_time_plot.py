@@ -301,8 +301,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         """Remove the curve's error bar when the curve is deleted."""
         if self.error_bar is None:
             return
-        vb = self.error_bar.getViewBox()
-        vb.removeItem(self.error_bar)
+        if vb := self.error_bar.getViewBox():
+            vb.removeItem(self.error_bar)
 
     def setLogMode(self, xState: bool, yState: bool) -> None:
         """When log mode is enabled for the respective axis by setting xState or
