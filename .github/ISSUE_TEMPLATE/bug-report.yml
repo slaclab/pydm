@@ -13,25 +13,28 @@ body:
     attributes:
       label: "Describe the bug"
       description: "A clear and concise description the bug. May include logs, images, or videos."
+      placeholder: "A clear and concise description the bug. May include logs, images, or videos."
     validations:
       required: true
   - type: textarea
     attributes:
       label: "Steps to reproduce"
-      description: "Steps to reproduce the bug"
+      description: "Steps to reproduce the bug."
+      placeholder: "Steps to reproduce the bug."
     validations:
       required: true
   - type: textarea
     attributes:
       label: "Expected behavior"
       description: "A clear and concise description of what you expected to happen."
+      placeholder: "A clear and concise description of what you expected to happen."
     validations:
       required: true
 
   - type: dropdown
     id: os-version
     attributes:
-      label: "Operating System"
+      label: "Operating System."
       description: "Select your OS"
       options:
         - Linux
@@ -43,8 +46,9 @@ body:
   - type: input
     id: os-specific-version
     attributes:
-      label: "OS Version Details"
-      description: "Specify your OS version (e.g., Ubuntu 22.04, Windows 10, macOS 13.3)"
+      label: "OS Version Details."
+      description: "Specify your OS version (e.g., Ubuntu 22.04, Windows 10, macOS 13.3)."
+      placeholder: "Specify your OS version (e.g., Ubuntu 22.04, Windows 10, macOS 13.3)."
     validations:
       required: false
   
@@ -66,8 +70,8 @@ body:
     id: package-versions
     attributes:
       label: "Packages Version"
-      description: "Provide package versions (Check `File > About` in PyDM)"
-      placeholder: "Example: PyDM 1.24.1, NumPy 1.23.4, PyQt 5.15.2"
+      description: "Provide package versions (Check `File > About` in PyDM). Can upload a screenshot if you wish."
+      placeholder: "Example: PyDM v1.25.2, NumPy v2.2.2, PyQt v5.12.3, Qt v5.12.9, PyQtGraph v.0.12.4"
     validations:
       required: true
 
@@ -75,5 +79,6 @@ body:
     attributes:
       label: "Additional context."
       description: "Add any other context, links, etc. about the feature here."
+      placeholder: "Add any other context, links, etc. about the feature here."
     validations:
       required: false
