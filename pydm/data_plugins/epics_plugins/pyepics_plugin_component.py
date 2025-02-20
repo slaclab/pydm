@@ -247,7 +247,7 @@ class Connection(PyDMConnection):
             self.pv.connection_callbacks = []
             self.pv.disconnect()
         except KeyError:
-            # The PV was no longer availbale.
+            # The PV was no longer available.
             pass
 
 

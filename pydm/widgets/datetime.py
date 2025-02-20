@@ -2,6 +2,7 @@ import logging
 from qtpy import QtWidgets, QtCore
 
 from .base import PyDMWritableWidget, PyDMWidget
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -11,8 +12,27 @@ class TimeBase(object):
     Seconds = 1
 
 
-class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget, TimeBase):
-    QtCore.Q_ENUMS(TimeBase)
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class TimeBase(Enum):  # noqa F811
+        Milliseconds = 0
+        Seconds = 1
+
+
+class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(TimeBase)
+
+    # Make enum definitions known to this class
+    Milliseconds = TimeBase.Milliseconds
+    Seconds = TimeBase.Seconds
+
     returnPressed = QtCore.Signal()
     """
     A QDateTimeEdit with support for setting the text via a PyDM Channel, or
@@ -107,8 +127,16 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget, TimeBase):
         self.setDateTime(val)
 
 
-class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget, TimeBase):
-    QtCore.Q_ENUMS(TimeBase)
+class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(TimeBase)
+
+    # Make enum definitions known to this class
+    Milliseconds = TimeBase.Milliseconds
+    Seconds = TimeBase.Seconds
+
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.

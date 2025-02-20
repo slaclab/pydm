@@ -5,10 +5,10 @@ from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS
+from qtpy.QtCore import Signal, Slot, Property, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
-from ..utilities import remove_protocol
+from ..utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 import logging
 
@@ -29,6 +29,17 @@ class updateMode(object):
 
     OnValueChange = 1
     AtFixedRate = 2
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class updateMode(Enum):  # noqa F811
+        OnValueChange = 1
+        AtFixedRate = 2
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
@@ -224,7 +235,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             if self.points_accumulated < self._bufferSize:
                 self.points_accumulated += 1
             self.data_changed.emit()
-        elif self._update_mode == PyDMTimePlot.AtFixedRated:
+        elif self._update_mode == PyDMTimePlot.AtFixedRate:
             self.latest_value = new_value
 
     @Slot()
@@ -234,7 +245,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         buffer, together with the timestamp when this happens. Also increments
         the accumulated point counter.
         """
-        if self._update_mode != PyDMTimePlot.AtFixedRated:
+        if self._update_mode != PyDMTimePlot.AtFixedRate:
             return
         self.data_buffer = np.roll(self.data_buffer, -1)
         self.data_buffer[0, self._bufferSize - 1] = time.time()
@@ -412,7 +423,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         return [self.channel]
 
 
-class PyDMTimePlot(BasePlot, updateMode):
+class PyDMTimePlot(BasePlot):
     """
     PyDMTimePlot is a widget to plot one or more channels vs. time.
 
@@ -437,11 +448,15 @@ class PyDMTimePlot(BasePlot, updateMode):
         to either a TimeAxisItem if plot_by_timestamps is true, or a regular AxisItem otherwise
     """
 
-    OnValueChange = 1
-    AtFixedRated = 2
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
 
-    Q_ENUMS(updateMode)
+        Q_ENUM(updateMode)
     updateMode = updateMode
+
+    # Make enum definitions known to this class
+    OnValueChange = updateMode.OnValueChange
+    AtFixedRate = updateMode.AtFixedRate
 
     plot_redrawn_signal = Signal(TimePlotCurveItem)
 
@@ -918,7 +933,7 @@ class PyDMTimePlot(BasePlot, updateMode):
     bufferSize = Property("int", getBufferSize, setBufferSize, resetBufferSize)
 
     def getUpdatesAsynchronously(self):
-        return self._update_mode == PyDMTimePlot.AtFixedRated
+        return self._update_mode == PyDMTimePlot.AtFixedRate
 
     def setUpdatesAsynchronously(self, value):
         for curve in self._curves:

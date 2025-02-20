@@ -5,16 +5,17 @@ import shlex
 import logging
 from functools import partial
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
-from qtpy.QtCore import Property, Q_ENUMS, Qt
+from qtpy.QtCore import Property, Qt
 from qtpy.QtGui import QFocusEvent
 from .. import utilities
 from .base import PyDMWritableWidget, TextFormatter, str_types
 from .display_format import DisplayFormat, parse_value_for_display
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
 
-class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
+class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
     """
     A QLineEdit (writable text field) with support for Channels and more
     from PyDM.
@@ -29,8 +30,19 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget, DisplayFormat):
         The channel to be used by the widget.
     """
 
-    Q_ENUMS(DisplayFormat)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(DisplayFormat)
     DisplayFormat = DisplayFormat
+
+    # Make enum definitions known to this class
+    Default = DisplayFormat.Default
+    String = DisplayFormat.String
+    Decimal = DisplayFormat.Decimal
+    Exponential = DisplayFormat.Exponential
+    Hex = DisplayFormat.Hex
+    Binary = DisplayFormat.Binary
 
     def __init__(self, parent=None, init_channel=None):
         QLineEdit.__init__(self, parent)
