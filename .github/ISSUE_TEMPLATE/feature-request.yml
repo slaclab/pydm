@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before requesting please search the [existing feature requests](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aopen).
+        Before requesting please search the existing [feature request issues](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aopen).
 
   - type: textarea
     attributes:
