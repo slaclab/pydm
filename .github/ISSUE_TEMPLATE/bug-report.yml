@@ -1,6 +1,6 @@
 name: Bug Report
 description: Let us know if something is broken on PyDM.
-type: 'bug'
+labels: [bug]
 body:
 
   - type: markdown
