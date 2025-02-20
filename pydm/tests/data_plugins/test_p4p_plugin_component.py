@@ -51,7 +51,7 @@ def generate_control_variables(value):
             1,
         ),
         (NTEnum().wrap({"index": 0, "choices": ["YES", "NO", "MAYBE"]}), False, 0, 2),
-    ],
+    ],  # Add cases for testing NTTable containing np.integer and np float types arrays here
 )
 def test_send_new_value(
     monkeypatch: MonkeyPatch,
