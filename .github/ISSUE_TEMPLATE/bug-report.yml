@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before reporting, please search through the existing [open issues](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aopen),
-        and also [closed issues](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aclosed) to check if it's been previously addressed.
+        Before reporting, please make a quick search through the existing [open issues](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aopen),
+        and also [closed issues](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aclosed), to check if it's been previously addressed.
 
   - type: textarea
     attributes:
