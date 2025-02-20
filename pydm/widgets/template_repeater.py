@@ -3,12 +3,13 @@ import json
 import copy
 import logging
 from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QHBoxLayout, QWidget, QStyle, QSizePolicy, QLayout
-from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint, Q_ENUMS
+from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint
 from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer
 import pydm.data_plugins
 from ..utilities import find_file
 from ..display import load_file
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -117,6 +118,18 @@ class LayoutType(object):
     Flow = 2
 
 
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class LayoutType(Enum):  # noqa F811
+        Vertical = 0
+        Horizontal = 1
+        Flow = 2
+
+
 layout_class_for_type = (QVBoxLayout, QHBoxLayout, FlowLayout)
 
 
@@ -140,7 +153,10 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         The parent of this widget.
     """
 
-    Q_ENUMS(LayoutType)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(LayoutType)
     LayoutType = LayoutType
 
     # Make enum definitions known to this class

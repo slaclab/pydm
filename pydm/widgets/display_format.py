@@ -4,6 +4,8 @@ from typing import Any
 import logging
 import warnings
 
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
 logger = logging.getLogger(__name__)
 
 
@@ -22,6 +24,21 @@ class DisplayFormat(object):
     Hex = 4
     #: Show numerical values in base 2 (binary) notation.
     Binary = 5
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class DisplayFormat(Enum):  # noqa F811
+        Default = 0
+        String = 1
+        Decimal = 2
+        Exponential = 3
+        Hex = 4
+        Binary = 5
 
 
 def parse_value_for_display(
