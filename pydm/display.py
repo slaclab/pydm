@@ -103,7 +103,7 @@ def _compile_ui_file(uifile: str) -> Tuple[str, str]:
         uic.compileUi(uifile, code_string)
         code_string = code_string.getvalue()
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-        # seemss like pyside6 only offers .ui compilation with pyside6-uic cmdline tool
+        # seems like pyside6 only offers .ui compilation with pyside6-uic cmdline tool
         try:
             result = subprocess.run(
                 ["pyside6-uic", uifile],
