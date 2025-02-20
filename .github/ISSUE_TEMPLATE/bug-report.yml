@@ -6,7 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before reporting, please search through the [existing issues](https://github.com/slaclab/pydm/issues) (including closed ones, incase it was addressed previously.)
+        Before reporting, please search through the existing [open issues](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aopen),
+        and also [closed issues](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aclosed) to check if it's been previously addressed.
 
   - type: textarea
     attributes:
@@ -51,7 +52,7 @@ body:
     id: python-version
     attributes:
       label: "Python Version"
-      description: "Select your Python version (can get by running 'python -V')"
+      description: "Select your Python version (check this with 'python -V')"
       options:
         - "3.9"
         - "3.10"
@@ -75,4 +76,4 @@ body:
       label: "Additional context."
       description: "Add any other context, links, etc. about the feature here."
     validations:
-      required: true
+      required: false
