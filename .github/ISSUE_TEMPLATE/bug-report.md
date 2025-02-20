@@ -1,31 +1,78 @@
----
-name: Bug report
-about: Let us know if something is broken on PyDM.
+name: Bug Report
+description: Let us know if something is broken on PyDM.
+type: 'bug'
+body:
 
----
+  - type: markdown
+    attributes:
+      value: |
+        Before reporting, please search through the [existing issues](https://github.com/slaclab/pydm/issues) (including closed ones, incase it was addressed previously.)
 
-**Describe the bug**
-<!-- A clear and concise description the bug -->
+  - type: textarea
+    attributes:
+      label: "Describe the bug"
+      description: "A clear and concise description the bug. May include logs, images, or videos."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Steps to reproduce"
+      description: "Steps to reproduce the bug"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Expected behavior"
+      description: "A clear and concise description of what you expected to happen."
+    validations:
+      required: true
 
-**Expected behavior**
-<!-- A clear and concise description of what you expected to happen -->
+  - type: dropdown
+    id: os-version
+    attributes:
+      label: "Operating System"
+      description: "Select your OS"
+      options:
+        - Linux
+        - Windows
+        - macOS
+    validations:
+      required: true
+      
+  - type: input
+    id: os-specific-version
+    attributes:
+      label: "OS Version Details"
+      description: "Specify your OS version (e.g., Ubuntu 22.04, Windows 10, macOS 13.3)"
+    validations:
+      required: false
+  
+  - type: dropdown
+    id: python-version
+    attributes:
+      label: "Python Version"
+      description: "Select your Python version (can get by running 'python -V')"
+      options:
+        - "3.9"
+        - "3.10"
+        - "3.11"
+        - "3.12"
+        - "3.13"
+    validations:
+      required: true
 
-**Steps to Reproduce**
-<!-- Steps to reproduce the bug -->
+  - type: textarea
+    id: package-versions
+    attributes:
+      label: "Packages Version"
+      description: "Provide package versions (Check `File > About` in PyDM)"
+      placeholder: "Example: PyDM 1.24.1, NumPy 1.23.4, PyQt 5.15.2"
+    validations:
+      required: true
 
-**Possible Solution**
-<!--
-    Not obligatory, but suggest a fix/reason for the bug, or ideas how to 
-    implement the addition or change.
---> 
-
-**My Platform**
-<!--
-    Any details about your specific platform:
-    * OS Version
-    * Python Version
-    * Packages Version (One good start point is the File > About screen at PyDM.
--->
-
-**Additional context**
-<!-- Add any other context, links, etc. about the bug here. -->
+  - type: textarea
+    attributes:
+      label: "Additional context."
+      description: "Add any other context, links, etc. about the feature here."
+    validations:
+      required: true

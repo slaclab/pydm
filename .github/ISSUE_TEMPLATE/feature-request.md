@@ -1,14 +1,32 @@
----
 name: Feature request
-about: Suggest a new feature for PyDM
+description: Suggest a new feature for PyDM
+type: 'enhancement'
+body:
 
----
+  - type: markdown
+    attributes:
+      value: |
+        Before requesting please search the [existing feature requests](https://github.com/slaclab/pydm/issues).
 
-**What's the problem this feature will solve?**
-<!-- A clear and concise description of what the problem is. -->
+  - type: textarea
+    attributes:
+      label: "What's the problem this feature will solve?"
+      description: "A clear and concise description of what the problem is."
+    validations:
+      required: true
 
-**Describe the solution you'd like**
-<!-- A clear and concise description of what you want to happen. -->
+  - type: textarea
+    attributes:
+      label: "Describe the solution you'd like."
+      description: "A clear and concise description of what you want to happen."
+    validations:
+      required: true
 
-**Additional context**
-<!-- Add any other context, links, etc. about the feature here. -->
+  - type: textarea
+    attributes:
+      label: "Additional context."
+      description: "Add any other context, links, etc. about the feature here."
+    validations:
+      required: true
+
+
