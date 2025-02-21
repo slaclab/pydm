@@ -197,6 +197,8 @@ class MultiAxisPlot(PlotItem):
 
         if axisToLink.logMode:
             plotDataItem.setLogMode(False, True)
+        else:
+            plotDataItem.setLogMode(False, False)
 
         axisToLink.linkedView().addItem(plotDataItem)
         self.dataItems.append(plotDataItem)
