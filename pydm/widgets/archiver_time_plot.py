@@ -791,7 +791,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     def updateXAxis(self, update_immediately: bool = False) -> None:
         """Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,
         a request will be made for backfill data"""
-        if len(self._curves) == 0 or self.auto_scroll_timer.isActive():
+        if len(self._curves) == 0:
             return
 
         min_x = self.plotItem.getAxis("bottom").range[0]  # Gets the leftmost timestamp displayed on the x-axis
