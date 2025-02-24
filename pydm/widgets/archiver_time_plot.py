@@ -785,6 +785,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         self._archive_request_queued = False
         self.setTimeSpan(DEFAULT_TIME_SPAN)
 
+        self.plotItem.sigXRangeChanged.connect(lambda *_: self.updateXAxis)
+        self.plotItem.sigXRangeChangedManually.connect(lambda *_: self.updateXAxis)
+
     def updateXAxis(self, update_immediately: bool = False) -> None:
         """Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,
         a request will be made for backfill data"""
@@ -793,7 +796,6 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
 
         min_x = self.plotItem.getAxis("bottom").range[0]  # Gets the leftmost timestamp displayed on the x-axis
         max_x = self.plotItem.getAxis("bottom").range[1]
-        max_point = max([curve.max_x() for curve in self._curves])
         if min_x == 0:  # This is zero when the plot first renders
             self._max_x = time.time()
             self._min_x = self._max_x - DEFAULT_TIME_SPAN
@@ -806,27 +808,17 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             self.plotItem.setXRange(
                 time.time() - DEFAULT_TIME_SPAN, time.time(), padding=0.0, update=update_immediately
             )
-        elif min_x < self._min_x and not self.plotItem.isAnyXAutoRange():
+        elif min_x != self._min_x or max_x != self._max_x:
             # This means the user has manually scrolled to the left, so request archived data
             self._min_x = min_x
-            self.setTimeSpan(max_point - min_x)
+            self._max_x = max_x
+            self.setTimeSpan(max_x - min_x)
             if not self._archive_request_queued:
                 # Letting the user pan or scroll the plot is convenient, but can generate a lot of events in under
                 # a second that would trigger a request for data. By using a timer, we avoid this burst of events
                 # and consolidate what would be many requests to archiver into just one.
                 self._archive_request_queued = True
                 QTimer.singleShot(1000, self.requestDataFromArchiver)
-        # Here we only update the x-axis if the user hasn't asked for autorange and they haven't zoomed in (as
-        # detected by the max range showing on the plot being less than the data available)
-        elif not self.plotItem.isAnyXAutoRange() and max_x >= max_point - 10:
-            if min_x > (self._prev_x + 15) or min_x < (self._prev_x - 15):
-                # The plus/minus 15 just makes sure we don't do this on every update tick of the graph
-                self.setTimeSpan(max_point - min_x)
-            else:
-                # Keep the plot moving with a rolling window based on the current timestamp
-                self.plotItem.setXRange(
-                    max_point - self.getTimeSpan(), max_point, padding=0.0, update=update_immediately
-                )
         self._prev_x = min_x
 
     def requestDataFromArchiver(self, min_x: Optional[float] = None, max_x: Optional[float] = None) -> None:
