@@ -842,7 +842,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             processing_command = ""
             if curve.use_archive_data:
                 if max_x is None:
-                    max_x = curve.min_x()
+                    max_x = min(curve.min_x(), self._max_x)
                 requested_seconds = max_x - min_x
                 if requested_seconds <= 5:
                     continue  # Avoids noisy requests when first rendering the plot
