@@ -770,6 +770,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         init_y_channels: List[str] = [],
         background: str = "default",
         optimized_data_bins: int = 2000,
+        show_all: bool = True,
     ):
         super(PyDMArchiverTimePlot, self).__init__(
             parent=parent,
@@ -779,6 +780,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             bottom_axis=DateAxisItem("bottom"),
         )
         self.optimized_data_bins = optimized_data_bins
+        self._show_all = show_all  # Show all plotted data after archiver fetch
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
         self._min_x = self._starting_timestamp - DEFAULT_TIME_SPAN
         self._prev_x = self._min_x  # Holds the minimum x-value of the previous update of the plot
@@ -895,7 +897,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     def archive_data_received(self):
         """Take any action needed when this plot receives new data from archiver appliance"""
         self._archive_request_queued = False
-        if self.auto_scroll_timer.isActive():
+        if self.auto_scroll_timer.isActive() or not self._show_all:
             return
 
         max_x = max([curve.max_x() for curve in self._curves])
