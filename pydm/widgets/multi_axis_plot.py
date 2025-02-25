@@ -623,3 +623,31 @@ class MultiAxisPlot(PlotItem):
 
         self.enableAutoRange()
         self.recomputeAverages()
+
+    def getViewBoxForAxis(self, axisName: str) -> ViewBox:
+        """
+        Retrieve the ViewBox associated with a given axis name.
+
+        Parameters
+        ----------
+        axisName : str
+            The name of the axis for which to obtain the linked ViewBox.
+
+        Returns
+        -------
+        ViewBox
+            The ViewBox linked to the axis specified by `axisName`. If the axis does not exist
+            or it does not have a linked ViewBox, the main ViewBox is returned.
+
+        Notes
+        -----
+        This method checks whether `axisName` exists in the `axes` dictionary. If it does, it retrieves
+        the corresponding AxisItem and calls its `linkedView()` method. If a valid ViewBox is found,
+        it is returned. Otherwise, the method falls back to returning the main ViewBox provided by `getViewBox()`.
+        """
+        if axisName in self.axes:
+            axisItem = self.axes[axisName]["item"]
+            viewBox = axisItem.linkedView()
+            if viewBox is not None:
+                return viewBox
+        return self.getViewBox()
