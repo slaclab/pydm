@@ -770,6 +770,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         init_y_channels: List[str] = [],
         background: str = "default",
         optimized_data_bins: int = 2000,
+        cache_data: bool = True,
         show_all: bool = True,
     ):
         super(PyDMArchiverTimePlot, self).__init__(
@@ -780,17 +781,35 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             bottom_axis=DateAxisItem("bottom"),
         )
         self.optimized_data_bins = optimized_data_bins
-        self._show_all = show_all  # Show all plotted data after archiver fetch
+        self._show_all = False  # Show all plotted data after archiver fetch
+        # self._show_all = show_all  # Show all plotted data after archiver fetch
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
         self._min_x = self._starting_timestamp - DEFAULT_TIME_SPAN
         self._prev_x = self._min_x  # Holds the minimum x-value of the previous update of the plot
         self._archive_request_queued = False
         self.setTimeSpan(DEFAULT_TIME_SPAN)
 
-        self.plotItem.sigXRangeChanged.connect(lambda *_: self.updateXAxis)
-        self.plotItem.sigXRangeChangedManually.connect(lambda *_: self.updateXAxis)
+        self.cache_data = False
+        # self.cache_data = cache_data
 
-    def updateXAxis(self, update_immediately: bool = False) -> None:
+    @property
+    def cache_data(self):
+        return self._cache_data
+
+    @cache_data.setter
+    def cache_data(self, retain: bool):
+        self._cache_data = retain
+        if retain:
+            try:
+                self.plotItem.sigXRangeChanged.disconnect(self.updateXAxis)
+                self.plotItem.sigXRangeChangedManually.disconnect(self.updateXAxis)
+            except TypeError:
+                pass
+        else:
+            self.plotItem.sigXRangeChanged.connect(self.updateXAxis)
+            self.plotItem.sigXRangeChangedManually.connect(self.updateXAxis)
+
+    def updateXAxis(self, update_immediately: bool = False, *_) -> None:
         """Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,
         a request will be made for backfill data"""
         if len(self._curves) == 0:
@@ -807,20 +826,40 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 self._min_x = self._min_x - self.getTimeSpan()
                 self._archive_request_queued = True
                 self.requestDataFromArchiver()
-            self.plotItem.setXRange(
-                time.time() - DEFAULT_TIME_SPAN, time.time(), padding=0.0, update=update_immediately
-            )
-        elif min_x != self._min_x or max_x != self._max_x:
-            # This means the user has manually scrolled to the left, so request archived data
-            self._min_x = min_x
-            self._max_x = max_x
-            self.setTimeSpan(max_x - min_x)
-            if not self._archive_request_queued:
-                # Letting the user pan or scroll the plot is convenient, but can generate a lot of events in under
-                # a second that would trigger a request for data. By using a timer, we avoid this burst of events
-                # and consolidate what would be many requests to archiver into just one.
-                self._archive_request_queued = True
-                QTimer.singleShot(1000, self.requestDataFromArchiver)
+            blocked = self.plotItem.blockSignals(True)
+            self.plotItem.setXRange(time.time() - DEFAULT_TIME_SPAN, time.time(), padding=0.0)
+            self.plotItem.blockSignals(blocked)
+        elif not self._cache_data:
+            if min_x != self._min_x or max_x != self._max_x:
+                # The timerange of the x-axis changed; user wants only archive data for the new range
+                self._min_x = min_x
+                self._max_x = max_x
+                self.setTimeSpan(max_x - min_x)
+                if not self._archive_request_queued:
+                    self._archive_request_queued = True
+                    QTimer.singleShot(1000, self.requestDataFromArchiver)
+        elif not self.plotItem.isAnyXAutoRange():
+            max_point = max([curve.max_x() for curve in self._curves])
+            if min_x < self._min_x:
+                # User has manually scrolled to the left, so request archived data
+                self._min_x = min_x
+                self.setTimeSpan(max_point - min_x)
+                if not self._archive_request_queued:
+                    self._archive_request_queued = True
+                    QTimer.singleShot(1000, self.requestDataFromArchiver)
+            elif max_x >= max_point - 10:
+                # Only update the x-axis if autorange is disabled and user hasn't zoomed in
+                if min_x > (self._prev_x + 15) or min_x < (self._prev_x - 15):
+                    # The plus/minus 15 just makes sure we don't do this on every update tick of the graph
+                    self.setTimeSpan(max_point - min_x)
+                else:
+                    # Keep the plot moving with a rolling window based on the current timestamp
+                    blocked = self.plotItem.blockSignals(True)
+                    self.plotItem.setXRange(
+                        max_point - self.getTimeSpan(), max_point, padding=0.0, update=update_immediately
+                    )
+                    self.plotItem.blockSignals(blocked)
+
         self._prev_x = min_x
 
     def requestDataFromArchiver(self, min_x: Optional[float] = None, max_x: Optional[float] = None) -> None:
@@ -844,9 +883,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             processing_command = ""
             if curve.use_archive_data:
                 if max_x is None:
-                    max_x = min(curve.min_x(), self._max_x)
+                    max_x = curve.min_x()
+                if not self._cache_data:
+                    max_x = min(max_x, self._max_x)
                 requested_seconds = max_x - min_x
-                if requested_seconds <= 5:
+                if requested_seconds <= MIN_TIME_SPAN:
                     continue  # Avoids noisy requests when first rendering the plot
                 # Max amount of raw data to return before using optimized data
                 max_data_request = int(0.80 * self.getArchiveBufferSize())
