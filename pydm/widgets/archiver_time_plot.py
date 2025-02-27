@@ -762,6 +762,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         pyqtgraph.mkColor will accept.
     optimized_data_bins: int
         The number of bins of data returned from the archiver when using optimized requests
+    cache_data : bool
+    show_all : bool
     """
 
     def __init__(
@@ -780,26 +782,33 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             background=background,
             bottom_axis=DateAxisItem("bottom"),
         )
+        self._cache_data = None
+
         self.optimized_data_bins = optimized_data_bins
-        self._show_all = False  # Show all plotted data after archiver fetch
-        # self._show_all = show_all  # Show all plotted data after archiver fetch
+        self.cache_data = cache_data
+        self._show_all = show_all  # Show all plotted data after archiver fetch
+
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
         self._min_x = self._starting_timestamp - DEFAULT_TIME_SPAN
         self._prev_x = self._min_x  # Holds the minimum x-value of the previous update of the plot
         self._archive_request_queued = False
         self.setTimeSpan(DEFAULT_TIME_SPAN)
 
-        self.cache_data = False
-        # self.cache_data = cache_data
-
     @property
     def cache_data(self):
+        """Returns if the curves of the plot are caching archive data or
+        fetching new archive data on every change to the x-axis"""
         return self._cache_data
 
     @cache_data.setter
-    def cache_data(self, retain: bool):
-        self._cache_data = retain
-        if retain:
+    def cache_data(self, enable: bool):
+        """If true, the curves on the plot will keep thier most recently fetched archive data. New
+        data will only be fetched when users navigate to an "unseen" section of the plot.
+        When false, the curves will fetch new archive data on every change to the x-axis.
+        """
+        if self._cache_data == enable:
+            return
+        if enable:
             try:
                 self.plotItem.sigXRangeChanged.disconnect(self.updateXAxis)
                 self.plotItem.sigXRangeChangedManually.disconnect(self.updateXAxis)
@@ -808,59 +817,68 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         else:
             self.plotItem.sigXRangeChanged.connect(self.updateXAxis)
             self.plotItem.sigXRangeChangedManually.connect(self.updateXAxis)
+        self._cache_data = enable
 
-    def updateXAxis(self, update_immediately: bool = False, *_) -> None:
+    def updateXAxis(self) -> None:
         """Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,
         a request will be made for backfill data"""
-        if len(self._curves) == 0:
+        if not self._curves:
             return
 
-        min_x = self.plotItem.getAxis("bottom").range[0]  # Gets the leftmost timestamp displayed on the x-axis
-        max_x = self.plotItem.getAxis("bottom").range[1]
-        if min_x == 0:  # This is zero when the plot first renders
-            self._max_x = time.time()
-            self._min_x = self._max_x - DEFAULT_TIME_SPAN
-            self._starting_timestamp = self._max_x
-            if self.getTimeSpan() != MIN_TIME_SPAN:
-                # Initialize x-axis based on the time span as well as trigger a call to the archiver below
-                self._min_x = self._min_x - self.getTimeSpan()
-                self._archive_request_queued = True
-                self.requestDataFromArchiver()
-            blocked = self.plotItem.blockSignals(True)
-            self.plotItem.setXRange(time.time() - DEFAULT_TIME_SPAN, time.time(), padding=0.0)
-            self.plotItem.blockSignals(blocked)
+        min_x, max_x = self.plotItem.getAxis("bottom").range  # Get current visible x-axis range
+        if min_x == 0:  # Initial render case
+            self._initialize_x_axis()
         elif not self._cache_data:
-            if min_x != self._min_x or max_x != self._max_x:
-                # The timerange of the x-axis changed; user wants only archive data for the new range
-                self._min_x = min_x
-                self._max_x = max_x
-                self.setTimeSpan(max_x - min_x)
-                if not self._archive_request_queued:
-                    self._archive_request_queued = True
-                    QTimer.singleShot(1000, self.requestDataFromArchiver)
+            self._handle_caching_off(min_x, max_x)
         elif not self.plotItem.isAnyXAutoRange():
-            max_point = max([curve.max_x() for curve in self._curves])
-            if min_x < self._min_x:
-                # User has manually scrolled to the left, so request archived data
-                self._min_x = min_x
-                self.setTimeSpan(max_point - min_x)
-                if not self._archive_request_queued:
-                    self._archive_request_queued = True
-                    QTimer.singleShot(1000, self.requestDataFromArchiver)
-            elif max_x >= max_point - 10:
-                # Only update the x-axis if autorange is disabled and user hasn't zoomed in
-                if min_x > (self._prev_x + 15) or min_x < (self._prev_x - 15):
-                    # The plus/minus 15 just makes sure we don't do this on every update tick of the graph
-                    self.setTimeSpan(max_point - min_x)
-                else:
-                    # Keep the plot moving with a rolling window based on the current timestamp
-                    blocked = self.plotItem.blockSignals(True)
-                    self.plotItem.setXRange(
-                        max_point - self.getTimeSpan(), max_point, padding=0.0, update=update_immediately
-                    )
-                    self.plotItem.blockSignals(blocked)
+            self._handle_manual_scrolling_or_zoom(min_x, max_x)
 
         self._prev_x = min_x
+
+    def _initialize_x_axis(self) -> None:
+        """Initializes the x-axis for the first render."""
+        self._max_x = time.time()
+        self._min_x = self._max_x - DEFAULT_TIME_SPAN
+        self._starting_timestamp = self._max_x
+
+        if self.getTimeSpan() != MIN_TIME_SPAN:
+            self._min_x -= self.getTimeSpan()
+            self._archive_request_queued = True
+            self.requestDataFromArchiver()
+
+        blocked = self.plotItem.blockSignals(True)
+        self.plotItem.setXRange(self._min_x, self._max_x, padding=0.0, update=False)
+        self.plotItem.blockSignals(blocked)
+
+    def _handle_caching_off(self, min_x: float, max_x: float) -> None:
+        """Handles the situation when there is no cached data and the user has changed the x-axis range."""
+        if min_x != self._min_x or max_x != self._max_x:
+            self._min_x = min_x
+            self._max_x = max_x
+            self.setTimeSpan(max_x - min_x)
+            if not self._archive_request_queued:
+                self._archive_request_queued = True
+                QTimer.singleShot(1000, self.requestDataFromArchiver)
+
+    def _handle_manual_scrolling_or_zoom(self, min_x: float, max_x: float) -> None:
+        """Handles scenarios of manual scrolling or zooming when autorange is disabled."""
+        max_point = max(curve.max_x() for curve in self._curves)
+
+        if min_x < self._min_x:
+            # User scrolled to the left, request archived data
+            self._min_x = min_x
+            self.setTimeSpan(max_point - min_x)
+            if not self._archive_request_queued:
+                self._archive_request_queued = True
+                QTimer.singleShot(1000, self.requestDataFromArchiver)
+        elif max_x >= max_point - 10:
+            # Check if we should update the x-axis
+            if abs(min_x - self._prev_x) > 15:
+                self.setTimeSpan(max_point - min_x)
+            else:
+                blocked = self.plotItem.blockSignals(True)
+                self.plotItem.setXRange(max_point - self.getTimeSpan(), max_point, padding=0.0, update=False)
+                self.plotItem.blockSignals(blocked)
 
     def requestDataFromArchiver(self, min_x: Optional[float] = None, max_x: Optional[float] = None) -> None:
         """
