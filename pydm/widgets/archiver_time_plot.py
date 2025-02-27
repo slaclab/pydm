@@ -763,7 +763,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     optimized_data_bins: int
         The number of bins of data returned from the archiver when using optimized requests
     cache_data : bool
+        Whether curves should retain archive data or fetch new data when the x-axis changes
     show_all : bool
+        Shifts the x-axis range to show all data, or stay where the user set the x-axis to
     """
 
     def __init__(
