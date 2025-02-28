@@ -149,10 +149,28 @@ class PyDMPrimitiveWidget(object):
         self.app = QApplication.instance()
         self._rules = None
         self._opacity = 1.0
-        if not is_qt_designer():
-            # We should  install the Event Filter only if we are running
-            # and not at the Designer
+        # Qt6 won't allow us to call 'self.installEventFilter(self)' here inside of __init__,
+        # since it can't seem to be sure the event-related setup in QWidget's __init__ has already been completed.
+        # (even though we do explicitly call QWidget's __init__ first, Qt6 generally tries to prevent us more from
+        # doing 'potentially bad things' than Qt5)
+        self._have_installed_event_filter = False
+
+    def _install_event_filter(self):
+        if not self._have_installed_event_filter:
             self.installEventFilter(self)
+            self._have_installed_event_filter = True
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        if not is_qt_designer():
+            # We should install the Event Filter only if we are running
+            # and not at the Designer
+            self._install_event_filter(self)
+
+    def event(self, event):
+        # Fallback installation for if widget never gets shown (like if set '.hidden')
+        self._install_event_filter()
+        return super().event(event)
 
     def __init_subclass__(cls, new_properties={}):
         """
@@ -654,15 +672,36 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
-        self.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.contextMenuEvent = self.open_context_menu
         self.channel = init_channel
         if not is_qt_designer():
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
 
-        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
+        # Qt6 won't let us to do some calls related to setting QWidget related things here in __init__,
+        # it can't seem to be sure if the __init__ of QWidget has already been called.
+        # (even though we do explicitly make QWidget's __init__ goes first, Qt6 generally tries to prevent us more from
+        # doing 'potentially bad things' than Qt5)
+        self._have_done_post_init_setup = False
+
+    def _post_init_setup(self):
+        if not self._have_done_post_init_setup:
+            self.setContextMenuPolicy(Qt.DefaultContextMenu)
+            self.contextMenuEvent = self.open_context_menu
+            self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
+
+    def showEvent(self, event):
+        # Fallback installation for if widget never gets shown (like if set '.hidden')
+        super().showEvent(event)
+        if not is_qt_designer():
+            # We should install the Event Filter only if we are running
+            # and not at the Designer
+            self._post_init_setup(self)
+
+    def event(self, event):
+        """Fallback installation if the widget is never shown (e.g., stays hidden)."""
+        self._post_init_setup()
+        return super().event(event)
 
     def widget_ctx_menu(self):
         """
