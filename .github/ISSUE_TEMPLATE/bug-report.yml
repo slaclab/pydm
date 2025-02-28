@@ -16,6 +16,7 @@ body:
       placeholder: "A clear and concise description of the bug. May include logs, images, or videos."
     validations:
       required: true
+
   - type: textarea
     attributes:
       label: "Steps to reproduce"
@@ -23,6 +24,7 @@ body:
       placeholder: "Steps to reproduce the bug."
     validations:
       required: true
+
   - type: textarea
     attributes:
       label: "Expected behavior"
