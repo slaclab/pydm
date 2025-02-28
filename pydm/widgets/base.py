@@ -678,7 +678,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
-        
+
         # Qt6 won't let us to do some calls related to setting QWidget related things here in __init__,
         # it can't seem to be sure if the __init__ of QWidget has already been called.
         # (even though we do explicitly make QWidget's __init__ goes first, Qt6 generally tries to prevent us more from
