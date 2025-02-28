@@ -58,8 +58,8 @@ body:
     id: python-version
     attributes:
       label: "Python Version"
-      description: "Select your Python version (check this with 'python -V')"
-      placeholder: "Select your Python version (check this with 'python -V')"
+      description: "Specify your Python version (check this with 'python -V')"
+      placeholder: "Specify your Python version (check this with 'python -V')"
     validations:
       required: true
 
