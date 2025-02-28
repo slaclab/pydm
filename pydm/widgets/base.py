@@ -149,9 +149,10 @@ class PyDMPrimitiveWidget(object):
         self.app = QApplication.instance()
         self._rules = None
         self._opacity = 1.0
-        # Qt6 won't allow us to call self._install_event_filter(self) here inside of __init__,
-        # seems like it can't be sure the event-related setup in QWidget's __init__ has been completed.
-        # (even though we do explicitly make QWidget's __init__ goes first, Qt6 is generally more strict than Qt5)
+        # Qt6 won't allow us to call 'self.installEventFilter(self)' here inside of __init__,
+        # since it can't seem to be sure the event-related setup in QWidget's __init__ has already been completed.
+        # (even though we do explicitly call QWidget's __init__ first, Qt6 generally tries to prevent us more from
+        # doing 'potentially bad things' than Qt5)
         self._have_installed_event_filter = False
 
     def _install_event_filter(self):
@@ -167,7 +168,7 @@ class PyDMPrimitiveWidget(object):
             self._install_event_filter(self)
 
     def event(self, event):
-        # Fallback installation for if widget never gets shown (like if gets set '.hidden')
+        # Fallback installation for if widget never gets shown (like if set '.hidden')
         if not self._have_installed_event_filter:
             self._install_event_filter()
         return super().event(event)
@@ -678,9 +679,10 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
         
-        # Qt6 won't allow us to do some calls related to setting QWidget related things,
-        # since it seems like can't be sure if __init__ of QWidget has already been called.
-        # (even though we do explicitly make QWidget's __init__ goes first, Qt6 is generally more strict than Qt5)
+        # Qt6 won't let us to do some calls related to setting QWidget related things here in __init__,
+        # it can't seem to be sure if the __init__ of QWidget has already been called.
+        # (even though we do explicitly make QWidget's __init__ goes first, Qt6 generally tries to prevent us more from
+        # doing 'potentially bad things' than Qt5)
         self._have_done_post_init_setup = False
 
     def _post_init_setup(self):
@@ -690,7 +692,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     def showEvent(self, event):
-        # Fallback installation for if widget never gets shown (like if it gets set '.hidden')
+        # Fallback installation for if widget never gets shown (like if set '.hidden')
         super().showEvent(event)
         if not is_qt_designer():
             # We should install the Event Filter only if we are running
