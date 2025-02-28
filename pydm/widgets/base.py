@@ -169,8 +169,7 @@ class PyDMPrimitiveWidget(object):
 
     def event(self, event):
         # Fallback installation for if widget never gets shown (like if set '.hidden')
-        if not self._have_installed_event_filter:
-            self._install_event_filter()
+        self._install_event_filter()
         return super().event(event)
 
     def __init_subclass__(cls, new_properties={}):
@@ -701,8 +700,7 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
     def event(self, event):
         """Fallback installation if the widget is never shown (e.g., stays hidden)."""
-        if not self._have_done_post_init_setup:
-            self._post_init_setup()
+        self._post_init_setup()
         return super().event(event)
 
     def widget_ctx_menu(self):
