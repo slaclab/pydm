@@ -6,7 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before requesting please make a quick search through the existing [feature request issues](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aopen).
+        Before reporting, please make a quick search through the existing [open issues](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aopen),
+        and also [closed issues](https://github.com/slaclab/pydm/issues?q=is%3Aissue+is%3Aclosed), to check if it's been previously addressed.
 
   - type: textarea
     attributes:
@@ -31,5 +32,3 @@ body:
       placeholder: "Add any other context, links, etc. about the feature here."
     validations:
       required: false
-
-

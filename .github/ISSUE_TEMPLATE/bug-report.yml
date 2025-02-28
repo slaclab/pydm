@@ -12,8 +12,8 @@ body:
   - type: textarea
     attributes:
       label: "Describe the bug"
-      description: "A clear and concise description the bug. May include logs, images, or videos."
-      placeholder: "A clear and concise description the bug. May include logs, images, or videos."
+      description: "A clear and concise description of the bug. May include logs, images, or videos."
+      placeholder: "A clear and concise description of the bug. May include logs, images, or videos."
     validations:
       required: true
   - type: textarea
@@ -52,17 +52,12 @@ body:
     validations:
       required: false
   
-  - type: dropdown
+  - type: input
     id: python-version
     attributes:
       label: "Python Version"
       description: "Select your Python version (check this with 'python -V')"
-      options:
-        - "3.9"
-        - "3.10"
-        - "3.11"
-        - "3.12"
-        - "3.13"
+      placeholder: "Select your Python version (check this with 'python -V')"
     validations:
       required: true
 
