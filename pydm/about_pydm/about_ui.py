@@ -34,7 +34,7 @@ class Ui_Form(object):
         font = QtGui.QFont()
         font.setPointSize(24)
         font.setBold(True)
-        font.setWeight(75)
+        font.setWeight(QtGui.QFont.Weight.Bold)
         self.pydmLabel.setFont(font)
         self.pydmLabel.setTextFormat(QtCore.Qt.PlainText)
         self.pydmLabel.setScaledContents(False)
