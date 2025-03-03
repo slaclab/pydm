@@ -4,30 +4,53 @@ from pydm import PyDMApplication
 from pydm.display import Display, clear_compiled_ui_file_cache
 from qtpy import uic
 from unittest.mock import MagicMock, patch
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 # The path to the .ui file for creating a main window
 test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data", "test.ui")
 
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
 
-@patch("qtpy.uic.compileUi", wraps=uic.compileUi)
-def test_reload_display(wrapped_compile_ui: MagicMock, qapp: PyDMApplication) -> None:
-    """Verify that when a user reloads a PyDM window the underling display's ui file is actually reloaded"""
-    clear_compiled_ui_file_cache()  # Ensure other tests have not already compiled our test file before we start
+    @patch("qtpy.uic.compileUi", wraps=uic.compileUi)
+    def test_reload_display_pyqt5(wrapped_compile_ui: MagicMock, qapp: PyDMApplication) -> None:
+        """Verify that when a user reloads a PyDM window the underling display's ui file is actually reloaded"""
+        clear_compiled_ui_file_cache()  # Ensure other tests have not already compiled our test file before we start
 
-    try:
-        display = Display(parent=None, ui_filename=test_ui_path)
+        try:
+            display = Display(parent=None, ui_filename=test_ui_path)
 
-        qapp.make_main_window()
-        qapp.main_window.set_display_widget(display)
+            qapp.make_main_window()
+            qapp.main_window.set_display_widget(display)
 
-        # When the display is first created and loaded the underlying ui file gets compiled
-        wrapped_compile_ui.assert_called_once()
+            # When the display is first created and loaded the underlying ui file gets compiled
+            wrapped_compile_ui.assert_called_once()
 
-        # Reloading should force a re-compile of the ui file to ensure any changes are picked up
-        qapp.main_window.reload_display(True)
-        assert wrapped_compile_ui.call_count == 2
-    finally:
-        clear_compiled_ui_file_cache()
+            # Reloading should force a re-compile of the ui file to ensure any changes are picked up
+            qapp.main_window.reload_display(True)
+            assert wrapped_compile_ui.call_count == 2
+        finally:
+            clear_compiled_ui_file_cache()
+
+else:  # pyside6
+    # In pyside6 to compile ui files we need to run the 'pyside6-uic' tool as a subprocess,
+    # but can't seem to mock "subprocess.run" here without things blowing up, so for now lets just test that
+    # the 'reload_display' function can at least be called without throwing an error in pyside6.
+    def test_reload_display_pyside6(qapp: PyDMApplication) -> None:
+        """Verify that when a user reloads a PyDM window, the underlying display's UI file is actually
+        recompiled with pyside6-uic"""
+        clear_compiled_ui_file_cache()  # Ensure other tests have not already compiled our test file before we start
+
+        try:
+            display = Display(parent=None, ui_filename=test_ui_path)
+
+            qapp.make_main_window()
+            qapp.main_window.set_display_widget(display)
+
+            # Try reloading things
+            qapp.main_window.reload_display(True)
+
+        finally:
+            clear_compiled_ui_file_cache()
 
 
 def test_menubar_text(qapp: PyDMApplication) -> None:

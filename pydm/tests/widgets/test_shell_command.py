@@ -77,7 +77,7 @@ def test_construct(qtbot, command, title):
 
     # verify that qt standard icons can be set through our custom property
     style = pydm_shell_command.style()
-    test_icon = style.standardIcon(style.SP_DesktopIcon)
+    test_icon = style.standardIcon(style.StandardPixmap.SP_DesktopIcon)
     test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
 
     pydm_shell_command.PyDMIcon = "SP_DesktopIcon"

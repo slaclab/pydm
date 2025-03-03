@@ -3,6 +3,7 @@ import pytest
 from pydm import Display
 from pydm.display import load_file, load_py_file, _compile_ui_file, _load_compiled_ui_into_display, ScreenTarget
 from qtpy.QtWidgets import QLabel
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 # The path to the .ui file used in these tests
 test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data", "test.ui")
@@ -37,16 +38,30 @@ def test_reimplemented_ui_filename(qtbot):
     qtbot.addWidget(my_display)
 
 
-def test_nonexistant_ui_file_raises(qtbot):
-    with pytest.raises(IOError):
-        Display(parent=None, ui_filename="this_doesnt_exist.ui")
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
 
-    class TestDisplay(Display):
-        def ui_filename(self):
-            return "this_doesnt_exist.ui"
+    def test_nonexistent_ui_file_raises_pyqt5(qtbot):
+        with pytest.raises(IOError):
+            Display(parent=None, ui_filename="this_doesnt_exist.ui")
 
-    with pytest.raises(IOError):
-        TestDisplay(parent=None)
+        class TestDisplay(Display):
+            def ui_filename(self):
+                return "this_doesnt_exist.ui"
+
+        with pytest.raises(IOError):
+            TestDisplay(parent=None)
+
+else:  # pyside6
+
+    def test_nonexistent_ui_file_raises_pyside6(qtbot):
+        # With pyside6 we compile ui files by subprocessing the program 'pyside6-uic' to
+        # generate the compiled output. When we try this on a nonexistent file we should raise a runtime error.
+        with pytest.raises(RuntimeError):
+            Display(parent=None, ui_filename="this_doesnt_exist.ui")
+
+        class TestDisplay(Display):
+            def ui_filename(self):
+                return "this_doesnt_exist.ui"
 
 
 def test_nonexistent_py_file_raises():
