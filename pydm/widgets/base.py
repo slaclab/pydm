@@ -152,7 +152,13 @@ class PyDMPrimitiveWidget(object):
         if not is_qt_designer():
             # We should  install the Event Filter only if we are running
             # and not at the Designer
-            self.installEventFilter(self)
+            try:
+                self.installEventFilter(self)
+            except RuntimeError:
+                # Catch an error from pyside6 about not having called child classes __init__ functions,
+                # since we actually explicitly call them and there is not a real issue.
+                # (use git blame and see this change's commit msg for more explanation)
+                pass
 
     def __init_subclass__(cls, new_properties={}):
         """
@@ -652,17 +658,23 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
             "TIME": "timestamp",
         }
 
-        # If this label is inside a PyDMApplication (not Designer) start it in
-        # the disconnected state.
-        self.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.contextMenuEvent = self.open_context_menu
         self.channel = init_channel
-        if not is_qt_designer():
-            self._connected = False
-            self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-            self.check_enable_state()
+        try:
+            if not is_qt_designer():
+                # If this label is inside a PyDMApplication (not Designer) start it in
+                # the disconnected state.
+                self._connected = False
+                self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
+                self.check_enable_state()
 
-        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
+            self.setContextMenuPolicy(Qt.DefaultContextMenu)
+            self.contextMenuEvent = self.open_context_menu
+            self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
+        except RuntimeError:
+            # Catch an error from pyside6 about not having called child classes __init__ functions,
+            # since we actually explicitly call them and there is not a real issue.
+            # (use git blame and see this change's commit msg for more explanation)
+            pass
 
     def widget_ctx_menu(self):
         """
