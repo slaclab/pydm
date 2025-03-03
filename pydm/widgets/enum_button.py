@@ -485,8 +485,11 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         elif not self._has_enums:
             tooltip += "Enums not available."
 
-        self.setToolTip(tooltip)
-        self.setEnabled(status)
+        try:
+            self.setToolTip(tooltip)
+            self.setEnabled(status)
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
     def value_changed(self, new_val):
         """

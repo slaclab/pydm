@@ -152,7 +152,10 @@ class PyDMPrimitiveWidget(object):
         if not is_qt_designer():
             # We should  install the Event Filter only if we are running
             # and not at the Designer
-            self.installEventFilter(self)
+            try:
+                self.installEventFilter(self)
+            except Exception as e:
+                print(f"An error occurred: {e}")
 
     def __init_subclass__(cls, new_properties={}):
         """
@@ -654,15 +657,22 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
 
         # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
-        self.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.contextMenuEvent = self.open_context_menu
+        try:
+            self.setContextMenuPolicy(Qt.DefaultContextMenu)
+            self.contextMenuEvent = self.open_context_menu
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
         self.channel = init_channel
         if not is_qt_designer():
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
 
-        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
+        try:
+            self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
     def widget_ctx_menu(self):
         """
