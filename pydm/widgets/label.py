@@ -10,7 +10,7 @@ from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 _labelRuleProperties = {"Text": ["value_changed", str]}
 
 
-class PyDMLabel(QLabel, TextFormatter, PyDMWidget, new_properties=_labelRuleProperties):
+class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
@@ -27,6 +27,8 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget, new_properties=_labelRuleProp
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
+    new_properties = _labelRuleProperties
 
     if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
         from PyQt5.QtCore import Q_ENUM
