@@ -67,7 +67,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # the full range of values retrieved
         self.error_bar = ErrorBarItem()
         self.error_bar_data = None
-        self.getViewBox().addItem(self.error_bar)
 
         self.destroyed.connect(lambda: self.remove_error_bar())
         self.address = channel_address
@@ -182,6 +181,9 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         if data.shape[0] == 5:  # 5 indicates optimized data was requested from the archiver
             self.error_bar_data = data
             self.set_error_bar()
+            self.error_bar.show()
+        else:
+            self.error_bar.hide()
 
         self.data_changed.emit()
         self.archive_data_received_signal.emit()
@@ -277,6 +279,9 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         based on the curve's log mode.
         """
         x_val = self.error_bar_data[0]
+
+        if self.error_bar.getViewBox() is None:
+            self.getViewBox().addItem(self.error_bar)
 
         # Calculate y-value and range for error bars
         logMode = self.opts["logMode"][1]
