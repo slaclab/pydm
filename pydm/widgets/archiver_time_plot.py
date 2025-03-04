@@ -67,6 +67,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # the full range of values retrieved
         self.error_bar = ErrorBarItem()
         self.error_bar_data = None
+        self.getViewBox().addItem(self.error_bar)
 
         self.destroyed.connect(lambda: self.remove_error_bar())
         self.address = channel_address
