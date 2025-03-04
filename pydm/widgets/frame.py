@@ -60,4 +60,10 @@ class PyDMFrame(QFrame, PyDMWidget):
         if hasattr(self, "_disable_on_disconnect") and self._disable_on_disconnect:
             PyDMWidget.check_enable_state(self)
         else:
-            self.setEnabled(True)
+            try:
+                self.setEnabled(True)
+            except RuntimeError:
+                # Catch an error from pyside6 about not having called child classes __init__ functions,
+                # since we actually explicitly call them and there is not a real issue.
+                # (use git blame and see this change's commit msg for more explanation)
+                pass

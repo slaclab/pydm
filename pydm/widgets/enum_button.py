@@ -485,8 +485,14 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         elif not self._has_enums:
             tooltip += "Enums not available."
 
-        self.setToolTip(tooltip)
-        self.setEnabled(status)
+        try:
+            self.setToolTip(tooltip)
+            self.setEnabled(status)
+        except RuntimeError:
+            # Catch an error from pyside6 about not having called child classes __init__ functions,
+            # since we actually explicitly call them and there is not a real issue.
+            # (use git blame and see this change's commit msg for more explanation)
+            pass
 
     def value_changed(self, new_val):
         """
