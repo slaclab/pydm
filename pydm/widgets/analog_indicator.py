@@ -83,10 +83,10 @@ class QScaleAlarmed(QScale):
             self._painter_scale_x = 1
 
         if self._flip_scale:
-            self._flip_traslation_y = self._widget_height
+            self._flip_translation_y = self._widget_height
             self._flip_scale_y = -1
         else:
-            self._flip_traslation_y = 0
+            self._flip_translation_y = 0
             self._flip_scale_y = 1
 
     def draw_ticks(self):
@@ -262,7 +262,7 @@ class QScaleAlarmed(QScale):
         self._painter.translate(self._painter_translation_x, 0)  # Invert appearance if needed
         self._painter.scale(self._painter_scale_x, 1)
 
-        self._painter.translate(0, self._flip_traslation_y)  # Invert scale if needed
+        self._painter.translate(0, self._flip_translation_y)  # Invert scale if needed
         self._painter.scale(1, self._flip_scale_y)
 
         self._painter.setRenderHint(QPainter.Antialiasing)

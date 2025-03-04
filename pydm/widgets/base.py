@@ -108,7 +108,7 @@ def widget_destroyed(channels, widget):
 def refresh_style(widget):
     """
     Method that traverse the widget tree starting at `widget` and refresh the
-    style for this widget and its childs.
+    style for this widget and its children.
 
     Parameters
     ----------
@@ -401,7 +401,7 @@ class TextFormatter(object):
 
         Parameters
         ----------
-        new_precison : int or float
+        new_precision : int or float
             The new precision value
         """
         if self.precisionFromPV and new_precision != self._prec:
@@ -512,7 +512,7 @@ class TextFormatter(object):
         with the value. If using an EPICS channel, this will automatically
         be linked to the EGU field of the PV.
 
-        Paramters
+        Parameters
         ---------
         show_units : bool
             True means that the unit will be appended to the output value
@@ -540,7 +540,7 @@ class TextFormatter(object):
 
         Returns
         -------
-        precison_from_pv : bool
+        precision_from_pv : bool
             True means that the widget will use the precision information
             from the Channel if available.
         """

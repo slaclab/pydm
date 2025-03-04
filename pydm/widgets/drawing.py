@@ -892,7 +892,7 @@ class PyDMDrawingImage(PyDMDrawing):
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self._movie = None
         self._file = None
-        # Make sure we don't set a non-existant file
+        # Make sure we don't set a non-existent file
         if filename:
             self.filename = filename
         # But we always have an internal value to reference
