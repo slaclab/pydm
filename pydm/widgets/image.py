@@ -1,14 +1,17 @@
+import numpy as np
+import logging
+import functools
+import weakref
+
 from qtpy.QtWidgets import QActionGroup
 from qtpy.QtCore import Signal, Slot, Property, QTimer, QThread
 from pyqtgraph import ImageView, PlotItem
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
-import numpy as np
-import logging
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
-from .base import PyDMWidget
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from .base import PyDMWidget, widget_destroyed
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, is_qt_designer
 
 logger = logging.getLogger(__name__)
 
@@ -232,6 +235,14 @@ class PyDMImageView(ImageView, PyDMWidget):
             self.imageChannel = image_channel or ""
         if width_channel:
             self.widthChannel = width_channel or ""
+
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+            self.check_enable_state()
+
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     @Property(str, designable=False)
     def channel(self):
