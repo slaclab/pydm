@@ -25,7 +25,7 @@ if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         RadioButton = 1
 
 
-class_for_type = [QPushButton, QRadioButton]
+class_for_type = {WidgetType.PushButton: QPushButton, WidgetType.RadioButton: QRadioButton}
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,10 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         self._layout_margins = QMargins(9, 9, 9, 9)
         self._btn_group = QButtonGroup()
         self._btn_group.setExclusive(True)
-        self._btn_group.buttonClicked[int].connect(self.handle_button_clicked)
+        try:
+            self._btn_group.buttonClicked[int].connect(self.handle_button_clicked)  # pyqt5
+        except TypeError:
+            self._btn_group.buttonClicked.connect(self.handle_button_clicked)  # pyside6
         self._widget_type = WidgetType.PushButton
         self._orientation = Qt.Vertical
         self._widgets = []

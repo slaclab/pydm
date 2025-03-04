@@ -2,7 +2,7 @@ import pytest
 from logging import ERROR
 import numpy as np
 
-from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QApplication
+from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QApplication, QSlider
 from qtpy.QtCore import Qt, QMargins, QPoint, QEvent, QRect, QSize
 from qtpy.QtGui import QMouseEvent
 from ...widgets.slider import PyDMSlider, PyDMPrimitiveSlider
@@ -351,12 +351,19 @@ def test_internal_slider_value_changed(qtbot, signals, new_value, mute_change):
 @pytest.mark.parametrize(
     "show_labels, tick_position",
     [
-        (True, 0),
-        (True, -10),
-        (True, 10),
-        (False, 0),
-        (False, -10),
-        (False, 10),
+        # Test all QSlider.TickPosition values
+        (True, QSlider.NoTicks),
+        (True, QSlider.TicksAbove),
+        (True, QSlider.TicksBelow),
+        (True, QSlider.TicksBothSides),
+        (True, QSlider.TicksLeft),
+        (True, QSlider.TicksRight),
+        (False, QSlider.NoTicks),
+        (False, QSlider.TicksAbove),
+        (False, QSlider.TicksBelow),
+        (False, QSlider.TicksBothSides),
+        (False, QSlider.TicksLeft),
+        (False, QSlider.TicksRight),
     ],
 )
 def test_properties_and_setters(qtbot, show_labels, tick_position):
@@ -372,7 +379,7 @@ def test_properties_and_setters(qtbot, show_labels, tick_position):
         pytest-qt window for widget test
     show_labels : bool
         True if the labels (min and max values) will be shown; False otherwise
-    tick_position : int
+    tick_position : QSlider.TickPosition
         The tick position for the slider component.
     """
     pydm_slider = PyDMSlider()

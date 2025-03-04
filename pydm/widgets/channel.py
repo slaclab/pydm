@@ -185,7 +185,10 @@ class PyDMChannel(object):
 
             value_signal_matched = self.value_signal is None and other.value_signal is None
             if self.value_signal and other.value_signal:
-                value_signal_matched = self.value_signal.signal == other.value_signal.signal
+                try:
+                    value_signal_matched = self.value_signal.signal == other.value_signal.signal  # pyqt5
+                except AttributeError:
+                    value_signal_matched = self.value_signal == other.value_signal  # pyside6
 
             return (
                 address_matched
