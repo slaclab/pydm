@@ -130,7 +130,11 @@ if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         Flow = 2
 
 
-layout_class_for_type = (QVBoxLayout, QHBoxLayout, FlowLayout)
+layout_class_for_type = {
+    LayoutType.Vertical: QVBoxLayout,
+    LayoutType.Horizontal: QHBoxLayout,
+    LayoutType.Flow: FlowLayout,
+}
 
 
 class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):

@@ -351,23 +351,24 @@ class Connection(PyDMConnection):
         if channel.value_signal is not None:
             try:
                 channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
+            # pyqt throws a keyerror here, and pyside6 an indexerror
+            except (KeyError, IndexError):
                 pass
             try:
                 channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
+            except (KeyError, IndexError):
                 pass
             try:
                 channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
+            except (KeyError, IndexError):
                 pass
             try:
                 channel.value_signal[bool].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
+            except (KeyError, IndexError):
                 pass
             try:
                 channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
+            except (KeyError, IndexError):
                 pass
 
     @Slot(int)

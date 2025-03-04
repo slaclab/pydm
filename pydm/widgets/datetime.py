@@ -51,7 +51,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         self._relative = True
         self._time_base = TimeBase.Milliseconds
 
-        QtWidgets.QDateTimeEdit.__init__(self, parent=parent)
+        QtWidgets.QDateTimeEdit.__init__(self)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self.setDisplayFormat("yyyy/MM/dd hh:mm:ss.zzz")
         self.setDateTime(QtCore.QDateTime.currentDateTime())
@@ -150,7 +150,7 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        QtWidgets.QLabel.__init__(self, parent=parent)
+        QtWidgets.QLabel.__init__(self)
         PyDMWidget.__init__(self, init_channel=init_channel)
 
         self._block_past_date = True
