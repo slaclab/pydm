@@ -2,12 +2,14 @@ import ast
 import math
 import os
 import logging
+import functools
+import weakref
 
 from qtpy.QtWidgets import QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygonF, QPixmap, QMovie
 from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
 from qtpy.QtDesigner import QDesignerFormWindowInterface
-from .base import PyDMWidget
+from .base import PyDMWidget, widget_destroyed
 from ..utilities import is_qt_designer, find_file
 from typing import List, Optional
 
@@ -92,6 +94,14 @@ class PyDMDrawing(QWidget, PyDMWidget):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.alarmSensitiveBorder = False
+
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+        self.setContextMenuPolicy(Qt.DefaultContextMenu)
+
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     def sizeHint(self):
         return QSize(100, 100)

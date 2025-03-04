@@ -2,7 +2,6 @@ import enum
 import os
 import re
 import platform
-import weakref
 import logging
 import functools
 import json
@@ -149,10 +148,6 @@ class PyDMPrimitiveWidget(object):
         self.app = QApplication.instance()
         self._rules = None
         self._opacity = 1.0
-        if not is_qt_designer():
-            # We should  install the Event Filter only if we are running
-            # and not at the Designer
-            self.installEventFilter(self)
 
     def __init_subclass__(cls):
         """
@@ -657,15 +652,12 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         # If this label is inside a PyDMApplication (not Designer) start it in
         # the disconnected state.
-        self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.contextMenuEvent = self.open_context_menu
         self.channel = init_channel
         if not is_qt_designer():
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
             self.check_enable_state()
-
-        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     def widget_ctx_menu(self):
         """

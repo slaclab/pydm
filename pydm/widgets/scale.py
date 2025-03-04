@@ -1,4 +1,8 @@
-from .base import PyDMWidget, TextFormatter
+import functools
+import weakref
+
+from .base import PyDMWidget, TextFormatter, widget_destroyed
+from ..utilities import is_qt_designer
 from qtpy.QtGui import QColor, QPolygon, QPen, QPainter, QPaintEvent
 from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
 from qtpy.QtCore import Qt, QPoint, Property
@@ -407,6 +411,14 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
 
         self.value_label.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.setup_widgets_for_orientation(Qt.Horizontal, False, False, self._value_position)
+
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+            self.check_enable_state()
+
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     def update_labels(self) -> None:
         """

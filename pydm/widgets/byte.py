@@ -1,8 +1,12 @@
+import functools
+import weakref
+
 from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QPaintEvent, QBrush
 from qtpy.QtCore import Property, Qt, QSize, QPoint
 from typing import List, Optional
-from .base import PyDMWidget
+from .base import PyDMWidget, widget_destroyed
+from ..utilities import is_qt_designer
 
 
 class PyDMBitIndicator(QWidget):
@@ -113,6 +117,14 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.numBits = 1  # Need to set the property to initialize
         # _labels and _indicators setting numBits there also performs
         # the first rebuild_layout.
+
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+            self.check_enable_state()
+
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     def init_for_designer(self) -> None:
         """
@@ -580,6 +592,14 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         self._brush = QBrush(Qt.SolidPattern)
         self._pen = QPen(Qt.SolidLine)
         self._render_as_rectangle = False
+
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+            self.check_enable_state()
+
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     # whether or not we render the widget as a circle (default) or a rectangle
     @Property(bool)

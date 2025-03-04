@@ -1,6 +1,10 @@
+import functools
+import weakref
+
 from qtpy.QtWidgets import QFrame
 from qtpy.QtCore import Property
-from .base import PyDMWidget
+from .base import PyDMWidget, widget_destroyed
+from ..utilities import is_qt_designer
 
 
 class PyDMFrame(QFrame, PyDMWidget):
@@ -22,6 +26,14 @@ class PyDMFrame(QFrame, PyDMWidget):
 
         self._disable_on_disconnect = False
         self.alarmSensitiveBorder = False
+
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+            self.check_enable_state()
+
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     @Property(bool)
     def disableOnDisconnect(self):

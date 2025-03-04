@@ -3,13 +3,14 @@ import os
 import logging
 import warnings
 from functools import partial
+import weakref
 import hashlib
 from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 from qtpy import QtDesigner
-from .base import PyDMWidget, only_if_channel_set
-from ..utilities import IconFont, find_file, is_pydm_app
+from .base import PyDMWidget, only_if_channel_set, widget_destroyed
+from ..utilities import IconFont, find_file, is_pydm_app, is_qt_designer
 from ..utilities.macro import parse_macro_string
 from ..utilities.stylesheet import merge_widget_stylesheet
 from ..display import load_file, ScreenTarget
@@ -86,6 +87,14 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
         # Retain references to subdisplays to avoid garbage collection
         self._subdisplays = []
+
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+            self.check_enable_state()
+
+        self.destroyed.connect(partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     @only_if_channel_set
     def check_enable_state(self) -> None:

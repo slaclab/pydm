@@ -2,6 +2,7 @@ import os
 import shlex
 import subprocess
 from functools import partial
+import weakref
 import sys
 import logging
 import warnings
@@ -11,8 +12,8 @@ from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineE
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
-from .base import PyDMWidget, only_if_channel_set
-from ..utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from .base import PyDMWidget, only_if_channel_set, widget_destroyed
+from ..utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes, is_qt_designer
 from typing import Optional, Union, List
 
 logger = logging.getLogger(__name__)
@@ -123,6 +124,14 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         # The color of "Font Awesome" icons can be set,
         # but standard icons are already colored and can not be set.
         self._pydm_icon_color = QColor(90, 90, 90)
+
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+            self.check_enable_state()
+
+        self.destroyed.connect(partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     def confirmDialog(self) -> bool:
         """

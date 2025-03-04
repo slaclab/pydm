@@ -1,12 +1,14 @@
 import os
 import json
 import logging
+import functools
+import weakref
 from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
-from ..utilities import find_file
-from .base import PyDMWidget
+from ..utilities import find_file, is_qt_designer
+from .base import PyDMWidget, widget_destroyed
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +39,15 @@ class PyDMSymbol(QWidget, PyDMWidget):
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self._sizeHint = self.minimumSizeHint()
         self._painter = QPainter()
+
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+            self.check_enable_state()
+        self.setContextMenuPolicy(Qt.DefaultContextMenu)
+
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     def init_for_designer(self):
         """
