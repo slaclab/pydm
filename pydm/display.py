@@ -5,6 +5,7 @@ import logging
 import os
 import sys
 import warnings
+import subprocess
 from functools import lru_cache
 from io import StringIO
 from os import path
@@ -13,11 +14,14 @@ from typing import Dict, Optional, Tuple
 
 import re
 import six
-from qtpy import uic
 from qtpy.QtWidgets import QApplication, QWidget
 
 from .help_files import HelpWindow
-from .utilities import import_module_by_filename, is_pydm_app, macro
+from .utilities import import_module_by_filename, is_pydm_app, macro, ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    from qtpy import uic
 
 
 class ScreenTarget:
@@ -94,15 +98,40 @@ def _compile_ui_file(uifile: str) -> Tuple[str, str]:
     -------
     Tuple[str, str] - The first element is the compiled ui file, the second is the name of the class (e.g. Ui_Form)
     """
-    code_string = StringIO()
-    uic.compileUi(uifile, code_string)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        code_string = StringIO()
+        uic.compileUi(uifile, code_string)
+        code_string = code_string.getvalue()
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+        # seems like pyside6 only offers .ui compilation with pyside6-uic cmdline tool
+        try:
+            result = subprocess.run(
+                ["pyside6-uic", uifile],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                check=True,
+            )
+            code_string = result.stdout
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Error compiling {uifile} with pyside6-uic: {e.stderr.strip()}") from e
+
     # Grabs non-whitespace characters between class and the opening parenthesis
-    class_name = re.search(r"^class\s*(\S*)\(", code_string.getvalue(), re.MULTILINE).group(1)
-    return code_string.getvalue(), class_name
+    class_name_match = re.search(r"^class\s*(\S*)\(", code_string, re.MULTILINE)
+    if not class_name_match:
+        raise ValueError("Unable to determine the class name from the compiled .ui file.")
+    class_name = class_name_match.group(1)
+
+    return code_string, class_name
 
 
 def _load_ui_into_display(uifile, display):
-    klass, _ = uic.loadUiType(uifile)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        klass, _ = uic.loadUiType(uifile)
+    else:  # pyside6
+        from PySide6.QtUiTools import loadUiType
+
+        klass, _ = loadUiType(uifile)
 
     # Python 2.7 compatibility. More info at the following links:
     # https://github.com/universe-proton/universe-topology/issues/3
@@ -130,7 +159,7 @@ def _load_compiled_ui_into_display(
     """
     Takes a ui file which has already been compiled by uic and loads it into the input display.
     Performs macro substitution within the input code_string if any macros supplied are
-    found withing the code string.
+    found within the code string.
 
     Parameters
     ----------
@@ -339,7 +368,7 @@ class Display(QWidget):
         and the values are callables, where the callable is the action performed
         when the menu item is selected.
 
-        Submenus are supported by using a similarly structued dictionary as the value.
+        Submenus are supported by using a similarly structured dictionary as the value.
 
         Shortcuts are supported by using a tuple of type (callable, shortcut_string) as the value.
 
