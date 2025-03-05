@@ -2,7 +2,7 @@ import functools
 import json
 import warnings
 from abc import abstractmethod
-from qtpy.QtGui import QColor, QBrush, QMouseEvent
+from qtpy.QtGui import QColor, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect
 from qtpy.QtWidgets import QToolTip, QWidget
 from .. import utilities
@@ -1466,7 +1466,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         crosshair lines if their positions have changed. Finally, it emits a signal with the new crosshair
         coordinates.
 
-        Note: 
+        Note:
         If a PyDMDisplay object is available, that display will also have the x- and y- values to update on the UI.
 
         Parameters
@@ -1479,16 +1479,17 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         -------
         None
         """
-        if isinstance(evt, tuple):  
-            pos = evt[0]  
+        if isinstance(evt, tuple):
+            pos = evt[0]
         else:
-            pos = evt.posF()  
+            pos = evt.posF()
         if self.sceneBoundingRect().contains(pos):
             mouse_point = self.getViewBox().mapSceneToView(pos)
 
-            if (self.vertical_crosshair_line.pos().x() != mouse_point.x() or 
-                self.horizontal_crosshair_line.pos().y() != mouse_point.y()):
-                
+            if (
+                self.vertical_crosshair_line.pos().x() != mouse_point.x()
+                or self.horizontal_crosshair_line.pos().y() != mouse_point.y()
+            ):
                 self.vertical_crosshair_line.setPos(mouse_point.x())
                 self.horizontal_crosshair_line.setPos(mouse_point.y())
 
@@ -1546,10 +1547,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                 starting_y_pos = (view_y_min + view_y_max) / 2
 
             self.vertical_crosshair_line = InfiniteLine(
-                pos=starting_x_pos, angle=vertical_angle, movable=vertical_movable, pen=mkPen('y')
+                pos=starting_x_pos, angle=vertical_angle, movable=vertical_movable, pen=mkPen("y")
             )
             self.horizontal_crosshair_line = InfiniteLine(
-                pos=starting_y_pos, angle=horizontal_angle, movable=horizontal_movable, pen=mkPen('y')
+                pos=starting_y_pos, angle=horizontal_angle, movable=horizontal_movable, pen=mkPen("y")
             )
 
             self.vertical_crosshair_line.setVisible(True)
@@ -1575,4 +1576,3 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                     proxy.sigDelayed.disconnect(proxy.slot)
                 except Exception:
                     pass
-

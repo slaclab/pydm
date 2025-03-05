@@ -2,10 +2,10 @@ import time
 import json
 from collections import OrderedDict
 from typing import Optional
-from pyqtgraph import BarGraphItem, ViewBox, AxisItem, PlotDataItem, TextItem, SignalProxy, mkBrush, mkPen
+from pyqtgraph import BarGraphItem, ViewBox, AxisItem, PlotDataItem, TextItem, mkBrush, mkPen
 import numpy as np
-from qtpy.QtGui import QColor, QFont, QCursor, QMouseEvent
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QPointF, QPoint
+from qtpy.QtGui import QColor, QFont, QCursor
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QPointF
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
@@ -103,7 +103,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.latest_value = None
         self.channel = None
         self.units = ""
-        
+
         super(TimePlotCurveItem, self).__init__(**kws)
         self.address = channel_address
 
@@ -512,7 +512,7 @@ class PyDMTimePlot(BasePlot):
         self.auto_scroll_timer.timeout.connect(self.auto_scroll)
 
         self.textItems = {}
-        self.crosshair = False 
+        self.crosshair = False
         self.init_labels = False
 
     def to_dict(self) -> OrderedDict:
@@ -543,7 +543,7 @@ class PyDMTimePlot(BasePlot):
         thresholdColor=None,
         yAxisName=None,
         useArchiveData=False,
-        **kwargs
+        **kwargs,
     ):
         """
         Adds a new curve to the current plot
@@ -604,7 +604,7 @@ class PyDMTimePlot(BasePlot):
             color=color,
             yAxisName=yAxisName,
             useArchiveData=useArchiveData,
-            **plot_opts
+            **plot_opts,
         )
         new_curve.setUpdatesAsynchronously(self.updateMode)
         new_curve.setBufferSize(self._bufferSize)
@@ -668,7 +668,7 @@ class PyDMTimePlot(BasePlot):
             return
 
         self.updateXAxis()
-        
+
         min_x = self.plotItem.getViewBox().state["viewRange"][0][0]
         max_x = self.plotItem.getViewBox().state["viewRange"][0][1]
 
@@ -682,7 +682,7 @@ class PyDMTimePlot(BasePlot):
             mouse_pos = QPointF(local_pos)
 
             if self.sceneBoundingRect().contains(mouse_pos):
-                mapped_point = self.getViewBox().mapSceneToView(mouse_pos)         
+                mapped_point = self.getViewBox().mapSceneToView(mouse_pos)
                 self.vertical_crosshair_line.setPos(mapped_point.x())
                 self.horizontal_crosshair_line.setPos(mapped_point.y())
                 self.crosshair_position_updated.emit(mapped_point.x(), mapped_point.y())
@@ -1180,10 +1180,7 @@ class PyDMTimePlot(BasePlot):
                 continue
 
             label: TextItem = TextItem(
-                text='No data',
-                color='w',
-                border=mkPen(color='w', width=2),
-                fill=mkBrush(0, 0, 0, 150)
+                text="No data", color="w", border=mkPen(color="w", width=2), fill=mkBrush(0, 0, 0, 150)
             )
 
             label.setPos(0, 0)
@@ -1204,7 +1201,7 @@ class PyDMTimePlot(BasePlot):
         -------
         None
         """
-        if hasattr(self, 'textItems'):
+        if hasattr(self, "textItems"):
             for label in self.textItems.values():
                 self.plotItem.removeItem(label)
             self.textItems.clear()
@@ -1215,11 +1212,11 @@ class PyDMTimePlot(BasePlot):
         """
         Update the label for each curve based on the given x-coordinate.
 
-        For each curve stored in the `textItems` dictionary, this method retrieves the curve's 
-        data (x and y arrays) and finds the data point with an x-value immediately to the left 
-        of `x_val`. If the x-coordinate is within the range of the curve's data and the data point 
-        is finite, the corresponding label is updated to display the x and y values and is moved 
-        to that position. If `x_val` is not finite or is outside the data range, the label text is 
+        For each curve stored in the `textItems` dictionary, this method retrieves the curve's
+        data (x and y arrays) and finds the data point with an x-value immediately to the left
+        of `x_val`. If the x-coordinate is within the range of the curve's data and the data point
+        is finite, the corresponding label is updated to display the x and y values and is moved
+        to that position. If `x_val` is not finite or is outside the data range, the label text is
         set to "No data!".
 
         Parameters
@@ -1248,7 +1245,7 @@ class PyDMTimePlot(BasePlot):
                 label.setText("No data!")
                 continue
 
-            idx = np.searchsorted(xData, x_val, side='right') - 1
+            idx = np.searchsorted(xData, x_val, side="right") - 1
             if idx < 0:
                 idx = 0
             if idx >= len(yData):
@@ -1259,7 +1256,7 @@ class PyDMTimePlot(BasePlot):
 
             if not (np.isfinite(real_x) and np.isfinite(real_y)):
                 continue
-            
+
             if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.plotItem.axes:
                 curve_vb = self.plotItem.getViewBoxForAxis(curve.y_axis_name)
             else:
