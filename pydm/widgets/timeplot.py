@@ -5,11 +5,11 @@ from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem, PlotDataItem, TextItem, SignalProxy, mkBrush, mkPen
 import numpy as np
 from qtpy.QtGui import QColor, QFont, QCursor, QMouseEvent
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QPointF, Qt
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QPointF, QPoint
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol
-
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -1210,7 +1210,8 @@ class PyDMTimePlot(BasePlot):
             self.textItems.clear()
             self.init_label = True
 
-    def updateLabel(self, x_val: float) -> None:
+    @Slot(float, float)
+    def updateLabel(self, x_val: float, y_val: float) -> None:
         """
         Update the label for each curve based on the given x-coordinate.
 
@@ -1266,11 +1267,19 @@ class PyDMTimePlot(BasePlot):
 
             curve_vb.addItem(label)
 
+            time_str = datetime.fromtimestamp(real_x).strftime("%H:%M:%S")
+
             if curve.channel.severity_slot is not None:
-                label.setText(f"x={real_x:.2f}\ny={real_y:.2f}" + "\n" + str(curve.channel.severity_slot))
+                label.setText(f"x={time_str}\ny={real_y:.2f}" + "\n" + str(curve.channel.severity_slot))
             else:
-                label.setText(f"x={real_x:.2f}\ny={real_y:.2f}")
-            label.setPos(real_x, real_y)
+                label.setText(f"x={time_str}\ny={real_y:.2f}")
+
+            data_point = QPointF(x_val, y_val)
+            primary_vb = self.getViewBox()
+            scene_point = primary_vb.mapViewToScene(data_point)
+            label_point = curve_vb.mapSceneToView(scene_point)
+            label.setPos(label_point.x(), real_y)
+
 
 class TimeAxisItem(AxisItem):
     """
