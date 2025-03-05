@@ -189,7 +189,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.units = units
         self.unitSignal.emit(units)
 
-    @Slot(str)
+    @Slot(int)
     def severityChanged(self, severity: int):
         """Slot to handle when severity are received from the PyDMChannel."""
         self.severity_raw = severity
