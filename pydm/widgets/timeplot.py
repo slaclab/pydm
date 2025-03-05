@@ -65,6 +65,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     _channels = ("channel",)
     unitSignal = Signal(str)
+    severitySignal = Signal(int)
     live_channel_connection = Signal(bool)
 
     def __init__(self, channel_address=None, plot_by_timestamps=True, plot_style="Line", **kws):
@@ -104,6 +105,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.channel = None
         self.units = ""
 
+        self.severity_raw = -1
+        self.severity = "N/A"
+
         super(TimePlotCurveItem, self).__init__(**kws)
         self.address = channel_address
 
@@ -135,6 +139,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             connection_slot=self.connectionStateChanged,
             value_slot=self.receiveNewValue,
             unit_slot=self.unitsChanged,
+            severity_slot=self.severityChanged
         )
         self.channel.connect()
 
@@ -184,6 +189,42 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.units = units
         self.unitSignal.emit(units)
 
+    @Slot(str)
+    def severityChanged(self, severity: int):
+        """Slot to handle when severity are received from the PyDMChannel."""
+        self.severity_raw = severity
+        self.alarm_severity_changed(severity)
+        self.severitySignal.emit(severity)    
+
+    def alarm_severity_changed(self, new_alarm_severity):
+        """
+        Callback invoked when the Channel alarm severity is changed.
+        Sets self.severity to a string representation based on the integer value.
+
+        Parameters
+        ----------
+        new_alarm_severity : int or str
+            The new severity where:
+                0 = NO_ALARM
+                1 = MINOR
+                2 = MAJOR
+                3 = INVALID
+        """
+        severity_map = {
+            0: "NO_ALARM",
+            1: "MINOR",
+            2: "MAJOR",
+            3: "INVALID"
+        }
+
+        try:
+            severity_int = int(new_alarm_severity)
+        except (ValueError, TypeError):
+            severity_int = -1  
+
+        self.severity = severity_map.get(severity_int, "N/A")
+        return self.severity
+        
     @Slot(bool)
     def connectionStateChanged(self, connected):
         # Maybe change pen stroke?
@@ -1266,8 +1307,8 @@ class PyDMTimePlot(BasePlot):
 
             time_str = datetime.fromtimestamp(real_x).strftime("%H:%M:%S")
 
-            if curve.channel.severity_slot is not None:
-                label.setText(f"x={time_str}\ny={real_y:.2f}" + "\n" + str(curve.channel.severity_slot))
+            if curve.severity_raw != -1:
+                label.setText(f"x={time_str}\ny={real_y:.2f}" + "\n" + str(curve.severity))
             else:
                 label.setText(f"x={time_str}\ny={real_y:.2f}")
 
