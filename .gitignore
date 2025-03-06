@@ -31,6 +31,7 @@ eggs/
 lib/
 lib64/
 parts/
+pydm/_version.py
 sdist/
 var/
 wheels/
