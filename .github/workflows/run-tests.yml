@@ -50,11 +50,10 @@ jobs:
     - name: Install additional Python dependencies with pip
       shell: bash -el {0}
       run: |
-        pip install -r requirements.txt
         if [ "$RUNNER_OS" == "Windows" ]; then
-          pip install -r windows-dev-requirements.txt
+          pip install .[testwindows]
         else
-          pip install -r dev-requirements.txt
+          pip install .[test]
         fi
 
     - name: Install packages for testing a PyQt app on Linux
