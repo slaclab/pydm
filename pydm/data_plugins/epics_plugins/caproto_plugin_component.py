@@ -115,7 +115,7 @@ class Connection(PyDMConnection):
         precision=None,
         timestamp=None,
         *args,
-        **kws
+        **kws,
     ):
         if severity is not None and self._severity != severity:
             self._severity = severity

@@ -351,7 +351,7 @@ class PyDMEventPlot(BasePlot):
             color=color,
             yAxisName=yAxisName,
             bufferSizeChannelAddress=bufferSizeChannelAddress,
-            **plot_opts
+            **plot_opts,
         )
         if buffer_size is not None:
             curve.setBufferSize(buffer_size)

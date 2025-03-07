@@ -553,7 +553,7 @@ class PyDMTimePlot(BasePlot):
         thresholdColor=None,
         yAxisName=None,
         useArchiveData=False,
-        **kwargs
+        **kwargs,
     ):
         """
         Adds a new curve to the current plot
@@ -614,7 +614,7 @@ class PyDMTimePlot(BasePlot):
             color=color,
             yAxisName=yAxisName,
             useArchiveData=useArchiveData,
-            **plot_opts
+            **plot_opts,
         )
         new_curve.setUpdatesAsynchronously(self.updateMode)
         new_curve.setBufferSize(self._bufferSize)
