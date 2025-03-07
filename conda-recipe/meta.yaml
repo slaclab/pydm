@@ -18,7 +18,7 @@ requirements:
     - pip
     - setuptools
     - pyqt =5
-    - qtpy
+    - qtpy >=2.2.0
   run:
     - python >=3.9
     - six
@@ -27,7 +27,7 @@ requirements:
     - pyepics
     - pyqt =5
     - pyqtgraph
-    - qtpy
+    - qtpy >=2.2.0
     - entrypoints
 
 test:
