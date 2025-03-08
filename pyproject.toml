@@ -40,7 +40,7 @@ file = "requirements.txt"
 [tool.setuptools.dynamic.optional-dependencies.test]
 file = "dev-requirements.txt"
 
-[tool.setuptools.dynamic.optional-dependencies.testwindows]
+[tool.setuptools.dynamic.optional-dependencies.test-no-optional]
 file = "windows-dev-requirements.txt"
 
 [tool.setuptools.dynamic.optional-dependencies.doc]
