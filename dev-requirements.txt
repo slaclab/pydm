@@ -4,5 +4,5 @@ pytest-qt
 pytest-cov
 pytest-timeout
 p4p
-git+https://github.com/slaclab/pyca.git; platform_system != "Windows"
+pyca @ git+https://github.com/slaclab/pyca.git
 pre-commit
