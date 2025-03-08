@@ -10,7 +10,7 @@ from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
 from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
-from qtpy.QtGui import QColor
+from qtpy.QtGui import QColor, QPen
 import logging
 from math import *  # noqa
 from statistics import mean  # noqa
@@ -65,9 +65,10 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
         # When optimized or mean value data is requested, we can display error bars representing
         # the full range of values retrieved
-        self.error_bar_item = ErrorBarItem()
-        self.error_bar_needs_set = True
+        self.error_bar = ErrorBarItem()
+        self.error_bar_data = None
 
+        self.destroyed.connect(lambda: self.remove_error_bar())
         self.address = channel_address
 
     def to_dict(self) -> OrderedDict:
@@ -76,14 +77,10 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         dic_.update(super(ArchivePlotCurveItem, self).to_dict())
         return dic_
 
-    @property
-    def address(self):
-        return super().address
-
-    @address.setter
+    @TimePlotCurveItem.address.setter
     def address(self, new_address: str) -> None:
         """Creates the channel for the input address for communicating with the archiver appliance plugin."""
-        TimePlotCurveItem.address.__set__(self, new_address)
+        TimePlotCurveItem.address.fset(self, new_address)
 
         if self.archive_channel:
             if new_address == self.archive_channel.address:
@@ -112,6 +109,20 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
         # Prompt the curve's associated plot to fetch archive data
         self.prompt_archive_request.emit()
+
+    @BasePlotCurveItem.y_axis_name.setter
+    def y_axis_name(self, axis_name: str) -> None:
+        """
+        Set the name of the y-axis that should be associated with this curve.
+        Also move's the curve's error bar item.
+        Parameters
+        ----------
+        axis_name: str
+        """
+        BasePlotCurveItem.y_axis_name.fset(self, axis_name)
+        if vb := self.error_bar.getViewBox():
+            vb.removeItem(self.error_bar)
+        self.getViewBox().addItem(self.error_bar)
 
     @property
     def liveData(self):
@@ -168,17 +179,11 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
         # Error bars
         if data.shape[0] == 5:  # 5 indicates optimized data was requested from the archiver
-            self.error_bar_item.setData(
-                x=self.archive_data_buffer[0, -self.archive_points_accumulated :],
-                y=self.archive_data_buffer[1, -self.archive_points_accumulated :],
-                top=data[4] - data[1],
-                bottom=data[1] - data[3],
-                beam=0.5,
-                pen={"color": self.color},
-            )
-            if self.error_bar_needs_set:
-                self.getViewBox().addItem(self.error_bar_item)
-                self.error_bar_needs_set = False
+            self.error_bar_data = data
+            self.set_error_bar()
+            self.error_bar.show()
+        else:
+            self.error_bar.hide()
 
         self.data_changed.emit()
         self.archive_data_received_signal.emit()
@@ -269,6 +274,58 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
             self.initializeArchiveBuffer()
 
+    def set_error_bar(self):
+        """Update the data in the ErrorBarItem. Applies log10 to the ErrorBarItem
+        based on the curve's log mode.
+        """
+        x_val = self.error_bar_data[0]
+
+        if self.error_bar.getViewBox() is None:
+            self.getViewBox().addItem(self.error_bar)
+
+        # Calculate y-value and range for error bars
+        logMode = self.opts["logMode"][1]
+        if logMode:
+            # If the curve's log mode is enabled, then apply numpy.log10 to all y-values
+            with np.errstate(divide="ignore"):
+                y_val = np.log10(self.error_bar_data[1])
+                bot_val = y_val - np.log10(self.error_bar_data[3])
+                top_val = np.log10(self.error_bar_data[4]) - y_val
+        else:
+            y_val = self.error_bar_data[1]
+            bot_val = y_val - self.error_bar_data[3]
+            top_val = self.error_bar_data[4] - y_val
+
+        # Set the error bar's pen to be the same as the curve, but solid
+        solid_pen = QPen(self._pen)
+        solid_pen.setStyle(1)
+
+        self.error_bar.setData(x=x_val, y=y_val, top=top_val, bottom=bot_val, beam=0.5, pen=solid_pen)
+
+    @Slot()
+    def remove_error_bar(self):
+        """Remove the curve's error bar when the curve is deleted."""
+        if self.error_bar is None:
+            return
+        if vb := self.error_bar.getViewBox():
+            vb.removeItem(self.error_bar)
+
+    def setLogMode(self, xState: bool, yState: bool) -> None:
+        """When log mode is enabled for the respective axis by setting xState or
+        yState to True, a mapping according to mapped = np.log10( value ) is applied
+        to the data. For negative or zero values, this results in a NaN value.
+
+        Parameters
+        ----------
+        xState : bool
+            Set log mode for the x-axis
+        yState : bool
+            Set log mode for the y-axis
+        """
+        super().setLogMode(xState, yState)
+        if self.error_bar_data is not None:
+            self.set_error_bar()
+
     @Slot(bool)
     def archiveConnectionStateChanged(self, connected: bool) -> None:
         """Capture the archive channel connection status and emit changes
@@ -314,8 +371,15 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         else:
             return self.min_x()
 
-    def receiveNewValue(self, new_value):
-        """ """
+    def receiveNewValue(self, new_value: float) -> None:
+        """Fill incoming live data if requested by user.
+
+        Parameters
+        ----------
+        new_value : float
+            The new y-value to append to the live data buffer
+        """
+        # Ignore incoming live data depending on user request
         if self._liveData:
             super().receiveNewValue(new_value)
 
@@ -358,7 +422,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         liveData: Optional[bool] = True,
         color: Optional[str] = "green",
         plot_style: str = "Line",
-        **kws
+        **kws,
     ):
         super(FormulaCurveItem, self).__init__(**kws)
         self.color = color
@@ -373,12 +437,8 @@ class FormulaCurveItem(BasePlotCurveItem):
 
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
 
-        # When optimized or mean value data is requested, we can display error bars representing
-        # the full range of values retrieved
-        self.error_bar_item = ErrorBarItem()
-        self.error_bar_needs_set = True
-        self._formula = formula
         # Have a formula for internal calculations, that the user does not see
+        self._formula = formula
         self._trueFormula = self.createTrueFormula()
         self.pvs = pvs if pvs else {}
         self._liveData = liveData
@@ -919,9 +979,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     def clearCurves(self) -> None:
         """Clear all curves from the plot"""
         for curve in self._curves:
-            # Need to clear out any bars from optimized data, then super() can handle the rest
-            if not curve.error_bar_needs_set:
-                curve.getViewBox().removeItem(curve.error_bar_item)
+            # Need to clear out any bars from optimized data; only applicable to ArchivePlotCurveItems
+            if not isinstance(curve, ArchivePlotCurveItem):
+                continue
+            vb = curve.error_bar.getViewBox()
+            vb.removeItem(curve.error_bar)
 
         # reset _min_x to let updateXAxis make requests anew
         self._min_x = self._starting_timestamp

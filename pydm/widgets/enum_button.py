@@ -1,16 +1,28 @@
 import logging
 
-from qtpy.QtCore import Qt, QSize, Property, Slot, Q_ENUMS, QMargins
+from qtpy.QtCore import Qt, QSize, Property, Slot, QMargins
 from qtpy.QtGui import QPainter
 from qtpy.QtWidgets import QWidget, QButtonGroup, QGridLayout, QPushButton, QRadioButton, QStyleOption, QStyle
 
 from .base import PyDMWritableWidget
 from .. import data_plugins
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 
 class WidgetType(object):
     PushButton = 0
     RadioButton = 1
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class WidgetType(Enum):  # noqa: F811
+        PushButton = 0
+        RadioButton = 1
 
 
 class_for_type = [QPushButton, QRadioButton]
@@ -38,7 +50,10 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         Emitted when the user changes the value.
     """
 
-    Q_ENUMS(WidgetType)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(WidgetType)
     WidgetType = WidgetType
 
     # Make enum definitions known to this class

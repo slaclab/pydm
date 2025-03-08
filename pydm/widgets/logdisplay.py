@@ -3,7 +3,7 @@ import functools
 
 from collections import OrderedDict
 
-from qtpy.QtCore import QObject, Slot, Signal, Property, Q_ENUMS, QSize
+from qtpy.QtCore import QObject, Slot, Signal, Property, QSize
 from qtpy.QtWidgets import (
     QWidget,
     QPlainTextEdit,
@@ -16,6 +16,8 @@ from qtpy.QtWidgets import (
     QStyle,
 )
 from qtpy.QtGui import QPainter
+
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -108,6 +110,32 @@ class LogLevels(object):
         return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
 
 
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    class LogLevels(Enum):  # noqa F811
+        NOTSET = 0
+        DEBUG = 10
+        INFO = 20
+        WARNING = 30
+        ERROR = 40
+        CRITICAL = 50
+
+        @staticmethod
+        def as_dict():
+            """
+            Returns an ordered dict of LogLevels ordered by value.
+            Returns
+            -------
+            OrderedDict
+            """
+            # First let's remove the internals
+            entries = [(k, v.value) for k, v in LogLevels.__members__.items()]
+            return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
+
+
 class PyDMLogDisplay(QWidget):
     """
     Standard display for Log Output
@@ -129,7 +157,10 @@ class PyDMLogDisplay(QWidget):
 
     """
 
-    Q_ENUMS(LogLevels)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(LogLevels)
     LogLevels = LogLevels
 
     # Make enum definitions known to this class

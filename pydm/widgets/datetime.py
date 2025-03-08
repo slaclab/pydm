@@ -2,6 +2,7 @@ import logging
 from qtpy import QtWidgets, QtCore
 
 from .base import PyDMWritableWidget, PyDMWidget
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -11,8 +12,22 @@ class TimeBase(object):
     Seconds = 1
 
 
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class TimeBase(Enum):  # noqa F811
+        Milliseconds = 0
+        Seconds = 1
+
+
 class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
-    QtCore.Q_ENUMS(TimeBase)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(TimeBase)
 
     # Make enum definitions known to this class
     Milliseconds = TimeBase.Milliseconds
@@ -113,7 +128,10 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
 
 
 class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
-    QtCore.Q_ENUMS(TimeBase)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(TimeBase)
 
     # Make enum definitions known to this class
     Milliseconds = TimeBase.Milliseconds
