@@ -1285,7 +1285,8 @@ class PyDMDrawingPie(PyDMDrawingArc):
     init_channel : str, optional
         The channel to be used by the widget.
     """
-    new_properties = {"Start Angle": ["startAngle", float], "Span Angle": ["spanAngle",float]}
+
+    new_properties = {"Start Angle": ["startAngle", float], "Span Angle": ["spanAngle", float]}
 
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingPie, self).__init__(parent, init_channel)
