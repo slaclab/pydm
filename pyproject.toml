@@ -27,7 +27,7 @@ Documentation = "https://slaclab.github.io/pydm/"
 file = "LICENSE.md"
 
 [tool.setuptools_scm]
-version_file = "pydm/_version.py"
+write_to = "pydm/_version.py"
 
 [tool.setuptools.packages.find]
 where = ["."]
