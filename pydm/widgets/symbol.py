@@ -106,14 +106,14 @@ class PyDMSymbol(QWidget, PyDMWidget):
             qInstallMessageHandler(self.qt_message_handler)
             svg = QSvgRenderer()
             svg.repaintNeeded.connect(self.update)
-            if svg.load(file_path):
+            if file_path is not None and svg.load(file_path):
                 self._state_images[int(state)] = (filename, svg)
                 self._sizeHint = self._sizeHint.expandedTo(svg.defaultSize())
                 qInstallMessageHandler(None)
                 continue
             qInstallMessageHandler(None)
             # SVG didn't work, lets try QPixmap
-            image = QPixmap(file_path)
+            image = QPixmap(file_path) if file_path is not None else QPixmap()
             if not image.isNull():
                 self._state_images[int(state)] = (filename, image)
                 self._sizeHint = self._sizeHint.expandedTo(image.size())
