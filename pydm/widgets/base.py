@@ -1366,10 +1366,10 @@ class PyDMWritableWidget(PyDMWidget):
         Emitted when the user changes the value
     """
 
-    __Signals__ = "send_value_signal([int], [float], [str], [bool], [object])"
+    __Signals__ = "send_value_signal((int, ), (float, ), (str, ), (bool, ), (object, ))"
 
     # Emitted when the user changes the value.
-    send_value_signal = Signal([int], [float], [str], [bool], [object])
+    send_value_signal = Signal((int,), (float,), (str,), (bool,), (object,))
 
     def __init__(self, init_channel=None):
         self._write_access = False

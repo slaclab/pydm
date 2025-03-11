@@ -29,22 +29,22 @@ class ConnectionSignals(QObject):
     An assortment of signals, to which a unit test can choose from and bind an appropriate slot
     """
 
-    new_value_signal = Signal([float], [int], [str], [np.ndarray])
+    new_value_signal = Signal((float,), (int,), (str,), (np.ndarray,))
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
     write_access_signal = Signal(bool)
     enum_strings_signal = Signal(tuple)
     internal_slider_moved = Signal(int)
     internal_slider_clicked = Signal()
-    send_value_signal = Signal([int], [float], [str], [bool], [np.ndarray])
+    send_value_signal = Signal((int,), (float,), (str,), (bool,), (np.ndarray,))
     unit_signal = Signal(str)
     prec_signal = Signal(int)
-    upper_ctrl_limit_signal = Signal([float])
-    lower_ctrl_limit_signal = Signal([float])
-    upper_alarm_limit_signal = Signal([float])
-    lower_alarm_limit_signal = Signal([float])
-    upper_warning_limit_signal = Signal([float])
-    lower_warning_limit_signal = Signal([float])
+    upper_ctrl_limit_signal = Signal((float,))
+    lower_ctrl_limit_signal = Signal((float,))
+    upper_alarm_limit_signal = Signal((float,))
+    lower_alarm_limit_signal = Signal((float,))
+    upper_warning_limit_signal = Signal((float,))
+    lower_warning_limit_signal = Signal((float,))
 
     def __init__(self):
         super(ConnectionSignals, self).__init__()
