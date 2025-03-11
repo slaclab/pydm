@@ -1,6 +1,7 @@
 # import epics
 # from qtpy import uic
 import functools
+import weakref
 from qtpy.QtCore import Slot, Signal, QPointF, QRectF
 from qtpy.QtGui import QPen
 from qtpy.QtWidgets import QSizePolicy
@@ -141,7 +142,7 @@ class CamViewer(Display):
         self.ui.setROIButton.clicked.connect(self.setROI)
         self.ui.resetROIButton.clicked.connect(self.resetROI)
 
-        self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     @Slot()
     def zoomIn(self):
