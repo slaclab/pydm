@@ -289,7 +289,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
 
         Returns
         -------
-        int
+        Qt.PenStyle
             Index at Qt.PenStyle enum
         """
         return self._pen_style
@@ -301,7 +301,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
 
         Parameters
         ----------
-        new_style : int
+        new_style : Qt.PenStyle
             Index at Qt.PenStyle enum
         """
         if self._alarm_state == PyDMWidget.ALARM_NONE:

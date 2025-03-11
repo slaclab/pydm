@@ -100,6 +100,12 @@ class BasePlotCurveItem(PlotDataItem):
         if lineWidth is not None:
             self._pen.setWidth(lineWidth)
         if lineStyle is not None:
+            # The type hint for 'Optional' for lineStyle arg, which has allowed for some screens to
+            # pass int value for lineStyle. pyqt5 doesn't mind the int, but pyside6 complains so lets
+            # convert any ints here to the proper Qt.PenStyle enums. The int values get converted to enums
+            # according to: https://doc.qt.io/qt-6/qt.html#PenStyle-enum
+            if isinstance(lineStyle, int):
+                lineStyle = Qt.PenStyle(lineStyle)
             self._pen.setStyle(lineStyle)
         kws["pen"] = self._pen
         super(BasePlotCurveItem, self).__init__(**kws)
