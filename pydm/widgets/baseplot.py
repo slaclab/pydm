@@ -1,9 +1,11 @@
 import functools
 import json
 import warnings
+import numpy as np
+
 from abc import abstractmethod
-from qtpy.QtGui import QColor, QBrush
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect
+from qtpy.QtGui import QColor, QFont, QBrush
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect, QPointF
 from qtpy.QtWidgets import QToolTip, QWidget
 from .. import utilities
 from pyqtgraph import (
@@ -14,11 +16,14 @@ from pyqtgraph import (
     ViewBox,
     InfiniteLine,
     SignalProxy,
+    mkBrush,
+    TextItem,
 )
 from collections import OrderedDict
 from typing import Dict, List, Optional, Union, Any
 from .base import PyDMPrimitiveWidget, widget_destroyed
 from .multi_axis_plot import MultiAxisPlot
+from datetime import datetime
 
 
 class NoDataError(Exception):
@@ -742,6 +747,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.vertical_crosshair_line = None
         self.horizontal_crosshair_line = None
         self.crosshair_movement_proxy = None
+
+        self.textItems = {}
+        self.crosshair = False
+        self.init_labels = False
 
         # Mouse mode to 1 button (left button draw rectangle for zoom)
         self.plotItem.getViewBox().setMouseMode(ViewBox.RectMode)
@@ -1557,7 +1566,14 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.crosshair_movement_proxy = SignalProxy(
                 self.plotItem.scene().sigMouseMoved, rateLimit=60, slot=self.mouseMoved
             )
+
+            self.crosshair = True
+            self.textItems = {}
+            self.init_label = True
+            self.crosshair_position_updated.connect(self.updateLabel)
         else:
+            self.clearCurveLabels()
+
             if self.vertical_crosshair_line in self.plotItem.items:
                 self.plotItem.removeItem(self.vertical_crosshair_line)
             if self.horizontal_crosshair_line in self.plotItem.items:
@@ -1571,3 +1587,116 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                     proxy.sigDelayed.disconnect(proxy.slot)
                 except Exception:
                     pass
+
+    def initializeCurveLabels(self, font: str = "arial", font_size: int = 8) -> None:
+        """
+        Create a TextItem for each PlotDataItem in the plot and stores them in self.textItems.
+
+        Returns
+        -------
+        None
+        """
+        self.clearCurveLabels()
+        self.init_label = False
+
+        for item in self.plotItem.listDataItems():
+            if not isinstance(item, PlotDataItem):
+                continue
+
+            label: TextItem = TextItem(
+                text="No data", color="w", border=mkPen(color="w", width=2), fill=mkBrush(0, 0, 0, 150)
+            )
+
+            label.setPos(0, 0)
+            label.setAnchor((0.5, 0.5))
+            label.setFont(QFont(font, font_size))
+
+            self.textItems[item] = label
+
+    def clearCurveLabels(self) -> None:
+        """
+        Remove all existing curve labels from the plot and clear the textItems dictionary.
+
+        This method iterates through all TextItem objects stored in the `textItems` attribute,
+        removes each one from the plot (via `plotItem.removeItem`), clears the dictionary, and
+        sets the `init_label` flag to True.
+
+        Returns
+        -------
+        None
+        """
+        if hasattr(self, "textItems"):
+            for label in self.textItems.values():
+                self.plotItem.removeItem(label)
+            self.textItems.clear()
+            self.init_label = True
+
+    @Slot(float, float)
+    def updateLabel(self, x_val: float, y_val: float) -> None:
+        """
+        Update the label for each curve based on the given x-coordinate.
+
+        For each curve stored in the `textItems` dictionary, this method retrieves the curve's
+        data (x and y arrays) and finds the data point with an x-value immediately to the left
+        of `x_val`. If the x-coordinate is within the range of the curve's data and the data point
+        is finite, the corresponding label is updated to display the x and y values and is moved
+        to that position. If `x_val` is not finite or is outside the data range, the label text is
+        set to "No data!".
+
+        Parameters
+        ----------
+        x_val : float
+            The x-coordinate (in data space) used to determine which data point to label.
+
+        Returns
+        -------
+        None
+        """
+        if not np.isfinite(x_val):
+            return
+
+        if self.init_label:
+            self.initializeCurveLabels()
+            self.init_label = False
+
+        for curve, label in self.textItems.items():
+            xData, yData = curve.getData()
+            if xData is None or yData is None or len(xData) == 0:
+                label.setText("No data!")
+                continue
+
+            if x_val < xData[0] or x_val > xData[-1]:
+                label.setText("No data!")
+                continue
+
+            idx = np.searchsorted(xData, x_val, side="right") - 1
+            if idx < 0:
+                idx = 0
+            if idx >= len(yData):
+                idx = len(yData) - 1
+
+            real_x = xData[idx]
+            real_y = yData[idx]
+
+            if not (np.isfinite(real_x) and np.isfinite(real_y)):
+                continue
+
+            if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.plotItem.axes:
+                curve_vb = self.plotItem.getViewBoxForAxis(curve.y_axis_name)
+            else:
+                curve_vb = self.getViewBox()
+
+            curve_vb.addItem(label)
+
+            time_str = datetime.fromtimestamp(real_x).strftime("%H:%M:%S")
+
+            if curve.severity_raw != -1:
+                label.setText(f"x={time_str}\ny={real_y:.2f}" + "\n" + str(curve.severity))
+            else:
+                label.setText(f"x={time_str}\ny={real_y:.2f}")
+
+            data_point = QPointF(x_val, y_val)
+            primary_vb = self.getViewBox()
+            scene_point = primary_vb.mapViewToScene(data_point)
+            label_point = curve_vb.mapSceneToView(scene_point)
+            label.setPos(label_point.x(), real_y)
