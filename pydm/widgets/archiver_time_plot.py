@@ -9,7 +9,7 @@ from pydm.utilities import remove_protocol, is_qt_designer
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
-from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot
+from qtpy.QtCore import Qt, QObject, QTimer, Property, Signal, Slot
 from qtpy.QtGui import QColor, QPen
 import logging
 from math import *  # noqa
@@ -298,7 +298,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
         # Set the error bar's pen to be the same as the curve, but solid
         solid_pen = QPen(self._pen)
-        solid_pen.setStyle(1)
+        solid_pen.setStyle(Qt.SolidLine)
 
         self.error_bar.setData(x=x_val, y=y_val, top=top_val, bottom=bot_val, beam=0.5, pen=solid_pen)
 
