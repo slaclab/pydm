@@ -104,7 +104,7 @@ def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_
 
         # verify that qt standard icons can be set through our custom property
         style = pydm_pushbutton.style()
-        test_icon = style.standardIcon(style.SP_DesktopIcon)
+        test_icon = style.standardIcon(style.StandardPixmap.SP_DesktopIcon)
         test_icon_image = test_icon.pixmap(size).toImage()
 
         pydm_pushbutton.PyDMIcon = "SP_DesktopIcon"
