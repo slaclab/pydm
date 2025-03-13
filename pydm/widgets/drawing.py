@@ -104,6 +104,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             # We should  install the Event Filter only if we are running
             # and not at the Designer
             self.installEventFilter(self)
+            self.check_enable_state()
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 

@@ -657,7 +657,6 @@ class PyDMWidget(PyDMPrimitiveWidget):
         if not is_qt_designer():
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
-            self.check_enable_state()
 
     def widget_ctx_menu(self):
         """
