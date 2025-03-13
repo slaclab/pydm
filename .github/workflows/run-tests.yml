@@ -42,9 +42,9 @@ jobs:
       shell: bash -el {0}
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+          conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} pyside6
         else
-          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} pyside6
         fi
 
     - name: Install additional Python dependencies with pip
@@ -62,15 +62,19 @@ jobs:
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo apt update
-          sudo apt install -y xvfb herbstluftwm libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 x11-utils
+          sudo apt install -y xvfb herbstluftwm libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 x11-utils libegl1 libopengl0
           sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1024x768x24 -ac +extension GLX +render -noreset
           sleep 3
           sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_herbstluftwm_99.pid --make-pidfile --background --exec /usr/bin/herbstluftwm
           sleep 1
         fi
 
-    - name: Test with pytest
+    - name: Test with pytest (pyqt5/qt5)
+      env:
+        QT_API: pyqt5
       shell: bash -el {0}
       timeout-minutes: 30 # timeout applies to single run of run_tests.py, not all os/python combos
       run: |
+        echo "QT_API=$QT_API"
+        python -c "import PyQt5.QtCore; print('PyQt5 is installed and working')"
         python run_tests.py
