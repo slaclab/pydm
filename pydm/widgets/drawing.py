@@ -1203,6 +1203,8 @@ class PyDMDrawingArc(PyDMDrawing):
         The channel to be used by the widget.
     """
 
+    new_properties = {"Start Angle": ["startAngle", float], "Span Angle": ["spanAngle", float]}
+
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingArc, self).__init__(parent, init_channel)
         self.penStyle = Qt.SolidLine
