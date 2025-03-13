@@ -23,7 +23,7 @@ def install_connection_inspector(parent, keys=None):
     parent = parent or QtWidgets.QApplication.desktop()
 
     if keys is None:
-        keys = QtGui.QKeySequence(QtCore.Qt.ALT + QtCore.Qt.Key_C)
+        keys = QtGui.QKeySequence(QtCore.Qt.ALT | QtCore.Qt.Key_C)
     shortcut = QtWidgets.QShortcut(keys, parent)
     shortcut.setContext(QtCore.Qt.ApplicationShortcut)
     shortcut.activated.connect(show_inspector)
