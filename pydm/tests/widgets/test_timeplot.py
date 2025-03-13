@@ -2,13 +2,81 @@ import pytest
 import logging
 import numpy as np
 from collections import OrderedDict
-from pyqtgraph import AxisItem, BarGraphItem
+from pyqtgraph import AxisItem, BarGraphItem, InfiniteLine
 from unittest import mock
+from unittest.mock import MagicMock
 from ...widgets.channel import PyDMChannel
 from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
 from ...utilities import remove_protocol
+from qtpy.QtTest import QSignalSpy
 
 logger = logging.getLogger(__name__)
+
+
+@pytest.fixture
+def time_plot(qtbot):
+    """
+    Fixture to provide a fresh PyDMTimePlot for each test.
+    """
+    plot = PyDMTimePlot()
+    qtbot.addWidget(plot)
+    return plot
+
+
+@pytest.fixture
+def timeplotcurveitem_widget(qtbot):
+    """
+    Fixture that creates and returns a TimePlotCurveItem instance for each test.
+    """
+    return TimePlotCurveItem()
+
+
+def test_timeplotcurveitem_severityChanged_updates_attributes_and_emits(timeplotcurveitem_widget, qtbot):
+    """
+    Test that calling severityChanged:
+    1) Sets self.severity_raw.
+    2) Calls alarm_severity_changed -> updates self.severity.
+    3) Emits severitySignal with the same severity int.
+    """
+    severity_spy = QSignalSpy(timeplotcurveitem_widget.severitySignal)
+    timeplotcurveitem_widget.severityChanged(2)
+
+    assert timeplotcurveitem_widget.severity_raw == 2
+    assert timeplotcurveitem_widget.severity == "MAJOR"
+
+    assert len(severity_spy) == 1
+    assert severity_spy[0] == [2]
+
+
+def test_timeplotcurveitem_alarm_severity_changed_valid_values(timeplotcurveitem_widget):
+    """
+    Test alarm_severity_changed with valid integer or string values for severity.
+    """
+    timeplotcurveitem_widget.alarm_severity_changed(0)
+    assert timeplotcurveitem_widget.severity == "NO_ALARM"
+
+    timeplotcurveitem_widget.alarm_severity_changed("1")
+    assert timeplotcurveitem_widget.severity == "MINOR"
+
+    timeplotcurveitem_widget.alarm_severity_changed(2)
+    assert timeplotcurveitem_widget.severity == "MAJOR"
+
+    timeplotcurveitem_widget.alarm_severity_changed("3")
+    assert timeplotcurveitem_widget.severity == "INVALID"
+
+
+def test_timeplotcurveitem_alarm_severity_changed_invalid_values(timeplotcurveitem_widget):
+    """
+    Test alarm_severity_changed with invalid severity input, expecting "N/A".
+    """
+    timeplotcurveitem_widget.alarm_severity_changed(-1)
+    assert timeplotcurveitem_widget.severity == "N/A"
+
+    timeplotcurveitem_widget.alarm_severity_changed("not_an_int")
+    assert timeplotcurveitem_widget.severity == "N/A"
+
+    timeplotcurveitem_widget.alarm_severity_changed(None)
+    assert timeplotcurveitem_widget.severity == "N/A"
 
 
 @pytest.mark.parametrize(
@@ -270,3 +338,167 @@ def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
 
     # After a call to redraw, the plot returns to this state until more data arrives
     assert not time_plot._needs_redraw
+
+
+@pytest.mark.parametrize("is_enabled", [True, False])
+def test_enableCrosshair(time_plot, is_enabled):
+    """
+    Verify that enabling/disabling the crosshair sets `crosshair`, manipulates
+    `textItems`, and sets the `init_label` flag as expected.
+    """
+    time_plot.enableCrosshair(is_enabled)
+
+    if is_enabled:
+        assert time_plot.crosshair is True
+        assert time_plot.init_label is True
+        assert time_plot.textItems == {}
+    else:
+        assert time_plot.crosshair is False
+        assert len(time_plot.textItems) == 0
+
+
+def test_initializeCurveLabels_no_data_items(time_plot):
+    """
+    If there are no PlotDataItems (or no TimePlotCurveItems) in the plot,
+    initializeCurveLabels should simply end up with an empty `textItems`.
+    """
+    line = InfiniteLine()
+    time_plot.plotItem.addItem(line)
+
+    time_plot.initializeCurveLabels()
+    assert len(time_plot.textItems) == 0
+    assert time_plot.init_label is False
+
+
+def test_initializeCurveLabels_with_data_items(time_plot):
+    """
+    Should create a TextItem for each *TimePlotCurveItem* in the plot.
+    """
+    curve1 = TimePlotCurveItem()
+    curve1.setData([1, 2, 3], [4, 5, 6])
+    curve2 = TimePlotCurveItem()
+    curve2.setData([10, 11, 12], [100, 110, 120])
+
+    time_plot.plotItem.addItem(curve1)
+    time_plot.plotItem.addItem(curve2)
+
+    time_plot.initializeCurveLabels()
+    assert len(time_plot.textItems) == 2
+    assert time_plot.init_label is False
+
+    for k, v in time_plot.textItems.items():
+        assert isinstance(k, TimePlotCurveItem)
+        assert hasattr(v, "setText")
+
+
+def test_clearCurveLabels(time_plot):
+    """
+    clearCurveLabels removes items from the plot and empties `textItems`.
+    """
+    curve = TimePlotCurveItem()
+    curve.setData([1, 2, 3], [4, 5, 6])
+    time_plot.plotItem.addItem(curve)
+
+    time_plot.initializeCurveLabels()
+    assert len(time_plot.textItems) == 1
+
+    time_plot.clearCurveLabels()
+    assert len(time_plot.textItems) == 0
+    assert time_plot.init_label is True
+
+
+@pytest.mark.parametrize("x_val", [float("inf"), float("nan")])
+def test_updateLabel_nonfinite_x(time_plot, x_val):
+    """
+    If x_val is infinite or NaN, updateLabel immediately returns, making no changes.
+    """
+    curve = TimePlotCurveItem()
+    curve.setData([10, 11, 12], [100, 110, 120])
+    time_plot.plotItem.addItem(curve)
+
+    time_plot.initializeCurveLabels()
+    label = time_plot.textItems[curve]
+    original_text = label.toPlainText()
+
+    time_plot.updateLabel(x_val, 0)
+    assert label.toPlainText() == original_text
+
+
+def test_updateLabel_empty_data(time_plot):
+    """
+    If a curve has no data, label is set to "No data!".
+    """
+    curve = TimePlotCurveItem()
+    time_plot.plotItem.addItem(curve)
+
+    time_plot.initializeCurveLabels()
+    label = time_plot.textItems[curve]
+
+    time_plot.updateLabel(5.0, 0)
+    assert label.toPlainText() == "No data!"
+
+
+def test_updateLabel_in_range(time_plot, monkeypatch):
+    """
+    If x_val is within the curve's data range, label should show x as a timestamp,
+    y as numeric, and no severity if severity_raw == -1.
+    """
+    curve = TimePlotCurveItem()
+    curve.setData([10, 11, 12], [100, 110, 120])
+    curve.severity_raw = -1
+    curve.severity = "None"
+    time_plot.plotItem.addItem(curve)
+
+    time_plot.initializeCurveLabels()
+    label = time_plot.textItems[curve]
+    assert label.toPlainText() == "No data"
+
+    mock_dt = MagicMock()
+    mock_dt.strftime.return_value = "TEST_TIME"
+    monkeypatch.setattr("pydm.widgets.timeplot.datetime", MagicMock(fromtimestamp=MagicMock(return_value=mock_dt)))
+
+    time_plot.updateLabel(11, 999)
+    text = label.toPlainText()
+    assert "TEST_TIME" in text
+    assert "110" in text
+    assert "None" not in text
+
+
+def test_updateLabel_out_of_range(time_plot):
+    """
+    If x_val < min(xData) or x_val > max(xData), label => "No data!".
+    """
+    curve = TimePlotCurveItem()
+    curve.setData([10, 11, 12], [100, 110, 120])
+    time_plot.plotItem.addItem(curve)
+    time_plot.initializeCurveLabels()
+    label = time_plot.textItems[curve]
+
+    time_plot.updateLabel(9, 0)
+    assert label.toPlainText() == "No data!"
+    time_plot.updateLabel(13, 0)
+    assert label.toPlainText() == "No data!"
+
+
+def test_updateLabel_with_severity(time_plot, monkeypatch):
+    """
+    If severity_raw != -1, the label includes severity text.
+    """
+    curve = TimePlotCurveItem()
+    curve.setData([10, 11], [100, 110])
+    curve.severity_raw = 2
+    curve.severity = "MINOR"
+    time_plot.plotItem.addItem(curve)
+
+    time_plot.initializeCurveLabels()
+    label = time_plot.textItems[curve]
+
+    mock_dt = MagicMock()
+    mock_dt.strftime.return_value = "TEST_TIME"
+    monkeypatch.setattr("pydm.widgets.timeplot.datetime", MagicMock(fromtimestamp=MagicMock(return_value=mock_dt)))
+
+    time_plot.updateLabel(11, 0)
+    text = label.toPlainText()
+    assert "TEST_TIME" in text
+    assert "110" in text
+    assert "MINOR" in text

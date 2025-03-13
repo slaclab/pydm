@@ -1,9 +1,11 @@
 import functools
 import json
 import warnings
+import numpy as np
+
 from abc import abstractmethod
-from qtpy.QtGui import QColor, QBrush, QMouseEvent
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect
+from qtpy.QtGui import QColor, QFont, QBrush
+from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect, QPointF
 from qtpy.QtWidgets import QToolTip, QWidget
 from .. import utilities
 from pyqtgraph import (
@@ -14,11 +16,14 @@ from pyqtgraph import (
     ViewBox,
     InfiniteLine,
     SignalProxy,
+    mkBrush,
+    TextItem,
 )
 from collections import OrderedDict
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, Any
 from .base import PyDMPrimitiveWidget, widget_destroyed
 from .multi_axis_plot import MultiAxisPlot
+from datetime import datetime
 
 
 class NoDataError(Exception):
@@ -743,6 +748,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self.horizontal_crosshair_line = None
         self.crosshair_movement_proxy = None
 
+        self.textItems = {}
+        self.crosshair = False
+        self.init_labels = False
+
         # Mouse mode to 1 button (left button draw rectangle for zoom)
         self.plotItem.getViewBox().setMouseMode(ViewBox.RectMode)
 
@@ -1451,24 +1460,44 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         (self.redraw_timer.stop() if self.redraw_timer.isActive() else self.redraw_timer.start())
         return self.redraw_timer.isActive()
 
-    def mouseMoved(self, evt: QMouseEvent) -> None:
+    def mouseMoved(self, evt: Any) -> None:
         """
-        A handler for the crosshair feature. Every time the mouse move, the mouse coordinates are updated, and the
-        horizontal and vertical hairlines will be redrawn at the new coordinate. If a PyDMDisplay object is available,
-        that display will also have the x- and y- values to update on the UI.
+        Handle crosshair updates when the mouse moves.
+
+        This method is called when a mouse move event occurs. The event may be either a tuple
+        (position, event) or a QMouseEvent. The method extracts the mouse position in scene coordinates,
+        maps it to the view coordinates, and then updates the positions of the vertical and horizontal
+        crosshair lines if their positions have changed. Finally, it emits a signal with the new crosshair
+        coordinates.
+
+        Note:
+        If a PyDMDisplay object is available, that display will also have the x- and y- values to update on the UI.
 
         Parameters
+        ----------
+        evt : Any
+            The event representing the mouse movement. This may be a tuple containing a QPointF (the mouse
+            position) and the event itself, or it may be a QMouseEvent with a posF() method.
+
+        Returns
         -------
-        evt: MouseEvent
-            The mouse event type, from which the mouse coordinates are obtained.
+        None
         """
-        pos = evt[0]
+        if isinstance(evt, tuple):
+            pos = evt[0]
+        else:
+            pos = evt.posF()
         if self.sceneBoundingRect().contains(pos):
             mouse_point = self.getViewBox().mapSceneToView(pos)
-            self.vertical_crosshair_line.setPos(mouse_point.x())
-            self.horizontal_crosshair_line.setPos(mouse_point.y())
 
-            self.crosshair_position_updated.emit(mouse_point.x(), mouse_point.y())
+            if (
+                self.vertical_crosshair_line.pos().x() != mouse_point.x()
+                or self.horizontal_crosshair_line.pos().y() != mouse_point.y()
+            ):
+                self.vertical_crosshair_line.setPos(mouse_point.x())
+                self.horizontal_crosshair_line.setPos(mouse_point.y())
+
+                self.crosshair_position_updated.emit(mouse_point.x(), mouse_point.y())
 
     def enableCrosshair(
         self,
@@ -1481,45 +1510,76 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         horizontal_movable: Optional[bool] = False,
     ) -> None:
         """
-        Enable the crosshair to be drawn on the ViewBox.
+        Enable or disable the crosshair on the plot's ViewBox.
+
+        When enabled, this method creates vertical and horizontal crosshair lines (InfiniteLine objects)
+        at the specified starting positions. If the provided starting positions are outside the current view range,
+        they are reset to the center of the current view. The crosshair lines are added to the plot, and a SignalProxy
+        is created to capture mouse move events (which are handled by the mouseMoved method). When disabled, the
+        crosshair items are removed and the SignalProxy is disconnected.
+
 
         Parameters
         ----------
         is_enabled : bool
-            True is to draw the crosshair, False is to not draw.
+            If True, enable and display the crosshair; if False, remove the crosshair.
         starting_x_pos : float
-            The x coordinate where to start the vertical crosshair line.
+            The initial x-coordinate for the vertical crosshair line.
         starting_y_pos : float
-            The y coordinate where to start the horizontal crosshair line.
-        vertical_angle : float
-            The angle to tilt the vertical crosshair line. Default at 90 degrees.
-        horizontal_angle
-            The angle to tilt the horizontal crosshair line. Default at 0 degrees.
-        vertical_movable : bool
-            True if the vertical line can be moved by the user; False is not.
-        horizontal_movable
-            False if the horizontal line can be moved by the user; False is not.
+            The initial y-coordinate for the horizontal crosshair line.
+        vertical_angle : Optional[float], default 90
+            The angle (in degrees) for the vertical crosshair line (typically 90°).
+        horizontal_angle : Optional[float], default 0
+            The angle (in degrees) for the horizontal crosshair line (typically 0°).
+        vertical_movable : Optional[bool], default False
+            If True, the vertical crosshair line is movable by the user.
+        horizontal_movable : Optional[bool], default False
+            If True, the horizontal crosshair line is movable by the user.
+
+        Returns
+        -------
+        None
         """
         if is_enabled:
+            view_range = self.plotItem.getViewBox().viewRange()
+            view_x_min, view_x_max = view_range[0]
+            view_y_min, view_y_max = view_range[1]
+
+            if not (view_x_min <= starting_x_pos <= view_x_max):
+                starting_x_pos = (view_x_min + view_x_max) / 2
+            if not (view_y_min <= starting_y_pos <= view_y_max):
+                starting_y_pos = (view_y_min + view_y_max) / 2
+
             self.vertical_crosshair_line = InfiniteLine(
-                pos=starting_x_pos, angle=vertical_angle, movable=vertical_movable
+                pos=starting_x_pos, angle=vertical_angle, movable=vertical_movable, pen=mkPen("y")
             )
             self.horizontal_crosshair_line = InfiniteLine(
-                pos=starting_y_pos, angle=horizontal_angle, movable=horizontal_movable
+                pos=starting_y_pos, angle=horizontal_angle, movable=horizontal_movable, pen=mkPen("y")
             )
 
-            self.plotItem.addItem(self.vertical_crosshair_line)
-            self.plotItem.addItem(self.horizontal_crosshair_line)
+            self.vertical_crosshair_line.setVisible(True)
+            self.horizontal_crosshair_line.setVisible(True)
+
+            self.plotItem.addItem(self.vertical_crosshair_line, ignoreBounds=True)
+            self.plotItem.addItem(self.horizontal_crosshair_line, ignoreBounds=True)
+
             self.crosshair_movement_proxy = SignalProxy(
                 self.plotItem.scene().sigMouseMoved, rateLimit=60, slot=self.mouseMoved
             )
+
+            self.crosshair = True
+            self.textItems = {}
+            self.init_label = True
+            self.crosshair_position_updated.connect(self.updateLabel)
         else:
-            if self.vertical_crosshair_line:
+            self.clearCurveLabels()
+
+            if self.vertical_crosshair_line in self.plotItem.items:
                 self.plotItem.removeItem(self.vertical_crosshair_line)
-            if self.horizontal_crosshair_line:
+            if self.horizontal_crosshair_line in self.plotItem.items:
                 self.plotItem.removeItem(self.horizontal_crosshair_line)
-            if self.crosshair_movement_proxy:
-                # self.crosshair_movement_proxy.disconnect()
+
+            if hasattr(self, "crosshair_movement_proxy") and self.crosshair_movement_proxy:
                 proxy = self.crosshair_movement_proxy
                 proxy.block = True
                 try:
@@ -1527,3 +1587,116 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                     proxy.sigDelayed.disconnect(proxy.slot)
                 except Exception:
                     pass
+
+    def initializeCurveLabels(self, font: str = "arial", font_size: int = 8) -> None:
+        """
+        Create a TextItem for each PlotDataItem in the plot and stores them in self.textItems.
+
+        Returns
+        -------
+        None
+        """
+        self.clearCurveLabels()
+        self.init_label = False
+
+        for item in self.plotItem.listDataItems():
+            if not isinstance(item, PlotDataItem):
+                continue
+
+            label: TextItem = TextItem(
+                text="No data", color="w", border=mkPen(color="w", width=2), fill=mkBrush(0, 0, 0, 150)
+            )
+
+            label.setPos(0, 0)
+            label.setAnchor((0.5, 0.5))
+            label.setFont(QFont(font, font_size))
+
+            self.textItems[item] = label
+
+    def clearCurveLabels(self) -> None:
+        """
+        Remove all existing curve labels from the plot and clear the textItems dictionary.
+
+        This method iterates through all TextItem objects stored in the `textItems` attribute,
+        removes each one from the plot (via `plotItem.removeItem`), clears the dictionary, and
+        sets the `init_label` flag to True.
+
+        Returns
+        -------
+        None
+        """
+        if hasattr(self, "textItems"):
+            for label in self.textItems.values():
+                self.plotItem.removeItem(label)
+            self.textItems.clear()
+            self.init_label = True
+
+    @Slot(float, float)
+    def updateLabel(self, x_val: float, y_val: float) -> None:
+        """
+        Update the label for each curve based on the given x-coordinate.
+
+        For each curve stored in the `textItems` dictionary, this method retrieves the curve's
+        data (x and y arrays) and finds the data point with an x-value immediately to the left
+        of `x_val`. If the x-coordinate is within the range of the curve's data and the data point
+        is finite, the corresponding label is updated to display the x and y values and is moved
+        to that position. If `x_val` is not finite or is outside the data range, the label text is
+        set to "No data!".
+
+        Parameters
+        ----------
+        x_val : float
+            The x-coordinate (in data space) used to determine which data point to label.
+
+        Returns
+        -------
+        None
+        """
+        if not np.isfinite(x_val):
+            return
+
+        if self.init_label:
+            self.initializeCurveLabels()
+            self.init_label = False
+
+        for curve, label in self.textItems.items():
+            xData, yData = curve.getData()
+            if xData is None or yData is None or len(xData) == 0:
+                label.setText("No data!")
+                continue
+
+            if x_val < xData[0] or x_val > xData[-1]:
+                label.setText("No data!")
+                continue
+
+            idx = np.searchsorted(xData, x_val, side="right") - 1
+            if idx < 0:
+                idx = 0
+            if idx >= len(yData):
+                idx = len(yData) - 1
+
+            real_x = xData[idx]
+            real_y = yData[idx]
+
+            if not (np.isfinite(real_x) and np.isfinite(real_y)):
+                continue
+
+            if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.plotItem.axes:
+                curve_vb = self.plotItem.getViewBoxForAxis(curve.y_axis_name)
+            else:
+                curve_vb = self.getViewBox()
+
+            curve_vb.addItem(label)
+
+            time_str = datetime.fromtimestamp(real_x).strftime("%H:%M:%S")
+
+            if curve.severity_raw != -1:
+                label.setText(f"x={time_str}\ny={real_y:.2f}" + "\n" + str(curve.severity))
+            else:
+                label.setText(f"x={time_str}\ny={real_y:.2f}")
+
+            data_point = QPointF(x_val, y_val)
+            primary_vb = self.getViewBox()
+            scene_point = primary_vb.mapViewToScene(data_point)
+            label_point = curve_vb.mapSceneToView(scene_point)
+            label.setPos(label_point.x(), real_y)
