@@ -22,7 +22,7 @@ from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 logger = logging.getLogger(__name__)
 
 
-def logger_destroyed(log, obj):
+def logger_destroyed(log):
     """
     Callback invoked when the Widget is destroyed.
     This method is used to ensure that the log handlers are cleared.
