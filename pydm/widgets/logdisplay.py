@@ -69,8 +69,11 @@ class GuiHandler(QObject, logging.Handler):
     message = Signal(str)
 
     def __init__(self, level=logging.NOTSET, parent=None):
-        logging.Handler.__init__(self, level=level)
-        QObject.__init__(self, parent=parent)
+        # We can't do 'arg=arg' here since they are only positionals argument, since the python qt
+        # docs can sometimes be sparse you can use python's inspect module to see function's arg details,
+        # like 'print(inspect.signature(QLabel.__init__)'
+        logging.Handler.__init__(self, level)
+        QObject.__init__(self, parent)
 
     def emit(self, record):
         """Emit formatted log messages when received but only if level is set."""

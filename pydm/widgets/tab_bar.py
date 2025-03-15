@@ -12,7 +12,10 @@ class PyDMTabBar(QTabBar, PyDMWidget):
     """PyDMTabBar is used internally by PyDMTabWidget, and shouldn't be directly used on its own."""
 
     def __init__(self, parent=None):
-        super(PyDMTabBar, self).__init__(parent=parent)
+        # We can't do 'parent=parent' here since its only a positional argument, since the python qt
+        # docs can sometimes be sparse you can use python's inspect module to see function's arg details,
+        # like 'print(inspect.signature(QLabel.__init__)'
+        super(PyDMTabBar, self).__init__(parent)
         self.tab_channels = {}
         self.tab_connection_status = {}
         self.tab_alarm_severity = {}
