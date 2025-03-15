@@ -1,11 +1,15 @@
+import functools
+import weakref
+
 from qtpy.QtWidgets import QTabBar, QTabWidget
 from qtpy.QtGui import QIcon, QColor
 from qtpy.QtCore import QByteArray
-from .base import PyDMWidget
+from .base import PyDMWidget, widget_destroyed
 from .channel import PyDMChannel
 from qtpy.QtCore import Property
 from functools import partial
 from ..utilities.iconfont import IconFont
+from ..utilities import is_qt_designer
 
 
 class PyDMTabBar(QTabBar, PyDMWidget):
@@ -24,6 +28,18 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         self._disconnected_alarm_icon_color = QColor(255, 255, 255)
         self.alarm_icons = None
         self.generate_alarm_icons()
+
+        # Note: the following calls can *not* be moved to the PyDMWidget parent class,
+        # this is b/c on pyside6 these calls (if done in PyDMWidget's __init__) throw an error.
+        # The error is that pyside6 thinks this child class's __init__ functions have not been called yet,
+        # even though we explicitly call them and there is no real issue.
+        # (use git blame and see this change's commit msg for more explanation)
+        if not is_qt_designer():
+            # We should  install the Event Filter only if we are running
+            # and not at the Designer
+            self.installEventFilter(self)
+            self.check_enable_state()
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     @Property(str)
     def currentTabAlarmChannel(self):
