@@ -37,7 +37,7 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
     sigYManualRange = Signal(float, float)
 
     def __init__(self, view):
-        super(MultiAxisViewBoxMenu, self).__init__(view)
+        super().__init__(view)
         self.restoreRangesAction = QAction(QCoreApplication.translate("ViewBox", "Restore default X/Y ranges"), self)
         self.restoreRangesAction.triggered.connect(self.restoreRanges)
 
@@ -48,12 +48,12 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
 
     def set3ButtonMode(self):
         """Change the mouse left-click functionality to pan the plot"""
-        super(MultiAxisViewBoxMenu, self).set3ButtonMode()
+        super().set3ButtonMode()
         self.sigMouseModeChanged.emit("pan")
 
     def set1ButtonMode(self):
         """Change the mouse left-click functionality to zoom in on the plot"""
-        super(MultiAxisViewBoxMenu, self).set1ButtonMode()
+        super().set1ButtonMode()
         self.sigMouseModeChanged.emit("rect")
 
     def xAutoClicked(self):

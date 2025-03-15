@@ -62,7 +62,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         userData : object
             Arbitrary user data that is stored in the Qt.UserRole
         """
-        super(PyDMEnumComboBox, self).addItem(text, userData)
+        super().addItem(text, userData)
         self._new_item_added = True
 
     def setItemText(self, index, text):
@@ -76,11 +76,11 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         text : str
             Title for the item
         """
-        super(PyDMEnumComboBox, self).setItemText(index, text)
+        super().setItemText(index, text)
         if self._new_item_added:
             self._new_item_added = False
             # Recalculate the enums
-            super(PyDMEnumComboBox, self).enum_strings_changed(tuple(self.itemText(i) for i in range(self.count())))
+            super().enum_strings_changed(tuple(self.itemText(i) for i in range(self.count())))
             self._has_enums = True
             self.check_enable_state()
 
@@ -152,7 +152,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         new_enum_strings : tuple
             The new list of values
         """
-        super(PyDMEnumComboBox, self).enum_strings_changed(new_enum_strings)
+        super().enum_strings_changed(new_enum_strings)
         self.set_items(new_enum_strings)
 
     def value_changed(self, new_val):
@@ -166,7 +166,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
             The new value from the channel. The type depends on the channel.
         """
         if new_val is not None:
-            super(PyDMEnumComboBox, self).value_changed(new_val)
+            super().value_changed(new_val)
             # Integers are straight forward
             if isinstance(new_val, int):
                 idx = new_val

@@ -331,7 +331,7 @@ _extension_to_loader = {
 
 class Display(QWidget):
     def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
-        super(Display, self).__init__(parent=parent)
+        super().__init__(parent=parent)
         self.ui = None
         self.help_window = None
         self._ui_filename = ui_filename
@@ -482,4 +482,4 @@ class Display(QWidget):
             with open(stylesheet_filename) as f:
                 self._local_style = f.read()
         logger.debug("Setting stylesheet to: %s", self._local_style)
-        super(Display, self).setStyleSheet(self._local_style)
+        super().setStyleSheet(self._local_style)

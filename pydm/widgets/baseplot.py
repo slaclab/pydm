@@ -108,7 +108,7 @@ class BasePlotCurveItem(PlotDataItem):
                 lineStyle = Qt.PenStyle(lineStyle)
             self._pen.setStyle(lineStyle)
         kws["pen"] = self._pen
-        super(BasePlotCurveItem, self).__init__(**kws)
+        super().__init__(**kws)
         self.setSymbolBrush(None)
         if color is not None:
             self.color = color
@@ -480,7 +480,7 @@ class BasePlotAxisItem(AxisItem):
         logMode: Optional[bool] = False,
         **kws,
     ) -> None:
-        super(BasePlotAxisItem, self).__init__(orientation, **kws)
+        super().__init__(orientation, **kws)
         self._curves: List[BasePlotCurveItem] = []
         self._name = name
         self._orientation = orientation
@@ -711,7 +711,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             # The pyqtgraph PlotItem.setAxisItems() will always add an an AxisItem called left whether you asked
             # it to or not. This will clear it if not specifically requested.
             plotItem.removeAxis("left")
-        super(BasePlot, self).__init__(parent=parent, background=background, plotItem=plotItem)
+        super().__init__(parent=parent, background=background, plotItem=plotItem)
 
         self.plotItem = plotItem
         self.plotItem.hideButtons()
@@ -780,7 +780,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def eventFilter(self, obj: QObject, event: QEvent) -> bool:
         """Display a tool tip upon mousing over the plot in Qt designer explaining how to edit curves on it"""
-        ret = super(BasePlot, self).eventFilter(obj, event)
+        ret = super().eventFilter(obj, event)
         if utilities.is_qt_designer():
             if event.type() == QEvent.Enter:
                 QToolTip.showText(

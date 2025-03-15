@@ -53,7 +53,7 @@ float_types = set(
 
 class Connection(PyDMConnection):
     def __init__(self, channel, pv, protocol=None, parent=None):
-        super(Connection, self).__init__(channel, pv, protocol, parent)
+        super().__init__(channel, pv, protocol, parent)
         self.app = QApplication.instance()
         self.pv = epics.PV(
             pv,
@@ -213,7 +213,7 @@ class Connection(PyDMConnection):
                 logger.exception("Unable to put %s to %s.  Exception: %s", new_val, self.pv.pvname, str(e))
 
     def add_listener(self, channel):
-        super(Connection, self).add_listener(channel)
+        super().add_listener(channel)
         # If we are adding a listener to an already existing PV, we need to
         # manually send the signals indicating that the PV is connected, what the latest value is, etc.
         if epics.ca.isConnected(self.pv.chid):

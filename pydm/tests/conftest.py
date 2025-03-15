@@ -47,7 +47,7 @@ class ConnectionSignals(QObject):
     lower_warning_limit_signal = Signal((float,))
 
     def __init__(self):
-        super(ConnectionSignals, self).__init__()
+        super().__init__()
         self._value = None
         self._received_values = {}
 

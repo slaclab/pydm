@@ -21,7 +21,7 @@ else:
 
 class AboutWindow(QWidget):
     def __init__(self, parent=None):
-        super(AboutWindow, self).__init__(parent, Qt.Window)
+        super().__init__(parent, Qt.Window)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.ui.pydmVersionLabel.setText(str(self.ui.pydmVersionLabel.text()).format(version=pydm.__version__))

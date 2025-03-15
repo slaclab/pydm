@@ -33,7 +33,7 @@ class PyDMMainWindow(QMainWindow):
         macros=None,
         command_line_args=None,
     ):
-        super(PyDMMainWindow, self).__init__(parent)
+        super().__init__(parent)
         self.app = QApplication.instance()
         self.font_factor = 1
         self.iconFont = IconFont()

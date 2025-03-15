@@ -38,7 +38,7 @@ class BasePlotCurveEditorDialog(QDialog):
     AXIS_MODEL_TAB_INDEX = 1
 
     def __init__(self, plot, parent=None):
-        super(BasePlotCurveEditorDialog, self).__init__(parent)
+        super().__init__(parent)
         self.tab_widget = QTabWidget()
         self.plot = plot
         self.setup_ui()

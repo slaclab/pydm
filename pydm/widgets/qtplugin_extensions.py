@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 class PyDMExtensionFactory(QExtensionFactory):
     def __init__(self, parent=None):
-        super(PyDMExtensionFactory, self).__init__(parent)
+        super().__init__(parent)
 
     def createExtension(self, obj, iid, parent):
         if not isinstance(obj, PyDMPrimitiveWidget):
@@ -40,7 +40,7 @@ class PyDMExtensionFactory(QExtensionFactory):
 
 class PyDMTaskMenuExtension(QPyDesignerTaskMenuExtension):
     def __init__(self, widget, parent):
-        super(PyDMTaskMenuExtension, self).__init__(parent)
+        super().__init__(parent)
 
         self.widget = widget
         self.__actions = None
@@ -77,7 +77,7 @@ class PyDMExtension(object):
 
 class BasicSettingsExtension(PyDMExtension):
     def __init__(self, widget):
-        super(BasicSettingsExtension, self).__init__(widget)
+        super().__init__(widget)
         self.widget = widget
         self.edit_settings_action = QtWidgets.QAction("Py&DM basic settings...", self.widget)
         self.edit_settings_action.triggered.connect(self.open_dialog)
@@ -132,7 +132,7 @@ class BasicSettingsExtension(PyDMExtension):
 
 class RulesExtension(PyDMExtension):
     def __init__(self, widget):
-        super(RulesExtension, self).__init__(widget)
+        super().__init__(widget)
         self.widget = widget
         self.edit_rules_action = QtWidgets.QAction("Edit Rules...", self.widget)
         self.edit_rules_action.triggered.connect(self.edit_rules)
@@ -147,7 +147,7 @@ class RulesExtension(PyDMExtension):
 
 class SymbolExtension(PyDMExtension):
     def __init__(self, widget):
-        super(SymbolExtension, self).__init__(widget)
+        super().__init__(widget)
         self.widget = widget
         self.edit_symbols_action = QtWidgets.QAction("Edit Symbols...", self.widget)
         self.edit_symbols_action.triggered.connect(self.edit_symbols)
@@ -162,7 +162,7 @@ class SymbolExtension(PyDMExtension):
 
 class BasePlotExtension(PyDMExtension):
     def __init__(self, widget, curve_editor_class):
-        super(BasePlotExtension, self).__init__(widget)
+        super().__init__(widget)
         self.widget = widget
         self.curve_editor_class = curve_editor_class
         self.edit_curves_action = QtWidgets.QAction("Edit Curves...", self.widget)
@@ -178,24 +178,24 @@ class BasePlotExtension(PyDMExtension):
 
 class WaveformCurveEditorExtension(BasePlotExtension):
     def __init__(self, widget):
-        super(WaveformCurveEditorExtension, self).__init__(widget, WaveformPlotCurveEditorDialog)
+        super().__init__(widget, WaveformPlotCurveEditorDialog)
 
 
 class ArchiveTimeCurveEditorExtension(BasePlotExtension):
     def __init__(self, widget):
-        super(ArchiveTimeCurveEditorExtension, self).__init__(widget, ArchiverTimePlotCurveEditorDialog)
+        super().__init__(widget, ArchiverTimePlotCurveEditorDialog)
 
 
 class TimeCurveEditorExtension(BasePlotExtension):
     def __init__(self, widget):
-        super(TimeCurveEditorExtension, self).__init__(widget, TimePlotCurveEditorDialog)
+        super().__init__(widget, TimePlotCurveEditorDialog)
 
 
 class ScatterCurveEditorExtension(BasePlotExtension):
     def __init__(self, widget):
-        super(ScatterCurveEditorExtension, self).__init__(widget, ScatterPlotCurveEditorDialog)
+        super().__init__(widget, ScatterPlotCurveEditorDialog)
 
 
 class EventCurveEditorExtension(BasePlotExtension):
     def __init__(self, widget):
-        super(EventCurveEditorExtension, self).__init__(widget, EventPlotCurveEditorDialog)
+        super().__init__(widget, EventPlotCurveEditorDialog)
