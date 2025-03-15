@@ -581,7 +581,7 @@ class TextFormatter(object):
         new_val : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
-        super(TextFormatter, self).value_changed(new_val)
+        super().value_changed(new_val)
         self.update_format_string()
 
 
@@ -612,7 +612,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
     ALARM_DISCONNECTED = 4
 
     def __init__(self, init_channel=None):
-        super(PyDMWidget, self).__init__()
+        super().__init__()
 
         self._connected = True
         self._channel = None
@@ -1376,14 +1376,14 @@ class PyDMWritableWidget(PyDMWidget):
         self._disp_channel = None
         self._disable_put = False
         self._monitor_disp = False
-        super(PyDMWritableWidget, self).__init__(init_channel=init_channel)
+        super().__init__(init_channel=init_channel)
 
     def init_for_designer(self):
         """
         Method called after the constructor to tweak configurations for
         when using the widget with the Qt Designer
         """
-        super(PyDMWritableWidget, self).init_for_designer()
+        super().init_for_designer()
         self._write_access = True
 
     def eventFilter(self, obj, event):

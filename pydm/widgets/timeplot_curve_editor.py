@@ -7,7 +7,7 @@ from .timeplot import PyDMTimePlot
 
 class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
     def __init__(self, plot, parent=None):
-        super(PyDMTimePlotCurvesModel, self).__init__(plot, parent=parent)
+        super().__init__(plot, parent=parent)
         self._column_names = ("Channel", "Style") + self._column_names
 
     def get_data(self, column_name, curve):
@@ -17,7 +17,7 @@ class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
             return str(curve.address)
         elif column_name == "Style":
             return curve.plot_style
-        return super(PyDMTimePlotCurvesModel, self).get_data(column_name, curve)
+        return super().get_data(column_name, curve)
 
     def set_data(self, column_name, curve, value):
         if column_name == "Channel":
@@ -25,7 +25,7 @@ class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
         elif column_name == "Style":
             curve.plot_style = str(value)
         else:
-            return super(PyDMTimePlotCurvesModel, self).set_data(column_name=column_name, curve=curve, value=value)
+            return super().set_data(column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, address=None, name=None, color=None):

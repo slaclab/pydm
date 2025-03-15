@@ -615,7 +615,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if self._menu_needs_rebuild:
             self._rebuild_menu()
-        super(PyDMShellCommand, self).mousePressEvent(event)
+        super().mousePressEvent(event)
 
     def mouseReleaseEvent(self, mouse_event: QMouseEvent) -> None:
         """
@@ -629,12 +629,12 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         mouse_event :
         """
         if mouse_event.button() != Qt.LeftButton:
-            return super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
+            return super().mouseReleaseEvent(mouse_event)
         if self.menu() is not None:
-            return super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
+            return super().mouseReleaseEvent(mouse_event)
         assert len(self.commands) == 1, "More than one command present, but no menu created."
         self.execute_command(self.commands[0])
-        super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
+        super().mouseReleaseEvent(mouse_event)
 
     def show_warning_icon(self) -> None:
         """Show the warning icon.  This is called when a shell command fails

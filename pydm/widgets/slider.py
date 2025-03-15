@@ -325,7 +325,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         if self._ignore_mouse_wheel:
             e.ignore()
         else:
-            super(PyDMSlider, self).wheelEvent(e)
+            super().wheelEvent(e)
         return
 
     def mousePressEvent(self, mouse_event):
@@ -773,7 +773,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         connected : int
             When this value is 0 the channel is disconnected, 1 otherwise.
         """
-        super(PyDMSlider, self).connection_changed(connected)
+        super().connection_changed(connected)
         self.set_enable_state()
 
     def write_access_changed(self, new_write_access):
@@ -787,7 +787,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_write_access : bool
             True if write operations to the channel are allowed.
         """
-        super(PyDMSlider, self).write_access_changed(new_write_access)
+        super().write_access_changed(new_write_access)
         self.set_enable_state()
 
     def value_changed(self, new_val):
@@ -849,7 +849,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             The format string to be used including or not the precision
             and unit
         """
-        fs = super(PyDMSlider, self).update_format_string()
+        fs = super().update_format_string()
         self.update_labels()
         return fs
 

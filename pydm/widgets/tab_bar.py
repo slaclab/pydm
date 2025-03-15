@@ -12,7 +12,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
     """PyDMTabBar is used internally by PyDMTabWidget, and shouldn't be directly used on its own."""
 
     def __init__(self, parent=None):
-        super(PyDMTabBar, self).__init__(parent=parent)
+        super().__init__(parent=parent)
         self.tab_channels = {}
         self.tab_connection_status = {}
         self.tab_alarm_severity = {}
@@ -104,7 +104,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
             self.setTabIcon(index, self.alarm_icons[icon_index])
 
     def tabInserted(self, index):
-        super(PyDMTabBar, self).tabInserted(index)
+        super().tabInserted(index)
         if index not in self.tab_channels:
             self.tab_channels[index] = {"address": ""}
         self.set_initial_icon_for_tab(index)
@@ -184,7 +184,7 @@ class PyDMTabWidget(QTabWidget):
     """
 
     def __init__(self, parent=None):
-        super(PyDMTabWidget, self).__init__(parent=parent)
+        super().__init__(parent=parent)
         self.tb = PyDMTabBar(parent=self)
         self.setTabBar(self.tb)
 

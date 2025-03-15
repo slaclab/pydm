@@ -103,7 +103,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         new_value : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
-        super(PyDMLabel, self).value_changed(new_value)
+        super().value_changed(new_value)
         new_value = parse_value_for_display(
             value=new_value,
             precision=self.precision,

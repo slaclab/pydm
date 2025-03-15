@@ -28,7 +28,7 @@ class PyDMConnection(QObject):
     timestamp_signal = Signal(float)
 
     def __init__(self, channel, address, protocol=None, parent=None):
-        super(PyDMConnection, self).__init__(parent)
+        super().__init__(parent)
         self.protocol = protocol
         self.address = address
         self.connected = False
