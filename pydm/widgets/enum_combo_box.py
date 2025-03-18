@@ -8,7 +8,7 @@ from .. import data_plugins
 logger = logging.getLogger(__name__)
 
 
-class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
+class PyDMEnumComboBox(PyDMWritableWidget, QComboBox):
     """
     A QComboBox with support for Channels and more from PyDM
 

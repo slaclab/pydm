@@ -5,7 +5,7 @@ import numpy as np
 from .base import PyDMWritableWidget
 
 
-class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
+class PyDMWaveformTable(PyDMWritableWidget, QTableWidget):
     """
     A QTableWidget with support for Channels and more from PyDM.
 

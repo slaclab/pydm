@@ -681,7 +681,7 @@ class BasePlotAxisItem(AxisItem):
         )
 
 
-class BasePlot(PlotWidget, PyDMPrimitiveWidget):
+class BasePlot(PyDMPrimitiveWidget, PlotWidget):
     crosshair_position_updated = Signal(float, float)
     """
     BasePlot is the parent class for all specific types of PyDM plots. It is built on top of the
@@ -711,7 +711,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             # The pyqtgraph PlotItem.setAxisItems() will always add an an AxisItem called left whether you asked
             # it to or not. This will clear it if not specifically requested.
             plotItem.removeAxis("left")
-        super(BasePlot, self).__init__(parent=parent, background=background, plotItem=plotItem)
+        PlotWidget.__init__(self, background=background, plotItem=plotItem)
+        PyDMPrimitiveWidget.__init__(parent)
 
         self.plotItem = plotItem
         self.plotItem.hideButtons()

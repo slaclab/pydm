@@ -66,7 +66,7 @@ class PyDMBitIndicator(QWidget):
         return QSize(fm.height(), fm.height())
 
 
-class PyDMByteIndicator(QWidget, PyDMWidget):
+class PyDMByteIndicator(PyDMWidget, QWidget):
     """
     Widget for graphical representation of bits from an integer number
     with support for Channels and more from PyDM
@@ -557,7 +557,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
                 self.update_indicators()
 
 
-class PyDMMultiStateIndicator(QWidget, PyDMWidget):
+class PyDMMultiStateIndicator(PyDMWidget, QWidget):
     """
     Widget with 16 available states that are set by the connected channel.
     Each state represents a different color that can be configured.

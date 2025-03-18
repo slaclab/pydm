@@ -40,7 +40,7 @@ if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         STORE = 2
 
 
-class PyDMShellCommand(QPushButton, PyDMWidget):
+class PyDMShellCommand(PyDMWidget, QPushButton):
     """
     A QPushButton capable of execute shell commands.
 

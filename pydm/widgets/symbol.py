@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 _symbolRuleProperties = {"Index": ["set_current_key", int]}
 
 
-class PyDMSymbol(QWidget, PyDMWidget):
+class PyDMSymbol(PyDMWidget, QWidget):
     """
     PyDMSymbol will render an image (symbol) for each value of a channel.
 

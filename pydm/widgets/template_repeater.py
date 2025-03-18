@@ -133,7 +133,7 @@ if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
 layout_class_for_type = (QVBoxLayout, QHBoxLayout, FlowLayout)
 
 
-class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
+class PyDMTemplateRepeater(PyDMPrimitiveWidget, QFrame):
     """
     PyDMTemplateRepeater takes a .ui file with macro variables as a template, and a JSON
     file (or a list of dictionaries) with a list of values to use to fill in

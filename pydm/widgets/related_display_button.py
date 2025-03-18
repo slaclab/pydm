@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 _relatedDisplayRuleProperties = {"Text": ["setText", str], "Filenames": ["filenames", list]}
 
 
-class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
+class PyDMRelatedDisplayButton(PyDMWidget, QPushButton):
     """
     A QPushButton capable of opening a new Display in the same or a new window.
 

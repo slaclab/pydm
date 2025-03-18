@@ -11,7 +11,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class PyDMPushButton(QPushButton, PyDMWritableWidget):
+class PyDMPushButton(PyDMWritableWidget, QPushButton):
     """
     Basic PushButton to send a fixed value.
 

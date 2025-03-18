@@ -121,7 +121,7 @@ class ImageUpdateThread(QThread):
         self.image_view.needs_redraw = False
 
 
-class PyDMImageView(ImageView, PyDMWidget):
+class PyDMImageView(PyDMWidget, ImageView):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM.
 

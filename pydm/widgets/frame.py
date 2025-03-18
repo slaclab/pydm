@@ -3,7 +3,7 @@ from qtpy.QtCore import Property
 from .base import PyDMWidget
 
 
-class PyDMFrame(QFrame, PyDMWidget):
+class PyDMFrame(PyDMWidget, QFrame):
     """
     QFrame with support for alarms
     This class inherits from QFrame and PyDMWidget.

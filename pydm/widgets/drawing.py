@@ -59,7 +59,7 @@ def qt_to_deg(deg):
     return deg / 16.0
 
 
-class PyDMDrawing(QWidget, PyDMWidget):
+class PyDMDrawing(PyDMWidget, QWidget):
     """
     Base class to be used for all PyDM Drawing Widgets.
     This class inherits from QWidget and PyDMWidget.
