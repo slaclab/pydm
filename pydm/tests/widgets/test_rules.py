@@ -230,31 +230,55 @@ def test_rules_invalid_expr(qtbot, caplog):
         }
     ]
 
+    print("! 1")
     dispatcher = RulesDispatcher()
+    print("! 2")
     dispatcher.register(widget, rules)
+    print("! 3")
 
     re = dispatcher.rules_engine
+    print("! 3")
+
     assert weakref.ref(widget) in re.widget_map
+    print("! 4")
+
     assert len(re.widget_map[weakref.ref(widget)]) == 1
+    print("! 5")
+
     assert re.widget_map[weakref.ref(widget)][0]["rule"] == rules[0]
+    print("! 6")
 
     caplog.clear()
+    print("! 7")
 
     rules[0]["expression"] = "foo"
+    print("! 8")
+
     dispatcher.register(widget, rules)
+    print("! 9")
+
     assert len(re.widget_map[weakref.ref(widget)]) == 1
+    print("! 10")
+
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
+    print("! 11")
+
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value="a")
+    print("! 12")
 
     # Wait for rule to execute but keep app responsive
     qtbot.wait(5000)
+    print("! 13")
 
     for record in caplog.records:
         assert record.levelno == logging.ERROR
     assert "Error while evaluating Rule" in caplog.text
 
+    print("! 14")
+
     dispatcher.unregister(widget)
     assert weakref.ref(widget) not in re.widget_map
+    print("! 15")
 
 
 def test_rules_initial_value(qtbot, caplog):

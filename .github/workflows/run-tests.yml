@@ -19,9 +19,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.9', '3.10']
-        pyqt-version: [5.12.3, 5.15.9]
+        os: [windows-latest]
+        python-version: ['3.10']
+        pyqt-version: [5.15.9]
     env:
       DISPLAY: ':99.0'
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
@@ -72,6 +72,6 @@ jobs:
 
     - name: Test with pytest
       shell: bash -el {0}
-      timeout-minutes: 30 # timeout applies to single run of run_tests.py, not all os/python combos
+      timeout-minutes: 50 # timeout applies to single run of run_tests.py, not all os/python combos
       run: |
-        python run_tests.py
+        python run_tests.py -s
