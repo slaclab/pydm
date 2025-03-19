@@ -5,13 +5,13 @@ Installation
 =========================
 
 There are a few different ways to install PyDM.  The easiest way to install it
-from scratch is probably using the Anaconda system.  If you have an existing
+from scratch is probably using the Conda system. We recommended using Conda from `Miniforge <https://conda-forge.org/download/>`. If you have an existing
 python environment, and want to install PyDM for use with that, you can do that
 with pip.
 
 Please note, this guide is written with Unix in mind, so there are probably some differences when installing on Windows.
 
-Installing PyDM and Prerequisites with Anaconda
+Installing PyDM and Prerequisites with Conda
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. warning::
@@ -23,7 +23,7 @@ Installing PyDM and Prerequisites with Anaconda
 
     $ conda create -n pydm-environment python=3.10 pyqt=5.12.3 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
 
-After installing Anaconda (see https://www.anaconda.com/download/), create a new
+After installing Miniforge (see https://conda-forge.org/download/), create a new
 environment for PyDM::
   
   $ conda create -n pydm-environment python=3.10 pyqt=5 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
