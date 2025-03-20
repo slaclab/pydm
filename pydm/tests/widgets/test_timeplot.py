@@ -455,7 +455,7 @@ def test_updateLabel_in_range(time_plot, monkeypatch):
 
     mock_dt = MagicMock()
     mock_dt.strftime.return_value = "TEST_TIME"
-    monkeypatch.setattr("pydm.widgets.timeplot.datetime", MagicMock(fromtimestamp=MagicMock(return_value=mock_dt)))
+    monkeypatch.setattr("pydm.widgets.baseplot.datetime", MagicMock(fromtimestamp=MagicMock(return_value=mock_dt)))
 
     time_plot.updateLabel(11, 999)
     text = label.toPlainText()
@@ -495,7 +495,7 @@ def test_updateLabel_with_severity(time_plot, monkeypatch):
 
     mock_dt = MagicMock()
     mock_dt.strftime.return_value = "TEST_TIME"
-    monkeypatch.setattr("pydm.widgets.timeplot.datetime", MagicMock(fromtimestamp=MagicMock(return_value=mock_dt)))
+    monkeypatch.setattr("pydm.widgets.baseplot.datetime", MagicMock(fromtimestamp=MagicMock(return_value=mock_dt)))
 
     time_plot.updateLabel(11, 0)
     text = label.toPlainText()
