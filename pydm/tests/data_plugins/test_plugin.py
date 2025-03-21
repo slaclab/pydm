@@ -28,7 +28,7 @@ def test_connections():
     assert len(pydm_plugin.connections) == 0
 
 
-def test_signal_slot_discconect():
+def test_signal_slot_disconnect():
     """When a listener is removed from a channel, verify all signals/slots for that listener are disconnected"""
     pydm_plugin = PyDMPlugin()
 
