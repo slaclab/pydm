@@ -195,7 +195,7 @@ class PyDMLogDisplay(QWidget):
         # Allow QCombobox to control log level
         for log_level, value in LogLevels.as_dict().items():
             self.combo.addItem(log_level, value)
-        self.combo.currentIndexChanged[str].connect(self.setLevel)
+        self.combo.currentTextChanged.connect(self.setLevel)
         # Allow QPushButton to clear log text
         self.clear_btn.clicked.connect(self.clear)
         # Create a handler with the default format
