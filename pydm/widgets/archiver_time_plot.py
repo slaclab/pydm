@@ -757,11 +757,13 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         The parent of this widget.
     init_y_channels : list
         A list of scalar channels to plot vs time.
-    background: str
+    background : str
         The background color for the plot.  Accepts any arguments that
         pyqtgraph.mkColor will accept.
-    optimized_data_bins: int
+    optimized_data_bins : int
         The number of bins of data returned from the archiver when using optimized requests
+    request_cooldown : int
+        The time, in seconds, between requests to the archiver appliance
     cache_data : bool
         Whether curves should retain archive data or fetch new data when the x-axis changes
     show_all : bool
@@ -774,6 +776,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         init_y_channels: List[str] = [],
         background: str = "default",
         optimized_data_bins: int = 2000,
+        request_cooldown: int = 1000,
         cache_data: bool = True,
         show_all: bool = True,
     ):
@@ -787,6 +790,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         self._cache_data = None
 
         self.optimized_data_bins = optimized_data_bins
+        self.request_cooldown = request_cooldown
         self.cache_data = cache_data
         self._show_all = show_all  # Show all plotted data after archiver fetch
 
@@ -860,7 +864,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             self.setTimeSpan(max_x - min_x)
             if not self._archive_request_queued:
                 self._archive_request_queued = True
-                QTimer.singleShot(1000, self.requestDataFromArchiver)
+                QTimer.singleShot(self.request_cooldown, self.requestDataFromArchiver)
 
     def _handle_manual_scrolling_or_zoom(self, min_x: float, max_x: float) -> None:
         """Handles scenarios of manual scrolling or zooming when autorange is disabled."""
@@ -872,7 +876,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             self.setTimeSpan(max_point - min_x)
             if not self._archive_request_queued:
                 self._archive_request_queued = True
-                QTimer.singleShot(1000, self.requestDataFromArchiver)
+                QTimer.singleShot(self.request_cooldown, self.requestDataFromArchiver)
         elif max_x >= max_point - 10:
             # Check if we should update the x-axis
             if abs(min_x - self._prev_x) > 15:
