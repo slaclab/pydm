@@ -763,7 +763,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     optimized_data_bins : int
         The number of bins of data returned from the archiver when using optimized requests
     request_cooldown : int
-        The time, in seconds, between requests to the archiver appliance
+        The time, in milliseconds, between requests to the archiver appliance
     cache_data : bool
         Whether curves should retain archive data or fetch new data when the x-axis changes
     show_all : bool
