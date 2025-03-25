@@ -515,7 +515,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         Parameters
         ----------
-        new_orientation : int
+        new_orientation : Qt.Orientation
             Qt.Horizontal or Qt.Vertical
         """
         self._orientation = new_orientation
@@ -527,7 +527,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         Parameters
         ----------
-        new_orientation : int
+        new_orientation : Qt.Orientation
             Qt.Horizontal or Qt.Vertical
         """
         if new_orientation not in (Qt.Horizontal, Qt.Vertical):

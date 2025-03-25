@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pydm"
+description = "A PyQt-based framework for building user interfaces for control systems"
+readme = "README.md"
+authors = [ {name = "SLAC National Accelerator Laboratory"} ]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+requires-python = ">=3.9"
+dynamic = ["version", "dependencies", "optional-dependencies"]
+
+[project.scripts]
+pydm = "pydm_launcher.main:main"
+
+[project.urls]
+Homepage = "https://github.com/slaclab/pydm"
+Documentation = "https://slaclab.github.io/pydm/"
+
+[project.license]
+file = "LICENSE.md"
+
+[tool.setuptools_scm]
+write_to = "pydm/_version.py"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pydm*"]
+namespaces = false
+
+[tool.setuptools.dynamic.dependencies]
+file = "requirements.txt"
+
+[tool.setuptools.dynamic.optional-dependencies.test]
+file = "dev-requirements.txt"
+
+[tool.setuptools.dynamic.optional-dependencies.test-no-optional]
+file = "windows-dev-requirements.txt"
+
+[tool.setuptools.dynamic.optional-dependencies.doc]
+file = "docs-requirements.txt"

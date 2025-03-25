@@ -491,7 +491,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
     def validate_password(self) -> bool:
         """
-        If the widget is ```passwordProtected```, this method will propmt
+        If the widget is ```passwordProtected```, this method will prompt
         the user for the correct password.
 
         Returns

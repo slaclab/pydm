@@ -69,7 +69,7 @@ def test_press_with_filename(qtbot):
 
     # verify that qt standard icons can be set through our custom property
     style = button.style()
-    test_icon = style.standardIcon(style.SP_DesktopIcon)
+    test_icon = style.standardIcon(style.StandardPixmap.SP_DesktopIcon)
     test_icon_image = test_icon.pixmap(DEFAULT_ICON_SIZE).toImage()
 
     button.PyDMIcon = "SP_DesktopIcon"
