@@ -31,9 +31,6 @@ def logger_destroyed(log):
     ----------
     log : Logger
         The logger object being used by the PyDMLogDisplay widget.
-    obj : QWidget
-        The widget which is being destroyed. All childs of this widget are
-        already destroyed and must not be accessed.
     """
     if log:
         for handler in log.handlers:
