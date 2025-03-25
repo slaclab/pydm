@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Archiver Appliance Enabled Time Plots &mdash; PyDM 1.25.2 documentation</title>
+  <title>Archiver Appliance Enabled Time Plots &mdash; PyDM 1.26.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.2
+                1.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -430,9 +430,26 @@ For example optimized data will include standard deviations, minimums, and maxim
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.receiveNewValue">
+<span class="sig-name descname"><span class="pre">receiveNewValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.receiveNewValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.receiveNewValue" title="Permalink to this definition"></a></dt>
+<dd><p>Fill incoming live data if requested by user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_value</strong> (<em>float</em>) – The new y-value to append to the live data buffer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.redrawCurve">
 <span class="sig-name descname"><span class="pre">redrawCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.redrawCurve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.redrawCurve" title="Permalink to this definition"></a></dt>
 <dd><p>Redraw the curve with any new data added since the last draw call.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.remove_error_bar">
+<span class="sig-name descname"><span class="pre">remove_error_bar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.remove_error_bar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.remove_error_bar" title="Permalink to this definition"></a></dt>
+<dd><p>Remove the curve’s error bar when the curve is deleted.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -448,9 +465,40 @@ For example optimized data will include standard deviations, minimums, and maxim
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setLogMode">
+<span class="sig-name descname"><span class="pre">setLogMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xState</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yState</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.setLogMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setLogMode" title="Permalink to this definition"></a></dt>
+<dd><p>When log mode is enabled for the respective axis by setting xState or
+yState to True, a mapping according to mapped = np.log10( value ) is applied
+to the data. For negative or zero values, this results in a NaN value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xState</strong> (<em>bool</em>) – Set log mode for the x-axis</p></li>
+<li><p><strong>yState</strong> (<em>bool</em>) – Set log mode for the y-axis</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.set_error_bar">
+<span class="sig-name descname"><span class="pre">set_error_bar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.set_error_bar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.set_error_bar" title="Permalink to this definition"></a></dt>
+<dd><p>Update the data in the ErrorBarItem. Applies log10 to the ErrorBarItem
+based on the curve’s log mode.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.to_dict">
 <span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OrderedDict</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/archiver_time_plot.html#ArchivePlotCurveItem.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.to_dict" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an OrderedDict representation with values for all properties needed to recreate this curve.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.y_axis_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_axis_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.y_axis_name" title="Permalink to this definition"></a></dt>
+<dd><p>Return the name of the y-axis that this curve should be associated with. This allows us to have plots that
+contain multiple y-axes, with each curve assigned to either a unique or shared axis as needed.
+:rtype: str</p>
 </dd></dl>
 
 </dd></dl>

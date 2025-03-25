@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.template_repeater &mdash; PyDM 1.25.2 documentation</title>
+  <title>pydm.widgets.template_repeater &mdash; PyDM 1.26.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.2
+                1.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -119,12 +119,13 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QLayout</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">Q_ENUMS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QPoint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMPrimitiveWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_qt_designer</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pydm.data_plugins</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_file</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..display</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -233,10 +234,22 @@
     <span class="n">Flow</span> <span class="o">=</span> <span class="mi">2</span>
 
 
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QEnum</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+    <span class="nd">@QEnum</span>
+    <span class="c1"># overrides prev enum def</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">LayoutType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>  <span class="c1"># noqa F811</span>
+        <span class="n">Vertical</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Horizontal</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">Flow</span> <span class="o">=</span> <span class="mi">2</span>
+
+
 <span class="n">layout_class_for_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">FlowLayout</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="PyDMTemplateRepeater"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMTemplateRepeater</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">,</span> <span class="n">LayoutType</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMTemplateRepeater"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMTemplateRepeater</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PyDMTemplateRepeater takes a .ui file with macro variables as a template, and a JSON</span>
 <span class="sd">    file (or a list of dictionaries) with a list of values to use to fill in</span>
@@ -256,8 +269,16 @@
 <span class="sd">        The parent of this widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">LayoutType</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYQT5</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Q_ENUM</span>
+
+        <span class="n">Q_ENUM</span><span class="p">(</span><span class="n">LayoutType</span><span class="p">)</span>
     <span class="n">LayoutType</span> <span class="o">=</span> <span class="n">LayoutType</span>
+
+    <span class="c1"># Make enum definitions known to this class</span>
+    <span class="n">Vertical</span> <span class="o">=</span> <span class="n">LayoutType</span><span class="o">.</span><span class="n">Vertical</span>
+    <span class="n">Horizontal</span> <span class="o">=</span> <span class="n">LayoutType</span><span class="o">.</span><span class="n">Horizontal</span>
+    <span class="n">Flow</span> <span class="o">=</span> <span class="n">LayoutType</span><span class="o">.</span><span class="n">Flow</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">pydm</span><span class="o">.</span><span class="n">data_plugins</span><span class="o">.</span><span class="n">initialize_plugins_if_needed</span><span class="p">()</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.drawing &mdash; PyDM 1.25.2 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM 1.26.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.2
+                1.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -175,7 +175,7 @@
     <span class="k">return</span> <span class="n">deg</span> <span class="o">/</span> <span class="mf">16.0</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawing</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_penRuleProperties</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawing</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class to be used for all PyDM Drawing Widgets.</span>
 <span class="sd">    This class inherits from QWidget and PyDMWidget.</span>
@@ -187,6 +187,8 @@
 <span class="sd">    init_channel : str, optional</span>
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">new_properties</span> <span class="o">=</span> <span class="n">_penRuleProperties</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -403,7 +405,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        int</span>
+<span class="sd">        Qt.PenStyle</span>
 <span class="sd">            Index at Qt.PenStyle enum</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_style</span>
@@ -415,7 +417,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        new_style : int</span>
+<span class="sd">        new_style : Qt.PenStyle</span>
 <span class="sd">            Index at Qt.PenStyle enum</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">==</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">ALARM_NONE</span><span class="p">:</span>
@@ -739,7 +741,7 @@
         <span class="k">return</span> <span class="n">QPolygonF</span><span class="p">([</span><span class="n">left</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">right</span><span class="p">])</span>
 
 
-<div class="viewcode-block" id="PyDMDrawingLine"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingLine">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingLine</span><span class="p">(</span><span class="n">PyDMDrawingLineBase</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_penRuleProperties</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMDrawingLine"><a class="viewcode-back" href="../../../widgets/drawing.html#pydm.widgets.drawing.PyDMDrawingLine">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMDrawingLine</span><span class="p">(</span><span class="n">PyDMDrawingLineBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A widget with a line drawn in it.</span>
 <span class="sd">    This class inherits from PyDMDrawingLineBase.</span>
@@ -751,6 +753,8 @@
 <span class="sd">    init_channel : str, optional</span>
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">new_properties</span> <span class="o">=</span> <span class="n">_penRuleProperties</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>
@@ -1004,7 +1008,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_movie</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># Make sure we don&#39;t set a non-existant file</span>
+        <span class="c1"># Make sure we don&#39;t set a non-existent file</span>
         <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="c1"># But we always have an internal value to reference</span>
@@ -1314,6 +1318,8 @@
 <span class="sd">    init_channel : str, optional</span>
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">new_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Start Angle&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;startAngle&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="s2">&quot;Span Angle&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;spanAngle&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">]}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PyDMDrawingArc</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">init_channel</span><span class="p">)</span>

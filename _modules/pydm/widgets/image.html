@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.image &mdash; PyDM 1.25.2 documentation</title>
+  <title>pydm.widgets.image &mdash; PyDM 1.26.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.2
+                1.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -115,7 +115,7 @@
              
   <h1>Source code for pydm.widgets.image</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QActionGroup</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">,</span> <span class="n">QThread</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">QThread</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyqtgraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageView</span><span class="p">,</span> <span class="n">PlotItem</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyqtgraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">ColorMap</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu</span><span class="w"> </span><span class="kn">import</span> <span class="n">ViewBoxMenu</span>
@@ -124,6 +124,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.channel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.colormaps</span><span class="w"> </span><span class="kn">import</span> <span class="n">cmaps</span><span class="p">,</span> <span class="n">cmap_names</span><span class="p">,</span> <span class="n">PyDMColorMap</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -133,6 +134,17 @@
 
     <span class="n">Fortranlike</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">Clike</span> <span class="o">=</span> <span class="mi">1</span>
+
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QEnum</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+    <span class="nd">@QEnum</span>
+    <span class="c1"># overrides prev enum def</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">ReadingOrder</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>  <span class="c1"># noqa F811</span>
+        <span class="n">Fortranlike</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Clike</span> <span class="o">=</span> <span class="mi">1</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">DimensionOrder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -155,6 +167,17 @@
 
     <span class="n">HeightFirst</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">WidthFirst</span> <span class="o">=</span> <span class="mi">1</span>
+
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QEnum</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+    <span class="nd">@QEnum</span>
+    <span class="c1"># overrides prev enum def</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">DimensionOrder</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>  <span class="c1"># noqa F811</span>
+        <span class="n">HeightFirst</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">WidthFirst</span> <span class="o">=</span> <span class="mi">1</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">ImageUpdateThread</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
@@ -214,7 +237,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">image_view</span><span class="o">.</span><span class="n">needs_redraw</span> <span class="o">=</span> <span class="kc">False</span>
 
 
-<div class="viewcode-block" id="PyDMImageView"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMImageView</span><span class="p">(</span><span class="n">ImageView</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">PyDMColorMap</span><span class="p">,</span> <span class="n">ReadingOrder</span><span class="p">,</span> <span class="n">DimensionOrder</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMImageView"><a class="viewcode-back" href="../../../widgets/image.html#pydm.widgets.image.PyDMImageView">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMImageView</span><span class="p">(</span><span class="n">ImageView</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A PyQtGraph ImageView with support for Channels and more from PyDM.</span>
 
@@ -242,9 +265,27 @@
     <span class="n">ReadingOrder</span> <span class="o">=</span> <span class="n">ReadingOrder</span>
     <span class="n">DimensionOrder</span> <span class="o">=</span> <span class="n">DimensionOrder</span>
 
-    <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">ReadingOrder</span><span class="p">)</span>
-    <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">DimensionOrder</span><span class="p">)</span>
-    <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">PyDMColorMap</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYQT5</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Q_ENUM</span>
+
+        <span class="n">Q_ENUM</span><span class="p">(</span><span class="n">ReadingOrder</span><span class="p">)</span>
+        <span class="n">Q_ENUM</span><span class="p">(</span><span class="n">DimensionOrder</span><span class="p">)</span>
+        <span class="n">Q_ENUM</span><span class="p">(</span><span class="n">PyDMColorMap</span><span class="p">)</span>
+
+    <span class="c1"># Make enum definitions known to this class</span>
+    <span class="n">Fortranlike</span> <span class="o">=</span> <span class="n">ReadingOrder</span><span class="o">.</span><span class="n">Fortranlike</span>
+    <span class="n">Clike</span> <span class="o">=</span> <span class="n">ReadingOrder</span><span class="o">.</span><span class="n">Clike</span>
+
+    <span class="n">HeightFirst</span> <span class="o">=</span> <span class="n">DimensionOrder</span><span class="o">.</span><span class="n">HeightFirst</span>
+    <span class="n">WidthFirst</span> <span class="o">=</span> <span class="n">DimensionOrder</span><span class="o">.</span><span class="n">WidthFirst</span>
+
+    <span class="n">Magma</span> <span class="o">=</span> <span class="n">PyDMColorMap</span><span class="o">.</span><span class="n">Magma</span>
+    <span class="n">Inferno</span> <span class="o">=</span> <span class="n">PyDMColorMap</span><span class="o">.</span><span class="n">Inferno</span>
+    <span class="n">Plasma</span> <span class="o">=</span> <span class="n">PyDMColorMap</span><span class="o">.</span><span class="n">Plasma</span>
+    <span class="n">Viridis</span> <span class="o">=</span> <span class="n">PyDMColorMap</span><span class="o">.</span><span class="n">Viridis</span>
+    <span class="n">Jet</span> <span class="o">=</span> <span class="n">PyDMColorMap</span><span class="o">.</span><span class="n">Jet</span>
+    <span class="n">Monochrome</span> <span class="o">=</span> <span class="n">PyDMColorMap</span><span class="o">.</span><span class="n">Monochrome</span>
+    <span class="n">Hot</span> <span class="o">=</span> <span class="n">PyDMColorMap</span><span class="o">.</span><span class="n">Hot</span>
 
     <span class="n">color_maps</span> <span class="o">=</span> <span class="n">cmaps</span>
 
@@ -280,7 +321,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">showAxes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_axes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imageItem</span><span class="o">.</span><span class="n">setOpts</span><span class="p">(</span><span class="n">axisOrder</span><span class="o">=</span><span class="s2">&quot;row-major&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Hide some itens of the widget.</span>
+        <span class="c1"># Hide some items of the widget.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">getImageItem</span><span class="p">()</span><span class="o">.</span><span class="n">sigImageChanged</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">histogram</span><span class="o">.</span><span class="n">imageChanged</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">roiBtn</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>

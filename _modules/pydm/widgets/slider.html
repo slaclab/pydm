@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.slider &mdash; PyDM 1.25.2 documentation</title>
+  <title>pydm.widgets.slider &mdash; PyDM 1.26.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.2
+                1.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -346,7 +346,7 @@
             <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">proportion</span><span class="p">)</span> <span class="o">*</span> <span class="n">slider_length</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">getHandleSize</span><span class="p">()</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span>
 
 
-<div class="viewcode-block" id="PyDMSlider"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMSlider</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_step_size_properties</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMSlider</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A QSlider with support for Channels and more from PyDM.</span>
 
@@ -357,6 +357,8 @@
 <span class="sd">    init_channel : str, optional</span>
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">new_properties</span> <span class="o">=</span> <span class="n">_step_size_properties</span>
 
     <span class="n">actionTriggered</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">rangeChanged</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
@@ -629,7 +631,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        new_orientation : int</span>
+<span class="sd">        new_orientation : Qt.Orientation</span>
 <span class="sd">            Qt.Horizontal or Qt.Vertical</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span> <span class="o">=</span> <span class="n">new_orientation</span>
@@ -641,7 +643,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        new_orientation : int</span>
+<span class="sd">        new_orientation : Qt.Orientation</span>
 <span class="sd">            Qt.Horizontal or Qt.Vertical</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_orientation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">):</span>

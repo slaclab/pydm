@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.symbol &mdash; PyDM 1.25.2 documentation</title>
+  <title>pydm.widgets.symbol &mdash; PyDM 1.26.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.2
+                1.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -129,7 +129,7 @@
 <span class="n">_symbolRuleProperties</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Index&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;set_current_key&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">]}</span>
 
 
-<div class="viewcode-block" id="PyDMSymbol"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMSymbol</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">new_properties</span><span class="o">=</span><span class="n">_symbolRuleProperties</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSymbol"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMSymbol</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    PyDMSymbol will render an image (symbol) for each value of a channel.</span>
 
@@ -140,6 +140,8 @@
 <span class="sd">    init_channel : str, optional</span>
 <span class="sd">        The channel to be used by the widget.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">new_properties</span> <span class="o">=</span> <span class="n">_symbolRuleProperties</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
@@ -220,14 +222,14 @@
             <span class="n">qInstallMessageHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qt_message_handler</span><span class="p">)</span>
             <span class="n">svg</span> <span class="o">=</span> <span class="n">QSvgRenderer</span><span class="p">()</span>
             <span class="n">svg</span><span class="o">.</span><span class="n">repaintNeeded</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">svg</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">svg</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">state</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">svg</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_sizeHint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sizeHint</span><span class="o">.</span><span class="n">expandedTo</span><span class="p">(</span><span class="n">svg</span><span class="o">.</span><span class="n">defaultSize</span><span class="p">())</span>
                 <span class="n">qInstallMessageHandler</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="n">qInstallMessageHandler</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
             <span class="c1"># SVG didn&#39;t work, lets try QPixmap</span>
-            <span class="n">image</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">QPixmap</span><span class="p">()</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">image</span><span class="o">.</span><span class="n">isNull</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">state</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_sizeHint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sizeHint</span><span class="o">.</span><span class="n">expandedTo</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.archiver_time_plot &mdash; PyDM 1.25.2 documentation</title>
+  <title>pydm.widgets.archiver_time_plot &mdash; PyDM 1.26.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.2
+                1.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -125,8 +125,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.widgets.channel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.widgets.timeplot</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimePlotCurveItem</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.widgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMTimePlot</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QObject</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QObject</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPen</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>  <span class="c1"># noqa</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">statistics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean</span>  <span class="c1"># noqa</span>
@@ -181,9 +181,10 @@
 
         <span class="c1"># When optimized or mean value data is requested, we can display error bars representing</span>
         <span class="c1"># the full range of values retrieved</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_item</span> <span class="o">=</span> <span class="n">ErrorBarItem</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_needs_set</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span> <span class="o">=</span> <span class="n">ErrorBarItem</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_error_bar</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">channel_address</span>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.to_dict"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.to_dict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderedDict</span><span class="p">:</span>
@@ -192,14 +193,10 @@
         <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">ArchivePlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">dic_</span></div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">address</span>
-
-    <span class="nd">@address</span><span class="o">.</span><span class="n">setter</span>
+    <span class="nd">@TimePlotCurveItem</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the channel for the input address for communicating with the archiver appliance plugin.&quot;&quot;&quot;</span>
-        <span class="n">TimePlotCurveItem</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">)</span>
+        <span class="n">TimePlotCurveItem</span><span class="o">.</span><span class="n">address</span><span class="o">.</span><span class="n">fset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_address</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_channel</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">new_address</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_channel</span><span class="o">.</span><span class="n">address</span><span class="p">:</span>
@@ -228,6 +225,20 @@
 
         <span class="c1"># Prompt the curve&#39;s associated plot to fetch archive data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prompt_archive_request</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+
+    <span class="nd">@BasePlotCurveItem</span><span class="o">.</span><span class="n">y_axis_name</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">y_axis_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the name of the y-axis that should be associated with this curve.</span>
+<span class="sd">        Also move&#39;s the curve&#39;s error bar item.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis_name: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">BasePlotCurveItem</span><span class="o">.</span><span class="n">y_axis_name</span><span class="o">.</span><span class="n">fset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vb</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">():</span>
+            <span class="n">vb</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">liveData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -284,17 +295,11 @@
 
         <span class="c1"># Error bars</span>
         <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>  <span class="c1"># 5 indicates optimized data was requested from the archiver</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span>
-                <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="p">:],</span>
-                <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="p">:],</span>
-                <span class="n">top</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                <span class="n">bottom</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
-                <span class="n">beam</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                <span class="n">pen</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">},</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_needs_set</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar_item</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_needs_set</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_error_bar</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">data_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_received_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
@@ -385,6 +390,58 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span> <span class="o">=</span> <span class="n">DEFAULT_ARCHIVE_BUFFER_SIZE</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initializeArchiveBuffer</span><span class="p">()</span></div>
 
+<div class="viewcode-block" id="ArchivePlotCurveItem.set_error_bar"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.set_error_bar">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_error_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the data in the ErrorBarItem. Applies log10 to the ErrorBarItem</span>
+<span class="sd">        based on the curve&#39;s log mode.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="p">)</span>
+
+        <span class="c1"># Calculate y-value and range for error bars</span>
+        <span class="n">logMode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s2">&quot;logMode&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">logMode</span><span class="p">:</span>
+            <span class="c1"># If the curve&#39;s log mode is enabled, then apply numpy.log10 to all y-values</span>
+            <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
+                <span class="n">y_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">bot_val</span> <span class="o">=</span> <span class="n">y_val</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                <span class="n">top_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">-</span> <span class="n">y_val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">y_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">bot_val</span> <span class="o">=</span> <span class="n">y_val</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">top_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_val</span>
+
+        <span class="c1"># Set the error bar&#39;s pen to be the same as the curve, but solid</span>
+        <span class="n">solid_pen</span> <span class="o">=</span> <span class="n">QPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
+        <span class="n">solid_pen</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_val</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">top_val</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bot_val</span><span class="p">,</span> <span class="n">beam</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="n">solid_pen</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ArchivePlotCurveItem.remove_error_bar"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.remove_error_bar">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_error_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the curve&#39;s error bar when the curve is deleted.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">vb</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">():</span>
+            <span class="n">vb</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ArchivePlotCurveItem.setLogMode"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.setLogMode">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setLogMode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xState</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">yState</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;When log mode is enabled for the respective axis by setting xState or</span>
+<span class="sd">        yState to True, a mapping according to mapped = np.log10( value ) is applied</span>
+<span class="sd">        to the data. For negative or zero values, this results in a NaN value.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xState : bool</span>
+<span class="sd">            Set log mode for the x-axis</span>
+<span class="sd">        yState : bool</span>
+<span class="sd">            Set log mode for the y-axis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setLogMode</span><span class="p">(</span><span class="n">xState</span><span class="p">,</span> <span class="n">yState</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_error_bar</span><span class="p">()</span></div>
+
 <div class="viewcode-block" id="ArchivePlotCurveItem.archiveConnectionStateChanged"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.archiveConnectionStateChanged">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">archiveConnectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Capture the archive channel connection status and emit changes</span>
@@ -430,10 +487,17 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_x</span><span class="p">()</span></div>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">receiveNewValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ArchivePlotCurveItem.receiveNewValue"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.receiveNewValue">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">receiveNewValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill incoming live data if requested by user.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_value : float</span>
+<span class="sd">            The new y-value to append to the live data buffer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Ignore incoming live data depending on user request</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_liveData</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">receiveNewValue</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span></div>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">receiveNewValue</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="FormulaCurveItem"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.FormulaCurveItem">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FormulaCurveItem</span><span class="p">(</span><span class="n">BasePlotCurveItem</span><span class="p">):</span>
@@ -474,7 +538,7 @@
         <span class="n">liveData</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span>
         <span class="n">plot_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Line&quot;</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kws</span>
+        <span class="o">**</span><span class="n">kws</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FormulaCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
@@ -489,12 +553,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-        <span class="c1"># When optimized or mean value data is requested, we can display error bars representing</span>
-        <span class="c1"># the full range of values retrieved</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_item</span> <span class="o">=</span> <span class="n">ErrorBarItem</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_needs_set</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_formula</span> <span class="o">=</span> <span class="n">formula</span>
         <span class="c1"># Have a formula for internal calculations, that the user does not see</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_formula</span> <span class="o">=</span> <span class="n">formula</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createTrueFormula</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span> <span class="o">=</span> <span class="n">pvs</span> <span class="k">if</span> <span class="n">pvs</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_liveData</span> <span class="o">=</span> <span class="n">liveData</span>
@@ -1035,9 +1095,11 @@
 <div class="viewcode-block" id="PyDMArchiverTimePlot.clearCurves"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot.clearCurves">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">clearCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear all curves from the plot&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
-            <span class="c1"># Need to clear out any bars from optimized data, then super() can handle the rest</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">curve</span><span class="o">.</span><span class="n">error_bar_needs_set</span><span class="p">:</span>
-                <span class="n">curve</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">error_bar_item</span><span class="p">)</span>
+            <span class="c1"># Need to clear out any bars from optimized data; only applicable to ArchivePlotCurveItems</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">ArchivePlotCurveItem</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">vb</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">error_bar</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span>
+            <span class="n">vb</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">error_bar</span><span class="p">)</span>
 
         <span class="c1"># reset _min_x to let updateXAxis make requests anew</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_min_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_starting_timestamp</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.display_format &mdash; PyDM 1.25.2 documentation</title>
+  <title>pydm.widgets.display_format &mdash; PyDM 1.26.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.2
+                1.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -117,14 +117,15 @@
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="DisplayFormat"><a class="viewcode-back" href="../../../widgets/utilities.html#pydm.widgets.display_format.DisplayFormat">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">DisplayFormat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DisplayFormat</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Display format for showing data in a PyDM widget.&quot;&quot;&quot;</span>
 
     <span class="c1">#: The default display format.</span>
@@ -138,7 +139,22 @@
     <span class="c1">#: Show numerical values in base 16 (hexadecimal) notation.</span>
     <span class="n">Hex</span> <span class="o">=</span> <span class="mi">4</span>
     <span class="c1">#: Show numerical values in base 2 (binary) notation.</span>
-    <span class="n">Binary</span> <span class="o">=</span> <span class="mi">5</span></div>
+    <span class="n">Binary</span> <span class="o">=</span> <span class="mi">5</span>
+
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QEnum</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+<div class="viewcode-block" id="DisplayFormat"><a class="viewcode-back" href="../../../widgets/utilities.html#pydm.widgets.display_format.DisplayFormat">[docs]</a>    <span class="nd">@QEnum</span>
+    <span class="c1"># overrides prev enum def</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">DisplayFormat</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>  <span class="c1"># noqa F811</span>
+        <span class="n">Default</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">String</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">Decimal</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">Exponential</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">Hex</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">Binary</span> <span class="o">=</span> <span class="mi">5</span></div>
 
 
 <div class="viewcode-block" id="parse_value_for_display"><a class="viewcode-back" href="../../../widgets/utilities.html#pydm.widgets.display_format.parse_value_for_display">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">parse_value_for_display</span><span class="p">(</span>

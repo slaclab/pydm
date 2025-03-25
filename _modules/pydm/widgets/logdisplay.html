@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.logdisplay &mdash; PyDM 1.25.2 documentation</title>
+  <title>pydm.widgets.logdisplay &mdash; PyDM 1.26.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.2
+                1.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -119,7 +119,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QObject</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Q_ENUMS</span><span class="p">,</span> <span class="n">QSize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QObject</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QSize</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">QWidget</span><span class="p">,</span>
     <span class="n">QPlainTextEdit</span><span class="p">,</span>
@@ -132,6 +132,8 @@
     <span class="n">QStyle</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPainter</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -224,7 +226,33 @@
         <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="PyDMLogDisplay"><a class="viewcode-back" href="../../../widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMLogDisplay</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">LogLevels</span><span class="p">):</span>
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QEnum</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+    <span class="nd">@QEnum</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">LogLevels</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>  <span class="c1"># noqa F811</span>
+        <span class="n">NOTSET</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">DEBUG</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">INFO</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="n">WARNING</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="n">ERROR</span> <span class="o">=</span> <span class="mi">40</span>
+        <span class="n">CRITICAL</span> <span class="o">=</span> <span class="mi">50</span>
+
+        <span class="nd">@staticmethod</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">as_dict</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns an ordered dict of LogLevels ordered by value.</span>
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            OrderedDict</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># First let&#39;s remove the internals</span>
+            <span class="n">entries</span> <span class="o">=</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">__members__</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+            <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="PyDMLogDisplay"><a class="viewcode-back" href="../../../widgets/log.html#pydm.widgets.logdisplay.PyDMLogDisplay">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMLogDisplay</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Standard display for Log Output</span>
 
@@ -245,8 +273,20 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">LogLevels</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYQT5</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Q_ENUM</span>
+
+        <span class="n">Q_ENUM</span><span class="p">(</span><span class="n">LogLevels</span><span class="p">)</span>
     <span class="n">LogLevels</span> <span class="o">=</span> <span class="n">LogLevels</span>
+
+    <span class="c1"># Make enum definitions known to this class</span>
+    <span class="n">NOTSET</span> <span class="o">=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">NOTSET</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">DEBUG</span>
+    <span class="n">INFO</span> <span class="o">=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">INFO</span>
+    <span class="n">WARNING</span> <span class="o">=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">WARNING</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">ERROR</span>
+    <span class="n">CRITICAL</span> <span class="o">=</span> <span class="n">LogLevels</span><span class="o">.</span><span class="n">CRITICAL</span>
+
     <span class="n">terminator</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
     <span class="n">default_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
     <span class="n">default_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>

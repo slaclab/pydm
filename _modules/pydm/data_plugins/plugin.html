@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.data_plugins.plugin &mdash; PyDM 1.25.2 documentation</title>
+  <title>pydm.data_plugins.plugin &mdash; PyDM 1.26.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.25.2
+                1.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -129,19 +129,19 @@
 
 
 <div class="viewcode-block" id="PyDMConnection"><a class="viewcode-back" href="../../../data_plugins/external_plugins.html#pydm.data_plugins.PyDMConnection">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMConnection</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
-    <span class="n">new_value_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">([</span><span class="nb">float</span><span class="p">],</span> <span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="p">[</span><span class="nb">object</span><span class="p">])</span>
+    <span class="n">new_value_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">((</span><span class="nb">float</span><span class="p">,),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,),</span> <span class="p">(</span><span class="nb">str</span><span class="p">,),</span> <span class="p">(</span><span class="nb">bool</span><span class="p">,),</span> <span class="p">(</span><span class="nb">object</span><span class="p">,))</span>
     <span class="n">connection_state_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="n">new_severity_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">write_access_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="n">enum_strings_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">tuple</span><span class="p">)</span>
     <span class="n">unit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="n">prec_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="n">upper_ctrl_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">([</span><span class="nb">float</span><span class="p">],</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
-    <span class="n">lower_ctrl_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">([</span><span class="nb">float</span><span class="p">],</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
-    <span class="n">upper_alarm_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">([</span><span class="nb">float</span><span class="p">],</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
-    <span class="n">lower_alarm_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">([</span><span class="nb">float</span><span class="p">],</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
-    <span class="n">upper_warning_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">([</span><span class="nb">float</span><span class="p">],</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
-    <span class="n">lower_warning_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">([</span><span class="nb">float</span><span class="p">],</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
+    <span class="n">upper_ctrl_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">((</span><span class="nb">float</span><span class="p">,),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,))</span>
+    <span class="n">lower_ctrl_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">((</span><span class="nb">float</span><span class="p">,),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,))</span>
+    <span class="n">upper_alarm_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">((</span><span class="nb">float</span><span class="p">,),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,))</span>
+    <span class="n">lower_alarm_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">((</span><span class="nb">float</span><span class="p">,),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,))</span>
+    <span class="n">upper_warning_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">((</span><span class="nb">float</span><span class="p">,),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,))</span>
+    <span class="n">lower_warning_limit_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">((</span><span class="nb">float</span><span class="p">,),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,))</span>
     <span class="n">timestamp_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
