@@ -490,8 +490,10 @@ class BasePlotAxisItem(AxisItem):
         if oldView := self.linkedView():
             oldView.sigXRangeChanged.disconnect(self.sigXRangeChanged.emit)
             oldView.sigYRangeChanged.disconnect(self.sigYRangeChanged.emit)
+            oldView.sigRangeChangedManually.disconnect(self.disable_auto_range)
         view.sigXRangeChanged.connect(self.sigXRangeChanged.emit)
         view.sigYRangeChanged.connect(self.sigYRangeChanged.emit)
+        view.sigRangeChangedManually.connect(self.disable_auto_range)
         super().linkToView(view)
 
     @property
@@ -626,6 +628,12 @@ class BasePlotAxisItem(AxisItem):
         elif self.orientation == "top" or self.orientation == "bottom":
             axis = ViewBox.XAxis
         self.linkedView().enableAutoRange(axis, auto_range)
+
+    def disable_auto_range(self) -> None:
+        self.auto_range = False
+
+    def enable_auto_range(self) -> None:
+        self.auto_range = True
 
     @property
     def log_mode(self) -> bool:
