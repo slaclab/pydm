@@ -54,18 +54,19 @@ jobs:
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
           conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} 
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} git p4p pyca
         else
-          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} pyca
         fi
 
     - name: Install additional Python dependencies with pip for PyQt5
       shell: bash -el {0}
       run: |
-        pip install -r requirements.txt
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          pip install -r windows-dev-requirements.txt
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          pip install .[test]
         else
-          pip install -r dev-requirements.txt
+          pip install .[test-no-optional]
         fi
   
     - name: Run PyQt tests with pytest

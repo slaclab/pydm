@@ -1,6 +1,7 @@
 # import epics
 # from qtpy import uic
 import functools
+import weakref
 from qtpy.QtCore import Slot, Signal, QPointF, QRectF
 from qtpy.QtGui import QPen
 from qtpy.QtWidgets import QSizePolicy
@@ -46,14 +47,14 @@ class CamViewer(Display):
             self.ui.cameraComboBox.addItem(camera)
 
         # When the camera combo box changes, disconnect from PVs, re-initialize, then reconnect.
-        self.ui.cameraComboBox.activated[str].connect(self.cameraChanged)
+        self.ui.cameraComboBox.currentTextChanged.connect(self.cameraChanged)
 
         # Set up the color map combo box.
         self.ui.colorMapComboBox.clear()
         for key, map_name in cmap_names.items():
             self.ui.colorMapComboBox.addItem(map_name, userData=key)
         self.ui.imageView.colorMap = self.ui.colorMapComboBox.currentData()
-        self.ui.colorMapComboBox.activated[str].connect(self.colorMapChanged)
+        self.ui.colorMapComboBox.currentTextChanged.connect(self.colorMapChanged)
 
         # Set up the color map limit sliders and line edits.
         # self._color_map_limit_sliders_need_config = True
@@ -141,7 +142,7 @@ class CamViewer(Display):
         self.ui.setROIButton.clicked.connect(self.setROI)
         self.ui.resetROIButton.clicked.connect(self.resetROI)
 
-        self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
+        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     @Slot()
     def zoomIn(self):

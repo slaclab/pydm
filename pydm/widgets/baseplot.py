@@ -1,6 +1,7 @@
 import functools
 import json
 import warnings
+import weakref
 from abc import abstractmethod
 from qtpy.QtGui import QColor, QBrush, QMouseEvent
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect
@@ -100,6 +101,12 @@ class BasePlotCurveItem(PlotDataItem):
         if lineWidth is not None:
             self._pen.setWidth(lineWidth)
         if lineStyle is not None:
+            # The type hint for 'Optional' for lineStyle arg, which has allowed for some screens to
+            # pass int value for lineStyle. pyqt5 doesn't mind the int, but pyside6 complains so lets
+            # convert any ints here to the proper Qt.PenStyle enums. The int values get converted to enums
+            # according to: https://doc.qt.io/qt-6/qt.html#PenStyle-enum
+            if isinstance(lineStyle, int):
+                lineStyle = Qt.PenStyle(lineStyle)
             self._pen.setStyle(lineStyle)
         kws["pen"] = self._pen
         super(BasePlotCurveItem, self).__init__(**kws)
@@ -120,7 +127,7 @@ class BasePlotCurveItem(PlotDataItem):
         self.bar_graph_item = None
 
         if hasattr(self, "channels"):
-            self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
+            self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     @property
     def color_string(self) -> str:
