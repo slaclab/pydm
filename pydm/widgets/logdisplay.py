@@ -22,7 +22,7 @@ from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 logger = logging.getLogger(__name__)
 
 
-def logger_destroyed(log, obj):
+def logger_destroyed(log):
     """
     Callback invoked when the Widget is destroyed.
     This method is used to ensure that the log handlers are cleared.
@@ -31,9 +31,6 @@ def logger_destroyed(log, obj):
     ----------
     log : Logger
         The logger object being used by the PyDMLogDisplay widget.
-    obj : QWidget
-        The widget which is being destroyed. All childs of this widget are
-        already destroyed and must not be accessed.
     """
     if log:
         for handler in log.handlers:

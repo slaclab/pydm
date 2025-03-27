@@ -46,7 +46,7 @@ jobs:
         elif [ "$RUNNER_OS" == "macOS" ]; then
           mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} git p4p pyca
         else
-          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} pyca
         fi
 
     - name: Install additional Python dependencies with pip

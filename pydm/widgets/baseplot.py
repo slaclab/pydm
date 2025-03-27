@@ -1,6 +1,7 @@
 import functools
 import json
 import warnings
+import weakref
 from abc import abstractmethod
 from qtpy.QtGui import QColor, QBrush, QMouseEvent
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect
@@ -126,7 +127,7 @@ class BasePlotCurveItem(PlotDataItem):
         self.bar_graph_item = None
 
         if hasattr(self, "channels"):
-            self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
+            self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     @property
     def color_string(self) -> str:
