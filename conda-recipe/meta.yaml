@@ -1,8 +1,10 @@
-{% set data = load_setup_py_data() %}
+{% set package_name = "pydm" %}
+{% set import_name = "pydm" %}
+{% set version = load_file_regex(load_file=os.path.join(import_name, "_version.py"), regex_pattern=".*version = '(\S+)'").group(1) %}
 
 package:
-    name    : pydm
-    version : {{ data.get('version') }}
+    name    : {{ package_name }}
+    version : {{ version }}
 
 source:
     path: ..
@@ -17,8 +19,9 @@ requirements:
     - python >=3.9
     - pip
     - setuptools
+    - setuptools_scm
     - pyqt =5
-    - qtpy
+    - qtpy >=2.2.0
   run:
     - python >=3.9
     - six
@@ -27,7 +30,7 @@ requirements:
     - pyepics
     - pyqt =5
     - pyqtgraph
-    - qtpy
+    - qtpy >=2.2.0
     - entrypoints
 
 test:

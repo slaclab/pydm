@@ -65,7 +65,7 @@ jobs:
         if [ "$RUNNER_OS" == "Windows" ]; then
           conda install -c conda-forge pyside6 pydm
         else
-          mamba install -c conda-forge pyside6 pydm
+          mamba install -c conda-forge pyside6 pydm pyca
         fi
 
     - name: Install additional Python dependencies with pip for PySide6
