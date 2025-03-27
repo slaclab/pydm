@@ -50,8 +50,10 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         self._block_past_date = True
         self._relative = True
         self._time_base = TimeBase.Milliseconds
-
-        QtWidgets.QDateTimeEdit.__init__(self, parent=parent)
+        # We can't do 'parent=parent' here since its only a positional argument, since the python qt
+        # docs can sometimes be sparse you can use python's inspect module to see function's arg details,
+        # like 'print(inspect.signature(QLabel.__init__)'
+        QtWidgets.QDateTimeEdit.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
         self.setDisplayFormat("yyyy/MM/dd hh:mm:ss.zzz")
         self.setDateTime(QtCore.QDateTime.currentDateTime())
@@ -121,9 +123,9 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
 
         val = QtCore.QDateTime.currentDateTime()
         if self._relative:
-            val = val.addMSecs(new_val)
+            val = val.addMSecs(int(new_val))
         else:
-            val.setMSecsSinceEpoch(new_val)
+            val.setMSecsSinceEpoch(int(new_val))
         self.setDateTime(val)
 
 
@@ -150,7 +152,10 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        QtWidgets.QLabel.__init__(self, parent=parent)
+        # We can't do 'parent=parent' here since its only a positional argument, since the python qt
+        # docs can sometimes be sparse you can use python's inspect module to see function's arg details,
+        # like 'print(inspect.signature(QLabel.__init__)'
+        QtWidgets.QLabel.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
 
         self._block_past_date = True
@@ -201,7 +206,7 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
 
         val = QtCore.QDateTime.currentDateTime()
         if self._relative:
-            val = val.addMSecs(new_val)
+            val = val.addMSecs(int(new_val))
         else:
-            val.setMSecsSinceEpoch(new_val)
+            val.setMSecsSinceEpoch(int(new_val))
         self.setText(val.toString(self.textFormat))
