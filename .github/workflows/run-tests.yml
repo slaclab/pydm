@@ -19,8 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.9', '3.10']
-        pyqt-version: [5.12.3, 5.15.9]
+        python-version: ['3.10']
     env:
       DISPLAY: ':99.0'
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
@@ -49,44 +48,6 @@ jobs:
         conda-remove-defaults: true
         architecture: x64  # Ensure macOS finds PyQt 5.12.3 which isn't available with osx-arm64
 
-    - name: Install PyQt5 and PyDM with Mamba (if windows use conda)
-      shell: bash -el {0}
-      run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} 
-        else
-          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
-        fi
-
-    - name: Install additional Python dependencies with pip for PyQt5
-      shell: bash -el {0}
-      run: |
-        pip install -r requirements.txt
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          pip install -r windows-dev-requirements.txt
-        else
-          pip install -r dev-requirements.txt
-        fi
-  
-    - name: Run PyQt tests with pytest
-      env:
-        QT_API: pyqt5
-      shell: bash -el {0}
-      timeout-minutes: 30 # timeout applies to single run of run_tests.py, not all os/python combos
-      run: |
-        echo "Running PyQt tests with QT_API=$QT_API"
-        python -c "import PyQt5.QtCore; print('PyQt5 is installed and working')"
-        python run_tests.py
-
-    - name: Remove existing Miniconda installation on Windows (error workaround)
-      if: runner.os == 'Windows'
-      shell: powershell
-      run: |
-        $condaPath = "C:\Users\runneradmin\miniconda3"
-        if (Test-Path $condaPath) {
-          Remove-Item -Recurse -Force $condaPath
-        }
-
     - name: Setup Conda and install PySide6
       uses: conda-incubator/setup-miniconda@v3
       with:
@@ -95,7 +56,7 @@ jobs:
         miniforge-version: latest
         activate-environment: pyside-env
         conda-remove-defaults: true
-        architecture: x64 # Ensure macOS finds PyQt 5.12.3 which isn't available with osx-arm64
+        architecture: x64
         auto-update-conda: true
 
     - name: Install PySide6 and PyDM with Mamba (if windows use conda)

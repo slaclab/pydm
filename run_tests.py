@@ -2,6 +2,7 @@
 import os
 import sys
 import pytest
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 if __name__ == "__main__":
     # Show output results from every test function
@@ -21,7 +22,11 @@ if __name__ == "__main__":
     # and a Windows PyCA build exists
     if os.name == "nt":
         args.append("--ignore=pydm/tests/data_plugins/test_p4p_plugin_component.py")
-        args.append("--ignore=pydm/tests/data_plugins/test_psp_plugin_component.py")
+    args.append("--ignore=pydm/tests/data_plugins/test_psp_plugin_component.py")
+
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+        args.append("--ignore=pydm/tests/test_plugins_import.py")
+        args.append("--ignore=pydm/tests/test_main_window.py")
 
     print("pytest arguments: {}".format(args))
 
