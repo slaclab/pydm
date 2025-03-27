@@ -289,7 +289,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
 
         Returns
         -------
-        int
+        Qt.PenStyle
             Index at Qt.PenStyle enum
         """
         return self._pen_style
@@ -301,7 +301,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
 
         Parameters
         ----------
-        new_style : int
+        new_style : Qt.PenStyle
             Index at Qt.PenStyle enum
         """
         if self._alarm_state == PyDMWidget.ALARM_NONE:
@@ -892,7 +892,7 @@ class PyDMDrawingImage(PyDMDrawing):
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self._movie = None
         self._file = None
-        # Make sure we don't set a non-existant file
+        # Make sure we don't set a non-existent file
         if filename:
             self.filename = filename
         # But we always have an internal value to reference
@@ -1202,6 +1202,8 @@ class PyDMDrawingArc(PyDMDrawing):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
+    new_properties = {"Start Angle": ["startAngle", float], "Span Angle": ["spanAngle", float]}
 
     def __init__(self, parent=None, init_channel=None):
         super(PyDMDrawingArc, self).__init__(parent, init_channel)

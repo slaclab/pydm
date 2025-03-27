@@ -443,7 +443,7 @@ class PyDMWaveformPlot(BasePlot):
             name=name,
             color=color,
             yAxisName=yAxisName,
-            **plot_opts
+            **plot_opts,
         )
         self.channel_pairs[(y_channel, x_channel)] = curve
         if plot_style == "Bar":

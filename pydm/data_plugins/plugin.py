@@ -12,19 +12,19 @@ from .. import config
 
 
 class PyDMConnection(QObject):
-    new_value_signal = Signal([float], [int], [str], [bool], [object])
+    new_value_signal = Signal((float,), (int,), (str,), (bool,), (object,))
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
     write_access_signal = Signal(bool)
     enum_strings_signal = Signal(tuple)
     unit_signal = Signal(str)
     prec_signal = Signal(int)
-    upper_ctrl_limit_signal = Signal([float], [int])
-    lower_ctrl_limit_signal = Signal([float], [int])
-    upper_alarm_limit_signal = Signal([float], [int])
-    lower_alarm_limit_signal = Signal([float], [int])
-    upper_warning_limit_signal = Signal([float], [int])
-    lower_warning_limit_signal = Signal([float], [int])
+    upper_ctrl_limit_signal = Signal((float,), (int,))
+    lower_ctrl_limit_signal = Signal((float,), (int,))
+    upper_alarm_limit_signal = Signal((float,), (int,))
+    lower_alarm_limit_signal = Signal((float,), (int,))
+    upper_warning_limit_signal = Signal((float,), (int,))
+    lower_warning_limit_signal = Signal((float,), (int,))
     timestamp_signal = Signal(float)
 
     def __init__(self, channel, address, protocol=None, parent=None):
@@ -42,26 +42,14 @@ class PyDMConnection(QObject):
             self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
 
         if channel.value_slot is not None:
-            try:
-                self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[bool].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[object].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
+            for signal_type in (int, float, str, bool, object):
+                try:
+                    self.new_value_signal[signal_type].connect(channel.value_slot, Qt.QueuedConnection)
+                # If the signal exists (always does in this case since we define it for all 'signal_type' values above)
+                # but doesn't match slot, TypeError is thrown. We also don't need to catch KeyError/IndexError here,
+                # since those are only thrown when signal type doesn't exist.
+                except TypeError:
+                    pass
 
         if channel.severity_slot is not None:
             self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
@@ -121,26 +109,14 @@ class PyDMConnection(QObject):
                 pass
 
         if self._should_disconnect(channel.value_slot, destroying):
-            try:
-                self.new_value_signal[int].disconnect(channel.value_slot)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[float].disconnect(channel.value_slot)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[str].disconnect(channel.value_slot)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[bool].disconnect(channel.value_slot)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[object].disconnect(channel.value_slot)
-            except TypeError:
-                pass
+            for signal_type in (int, float, str, bool, object):
+                try:
+                    self.new_value_signal[signal_type].disconnect(channel.value_slot)
+                # If the signal exists (always does in this case since we define it for all 'signal_type' earlier)
+                # but doesn't match slot, TypeError is thrown. We also don't need to catch KeyError/IndexError here,
+                # since those are only thrown when signal type doesn't exist.
+                except TypeError:
+                    pass
 
         if self._should_disconnect(channel.severity_slot, destroying):
             try:

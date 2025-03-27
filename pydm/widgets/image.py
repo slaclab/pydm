@@ -205,7 +205,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.showAxes = self._show_axes
         self.imageItem.setOpts(axisOrder="row-major")
 
-        # Hide some itens of the widget.
+        # Hide some items of the widget.
         self.ui.histogram.hide()
         self.getImageItem().sigImageChanged.disconnect(self.ui.histogram.imageChanged)
         self.ui.roiBtn.hide()

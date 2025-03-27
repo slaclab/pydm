@@ -343,13 +343,13 @@ class SymbolEditor(QtWidgets.QDialog):
         # So we have to temporarily silence Qt warning messages here.
         qInstallMessageHandler(self.qt_message_handler)
         svg = QSvgRenderer()
-        if svg.load(abs_path):
+        if abs_path is not None and svg.load(abs_path):
             file_type = svg
             qInstallMessageHandler(None)
             return error, file_type
         qInstallMessageHandler(None)
         # SVG didn't work, lets try QPixmap
-        image = QPixmap(abs_path)
+        image = QPixmap(abs_path) if abs_path is not None else QPixmap()
         if not image.isNull():
             file_type = image
             return error, file_type
