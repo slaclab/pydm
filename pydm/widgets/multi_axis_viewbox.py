@@ -42,7 +42,7 @@ class MultiAxisViewBox(ViewBox):
         if axis != ViewBox.YAxis and not fromSignal:
             # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
             self.sigMouseWheelZoomed.emit(self, ev, axis)
-        super(MultiAxisViewBox, self).wheelEvent(ev, axis)
+        super().wheelEvent(ev, axis)
 
     def mouseDragEvent(self, ev, axis=None, fromSignal=False):
         """
@@ -63,7 +63,7 @@ class MultiAxisViewBox(ViewBox):
             self.sigMouseDragged.emit(self, ev, axis)
             if ev.isFinish() and self.state["mouseMode"] == ViewBox.RectMode and axis is None:
                 self.sigMouseDraggedDone.emit()  # Indicates the end of a mouse drag event
-        super(MultiAxisViewBox, self).mouseDragEvent(ev, axis)
+        super().mouseDragEvent(ev, axis)
 
     def keyPressEvent(self, ev):
         """

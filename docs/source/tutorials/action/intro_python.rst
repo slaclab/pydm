@@ -45,7 +45,7 @@ Your display must subclass Display, and implement a few required methods::
   from pydm import Display
   class MyDisplay(Display):
     def __init__(self, parent=None, args=None, macros=None):
-      super(MyDisplay, self).__init__(parent=parent, args=args, macros=macros)
+      super().__init__(parent=parent, args=args, macros=macros)
 
     def ui_filename(self):
       return 'my_display.ui'
@@ -65,7 +65,7 @@ Next, we define our Display subclass, and its initializer::
 
   class MyDisplay(Display):
     def __init__(self, parent=None, args=None):
-      super(MyDisplay, self).__init__(parent=parent)
+      super().__init__(parent=parent)
 
 It is important to remember that you must always call the superclass' initializer
 in your own, and pass it the 'parent' argument from your initializer.  Otherwise,

@@ -84,7 +84,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
         value: str, float or int
             The new value of the channel
         """
-        super(PyDMLineEdit, self).value_changed(new_val)
+        super().value_changed(new_val)
         self.set_display()
 
     def send_value(self):
@@ -153,15 +153,15 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
 
     def setReadOnly(self, readOnly):
         self._user_set_read_only = readOnly
-        super(PyDMLineEdit, self).setReadOnly(True if self._user_set_read_only else not self._write_access)
+        super().setReadOnly(True if self._user_set_read_only else not self._write_access)
 
     def write_access_changed(self, new_write_access):
         """
         Change the PyDMLineEdit to read only if write access is denied
         """
-        super(PyDMLineEdit, self).write_access_changed(new_write_access)
+        super().write_access_changed(new_write_access)
         if not self._user_set_read_only:
-            super(PyDMLineEdit, self).setReadOnly(not new_write_access)
+            super().setReadOnly(not new_write_access)
 
     def unit_changed(self, new_unit):
         """
@@ -171,7 +171,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
         attribute. Receiving a new value for the unit causes the display to
         reset.
         """
-        super(PyDMLineEdit, self).unit_changed(new_unit)
+        super().unit_changed(new_unit)
         self._scale = 1
 
     def create_unit_options(self):
@@ -324,7 +324,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
         """
         if self._display is not None:
             self.setText(self._display)
-        super(PyDMLineEdit, self).focusOutEvent(event)
+        super().focusOutEvent(event)
 
     @staticmethod
     def strtobool(val):

@@ -19,7 +19,7 @@ from pydm.widgets import PyDMEmbeddedDisplay
 
 class AllMotorsDisplay(Display):
     def __init__(self, parent=None, args=[], macros=None):
-        super(AllMotorsDisplay, self).__init__(parent=parent, args=args, macros=None)
+        super().__init__(parent=parent, args=args, macros=macros)
         # Placeholder for data to filter
         self.data = []
         # Reference to the PyDMApplication

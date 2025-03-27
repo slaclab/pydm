@@ -508,7 +508,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             The new value from the channel.
         """
         if new_val is not None and new_val != self.value:
-            super(PyDMEnumButton, self).value_changed(new_val)
+            super().value_changed(new_val)
             btn = self._btn_group.button(new_val)
             if btn:
                 btn.setChecked(True)
@@ -525,7 +525,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             The new list of values
         """
         if new_enum_strings is not None and new_enum_strings != self.enum_strings:
-            super(PyDMEnumButton, self).enum_strings_changed(new_enum_strings)
+            super().enum_strings_changed(new_enum_strings)
             self._has_enums = True
             self.check_enable_state()
             self.rebuild_widgets()

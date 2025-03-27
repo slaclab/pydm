@@ -10,7 +10,7 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
     """
 
     def __init__(self, plot, parent=None):
-        super(PyDMScatterPlotCurvesModel, self).__init__(plot, parent=parent)
+        super().__init__(plot, parent=parent)
         self._column_names = ("Y Channel", "X Channel") + self._column_names
         self._column_names += ("Redraw Mode", "Buffer Size", "Buffer Size Channel")
 
@@ -29,7 +29,7 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
             return curve.getBufferSize()
         elif column_name == "Buffer Size Channel":
             return curve.bufferSizeChannelAddress or ""
-        return super(PyDMScatterPlotCurvesModel, self).get_data(column_name, curve)
+        return super().get_data(column_name, curve)
 
     def set_data(self, column_name, curve, value):
         if column_name == "Y Channel":
@@ -45,7 +45,7 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
                 value = None
             curve.bufferSizeChannelAddress = str(value)
         else:
-            return super(PyDMScatterPlotCurvesModel, self).set_data(column_name=column_name, curve=curve, value=value)
+            return super().set_data(column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, y_address=None, x_address=None, name=None, color=None):
@@ -71,7 +71,7 @@ class ScatterPlotCurveEditorDialog(BasePlotCurveEditorDialog):
     TABLE_MODEL_CLASS = PyDMScatterPlotCurvesModel
 
     def __init__(self, plot, parent=None):
-        super(ScatterPlotCurveEditorDialog, self).__init__(plot, parent)
+        super().__init__(plot, parent)
 
         redraw_mode_delegate = RedrawModeColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Redraw Mode"), redraw_mode_delegate)

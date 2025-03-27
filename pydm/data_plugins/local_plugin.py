@@ -36,7 +36,7 @@ class Connection(PyDMConnection):
         self._lower_limit = None
         self._enum_string = None
 
-        super(Connection, self).__init__(channel, address, protocol, parent)
+        super().__init__(channel, address, protocol, parent)
         self._configuration = {}
         self.add_listener(channel)
         self.send_connection_state(False)
@@ -330,7 +330,7 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(conn)
 
     def add_listener(self, channel):
-        super(Connection, self).add_listener(channel)
+        super().add_listener(channel)
         self._configure_local_plugin(channel)
         # send write access == True to the listeners
         self.send_access_state()

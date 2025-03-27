@@ -82,7 +82,7 @@ def qtplugin_factory(
         __doc__ = "PyDMDesigner Plugin for {}".format(cls.__name__)
 
         def __init__(self):
-            super(Plugin, self).__init__(cls, is_container, group, extensions, icon)
+            super().__init__(cls, is_container, group, extensions, icon)
 
     return Plugin
 

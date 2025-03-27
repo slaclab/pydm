@@ -62,7 +62,7 @@ class FlowLayout(QLayout):
         return self.do_layout(QRect(0, 0, width, 0), True)
 
     def setGeometry(self, rect):
-        super(FlowLayout, self).setGeometry(rect)
+        super().setGeometry(rect)
         self.do_layout(rect, False)
 
     def sizeHint(self):

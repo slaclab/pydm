@@ -30,7 +30,7 @@ An example:
     class MyDisplay(Display):
 
         def __init__(self, parent=None, args=None, macros=None):
-            super(MyDisplay, self).__init__(parent=parent, args=args, macros=macros)
+            super().__init__(parent=parent, args=args, macros=macros)
 
         def file_menu_items(self):
             return {"save": self.save_function, "load": (self.load_function, "Ctrl+L")}

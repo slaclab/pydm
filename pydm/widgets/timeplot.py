@@ -115,12 +115,12 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.channel = None
         self.units = ""
 
-        super(TimePlotCurveItem, self).__init__(**kws)
+        super().__init__(**kws)
         self.address = channel_address
 
     def to_dict(self):
         dic_ = OrderedDict([("channel", self.address), ("plot_style", self.plot_style)])
-        dic_.update(super(TimePlotCurveItem, self).to_dict())
+        dic_.update(super().to_dict())
         return dic_
 
     @property
@@ -490,9 +490,7 @@ class PyDMTimePlot(BasePlot):
             self.starting_epoch_time = time.time()
             self._bottom_axis = AxisItem("bottom")
 
-        super(PyDMTimePlot, self).__init__(
-            parent=parent, background=background, axisItems={"bottom": self._bottom_axis}
-        )
+        super().__init__(parent=parent, background=background, axisItems={"bottom": self._bottom_axis})
 
         # Removing the downsampling while PR 763 is not merged at pyqtgraph
         # Reference: https://github.com/pyqtgraph/pyqtgraph/pull/763
@@ -529,7 +527,7 @@ class PyDMTimePlot(BasePlot):
         """Adds attribute specific to TimePlot to add onto BasePlot's to_dict.
         This helps to recreate the Plot Config if we import a save file of it"""
         dic_ = OrderedDict([("refreshInterval", self.auto_scroll_timer.interval() / 1000)])
-        dic_.update(super(PyDMTimePlot, self).to_dict())
+        dic_.update(super().to_dict())
         return dic_
 
     def initialize_for_designer(self):
@@ -722,7 +720,7 @@ class PyDMTimePlot(BasePlot):
         """
         Remove all curves from the graph.
         """
-        super(PyDMTimePlot, self).clear()
+        super().clear()
 
     def getCurves(self):
         """
@@ -1071,14 +1069,14 @@ class PyDMTimePlot(BasePlot):
     def getAutoRangeX(self):
         if self._plot_by_timestamps:
             return False
-        return super(PyDMTimePlot, self).getAutoRangeX()
+        return super().getAutoRangeX()
 
     def setAutoRangeX(self, value):
         if self._plot_by_timestamps:
             self._auto_range_x = False
             self.plotItem.enableAutoRange(ViewBox.XAxis, enable=self._auto_range_x)
         else:
-            super(PyDMTimePlot, self).setAutoRangeX(value)
+            super().setAutoRangeX(value)
 
     def channels(self):
         return [curve.channel for curve in self._curves]
@@ -1143,7 +1141,7 @@ class PyDMTimePlot(BasePlot):
         horizontal_movable : bool
             True if the user can move the horizontal line; False if not
         """
-        super(PyDMTimePlot, self).enableCrosshair(
+        super().enableCrosshair(
             is_enabled,
             starting_x_pos,
             starting_y_pos,
@@ -1160,7 +1158,7 @@ class TimeAxisItem(AxisItem):
     """
 
     def __init__(self, *args, **kwargs):
-        super(TimeAxisItem, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.enableAutoSIPrefix(False)
 
     def tickStrings(self, values, scale, spacing):

@@ -20,7 +20,7 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
     """
 
     def __init__(self, parent=None, timeout=60, *args, **kwargs):
-        super(PyDMTerminator, self).__init__(parent=parent, *args, **kwargs)
+        super().__init__(parent=parent, *args, **kwargs)
         self.setText("")
         self._hook_setup = False
         self._timeout = 60
@@ -85,7 +85,7 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
     def eventFilter(self, obj, ev):
         if ev.type() in (QEvent.MouseMove, QEvent.KeyPress, QEvent.KeyRelease):
             self.reset()
-        return super(PyDMTerminator, self).eventFilter(obj, ev)
+        return super().eventFilter(obj, ev)
 
     def reset(self):
         if self._time_rem_ms != self._timeout * 1000:

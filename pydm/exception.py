@@ -36,7 +36,7 @@ class ExceptionDispatcher(QtCore.QThread):
     def __init__(self, *args, **kwargs):
         if self.__initialized:
             return
-        super(ExceptionDispatcher, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.__initialized = True
         self.app = QtWidgets.QApplication.instance()
         self.app.aboutToQuit.connect(self.requestInterruption)
@@ -100,7 +100,7 @@ class DefaultExceptionNotifier(QtCore.QObject):
     def __init__(self, *args, **kwargs):
         if self.__initialized:
             return
-        super(DefaultExceptionNotifier, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.__initialized = True
         ExceptionDispatcher().newException.connect(self.receiveException)
 

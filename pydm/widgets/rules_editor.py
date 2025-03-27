@@ -20,7 +20,7 @@ class RulesEditor(QtWidgets.QDialog):
     """
 
     def __init__(self, widget, parent=None):
-        super(RulesEditor, self).__init__(parent)
+        super().__init__(parent)
 
         self.widget = widget
         self.lst_rule_item = None
