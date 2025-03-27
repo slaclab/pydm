@@ -2,9 +2,8 @@ import pytest
 import logging
 import numpy as np
 from collections import OrderedDict
-from pyqtgraph import AxisItem, BarGraphItem, InfiniteLine
+from pyqtgraph import AxisItem, BarGraphItem
 from unittest import mock
-from unittest.mock import MagicMock
 from ...widgets.channel import PyDMChannel
 from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
 from ...utilities import remove_protocol
@@ -338,4 +337,3 @@ def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
 
     # After a call to redraw, the plot returns to this state until more data arrives
     assert not time_plot._needs_redraw
-

@@ -1,6 +1,6 @@
 from pyqtgraph import BarGraphItem
 from qtpy.QtGui import QColor, QCursor
-from qtpy.QtCore import Slot, Property, QPointF
+from qtpy.QtCore import Slot, Property
 import numpy as np
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
@@ -501,12 +501,12 @@ class PyDMWaveformPlot(BasePlot):
         self._needs_redraw = False
 
         if self.crosshair:
-            global_pos = QCursor.pos()             
-            local_pos = self.mapFromGlobal(global_pos)  
-            scene_pos = self.mapToScene(local_pos)  
+            global_pos = QCursor.pos()
+            local_pos = self.mapFromGlobal(global_pos)
+            scene_pos = self.mapToScene(local_pos)
 
             if self.plotItem.sceneBoundingRect().contains(scene_pos):
-                mapped_point = self.plotItem.vb.mapSceneToView(scene_pos)  
+                mapped_point = self.plotItem.vb.mapSceneToView(scene_pos)
                 self.vertical_crosshair_line.setPos(mapped_point.x())
                 self.horizontal_crosshair_line.setPos(mapped_point.y())
                 self.crosshair_position_updated.emit(scene_pos.x(), scene_pos.y())

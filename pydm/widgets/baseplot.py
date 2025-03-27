@@ -1465,9 +1465,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
         This method is called when a mouse move event occurs. The event may be either a tuple
         (position, event) or a QMouseEvent.
-        
-        Capture the scene pos from the mouse event and emits it as a signal. THe method also updates the positions of the vertical and horizontal
-        crosshair lines if their positions have changed. 
+
+        Capture the scene pos from the mouse event and emits it as a signal.
+        The method also updates the positions of the vertical and horizontal
+        crosshair lines if their positions have changed.
 
         Note:
         If a PyDMDisplay object is available, that display will also have the x- and y- values to update on the UI.
@@ -1490,7 +1491,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if self.sceneBoundingRect().contains(scene_pos):
             primary_vb = self.getViewBox()
             mouse_point_in_primary = primary_vb.mapSceneToView(scene_pos)
-            
+
             if (
                 self.vertical_crosshair_line.pos().x() != mouse_point_in_primary.x()
                 or self.horizontal_crosshair_line.pos().y() != mouse_point_in_primary.y()
@@ -1499,7 +1500,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                 self.horizontal_crosshair_line.setPos(mouse_point_in_primary.y())
 
             self.crosshair_position_updated.emit(scene_pos.x(), scene_pos.y())
-
 
     def enableCrosshair(
         self,
@@ -1633,7 +1633,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.textItems.clear()
             self.init_label = True
 
-
     @Slot(float, float)
     def updateLabel(self, scene_x: float, scene_y: float) -> None:
         """
@@ -1668,7 +1667,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                 curve_vb = self.getViewBox()
 
             curve_vb.addItem(label)
-            
+
             mouse_point_in_curve_vb = curve_vb.mapSceneToView(QPointF(scene_x, scene_y))
             x_val = mouse_point_in_curve_vb.x()
 
@@ -1697,7 +1696,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             else:
                 label.show()
 
-            x_str = f"{real_x:.2f}"  
+            x_str = f"{real_x:.2f}"
             y_str = f"{real_y:.2f}"
             label.setText(f"x={x_str}\ny={y_str}")
             label.setPos(x_val, real_y)
@@ -1705,7 +1704,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def getFormattedX(self, real_x: float) -> str:
         """
         Return a string representation for `real_x`.
-        
+
         The default is numeric, but child classes (e.g., time plots) can override this.
         """
         return f"{real_x:.2f}"

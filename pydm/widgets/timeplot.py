@@ -5,7 +5,7 @@ from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor, QCursor
-from qtpy.QtCore import Signal, Slot, Property, QTimer, QPointF
+from qtpy.QtCore import Signal, Slot, Property, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
@@ -26,6 +26,7 @@ DEFAULT_UPDATE_INTERVAL = 1000  # Plot update rate for fixed rate mode in millis
 
 DEFAULT_SEVERITY_RAW = -1
 DEFAULT_SEVERITY_STRING = "N/A"
+
 
 class updateMode(object):
     """updateMode as new type for plot update"""
@@ -726,7 +727,7 @@ class PyDMTimePlot(BasePlot):
             self.plot_redrawn_signal.emit(curve)
 
         if self.crosshair:
-            global_pos = QCursor.pos()              # Screen coords
+            global_pos = QCursor.pos()  # Screen coords
             local_pos = self.mapFromGlobal(global_pos)  # Widget coords
             scene_pos = self.mapToScene(local_pos)  # Scene coords
 
@@ -1210,8 +1211,8 @@ class PyDMTimePlot(BasePlot):
         super().updateLabel(x_val, y_val)
 
         for curve, label in self.textItems.items():
-            if getattr(curve, 'severity_raw', -1) != -1:
-                old_text = label.toPlainText() 
+            if getattr(curve, "severity_raw", -1) != -1:
+                old_text = label.toPlainText()
                 label.setText(old_text + "\n" + str(curve.severity))
 
     def getFormattedX(self, real_x: float) -> str:
@@ -1219,6 +1220,7 @@ class PyDMTimePlot(BasePlot):
         For time plots, interpret `real_x` as a UNIX timestamp and return HH:MM:SS.
         """
         return datetime.fromtimestamp(real_x).strftime("%H:%M:%S")
+
 
 class TimeAxisItem(AxisItem):
     """
