@@ -2,6 +2,8 @@ import logging
 
 import pydm.data_plugins
 
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
 logger = logging.getLogger(__name__)
 
 
@@ -185,7 +187,13 @@ class PyDMChannel(object):
 
             value_signal_matched = self.value_signal is None and other.value_signal is None
             if self.value_signal and other.value_signal:
-                value_signal_matched = self.value_signal.signal == other.value_signal.signal
+                if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+                    value_signal_matched = self.value_signal.signal == other.value_signal.signal
+                else:
+                    # PySide6 changes how we do signal comparison, if we try to use .signal it throws error:
+                    # "AttributeError: 'PySide6.QtCore.SignalInstance' object has no attribute 'signal'"
+                    # Instead we can do 'signalA is signalB' or 'signalA == SignalB' to compare.
+                    value_signal_matched = self.value_signal == other.value_signal
 
             return (
                 address_matched
