@@ -365,6 +365,10 @@ class PyDMScatterPlot(BasePlot):
         # If we are in Qt Designer, don't update the plot continuously.
         # This function gets called by PyDMTimePlot's designer plugin.
         pass
+    
+    def updateLabel(self, x_val: float, y_val: float) -> None:
+        # Do nothing — disabling labels for this class. method would need to be implemented if labels are desired. 
+        pass
 
     def addChannel(
         self,

@@ -9,6 +9,7 @@ from qtpy.QtCore import Signal, Slot, Property, QTimer, QPointF
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from datetime import datetime
 
 import logging
 
@@ -23,6 +24,8 @@ DEFAULT_Y_MIN = 0
 DEFAULT_TIME_SPAN = 5.0
 DEFAULT_UPDATE_INTERVAL = 1000  # Plot update rate for fixed rate mode in milliseconds
 
+DEFAULT_SEVERITY_RAW = -1
+DEFAULT_SEVERITY_STRING = "N/A"
 
 class updateMode(object):
     """updateMode as new type for plot update"""
@@ -116,8 +119,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.channel = None
         self.units = ""
 
-        self.severity_raw = -1
-        self.severity = "N/A"
+        self.severity_raw = DEFAULT_SEVERITY_RAW
+        self.severity = DEFAULT_SEVERITY_STRING
 
         super(TimePlotCurveItem, self).__init__(**kws)
         self.address = channel_address
@@ -228,7 +231,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         except (ValueError, TypeError):
             severity_int = -1
 
-        self.severity = severity_map.get(severity_int, "N/A")
+        self.severity = severity_map.get(severity_int, DEFAULT_SEVERITY_STRING)
         return self.severity
 
     @Slot(bool)
@@ -723,15 +726,15 @@ class PyDMTimePlot(BasePlot):
             self.plot_redrawn_signal.emit(curve)
 
         if self.crosshair:
-            global_pos = QCursor.pos()
-            local_pos = self.mapFromGlobal(global_pos)
-            mouse_pos = QPointF(local_pos)
+            global_pos = QCursor.pos()              # Screen coords
+            local_pos = self.mapFromGlobal(global_pos)  # Widget coords
+            scene_pos = self.mapToScene(local_pos)  # Scene coords
 
-            if self.sceneBoundingRect().contains(mouse_pos):
-                mapped_point = self.getViewBox().mapSceneToView(mouse_pos)
+            if self.plotItem.sceneBoundingRect().contains(scene_pos):
+                mapped_point = self.plotItem.vb.mapSceneToView(scene_pos)  # Data coords
                 self.vertical_crosshair_line.setPos(mapped_point.x())
                 self.horizontal_crosshair_line.setPos(mapped_point.y())
-                self.crosshair_position_updated.emit(mapped_point.x(), mapped_point.y())
+                self.crosshair_position_updated.emit(scene_pos.x(), scene_pos.y())
 
         self._needs_redraw = False
 
@@ -1202,6 +1205,20 @@ class PyDMTimePlot(BasePlot):
             horizontal_movable,
         )
 
+    def updateLabel(self, x_val: float, y_val: float) -> None:
+        # First, let the parent do all the general updating and label placement:
+        super().updateLabel(x_val, y_val)
+
+        for curve, label in self.textItems.items():
+            if getattr(curve, 'severity_raw', -1) != -1:
+                old_text = label.toPlainText() 
+                label.setText(old_text + "\n" + str(curve.severity))
+
+    def getFormattedX(self, real_x: float) -> str:
+        """
+        For time plots, interpret `real_x` as a UNIX timestamp and return HH:MM:SS.
+        """
+        return datetime.fromtimestamp(real_x).strftime("%H:%M:%S")
 
 class TimeAxisItem(AxisItem):
     """

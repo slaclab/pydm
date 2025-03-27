@@ -23,7 +23,6 @@ from collections import OrderedDict
 from typing import Dict, List, Optional, Union, Any
 from .base import PyDMPrimitiveWidget, widget_destroyed
 from .multi_axis_plot import MultiAxisPlot
-from datetime import datetime
 
 
 class NoDataError(Exception):
@@ -1465,10 +1464,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         Handle crosshair updates when the mouse moves.
 
         This method is called when a mouse move event occurs. The event may be either a tuple
-        (position, event) or a QMouseEvent. The method extracts the mouse position in scene coordinates,
-        maps it to the view coordinates, and then updates the positions of the vertical and horizontal
-        crosshair lines if their positions have changed. Finally, it emits a signal with the new crosshair
-        coordinates.
+        (position, event) or a QMouseEvent.
+        
+        Capture the scene pos from the mouse event and emits it as a signal. THe method also updates the positions of the vertical and horizontal
+        crosshair lines if their positions have changed. 
 
         Note:
         If a PyDMDisplay object is available, that display will also have the x- and y- values to update on the UI.
@@ -1484,20 +1483,23 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         None
         """
         if isinstance(evt, tuple):
-            pos = evt[0]
+            scene_pos = evt[0]
         else:
-            pos = evt.posF()
-        if self.sceneBoundingRect().contains(pos):
-            mouse_point = self.getViewBox().mapSceneToView(pos)
+            scene_pos = evt.posF()
 
+        if self.sceneBoundingRect().contains(scene_pos):
+            primary_vb = self.getViewBox()
+            mouse_point_in_primary = primary_vb.mapSceneToView(scene_pos)
+            
             if (
-                self.vertical_crosshair_line.pos().x() != mouse_point.x()
-                or self.horizontal_crosshair_line.pos().y() != mouse_point.y()
+                self.vertical_crosshair_line.pos().x() != mouse_point_in_primary.x()
+                or self.horizontal_crosshair_line.pos().y() != mouse_point_in_primary.y()
             ):
-                self.vertical_crosshair_line.setPos(mouse_point.x())
-                self.horizontal_crosshair_line.setPos(mouse_point.y())
+                self.vertical_crosshair_line.setPos(mouse_point_in_primary.x())
+                self.horizontal_crosshair_line.setPos(mouse_point_in_primary.y())
 
-                self.crosshair_position_updated.emit(mouse_point.x(), mouse_point.y())
+            self.crosshair_position_updated.emit(scene_pos.x(), scene_pos.y())
+
 
     def enableCrosshair(
         self,
@@ -1631,72 +1633,79 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.textItems.clear()
             self.init_label = True
 
+
     @Slot(float, float)
-    def updateLabel(self, x_val: float, y_val: float) -> None:
+    def updateLabel(self, scene_x: float, scene_y: float) -> None:
         """
-        Update the label for each curve based on the given x-coordinate.
+        Update the label for each curve based on the scene coordinates emitted by mouseMoved.
+        Each curve uses its own ViewBox (if it has a custom y_axis_name).
 
         For each curve stored in the `textItems` dictionary, this method retrieves the curve's
         data (x and y arrays) and finds the data point with an x-value immediately to the left
         of `x_val`. If the x-coordinate is within the range of the curve's data and the data point
         is finite, the corresponding label is updated to display the x and y values and is moved
-        to that position. If `x_val` is not finite or is outside the data range, the label text is
-        set to "No data!".
+        to that position. If `x_val` is not finite or is outside the data range, the label hidden.
 
         Parameters
         ----------
-        x_val : float
-            The x-coordinate (in data space) used to determine which data point to label.
+        scene_x : float
+            The x-coordinate (in scene coordinate) used to determine which data point to label.
+        scene_y : float
+            the y-coordinate (in scene coordinate) used to determine which data point to label.
 
         Returns
         -------
         None
         """
-        if not np.isfinite(x_val):
-            return
-
         if self.init_label:
             self.initializeCurveLabels()
             self.init_label = False
 
         for curve, label in self.textItems.items():
-            xData, yData = curve.getData()
-            if xData is None or yData is None or len(xData) == 0:
-                label.setText("No data!")
-                continue
-
-            if x_val < xData[0] or x_val > xData[-1]:
-                label.setText("No data!")
-                continue
-
-            idx = np.searchsorted(xData, x_val, side="right") - 1
-            if idx < 0:
-                idx = 0
-            if idx >= len(yData):
-                idx = len(yData) - 1
-
-            real_x = xData[idx]
-            real_y = yData[idx]
-
-            if not (np.isfinite(real_x) and np.isfinite(real_y)):
-                continue
-
             if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.plotItem.axes:
                 curve_vb = self.plotItem.getViewBoxForAxis(curve.y_axis_name)
             else:
                 curve_vb = self.getViewBox()
 
             curve_vb.addItem(label)
+            
+            mouse_point_in_curve_vb = curve_vb.mapSceneToView(QPointF(scene_x, scene_y))
+            x_val = mouse_point_in_curve_vb.x()
 
-            time_str = datetime.fromtimestamp(real_x).strftime("%H:%M:%S")
+            xData, yData = curve.getData()
+            if (
+                xData is None
+                or yData is None
+                or len(xData) == 0
+                or not np.isfinite(x_val)
+                or x_val < xData[0]
+                or x_val > xData[-1]
+            ):
+                label.hide()
+                continue
 
-            if curve.severity_raw != -1:
-                label.setText(f"x={time_str}\ny={real_y:.2f}" + "\n" + str(curve.severity))
+            label.show()
+            idx = np.searchsorted(xData, x_val, side="right") - 1
+            idx = max(0, min(idx, len(yData) - 1))
+
+            real_x = xData[idx]
+            real_y = yData[idx]
+
+            if not (np.isfinite(real_x) and np.isfinite(real_y)):
+                label.hide()
+                continue
             else:
-                label.setText(f"x={time_str}\ny={real_y:.2f}")
+                label.show()
 
-            data_point = QPointF(x_val, y_val)
-            primary_vb = self.getViewBox()
-            scene_point = primary_vb.mapViewToScene(data_point)
-            label_point = curve_vb.mapSceneToView(scene_point)
-            label.setPos(label_point.x(), real_y)
+            x_str = f"{real_x:.2f}"  
+            y_str = f"{real_y:.2f}"
+            label.setText(f"x={x_str}\ny={y_str}")
+            label.setPos(x_val, real_y)
+
+    def getFormattedX(self, real_x: float) -> str:
+        """
+        Return a string representation for `real_x`.
+        
+        The default is numeric, but child classes (e.g., time plots) can override this.
+        """
+        return f"{real_x:.2f}"

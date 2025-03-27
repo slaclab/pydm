@@ -285,6 +285,10 @@ class PyDMEventPlot(BasePlot):
         # This function gets called by PyDMTimePlot's designer plugin.
         pass
 
+    def updateLabel(self, x_val: float, y_val: float) -> None:
+        # Do nothing — disabling labels for this class. method would need to be implemented if labels are desired. 
+        pass
+
     def addChannel(
         self,
         channel=None,
