@@ -51,7 +51,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installing-pydm-and-prerequisites-with-anaconda">Installing PyDM and Prerequisites with Anaconda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-pydm-and-prerequisites-with-conda">Installing PyDM and Prerequisites with Conda</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-manually-without-anaconda">Installing Manually, Without Anaconda</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#qt-5">Qt 5</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sip">SIP</a></li>
@@ -135,12 +135,12 @@
   <section id="installation">
 <span id="install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
 <p>There are a few different ways to install PyDM.  The easiest way to install it
-from scratch is probably using the Anaconda system.  If you have an existing
+from scratch is probably using the Conda system. We recommended using Conda from <cite>Miniforge &lt;https://conda-forge.org/download/&gt;</cite>. If you have an existing
 python environment, and want to install PyDM for use with that, you can do that
 with pip.</p>
 <p>Please note, this guide is written with Unix in mind, so there are probably some differences when installing on Windows.</p>
-<section id="installing-pydm-and-prerequisites-with-anaconda">
-<h2>Installing PyDM and Prerequisites with Anaconda<a class="headerlink" href="#installing-pydm-and-prerequisites-with-anaconda" title="Permalink to this heading"></a></h2>
+<section id="installing-pydm-and-prerequisites-with-conda">
+<h2>Installing PyDM and Prerequisites with Conda<a class="headerlink" href="#installing-pydm-and-prerequisites-with-conda" title="Permalink to this heading"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>There is currently no PyQt 5.15+ build available on conda or PyPI that has
@@ -149,7 +149,7 @@ designer support for python plugins. PyDM widgets will not load in these designe
 until this is resolved.</p>
 <p>$ conda create -n pydm-environment python=3.10 pyqt=5.12.3 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge</p>
 </div>
-<p>After installing Anaconda (see <a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>), create a new
+<p>After installing Miniforge (see <a class="reference external" href="https://conda-forge.org/download/">https://conda-forge.org/download/</a>), create a new
 environment for PyDM:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create -n pydm-environment python=3.10 pyqt=5 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
 $ source activate pydm-environment
