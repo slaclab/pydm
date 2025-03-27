@@ -204,22 +204,13 @@ class Connection(PyDMConnection):
             self.send_connection_state(conn=False)
         # If the channel is used for writing to PVs, hook it up to the 'put' methods.
         if channel.value_signal is not None:
-            try:
-                channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
-            try:
-                channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
-            try:
-                channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
-            try:
-                channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
+            for signal_type in (str, int, float, np.ndarray):
+                try:
+                    channel.value_signal[signal_type].connect(self.put_value, Qt.QueuedConnection)
+                # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
+                # If signal type exists but doesn't match the slot, TypeError gets thrown.
+                except (KeyError, IndexError, TypeError):
+                    pass
 
     def close(self):
         self.pv.disconnect()
