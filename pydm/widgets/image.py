@@ -1,5 +1,5 @@
 from qtpy.QtWidgets import QActionGroup
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS, QThread
+from qtpy.QtCore import Signal, Slot, Property, QTimer, QThread
 from pyqtgraph import ImageView, PlotItem
 from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
@@ -8,6 +8,7 @@ import logging
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +18,17 @@ class ReadingOrder(object):
 
     Fortranlike = 0
     Clike = 1
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class ReadingOrder(Enum):  # noqa F811
+        Fortranlike = 0
+        Clike = 1
 
 
 class DimensionOrder(object):
@@ -39,6 +51,17 @@ class DimensionOrder(object):
 
     HeightFirst = 0
     WidthFirst = 1
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class DimensionOrder(Enum):  # noqa F811
+        HeightFirst = 0
+        WidthFirst = 1
 
 
 class ImageUpdateThread(QThread):
@@ -126,9 +149,12 @@ class PyDMImageView(ImageView, PyDMWidget):
     ReadingOrder = ReadingOrder
     DimensionOrder = DimensionOrder
 
-    Q_ENUMS(ReadingOrder)
-    Q_ENUMS(DimensionOrder)
-    Q_ENUMS(PyDMColorMap)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(ReadingOrder)
+        Q_ENUM(DimensionOrder)
+        Q_ENUM(PyDMColorMap)
 
     # Make enum definitions known to this class
     Fortranlike = ReadingOrder.Fortranlike
@@ -179,7 +205,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         self.showAxes = self._show_axes
         self.imageItem.setOpts(axisOrder="row-major")
 
-        # Hide some itens of the widget.
+        # Hide some items of the widget.
         self.ui.histogram.hide()
         self.getImageItem().sigImageChanged.disconnect(self.ui.histogram.imageChanged)
         self.ui.roiBtn.hide()

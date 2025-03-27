@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 _relatedDisplayRuleProperties = {"Text": ["setText", str], "Filenames": ["filenames", list]}
 
 
-class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedDisplayRuleProperties):
+class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
     """
     A QPushButton capable of opening a new Display in the same or a new window.
 
@@ -34,6 +34,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
         The channel to be used by the widget
     """
 
+    new_properties = _relatedDisplayRuleProperties
     # Constants for determining where to open the display.
     EXISTING_WINDOW = 0
     NEW_WINDOW = 1
@@ -490,7 +491,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget, new_properties=_relatedD
 
     def validate_password(self) -> bool:
         """
-        If the widget is ```passwordProtected```, this method will propmt
+        If the widget is ```passwordProtected```, this method will prompt
         the user for the correct password.
 
         Returns

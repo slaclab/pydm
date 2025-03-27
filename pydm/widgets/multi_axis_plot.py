@@ -195,8 +195,8 @@ class MultiAxisPlot(PlotItem):
             currentView.removeItem(plotDataItem)
             plotDataItem.forgetViewBox()
 
-        if axisToLink.logMode:
-            plotDataItem.setLogMode(False, True)
+        # Match the curve's logMode to its new axis' logMode
+        plotDataItem.setLogMode(False, axisToLink.logMode)
 
         axisToLink.linkedView().addItem(plotDataItem)
         self.dataItems.append(plotDataItem)

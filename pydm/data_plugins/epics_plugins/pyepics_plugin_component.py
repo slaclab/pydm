@@ -131,7 +131,7 @@ class Connection(PyDMConnection):
         lower_warning_limit=None,
         timestamp=None,
         *args,
-        **kws
+        **kws,
     ):
         """Callback invoked when there is a change any of these variables. For a full description see:
         https://cars9.uchicago.edu/software/python/pyepics3/pv.html#user-supplied-callback-functions
@@ -247,7 +247,7 @@ class Connection(PyDMConnection):
             self.pv.connection_callbacks = []
             self.pv.disconnect()
         except KeyError:
-            # The PV was no longer availbale.
+            # The PV was no longer available.
             pass
 
 

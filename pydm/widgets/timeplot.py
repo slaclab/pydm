@@ -5,10 +5,10 @@ from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Q_ENUMS
+from qtpy.QtCore import Signal, Slot, Property, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
-from ..utilities import remove_protocol
+from ..utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 import logging
 
@@ -29,6 +29,17 @@ class updateMode(object):
 
     OnValueChange = 1
     AtFixedRate = 2
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import Enum
+
+    @QEnum
+    # overrides prev enum def
+    class updateMode(Enum):  # noqa F811
+        OnValueChange = 1
+        AtFixedRate = 2
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
@@ -437,7 +448,10 @@ class PyDMTimePlot(BasePlot):
         to either a TimeAxisItem if plot_by_timestamps is true, or a regular AxisItem otherwise
     """
 
-    Q_ENUMS(updateMode)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(updateMode)
     updateMode = updateMode
 
     # Make enum definitions known to this class
@@ -539,7 +553,7 @@ class PyDMTimePlot(BasePlot):
         thresholdColor=None,
         yAxisName=None,
         useArchiveData=False,
-        **kwargs
+        **kwargs,
     ):
         """
         Adds a new curve to the current plot
@@ -600,7 +614,7 @@ class PyDMTimePlot(BasePlot):
             color=color,
             yAxisName=yAxisName,
             useArchiveData=useArchiveData,
-            **plot_opts
+            **plot_opts,
         )
         new_curve.setUpdatesAsynchronously(self.updateMode)
         new_curve.setBufferSize(self._bufferSize)

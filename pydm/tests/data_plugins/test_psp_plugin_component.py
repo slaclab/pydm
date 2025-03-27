@@ -1,3 +1,4 @@
+import time
 import functools
 import pydm.data_plugins.epics_plugins.psp_plugin_component
 from pydm.data_plugins.epics_plugins.psp_plugin_component import Connection
@@ -18,6 +19,11 @@ class MockPV:
     @staticmethod
     def severity(self):
         return None
+
+    def timestamp(self):
+        secs = time.time()
+        nanos = time.time_ns()
+        return secs, nanos
 
 
 def test_update_ctrl_vars(monkeypatch: MonkeyPatch, signals: ConnectionSignals):

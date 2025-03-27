@@ -108,7 +108,7 @@ def widget_destroyed(channels, widget):
 def refresh_style(widget):
     """
     Method that traverse the widget tree starting at `widget` and refresh the
-    style for this widget and its childs.
+    style for this widget and its children.
 
     Parameters
     ----------
@@ -154,7 +154,7 @@ class PyDMPrimitiveWidget(object):
             # and not at the Designer
             self.installEventFilter(self)
 
-    def __init_subclass__(cls, new_properties={}):
+    def __init_subclass__(cls):
         """
         Adds or redefines rule-triggered property configuration for derivative
         classes.
@@ -171,9 +171,9 @@ class PyDMPrimitiveWidget(object):
             rule dispatch, and a type matching the one that we expect to
             receive from the PV value.
         """
-        if new_properties:
+        if hasattr(cls, "new_properties") and isinstance(cls.new_properties, dict):
             cls.RULE_PROPERTIES = cls.RULE_PROPERTIES.copy()
-            cls.RULE_PROPERTIES.update(new_properties)
+            cls.RULE_PROPERTIES.update(cls.new_properties)
 
     @staticmethod
     def get_designer_icon():
@@ -401,7 +401,7 @@ class TextFormatter(object):
 
         Parameters
         ----------
-        new_precison : int or float
+        new_precision : int or float
             The new precision value
         """
         if self.precisionFromPV and new_precision != self._prec:
@@ -512,7 +512,7 @@ class TextFormatter(object):
         with the value. If using an EPICS channel, this will automatically
         be linked to the EGU field of the PV.
 
-        Paramters
+        Parameters
         ---------
         show_units : bool
             True means that the unit will be appended to the output value
@@ -540,7 +540,7 @@ class TextFormatter(object):
 
         Returns
         -------
-        precison_from_pv : bool
+        precision_from_pv : bool
             True means that the widget will use the precision information
             from the Channel if available.
         """
@@ -588,7 +588,7 @@ class TextFormatter(object):
 _positionRuleProperties = {"Position - X": ["setX", int], "Position - Y": ["setY", int]}
 
 
-class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
+class PyDMWidget(PyDMPrimitiveWidget):
     """
     PyDM base class for Read-Only widgets.
     This class implements all the functions of connection, alarm
@@ -600,6 +600,9 @@ class PyDMWidget(PyDMPrimitiveWidget, new_properties=_positionRuleProperties):
         The channel to be used by the widget.
 
     """
+
+    # this is same for all instances of the class, so don't define with '.self'
+    new_properties = _positionRuleProperties
 
     # Alarm types
     ALARM_NONE = 0
@@ -1363,10 +1366,10 @@ class PyDMWritableWidget(PyDMWidget):
         Emitted when the user changes the value
     """
 
-    __Signals__ = "send_value_signal([int], [float], [str], [bool], [object])"
+    __Signals__ = "send_value_signal((int, ), (float, ), (str, ), (bool, ), (object, ))"
 
     # Emitted when the user changes the value.
-    send_value_signal = Signal([int], [float], [str], [bool], [object])
+    send_value_signal = Signal((int,), (float,), (str,), (bool,), (object,))
 
     def __init__(self, init_channel=None):
         self._write_access = False

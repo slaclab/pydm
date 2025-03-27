@@ -5,11 +5,12 @@ import shlex
 import logging
 from functools import partial
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
-from qtpy.QtCore import Property, Q_ENUMS, Qt
+from qtpy.QtCore import Property, Qt
 from qtpy.QtGui import QFocusEvent
 from .. import utilities
 from .base import PyDMWritableWidget, TextFormatter, str_types
 from .display_format import DisplayFormat, parse_value_for_display
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +30,10 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
         The channel to be used by the widget.
     """
 
-    Q_ENUMS(DisplayFormat)
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(DisplayFormat)
     DisplayFormat = DisplayFormat
 
     # Make enum definitions known to this class

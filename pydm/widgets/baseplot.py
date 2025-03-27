@@ -1,6 +1,7 @@
 import functools
 import json
 import warnings
+import weakref
 from abc import abstractmethod
 from qtpy.QtGui import QColor, QBrush, QMouseEvent
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect
@@ -100,6 +101,12 @@ class BasePlotCurveItem(PlotDataItem):
         if lineWidth is not None:
             self._pen.setWidth(lineWidth)
         if lineStyle is not None:
+            # The type hint for 'Optional' for lineStyle arg, which has allowed for some screens to
+            # pass int value for lineStyle. pyqt5 doesn't mind the int, but pyside6 complains so lets
+            # convert any ints here to the proper Qt.PenStyle enums. The int values get converted to enums
+            # according to: https://doc.qt.io/qt-6/qt.html#PenStyle-enum
+            if isinstance(lineStyle, int):
+                lineStyle = Qt.PenStyle(lineStyle)
             self._pen.setStyle(lineStyle)
         kws["pen"] = self._pen
         super(BasePlotCurveItem, self).__init__(**kws)
@@ -120,7 +127,7 @@ class BasePlotCurveItem(PlotDataItem):
         self.bar_graph_item = None
 
         if hasattr(self, "channels"):
-            self.destroyed.connect(functools.partial(widget_destroyed, self.channels))
+            self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
     @property
     def color_string(self) -> str:
@@ -458,7 +465,7 @@ class BasePlotAxisItem(AxisItem):
         Extra arguments for CSS style options for this axis
     """
 
-    log_mode_updated = Signal(str, bool)
+    log_mode_updated = Signal()
     sigXRangeChanged = Signal(object, object)
     sigYRangeChanged = Signal(object, object)
     axis_orientations = OrderedDict([("Left", "left"), ("Right", "right")])
@@ -638,7 +645,9 @@ class BasePlotAxisItem(AxisItem):
         """
         self._log_mode = log_mode
         self.setLogMode(x=False, y=log_mode)
-        self.log_mode_updated.emit(self.name, log_mode)
+        for curve in self._curves:
+            curve.setLogMode(xState=False, yState=log_mode)
+        self.log_mode_updated.emit()
 
     def setHidden(self, shouldHide: bool):
         """Set an axis to hide/show and do the same for all of its connected curves"""
@@ -898,7 +907,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if plot_data_item is not None:
             plot_data_item.setLogMode(False, log_mode)
         axis.setLogMode(log_mode)
-        axis.log_mode_updated.connect(self.setAxisLogMode)
+        axis.log_mode_updated.connect(self.plotItem.recomputeAverages)
         self._axes.append(axis)
         # If the x axis is just timestamps, we don't want autorange on the x axis
         setXLink = hasattr(self, "_plot_by_timestamps") and self._plot_by_timestamps
@@ -980,13 +989,6 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     @Slot()
     def redrawPlot(self) -> None:
         pass
-
-    @Slot(str, bool)
-    def setAxisLogMode(self, axis_name: str, log_mode: bool) -> None:
-        axis_curves = [c for c in self._curves if c.y_axis_name == axis_name]
-        for curve in axis_curves:
-            curve.setLogMode(False, log_mode)
-        self.plotItem.recomputeAverages()
 
     def getShowXGrid(self) -> bool:
         """True if showing x grid lines on the plot, False otherwise"""

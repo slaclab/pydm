@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 _symbolRuleProperties = {"Index": ["set_current_key", int]}
 
 
-class PyDMSymbol(QWidget, PyDMWidget, new_properties=_symbolRuleProperties):
+class PyDMSymbol(QWidget, PyDMWidget):
     """
     PyDMSymbol will render an image (symbol) for each value of a channel.
 
@@ -24,6 +24,8 @@ class PyDMSymbol(QWidget, PyDMWidget, new_properties=_symbolRuleProperties):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
+    new_properties = _symbolRuleProperties
 
     def __init__(self, parent=None, init_channel=None):
         QWidget.__init__(self, parent)
@@ -104,14 +106,14 @@ class PyDMSymbol(QWidget, PyDMWidget, new_properties=_symbolRuleProperties):
             qInstallMessageHandler(self.qt_message_handler)
             svg = QSvgRenderer()
             svg.repaintNeeded.connect(self.update)
-            if svg.load(file_path):
+            if file_path is not None and svg.load(file_path):
                 self._state_images[int(state)] = (filename, svg)
                 self._sizeHint = self._sizeHint.expandedTo(svg.defaultSize())
                 qInstallMessageHandler(None)
                 continue
             qInstallMessageHandler(None)
             # SVG didn't work, lets try QPixmap
-            image = QPixmap(file_path)
+            image = QPixmap(file_path) if file_path is not None else QPixmap()
             if not image.isNull():
                 self._state_images[int(state)] = (filename, image)
                 self._sizeHint = self._sizeHint.expandedTo(image.size())

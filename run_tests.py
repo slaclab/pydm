@@ -21,7 +21,7 @@ if __name__ == "__main__":
     # and a Windows PyCA build exists
     if os.name == "nt":
         args.append("--ignore=pydm/tests/data_plugins/test_p4p_plugin_component.py")
-    args.append("--ignore=pydm/tests/data_plugins/test_psp_plugin_component.py")
+        args.append("--ignore=pydm/tests/data_plugins/test_psp_plugin_component.py")
 
     print("pytest arguments: {}".format(args))
 

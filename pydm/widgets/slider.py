@@ -230,7 +230,7 @@ class PyDMPrimitiveSlider(QSlider):
             return (1 - proportion) * slider_length + self.getHandleSize().height() / 2
 
 
-class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step_size_properties):
+class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
     """
     A QSlider with support for Channels and more from PyDM.
 
@@ -241,6 +241,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
+    new_properties = _step_size_properties
 
     actionTriggered = Signal(int)
     rangeChanged = Signal(float, float)
@@ -513,7 +515,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
 
         Parameters
         ----------
-        new_orientation : int
+        new_orientation : Qt.Orientation
             Qt.Horizontal or Qt.Vertical
         """
         self._orientation = new_orientation
@@ -525,7 +527,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget, new_properties=_step
 
         Parameters
         ----------
-        new_orientation : int
+        new_orientation : Qt.Orientation
             Qt.Horizontal or Qt.Vertical
         """
         if new_orientation not in (Qt.Horizontal, Qt.Vertical):
