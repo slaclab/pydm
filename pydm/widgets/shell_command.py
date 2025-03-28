@@ -2,7 +2,6 @@ import os
 import shlex
 import subprocess
 from functools import partial
-import weakref
 import sys
 import logging
 import warnings
@@ -12,8 +11,8 @@ from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineE
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
-from .base import PyDMWidget, only_if_channel_set, widget_destroyed
-from ..utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes, is_qt_designer
+from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
+from ..utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from typing import Optional, Union, List
 
 logger = logging.getLogger(__name__)
@@ -124,18 +123,10 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         # The color of "Font Awesome" icons can be set,
         # but standard icons are already colored and can not be set.
         self._pydm_icon_color = QColor(90, 90, 90)
-
-        # Note: the following calls can *not* be moved to the PyDMWidget parent class,
-        # this is b/c on pyside6 these calls (if done in PyDMWidget's __init__) throw an error.
-        # The error is that pyside6 thinks this child class's __init__ functions have not been called yet,
-        # even though we explicitly call them and there is no real issue.
-        # (use git blame and see this change's commit msg for more explanation)
-        if not is_qt_designer():
-            # We should  install the Event Filter only if we are running
-            # and not at the Designer
-            self.installEventFilter(self)
-            self.check_enable_state()
-        self.destroyed.connect(partial(widget_destroyed, self.channels, weakref.ref(self)))
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def confirmDialog(self) -> bool:
         """

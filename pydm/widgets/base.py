@@ -2,6 +2,7 @@ import enum
 import os
 import re
 import platform
+import weakref
 import logging
 import functools
 import json
@@ -128,6 +129,22 @@ def refresh_style(widget):
         except Exception as ex:
             # Widget was probably destroyed
             logger.debug("Error while refreshing stylesheet. %s ", ex)
+
+
+def PostParentClassInitSetup(self):
+    # This function should only be called from a pydm widget class's __init__ call, and *not* from
+    # from the __init__ of it's parent classes (PyDMWidget/PyDMPrimitiveWidget) where it throws an error on pyside6.
+    # The error is pyside6 thinks the widget class's parent __init__ calls are not getting called
+    # in the proper order, despite the fact that we explicitly call them so there should be no real issue.
+    # (see commit-msg of beb3c5533b717c3c9a00bd35c8615d900abbc03c for more explanation)
+    self.setContextMenuPolicy(Qt.DefaultContextMenu)
+    if not is_qt_designer():
+        # Install event filter only if not running in Designer
+        self.installEventFilter(self)
+        # Will call the widget class's check_enable_state if it has one, else will use PyDMWidget's.
+        self.check_enable_state()
+
+    self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
 
 
 class PyDMPrimitiveWidget(object):
