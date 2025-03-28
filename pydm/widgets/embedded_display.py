@@ -5,9 +5,9 @@ from qtpy.QtCore import QPoint, Qt, QSize, Property, QTimer
 import copy
 import os.path
 import logging
-from .base import PyDMPrimitiveWidget
-from .baseplot import BasePlot
-from ..utilities import (
+from pydm.widgets.base import PyDMPrimitiveWidget
+from pydm.widgets.baseplot import BasePlot
+from pydm.utilities import (
     is_pydm_app,
     establish_widget_connections,
     close_widget_connections,
@@ -15,7 +15,7 @@ from ..utilities import (
     is_qt_designer,
     find_file,
 )
-from ..display import load_file, ScreenTarget
+from pydm.display import load_file, ScreenTarget
 
 logger = logging.getLogger(__name__)
 

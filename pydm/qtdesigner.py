@@ -1,8 +1,8 @@
 import sys
 import traceback
 from qtpy.QtCore import QTimer
-from .utilities import stylesheet
-from . import data_plugins
+from pydm.utilities import stylesheet
+from pydm import data_plugins
 
 
 class DesignerHooks(object):

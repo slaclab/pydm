@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QWidget, QTableWidgetItem
 from qtpy.QtCore import Qt, qVersion
-from .about_ui import Ui_Form
+from pydm.about_pydm.about_ui import Ui_Form
 from numpy import __version__ as numpyver
 from pyqtgraph import __version__ as pyqtgraphver
 import pydm

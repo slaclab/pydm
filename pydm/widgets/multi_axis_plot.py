@@ -2,9 +2,9 @@ import weakref
 from pyqtgraph import AxisItem, PlotDataItem, PlotItem, ViewBox
 from typing import List, Optional
 from qtpy.QtCore import Qt, Signal
-from .multi_axis_viewbox import MultiAxisViewBox
-from .multi_axis_viewbox_menu import MultiAxisViewBoxMenu
-from ..utilities import is_qt_designer
+from pydm.widgets.multi_axis_viewbox import MultiAxisViewBox
+from pydm.widgets.multi_axis_viewbox_menu import MultiAxisViewBoxMenu
+from pydm.utilities import is_qt_designer
 
 
 class MultiAxisPlot(PlotItem):

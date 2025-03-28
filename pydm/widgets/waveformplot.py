@@ -2,12 +2,12 @@ from pyqtgraph import BarGraphItem
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Slot, Property
 import numpy as np
-from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
-from .channel import PyDMChannel
+from pydm.widgets.baseplot import BasePlot, NoDataError, BasePlotCurveItem
+from pydm.widgets.channel import PyDMChannel
 import itertools
 import json
 from collections import OrderedDict
-from ..utilities import remove_protocol
+from pydm.utilities import remove_protocol
 
 
 class WaveformCurveItem(BasePlotCurveItem):

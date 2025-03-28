@@ -1,7 +1,7 @@
 import numpy as np
 from pyqtgraph import BarGraphItem
 from unittest import mock
-from ...widgets.waveformplot import PyDMWaveformPlot, WaveformCurveItem
+from pydm.widgets.waveformplot import PyDMWaveformPlot, WaveformCurveItem
 
 
 @mock.patch("pydm.widgets.waveformplot.WaveformCurveItem.setData")

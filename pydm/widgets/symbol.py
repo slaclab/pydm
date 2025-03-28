@@ -5,8 +5,8 @@ from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
-from ..utilities import find_file
-from .base import PyDMWidget
+from pydm.utilities import find_file
+from pydm.widgets.base import PyDMWidget
 
 logger = logging.getLogger(__name__)
 

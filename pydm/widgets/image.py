@@ -5,10 +5,10 @@ from pyqtgraph import ColorMap
 from pyqtgraph.graphicsItems.ViewBox.ViewBoxMenu import ViewBoxMenu
 import numpy as np
 import logging
-from .channel import PyDMChannel
-from .colormaps import cmaps, cmap_names, PyDMColorMap
-from .base import PyDMWidget
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.widgets.channel import PyDMChannel
+from pydm.widgets.colormaps import cmaps, cmap_names, PyDMColorMap
+from pydm.widgets.base import PyDMWidget
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 

@@ -4,9 +4,9 @@ import copy
 from qtpy import QtCore
 from qtpy.QtWidgets import QMessageBox, QTableWidgetSelectionRange
 
-from ...widgets.symbol import PyDMSymbol
-from ...widgets.symbol_editor import SymbolEditor
-from ...utilities import checkObjectProperties
+from pydm.widgets.symbol import PyDMSymbol
+from pydm.widgets.symbol_editor import SymbolEditor
+from pydm.utilities import checkObjectProperties
 
 
 # additional props we expect to get added to PyDMSymbol class RULE_PROPERTIES

@@ -4,7 +4,7 @@ import logging
 
 from qtpy.QtWidgets import QApplication
 
-from ..config import STYLESHEET, STYLESHEET_INCLUDE_DEFAULT
+from pydm.config import STYLESHEET, STYLESHEET_INCLUDE_DEFAULT
 
 logger = logging.getLogger(__name__)
 

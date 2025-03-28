@@ -1,6 +1,6 @@
 from qtpy.QtCore import QModelIndex
-from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate
+from pydm.widgets.baseplot_table_model import BasePlotCurvesModel
+from pydm.widgets.baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate
 
 
 class PyDMEventPlotCurvesModel(BasePlotCurvesModel):

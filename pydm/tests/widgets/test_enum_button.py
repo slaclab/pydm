@@ -2,8 +2,8 @@ import pytest
 
 from qtpy.QtCore import Qt, QSize
 
-from ...widgets.enum_button import PyDMEnumButton, WidgetType, class_for_type
-from ... import data_plugins
+from pydm.widgets.enum_button import PyDMEnumButton, WidgetType, class_for_type
+from pydm import data_plugins
 
 
 def test_construct(qtbot):

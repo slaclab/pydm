@@ -1,8 +1,8 @@
-from .base import PyDMWidget
+from pydm.widgets.base import PyDMWidget
 from qtpy.QtGui import QColor, QPolygon, QPainter, QFontMetrics
 from qtpy.QtWidgets import QFrame, QSizePolicy
 from qtpy.QtCore import Qt, QPoint, Property, QSize
-from .scale import QScale, PyDMScaleIndicator
+from pydm.widgets.scale import QScale, PyDMScaleIndicator
 
 
 class QScaleAlarmed(QScale):

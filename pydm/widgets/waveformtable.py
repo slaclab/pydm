@@ -2,7 +2,7 @@ from qtpy.QtWidgets import QTableWidget, QTableWidgetItem, QApplication
 from qtpy.QtGui import QCursor
 from qtpy.QtCore import Slot, Property, Qt, QEvent
 import numpy as np
-from .base import PyDMWritableWidget
+from pydm.widgets.base import PyDMWritableWidget
 
 
 class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):

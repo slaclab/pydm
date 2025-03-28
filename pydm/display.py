@@ -16,8 +16,8 @@ import re
 import six
 from qtpy.QtWidgets import QApplication, QWidget
 
-from .help_files import HelpWindow
-from .utilities import import_module_by_filename, is_pydm_app, macro, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.help_files import HelpWindow
+from pydm.utilities import import_module_by_filename, is_pydm_app, macro, ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:

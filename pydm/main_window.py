@@ -4,16 +4,16 @@ from os import path
 from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QAction, QMessageBox
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo, QCoreApplication
 from qtpy.QtGui import QKeySequence
-from .utilities import IconFont, find_file, establish_widget_connections, close_widget_connections
-from .pydm_ui import Ui_MainWindow
-from .display import Display, ScreenTarget, load_file, clear_compiled_ui_file_cache
-from .connection_inspector import ConnectionInspector
-from .about_pydm import AboutWindow
-from .show_macros import MacroWindow
-from . import data_plugins
-from . import tools
-from .widgets.rules import register_widget_rules, unregister_widget_rules
-from . import config
+from pydm.utilities import IconFont, find_file, establish_widget_connections, close_widget_connections
+from pydm.pydm_ui import Ui_MainWindow
+from pydm.display import Display, ScreenTarget, load_file, clear_compiled_ui_file_cache
+from pydm.connection_inspector import ConnectionInspector
+from pydm.about_pydm import AboutWindow
+from pydm.show_macros import MacroWindow
+from pydm import data_plugins
+from pydm import tools
+from pydm.widgets.rules import register_widget_rules, unregister_widget_rules
+from pydm import config
 import subprocess
 import platform
 import logging

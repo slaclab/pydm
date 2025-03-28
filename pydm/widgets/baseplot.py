@@ -6,7 +6,7 @@ from abc import abstractmethod
 from qtpy.QtGui import QColor, QBrush, QMouseEvent
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect
 from qtpy.QtWidgets import QToolTip, QWidget
-from .. import utilities
+from pydm import utilities
 from pyqtgraph import (
     AxisItem,
     PlotWidget,
@@ -18,8 +18,8 @@ from pyqtgraph import (
 )
 from collections import OrderedDict
 from typing import Dict, List, Optional, Union
-from .base import PyDMPrimitiveWidget, widget_destroyed
-from .multi_axis_plot import MultiAxisPlot
+from pydm.widgets.base import PyDMPrimitiveWidget, widget_destroyed
+from pydm.widgets.multi_axis_plot import MultiAxisPlot
 
 
 class NoDataError(Exception):

@@ -13,11 +13,11 @@ import warnings
 
 from qtpy.QtCore import Qt, QTimer, Slot
 from qtpy.QtWidgets import QApplication
-from .main_window import PyDMMainWindow
+from pydm.main_window import PyDMMainWindow
 
-from .utilities import which, path_info, connection, ACTIVE_QT_WRAPPER, QtWrapperTypes
-from .utilities.stylesheet import apply_stylesheet
-from . import config, data_plugins
+from pydm.utilities import which, path_info, connection, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities.stylesheet import apply_stylesheet
+from pydm import config, data_plugins
 
 logger = logging.getLogger(__name__)
 

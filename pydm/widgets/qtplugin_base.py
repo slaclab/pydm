@@ -26,9 +26,9 @@ from typing import Dict, List, Optional, Type
 import entrypoints
 from qtpy import QtCore, QtDesigner, QtGui, QtWidgets
 
-from .. import config
-from ..qtdesigner import DesignerHooks
-from .qtplugin_extensions import PyDMExtensionFactory
+from pydm import config
+from pydm.qtdesigner import DesignerHooks
+from pydm.widgets.qtplugin_extensions import PyDMExtensionFactory
 
 logger = logging.getLogger(__name__)
 

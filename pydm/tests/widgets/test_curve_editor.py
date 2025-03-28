@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QTableView
-from ...widgets.baseplot import BasePlot
-from ...widgets.baseplot_curve_editor import (
+from pydm.widgets.baseplot import BasePlot
+from pydm.widgets.baseplot_curve_editor import (
     AxisColumnDelegate,
     ColorColumnDelegate,
     LineColumnDelegate,
@@ -8,14 +8,14 @@ from ...widgets.baseplot_curve_editor import (
     RedrawModeColumnDelegate,
     PlotStyleColumnDelegate,
 )
-from ...widgets import PyDMArchiverTimePlot
-from ...widgets.axis_table_model import BasePlotAxesModel
-from ...widgets.baseplot_table_model import BasePlotCurvesModel
-from ...widgets.archiver_time_plot_editor import PyDMArchiverTimePlotCurvesModel
-from ...widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
-from ...widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
-from ...widgets.waveformplot import WaveformCurveItem
-from ...widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
+from pydm.widgets import PyDMArchiverTimePlot
+from pydm.widgets.axis_table_model import BasePlotAxesModel
+from pydm.widgets.baseplot_table_model import BasePlotCurvesModel
+from pydm.widgets.archiver_time_plot_editor import PyDMArchiverTimePlotCurvesModel
+from pydm.widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
+from pydm.widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
+from pydm.widgets.waveformplot import WaveformCurveItem
+from pydm.widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
 
 
 def test_waveform_curve_editor(qtbot):

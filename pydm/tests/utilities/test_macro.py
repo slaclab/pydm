@@ -2,7 +2,7 @@ import os
 import tempfile
 import pytest
 
-from ...utilities.macro import substitute_in_file, parse_macro_string
+from pydm.utilities.macro import substitute_in_file, parse_macro_string
 
 
 @pytest.mark.parametrize(

@@ -1,10 +1,10 @@
-from .application import PyDMApplication
-from .display import Display
-from .data_plugins import set_read_only
-from .widgets import PyDMChannel
+from pydm.application import PyDMApplication
+from pydm.display import Display
+from pydm.data_plugins import set_read_only
+from pydm.widgets import PyDMChannel
 
 try:
-    from ._version import version as __version__
+    from pydm._version import version as __version__
 except ImportError:
     __version__ = "unknown"
 

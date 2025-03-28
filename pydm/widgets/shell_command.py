@@ -11,8 +11,8 @@ from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineE
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
-from .base import PyDMWidget, only_if_channel_set
-from ..utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.widgets.base import PyDMWidget, only_if_channel_set
+from pydm.utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from typing import Optional, Union, List
 
 logger = logging.getLogger(__name__)

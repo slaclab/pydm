@@ -5,7 +5,7 @@ import webbrowser
 
 from qtpy import QtWidgets, QtCore, QtDesigner
 from qtpy.QtCore import Qt
-from ..utilities.iconfont import IconFont
+from pydm.utilities.iconfont import IconFont
 
 
 class RulesEditor(QtWidgets.QDialog):

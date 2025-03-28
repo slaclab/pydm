@@ -1,12 +1,12 @@
 from qtpy.QtCore import QModelIndex, QObject
-from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import (
+from pydm.widgets.baseplot_table_model import BasePlotCurvesModel
+from pydm.widgets.baseplot_curve_editor import (
     BasePlotCurveEditorDialog,
     ColorColumnDelegate,
     PlotStyleColumnDelegate,
     RedrawModeColumnDelegate,
 )
-from .waveformplot import PyDMWaveformPlot
+from pydm.widgets.waveformplot import PyDMWaveformPlot
 
 
 class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):

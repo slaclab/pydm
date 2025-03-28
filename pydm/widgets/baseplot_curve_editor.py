@@ -18,9 +18,9 @@ from qtpy.QtWidgets import (
 )
 from qtpy.QtCore import Qt, Slot, QAbstractItemModel, QModelIndex, QObject, QItemSelection
 from qtpy.QtDesigner import QDesignerFormWindowInterface
-from .baseplot import BasePlotAxisItem, BasePlotCurveItem
-from .baseplot_table_model import BasePlotCurvesModel
-from .axis_table_model import BasePlotAxesModel
+from pydm.widgets.baseplot import BasePlotAxisItem, BasePlotCurveItem
+from pydm.widgets.baseplot_table_model import BasePlotCurvesModel
+from pydm.widgets.axis_table_model import BasePlotAxesModel
 from collections import OrderedDict
 from typing import Optional
 

@@ -6,7 +6,7 @@ from qtpy.QtWidgets import QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
-from ..utilities import is_qt_designer, find_file
+from pydm.utilities import is_qt_designer, find_file
 
 
 class SymbolEditor(QtWidgets.QDialog):
