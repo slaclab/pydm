@@ -13,9 +13,9 @@ from qtpy.QtWidgets import (
     QAbstractButton,
 )
 
-from .base import PyDMWritableWidget
-from .. import data_plugins
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.widgets.base import PyDMWritableWidget
+from pydm import data_plugins
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 
 class WidgetType(object):

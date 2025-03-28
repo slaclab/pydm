@@ -6,13 +6,13 @@ import logging
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QMenu
 from qtpy.QtGui import QClipboard, QColor, QMouseEvent
-from ..conftest import ConnectionSignals
-from ...utilities import is_pydm_app
-from ... import data_plugins
-from ...widgets.base import AlarmLimit, is_channel_valid, PyDMWidget
-from ...widgets.label import PyDMLabel
-from ...widgets.line_edit import PyDMLineEdit
-from ...widgets.channel import PyDMChannel
+from pydm.tests.conftest import ConnectionSignals
+from pydm.utilities import is_pydm_app
+from pydm import data_plugins
+from pydm.widgets.base import AlarmLimit, is_channel_valid, PyDMWidget
+from pydm.widgets.label import PyDMLabel
+from pydm.widgets.line_edit import PyDMLineEdit
+from pydm.widgets.channel import PyDMChannel
 
 logger = logging.getLogger(__name__)
 

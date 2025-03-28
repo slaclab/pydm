@@ -6,9 +6,9 @@ from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Signal, Slot, Property, QTimer
-from .baseplot import BasePlot, BasePlotCurveItem
-from .channel import PyDMChannel
-from ..utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.widgets.baseplot import BasePlot, BasePlotCurveItem
+from pydm.widgets.channel import PyDMChannel
+from pydm.utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 import logging
 

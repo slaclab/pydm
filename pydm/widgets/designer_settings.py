@@ -5,8 +5,8 @@ from typing import Any, List, Optional
 
 from qtpy import QtCore, QtDesigner, QtWidgets
 
-from ..utilities import copy_to_clipboard, get_clipboard_text
-from ..utilities.macro import parse_macro_string
+from pydm.utilities import copy_to_clipboard, get_clipboard_text
+from pydm.utilities.macro import parse_macro_string
 
 logger = logging.getLogger(__name__)
 
@@ -224,7 +224,7 @@ class PropertyRuleEditor(_PropertyHelper, QtWidgets.QPushButton):
         self.setText("&Rules...")
 
     def _open_rules_editor(self):
-        from .rules_editor import RulesEditor
+        from pydm.widgets.rules_editor import RulesEditor
 
         self._rules_editor = RulesEditor(self._property_widget, parent=self)
         self._rules_editor.exec_()

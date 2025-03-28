@@ -17,7 +17,7 @@ from qtpy.QtWidgets import (
 )
 from qtpy.QtGui import QPainter
 
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 

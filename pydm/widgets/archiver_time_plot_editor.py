@@ -1,10 +1,10 @@
 from typing import Any, Optional
 from qtpy.QtCore import Qt, QModelIndex, QObject
 from qtpy.QtGui import QColor
-from .archiver_time_plot import ArchivePlotCurveItem
-from .baseplot import BasePlot, BasePlotCurveItem
-from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate
+from pydm.widgets.archiver_time_plot import ArchivePlotCurveItem
+from pydm.widgets.baseplot import BasePlot, BasePlotCurveItem
+from pydm.widgets.baseplot_table_model import BasePlotCurvesModel
+from pydm.widgets.baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate
 
 
 class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):

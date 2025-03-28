@@ -7,8 +7,8 @@ from qtpy.QtWidgets import QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygonF, QPixmap, QMovie
 from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
 from qtpy.QtDesigner import QDesignerFormWindowInterface
-from .base import PyDMWidget
-from ..utilities import is_qt_designer, find_file
+from pydm.widgets.base import PyDMWidget
+from pydm.utilities import is_qt_designer, find_file
 from typing import List, Optional
 
 logger = logging.getLogger(__name__)

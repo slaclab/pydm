@@ -1,11 +1,11 @@
 from qtpy.QtWidgets import QTabBar, QTabWidget
 from qtpy.QtGui import QIcon, QColor
 from qtpy.QtCore import QByteArray
-from .base import PyDMWidget
-from .channel import PyDMChannel
+from pydm.widgets.base import PyDMWidget
+from pydm.widgets.channel import PyDMChannel
 from qtpy.QtCore import Property
 from functools import partial
-from ..utilities.iconfont import IconFont
+from pydm.utilities.iconfont import IconFont
 
 
 class PyDMTabBar(QTabBar, PyDMWidget):

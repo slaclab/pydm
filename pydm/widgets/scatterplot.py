@@ -4,9 +4,9 @@ from collections import OrderedDict
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Slot, Property, Qt
-from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
-from .channel import PyDMChannel
-from ..utilities import remove_protocol
+from pydm.widgets.baseplot import BasePlot, NoDataError, BasePlotCurveItem
+from pydm.widgets.channel import PyDMChannel
+from pydm.utilities import remove_protocol
 
 
 DEFAULT_BUFFER_SIZE = 1200

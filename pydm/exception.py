@@ -6,7 +6,7 @@ from collections import namedtuple
 
 from qtpy import QtWidgets, QtCore
 
-from .utilities import only_main_thread
+from pydm.utilities import only_main_thread
 
 """
 Utility functions which installs an exception hook and displays any global

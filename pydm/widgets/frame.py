@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QFrame
 from qtpy.QtCore import Property
-from .base import PyDMWidget
+from pydm.widgets.base import PyDMWidget
 
 
 class PyDMFrame(QFrame, PyDMWidget):

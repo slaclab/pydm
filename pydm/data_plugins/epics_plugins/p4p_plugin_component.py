@@ -8,7 +8,7 @@ import time
 from p4p.client.thread import Context, Disconnected
 from p4p.wrapper import Value
 from p4p.nt import NTURI
-from .pva_codec import decompress
+from pydm.data_plugins.epics_plugins.pva_codec import decompress
 from pydm.data_plugins import is_read_only
 from pydm.data_plugins.plugin import PyDMPlugin, PyDMConnection
 from pydm.widgets.channel import PyDMChannel

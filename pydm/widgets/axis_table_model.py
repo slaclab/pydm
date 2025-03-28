@@ -1,5 +1,5 @@
 from qtpy.QtCore import QAbstractTableModel, Qt, QModelIndex
-from .baseplot import BasePlotAxisItem
+from pydm.widgets.baseplot import BasePlotAxisItem
 
 
 class BasePlotAxesModel(QAbstractTableModel):

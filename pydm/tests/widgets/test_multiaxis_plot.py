@@ -2,7 +2,7 @@ import pytest
 from unittest import mock
 from pyqtgraph import AxisItem, PlotDataItem, ViewBox
 from qtpy.QtWidgets import QGraphicsScene
-from ...widgets.multi_axis_plot import MultiAxisPlot
+from pydm.widgets.multi_axis_plot import MultiAxisPlot
 
 
 @pytest.fixture

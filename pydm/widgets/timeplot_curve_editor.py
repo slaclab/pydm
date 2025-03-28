@@ -1,8 +1,8 @@
 from qtpy.QtCore import QModelIndex, QObject
 from typing import Optional
-from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import BasePlotCurveEditorDialog, ColorColumnDelegate, PlotStyleColumnDelegate
-from .timeplot import PyDMTimePlot
+from pydm.widgets.baseplot_table_model import BasePlotCurvesModel
+from pydm.widgets.baseplot_curve_editor import BasePlotCurveEditorDialog, ColorColumnDelegate, PlotStyleColumnDelegate
+from pydm.widgets.timeplot import PyDMTimePlot
 
 
 class PyDMTimePlotCurvesModel(BasePlotCurvesModel):

@@ -7,7 +7,7 @@ from qtpy.QtGui import QColor
 from qtpy.QtCore import QTimer, Qt
 
 from collections import OrderedDict
-from ...widgets.baseplot import BasePlotCurveItem, BasePlot
+from pydm.widgets.baseplot import BasePlotCurveItem, BasePlot
 
 logger = logging.getLogger(__name__)
 

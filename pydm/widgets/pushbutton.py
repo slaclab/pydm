@@ -4,8 +4,8 @@ from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit, QStyle
 from qtpy.QtCore import Slot, Property
 from qtpy import QtDesigner
-from .base import PyDMWritableWidget
-from ..utilities import IconFont
+from pydm.widgets.base import PyDMWritableWidget
+from pydm.utilities import IconFont
 import logging
 
 logger = logging.getLogger(__name__)

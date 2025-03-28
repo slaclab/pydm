@@ -2,7 +2,7 @@ from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QSt
 from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QPaintEvent, QBrush
 from qtpy.QtCore import Property, Qt, QSize, QPoint
 from typing import List, Optional
-from .base import PyDMWidget
+from pydm.widgets.base import PyDMWidget
 
 
 class PyDMBitIndicator(QWidget):

@@ -1,5 +1,5 @@
-from .qtplugin_base import PyDMDesignerPlugin, WidgetCategory
-from .tab_bar import PyDMTabWidget
+from pydm.widgets.qtplugin_base import PyDMDesignerPlugin, WidgetCategory
+from pydm.widgets.tab_bar import PyDMTabWidget
 
 
 class TabWidgetPlugin(PyDMDesignerPlugin):

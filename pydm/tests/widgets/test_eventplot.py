@@ -1,4 +1,4 @@
-from ...widgets.eventplot import PyDMEventPlot
+from pydm.widgets.eventplot import PyDMEventPlot
 
 
 def test_add_channel(qtbot):

@@ -16,8 +16,8 @@ from qtpy.QtWidgets import (
     QComboBox,
 )
 from pydm.widgets import PyDMLabel
-from .base import PyDMWritableWidget, TextFormatter, is_channel_valid
-from .channel import PyDMChannel
+from pydm.widgets.base import PyDMWritableWidget, TextFormatter, is_channel_valid
+from pydm.widgets.channel import PyDMChannel
 
 logger = logging.getLogger(__name__)
 _step_size_properties = {

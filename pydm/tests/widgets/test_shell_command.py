@@ -12,8 +12,8 @@ from qtpy import QtCore
 from qtpy.QtCore import QSize
 from qtpy.QtWidgets import QMenu, QAction
 
-from ...widgets.shell_command import PyDMShellCommand, TermOutputMode
-from ...utilities import IconFont
+from pydm.widgets.shell_command import PyDMShellCommand, TermOutputMode
+from pydm.utilities import IconFont
 
 
 # --------------------

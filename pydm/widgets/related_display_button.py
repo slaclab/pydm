@@ -8,11 +8,11 @@ from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialo
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 from qtpy import QtDesigner
-from .base import PyDMWidget, only_if_channel_set
-from ..utilities import IconFont, find_file, is_pydm_app
-from ..utilities.macro import parse_macro_string
-from ..utilities.stylesheet import merge_widget_stylesheet
-from ..display import load_file, ScreenTarget
+from pydm.widgets.base import PyDMWidget, only_if_channel_set
+from pydm.utilities import IconFont, find_file, is_pydm_app
+from pydm.utilities.macro import parse_macro_string
+from pydm.utilities.stylesheet import merge_widget_stylesheet
+from pydm.display import load_file, ScreenTarget
 from typing import Optional, List
 
 logger = logging.getLogger(__name__)

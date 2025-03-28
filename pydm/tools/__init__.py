@@ -8,9 +8,9 @@ from typing import Any, Dict, Generator, List, Optional, Union
 import entrypoints
 from qtpy.QtWidgets import QMenu, QWidget
 
-from ..config import ENTRYPOINT_EXTERNAL_TOOL, EXTERNAL_TOOL_SUFFIX
-from ..utilities import import_module_by_filename, log_failures
-from .tools import ExternalTool
+from pydm.config import ENTRYPOINT_EXTERNAL_TOOL, EXTERNAL_TOOL_SUFFIX
+from pydm.utilities import import_module_by_filename, log_failures
+from pydm.tools.tools import ExternalTool
 
 logger = logging.getLogger(__name__)
 ext_tools: Dict[str, Any] = {}

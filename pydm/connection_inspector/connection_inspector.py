@@ -13,8 +13,8 @@ from qtpy.QtWidgets import (
     QLabel,
 )
 from qtpy.QtCore import Qt, Slot, QTimer
-from .connection_table_model import ConnectionTableModel
-from .. import data_plugins
+from pydm.connection_inspector.connection_table_model import ConnectionTableModel
+from pydm import data_plugins
 
 
 class ConnectionInspector(QWidget):

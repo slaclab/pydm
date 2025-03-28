@@ -1,4 +1,4 @@
-from .base import PyDMWidget, TextFormatter
+from pydm.widgets.base import PyDMWidget, TextFormatter
 from qtpy.QtGui import QColor, QPolygon, QPen, QPainter, QPaintEvent
 from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
 from qtpy.QtCore import Qt, QPoint, Property

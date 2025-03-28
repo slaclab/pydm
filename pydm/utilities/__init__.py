@@ -16,11 +16,11 @@ from enum import IntEnum
 
 from qtpy import QtCore, QtGui, QtWidgets
 
-from . import colors, macro, shortcuts
-from .connection import close_widget_connections, establish_widget_connections
-from .iconfont import IconFont
-from .remove_protocol import protocol_and_address, remove_protocol, parsed_address
-from .units import convert, find_unit_options, find_unittype
+from pydm.utilities import colors, macro, shortcuts
+from pydm.utilities.connection import close_widget_connections, establish_widget_connections
+from pydm.utilities.iconfont import IconFont
+from pydm.utilities.remove_protocol import protocol_and_address, remove_protocol, parsed_address
+from pydm.utilities.units import convert, find_unit_options, find_unittype
 
 __all__ = [
     "colors",
@@ -110,7 +110,7 @@ def is_pydm_app(app=None):
     """
     from qtpy.QtWidgets import QApplication
 
-    from ..application import PyDMApplication
+    from pydm.application import PyDMApplication
 
     if app is None:
         app = QApplication.instance()
@@ -129,7 +129,7 @@ def is_qt_designer():
     bool
         True if inside Designer, False otherwise.
     """
-    from ..qtdesigner import DesignerHooks
+    from pydm.qtdesigner import DesignerHooks
 
     return DesignerHooks().form_editor is not None
 
@@ -147,7 +147,7 @@ def get_designer_current_path():
     if not is_qt_designer():
         return None
 
-    from ..qtdesigner import DesignerHooks
+    from pydm.qtdesigner import DesignerHooks
 
     form_editor = DesignerHooks().form_editor
     win_manager = form_editor.formWindowManager()

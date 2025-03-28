@@ -3,10 +3,10 @@
 
 import pytest
 
-from ...widgets.base import is_channel_valid
-from ... import data_plugins
-from ...widgets.base import PyDMWidget
-from ...widgets.frame import PyDMFrame
+from pydm.widgets.base import is_channel_valid
+from pydm import data_plugins
+from pydm.widgets.base import PyDMWidget
+from pydm.widgets.frame import PyDMFrame
 
 
 # --------------------

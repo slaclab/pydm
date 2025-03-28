@@ -4,11 +4,11 @@ import threading
 
 from typing import Optional, Callable
 
-from ..utilities.remove_protocol import parsed_address
+from pydm.utilities.remove_protocol import parsed_address
 from qtpy.compat import isalive
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
-from .. import config
+from pydm import config
 
 
 class PyDMConnection(QObject):
