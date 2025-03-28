@@ -187,6 +187,7 @@ class PyDMChannel(object):
 
             value_signal_matched = self.value_signal is None and other.value_signal is None
             if self.value_signal and other.value_signal:
+                # @QT_WRAPPER_SPECIFIC
                 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
                     value_signal_matched = self.value_signal.signal == other.value_signal.signal
                 else:
