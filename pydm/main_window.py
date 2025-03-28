@@ -434,6 +434,10 @@ class PyDMMainWindow(QMainWindow):
             logger.error("The display manager does not have a display loaded.")
             return
 
+        # Ensure the existing display is cleared out of the home widget attribute when it is reloaded
+        if curr_display == self.home_widget:
+            self.home_widget = None
+
         prev_display = curr_display.previous_display
         next_display = curr_display.next_display
 
