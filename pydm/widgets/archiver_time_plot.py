@@ -9,8 +9,6 @@ from pydm.utilities import remove_protocol, is_qt_designer
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
-from qtpy.QtCore import QObject, QTimer, Property, Signal, Slot, Qt
-from qtpy.QtGui import QColor
 from qtpy.QtCore import Qt, QObject, QTimer, Property, Signal, Slot
 from qtpy.QtGui import QColor, QPen
 import logging
@@ -61,7 +59,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         use_archive_data: bool = True,
         liveData: bool = True,
         current_point_always_vis: bool = False,
-        **kws
+        **kws,
     ):
         self.archive_channel = None
         super(ArchivePlotCurveItem, self).__init__(**kws)
@@ -136,6 +134,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         if vb := self.error_bar.getViewBox():
             vb.removeItem(self.error_bar)
         self.getViewBox().addItem(self.error_bar)
+
+        self.axis_time_plot.emit(axis_name)
 
     @property
     def liveData(self):
@@ -431,18 +431,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # Ignore incoming live data depending on user request
         if self._liveData:
             super().receiveNewValue(new_value)
-
-    @BasePlotCurveItem.y_axis_name.setter
-    def y_axis_name(self, axis_name: str) -> None:
-        """
-        Set the name of the y-axis that should be associated with this curve.
-        Also move's the curve's error bar item.
-        Parameters
-        ----------
-        axis_name: str
-        """
-        BasePlotCurveItem.y_axis_name.fset(self, axis_name)
-        self.axis_time_plot.emit(axis_name)
 
 
 class FormulaCurveItem(BasePlotCurveItem):
