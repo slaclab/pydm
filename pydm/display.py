@@ -98,6 +98,7 @@ def _compile_ui_file(uifile: str) -> Tuple[str, str]:
     -------
     Tuple[str, str] - The first element is the compiled ui file, the second is the name of the class (e.g. Ui_Form)
     """
+    # @QT_WRAPPER_SPECIFIC
     if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
         code_string = StringIO()
         uic.compileUi(uifile, code_string)
@@ -126,6 +127,7 @@ def _compile_ui_file(uifile: str) -> Tuple[str, str]:
 
 
 def _load_ui_into_display(uifile, display):
+    # @QT_WRAPPER_SPECIFIC
     if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
         klass, _ = uic.loadUiType(uifile)
     else:  # pyside6
