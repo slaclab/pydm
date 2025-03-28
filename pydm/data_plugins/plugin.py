@@ -194,22 +194,12 @@ class PyDMConnection(QObject):
                 pass
 
         if channel.value_signal is not None and hasattr(self, "put_value"):
-            if self._should_disconnect(self.put_value, destroying):
+            for signal_type in (str, int, float, np.ndarray, dict):
                 try:
-                    channel.value_signal[str].disconnect(self.put_value)
-                except TypeError:
-                    pass
-                try:
-                    channel.value_signal[int].disconnect(self.put_value)
-                except TypeError:
-                    pass
-                try:
-                    channel.value_signal[float].disconnect(self.put_value)
-                except TypeError:
-                    pass
-                try:
-                    channel.value_signal[np.ndarray].disconnect(self.put_value)
-                except TypeError:
+                    channel.value_signal[signal_type].disconnect(self.put_value)
+                # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
+                # If signal type exists but doesn't match the slot, TypeError gets thrown.
+                except (KeyError, IndexError, TypeError):
                     pass
 
         self.listener_count = self.listener_count - 1
