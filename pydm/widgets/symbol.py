@@ -6,7 +6,7 @@ from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
 from ..utilities import find_file
-from .base import PyDMWidget
+from .base import PyDMWidget, PostParentClassInitSetup
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +37,11 @@ class PyDMSymbol(QWidget, PyDMWidget):
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self._sizeHint = self.minimumSizeHint()
         self._painter = QPainter()
+
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def init_for_designer(self):
         """

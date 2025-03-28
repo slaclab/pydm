@@ -1,4 +1,4 @@
-from .base import PyDMWidget, TextFormatter
+from .base import PyDMWidget, TextFormatter, PostParentClassInitSetup
 from qtpy.QtGui import QColor, QPolygon, QPen, QPainter, QPaintEvent
 from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
 from qtpy.QtCore import Qt, QPoint, Property
@@ -407,6 +407,10 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
 
         self.value_label.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.setup_widgets_for_orientation(Qt.Horizontal, False, False, self._value_position)
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def update_labels(self) -> None:
         """

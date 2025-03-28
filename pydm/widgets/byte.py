@@ -2,7 +2,7 @@ from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QSt
 from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QPaintEvent, QBrush
 from qtpy.QtCore import Property, Qt, QSize, QPoint
 from typing import List, Optional
-from .base import PyDMWidget
+from .base import PyDMWidget, PostParentClassInitSetup
 
 
 class PyDMBitIndicator(QWidget):
@@ -113,6 +113,11 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.numBits = 1  # Need to set the property to initialize
         # _labels and _indicators setting numBits there also performs
         # the first rebuild_layout.
+
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def init_for_designer(self) -> None:
         """
@@ -580,6 +585,10 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         self._brush = QBrush(Qt.SolidPattern)
         self._pen = QPen(Qt.SolidLine)
         self._render_as_rectangle = False
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     # whether or not we render the widget as a circle (default) or a rectangle
     @Property(bool)
