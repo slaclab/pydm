@@ -324,7 +324,7 @@ class BasicSettingsEditor(QtWidgets.QDialog):
     }
 
     def __init__(self, widget, parent=None):
-        super(BasicSettingsEditor, self).__init__(parent)
+        super().__init__(parent)
 
         self.widget = widget
 

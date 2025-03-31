@@ -16,7 +16,7 @@ class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
     """
 
     def __init__(self, plot, parent=None):
-        super(PyDMWaveformPlotCurvesModel, self).__init__(plot, parent=parent)
+        super().__init__(plot, parent=parent)
         self._column_names = ("Y Channel", "X Channel", "Style") + self._column_names
         self._column_names += ("Redraw Mode",)
 
@@ -33,7 +33,7 @@ class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
             return curve.plot_style
         elif column_name == "Redraw Mode":
             return curve.redraw_mode
-        return super(PyDMWaveformPlotCurvesModel, self).get_data(column_name, curve)
+        return super().get_data(column_name, curve)
 
     def set_data(self, column_name, curve, value):
         if column_name == "Y Channel":
@@ -45,7 +45,7 @@ class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
         elif column_name == "Redraw Mode":
             curve.redraw_mode = int(value)
         else:
-            return super(PyDMWaveformPlotCurvesModel, self).set_data(column_name=column_name, curve=curve, value=value)
+            return super().set_data(column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, y_address=None, x_address=None, name=None, color=None):

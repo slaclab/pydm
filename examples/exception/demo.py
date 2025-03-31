@@ -6,7 +6,7 @@ from pydm import exception
 
 class Screen(QtWidgets.QFrame):
     def __init__(self, *args, **kwargs):
-        super(Screen, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.setup_ui()
 
     def setup_ui(self):

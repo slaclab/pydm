@@ -9,7 +9,7 @@ class TabWidgetPlugin(PyDMDesignerPlugin):
     TabClass = PyDMTabWidget
 
     def __init__(self, extensions=None):
-        super(TabWidgetPlugin, self).__init__(self.TabClass, group=WidgetCategory.CONTAINER, extensions=extensions)
+        super().__init__(self.TabClass, group=WidgetCategory.CONTAINER, extensions=extensions)
 
     def domXml(self):
         """

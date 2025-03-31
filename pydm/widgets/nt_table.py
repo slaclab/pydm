@@ -87,7 +87,7 @@ class PythonTableModel(QtCore.QAbstractTableModel):
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         if role != QtCore.Qt.DisplayRole:
-            return super(PythonTableModel, self).headerData(section, orientation, role)
+            return super().headerData(section, orientation, role)
         if orientation == QtCore.Qt.Horizontal and section < self.columnCount():
             return str(self._column_names[section])
         elif orientation == QtCore.Qt.Vertical and section < self.rowCount():
@@ -232,7 +232,7 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         if data is None:
             return
 
-        super(PyDMNTTable, self).value_changed(data)
+        super().value_changed(data)
 
         labels = data.get("labels", None)
         values = data.get("value", {})

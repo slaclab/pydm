@@ -33,7 +33,7 @@ class PyDMMainWindow(QMainWindow):
         macros=None,
         command_line_args=None,
     ):
-        super(PyDMMainWindow, self).__init__(parent)
+        super().__init__(parent)
         self.app = QApplication.instance()
         self.font_factor = 1
         self.iconFont = IconFont()
@@ -433,6 +433,10 @@ class PyDMMainWindow(QMainWindow):
         if not curr_display:
             logger.error("The display manager does not have a display loaded.")
             return
+
+        # Ensure the existing display is cleared out of the home widget attribute when it is reloaded
+        if curr_display == self.home_widget:
+            self.home_widget = None
 
         prev_display = curr_display.previous_display
         next_display = curr_display.next_display

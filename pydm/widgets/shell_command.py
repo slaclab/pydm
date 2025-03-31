@@ -11,7 +11,7 @@ from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineE
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
-from .base import PyDMWidget, only_if_channel_set
+from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
 from ..utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from typing import Optional, Union, List
 
@@ -123,6 +123,10 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         # The color of "Font Awesome" icons can be set,
         # but standard icons are already colored and can not be set.
         self._pydm_icon_color = QColor(90, 90, 90)
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def confirmDialog(self) -> bool:
         """
@@ -615,7 +619,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if self._menu_needs_rebuild:
             self._rebuild_menu()
-        super(PyDMShellCommand, self).mousePressEvent(event)
+        super().mousePressEvent(event)
 
     def mouseReleaseEvent(self, mouse_event: QMouseEvent) -> None:
         """
@@ -629,12 +633,12 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         mouse_event :
         """
         if mouse_event.button() != Qt.LeftButton:
-            return super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
+            return super().mouseReleaseEvent(mouse_event)
         if self.menu() is not None:
-            return super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
+            return super().mouseReleaseEvent(mouse_event)
         assert len(self.commands) == 1, "More than one command present, but no menu created."
         self.execute_command(self.commands[0])
-        super(PyDMShellCommand, self).mouseReleaseEvent(mouse_event)
+        super().mouseReleaseEvent(mouse_event)
 
     def show_warning_icon(self) -> None:
         """Show the warning icon.  This is called when a shell command fails

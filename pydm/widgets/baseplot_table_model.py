@@ -12,7 +12,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
     """
 
     def __init__(self, plot, parent=None):
-        super(BasePlotCurvesModel, self).__init__(parent=parent)
+        super().__init__(parent=parent)
         self._plot = plot
         self._column_names = (
             "Label",
@@ -152,7 +152,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
-            return super(BasePlotCurvesModel, self).headerData(section, orientation, role)
+            return super().headerData(section, orientation, role)
         if orientation == Qt.Horizontal and section < self.columnCount():
             return str(self._column_names[section])
         elif orientation == Qt.Vertical and section < self.rowCount():

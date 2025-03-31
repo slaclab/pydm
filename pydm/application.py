@@ -15,9 +15,8 @@ from qtpy.QtCore import Qt, QTimer, Slot
 from qtpy.QtWidgets import QApplication
 from .main_window import PyDMMainWindow
 
-from .utilities import which, path_info
+from .utilities import which, path_info, connection, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from .utilities.stylesheet import apply_stylesheet
-from .utilities import connection
 from . import config, data_plugins
 
 logger = logging.getLogger(__name__)
@@ -89,9 +88,9 @@ class PyDMApplication(QApplication):
         fullscreen=False,
         home_file=None,
     ):
-        super(PyDMApplication, self).__init__(command_line_args)
+        super().__init__(command_line_args)
         # Enable High DPI display, if available.
-        if hasattr(Qt, "AA_UseHighDpiPixmaps"):
+        if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
             self.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
         data_plugins.set_read_only(read_only)
@@ -149,7 +148,7 @@ class PyDMApplication(QApplication):
         """
         Execute the QApplication.
         """
-        return super(PyDMApplication, self).exec_()
+        return super().exec_()
 
     def is_read_only(self):
         warnings.warn("'PyDMApplication.is_read_only' is deprecated, " "use 'pydm.data_plugins.is_read_only' instead.")

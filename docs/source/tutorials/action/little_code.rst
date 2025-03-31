@@ -40,7 +40,7 @@ This is accomplished by subclassing `pydm.Display` (See :ref:`Display` for more 
       class BeamPositioning(Display):
 
           def __init__(self, parent=None, args=None, macros=None):
-              super(BeamPositioning, self).__init__(parent=parent, args=args, macros=None)
+              super().__init__(parent=parent, args=args, macros=None)
               # Attach our custom process_image method
               self.ui.imageView.process_image = self.process_image
               # Hook up to the newImageSignal so we can update

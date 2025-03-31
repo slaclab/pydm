@@ -7,7 +7,7 @@ import numpy as np
 import logging
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
-from .base import PyDMWidget
+from .base import PyDMWidget, PostParentClassInitSetup
 from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
@@ -232,6 +232,10 @@ class PyDMImageView(ImageView, PyDMWidget):
             self.imageChannel = image_channel or ""
         if width_channel:
             self.widthChannel = width_channel or ""
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     @Property(str, designable=False)
     def channel(self):

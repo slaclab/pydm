@@ -2,7 +2,16 @@ import logging
 
 from qtpy.QtCore import Qt, QSize, Property, Slot, QMargins
 from qtpy.QtGui import QPainter
-from qtpy.QtWidgets import QWidget, QButtonGroup, QGridLayout, QPushButton, QRadioButton, QStyleOption, QStyle
+from qtpy.QtWidgets import (
+    QWidget,
+    QButtonGroup,
+    QGridLayout,
+    QPushButton,
+    QRadioButton,
+    QStyleOption,
+    QStyle,
+    QAbstractButton,
+)
 
 from .base import PyDMWritableWidget
 from .. import data_plugins
@@ -25,7 +34,7 @@ if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         RadioButton = 1
 
 
-class_for_type = [QPushButton, QRadioButton]
+class_for_type = {WidgetType.PushButton: QPushButton, WidgetType.RadioButton: QRadioButton}
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +83,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         self._layout_margins = QMargins(9, 9, 9, 9)
         self._btn_group = QButtonGroup()
         self._btn_group.setExclusive(True)
-        self._btn_group.buttonClicked[int].connect(self.handle_button_clicked)
+        self._btn_group.buttonClicked.connect(self.handle_button_clicked)
         self._widget_type = WidgetType.PushButton
         self._orientation = Qt.Vertical
         self._widgets = []
@@ -379,17 +388,18 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             for widget in self._widgets:
                 widget.setCheckable(value)
 
-    @Slot(int)
-    def handle_button_clicked(self, id):
+    @Slot(QAbstractButton)
+    def handle_button_clicked(self, button):
         """
         Handles the event of a button being clicked.
 
         Parameters
         ----------
-        id : int
-            The clicked button id.
+        id : QAbstractButton
+            The clicked button button.
         """
-        self.send_value_signal.emit(id)
+        button_id = self._btn_group.id(button)  # get id of the button in the group
+        self.send_value_signal.emit(button_id)
 
     def clear(self):
         """
@@ -498,7 +508,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             The new value from the channel.
         """
         if new_val is not None and new_val != self.value:
-            super(PyDMEnumButton, self).value_changed(new_val)
+            super().value_changed(new_val)
             btn = self._btn_group.button(new_val)
             if btn:
                 btn.setChecked(True)
@@ -515,7 +525,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             The new list of values
         """
         if new_enum_strings is not None and new_enum_strings != self.enum_strings:
-            super(PyDMEnumButton, self).enum_strings_changed(new_enum_strings)
+            super().enum_strings_changed(new_enum_strings)
             self._has_enums = True
             self.check_enable_state()
             self.rebuild_widgets()
