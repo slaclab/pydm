@@ -1041,8 +1041,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             # Need to clear out any bars from optimized data; only applicable to ArchivePlotCurveItems
             if not isinstance(curve, ArchivePlotCurveItem):
                 continue
-            vb = curve.error_bar.getViewBox()
-            vb.removeItem(curve.error_bar)
+            curve.remove_error_bar()
 
         # reset _min_x to let updateXAxis make requests anew
         self._min_x = self._starting_timestamp
