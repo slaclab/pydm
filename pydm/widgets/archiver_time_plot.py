@@ -885,7 +885,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             self.plotItem.sigXRangeChangedManually.connect(self.updateXAxis)
         self._cache_data = enable
 
-    def updateXAxis(self) -> None:
+    def updateXAxis(self, update_immediately: bool = False) -> None:
         """Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,
         a request will be made for backfill data"""
         if not self._curves:
@@ -897,7 +897,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         elif not self._cache_data:
             self._handle_caching_off(min_x, max_x)
         elif not self.plotItem.isAnyXAutoRange():
-            self._handle_manual_scrolling_or_zoom(min_x, max_x)
+            self._handle_manual_scrolling_or_zoom(min_x, max_x, update_immediately)
 
         self._prev_x = min_x
 
@@ -926,7 +926,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 self._archive_request_queued = True
                 QTimer.singleShot(self.request_cooldown, self.requestDataFromArchiver)
 
-    def _handle_manual_scrolling_or_zoom(self, min_x: float, max_x: float) -> None:
+    def _handle_manual_scrolling_or_zoom(self, min_x: float, max_x: float, update_immediately: bool = False) -> None:
         """Handles scenarios of manual scrolling or zooming when autorange is disabled."""
         max_point = max(curve.max_x() for curve in self._curves)
 
@@ -943,7 +943,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 self.setTimeSpan(max_point - min_x)
             else:
                 blocked = self.plotItem.blockSignals(True)
-                self.plotItem.setXRange(max_point - self.getTimeSpan(), max_point, padding=0.0, update=False)
+                self.plotItem.setXRange(
+                    max_point - self.getTimeSpan(), max_point, padding=0.0, update=update_immediately
+                )
                 self.plotItem.blockSignals(blocked)
 
     def requestDataFromArchiver(self, min_x: Optional[float] = None, max_x: Optional[float] = None) -> None:
