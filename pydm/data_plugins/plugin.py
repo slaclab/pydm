@@ -193,7 +193,7 @@ class PyDMConnection(QObject):
             except (KeyError, TypeError):
                 pass
 
-        if channel.value_signal is not None and hasattr(self, "put_value"):
+        if not destroying and channel.value_signal is not None and hasattr(self, "put_value"):
             for signal_type in (str, int, float, np.ndarray, dict):
                 try:
                     channel.value_signal[signal_type].disconnect(self.put_value)
