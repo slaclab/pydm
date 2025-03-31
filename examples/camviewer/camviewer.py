@@ -24,7 +24,7 @@ class CamViewer(Display):
     roi_h_signal = Signal(str)
 
     def __init__(self, parent=None, args=None):
-        super(CamViewer, self).__init__(parent=parent, args=args)
+        super().__init__(parent=parent, args=args)
 
         # Set up the list of cameras, and all the PVs
         test_dict = {

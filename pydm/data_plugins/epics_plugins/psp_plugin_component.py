@@ -143,7 +143,7 @@ class Connection(PyDMConnection):
         :param parent: PyQt widget that this widget is inside of.
         :type parent:  QWidget
         """
-        super(Connection, self).__init__(channel, pv, protocol, parent)
+        super().__init__(channel, pv, protocol, parent)
         self.python_type = None
         self.pv = setup_pv(
             pv, con_cb=self.connected_cb, mon_cb=self.monitor_cb, rwaccess_cb=self.rwaccess_cb, control=True
@@ -524,7 +524,7 @@ class Connection(PyDMConnection):
         :param channel: The channel to connect.
         :type channel:  :class:`PyDMChannel`
         """
-        super(Connection, self).add_listener(channel)
+        super().add_listener(channel)
         # If we are adding a listener to an already existing PV, we need to
         # manually send the signals indicating that the PV is connected, what
         # the latest value is, etc.

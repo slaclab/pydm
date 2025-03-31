@@ -162,7 +162,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
         connected : int
             When this value is 0 the channel is disconnected, 1 otherwise.
         """
-        super(PyDMSymbol, self).connection_changed(connected)
+        super().connection_changed(connected)
         self.update()
 
     def value_changed(self, new_val):
@@ -174,7 +174,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
         new_val : int
             The new value from the channel.
         """
-        super(PyDMSymbol, self).value_changed(new_val)
+        super().value_changed(new_val)
         self._current_key = new_val
         self.update()
 

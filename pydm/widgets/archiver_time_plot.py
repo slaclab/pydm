@@ -56,7 +56,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws
     ):
         self.archive_channel = None
-        super(ArchivePlotCurveItem, self).__init__(**kws)
+        super().__init__(**kws)
         self.use_archive_data = use_archive_data
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
@@ -229,7 +229,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         Redraw the curve with any new data added since the last draw call.
         """
         if self.archive_points_accumulated == 0:
-            super(ArchivePlotCurveItem, self).redrawCurve()
+            super().redrawCurve()
         else:
             try:
                 x = np.concatenate(
@@ -471,7 +471,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             else:
                 curveDict[header] = curve.formula
         dic_.update({"curveDict": curveDict})
-        dic_.update(super(FormulaCurveItem, self).to_dict())
+        dic_.update(super().to_dict())
         return dic_
 
     @property
@@ -840,7 +840,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         cache_data: bool = True,
         show_all: bool = True,
     ):
-        super(PyDMArchiverTimePlot, self).__init__(
+        super().__init__(
             parent=parent,
             init_y_channels=init_y_channels,
             plot_by_timestamps=True,

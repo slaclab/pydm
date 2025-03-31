@@ -30,7 +30,7 @@ class PyDMCheckbox(QCheckBox, PyDMWritableWidget):
         new_val : int
             The new value from the channel.
         """
-        super(PyDMCheckbox, self).value_changed(new_val)
+        super().value_changed(new_val)
         if new_val is None:
             return
         if new_val > 0:

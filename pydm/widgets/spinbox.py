@@ -45,7 +45,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         ----------
         step: int
         """
-        super(PyDMSpinbox, self).stepBy(step)
+        super().stepBy(step)
         if self._write_on_press:
             self.send_value()
 
@@ -75,7 +75,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
             self.send_value()
 
         else:
-            super(PyDMSpinbox, self).keyPressEvent(ev)
+            super().keyPressEvent(ev)
 
     def widget_ctx_menu(self):
         """
@@ -144,7 +144,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
             # SpinBox is unable to work with None and
             # but sometimes it can arrive as an initial value
             return
-        super(PyDMSpinbox, self).value_changed(new_val)
+        super().value_changed(new_val)
         self.valueBeingSet = True
         self.setValue(new_val)
         self.valueBeingSet = False
@@ -259,7 +259,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         new_limit : float
             New value for the control limit
         """
-        super(PyDMSpinbox, self).ctrl_limit_changed(which, new_limit)
+        super().ctrl_limit_changed(which, new_limit)
         if not self.userDefinedLimits:
             if which == "UPPER":
                 self.setMaximum(new_limit)
@@ -277,7 +277,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         new_precison : int or float
             The new precision value
         """
-        super(PyDMSpinbox, self).precision_changed(new_precision)
+        super().precision_changed(new_precision)
         self.setDecimals(self.precision)
 
     @Property(int)

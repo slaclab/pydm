@@ -5,7 +5,7 @@ import random
 
 class Connection(PyDMConnection):
     def __init__(self, widget, address, protocol=None, parent=None):
-        super(Connection, self).__init__(widget, address, protocol, parent)
+        super().__init__(widget, address, protocol, parent)
         self.add_listener(widget)
         self.value = address
         self.rand = 0
@@ -22,7 +22,7 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(conn)
 
     def add_listener(self, widget):
-        super(Connection, self).add_listener(widget)
+        super().add_listener(widget)
         self.send_connection_state(True)
 
 

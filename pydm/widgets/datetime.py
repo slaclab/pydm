@@ -92,7 +92,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
             self._block_past_date = block
 
     def keyPressEvent(self, key_event):
-        ret = super(PyDMDateTimeEdit, self).keyPressEvent(key_event)
+        ret = super().keyPressEvent(key_event)
         if key_event.key() in [QtCore.Qt.Key_Return, QtCore.Qt.Key_Enter]:
             self.returnPressed.emit()
         return ret
@@ -114,7 +114,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         self.send_value_signal.emit(new_value)
 
     def value_changed(self, new_val):
-        super(PyDMDateTimeEdit, self).value_changed(new_val)
+        super().value_changed(new_val)
 
         if self.timeBase == TimeBase.Seconds:
             new_val *= 1000
@@ -199,7 +199,7 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
             self._relative = checked
 
     def value_changed(self, new_val):
-        super(PyDMDateTimeLabel, self).value_changed(new_val)
+        super().value_changed(new_val)
 
         if self.timeBase == TimeBase.Seconds:
             new_val *= 1000

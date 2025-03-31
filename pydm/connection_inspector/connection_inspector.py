@@ -19,7 +19,7 @@ from .. import data_plugins
 
 class ConnectionInspector(QWidget):
     def __init__(self, parent=None):
-        super(ConnectionInspector, self).__init__(parent, Qt.Window)
+        super().__init__(parent, Qt.Window)
         connections = self.fetch_data()
         self.table_view = ConnectionTableView(connections, self)
         self.setLayout(QVBoxLayout(self))
@@ -89,7 +89,7 @@ class ConnectionInspector(QWidget):
 
 class ConnectionTableView(QTableView):
     def __init__(self, connections=[], parent=None):
-        super(ConnectionTableView, self).__init__(parent)
+        super().__init__(parent)
         self.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContentsOnFirstShow)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.horizontalHeader().setStretchLastSection(True)

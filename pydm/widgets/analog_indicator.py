@@ -17,7 +17,7 @@ class QScaleAlarmed(QScale):
     """
 
     def __init__(self, parent=None):
-        super(QScaleAlarmed, self).__init__(parent)
+        super().__init__(parent)
         self._lower_minor_alarm = 0
         self._upper_minor_alarm = 0
         self._lower_major_alarm = 0
@@ -438,7 +438,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Callback updates the lower minor alarm boundary
         """
-        super(PyDMAnalogIndicator, self).lower_warning_limit_changed(new_minor_alarm)
+        super().lower_warning_limit_changed(new_minor_alarm)
         if self.minorAlarmFromChannel:
             self.scale_indicator.set_lower_minor_alarm(new_minor_alarm)
             self.update_labels()
@@ -447,7 +447,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Callback updates the upper minor alarm boundary
         """
-        super(PyDMAnalogIndicator, self).upper_warning_limit_changed(new_minor_alarm)
+        super().upper_warning_limit_changed(new_minor_alarm)
         if self.minorAlarmFromChannel:
             self.scale_indicator.set_upper_minor_alarm(new_minor_alarm)
             self.update_labels()
@@ -456,7 +456,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Callback updates the lower major alarm boundary
         """
-        super(PyDMAnalogIndicator, self).lower_alarm_limit_changed(new_major_alarm)
+        super().lower_alarm_limit_changed(new_major_alarm)
         if self.majorAlarmFromChannel:
             self.scale_indicator.set_lower_major_alarm(new_major_alarm)
             self.update_labels()
@@ -465,7 +465,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Callback updates the upper major alarm boundary
         """
-        super(PyDMAnalogIndicator, self).upper_alarm_limit_changed(new_major_alarm)
+        super().upper_alarm_limit_changed(new_major_alarm)
         if self.majorAlarmFromChannel:
             self.scale_indicator.set_upper_major_alarm(new_major_alarm)
             self.update_labels()

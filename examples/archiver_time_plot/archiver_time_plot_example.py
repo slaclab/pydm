@@ -7,7 +7,7 @@ from pydm.widgets import PyDMArchiverTimePlot
 
 class archiver_time_plot_example(Display):
     def __init__(self, parent=None, args=None, macros=None):
-        super(archiver_time_plot_example, self).__init__(parent=parent, args=args, macros=None)
+        super().__init__(parent=parent, args=args, macros=macros)
         self.app = QApplication.instance()
         self.setup_ui()
 

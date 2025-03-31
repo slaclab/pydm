@@ -463,7 +463,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             self._shift_key_was_down = True
         else:
             self._shift_key_was_down = False
-        super(PyDMRelatedDisplayButton, self).mousePressEvent(event)
+        super().mousePressEvent(event)
 
     def push_button_release_event(self, mouse_event: QMouseEvent) -> None:
         """
@@ -482,7 +482,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
         """
         if mouse_event.button() != Qt.LeftButton:
-            return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
+            return super().mouseReleaseEvent(mouse_event)
         if self.menu() is not None:
             return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
         try:
@@ -492,7 +492,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         except Exception:
             logger.exception("Failed to open display.")
         finally:
-            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
+            super().mouseReleaseEvent(mouse_event)
 
     def validate_password(self) -> bool:
         """
@@ -621,7 +621,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
     def context_menu(self):
         try:
-            menu = super(PyDMRelatedDisplayButton, self).context_menu()
+            menu = super().context_menu()
         except Exception:
             menu = QMenu(self)
         if len(menu.findChildren(QAction)) > 0:
