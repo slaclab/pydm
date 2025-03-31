@@ -9,4 +9,8 @@ def test_add_channel(qtbot):
     curve = "TEST:EVENT:PLOT"
     event_plot.addChannel(curve)
 
+    # We need redrawPlot here to stop a specific pyside6 error where the internal C++ object for the plot gets
+    # deleted early. This only happens in the case of running all the tests together with pytest.
+    event_plot.redrawPlot()
+
     assert event_plot.curveAtIndex(0).channel.address == "TEST:EVENT:PLOT"
