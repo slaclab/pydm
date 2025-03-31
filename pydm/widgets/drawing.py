@@ -7,7 +7,7 @@ from qtpy.QtWidgets import QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygonF, QPixmap, QMovie
 from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
 from qtpy.QtDesigner import QDesignerFormWindowInterface
-from .base import PyDMWidget
+from .base import PyDMWidget, PostParentClassInitSetup
 from ..utilities import is_qt_designer, find_file
 from typing import List, Optional
 
@@ -92,6 +92,10 @@ class PyDMDrawing(QWidget, PyDMWidget):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.alarmSensitiveBorder = False
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def sizeHint(self):
         return QSize(100, 100)

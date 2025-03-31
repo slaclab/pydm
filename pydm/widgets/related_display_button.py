@@ -8,7 +8,7 @@ from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialo
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 from qtpy import QtDesigner
-from .base import PyDMWidget, only_if_channel_set
+from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
 from ..utilities.stylesheet import merge_widget_stylesheet
@@ -86,6 +86,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
         # Retain references to subdisplays to avoid garbage collection
         self._subdisplays = []
+
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     @only_if_channel_set
     def check_enable_state(self) -> None:

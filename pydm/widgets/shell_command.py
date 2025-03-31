@@ -11,7 +11,7 @@ from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineE
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
-from .base import PyDMWidget, only_if_channel_set
+from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
 from ..utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from typing import Optional, Union, List
 
@@ -123,6 +123,10 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         # The color of "Font Awesome" icons can be set,
         # but standard icons are already colored and can not be set.
         self._pydm_icon_color = QColor(90, 90, 90)
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def confirmDialog(self) -> bool:
         """
