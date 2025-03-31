@@ -139,3 +139,28 @@ should look like this:
    working on that branch. The rebasing process re-writes the commit history so
    any other checkout of the same branch referring to the old history will
    create duplicates of all the commits.
+
+Qt Wrapper Dependent Code
+===========================
+PyDM runs using python wrappers around the Qt library, 
+and there are two choices for python wrappers currently supported: PyQt (Qt5) and PySide6 (Qt6). Note: atm functionality
+of PyDM should be the same regardless of if PyQt5 of PySide6 is used.
+
+Furthermore, PyDM runs ontop an abstraction layer called "qtpy" (https://github.com/spyder-ide/qtpy), which is used to handle differences
+between PyQt and PySide6 with one set of code.
+
+But ends up that there are still some places in the PyDM codebase where we needed to implement 
+wrapper-specific or Qt version specific code, either b/c qtpy was lacking a specific abstraction we needed
+or b/c we had gone around the abstraction layer in the past and now it's now difficult to change these sections.
+
+Also, in the future PyDM may add the option to use Qt6 specific features, and these sections of code will only run on PySide6.
+
+These wrapper-specific sections are noted in the codebase by the ``@QT_WRAPPER_SPECIFIC`` string. There are also comments in 
+these sections explaining what differences there are between the PyQt and Pyside6 implementations. 
+
+When changing code marked with ``@QT_WRAPPER_SPECIFIC``, developers should make sure their changes work on both PyQt and PySide6.
+Automated testing on GitHub will ultimately run changes on both wrappers before any code gets merged, 
+but if you are changing a ``@QT_WRAPPER_SPECIFIC`` section it's recommended to have two separate conda environments setup 
+(one with PyQt and the other PySide6) so you can test PyDM with both wrappers.
+
+Also, if new PySide6/Qt6 only features are implemented, these sections will also get denoted with the ``@QT_WRAPPER_SPECIFIC`` string.

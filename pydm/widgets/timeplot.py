@@ -31,6 +31,7 @@ class updateMode(object):
     AtFixedRate = 2
 
 
+# @QT_WRAPPER_SPECIFIC
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
     from enum import Enum
