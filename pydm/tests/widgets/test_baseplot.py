@@ -15,7 +15,6 @@ from ...widgets.baseplot import BasePlotCurveItem, BasePlot
 logger = logging.getLogger(__name__)
 
 
-
 @pytest.mark.parametrize(
     "color, line_style, line_width, name",
     [(QColor("red"), Qt.SolidLine, 1, "test_name"), (None, Qt.DashLine, 10, ""), (None, None, None, None)],
@@ -289,13 +288,16 @@ def test_reset_autorange(qtbot):
 
 class DummyPlotDataItem:
     """Simulate a valid PlotDataItem."""
+
     pass
+
 
 class DummyTextItem:
     """
     A dummy text item to simulate the TextItem created in initializeCurveLabels.
     It records calls to setPos, setAnchor, setFont, setText and tracks its visibility.
     """
+
     def __init__(self, text, color, border, fill):
         self.text = text
         self.color = color
@@ -328,11 +330,13 @@ class DummyTextItem:
     def hide(self):
         self.visible = False
 
+
 class DummyViewBox:
     """
     A dummy view box for use in updateLabel. Its mapSceneToView method returns
     a dummy point whose x() value we control.
     """
+
     def __init__(self, mapped_x=0):
         self.mapped_x = mapped_x
 
@@ -344,6 +348,7 @@ class DummyViewBox:
         dummy.x.return_value = self.mapped_x
         return dummy
 
+
 class DummyPlotItem:
     """
     A dummy plot item that provides:
@@ -352,6 +357,7 @@ class DummyPlotItem:
       - getViewBoxForAxis(axis_name) to return a dummy view box.
       - An attribute axes (a list) and a vb (default view box).
     """
+
     def __init__(self, data_items=None, axes=None, viewbox=None):
         self._data_items = data_items if data_items is not None else []
         self.axes = axes if axes is not None else []
@@ -398,12 +404,7 @@ class DummyWidget:
             if not isinstance(item, DummyPlotDataItem):
                 continue
 
-            label = DummyTextItem(
-                text="No data",
-                color="w",
-                border="dummy_pen",  
-                fill="dummy_brush"   
-            )
+            label = DummyTextItem(text="No data", color="w", border="dummy_pen", fill="dummy_brush")
 
             label.setPos(0, 0)
             label.setAnchor((0.5, 0.5))
@@ -494,6 +495,7 @@ def test_initializeCurveLabels():
     assert label._font.family() == "Times"
     assert label._font.pointSize() == 10
 
+
 def test_clearCurveLabels(monkeypatch):
     widget = DummyWidget()
     dummy_item = DummyPlotDataItem()
@@ -501,14 +503,17 @@ def test_clearCurveLabels(monkeypatch):
     widget.textItems = {dummy_item: dummy_label}
 
     remove_calls = []
+
     def fake_remove(item):
         remove_calls.append(item)
+
     monkeypatch.setattr(widget.plotItem, "removeItem", fake_remove)
 
     widget.clearCurveLabels()
     assert dummy_label in remove_calls
     assert widget.textItems == {}
     assert widget.init_label is True
+
 
 def test_updateLabel_valid():
     """
@@ -530,7 +535,7 @@ def test_updateLabel_valid():
     widget.textItems = {curve: label}
 
     # When getViewBox() is called, our dummy view box returns x_val = 2.3.
-    widget.updateLabel(100.0, 200.0)  
+    widget.updateLabel(100.0, 200.0)
 
     # For x_val = 2.3, np.searchsorted([0,1,2,3], 2.3, side="right") returns 3;
     # subtracting 1 gives index 2. Thus, real_x should be 2 and real_y should be 30.
@@ -539,6 +544,7 @@ def test_updateLabel_valid():
     assert label._text == expected_text
     assert label._pos == expected_pos
     assert label.visible is True
+
 
 def test_updateLabel_invalid_data():
     """
@@ -559,6 +565,7 @@ def test_updateLabel_invalid_data():
     widget.updateLabel(100.0, 200.0)
     # Since the data arrays are empty, the label should be hidden.
     assert label.visible is False
+
 
 def test_getFormattedX():
     widget = DummyWidget()

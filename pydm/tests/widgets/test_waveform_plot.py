@@ -4,6 +4,7 @@ from unittest import mock
 from unittest.mock import MagicMock, patch
 from ...widgets.waveformplot import PyDMWaveformPlot, WaveformCurveItem
 
+
 @mock.patch("pydm.widgets.waveformplot.WaveformCurveItem.setData")
 @mock.patch("pyqtgraph.BarGraphItem.setOpts")
 def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
@@ -170,8 +171,8 @@ def test_redrawPlot_with_crosshair():
 
     # Set up dummy positions.
     dummy_global_pos = MagicMock()  # This will be returned by QCursor.pos()
-    dummy_local_pos = MagicMock()   # Returned by mapFromGlobal
-    dummy_scene_pos = MagicMock()   # Returned by mapToScene
+    dummy_local_pos = MagicMock()  # Returned by mapFromGlobal
+    dummy_scene_pos = MagicMock()  # Returned by mapToScene
     dummy_scene_pos.x.return_value = 150.0
     dummy_scene_pos.y.return_value = 250.0
 
@@ -180,7 +181,7 @@ def test_redrawPlot_with_crosshair():
     widget.mapToScene = MagicMock(return_value=dummy_scene_pos)
 
     # Patch QCursor.pos to return dummy_global_pos.
-    with patch('PyQt5.QtGui.QCursor.pos', return_value=dummy_global_pos):
+    with patch("PyQt5.QtGui.QCursor.pos", return_value=dummy_global_pos):
         # Set up a dummy plotItem with sceneBoundingRect() and vb.mapSceneToView().
         dummy_rect = MagicMock()
         dummy_rect.contains.return_value = True  # Indicate scene_pos is within bounds
@@ -216,6 +217,4 @@ def test_redrawPlot_with_crosshair():
     widget.horizontal_crosshair_line.setPos.assert_called_once_with(dummy_mapped_point.y())
 
     # Verify that the crosshair_position_updated signal was emitted with the scene position.
-    widget.crosshair_position_updated.emit.assert_called_once_with(
-        dummy_scene_pos.x(), dummy_scene_pos.y()
-    )
+    widget.crosshair_position_updated.emit.assert_called_once_with(dummy_scene_pos.x(), dummy_scene_pos.y())
