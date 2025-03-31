@@ -42,7 +42,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         the plot is zoomed or scrolled to the left.
     liveData : bool
         If True, the curve will gather data in real time.
-    current_point_always_vis : bool
+    show_extension_line : bool
         If True, shows a line that extends from the right-most point to the future.
         Defaults to False.
     **kws : dict[str: any]
@@ -60,7 +60,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         channel_address: Optional[str] = None,
         use_archive_data: bool = True,
         liveData: bool = True,
-        current_point_always_vis: bool = False,
+        show_extension_line: bool = False,
         **kws,
     ):
         # Attributes that must exist before super().__init__() call
@@ -75,8 +75,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
         self._liveData = liveData
 
-        self.current_point_always_vis = current_point_always_vis
-        if not self.current_point_always_vis:
+        self._show_extension_line = show_extension_line
+        if not self._show_extension_line:
             self._extension_line.hide()
 
         self.error_bar_data = None
@@ -91,7 +91,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             [
                 ("useArchiveData", self.use_archive_data),
                 ("liveData", self.liveData),
-                ("currentPointAlwaysVis", self.current_point_always_vis),
+                ("showExtensionLine", self._show_extension_line),
             ]
         )
         dic_.update(super(ArchivePlotCurveItem, self).to_dict())
@@ -189,6 +189,19 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             self.archive_data_request_signal.emit(min_x, max_x - 1, "")
 
         self._liveData = True
+
+    @property
+    def show_extension_line(self):
+        return self._show_extension_line
+
+    @show_extension_line.setter
+    def show_extension_line(self, enable: bool):
+        self._show_extension_line = enable
+        if self._show_extension_line:
+            self.set_extension_line_data()
+            self._extension_line.show()
+        else:
+            self._extension_line.hide()
 
     @Slot(np.ndarray)
     def receiveArchiveData(self, data: np.ndarray) -> None:
@@ -295,16 +308,14 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
                 self.setData(y=y, x=x)
 
-                if self.current_point_always_vis:
-                    self.add_infinite_line()
-                else:
-                    self._extension_line.hide()
-
             except (ZeroDivisionError, OverflowError, TypeError):
                 # Solve an issue with pyqtgraph and initial downsampling
                 pass
 
-    def add_infinite_line(self) -> None:
+        if self._show_extension_line:
+            self.set_extension_line_data()
+
+    def set_extension_line_data(self) -> None:
         """
         Creates a dotted line from the lastest point in the buffer
         (live or archived depending on if live data is active).
@@ -325,8 +336,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         x_line = np.array([x_last[0], x_infinity])
         y_line = np.array([y_last[1], y_last[1]])
         self._extension_line.setData(x=x_line, y=y_line)
-
-        self._extension_line.show()
 
     @Slot()
     def remove_extenstion_line(self):
@@ -937,6 +946,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         Whether curves should retain archive data or fetch new data when the x-axis changes
     show_all : bool
         Shifts the x-axis range to show all data, or stay where the user set the x-axis to
+    show_extension_lines : bool
+        Show a line extending from the right most point for all curves, defaults to False
     """
 
     def __init__(
@@ -948,6 +959,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         request_cooldown: int = 1000,
         cache_data: bool = True,
         show_all: bool = True,
+        show_extension_lines: bool = False,
     ):
         super(PyDMArchiverTimePlot, self).__init__(
             parent=parent,
@@ -962,6 +974,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         self.request_cooldown = request_cooldown
         self.cache_data = cache_data
         self._show_all = show_all  # Show all plotted data after archiver fetch
+        self._show_extension_lines = show_extension_lines
 
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
         self._min_x = self._starting_timestamp - DEFAULT_TIME_SPAN
@@ -993,6 +1006,16 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             self.plotItem.sigXRangeChanged.connect(self.updateXAxis)
             self.plotItem.sigXRangeChangedManually.connect(self.updateXAxis)
         self._cache_data = enable
+
+    @property
+    def show_extension_lines(self):
+        return self._show_extension_lines
+
+    @show_extension_lines.setter
+    def show_extension_lines(self, enable: bool):
+        self._show_extension_lines = enable
+        for curve in self._curves:
+            curve.show_extension_line = enable
 
     def updateXAxis(self) -> None:
         """Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,
@@ -1216,10 +1239,14 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         yAxisName=None,
         useArchiveData=False,
         liveData=True,
+        show_extension_line=None,
     ) -> ArchivePlotCurveItem:
         """
         Overrides timeplot addYChannel method to be able to pass the liveData flag.
         """
+        if show_extension_line is None:
+            show_extension_line = self._show_extension_lines
+
         curve = super().addYChannel(
             y_channel=y_channel,
             plot_style=plot_style,
@@ -1236,6 +1263,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             yAxisName=yAxisName,
             useArchiveData=useArchiveData,
             liveData=liveData,
+            show_extension_line=show_extension_line,
         )
         if not is_qt_designer():
             self.requestDataFromArchiver()
