@@ -8,6 +8,7 @@ from ...widgets.channel import PyDMChannel
 from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
 from ...utilities import remove_protocol
 from qtpy.QtTest import QSignalSpy
+from unittest.mock import MagicMock
 
 logger = logging.getLogger(__name__)
 
@@ -337,3 +338,49 @@ def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
 
     # After a call to redraw, the plot returns to this state until more data arrives
     assert not time_plot._needs_redraw
+
+
+class BasePlotDummy:
+    def updateLabel(self, x_val, y_val):
+        self.parent_called = True
+
+
+class TimePlotDummy(BasePlotDummy):
+    def __init__(self):
+        self.textItems = {}
+        self.parent_called = False
+
+    def updateLabel(self, x_val: float, y_val: float) -> None:
+        super().updateLabel(x_val, y_val)
+
+        for curve, label in self.textItems.items():
+            if getattr(curve, "severity_raw", -1) != -1:
+                old_text = label.toPlainText()
+                label.setText(old_text + "\n" + str(curve.severity))
+
+
+def test_updateLabel():
+    instance = TimePlotDummy()
+
+    curve_with_severity = MagicMock()
+    curve_with_severity.severity_raw = 1
+    curve_with_severity.severity = "HIGH"
+
+    curve_without_severity = MagicMock()
+    curve_without_severity.severity_raw = -1
+
+    label1 = MagicMock()
+    label1.toPlainText.return_value = "Curve1"
+    label2 = MagicMock()
+    label2.toPlainText.return_value = "Curve2"
+
+    instance.textItems = {
+        curve_with_severity: label1,
+        curve_without_severity: label2,
+    }
+
+    instance.updateLabel(10.0, 20.0)
+
+    assert instance.parent_called, "Parent's updateLabel was not called."
+    label1.setText.assert_called_once_with("Curve1\nHIGH")
+    label2.setText.assert_not_called()

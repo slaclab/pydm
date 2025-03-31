@@ -1205,7 +1205,24 @@ class PyDMTimePlot(BasePlot):
         )
 
     def updateLabel(self, x_val: float, y_val: float) -> None:
-        # First, let the parent do all the general updating and label placement:
+        """
+        Update the label for each curve with severity information, if available.
+
+        This method first calls the parent class's `updateLabel` to handle general
+        label updates and positioning. It then appends severity information to the
+        label of each curve that contains a valid `severity_raw` attribute.
+
+        Parameters
+        ----------
+        x_val : float
+            The x-coordinate value at which the label is being updated.
+        y_val : float
+            The y-coordinate value at which the label is being updated.
+
+        Returns
+        -------
+        None
+        """
         super().updateLabel(x_val, y_val)
 
         for curve, label in self.textItems.items():
