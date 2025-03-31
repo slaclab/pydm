@@ -67,7 +67,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.archive_channel = None
         self.error_bar = ErrorBarItem()
         self._extension_line = PlotCurveItem()
-        
+
         super().__init__(**kws)
 
         self.use_archive_data = use_archive_data
