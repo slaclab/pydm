@@ -7,7 +7,7 @@ from qtpy.QtCore import Slot
 
 class MyDisplay(Display):
     def __init__(self, parent=None, args=[]):
-        super(MyDisplay, self).__init__(parent=parent, args=args)
+        super().__init__(parent=parent, args=args)
         self.tracks = [
             "Humming",
             "Cowboys",

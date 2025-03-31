@@ -1,11 +1,10 @@
-from .base import PyDMWidget, TextFormatter, str_types
+from .base import PyDMWidget, TextFormatter, str_types, PostParentClassInitSetup
 from qtpy.QtWidgets import QLabel, QApplication
 from qtpy.QtCore import Qt, Property
 from .display_format import DisplayFormat, parse_value_for_display
-from pydm.utilities import is_pydm_app, is_qt_designer
+from pydm.utilities import is_pydm_app, is_qt_designer, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from pydm import config
 from pydm.widgets.base import only_if_channel_set
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 _labelRuleProperties = {"Text": ["value_changed", str]}
 
@@ -57,6 +56,10 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         self._enable_rich_text = False
         if is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     @Property(bool)
     def enableRichText(self):
@@ -103,7 +106,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         new_value : str, int, float, bool or np.ndarray
             The new value from the channel. The type depends on the channel.
         """
-        super(PyDMLabel, self).value_changed(new_value)
+        super().value_changed(new_value)
         new_value = parse_value_for_display(
             value=new_value,
             precision=self.precision,

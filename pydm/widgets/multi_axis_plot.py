@@ -29,7 +29,7 @@ class MultiAxisPlot(PlotItem):
         # Create a view box that will support multiple axes to pass to the PyQtGraph PlotItem
         viewBox = MultiAxisViewBox()
         viewBox.menu = MultiAxisViewBoxMenu(viewBox)
-        super(MultiAxisPlot, self).__init__(viewBox=viewBox, axisItems=axisItems, **kargs)
+        super().__init__(viewBox=viewBox, axisItems=axisItems, **kargs)
 
         self.axesOriginalRanges = {}  # Dict from axis name to floats (x, y) representing original range of the axis
 
@@ -308,7 +308,7 @@ class MultiAxisPlot(PlotItem):
             view.setXRange(minX, maxX, padding=padding)
         if "bottom" not in self.axesOriginalRanges:
             self.axesOriginalRanges["bottom"] = (minX, maxX)
-        super(MultiAxisPlot, self).setXRange(minX, maxX, padding=padding)
+        super().setXRange(minX, maxX, padding=padding)
 
     def setYRange(self, minY, maxY, padding=0, update=True):
         """
@@ -328,7 +328,7 @@ class MultiAxisPlot(PlotItem):
 
         for view in self.stackedViews:
             view.setYRange(minY, maxY, padding=padding)
-        super(MultiAxisPlot, self).setYRange(minY, maxY, padding=padding)
+        super().setYRange(minY, maxY, padding=padding)
 
     def isAnyXAutoRange(self) -> bool:
         """Return true if any view boxes are set to autorange on the x-axis, false otherwise"""

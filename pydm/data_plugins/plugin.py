@@ -1,10 +1,13 @@
 import functools
+import numpy as np
 import weakref
 import threading
 
 from typing import Optional, Callable
+from urllib.parse import ParseResult
 
 from ..utilities.remove_protocol import parsed_address
+from ..widgets import PyDMChannel
 from qtpy.compat import isalive
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
@@ -28,7 +31,7 @@ class PyDMConnection(QObject):
     timestamp_signal = Signal(float)
 
     def __init__(self, channel, address, protocol=None, parent=None):
-        super(PyDMConnection, self).__init__(parent)
+        super().__init__(parent)
         self.protocol = protocol
         self.address = address
         self.connected = False
@@ -190,6 +193,15 @@ class PyDMConnection(QObject):
             except (KeyError, TypeError):
                 pass
 
+        if channel.value_signal is not None and hasattr(self, "put_value"):
+            for signal_type in (str, int, float, np.ndarray, dict):
+                try:
+                    channel.value_signal[signal_type].disconnect(self.put_value)
+                # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
+                # If signal type exists but doesn't match the slot, TypeError gets thrown.
+                except (KeyError, IndexError, TypeError):
+                    pass
+
         self.listener_count = self.listener_count - 1
         if self.listener_count < 1:
             self.close()
@@ -227,12 +239,12 @@ class PyDMPlugin(object):
         self.lock = threading.Lock()
 
     @staticmethod
-    def get_parsed_address(channel):
+    def get_parsed_address(channel: PyDMChannel) -> ParseResult:
         parsed_addr = parsed_address(channel.address)
         return parsed_addr
 
     @staticmethod
-    def get_full_address(channel):
+    def get_full_address(channel: PyDMChannel) -> Optional[str]:
         parsed_addr = parsed_address(channel.address)
 
         if parsed_addr:
@@ -243,14 +255,14 @@ class PyDMPlugin(object):
         return full_addr
 
     @staticmethod
-    def get_address(channel):
+    def get_address(channel: PyDMChannel) -> str:
         parsed_addr = parsed_address(channel.address)
         addr = parsed_addr.netloc
 
         return addr
 
     @staticmethod
-    def get_subfield(channel):
+    def get_subfield(channel: PyDMChannel) -> Optional[str]:
         parsed_addr = parsed_address(channel.address)
 
         if parsed_addr:
@@ -264,10 +276,10 @@ class PyDMPlugin(object):
         return subfield
 
     @staticmethod
-    def get_connection_id(channel):
+    def get_connection_id(channel: PyDMChannel) -> Optional[str]:
         return PyDMPlugin.get_full_address(channel)
 
-    def add_connection(self, channel):
+    def add_connection(self, channel: PyDMChannel) -> None:
         from pydm.utilities import is_qt_designer
 
         with self.lock:
@@ -287,7 +299,7 @@ class PyDMPlugin(object):
             else:
                 self.connections[connection_id] = self.connection_class(channel, address, self.protocol)
 
-    def remove_connection(self, channel, destroying=False):
+    def remove_connection(self, channel: PyDMChannel, destroying: bool = False) -> None:
         with self.lock:
             connection_id = self.get_connection_id(channel)
             if connection_id in self.connections and channel in self.channels:

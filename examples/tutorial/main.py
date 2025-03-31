@@ -5,7 +5,7 @@ from scipy.ndimage.measurements import maximum_position
 
 class BeamPositioning(Display):
     def __init__(self, parent=None, args=None):
-        super(BeamPositioning, self).__init__(parent=parent, args=args)
+        super().__init__(parent=parent, args=args)
         # Attach our custom process_image method
         self.ui.imageView.process_image = self.process_image
         # Hook up to the newImageSignal so we can update

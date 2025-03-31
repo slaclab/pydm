@@ -4,7 +4,7 @@ from operator import attrgetter
 
 class ConnectionTableModel(QAbstractTableModel):
     def __init__(self, connections=[], parent=None):
-        super(ConnectionTableModel, self).__init__(parent=parent)
+        super().__init__(parent=parent)
         self._column_names = ("protocol", "address", "connected")
         self.update_timer = QTimer(self)
         self.update_timer.setInterval(1000)
@@ -61,7 +61,7 @@ class ConnectionTableModel(QAbstractTableModel):
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
-            return super(ConnectionTableModel, self).headerData(section, orientation, role)
+            return super().headerData(section, orientation, role)
         if orientation == Qt.Horizontal and section < self.columnCount():
             return str(self._column_names[section]).capitalize()
         elif orientation == Qt.Vertical and section < self.rowCount():

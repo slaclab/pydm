@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QFrame
 from qtpy.QtCore import Property
-from .base import PyDMWidget
+from .base import PyDMWidget, PostParentClassInitSetup
 
 
 class PyDMFrame(QFrame, PyDMWidget):
@@ -22,6 +22,11 @@ class PyDMFrame(QFrame, PyDMWidget):
 
         self._disable_on_disconnect = False
         self.alarmSensitiveBorder = False
+
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     @Property(bool)
     def disableOnDisconnect(self):

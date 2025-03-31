@@ -75,7 +75,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         self.latest_y = None
         self.plot_style = plot_style
 
-        super(WaveformCurveItem, self).__init__(**kws)
+        super().__init__(**kws)
 
     def to_dict(self):
         """
@@ -89,7 +89,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         dic_ = OrderedDict(
             [("y_channel", self.y_address), ("x_channel", self.x_address), ("plot_style", self.plot_style)]
         )
-        dic_.update(super(WaveformCurveItem, self).to_dict())
+        dic_.update(super().to_dict())
         dic_["redraw_mode"] = self.redraw_mode
         return dic_
 
@@ -337,7 +337,7 @@ class PyDMWaveformPlot(BasePlot):
     """
 
     def __init__(self, parent=None, init_x_channels=[], init_y_channels=[], background="default"):
-        super(PyDMWaveformPlot, self).__init__(parent, background)
+        super().__init__(parent, background)
         # If the user supplies a single string instead of a list,
         # wrap it in a list.
         if isinstance(init_x_channels, str):
@@ -515,7 +515,7 @@ class PyDMWaveformPlot(BasePlot):
         """
         Remove all curves from the plot.
         """
-        super(PyDMWaveformPlot, self).clear()
+        super().clear()
 
     def getCurves(self):
         """

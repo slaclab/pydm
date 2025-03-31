@@ -88,7 +88,7 @@ class PyDMApplication(QApplication):
         fullscreen=False,
         home_file=None,
     ):
-        super(PyDMApplication, self).__init__(command_line_args)
+        super().__init__(command_line_args)
         # Enable High DPI display, if available.
         if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
             self.setAttribute(Qt.AA_UseHighDpiPixmaps)
@@ -148,7 +148,7 @@ class PyDMApplication(QApplication):
         """
         Execute the QApplication.
         """
-        return super(PyDMApplication, self).exec_()
+        return super().exec_()
 
     def is_read_only(self):
         warnings.warn("'PyDMApplication.is_read_only' is deprecated, " "use 'pydm.data_plugins.is_read_only' instead.")

@@ -176,7 +176,7 @@ class CalcThread(QThread):
 
 class Connection(PyDMConnection):
     def __init__(self, channel, address, protocol=None, parent=None):
-        super(Connection, self).__init__(channel, address, protocol, parent)
+        super().__init__(channel, address, protocol, parent)
         self._calc_thread = None
         self.value = None
         self._configuration = {}
@@ -190,7 +190,7 @@ class Connection(PyDMConnection):
 
     def add_listener(self, channel):
         self._setup_calc(channel)
-        super(Connection, self).add_listener(channel)
+        super().add_listener(channel)
         self.broadcast_value()
 
     def broadcast_value(self):

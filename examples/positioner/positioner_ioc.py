@@ -49,7 +49,7 @@ pvdb = {
 
 class myDriver(Driver):
     def __init__(self):
-        super(myDriver, self).__init__()
+        super().__init__()
 
 
 if __name__ == "__main__":

@@ -112,7 +112,7 @@ class BasePlotCurveItem(PlotDataItem):
                 lineStyle = Qt.PenStyle(lineStyle)
             self._pen.setStyle(lineStyle)
         kws["pen"] = self._pen
-        super(BasePlotCurveItem, self).__init__(**kws)
+        super().__init__(**kws)
         self.setSymbolBrush(None)
         if color is not None:
             self.color = color
@@ -460,8 +460,6 @@ class BasePlotAxisItem(AxisItem):
         The minimum value to be displayed on this axis
     maxRange: float, optional
         The maximum value to be displayed on this axis
-    autoRange: bool, optional
-        Whether or not this axis should automatically update its range as it receives new data
     logMode: bool, optional
         If true, this axis will start in logarithmic mode, will be linear otherwise
     **kws: optional
@@ -480,16 +478,14 @@ class BasePlotAxisItem(AxisItem):
         label: Optional[str] = None,
         minRange: Optional[float] = -1.0,
         maxRange: Optional[float] = 1.0,
-        autoRange: Optional[bool] = True,
         logMode: Optional[bool] = False,
         **kws,
     ) -> None:
-        super(BasePlotAxisItem, self).__init__(orientation, **kws)
+        super().__init__(orientation, **kws)
         self._curves: List[BasePlotCurveItem] = []
         self._name = name
         self._orientation = orientation
         self._label = label
-        self._auto_range = autoRange
         self._log_mode = logMode
         self.setRange(minRange, maxRange)
 
@@ -497,8 +493,10 @@ class BasePlotAxisItem(AxisItem):
         if oldView := self.linkedView():
             oldView.sigXRangeChanged.disconnect(self.sigXRangeChanged.emit)
             oldView.sigYRangeChanged.disconnect(self.sigYRangeChanged.emit)
+            oldView.sigRangeChangedManually.disconnect(self.disable_auto_range)
         view.sigXRangeChanged.connect(self.sigXRangeChanged.emit)
         view.sigYRangeChanged.connect(self.sigYRangeChanged.emit)
+        view.sigRangeChangedManually.connect(self.disable_auto_range)
         super().linkToView(view)
 
     @property
@@ -613,7 +611,11 @@ class BasePlotAxisItem(AxisItem):
         -------
         bool
         """
-        return self._auto_range
+        if self.orientation == "left" or self.orientation == "right":
+            axis = ViewBox.YAxis
+        elif self.orientation == "top" or self.orientation == "bottom":
+            axis = ViewBox.XAxis
+        return bool(self.linkedView().autoRangeEnabled()[axis])  # ViewBox axes map to 0 and 1
 
     @auto_range.setter
     def auto_range(self, auto_range: bool) -> None:
@@ -624,7 +626,17 @@ class BasePlotAxisItem(AxisItem):
         ----------
         auto_range: bool
         """
-        self._auto_range = auto_range
+        if self.orientation == "left" or self.orientation == "right":
+            axis = ViewBox.YAxis
+        elif self.orientation == "top" or self.orientation == "bottom":
+            axis = ViewBox.XAxis
+        self.linkedView().enableAutoRange(axis, auto_range)
+
+    def disable_auto_range(self) -> None:
+        self.auto_range = False
+
+    def enable_auto_range(self) -> None:
+        self.auto_range = True
 
     @property
     def log_mode(self) -> bool:
@@ -679,7 +691,7 @@ class BasePlotAxisItem(AxisItem):
                 ("label", self._label),
                 ("minRange", self.range[0]),
                 ("maxRange", self.range[1]),
-                ("autoRange", self._auto_range),
+                ("autoRange", self.auto_range),
                 ("logMode", self._log_mode),
             ]
         )
@@ -715,7 +727,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             # The pyqtgraph PlotItem.setAxisItems() will always add an an AxisItem called left whether you asked
             # it to or not. This will clear it if not specifically requested.
             plotItem.removeAxis("left")
-        super(BasePlot, self).__init__(parent=parent, background=background, plotItem=plotItem)
+        super().__init__(parent=parent, background=background, plotItem=plotItem)
 
         self.plotItem = plotItem
         self.plotItem.hideButtons()
@@ -788,7 +800,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
     def eventFilter(self, obj: QObject, event: QEvent) -> bool:
         """Display a tool tip upon mousing over the plot in Qt designer explaining how to edit curves on it"""
-        ret = super(BasePlot, self).eventFilter(obj, event)
+        ret = super().eventFilter(obj, event)
         if utilities.is_qt_designer():
             if event.type() == QEvent.Enter:
                 QToolTip.showText(

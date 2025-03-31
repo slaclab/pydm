@@ -1,4 +1,6 @@
 import os
+import weakref
+import gc
 
 from pydm import PyDMApplication
 from pydm.display import Display, clear_compiled_ui_file_cache
@@ -51,6 +53,23 @@ else:  # pyside6
 
         finally:
             clear_compiled_ui_file_cache()
+
+
+def test_reload_cleans_up_display(qapp: PyDMApplication):
+    """When calling reload_display() on the main window, verify the original display is entirely replaced by the
+    refreshed version. There should be no remaining references to the original one."""
+    qapp.make_main_window()
+    qapp.main_window.open(test_ui_path)
+    display_widget_ref = weakref.ref(qapp.main_window.display_widget())
+
+    # Reloading should replace the existing display_widget with a new refreshed version
+    qapp.main_window.reload_display(True)
+
+    # After the reload there should be no more references to the original display so this will garbage collect it
+    gc.collect()
+
+    # With no more references, the weakref should be cleaned up
+    assert display_widget_ref() is None
 
 
 def test_menubar_text(qapp: PyDMApplication) -> None:

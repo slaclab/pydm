@@ -32,7 +32,7 @@ class EventPlotCurveItem(BasePlotCurveItem):
             kws["symbol"] = "o"
         if "lineStyle" not in kws.keys():
             kws["lineStyle"] = Qt.NoPen
-        super(EventPlotCurveItem, self).__init__(**kws)
+        super().__init__(**kws)
         self.bufferSizeChannelAddress = bufferSizeChannelAddress
 
     def to_dict(self):
@@ -46,7 +46,7 @@ class EventPlotCurveItem(BasePlotCurveItem):
             needed to recreate this curve.
         """
         dic_ = OrderedDict([("channel", self.address), ("y_idx", self.y_idx), ("x_idx", self.x_idx)])
-        dic_.update(super(EventPlotCurveItem, self).to_dict())
+        dic_.update(super().to_dict())
         dic_["buffer_size"] = self.getBufferSize()
         dic_["bufferSizeChannelAddress"] = self.bufferSizeChannelAddress
         return dic_
@@ -256,7 +256,7 @@ class PyDMEventPlot(BasePlot):
     """
 
     def __init__(self, parent=None, channel=None, init_x_indices=[], init_y_indices=[], background="default"):
-        super(PyDMEventPlot, self).__init__(parent, background)
+        super().__init__(parent, background)
         # If the user supplies a single integer instead of a list,
         # wrap it in a list.
         if isinstance(init_x_indices, int):
@@ -410,7 +410,7 @@ class PyDMEventPlot(BasePlot):
         """
         Remove all curves from the plot.
         """
-        super(PyDMEventPlot, self).clear()
+        super().clear()
 
     def getCurves(self):
         """
