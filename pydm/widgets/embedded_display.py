@@ -289,7 +289,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self._embedded_widget.show()
             self._is_connected = True
 
-    def connect(self):
+    def connectEmbeddedWidgetChannels(self):
         """
         Establish the connection between the embedded widget and
         the channels associated with it.
@@ -397,7 +397,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             if w:
                 self.embedded_widget = w
         if self.disconnectWhenHidden:
-            self.connect()
+            self.connectEmbeddedWidgetChannels()
 
     def hideEvent(self, e):
         """
