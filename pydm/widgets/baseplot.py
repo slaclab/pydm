@@ -1714,8 +1714,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             else:
                 label.show()
 
-            x_str = f"{real_x:.2f}"
-            y_str = f"{real_y:.2f}"
+            x_str = self.getFormattedX(real_x)
+            y_str = self.getFormattedY(real_y)
             label.setText(f"x={x_str}\ny={y_str}")
             label.setPos(x_val, real_y)
 
@@ -1726,3 +1726,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         The default is numeric, but child classes (e.g., time plots) can override this.
         """
         return f"{real_x:.2f}"
+
+    def getFormattedY(self, real_y: float) -> str:
+        """
+        Return a string representation for `real_y`.
+
+        The default is numeric, but child classes (e.g., time plots) can override this.
+        """
+        return f"{real_y:.2f}"
