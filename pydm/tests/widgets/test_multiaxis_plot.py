@@ -1,5 +1,6 @@
 import pytest
 from unittest import mock
+from unittest.mock import patch
 from pyqtgraph import AxisItem, PlotDataItem, ViewBox
 from qtpy.QtWidgets import QGraphicsScene
 from ...widgets.multi_axis_plot import MultiAxisPlot
@@ -163,3 +164,45 @@ def test_remove_item(qtbot, sample_plot: MultiAxisPlot):
     assert len(sample_plot.items) == 0
     assert len(sample_plot.dataItems) == 0
     assert len(linked_viewbox.addedItems) == 0
+
+
+def test_get_view_box_for_axis_valid_axis_with_link(sample_plot):
+    """
+    Test that if we pass a valid axis name that has a non-None linked ViewBox,
+    getViewBoxForAxis returns that specific ViewBox.
+    """
+    axis_name = "Test Axis"
+    test_axis = AxisItem("left")
+    sample_plot.addAxis(test_axis, axis_name)
+
+    linked_vb = test_axis.linkedView()
+    assert linked_vb is not None, "Expected newly added axis to have a linked ViewBox."
+
+    returned_vb = sample_plot.getViewBoxForAxis(axis_name)
+    assert returned_vb == linked_vb, "getViewBoxForAxis should return the specific ViewBox linked to the axis."
+
+
+def test_get_view_box_for_axis_valid_axis_no_link(sample_plot):
+    """
+    Test that if the axis name is valid but its linkedView() returns None,
+    getViewBoxForAxis will return the main ViewBox instead.
+    """
+    axis_name = "Test Axis No Link"
+    test_axis = AxisItem("left")
+    sample_plot.addAxis(test_axis, axis_name)
+
+    with patch.object(test_axis, "linkedView", return_value=None):
+        returned_vb = sample_plot.getViewBoxForAxis(axis_name)
+        main_vb = sample_plot.getViewBox()
+        assert returned_vb == main_vb, "If linkedView() is None, getViewBoxForAxis should return the main ViewBox."
+
+
+def test_get_view_box_for_axis_invalid_axis(sample_plot):
+    """
+    Test that if the axis name doesn't exist in the plot's axes dictionary,
+    getViewBoxForAxis returns the main ViewBox.
+    """
+    axis_name = "NonExistentAxis"
+    returned_vb = sample_plot.getViewBoxForAxis(axis_name)
+    main_vb = sample_plot.getViewBox()
+    assert returned_vb == main_vb, "An invalid axis name should cause getViewBoxForAxis to return the main ViewBox."
