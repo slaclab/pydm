@@ -1,6 +1,7 @@
 import numpy as np
 from pyqtgraph import BarGraphItem
 from unittest import mock
+from unittest.mock import MagicMock, patch
 from ...widgets.waveformplot import PyDMWaveformPlot, WaveformCurveItem
 
 
@@ -110,3 +111,110 @@ def test_clear_axes(qtbot):
     assert "Axis 1" not in waveform_plot.plotItem.axes
     assert "Axis 2" not in waveform_plot.plotItem.axes
     assert len(waveform_plot.plotItem.stackedViews) == 0
+
+
+def test_redrawPlot_no_redraw():
+    """
+    Test that when _needs_redraw is False, nothing happens.
+    """
+    widget = PyDMWaveformPlot()
+    widget._needs_redraw = False
+    # Set up some dummy curves.
+    widget._curves = [MagicMock(), MagicMock()]
+    widget.crosshair = True  # even if crosshair is True, the method should exit early
+
+    # Call redrawPlot.
+    widget.redrawPlot()
+
+    # Ensure that none of the curves had redrawCurve() called.
+    for curve in widget._curves:
+        curve.redrawCurve.assert_not_called()
+
+    # _needs_redraw remains False.
+    assert widget._needs_redraw is False
+
+
+def test_redrawPlot_without_crosshair():
+    """
+    Test that when _needs_redraw is True but crosshair is False,
+    the curves are redrawn and _needs_redraw is reset.
+    """
+    widget = PyDMWaveformPlot()
+    widget._needs_redraw = True
+    # Create dummy curves.
+    curves = [MagicMock(), MagicMock()]
+    widget._curves = curves
+    widget.crosshair = False
+
+    # Call redrawPlot.
+    widget.redrawPlot()
+
+    # Verify each curve's redrawCurve was called once.
+    for curve in curves:
+        curve.redrawCurve.assert_called_once()
+
+    # _needs_redraw should now be False.
+    assert widget._needs_redraw is False
+
+
+def test_redrawPlot_with_crosshair():
+    """
+    Test that when _needs_redraw is True and crosshair is True,
+    the curves are redrawn, crosshair is updated, and the signal is emitted.
+    """
+    widget = PyDMWaveformPlot()
+    widget._needs_redraw = True
+    # Create dummy curves.
+    curves = [MagicMock(), MagicMock()]
+    widget._curves = curves
+    widget.crosshair = True
+
+    # Set up dummy positions.
+    dummy_global_pos = MagicMock()  # This will be returned by QCursor.pos()
+    dummy_local_pos = MagicMock()  # Returned by mapFromGlobal
+    dummy_scene_pos = MagicMock()  # Returned by mapToScene
+    dummy_scene_pos.x.return_value = 150.0
+    dummy_scene_pos.y.return_value = 250.0
+
+    # Override mapFromGlobal and mapToScene.
+    widget.mapFromGlobal = MagicMock(return_value=dummy_local_pos)
+    widget.mapToScene = MagicMock(return_value=dummy_scene_pos)
+
+    # Patch QCursor.pos to return dummy_global_pos.
+    with patch("PyQt5.QtGui.QCursor.pos", return_value=dummy_global_pos):
+        # Set up a dummy plotItem with sceneBoundingRect() and vb.mapSceneToView().
+        dummy_rect = MagicMock()
+        dummy_rect.contains.return_value = True  # Indicate scene_pos is within bounds
+        dummy_mapped_point = MagicMock()
+        dummy_mapped_point.x.return_value = 300.0
+        dummy_mapped_point.y.return_value = 400.0
+
+        dummy_vb = MagicMock()
+        dummy_vb.mapSceneToView.return_value = dummy_mapped_point
+
+        widget.plotItem = MagicMock()
+        widget.plotItem.sceneBoundingRect.return_value = dummy_rect
+        widget.plotItem.vb = dummy_vb
+
+        # Create dummy crosshair line objects.
+        widget.vertical_crosshair_line = MagicMock()
+        widget.horizontal_crosshair_line = MagicMock()
+        # Simulate a signal by using a MagicMock for emit.
+        widget.crosshair_position_updated = MagicMock()
+
+        # Call redrawPlot.
+        widget.redrawPlot()
+
+    # Verify that redrawCurve was called for each curve.
+    for curve in curves:
+        curve.redrawCurve.assert_called_once()
+
+    # _needs_redraw should be reset.
+    assert widget._needs_redraw is False
+
+    # Verify that the crosshair lines' setPos methods were called with the mapped coordinates.
+    widget.vertical_crosshair_line.setPos.assert_called_once_with(dummy_mapped_point.x())
+    widget.horizontal_crosshair_line.setPos.assert_called_once_with(dummy_mapped_point.y())
+
+    # Verify that the crosshair_position_updated signal was emitted with the scene position.
+    widget.crosshair_position_updated.emit.assert_called_once_with(dummy_scene_pos.x(), dummy_scene_pos.y())

@@ -1,13 +1,16 @@
 import pytest
 import logging
+import numpy as np
+from unittest.mock import MagicMock
 
 from pydm.widgets.timeplot import PyDMTimePlot
 from pydm.widgets.waveformplot import PyDMWaveformPlot, WaveformCurveItem
-from qtpy.QtGui import QColor
-from qtpy.QtCore import QTimer, Qt
+from qtpy.QtGui import QColor, QFont
+from qtpy.QtCore import QTimer, Qt, QPointF
 
 from collections import OrderedDict
 from ...widgets.baseplot import BasePlotCurveItem, BasePlot
+
 
 logger = logging.getLogger(__name__)
 
@@ -281,3 +284,290 @@ def test_reset_autorange(qtbot):
 
     for view in plot.getPlotItem().stackedViews:
         assert all(view.state["autoRange"])
+
+
+class DummyPlotDataItem:
+    """Simulate a valid PlotDataItem."""
+
+    pass
+
+
+class DummyTextItem:
+    """
+    A dummy text item to simulate the TextItem created in initializeCurveLabels.
+    It records calls to setPos, setAnchor, setFont, setText and tracks its visibility.
+    """
+
+    def __init__(self, text, color, border, fill):
+        self.text = text
+        self.color = color
+        self.border = border
+        self.fill = fill
+        self._pos = None
+        self._anchor = None
+        self._font = None
+        self._text = text
+        self.visible = True
+
+    def setPos(self, x, y=None):
+        if y is None:
+            self._pos = x
+        else:
+            self._pos = (x, y)
+
+    def setAnchor(self, anchor):
+        self._anchor = anchor
+
+    def setFont(self, font):
+        self._font = font
+
+    def setText(self, text):
+        self._text = text
+
+    def show(self):
+        self.visible = True
+
+    def hide(self):
+        self.visible = False
+
+
+class DummyViewBox:
+    """
+    A dummy view box for use in updateLabel. Its mapSceneToView method returns
+    a dummy point whose x() value we control.
+    """
+
+    def __init__(self, mapped_x=0):
+        self.mapped_x = mapped_x
+
+    def addItem(self, item):
+        pass
+
+    def mapSceneToView(self, point):
+        dummy = MagicMock()
+        dummy.x.return_value = self.mapped_x
+        return dummy
+
+
+class DummyPlotItem:
+    """
+    A dummy plot item that provides:
+      - listDataItems() to supply data items.
+      - removeItem(item) to simulate removal of an item.
+      - getViewBoxForAxis(axis_name) to return a dummy view box.
+      - An attribute axes (a list) and a vb (default view box).
+    """
+
+    def __init__(self, data_items=None, axes=None, viewbox=None):
+        self._data_items = data_items if data_items is not None else []
+        self.axes = axes if axes is not None else []
+        self._viewbox = viewbox if viewbox is not None else DummyViewBox()
+
+    def listDataItems(self):
+        return self._data_items
+
+    def removeItem(self, item):
+        pass
+
+    def getViewBoxForAxis(self, axis_name):
+        return DummyViewBox(mapped_x=2.5)
+
+    @property
+    def vb(self):
+        return self._viewbox
+
+
+class DummyWidget:
+    def __init__(self):
+        self.textItems = {}  # Maps curves to labels.
+        self.init_label = False
+        self.plotItem = DummyPlotItem()
+
+    def clearCurveLabels(self) -> None:
+        """
+        Remove all existing curve labels from the plot and clear the textItems dictionary.
+        """
+        if hasattr(self, "textItems"):
+            for label in list(self.textItems.values()):
+                self.plotItem.removeItem(label)
+            self.textItems.clear()
+            self.init_label = True
+
+    def initializeCurveLabels(self, font: str = "arial", font_size: int = 8) -> None:
+        """
+        Create a TextItem for each PlotDataItem in the plot and stores them in self.textItems.
+        """
+        self.clearCurveLabels()
+        self.init_label = False
+
+        for item in self.plotItem.listDataItems():
+            if not isinstance(item, DummyPlotDataItem):
+                continue
+
+            label = DummyTextItem(text="No data", color="w", border="dummy_pen", fill="dummy_brush")
+
+            label.setPos(0, 0)
+            label.setAnchor((0.5, 0.5))
+            label.setFont(QFont(font, font_size))
+
+            self.textItems[item] = label
+
+    def getViewBox(self):
+        """
+        Return a dummy view box for use in updateLabel.
+        """
+        return DummyViewBox(mapped_x=2.3)
+
+    def updateLabel(self, scene_x: float, scene_y: float) -> None:
+        """
+        Update the label for each curve based on the scene coordinates.
+        """
+        if self.init_label:
+            self.initializeCurveLabels()
+            self.init_label = False
+
+        for curve, label in self.textItems.items():
+            if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.plotItem.axes:
+                curve_vb = self.plotItem.getViewBoxForAxis(curve.y_axis_name)
+            else:
+                curve_vb = self.getViewBox()
+
+            curve_vb.addItem(label)
+            mouse_point_in_curve_vb = curve_vb.mapSceneToView(QPointF(scene_x, scene_y))
+            x_val = mouse_point_in_curve_vb.x()
+
+            xData, yData = curve.getData()
+            if (
+                xData is None
+                or yData is None
+                or len(xData) == 0
+                or not np.isfinite(x_val)
+                or x_val < xData[0]
+                or x_val > xData[-1]
+            ):
+                label.hide()
+                continue
+
+            label.show()
+            idx = np.searchsorted(xData, x_val, side="right") - 1
+            idx = max(0, min(idx, len(yData) - 1))
+            real_x = xData[idx]
+            real_y = yData[idx]
+
+            if not (np.isfinite(real_x) and np.isfinite(real_y)):
+                label.hide()
+                continue
+            else:
+                label.show()
+
+            x_str = f"{real_x:.2f}"
+            y_str = f"{real_y:.2f}"
+            label.setText(f"x={x_str}\ny={y_str}")
+            label.setPos(x_val, real_y)
+
+    def getFormattedX(self, real_x: float) -> str:
+        """
+        Return a string representation for real_x.
+        """
+        return f"{real_x:.2f}"
+
+
+# -----------------------------------------------------------------------------
+# Pytest Unit Tests
+# -----------------------------------------------------------------------------
+
+
+def test_initializeCurveLabels():
+    widget = DummyWidget()
+    valid_item = DummyPlotDataItem()
+    invalid_item = "not a data item"
+    widget.plotItem._data_items = [valid_item, invalid_item]
+
+    widget.initializeCurveLabels(font="Times", font_size=10)
+
+    assert valid_item in widget.textItems
+    assert invalid_item not in widget.textItems
+
+    label = widget.textItems[valid_item]
+    assert label._pos == (0, 0)
+    assert label._anchor == (0.5, 0.5)
+    assert isinstance(label._font, QFont)
+    assert label._font.family() == "Times"
+    assert label._font.pointSize() == 10
+
+
+def test_clearCurveLabels(monkeypatch):
+    widget = DummyWidget()
+    dummy_item = DummyPlotDataItem()
+    dummy_label = DummyTextItem("No data", "w", "dummy_pen", "dummy_brush")
+    widget.textItems = {dummy_item: dummy_label}
+
+    remove_calls = []
+
+    def fake_remove(item):
+        remove_calls.append(item)
+
+    monkeypatch.setattr(widget.plotItem, "removeItem", fake_remove)
+
+    widget.clearCurveLabels()
+    assert dummy_label in remove_calls
+    assert widget.textItems == {}
+    assert widget.init_label is True
+
+
+def test_updateLabel_valid():
+    """
+    Test updateLabel with a dummy curve that returns valid data.
+    """
+    widget = DummyWidget()
+    widget.init_label = False  # So that initializeCurveLabels is not re-called.
+
+    class DummyCurve:
+        def __init__(self, xData, yData):
+            self._xData = xData
+            self._yData = yData
+
+        def getData(self):
+            return self._xData, self._yData
+
+    curve = DummyCurve(np.array([0, 1, 2, 3]), np.array([10, 20, 30, 40]))
+    label = DummyTextItem("No data", "w", "dummy_pen", "dummy_brush")
+    widget.textItems = {curve: label}
+
+    # When getViewBox() is called, our dummy view box returns x_val = 2.3.
+    widget.updateLabel(100.0, 200.0)
+
+    # For x_val = 2.3, np.searchsorted([0,1,2,3], 2.3, side="right") returns 3;
+    # subtracting 1 gives index 2. Thus, real_x should be 2 and real_y should be 30.
+    expected_text = "x=2.00\ny=30.00"
+    expected_pos = (2.3, 30)
+    assert label._text == expected_text
+    assert label._pos == expected_pos
+    assert label.visible is True
+
+
+def test_updateLabel_invalid_data():
+    """
+    Test updateLabel with a curve that returns empty data.
+    The label should be hidden.
+    """
+    widget = DummyWidget()
+    widget.init_label = False
+
+    class DummyCurve:
+        def getData(self):
+            return np.array([]), np.array([])
+
+    curve = DummyCurve()
+    label = DummyTextItem("No data", "w", "dummy_pen", "dummy_brush")
+    widget.textItems = {curve: label}
+
+    widget.updateLabel(100.0, 200.0)
+    # Since the data arrays are empty, the label should be hidden.
+    assert label.visible is False
+
+
+def test_getFormattedX():
+    widget = DummyWidget()
+    result = widget.getFormattedX(3.14159)
+    assert result == "3.14"
