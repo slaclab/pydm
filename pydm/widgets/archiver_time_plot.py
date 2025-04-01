@@ -3,8 +3,8 @@ import re
 import time
 import numpy as np
 from collections import OrderedDict
-from typing import List, Optional
-from pyqtgraph import DateAxisItem, ErrorBarItem
+from typing import List, Optional, Union
+from pyqtgraph import DateAxisItem, ErrorBarItem, PlotCurveItem
 from pydm.utilities import remove_protocol, is_qt_designer
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
@@ -42,6 +42,9 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         the plot is zoomed or scrolled to the left.
     liveData : bool
         If True, the curve will gather data in real time.
+    show_extension_line : bool
+        If True, shows a line that extends from the right-most point to the future.
+        Defaults to False.
     **kws : dict[str: any]
         Additional parameters supported by pyqtgraph.PlotDataItem.
     """
@@ -53,27 +56,45 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     prompt_archive_request = Signal()
 
     def __init__(
-        self, channel_address: Optional[str] = None, use_archive_data: bool = True, liveData: bool = True, **kws
+        self,
+        channel_address: Optional[str] = None,
+        use_archive_data: bool = True,
+        liveData: bool = True,
+        show_extension_line: bool = False,
+        **kws,
     ):
+        # Attributes that must exist before super().__init__() call
         self.archive_channel = None
+        self.error_bar = ErrorBarItem()
+        self._extension_line = PlotCurveItem()
+
         super().__init__(**kws)
+
         self.use_archive_data = use_archive_data
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
         self._liveData = liveData
 
-        # When optimized or mean value data is requested, we can display error bars representing
-        # the full range of values retrieved
-        self.error_bar = ErrorBarItem()
+        self._show_extension_line = show_extension_line
+        if not self._show_extension_line:
+            self._extension_line.hide()
+
         self.error_bar_data = None
 
         self.destroyed.connect(lambda: self.remove_error_bar())
+        self.destroyed.connect(lambda: self.remove_extenstion_line())
         self.address = channel_address
 
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
-        dic_ = OrderedDict([("useArchiveData", self.use_archive_data), ("liveData", self.liveData)])
+        dic_ = OrderedDict(
+            [
+                ("useArchiveData", self.use_archive_data),
+                ("liveData", self.liveData),
+                ("showExtensionLine", self._show_extension_line),
+            ]
+        )
         dic_.update(super(ArchivePlotCurveItem, self).to_dict())
         return dic_
 
@@ -114,15 +135,42 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     def y_axis_name(self, axis_name: str) -> None:
         """
         Set the name of the y-axis that should be associated with this curve.
-        Also move's the curve's error bar item.
+        Also move's the curve's error bar item and extension line.
         Parameters
         ----------
         axis_name: str
         """
         BasePlotCurveItem.y_axis_name.fset(self, axis_name)
-        if vb := self.error_bar.getViewBox():
-            vb.removeItem(self.error_bar)
+        self.remove_error_bar()
         self.getViewBox().addItem(self.error_bar)
+
+        self.remove_extenstion_line()
+        self.getViewBox().addItem(self._extension_line)
+
+    @BasePlotCurveItem.color.setter
+    def color(self, new_color: Union[QColor, str]) -> None:
+        """
+        Set the name of the color of the curve and its parts.
+        Parameters
+        ----------
+        new_color: QColor | str
+        """
+        BasePlotCurveItem.color.fset(self, new_color)
+        self.refresh_extension_line_pen()
+        self.refresh_error_bar_pen()
+
+    @BasePlotCurveItem.lineWidth.setter
+    def lineWidth(self, new_width: int) -> None:
+        """
+        Set the width of the line connecting the data points and the
+        curve's extension line.
+
+        Parameters
+        -------
+        new_width: int
+        """
+        BasePlotCurveItem.lineWidth.fset(self, new_width)
+        self.refresh_extension_line_pen()
 
     @property
     def liveData(self):
@@ -142,6 +190,19 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             self.archive_data_request_signal.emit(min_x, max_x - 1, "")
 
         self._liveData = True
+
+    @property
+    def show_extension_line(self):
+        return self._show_extension_line
+
+    @show_extension_line.setter
+    def show_extension_line(self, enable: bool):
+        self._show_extension_line = enable
+        if self._show_extension_line:
+            self.set_extension_line_data()
+            self._extension_line.show()
+        else:
+            self._extension_line.hide()
 
     @Slot(np.ndarray)
     def receiveArchiveData(self, data: np.ndarray) -> None:
@@ -247,9 +308,48 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
                 )
 
                 self.setData(y=y, x=x)
+
             except (ZeroDivisionError, OverflowError, TypeError):
                 # Solve an issue with pyqtgraph and initial downsampling
                 pass
+
+        if self._show_extension_line:
+            self.set_extension_line_data()
+
+    def set_extension_line_data(self) -> None:
+        """
+        Creates a dotted line from the lastest point in the buffer
+        (live or archived depending on if live data is active).
+        """
+        if self._liveData:
+            if self.data_buffer.size == 0:
+                return
+            x_last = self.data_buffer[:, -1]
+            y_last = self.data_buffer[:, -1]
+        else:
+            if self.archive_data_buffer.size == 0:
+                return
+            x_last = self.archive_data_buffer[:, -1]
+            y_last = self.archive_data_buffer[:, -1]
+
+        x_infinity = x_last[0] + APPROX_SECONDS_300_YEARS
+
+        x_line = np.array([x_last[0], x_infinity])
+        y_line = np.array([y_last[1], y_last[1]])
+        self._extension_line.setData(x=x_line, y=y_line)
+
+    @Slot()
+    def remove_extenstion_line(self):
+        """Remove the curve's error bar when the curve is deleted."""
+        if self._extension_line is None:
+            return
+        if vb := self._extension_line.getViewBox():
+            vb.removeItem(self._extension_line)
+
+    def refresh_extension_line_pen(self) -> None:
+        dotted_pen = QPen(self._pen)
+        dotted_pen.setStyle(Qt.DotLine)
+        self._extension_line.setPen(dotted_pen)
 
     def initializeArchiveBuffer(self) -> None:
         """
@@ -296,11 +396,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             bot_val = y_val - self.error_bar_data[3]
             top_val = self.error_bar_data[4] - y_val
 
-        # Set the error bar's pen to be the same as the curve, but solid
-        solid_pen = QPen(self._pen)
-        solid_pen.setStyle(Qt.SolidLine)
-
-        self.error_bar.setData(x=x_val, y=y_val, top=top_val, bottom=bot_val, beam=0.5, pen=solid_pen)
+        self.error_bar.setData(x=x_val, y=y_val, top=top_val, bottom=bot_val, beam=0.5)
 
     @Slot()
     def remove_error_bar(self):
@@ -309,6 +405,11 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             return
         if vb := self.error_bar.getViewBox():
             vb.removeItem(self.error_bar)
+
+    def refresh_error_bar_pen(self) -> None:
+        solid_pen = QPen(self._pen)
+        solid_pen.setStyle(Qt.SolidLine)
+        self.error_bar.setData(pen=solid_pen)
 
     def setLogMode(self, xState: bool, yState: bool) -> None:
         """When log mode is enabled for the respective axis by setting xState or
@@ -382,6 +483,24 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         # Ignore incoming live data depending on user request
         if self._liveData:
             super().receiveNewValue(new_value)
+
+    def setVisible(self, visible: bool) -> None:
+        """Propogate visibility changes to extension line and error bar."""
+        super().setVisible(visible)
+        self._extension_line.setVisible(visible)
+        self.error_bar.setVisible(visible)
+
+    def hide(self):
+        """Propogate visibility changes to extension line and error bar."""
+        super().hide()
+        self._extension_line.hide()
+        self.error_bar.hide()
+
+    def show(self):
+        """Propogate visibility changes to extension line and error bar."""
+        super().show()
+        self._extension_line.show()
+        self.error_bar.show()
 
 
 class FormulaCurveItem(BasePlotCurveItem):
@@ -828,6 +947,8 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         Whether curves should retain archive data or fetch new data when the x-axis changes
     show_all : bool
         Shifts the x-axis range to show all data, or stay where the user set the x-axis to
+    show_extension_lines : bool
+        Show a line extending from the right most point for all curves, defaults to False
     """
 
     def __init__(
@@ -839,6 +960,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         request_cooldown: int = 1000,
         cache_data: bool = True,
         show_all: bool = True,
+        show_extension_lines: bool = False,
     ):
         super().__init__(
             parent=parent,
@@ -853,6 +975,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         self.request_cooldown = request_cooldown
         self.cache_data = cache_data
         self._show_all = show_all  # Show all plotted data after archiver fetch
+        self._show_extension_lines = show_extension_lines
 
         self._starting_timestamp = time.time()  # The timestamp at which the plot was first rendered
         self._min_x = self._starting_timestamp - DEFAULT_TIME_SPAN
@@ -884,6 +1007,16 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             self.plotItem.sigXRangeChanged.connect(self.updateXAxis)
             self.plotItem.sigXRangeChangedManually.connect(self.updateXAxis)
         self._cache_data = enable
+
+    @property
+    def show_extension_lines(self):
+        return self._show_extension_lines
+
+    @show_extension_lines.setter
+    def show_extension_lines(self, enable: bool):
+        self._show_extension_lines = enable
+        for curve in self._curves:
+            curve.show_extension_line = enable
 
     def updateXAxis(self, update_immediately: bool = False) -> None:
         """Manages the requests to archiver appliance. When the user pans or zooms the x axis to the left,
@@ -1108,10 +1241,14 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         yAxisName=None,
         useArchiveData=False,
         liveData=True,
+        show_extension_line=None,
     ) -> ArchivePlotCurveItem:
         """
         Overrides timeplot addYChannel method to be able to pass the liveData flag.
         """
+        if show_extension_line is None:
+            show_extension_line = self._show_extension_lines
+
         curve = super().addYChannel(
             y_channel=y_channel,
             plot_style=plot_style,
@@ -1128,9 +1265,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             yAxisName=yAxisName,
             useArchiveData=useArchiveData,
             liveData=liveData,
+            show_extension_line=show_extension_line,
         )
         if not is_qt_designer():
             self.requestDataFromArchiver()
+
         return curve
 
     def addFormulaChannel(self, yAxisName: str, **kwargs) -> FormulaCurveItem:
