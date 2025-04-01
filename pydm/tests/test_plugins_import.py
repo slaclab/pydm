@@ -60,6 +60,13 @@ def test_import_frame_plugin():
     qtplugin_factory(PyDMFrame, is_container=True)
 
 
+def test_import_window_plugin():
+    # Window plugin
+    from ..widgets.window import PyDMWindow
+
+    qtplugin_factory(PyDMWindow, is_container=True)
+
+
 def test_import_enum_button_plugin():
     # Enum Button plugin
     from ..widgets.enum_button import PyDMEnumButton
