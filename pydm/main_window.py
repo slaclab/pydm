@@ -101,6 +101,7 @@ class PyDMMainWindow(QMainWindow):
         if hide_status_bar:
             self.toggle_status_bar(False)
             self.ui.actionShow_Status_Bar.setChecked(False)
+
         # Try to find the designer binary.
         self.ui.actionEdit_in_Designer.setEnabled(False)
 
@@ -119,8 +120,11 @@ class PyDMMainWindow(QMainWindow):
                 self.designer_path = designer_path
                 break
 
+        # Finish filling out menus, enable/disable nav bar buttons
         self.update_tools_menu()
         self.enable_disable_navigation()
+        if home_file is None:
+            self.ui.actionHome.setDisabled(True)
 
     def display_widget(self):
         return self._display_widget
