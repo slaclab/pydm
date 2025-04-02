@@ -1,6 +1,6 @@
 import pytest
 from scipy import constants
-from ...utilities import units
+from pydm.utilities import units
 
 
 @pytest.mark.parametrize("typ, expected", [("cm", "length"), ("non_existent", None)])

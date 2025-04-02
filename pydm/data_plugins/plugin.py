@@ -6,12 +6,12 @@ import threading
 from typing import Optional, Callable
 from urllib.parse import ParseResult
 
-from ..utilities.remove_protocol import parsed_address
-from ..widgets import PyDMChannel
+from pydm.utilities.remove_protocol import parsed_address
+from pydm.widgets import PyDMChannel
 from qtpy.compat import isalive
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
-from .. import config
+from pydm import config
 
 
 class PyDMConnection(QObject):

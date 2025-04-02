@@ -13,8 +13,8 @@ from typing import Any, Dict, Generator, List, Optional, Type
 import entrypoints
 from qtpy.QtWidgets import QApplication
 
-from .. import config
-from ..utilities import import_module_by_filename, log_failures, parsed_address
+from pydm import config
+from pydm.utilities import import_module_by_filename, log_failures, parsed_address
 from .plugin import PyDMPlugin
 
 logger = logging.getLogger(__name__)

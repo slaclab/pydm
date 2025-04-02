@@ -7,8 +7,8 @@ from typing import Any, Set
 
 import pytest
 
-from .. import tools
-from ..application import PyDMApplication
+from pydm import tools
+from pydm.application import PyDMApplication
 
 EXAMPLE_PATH = pathlib.Path(__file__).parents[2] / "examples"
 EXAMPLE_EXT_TOOL_PATH = EXAMPLE_PATH / "external_tool"

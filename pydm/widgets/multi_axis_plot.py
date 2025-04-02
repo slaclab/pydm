@@ -4,7 +4,7 @@ from typing import List, Optional
 from qtpy.QtCore import Qt, Signal
 from .multi_axis_viewbox import MultiAxisViewBox
 from .multi_axis_viewbox_menu import MultiAxisViewBoxMenu
-from ..utilities import is_qt_designer
+from pydm.utilities import is_qt_designer
 
 
 class MultiAxisPlot(PlotItem):

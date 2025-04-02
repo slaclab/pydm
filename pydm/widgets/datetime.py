@@ -2,7 +2,7 @@ import logging
 from qtpy import QtWidgets, QtCore
 
 from .base import PyDMWritableWidget, PyDMWidget, PostParentClassInitSetup
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 

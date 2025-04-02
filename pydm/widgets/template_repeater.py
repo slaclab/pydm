@@ -7,9 +7,9 @@ from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint
 from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer
 import pydm.data_plugins
-from ..utilities import find_file
-from ..display import load_file
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import find_file
+from pydm.display import load_file
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
