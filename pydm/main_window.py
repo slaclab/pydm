@@ -123,8 +123,6 @@ class PyDMMainWindow(QMainWindow):
         # Finish filling out menus, enable/disable nav bar buttons
         self.update_tools_menu()
         self.enable_disable_navigation()
-        if self.home_widget is None:
-            self.ui.actionHome.setDisabled(True)
 
     def display_widget(self):
         return self._display_widget
@@ -234,10 +232,14 @@ class PyDMMainWindow(QMainWindow):
 
     def enable_disable_navigation(self):
         w = self.display_widget()
+
+        self.ui.actionHome.setDisabled(not self.home_widget or w == self.home_widget)
+
         if not w:
             self.ui.actionBack.setDisabled(True)
             self.ui.actionForward.setDisabled(True)
             return
+
         if not isinstance(w, Display):
             # We can't do much if it is not a Display and we don't have the
             # previous_display and next_display properties since we don't
@@ -245,6 +247,7 @@ class PyDMMainWindow(QMainWindow):
             nav_stack_methods = hasattr(w, "previous_display") and hasattr(w, "next_display")
             if not nav_stack_methods:
                 return
+
         self.ui.actionBack.setDisabled(w.previous_display is None)
         self.ui.actionForward.setDisabled(w.next_display is None)
 

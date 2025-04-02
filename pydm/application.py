@@ -119,7 +119,7 @@ class PyDMApplication(QApplication):
                 command_line_args=command_line_args,
             )
             if ui_file is not None and self.home_file is not None:
-                if os.path.abspath(ui_file) != os.path.abspath(home_file):
+                if os.path.abspath(ui_file) != os.path.abspath(self.home_file):
                     self.main_window.open(ui_file, macros, command_line_args)
                 else:
                     self.main_window.home()
