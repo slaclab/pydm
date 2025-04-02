@@ -961,7 +961,7 @@ class PyDMDrawingImage(PyDMDrawing):
             base_path = None
             if parent_display:
                 base_path = os.path.dirname(parent_display.loaded_file())
-            abs_path = find_file(abs_path, base_path=base_path)
+            abs_path = find_file(abs_path, base_path=base_path, subdir_scan_time_limit=0)
             if not abs_path:
                 logger.error("Unable to find full filepath for %s", self._file)
                 return
