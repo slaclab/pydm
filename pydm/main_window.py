@@ -31,6 +31,7 @@ class PyDMMainWindow(QMainWindow):
         hide_status_bar=False,
         home_file=None,
         macros=None,
+        recursive_display_search=False,
         command_line_args=None,
     ):
         super().__init__(parent)
@@ -39,6 +40,7 @@ class PyDMMainWindow(QMainWindow):
         self.iconFont = IconFont()
         self._display_widget = None
         self._showing_file_path_in_title_bar = False
+        self._recursive_display_search = recursive_display_search
 
         # style sheet change flag
         self.isSS_Changed = False
@@ -388,7 +390,7 @@ class PyDMMainWindow(QMainWindow):
             curr_display = self.display_widget()
             if curr_display:
                 base_path = os.path.dirname(curr_display.loaded_file())
-            filename = find_file(filename, base_path=base_path, raise_if_not_found=True)
+            filename = find_file(filename, base_path=base_path, raise_if_not_found=True, subdir_scan_enabled=self._recursive_display_search, subdir_scan_base_path_only=False)
         new_widget = load_file(filename, macros=macros, args=args, target=target)
         if new_widget:
             if self.home_widget is None:
