@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.template_repeater &mdash; PyDM 1.26.0 documentation</title>
+  <title>pydm.widgets.template_repeater &mdash; PyDM 1.27.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.26.0
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -178,7 +178,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_layout</span><span class="p">(</span><span class="n">QRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="kc">True</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">setGeometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rect</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">FlowLayout</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">do_layout</span><span class="p">(</span><span class="n">rect</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -246,7 +246,11 @@
         <span class="n">Flow</span> <span class="o">=</span> <span class="mi">2</span>
 
 
-<span class="n">layout_class_for_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">FlowLayout</span><span class="p">)</span>
+<span class="n">layout_class_for_type</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">LayoutType</span><span class="o">.</span><span class="n">Vertical</span><span class="p">:</span> <span class="n">QVBoxLayout</span><span class="p">,</span>
+    <span class="n">LayoutType</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">:</span> <span class="n">QHBoxLayout</span><span class="p">,</span>
+    <span class="n">LayoutType</span><span class="o">.</span><span class="n">Flow</span><span class="p">:</span> <span class="n">FlowLayout</span><span class="p">,</span>
+<span class="p">}</span>
 
 
 <div class="viewcode-block" id="PyDMTemplateRepeater"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMTemplateRepeater</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">PyDMPrimitiveWidget</span><span class="p">):</span>

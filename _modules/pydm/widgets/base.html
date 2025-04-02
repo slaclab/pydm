@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.base &mdash; PyDM 1.26.0 documentation</title>
+  <title>pydm.widgets.base &mdash; PyDM 1.27.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.26.0
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -247,6 +247,22 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Error while refreshing stylesheet. </span><span class="si">%s</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">PostParentClassInitSetup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># This function should only be called from a pydm widget class&#39;s __init__ call, and *not* from</span>
+    <span class="c1"># from the __init__ of it&#39;s parent classes (PyDMWidget/PyDMPrimitiveWidget) where it throws an error on pyside6.</span>
+    <span class="c1"># The error is pyside6 thinks the widget class&#39;s parent __init__ calls are not getting called</span>
+    <span class="c1"># in the proper order, despite the fact that we explicitly call them so there should be no real issue.</span>
+    <span class="c1"># (see commit-msg of beb3c5533b717c3c9a00bd35c8615d900abbc03c for more explanation)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">DefaultContextMenu</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
+        <span class="c1"># Install event filter only if not running in Designer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># Will call the widget class&#39;s check_enable_state if it has one, else will use PyDMWidget&#39;s.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">widget_destroyed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
+
+
 <span class="k">class</span><span class="w"> </span><span class="nc">PyDMPrimitiveWidget</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Primitive class that determines that a given widget is a PyDMWidget.</span>
@@ -265,10 +281,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_opacity</span> <span class="o">=</span> <span class="mf">1.0</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
-            <span class="c1"># We should  install the Event Filter only if we are running</span>
-            <span class="c1"># and not at the Designer</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -697,7 +709,7 @@
 <span class="sd">        new_val : str, int, float, bool or np.ndarray</span>
 <span class="sd">            The new value from the channel. The type depends on the channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">TextFormatter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_format_string</span><span class="p">()</span>
 
 
@@ -728,7 +740,7 @@
     <span class="n">ALARM_DISCONNECTED</span> <span class="o">=</span> <span class="mi">4</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="kc">None</span>
@@ -773,15 +785,11 @@
 
         <span class="c1"># If this label is inside a PyDMApplication (not Designer) start it in</span>
         <span class="c1"># the disconnected state.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">DefaultContextMenu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">contextMenuEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_context_menu</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">init_channel</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_connected</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">alarmSeverityChanged</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ALARM_DISCONNECTED</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">widget_destroyed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
 
 <div class="viewcode-block" id="PyDMWidget.widget_ctx_menu"><a class="viewcode-back" href="../../../widgets/PyDMWidget.html#pydm.widgets.base.PyDMWidget.widget_ctx_menu">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">widget_ctx_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1492,14 +1500,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_disp_channel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_disable_put</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_monitor_disp</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">init_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method called after the constructor to tweak configurations for</span>
 <span class="sd">        when using the widget with the Qt Designer</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">init_for_designer</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init_for_designer</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_access</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>

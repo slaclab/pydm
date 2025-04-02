@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.scatterplot &mdash; PyDM 1.26.0 documentation</title>
+  <title>pydm.widgets.scatterplot &mdash; PyDM 1.27.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.26.0
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -161,7 +161,7 @@
             <span class="n">kws</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;o&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;lineStyle&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kws</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">kws</span><span class="p">[</span><span class="s2">&quot;lineStyle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">NoPen</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ScatterPlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannelAddress</span> <span class="o">=</span> <span class="n">bufferSizeChannelAddress</span>
 
 <div class="viewcode-block" id="ScatterPlotCurveItem.to_dict"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.ScatterPlotCurveItem.to_dict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -175,7 +175,7 @@
 <span class="sd">            needed to recreate this curve.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dic_</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;y_channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_address</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x_channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_address</span><span class="p">)])</span>
-        <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">ScatterPlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
         <span class="n">dic_</span><span class="p">[</span><span class="s2">&quot;redraw_mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_mode</span>
         <span class="n">dic_</span><span class="p">[</span><span class="s2">&quot;buffer_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getBufferSize</span><span class="p">()</span>
         <span class="n">dic_</span><span class="p">[</span><span class="s2">&quot;bufferSizeChannelAddress&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bufferSizeChannelAddress</span>
@@ -457,7 +457,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_x_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">init_y_channels</span><span class="o">=</span><span class="p">[],</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMScatterPlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="p">)</span>
         <span class="c1"># If the user supplies a single string instead of a list,</span>
         <span class="c1"># wrap it in a list.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init_x_channels</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -481,6 +481,10 @@
         <span class="c1"># If we are in Qt Designer, don&#39;t update the plot continuously.</span>
         <span class="c1"># This function gets called by PyDMTimePlot&#39;s designer plugin.</span>
         <span class="k">pass</span>
+
+<div class="viewcode-block" id="PyDMScatterPlot.updateLabel"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.PyDMScatterPlot.updateLabel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">updateLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_val</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y_val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Do nothing — disabling labels for this class. method would need to be implemented if labels are desired.</span>
+        <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="PyDMScatterPlot.addChannel"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.PyDMScatterPlot.addChannel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">addChannel</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -611,7 +615,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove all curves from the plot.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMScatterPlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMScatterPlot.getCurves"><a class="viewcode-back" href="../../../widgets/scatterplot.html#pydm.widgets.scatterplot.PyDMScatterPlot.getCurves">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">getCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

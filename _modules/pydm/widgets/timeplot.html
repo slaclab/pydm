@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.timeplot &mdash; PyDM 1.26.0 documentation</title>
+  <title>pydm.widgets.timeplot &mdash; PyDM 1.27.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.26.0
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -120,11 +120,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pyqtgraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">BarGraphItem</span><span class="p">,</span> <span class="n">ViewBox</span><span class="p">,</span> <span class="n">AxisItem</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QCursor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.baseplot</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePlot</span><span class="p">,</span> <span class="n">BasePlotCurveItem</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.channel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMChannel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">remove_protocol</span><span class="p">,</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
@@ -138,6 +139,9 @@
 
 <span class="n">DEFAULT_TIME_SPAN</span> <span class="o">=</span> <span class="mf">5.0</span>
 <span class="n">DEFAULT_UPDATE_INTERVAL</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># Plot update rate for fixed rate mode in milliseconds</span>
+
+<span class="n">DEFAULT_SEVERITY_RAW</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">DEFAULT_SEVERITY_STRING</span> <span class="o">=</span> <span class="s2">&quot;N/A&quot;</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">updateMode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -192,6 +196,7 @@
 
     <span class="n">_channels</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;channel&quot;</span><span class="p">,)</span>
     <span class="n">unitSignal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">severitySignal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">live_channel_connection</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_by_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="s2">&quot;Line&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
@@ -231,12 +236,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">TimePlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">severity_raw</span> <span class="o">=</span> <span class="n">DEFAULT_SEVERITY_RAW</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">severity</span> <span class="o">=</span> <span class="n">DEFAULT_SEVERITY_STRING</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">channel_address</span>
 
 <div class="viewcode-block" id="TimePlotCurveItem.to_dict"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.to_dict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dic_</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;channel&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;plot_style&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_style</span><span class="p">)])</span>
-        <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">TimePlotCurveItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">dic_</span></div>
 
     <span class="nd">@property</span>
@@ -262,6 +270,7 @@
             <span class="n">connection_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionStateChanged</span><span class="p">,</span>
             <span class="n">value_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiveNewValue</span><span class="p">,</span>
             <span class="n">unit_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unitsChanged</span><span class="p">,</span>
+            <span class="n">severity_slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">severityChanged</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
 
@@ -310,6 +319,37 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Slot to handle when units are received from the PyDMChannel.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unitSignal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">units</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimePlotCurveItem.severityChanged"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.severityChanged">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">severityChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">severity</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Slot to handle when severity are received from the PyDMChannel.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">severity_raw</span> <span class="o">=</span> <span class="n">severity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alarm_severity_changed</span><span class="p">(</span><span class="n">severity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">severitySignal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">severity</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimePlotCurveItem.alarm_severity_changed"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.TimePlotCurveItem.alarm_severity_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">alarm_severity_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_severity</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback invoked when the Channel alarm severity is changed.</span>
+<span class="sd">        Sets self.severity to a string representation based on the integer value.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_alarm_severity : int or str</span>
+<span class="sd">            The new severity where:</span>
+<span class="sd">                0 = NO_ALARM</span>
+<span class="sd">                1 = MINOR</span>
+<span class="sd">                2 = MAJOR</span>
+<span class="sd">                3 = INVALID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">severity_map</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;NO_ALARM&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;MINOR&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;MAJOR&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;INVALID&quot;</span><span class="p">}</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">severity_int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_alarm_severity</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="n">severity_int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">severity</span> <span class="o">=</span> <span class="n">severity_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">severity_int</span><span class="p">,</span> <span class="n">DEFAULT_SEVERITY_STRING</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">severity</span></div>
 
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">connectionStateChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
@@ -606,9 +646,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">starting_epoch_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span> <span class="o">=</span> <span class="n">AxisItem</span><span class="p">(</span><span class="s2">&quot;bottom&quot;</span><span class="p">)</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span> <span class="n">axisItems</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span><span class="p">}</span>
-        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span> <span class="n">axisItems</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bottom_axis</span><span class="p">})</span>
 
         <span class="c1"># Removing the downsampling while PR 763 is not merged at pyqtgraph</span>
         <span class="c1"># Reference: https://github.com/pyqtgraph/pyqtgraph/pull/763</span>
@@ -645,7 +683,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds attribute specific to TimePlot to add onto BasePlot&#39;s to_dict.</span>
 <span class="sd">        This helps to recreate the Plot Config if we import a save file of it&quot;&quot;&quot;</span>
         <span class="n">dic_</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;refreshInterval&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_scroll_timer</span><span class="o">.</span><span class="n">interval</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)])</span>
-        <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">PyDMTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="n">dic_</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">dic_</span></div>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">initialize_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -788,18 +826,31 @@
 <div class="viewcode-block" id="PyDMTimePlot.redrawPlot"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.redrawPlot">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">redrawPlot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Redraw the graph</span>
+<span class="sd">        Redraw the graph and ensure the crosshair remains aligned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">updateXAxis</span><span class="p">()</span>
-        <span class="c1"># The minimum and maximum x-axis timestamps visible to the user</span>
+
         <span class="n">min_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;viewRange&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">max_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;viewRange&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">:</span>
             <span class="n">curve</span><span class="o">.</span><span class="n">redrawCurve</span><span class="p">(</span><span class="n">min_x</span><span class="o">=</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span><span class="o">=</span><span class="n">max_x</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">plot_redrawn_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crosshair</span><span class="p">:</span>
+            <span class="n">global_pos</span> <span class="o">=</span> <span class="n">QCursor</span><span class="o">.</span><span class="n">pos</span><span class="p">()</span>  <span class="c1"># Screen coords</span>
+            <span class="n">local_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapFromGlobal</span><span class="p">(</span><span class="n">global_pos</span><span class="p">)</span>  <span class="c1"># Widget coords</span>
+            <span class="n">scene_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapToScene</span><span class="p">(</span><span class="n">local_pos</span><span class="p">)</span>  <span class="c1"># Scene coords</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">sceneBoundingRect</span><span class="p">()</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">scene_pos</span><span class="p">):</span>
+                <span class="n">mapped_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">vb</span><span class="o">.</span><span class="n">mapSceneToView</span><span class="p">(</span><span class="n">scene_pos</span><span class="p">)</span>  <span class="c1"># Data coords</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertical_crosshair_line</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">mapped_point</span><span class="o">.</span><span class="n">x</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">horizontal_crosshair_line</span><span class="o">.</span><span class="n">setPos</span><span class="p">(</span><span class="n">mapped_point</span><span class="o">.</span><span class="n">y</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">crosshair_position_updated</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">scene_pos</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">scene_pos</span><span class="o">.</span><span class="n">y</span><span class="p">())</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_needs_redraw</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="PyDMTimePlot.updateXAxis"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.updateXAxis">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">updateXAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_immediately</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -838,7 +889,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove all curves from the graph.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMTimePlot.getCurves"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.getCurves">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">getCurves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1187,14 +1238,14 @@
 <div class="viewcode-block" id="PyDMTimePlot.getAutoRangeX"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.getAutoRangeX">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">getAutoRangeX</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">getAutoRangeX</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">getAutoRangeX</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMTimePlot.setAutoRangeX"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.setAutoRangeX">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setAutoRangeX</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_by_timestamps</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_x</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">enableAutoRange</span><span class="p">(</span><span class="n">ViewBox</span><span class="o">.</span><span class="n">XAxis</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_range_x</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setAutoRangeX</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setAutoRangeX</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">curve</span><span class="o">.</span><span class="n">channel</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="p">]</span>
@@ -1259,7 +1310,7 @@
 <span class="sd">        horizontal_movable : bool</span>
 <span class="sd">            True if the user can move the horizontal line; False if not</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMTimePlot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">enableCrosshair</span><span class="p">(</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">enableCrosshair</span><span class="p">(</span>
             <span class="n">is_enabled</span><span class="p">,</span>
             <span class="n">starting_x_pos</span><span class="p">,</span>
             <span class="n">starting_y_pos</span><span class="p">,</span>
@@ -1267,7 +1318,39 @@
             <span class="n">horizontal_angle</span><span class="p">,</span>
             <span class="n">vertical_movable</span><span class="p">,</span>
             <span class="n">horizontal_movable</span><span class="p">,</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMTimePlot.updateLabel"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.updateLabel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">updateLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_val</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y_val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the label for each curve with severity information, if available.</span>
+
+<span class="sd">        This method first calls the parent class&#39;s `updateLabel` to handle general</span>
+<span class="sd">        label updates and positioning. It then appends severity information to the</span>
+<span class="sd">        label of each curve that contains a valid `severity_raw` attribute.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x_val : float</span>
+<span class="sd">            The x-coordinate value at which the label is being updated.</span>
+<span class="sd">        y_val : float</span>
+<span class="sd">            The y-coordinate value at which the label is being updated.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">updateLabel</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">curve</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">textItems</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="s2">&quot;severity_raw&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">old_text</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">()</span>
+                <span class="n">label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">old_text</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">curve</span><span class="o">.</span><span class="n">severity</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PyDMTimePlot.getFormattedX"><a class="viewcode-back" href="../../../widgets/timeplot.html#pydm.widgets.timeplot.PyDMTimePlot.getFormattedX">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">getFormattedX</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">real_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For time plots, interpret `real_x` as a UNIX timestamp and return HH:MM:SS.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">real_x</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">TimeAxisItem</span><span class="p">(</span><span class="n">AxisItem</span><span class="p">):</span>
@@ -1276,7 +1359,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">TimeAxisItem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">enableAutoSIPrefix</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">tickStrings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">spacing</span><span class="p">):</span>

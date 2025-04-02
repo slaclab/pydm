@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.spinbox &mdash; PyDM 1.26.0 documentation</title>
+  <title>pydm.widgets.spinbox &mdash; PyDM 1.27.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.26.0
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -161,7 +161,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        step: int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">stepBy</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">stepBy</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_on_press</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">()</span></div>
 
@@ -191,7 +191,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">()</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span></div>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMSpinbox.widget_ctx_menu"><a class="viewcode-back" href="../../../widgets/spinbox.html#pydm.widgets.spinbox.PyDMSpinbox.widget_ctx_menu">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">widget_ctx_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -260,7 +260,7 @@
             <span class="c1"># SpinBox is unable to work with None and</span>
             <span class="c1"># but sometimes it can arrive as an initial value</span>
             <span class="k">return</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valueBeingSet</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">valueBeingSet</span> <span class="o">=</span> <span class="kc">False</span></div>
@@ -375,7 +375,7 @@
 <span class="sd">        new_limit : float</span>
 <span class="sd">            New value for the control limit</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">ctrl_limit_changed</span><span class="p">(</span><span class="n">which</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">ctrl_limit_changed</span><span class="p">(</span><span class="n">which</span><span class="p">,</span> <span class="n">new_limit</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">userDefinedLimits</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">which</span> <span class="o">==</span> <span class="s2">&quot;UPPER&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="n">new_limit</span><span class="p">)</span>
@@ -393,7 +393,7 @@
 <span class="sd">        new_precison : int or float</span>
 <span class="sd">            The new precision value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMSpinbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">precision_changed</span><span class="p">(</span><span class="n">new_precision</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">precision_changed</span><span class="p">(</span><span class="n">new_precision</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span></div>
 
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>

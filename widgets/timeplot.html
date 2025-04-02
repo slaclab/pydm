@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMTimePlot &mdash; PyDM 1.26.0 documentation</title>
+  <title>PyDMTimePlot &mdash; PyDM 1.27.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.26.0
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -347,6 +347,12 @@ settings</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.getFormattedX">
+<span class="sig-name descname"><span class="pre">getFormattedX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">real_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.getFormattedX"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getFormattedX" title="Permalink to this definition"></a></dt>
+<dd><p>For time plots, interpret <cite>real_x</cite> as a UNIX timestamp and return HH:MM:SS.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.getTimeSpan">
 <span class="sig-name descname"><span class="pre">getTimeSpan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.getTimeSpan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.getTimeSpan" title="Permalink to this definition"></a></dt>
 <dd><p>The extent of the x-axis of the chart, in seconds.  In other words,
@@ -391,7 +397,7 @@ edge.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.redrawPlot">
 <span class="sig-name descname"><span class="pre">redrawPlot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.redrawPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.redrawPlot" title="Permalink to this definition"></a></dt>
-<dd><p>Redraw the graph</p>
+<dd><p>Redraw the graph and ensure the crosshair remains aligned.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -578,6 +584,26 @@ This helps to recreate the Plot Config if we import a save file of it</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.updateLabel">
+<span class="sig-name descname"><span class="pre">updateLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.updateLabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.updateLabel" title="Permalink to this definition"></a></dt>
+<dd><p>Update the label for each curve with severity information, if available.</p>
+<p>This method first calls the parent class’s <cite>updateLabel</cite> to handle general
+label updates and positioning. It then appends severity information to the
+label of each curve that contains a valid <cite>severity_raw</cite> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_val</strong> (<em>float</em>) – The x-coordinate value at which the label is being updated.</p></li>
+<li><p><strong>y_val</strong> (<em>float</em>) – The y-coordinate value at which the label is being updated.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.updateMode">
 <span class="sig-name descname"><span class="pre">updateMode</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.updateMode" title="Permalink to this definition"></a></dt>
@@ -633,6 +659,25 @@ like ‘symbol’ and ‘symbolSize’.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.alarm_severity_changed">
+<span class="sig-name descname"><span class="pre">alarm_severity_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_alarm_severity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.alarm_severity_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.alarm_severity_changed" title="Permalink to this definition"></a></dt>
+<dd><p>Callback invoked when the Channel alarm severity is changed.
+Sets self.severity to a string representation based on the integer value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_alarm_severity</strong> (<em>int</em><em> or </em><em>str</em>) – <dl class="simple">
+<dt>The new severity where:</dt><dd><p>0 = NO_ALARM
+1 = MINOR
+2 = MAJOR
+3 = INVALID</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.asyncUpdate">
 <span class="sig-name descname"><span class="pre">asyncUpdate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.asyncUpdate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.asyncUpdate" title="Permalink to this definition"></a></dt>
@@ -760,6 +805,12 @@ position on the x-axis.</p>
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.setUpdatesAsynchronously">
 <span class="sig-name descname"><span class="pre">setUpdatesAsynchronously</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.setUpdatesAsynchronously"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.setUpdatesAsynchronously" title="Permalink to this definition"></a></dt>
 <dd><p>Check if value is from updatesAsynchronously(bool) or updateMode(int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.timeplot.TimePlotCurveItem.severityChanged">
+<span class="sig-name descname"><span class="pre">severityChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">severity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#TimePlotCurveItem.severityChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.TimePlotCurveItem.severityChanged" title="Permalink to this definition"></a></dt>
+<dd><p>Slot to handle when severity are received from the PyDMChannel.</p>
 </dd></dl>
 
 <dl class="py method">

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.enum_combo_box &mdash; PyDM 1.26.0 documentation</title>
+  <title>pydm.widgets.enum_combo_box &mdash; PyDM 1.27.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.26.0
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -178,7 +178,7 @@
 <span class="sd">        userData : object</span>
 <span class="sd">            Arbitrary user data that is stored in the Qt.UserRole</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">userData</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">userData</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_new_item_added</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.setItemText"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.setItemText">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setItemText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
@@ -192,11 +192,11 @@
 <span class="sd">        text : str</span>
 <span class="sd">            Title for the item</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setItemText</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setItemText</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_item_added</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_new_item_added</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="c1"># Recalculate the enums</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">enum_strings_changed</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">itemText</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">())))</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">enum_strings_changed</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">itemText</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">())))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check_enable_state</span><span class="p">()</span></div>
 
@@ -268,7 +268,7 @@
 <span class="sd">        new_enum_strings : tuple</span>
 <span class="sd">            The new list of values</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">enum_strings_changed</span><span class="p">(</span><span class="n">new_enum_strings</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">enum_strings_changed</span><span class="p">(</span><span class="n">new_enum_strings</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_items</span><span class="p">(</span><span class="n">new_enum_strings</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMEnumComboBox.value_changed"><a class="viewcode-back" href="../../../widgets/enum_combo_box.html#pydm.widgets.enum_combo_box.PyDMEnumComboBox.value_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
@@ -282,7 +282,7 @@
 <span class="sd">            The new value from the channel. The type depends on the channel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">PyDMEnumComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
             <span class="c1"># Integers are straight forward</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_val</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="n">idx</span> <span class="o">=</span> <span class="n">new_val</span>
