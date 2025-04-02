@@ -123,7 +123,7 @@ class PyDMMainWindow(QMainWindow):
         # Finish filling out menus, enable/disable nav bar buttons
         self.update_tools_menu()
         self.enable_disable_navigation()
-        if home_file is None:
+        if self.home_widget is None:
             self.ui.actionHome.setDisabled(True)
 
     def display_widget(self):
