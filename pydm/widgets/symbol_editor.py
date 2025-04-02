@@ -330,7 +330,7 @@ class SymbolEditor(QtWidgets.QDialog):
                     base_path = None
                     if parent_display:
                         base_path = os.path.dirname(parent_display.loaded_file())
-                    abs_path = find_file(abs_path, base_path=base_path)
+                    abs_path = find_file(abs_path, base_path=base_path, subdir_scan_time_limit=0)
             except Exception as ex:
                 print("Exception: ", ex)
                 error = "Unable to find full filepath for {}".format(filename)

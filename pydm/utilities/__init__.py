@@ -7,6 +7,7 @@ import os
 import platform
 import shlex
 import sys
+import time
 import types
 import uuid
 import errno
@@ -227,7 +228,7 @@ def _screen_file_extensions(preferred_extension):
     return extensions
 
 
-def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_found=False):
+def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_found=False, subdir_scan_time_limit=3.0):
     """
     Look for files at the search paths common to PyDM.
 
@@ -255,6 +256,11 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_fo
     raise_if_not_found : bool
         Flag which if False will add a check that raises a FileNotFoundError
         instead of returning None when the file is not found.
+    recurse_time_limit : float
+        If the file cannot be found in the given directories, check
+        subdirectories. After searching for this time in seconds,
+        stop the search. If this limit is <= 0, subdirectories are
+        not scanned. Defaults to 3 seconds.
 
     Returns
     -------
@@ -269,19 +275,19 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_fo
     x_path = []
 
     if base_path:
-        x_path.extend([os.path.abspath(base_path)])
+        x_path.append(os.path.abspath(base_path))
 
     if is_qt_designer():
         designer_path = get_designer_current_path()
         if designer_path:
-            x_path.extend([designer_path])
+            x_path.append(designer_path)
 
     # Current working directory
-    x_path.extend([os.getcwd()])
+    x_path.append(os.getcwd())
+
     if extra_path:
         if not isinstance(extra_path, (list, tuple)):
             extra_path = [extra_path]
-        extra_path = [os.path.expanduser(os.path.expandvars(x)) for x in extra_path]
         x_path.extend(extra_path)
 
     pydm_search_path = os.getenv("PYDM_DISPLAYS_PATH", None)
@@ -294,14 +300,27 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_fo
     root, ext = os.path.splitext(fname)
 
     # loop through the possible screen file extensions
-    for e in _screen_file_extensions(ext):
-        file_path = which(str(root) + str(e), mode=mode, pathext=e, extra_path=x_path)
-        if file_path is not None:
-            break  # pick the first screen file found
+    start_time = time.perf_counter()
+    file_path = None
+    while file_path is None and len(x_path) > 0:
+        for e in _screen_file_extensions(ext):
+            file_path = which(str(root) + str(e), mode=mode, pathext=e, extra_path=x_path)
+            if file_path is not None:
+                break  # pick the first screen file found
 
-    if raise_if_not_found:
-        if not file_path:
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), fname)
+        if subdir_scan_time_limit <= 0 or time.perf_counter() - start_time >= subdir_scan_time_limit:
+            if not file_path and raise_if_not_found:
+                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), fname)
+            break
+
+        # This might get expensive in some situations, but it's the easiest way to do BFS without
+        # changing too much of the existing logic, and ideally recursion isn't needed to find a file
+        x_path = [
+            os.path.join(path, subdir)
+            for path in x_path
+            for subdir in os.listdir(path)
+            if os.path.isdir(os.path.join(path, subdir))
+        ]
 
     return file_path
 
