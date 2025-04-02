@@ -182,7 +182,7 @@ class myDriver(Driver):
                 else:
                     imageMoveAmount = 0.1 if motorRbv < motorParam else -0.1
 
-                # do movement in increments, updating displayed value and sleeping inbetween
+                # do movement in increments, updating displayed value and sleeping in between
                 while motorRbv != motorParam:
                     currStopVal = self.getParam(motorStopVarName)
                     if currStopVal:

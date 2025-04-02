@@ -137,7 +137,7 @@ class PyDMLogDisplay(QWidget):
     """
     Standard display for Log Output
 
-    This widget handles instantating a ``GuiHandler`` and displaying log
+    This widget handles instantiating a ``GuiHandler`` and displaying log
     messages to a ``QPlainTextEdit``. The level of the log can be changed from
     inside the widget itself, allowing users to select from any of the
     ``.levels`` specified by the widget.

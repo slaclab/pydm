@@ -608,7 +608,7 @@ def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
     new_value : int
         The new value for the widget
     expected_slider_value : int
-        The new calculcated widget value
+        The new calculated widget value
     """
     pydm_slider = PyDMSlider()
     qtbot.addWidget(pydm_slider)

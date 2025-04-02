@@ -269,7 +269,7 @@ def test_rules_initial_value(qtbot, caplog):
         To capture the log messages
     """
     widget = PyDMLabel()
-    widget.setText("Defaut Label")
+    widget.setText("Default Label")
     qtbot.addWidget(widget)
     widget.show()
 

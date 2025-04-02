@@ -26,7 +26,7 @@ def test_construct():
     """
     Test the construction of the ColorMaps, and the creations of auxiliary helper objects.
 
-    Expecations:
+    Expectations:
     The default values are assigned to the attributes correctly.
     """
 

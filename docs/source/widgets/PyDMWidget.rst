@@ -25,7 +25,7 @@ channel displayed on the tool tip.
         The value of the channel is 10
 
 A period followed by a field name can retrieve other properties of the channel
-(see the table bellow for all channel properties and associated field names.)
+(see the table below for all channel properties and associated field names.)
 
 .. note::
 

@@ -39,7 +39,7 @@ interface, macro substitution will occur inside the .ui file.
 
 Macro Behavior at Run Time
 --------------------------
-PyDM will remember the macros used to launch a display, and re-use them when
+PyDM will remember the macros used to launch a display, and reuse them when
 navigating with the forward, back, and home buttons. When a new display is opened,
 any macros defined on the current window are also passed to the new display.
 This lets you cascade macros to child displays.

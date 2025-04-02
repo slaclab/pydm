@@ -164,7 +164,7 @@ class Connection(PyDMConnection):
         self.epics_type = None
         self.read_access = False
         self.write_access = False
-        # Auxilliary info to help with throttling
+        # Auxiliary info to help with throttling
         self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb, mon_cb_once=True)
         self.throttle = QTimer(self)
         self.throttle.timeout.connect(self.throttle_cb)

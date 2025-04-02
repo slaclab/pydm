@@ -87,7 +87,7 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
 def _compile_ui_file(uifile: str) -> Tuple[str, str]:
     """
     Compile the ui file using uic and return the result as a string along with the associated class name.
-    Caches the result to improve performance when the same ui file is re-used many times within a display.
+    Caches the result to improve performance when the same ui file is reused many times within a display.
 
     Parameters
     ----------
