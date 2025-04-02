@@ -9,10 +9,10 @@ from logging import ERROR
 from qtpy.QtCore import QEvent, Qt
 from qtpy.QtGui import QFocusEvent
 from qtpy.QtWidgets import QMenu
-from ...widgets.line_edit import PyDMLineEdit
-from ...data_plugins import set_read_only
-from ...utilities import is_pydm_app, find_unit_options
-from ...widgets.display_format import DisplayFormat, parse_value_for_display
+from pydm.widgets.line_edit import PyDMLineEdit
+from pydm.data_plugins import set_read_only
+from pydm.utilities import is_pydm_app, find_unit_options
+from pydm.widgets.display_format import DisplayFormat, parse_value_for_display
 
 
 # --------------------

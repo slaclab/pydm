@@ -1,9 +1,9 @@
 # Unit Tests for the Channel widget class
 import pytest
 
-from ...widgets.label import PyDMLabel
-from ...widgets.line_edit import PyDMLineEdit
-from ...widgets.channel import PyDMChannel
+from pydm.widgets.label import PyDMLabel
+from pydm.widgets.line_edit import PyDMLineEdit
+from pydm.widgets.channel import PyDMChannel
 from pydm.data_plugins import plugin_for_address
 
 

@@ -10,8 +10,8 @@ import logging
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QInputDialog, QMessageBox
-from ...widgets.pushbutton import PyDMPushButton
-from ...utilities.iconfont import IconFont
+from pydm.widgets.pushbutton import PyDMPushButton
+from pydm.utilities.iconfont import IconFont
 
 
 # --------------------

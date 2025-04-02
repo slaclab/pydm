@@ -4,9 +4,15 @@ import numpy as np
 from collections import OrderedDict
 from pyqtgraph import AxisItem, BarGraphItem
 from unittest import mock
-from ...widgets.channel import PyDMChannel
-from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
-from ...utilities import remove_protocol
+from pydm.widgets.channel import PyDMChannel
+from pydm.widgets.timeplot import (
+    TimePlotCurveItem,
+    PyDMTimePlot,
+    TimeAxisItem,
+    MINIMUM_BUFFER_SIZE,
+    DEFAULT_BUFFER_SIZE,
+)
+from pydm.utilities import remove_protocol
 from qtpy.QtTest import QSignalSpy
 from unittest.mock import MagicMock
 

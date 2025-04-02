@@ -2,8 +2,8 @@ import numpy as np
 import pytest
 from qtpy.QtCore import Slot
 
-from ..conftest import ConnectionSignals
-from ...widgets.archiver_time_plot import ArchivePlotCurveItem, PyDMArchiverTimePlot, FormulaCurveItem
+from pydm.tests.conftest import ConnectionSignals
+from pydm.widgets.archiver_time_plot import ArchivePlotCurveItem, PyDMArchiverTimePlot, FormulaCurveItem
 
 
 @pytest.mark.parametrize("address", ["ca://LINAC:PV1", "pva://LINAC:PV1", "LINAC:PV1"])

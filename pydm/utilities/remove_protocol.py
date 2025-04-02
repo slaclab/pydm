@@ -1,6 +1,6 @@
 import re
 import urllib
-from .. import config
+from pydm import config
 
 
 def remove_protocol(addr):

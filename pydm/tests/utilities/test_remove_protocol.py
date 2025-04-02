@@ -1,6 +1,6 @@
-from ...utilities.remove_protocol import remove_protocol
-from ...utilities.remove_protocol import protocol_and_address
-from ...utilities.remove_protocol import parsed_address
+from pydm.utilities.remove_protocol import remove_protocol
+from pydm.utilities.remove_protocol import protocol_and_address
+from pydm.utilities.remove_protocol import parsed_address
 
 
 def test_remove_protocol():

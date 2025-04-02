@@ -5,7 +5,7 @@ from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QLabel, QMessageBox, QApplication
 
 from .base import PyDMPrimitiveWidget, get_icon_file
-from ..utilities import is_qt_designer
+from pydm.utilities import is_qt_designer
 
 logger = logging.getLogger(__name__)
 

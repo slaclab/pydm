@@ -9,7 +9,7 @@ from qtpy.QtGui import QColor, QFont
 from qtpy.QtCore import QTimer, Qt, QPointF
 
 from collections import OrderedDict
-from ...widgets.baseplot import BasePlotCurveItem, BasePlot
+from pydm.widgets.baseplot import BasePlotCurveItem, BasePlot
 
 
 logger = logging.getLogger(__name__)

@@ -2,7 +2,7 @@ import pytest
 
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Qt
-from ...widgets.byte import PyDMMultiStateIndicator
+from pydm.widgets.byte import PyDMMultiStateIndicator
 
 
 @pytest.mark.parametrize(

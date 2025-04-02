@@ -5,7 +5,7 @@ import tempfile
 
 from qtpy import QtWidgets
 
-from ...utilities import find_display_in_path, is_pydm_app, is_qt_designer, log_failures, path_info, which
+from pydm.utilities import find_display_in_path, is_pydm_app, is_qt_designer, log_failures, path_info, which
 
 logger = logging.getLogger(__name__)
 
