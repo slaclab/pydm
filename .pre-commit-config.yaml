@@ -18,4 +18,5 @@ repos:
     rev: v2.4.1
     hooks:
       - id: codespell
-        args: ["--write-changes", "-L", "slac"]
+       # don't run on .json files (don't mess with fontawesome-charmap.json), and don't correct 'slac' to 'slack'
+        args: ["--write-changes", "-S", "*.json", "-L", "slac"]
