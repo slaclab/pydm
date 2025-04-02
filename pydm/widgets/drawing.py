@@ -895,6 +895,7 @@ class PyDMDrawingImage(PyDMDrawing):
         self._pixmap.fill(self.null_color)
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self._movie = None
+        self._recursive_image_search = False
         self._file = None
         # Make sure we don't set a non-existent file
         if filename:
@@ -924,11 +925,37 @@ class PyDMDrawingImage(PyDMDrawing):
     def reload_image(self) -> None:
         self.filename = self._file
 
+    @Property(bool)
+    def recursiveImageSearch(self) -> bool:
+        """
+        Whether or not to search for a provided image file recursively
+        in subfolders relative to the location of this display.
+
+        Returns
+        -------
+        bool
+            If recursive search is enabled.
+        """
+        return self._recursive_image_search
+
+    @recursiveImageSearch.setter
+    def recursiveImageSearch(self, new_value) -> None:
+        """
+        Set whether or not to search for a provided image file recursively
+        in subfolders relative to the location of this image.
+
+        Parameters
+        ----------
+        new_value
+            If recursive search should be enabled.
+        """
+        self._recursive_image_search = new_value
+
     @Property(str)
     def filename(self) -> str:
         """
         The filename of the image to be displayed.
-        This can be an absolute or relative path to the display file.
+        This can be an absolute or relative path to the image file.
 
         Returns
         -------
@@ -961,7 +988,7 @@ class PyDMDrawingImage(PyDMDrawing):
             base_path = None
             if parent_display:
                 base_path = os.path.dirname(parent_display.loaded_file())
-            abs_path = find_file(abs_path, base_path=base_path)
+            abs_path = find_file(abs_path, base_path=base_path, subdir_scan_enabled=self._recursive_image_search)
             if not abs_path:
                 logger.error("Unable to find full filepath for %s", self._file)
                 return
