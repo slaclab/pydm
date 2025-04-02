@@ -8,7 +8,7 @@ Inline Motor Screen
     * Make sure the PCASpy tutorial server is :ref:`running <Setup>`
 
 For this screen, we want to present useful information to the user to operate
-the motors, and also provide a way for them to access other less-commonly-used parameters via an "Expert" screen. To make this screen re-usable in other displays, it will be necessary
+the motors, and also provide a way for them to access other less-commonly-used parameters via an "Expert" screen. To make this screen reusable in other displays, it will be necessary
 to use :ref:`Macros` that will later be replaced by the proper information for 
 each motor.
 

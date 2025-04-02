@@ -318,7 +318,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
     def set_extension_line_data(self) -> None:
         """
-        Creates a dotted line from the lastest point in the buffer
+        Creates a dotted line from the latest point in the buffer
         (live or archived depending on if live data is active).
         """
         if self._liveData:
@@ -485,19 +485,19 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             super().receiveNewValue(new_value)
 
     def setVisible(self, visible: bool) -> None:
-        """Propogate visibility changes to extension line and error bar."""
+        """Propagate visibility changes to extension line and error bar."""
         super().setVisible(visible)
         self._extension_line.setVisible(visible)
         self.error_bar.setVisible(visible)
 
     def hide(self):
-        """Propogate visibility changes to extension line and error bar."""
+        """Propagate visibility changes to extension line and error bar."""
         super().hide()
         self._extension_line.hide()
         self.error_bar.hide()
 
     def show(self):
-        """Propogate visibility changes to extension line and error bar."""
+        """Propagate visibility changes to extension line and error bar."""
         super().show()
         self._extension_line.show()
         self.error_bar.show()
@@ -991,7 +991,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
 
     @cache_data.setter
     def cache_data(self, enable: bool):
-        """If true, the curves on the plot will keep thier most recently fetched archive data. New
+        """If true, the curves on the plot will keep their most recently fetched archive data. New
         data will only be fetched when users navigate to an "unseen" section of the plot.
         When false, the curves will fetch new archive data on every change to the x-axis.
         """

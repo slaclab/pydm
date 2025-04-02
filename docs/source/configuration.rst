@@ -11,7 +11,7 @@ default values.
 =============================== ==================================================================================
 Variable                        What is it used for?
 =============================== ==================================================================================
-PYDM_DEFAULT_PROTOCOL           | The default protocol to be used when specifing channels.
+PYDM_DEFAULT_PROTOCOL           | The default protocol to be used when specifying channels.
                                 | This option eliminates the need for users to specify the protocol
                                 | for a given Data Plugin. E.g.: `ca`.
                                 | **Default:** None

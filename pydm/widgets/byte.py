@@ -95,7 +95,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
 
         self._orientation = Qt.Vertical
 
-        # This is kind of ridiculous, importing QTabWidget just to get a 4-item enum thats usable in Designer.
+        # This is kind of ridiculous, importing QTabWidget just to get a 4-item enum that's usable in Designer.
         # PyQt5 lets you define custom enums that you can use in designer with QtCore.Q_ENUMS(), doesn't exist in PyQt4.
         self._labels = []
         self._show_labels = True
@@ -206,7 +206,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         else:
             value = int(self.value) >> self._shift
 
-        # also display value when negative (these values are repesented by bits in Two's Complement form)
+        # also display value when negative (these values are represented by bits in Two's Complement form)
 
         bits = [(value >> i) & 1 for i in range(self._num_bits)]
         for bit, indicator in zip(bits, self._indicators):

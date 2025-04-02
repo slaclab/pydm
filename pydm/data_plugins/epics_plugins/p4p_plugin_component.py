@@ -173,7 +173,7 @@ class Connection(PyDMConnection):
         if len(function_name) >= 1 and function_name[-1] == "&":
             function_name = function_name[:-1]
 
-        # now handle case when no args givin but specified polling
+        # now handle case when no args given but specified polling
         pollrate = 0.0
         if "pydm_pollrate" in function_name:
             index = function_name.find("&pydm_pollrate=")
