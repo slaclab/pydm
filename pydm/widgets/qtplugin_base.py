@@ -87,10 +87,10 @@ def qtplugin_factory(
     return Plugin
 
 
-class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
+class PyDMDesignerPlugin(QtDesigner.QDesignerCustomWidgetInterface):
     """
     Parent class to standardize how pydm plugins are accessed in qt designer.
-    All functions have default returns that can be overriden as necessary.
+    All functions have default returns that can be overridden as necessary.
     """
 
     def __init__(
@@ -107,7 +107,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         :param cls: Class of the widget to use
         :type cls:  QWidget
         """
-        QtDesigner.QPyDesignerCustomWidgetPlugin.__init__(self)
+        QtDesigner.QDesignerCustomWidgetInterface.__init__(self)
         self.initialized = False
         self.is_container = is_container
         self.cls = cls
