@@ -111,21 +111,20 @@ class PyDMApplication(QApplication):
             self.home_file = config.HOME_FILE
 
         # Open a window if required.
-        if ui_file is not None:
+        if ui_file is not None or use_main_window:
             self.make_main_window(
                 stylesheet_path=stylesheet_path,
                 home_file=self.home_file,
                 macros=macros,
                 command_line_args=command_line_args,
             )
-            self.main_window.open(ui_file, macros, command_line_args)
-        elif use_main_window:
-            self.make_main_window(
-                stylesheet_path=stylesheet_path,
-                home_file=self.home_file,
-                macros=macros,
-                command_line_args=command_line_args,
-            )
+            if ui_file is not None and self.home_file is not None:
+                if os.path.abspath(ui_file) != os.path.abspath(home_file):
+                    self.main_window.open(ui_file, macros, command_line_args)
+                else:
+                    self.main_window.home()
+            elif ui_file is not None:
+                self.main_window.open(ui_file, macros, command_line_args)
 
         self.had_file = ui_file is not None
         # Re-enable sigint (usually blocked by pyqt)

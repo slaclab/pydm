@@ -2,10 +2,10 @@
 Configuration
 ========================
 
-In order to make PyDM a flexible tool a couple of Environment Variables are used
+In order to make PyDM a flexible tool, a couple of environment variables are used
 for configuration and customization.
 
-The following table describe the environment variable as well as its usage and
+The following table describes the environment variables as well as their usage and
 default values.
 
 =============================== ==================================================================================

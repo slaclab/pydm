@@ -101,6 +101,7 @@ class PyDMMainWindow(QMainWindow):
         if hide_status_bar:
             self.toggle_status_bar(False)
             self.ui.actionShow_Status_Bar.setChecked(False)
+
         # Try to find the designer binary.
         self.ui.actionEdit_in_Designer.setEnabled(False)
 
@@ -119,6 +120,7 @@ class PyDMMainWindow(QMainWindow):
                 self.designer_path = designer_path
                 break
 
+        # Finish filling out menus, enable/disable nav bar buttons
         self.update_tools_menu()
         self.enable_disable_navigation()
 
@@ -230,6 +232,14 @@ class PyDMMainWindow(QMainWindow):
 
     def enable_disable_navigation(self):
         w = self.display_widget()
+
+        self.ui.actionHome.setDisabled(not self.home_widget or w == self.home_widget)
+
+        if not w:
+            self.ui.actionBack.setDisabled(True)
+            self.ui.actionForward.setDisabled(True)
+            return
+
         if not isinstance(w, Display):
             # We can't do much if it is not a Display and we don't have the
             # previous_display and next_display properties since we don't
@@ -237,10 +247,7 @@ class PyDMMainWindow(QMainWindow):
             nav_stack_methods = hasattr(w, "previous_display") and hasattr(w, "next_display")
             if not nav_stack_methods:
                 return
-        if not w:
-            self.ui.actionBack.setDisabled(True)
-            self.ui.actionForward.setDisabled(True)
-            return
+
         self.ui.actionBack.setDisabled(w.previous_display is None)
         self.ui.actionForward.setDisabled(w.next_display is None)
 
