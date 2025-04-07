@@ -35,6 +35,7 @@ __all__ = [
     "PyDMTabWidget",
     "PyDMTemplateRepeater",
     "PyDMNTTable",
+	"PyDMWindow",
 ]
 
 from .channel import PyDMChannel
@@ -75,3 +76,4 @@ from .eventplot import PyDMEventPlot
 from .tab_bar import PyDMTabWidget
 from .template_repeater import PyDMTemplateRepeater
 from .nt_table import PyDMNTTable
+from .window import PyDMWindow

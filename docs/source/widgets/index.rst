@@ -58,6 +58,7 @@ Container Widgets
    frame.rst
    tab_widget.rst
    template_repeater.rst
+   window.rst
 
 Drawing Widgets
 ---------------
