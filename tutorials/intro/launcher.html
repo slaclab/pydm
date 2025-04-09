@@ -154,11 +154,10 @@ and sends them to the instantiated PyDMApplication.</p>
 <section id="command-line-arguments">
 <h2>Command Line Arguments<a class="headerlink" href="#command-line-arguments" title="Permalink to this heading"></a></h2>
 <p>The PyDM Launcher accepts many command line arguments, here they are:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pydm<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--perfmon<span class="o">]</span><span class="w"> </span><span class="o">[</span>--hide-nav-bar<span class="o">]</span><span class="w"> </span><span class="o">[</span>--hide-menu-bar<span class="o">]</span>
-<span class="w">     </span><span class="o">[</span>--hide-status-bar<span class="o">]</span><span class="w"> </span><span class="o">[</span>--fullscreen<span class="o">]</span><span class="w"> </span><span class="o">[</span>--read-only<span class="o">]</span>
-<span class="w">     </span><span class="o">[</span>--log_level<span class="w"> </span><span class="o">{</span>DEBUG,INFO,WARNING,ERROR,CRITICAL<span class="o">}]</span><span class="w"> </span><span class="o">[</span>--version<span class="o">]</span>
-<span class="w">     </span><span class="o">[</span>-m<span class="w"> </span>MACRO<span class="o">]</span><span class="w"> </span><span class="o">[</span>--stylesheet<span class="w"> </span>STYLESHEET<span class="o">]</span>
-<span class="w">     </span><span class="o">[</span>displayfile<span class="o">]</span><span class="w"> </span>...
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pydm<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--homefile<span class="w"> </span>HOMEFILE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--perfmon<span class="o">]</span><span class="w"> </span><span class="o">[</span>--profile<span class="o">]</span><span class="w"> </span><span class="o">[</span>--faulthandler<span class="o">]</span>
+<span class="w">     </span><span class="o">[</span>--hide-nav-bar<span class="o">]</span><span class="w"> </span><span class="o">[</span>--hide-menu-bar<span class="o">]</span><span class="w"> </span><span class="o">[</span>--hide-status-bar<span class="o">]</span>
+<span class="w">     </span><span class="o">[</span>--fullscreen<span class="o">]</span><span class="w"> </span><span class="o">[</span>--read-only<span class="o">]</span><span class="w"> </span><span class="o">[</span>--log_level<span class="w"> </span><span class="o">{</span>DEBUG,INFO,WARNING,ERROR,CRITICAL<span class="o">}]</span>
+<span class="w">     </span><span class="o">[</span>--version<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="w"> </span>MACRO<span class="o">]</span><span class="w"> </span><span class="o">[</span>--stylesheet<span class="w"> </span>STYLESHEET<span class="o">]</span><span class="w"> </span><span class="o">[</span>displayfile<span class="o">]</span><span class="w"> </span>...
 </pre></div>
 </div>
 <p>Where:</p>
@@ -169,44 +168,120 @@ and sends them to the instantiated PyDMApplication.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>-h, –help</p></td>
-<td><p>Show the help message and exit</p></td>
+<tr class="row-even"><td><p>DISPLAY_FILE (positional)</p></td>
+<td><div class="line-block">
+<div class="line">Loads a display from this file to show once PyDM has started.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>-h, –help</p></td>
+<td><div class="line-block">
+<div class="line">Show the PyDM help message and exit.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>–homefile FILE</p></td>
+<td><div class="line-block">
+<div class="line">Path to a PyDM file to return to when the home button is clicked in the</div>
+<div class="line">navigation bar. This display remains loaded at all times, and is loaded</div>
+<div class="line">even when a display file is specified separately. If the specified</div>
+<div class="line">display file is identical to the home file, PyDM will not load two</div>
+<div class="line">instances of the display.</div>
+<div class="line"><strong>Default:</strong> None</div>
+</div>
+</td>
 </tr>
 <tr class="row-odd"><td><p>–perfmon</p></td>
-<td><p>Enable performance monitoring, and print CPU usage to the terminal</p></td>
+<td><div class="line-block">
+<div class="line">Enable performance monitoring, and print CPU usage to the terminal.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>–profile</p></td>
+<td><div class="line-block">
+<div class="line">Enable cProfile function profiling, printing on exit.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>–faulthandler</p></td>
+<td><div class="line-block">
+<div class="line">Enable faulthandler to trace segmentation faults.</div>
+</div>
+</td>
 </tr>
 <tr class="row-even"><td><p>–hide-nav-bar</p></td>
-<td><p>Start PyDM with the navigation bar hidden</p></td>
+<td><div class="line-block">
+<div class="line">Start PyDM with the navigation bar hidden.</div>
+</div>
+</td>
 </tr>
 <tr class="row-odd"><td><p>–hide-menu-bar</p></td>
-<td><p>Start PyDM with the menu bar hidden</p></td>
+<td><div class="line-block">
+<div class="line">Start PyDM with the menu bar hidden.</div>
+</div>
+</td>
 </tr>
 <tr class="row-even"><td><p>–hide-status-bar</p></td>
-<td><p>Start PyDM with the status bar hidden</p></td>
+<td><div class="line-block">
+<div class="line">Start PyDM with the status bar hidden.</div>
+</div>
+</td>
 </tr>
 <tr class="row-odd"><td><p>–fullscreen</p></td>
-<td><p>Start PyDM in full screen mode.</p></td>
+<td><div class="line-block">
+<div class="line">Start PyDM in fullscreen mode.</div>
+</div>
+</td>
 </tr>
 <tr class="row-even"><td><p>–read-only</p></td>
-<td><p>Start PyDM in a Read-Only mode</p></td>
+<td><div class="line-block">
+<div class="line">Start PyDM in read-only mode.</div>
+</div>
+</td>
 </tr>
-<tr class="row-odd"><td><p>–log_level</p></td>
-<td><p>Configure the level of the display logger.</p></td>
+<tr class="row-odd"><td><p>–log_level LEVEL</p></td>
+<td><div class="line-block">
+<div class="line">Configure level of log display.</div>
+<div class="line"><strong>Choices:</strong> DEBUG, INFO, WARNING, ERROR, CRITICAL</div>
+<div class="line"><strong>Default:</strong> INFO</div>
+</div>
+</td>
 </tr>
 <tr class="row-even"><td><p>–version</p></td>
-<td><p>Show PyDM’s version number and exit</p></td>
+<td><div class="line-block">
+<div class="line">Show PyDM’s version number and exit.</div>
+</div>
+</td>
 </tr>
-<tr class="row-odd"><td><p>-m MACRO, –macro MACRO</p></td>
-<td><p>Specify macro replacements to use, in JSON object format</p></td>
+<tr class="row-odd"><td><p>-m, –macro STRING</p></td>
+<td><div class="line-block">
+<div class="line">Specify macro replacements to use, in JSON object format. Reminder: JSON</div>
+<div class="line">requires double quotes for strings, so you should wrap this whole argument</div>
+<div class="line">in single quotes.</div>
+<div class="line"><strong>Example:</strong> <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">'{&quot;sector&quot;:</span> <span class="pre">&quot;LI25&quot;,</span> <span class="pre">&quot;facility&quot;:</span> <span class="pre">&quot;LCLS&quot;}'</span></code></div>
+<div class="line">Macro replacements can also be specified as KEY=value pairs using a comma</div>
+<div class="line">as delimiter. If you want to use spaces after the delimiters or around the</div>
+<div class="line">= signs, wrap the entire set with quotes.</div>
+<div class="line"><strong>Example:</strong> <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">&quot;sector</span> <span class="pre">=</span> <span class="pre">LI25,</span> <span class="pre">facility=LCLS&quot;</span></code></div>
+<div class="line"><strong>Default:</strong> None</div>
+</div>
+</td>
 </tr>
-<tr class="row-even"><td><p>–stylesheet STYLESHEET</p></td>
-<td><p>Provide the full path to a CSS stylesheet file, which contains styles to be applied to specific Qt/PyDM widgets.</p></td>
+<tr class="row-even"><td><p>–stylesheet FILE</p></td>
+<td><div class="line-block">
+<div class="line">Specify the full path to a CSS stylesheet file, which can be used to customize</div>
+<div class="line">the appearance of PyDM and Qt widgets.</div>
+<div class="line"><strong>Default:</strong> None</div>
+</div>
+</td>
 </tr>
-<tr class="row-odd"><td><p>displayfile (positional)</p></td>
-<td><p>A PyDM file to display. Can be either a Qt (.ui) file or a Python (.py) file</p></td>
-</tr>
-<tr class="row-even"><td><p>display_args (positional)</p></td>
-<td><p>Arguments to be passed to the PyDM client application and displays.</p></td>
+<tr class="row-odd"><td><p>DISPLAY_ARGS… (positional)</p></td>
+<td><div class="line-block">
+<div class="line">Arguments to be passed to the PyDM client application (which is a QApplication</div>
+<div class="line">subclass).</div>
+<div class="line"><strong>Default:</strong> None</div>
+</div>
+</td>
 </tr>
 </tbody>
 </table>
