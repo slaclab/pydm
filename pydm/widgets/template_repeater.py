@@ -173,9 +173,11 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         QFrame.__init__(self, parent)
         PyDMPrimitiveWidget.__init__(self)
         self._template_filename = ""
+        self._recursive_template_search = False
         self._count_shown_in_designer = 1
         self._data_source = ""
         self._data = []
+        self._recursive_data_search = False
         self._cached_template = None
         self._parent_macros = None
         self._layout_type = LayoutType.Vertical
@@ -286,6 +288,32 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
             else:
                 self.clear()
 
+    @Property(bool)
+    def recursiveTemplateSearch(self) -> bool:
+        """
+        Whether or not to search for a provided template file recursively
+        in subfolders relative to the location of this widget.
+
+        Returns
+        -------
+        bool
+            If recursive search is enabled.
+        """
+        return self._recursive_template_search
+
+    @recursiveTemplateSearch.setter
+    def recursiveTemplateSearch(self, new_value) -> None:
+        """
+        Set whether or not to search for a provided template file recursively
+        in subfolders relative to the location of this widget.
+
+        Parameters
+        ----------
+        new_value
+            If recursive search should be enabled.
+        """
+        self._recursive_template_search = new_value
+
     def _is_json(self, source):
         """
         Validate if the string source is a valid json.
@@ -349,7 +377,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
                         base_path = None
                         if parent_display:
                             base_path = os.path.dirname(parent_display.loaded_file())
-                        fname = find_file(self._data_source, base_path=base_path, raise_if_not_found=True)
+                        fname = find_file(self._data_source, base_path=base_path, raise_if_not_found=True, subdir_scan_enabled=self._recursive_data_search)
 
                         if not fname:
                             if not is_qt_designer():
@@ -373,6 +401,32 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
             else:
                 self.clear()
 
+    @Property(bool)
+    def recursiveDataSearch(self) -> bool:
+        """
+        Whether or not to search for a provided data file recursively
+        in subfolders relative to the location of this widget.
+
+        Returns
+        -------
+        bool
+            If recursive search is enabled.
+        """
+        return self._recursive_data_search
+
+    @recursiveDataSearch.setter
+    def recursiveDataSearch(self, new_value) -> None:
+        """
+        Set whether or not to search for a provided data file recursively
+        in subfolders relative to the location of this widget.
+
+        Parameters
+        ----------
+        new_value
+            If recursive search should be enabled.
+        """
+        self._recursive_data_search = new_value
+
     def open_template_file(self, variables=None):
         """
         Opens the widget specified in the templateFilename property.
@@ -393,7 +447,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         base_path = None
         if parent_display:
             base_path = os.path.dirname(parent_display.loaded_file())
-        fname = find_file(self.templateFilename, base_path=base_path, raise_if_not_found=True)
+        fname = find_file(self.templateFilename, base_path=base_path, raise_if_not_found=True, subdir_scan_enabled=self._recursive_template_search)
 
         if self._parent_macros is None:
             self._parent_macros = {}
