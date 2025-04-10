@@ -11,7 +11,7 @@ class PyDMFrame(QFrame, PyDMWidget):
     Parameters
     ----------
     parent : QWidget
-        The parent widget for the Label
+        The parent widget for the Frame
     init_channel : str, optional
         The channel to be used by the widget.
     """

@@ -39,6 +39,7 @@ class PyDMMainWindow(QMainWindow):
         self.iconFont = IconFont()
         self._display_widget = None
         self._showing_file_path_in_title_bar = False
+        self._display_widget_has_been_shown = False
 
         # style sheet change flag
         self.isSS_Changed = False
@@ -91,16 +92,7 @@ class PyDMMainWindow(QMainWindow):
         self.showMacros.triggered.connect(self.show_macro_window)
         self.ui.actionQuit.triggered.connect(self.quit_main_window)
 
-        if hide_nav_bar:
-            self.toggle_nav_bar(False)
-            self.ui.actionShow_Navigation_Bar.setChecked(False)
-        if hide_menu_bar:
-            # Toggle the menu bar via the QAction so that the menu item
-            # stays in sync with menu visibility.
-            self.ui.actionShow_Menu_Bar.activate(QAction.Trigger)
-        if hide_status_bar:
-            self.toggle_status_bar(False)
-            self.ui.actionShow_Status_Bar.setChecked(False)
+        self.hide_window_components(hide_nav_bar, hide_menu_bar, hide_status_bar)
 
         # Try to find the designer binary.
         self.ui.actionEdit_in_Designer.setEnabled(False)
@@ -140,6 +132,16 @@ class PyDMMainWindow(QMainWindow):
         self.enable_disable_navigation()
         self.update_window_title()
         self.add_menu_items()
+
+        # We want to respect the user's choices after the first display has loaded
+        if not self._display_widget_has_been_shown:
+            self.hide_window_components(
+                self._display_widget.property("hideNavBar"),
+                self._display_widget.property("hideMenuBar"),
+                self._display_widget.property("hideStatusBar"),
+            )
+        self._display_widget_has_been_shown = True
+
         # Resizing to the new widget's dimensions needs to be
         # done on the event loop for some reason - you can't
         # just do it here.
@@ -263,6 +265,18 @@ class PyDMMainWindow(QMainWindow):
         if data_plugins.is_read_only():
             title += " [Read Only Mode]"
         self.setWindowTitle(title)
+
+    def hide_window_components(self, hide_nav_bar, hide_menu_bar, hide_status_bar):
+        if hide_nav_bar:
+            self.toggle_nav_bar(False)
+            self.ui.actionShow_Navigation_Bar.setChecked(False)
+        if hide_menu_bar:
+            # Toggle the menu bar via the QAction so that the menu item
+            # stays in sync with menu visibility.
+            self.ui.actionShow_Menu_Bar.activate(QAction.Trigger)
+        if hide_status_bar:
+            self.toggle_status_bar(False)
+            self.ui.actionShow_Status_Bar.setChecked(False)
 
     @property
     def showing_file_path_in_title_bar(self):

@@ -2,5 +2,5 @@
 Channel
 ========================
 
-.. autoclass:: channel.PyDMChannel
+.. autoclass:: pydm.widgets.channel.PyDMChannel
     :members:

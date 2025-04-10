@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Display</class>
+ <widget class="PyDMWindow" name="Display">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>PyDMWindow</string>
+  </property>
+  <property name="hideMenuBar" stdset="0">
+   <bool>true</bool>
+  </property>
+  <property name="hideNavBar" stdset="0">
+   <bool>true</bool>
+  </property>
+  <property name="hideStatusBar" stdset="0">
+   <bool>true</bool>
+  </property>
+  <widget class="QLabel" name="Label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>380</width>
+     <height>280</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This display is using a PyDMWindow widget as the root widget. This allows it to customize some otherwise unavailable properties.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Currently it is used for hiding specific parts of the PyDM interface, including the menu bar, nav bar, and status bar. Disabling these elements can make your popup displays look nicer!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMWindow</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.window</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
