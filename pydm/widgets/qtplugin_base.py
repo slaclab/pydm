@@ -90,7 +90,7 @@ def qtplugin_factory(
 class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
     """
     Parent class to standardize how pydm plugins are accessed in qt designer.
-    All functions have default returns that can be overriden as necessary.
+    All functions have default returns that can be overridden as necessary.
     """
 
     def __init__(

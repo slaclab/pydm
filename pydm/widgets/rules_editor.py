@@ -432,7 +432,7 @@ class RulesEditor(QtWidgets.QDialog):
         """
         Open the Help context for Rules.
         The documentation website prefix is given by the `PYDM_DOCS_URL`
-        environmnet variable. If not defined it defaults to
+        environment variable. If not defined it defaults to
         `https://slaclab.github.io/pydm`
 
         Parameters
@@ -498,7 +498,7 @@ class RulesEditor(QtWidgets.QDialog):
         Parameters
         ----------
         rules : dict
-            Dictionary with the rule defintions.
+            Dictionary with the rule definitions.
 
         Returns
         -------

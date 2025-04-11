@@ -279,7 +279,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         This property holds the value to send back through the channel.
 
         The type of this value does not matter because it is automatically
-        converted to match the prexisting value type of the channel. However,
+        converted to match the preexisting value type of the channel. However,
         the sign of the value matters for both the fixed and relative modes.
 
         Returns
@@ -294,7 +294,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         This property holds the value to send back through the channel.
 
         The type of this value does not matter because it is automatically
-        converted to match the prexisting value type of the channel. However,
+        converted to match the preexisting value type of the channel. However,
         the sign of the value matters for both the fixed and relative modes.
 
         Parameters
@@ -310,7 +310,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         This property holds the value to send back through the channel.
 
         The type of this value does not matter because it is automatically
-        converted to match the prexisting value type of the channel. However,
+        converted to match the preexisting value type of the channel. However,
         the sign of the value matters for both the fixed and relative modes.
 
         Returns
@@ -325,7 +325,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         This property holds the value to send back through the channel.
 
         The type of this value does not matter because it is automatically
-        converted to match the prexisting value type of the channel. However,
+        converted to match the preexisting value type of the channel. However,
         the sign of the value matters for both the fixed and relative modes.
 
         Parameters
@@ -411,7 +411,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
     def validate_password(self):
         """
-        If the widget is ```passwordProtected```, this method will propmt
+        If the widget is ```passwordProtected```, this method will prompt
         the user for the correct password.
 
         Returns

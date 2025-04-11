@@ -186,7 +186,7 @@ def test_update_step_size(qtbot, step_exp):
 )
 def test_update_format_string(qtbot, signals, show_unit, new_unit, step_exp, show_step_exp):
     """
-    Test the widget's capability of updating the format string when various unit and step exponent paramaters are
+    Test the widget's capability of updating the format string when various unit and step exponent parameters are
     updated. This method also test showStepExponent property and setter.
 
     Expectations:

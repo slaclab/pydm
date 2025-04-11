@@ -8,7 +8,7 @@ Expert Motor Screen
     * Make sure the PCASpy tutorial server is :ref:`running <Setup>`
 
 For this screen we will present detailed information to the user for the motors.
-Also, to ensure that we can re-use this screen in other displays, it will be
+Also, to ensure that we can reuse this screen in other displays, it will be
 necessary to use :ref:`Macros` that will later be replaced by the proper information
 for each motor.
 

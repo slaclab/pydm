@@ -202,7 +202,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         Yields
         ------
         item : dict
-            Containing filename, title, and macros/empy macros
+            Containing filename, title, and macros/empty macros
             Only containing valid entries or nothing
 
         """

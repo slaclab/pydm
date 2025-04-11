@@ -435,7 +435,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
 
         menu = None
         # Plot widgets use their own custom event handling, so we check to see if they were
-        # clicked on here. If so, just re-use the context menu they already have built. (Not
+        # clicked on here. If so, just reuse the context menu they already have built. (Not
         # specifically checking for these would clobber their context menus)
         plot_widgets = self.findChildren(BasePlot)
         for plot in plot_widgets:

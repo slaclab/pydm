@@ -172,7 +172,7 @@ def test_baseplot_no_added_y_axes(qtbot):
 
 
 def test_timeplot_add_multiple_axes(qtbot):
-    """Simliar to the multiple y axes test above, but this one creates the new axes first, and invokes the setters
+    """Similar to the multiple y axes test above, but this one creates the new axes first, and invokes the setters
     for the curves and axes directly, which is exactly what would happen in the flow initiated from designer.
     Since the base plot has no method for setting curves itself, we instead use a time plot."""
     time_plot = PyDMTimePlot()

@@ -1049,7 +1049,7 @@ class PyDMTimePlot(BasePlot):
     def setTimeSpan(self, value):
         """
         Set the extent of the x-axis of the chart, in seconds.
-        In aynchronous mode, the chart will allocate enough buffer for the new time span duration.
+        In asynchronous mode, the chart will allocate enough buffer for the new time span duration.
         Data arriving after each duration will be recorded into the buffer
         having been rotated.
 
