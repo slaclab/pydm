@@ -5,8 +5,8 @@ from logging import ERROR
 
 from qtpy.QtCore import Qt
 
-from ...widgets.enum_combo_box import PyDMEnumComboBox
-from ... import data_plugins
+from pydm.widgets.enum_combo_box import PyDMEnumComboBox
+from pydm import data_plugins
 
 
 # --------------------

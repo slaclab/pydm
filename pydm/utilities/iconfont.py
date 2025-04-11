@@ -3,6 +3,7 @@ iconfont provides a barebones system to get QIcons from icon fonts (like Font Aw
 The inspiration and methodology come from the 'QtAwesome' module, which does exactly this, but
 is a little too big, complicated, and flexible for PyDM's needs.
 """
+
 import json
 import os
 import sys

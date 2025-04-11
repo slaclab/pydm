@@ -3,17 +3,17 @@ import logging
 from qtpy.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
 from qtpy import QtWidgets
 
-from ..utilities import copy_to_clipboard, get_clipboard_text
-from ..widgets.base import PyDMPrimitiveWidget
+from pydm.utilities import copy_to_clipboard, get_clipboard_text
+from pydm.widgets.base import PyDMPrimitiveWidget
 
-from ..widgets.rules_editor import RulesEditor
-from ..widgets.designer_settings import BasicSettingsEditor
-from ..widgets.archiver_time_plot_editor import ArchiverTimePlotCurveEditorDialog
-from ..widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
-from ..widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
-from ..widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
-from ..widgets.eventplot_curve_editor import EventPlotCurveEditorDialog
-from ..widgets.symbol_editor import SymbolEditor
+from pydm.widgets.rules_editor import RulesEditor
+from pydm.widgets.designer_settings import BasicSettingsEditor
+from pydm.widgets.archiver_time_plot_editor import ArchiverTimePlotCurveEditorDialog
+from pydm.widgets.waveformplot_curve_editor import WaveformPlotCurveEditorDialog
+from pydm.widgets.timeplot_curve_editor import TimePlotCurveEditorDialog
+from pydm.widgets.scatterplot_curve_editor import ScatterPlotCurveEditorDialog
+from pydm.widgets.eventplot_curve_editor import EventPlotCurveEditorDialog
+from pydm.widgets.symbol_editor import SymbolEditor
 
 
 logger = logging.getLogger(__name__)

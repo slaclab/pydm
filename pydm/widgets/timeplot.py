@@ -8,7 +8,7 @@ from qtpy.QtGui import QColor, QCursor
 from qtpy.QtCore import Signal, Slot, Property, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
-from ..utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from datetime import datetime
 
 import logging

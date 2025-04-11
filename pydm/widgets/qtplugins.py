@@ -1,7 +1,7 @@
 import logging
 import os
 
-from ..utilities.iconfont import IconFont
+from pydm.utilities.iconfont import IconFont
 from .archiver_time_plot import PyDMArchiverTimePlot
 from .byte import PyDMByteIndicator
 from .byte import PyDMMultiStateIndicator

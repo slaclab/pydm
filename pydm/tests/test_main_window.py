@@ -6,7 +6,7 @@ from pydm import PyDMApplication
 from pydm.display import Display, clear_compiled_ui_file_cache
 from qtpy import uic
 from unittest.mock import MagicMock, patch
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 # The path to the .ui file for creating a main window
 test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data", "test.ui")

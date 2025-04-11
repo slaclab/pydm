@@ -6,7 +6,7 @@ import weakref
 from qtpy.QtCore import QThread, QMutex, Signal
 from qtpy.QtWidgets import QWidget, QApplication
 from qtpy.QtGui import QColor, QBrush
-from ..utilities import is_qt_designer
+from pydm.utilities import is_qt_designer
 from .channel import PyDMChannel
 
 import numpy as np
@@ -372,7 +372,7 @@ class RulesEngine(QThread):
             self.emit_value(widget_ref, name, prop, val)
         except Exception:
             logger.exception(
-                f"Error while evaluating Rule with name: {name} and type: {prop} " f"and expression: {expression}"
+                f"Error while evaluating Rule with name: {name} and type: {prop} and expression: {expression}"
             )
 
     def emit_value(self, widget_ref, name, prop, val):

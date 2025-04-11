@@ -8,7 +8,7 @@ import logging
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget, PostParentClassInitSetup
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 

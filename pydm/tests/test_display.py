@@ -3,7 +3,7 @@ import pytest
 from pydm import Display
 from pydm.display import load_file, load_py_file, _compile_ui_file, _load_compiled_ui_into_display, ScreenTarget
 from qtpy.QtWidgets import QLabel
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 # The path to the .ui file used in these tests
 test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data", "test.ui")

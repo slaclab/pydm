@@ -110,7 +110,7 @@ def is_pydm_app(app=None):
     """
     from qtpy.QtWidgets import QApplication
 
-    from ..application import PyDMApplication
+    from pydm.application import PyDMApplication
 
     if app is None:
         app = QApplication.instance()
@@ -129,7 +129,7 @@ def is_qt_designer():
     bool
         True if inside Designer, False otherwise.
     """
-    from ..qtdesigner import DesignerHooks
+    from pydm.qtdesigner import DesignerHooks
 
     return DesignerHooks().form_editor is not None
 
@@ -147,7 +147,7 @@ def get_designer_current_path():
     if not is_qt_designer():
         return None
 
-    from ..qtdesigner import DesignerHooks
+    from pydm.qtdesigner import DesignerHooks
 
     form_editor = DesignerHooks().form_editor
     win_manager = form_editor.formWindowManager()
@@ -567,9 +567,7 @@ def copy_to_clipboard(text: str, *, quiet: bool = False):
             app.sendEvent(clipboard, event)
 
     if not quiet:
-        logger.warning(
-            ("Copied text to clipboard:\n" "-------------------------\n" "%s\n" "-------------------------\n"), text
-        )
+        logger.warning(("Copied text to clipboard:\n-------------------------\n%s\n-------------------------\n"), text)
 
 
 def get_clipboard_text() -> str:

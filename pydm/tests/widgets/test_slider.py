@@ -5,9 +5,9 @@ import numpy as np
 from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QApplication, QSlider
 from qtpy.QtCore import Qt, QMargins, QPoint, QEvent, QRect, QSize
 from qtpy.QtGui import QMouseEvent
-from ...widgets.slider import PyDMSlider, PyDMPrimitiveSlider
-from ...widgets.base import PyDMWidget
-from ...utilities import checkObjectProperties
+from pydm.widgets.slider import PyDMSlider, PyDMPrimitiveSlider
+from pydm.widgets.base import PyDMWidget
+from pydm.utilities import checkObjectProperties
 
 # Unit Tests for the PyDMPrimitiveSlider class
 
