@@ -649,7 +649,14 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             menu.addAction("Display Command", lambda: QMessageBox.information(self, "Shell Command", self.commands[0]))
             menu.addAction("Copy Command", lambda: QApplication.clipboard().setText(self.commands[0]))
         else:
-            menu.addAction("Display Commands", lambda: QMessageBox.information(self, "Shell Commands", "\n\n".join([f"{name}:\n{cmd}" for name, cmd in zip(self.titles, self.commands)])))
+            menu.addAction(
+                "Display Commands",
+                lambda: QMessageBox.information(
+                    self,
+                    "Shell Commands",
+                    "\n\n".join([f"{name}:\n{cmd}" for name, cmd in zip(self.titles, self.commands)]),
+                ),
+            )
 
         return menu
 
