@@ -7,7 +7,7 @@ import logging
 import warnings
 import hashlib
 from ast import literal_eval
-from qtpy.QtWidgets import QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
+from qtpy.QtWidgets import QApplication, QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
@@ -42,7 +42,7 @@ if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
 
 class PyDMShellCommand(QPushButton, PyDMWidget):
     """
-    A QPushButton capable of execute shell commands.
+    A QPushButton capable of executing shell commands.
 
     Parameters
     ----------
@@ -639,6 +639,19 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         assert len(self.commands) == 1, "More than one command present, but no menu created."
         self.execute_command(self.commands[0])
         super().mouseReleaseEvent(mouse_event)
+
+    def generate_context_menu(self) -> None:
+        menu = PyDMWidget.generate_context_menu(self)
+
+        if len(menu.actions()) > 0:
+            menu.addSeparator()
+        if len(self.commands) == 1:
+            menu.addAction("Display Command", lambda: QMessageBox.information(self, "Shell Command", self.commands[0]))
+            menu.addAction("Copy Command", lambda: QApplication.clipboard().setText(self.commands[0]))
+        else:
+            menu.addAction("Display Commands", lambda: QMessageBox.information(self, "Shell Commands", "\n\n".join([f"{name}:\n{cmd}" for name, cmd in zip(self.titles, self.commands)])))
+
+        return menu
 
     def show_warning_icon(self) -> None:
         """Show the warning icon.  This is called when a shell command fails
