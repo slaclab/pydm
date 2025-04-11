@@ -1,4 +1,5 @@
-""" This file is intended for use in Display related test files. """
+"""This file is intended for use in Display related test files."""
+
 import os
 from pydm import Display
 from pydm.widgets import PyDMPushButton, PyDMLabel

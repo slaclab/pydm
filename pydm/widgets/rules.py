@@ -372,7 +372,7 @@ class RulesEngine(QThread):
             self.emit_value(widget_ref, name, prop, val)
         except Exception:
             logger.exception(
-                f"Error while evaluating Rule with name: {name} and type: {prop} " f"and expression: {expression}"
+                f"Error while evaluating Rule with name: {name} and type: {prop} and expression: {expression}"
             )
 
     def emit_value(self, widget_ref, name, prop, val):

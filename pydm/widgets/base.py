@@ -317,7 +317,7 @@ class PyDMPrimitiveWidget(object):
 
         except Exception:
             logger.error(
-                "Error at Rule: %s. Could not execute method %s with " "value %s and type as %s.",
+                "Error at Rule: %s. Could not execute method %s with value %s and type as %s.",
                 name,
                 method_name,
                 value,

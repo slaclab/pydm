@@ -18,12 +18,10 @@ examples_required = pytest.mark.skipif(
 )
 
 
-class ValidTool(tools.ExternalTool):
-    ...
+class ValidTool(tools.ExternalTool): ...
 
 
-class InvalidTool:
-    ...
+class InvalidTool: ...
 
 
 @pytest.mark.parametrize(

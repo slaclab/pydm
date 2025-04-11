@@ -822,7 +822,7 @@ def test_apply_conversion_wrong_unit(qtbot, caplog, value, precision, initial_un
 
 
 @pytest.mark.parametrize(
-    "init_value, user_typed_value, display_format, precision, scale, unit," "show_units, expected_errors",
+    "init_value, user_typed_value, display_format, precision, scale, unit,show_units, expected_errors",
     [
         (123, 345.678, DisplayFormat.Default, 0, 1, "s", True, ("Error trying to set data ", "with type ", "int'>")),
     ],

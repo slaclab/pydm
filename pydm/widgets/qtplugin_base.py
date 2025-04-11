@@ -18,6 +18,7 @@ for each PyDMDesignerPlugin that Qt Designer tries to use. This will not
 affect any of your widgets, but it will be annoying.
 
 """
+
 import enum
 import inspect
 import logging
@@ -249,7 +250,7 @@ def create_designer_widget_from_widget(
         designer_kwargs = getattr(widget_cls, "_qt_designer_", None) or {}
         return qtplugin_factory(widget_cls, **designer_kwargs)
 
-    raise ValueError(f"Expected a PyDMDesignerPlugin or a QWidget subclass, " f"got a {type(widget_cls).__name__}")
+    raise ValueError(f"Expected a PyDMDesignerPlugin or a QWidget subclass, got a {type(widget_cls).__name__}")
 
 
 def get_widgets_from_entrypoints(key: str = config.ENTRYPOINT_WIDGET) -> Dict[str, Type[PyDMDesignerPlugin]]:
@@ -278,7 +279,7 @@ def get_widgets_from_entrypoints(key: str = config.ENTRYPOINT_WIDGET) -> Dict[st
         try:
             designer_widget = create_designer_widget_from_widget(plugin_cls)
         except Exception:
-            logger.warning("Invalid widget class specified in entrypoint " "%s: %s", entry.name, plugin_cls)
+            logger.warning("Invalid widget class specified in entrypoint %s: %s", entry.name, plugin_cls)
         else:
             widgets[entry.name] = designer_widget
 

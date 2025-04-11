@@ -74,7 +74,7 @@ def install_external_tool(tool: Union[str, ExternalTool]) -> None:
 
     for tool_obj in objects:
         if not isinstance(tool_obj, ExternalTool):
-            raise ValueError(f"Invalid tool found: {tool}. String or ExternalTool " f"expected.")
+            raise ValueError(f"Invalid tool found: {tool}. String or ExternalTool expected.")
 
         if tool_obj.group is not None and tool_obj.group:
             if tool_obj.group not in ext_tools:
@@ -141,7 +141,7 @@ def assemble_tools_menu(
                         continue
                     if widget is not None and not t.is_compatible_with(widget):
                         logger.debug(
-                            "Skipping tool %s as it is incompatible with " "widget %s.",
+                            "Skipping tool %s as it is incompatible with widget %s.",
                             t.name,
                             widget,
                         )
@@ -174,7 +174,7 @@ def get_entrypoint_tools() -> Generator[ExternalTool, None, None]:
             continue
 
         if not _is_valid_external_tool_class(tool_cls):
-            logger.warning("Invalid external tool class specified in entrypoint " "%s: %s", entry.name, tool_cls)
+            logger.warning("Invalid external tool class specified in entrypoint %s: %s", entry.name, tool_cls)
             continue
 
         yield tool_cls()
@@ -185,7 +185,7 @@ def get_tools_from_path() -> Generator[ExternalTool, None, None]:
     tools_path = os.getenv("PYDM_TOOLS_PATH", None)
 
     if not tools_path:
-        logger.debug("External Tools not loaded from PYDM_TOOLS_PATH as no path " "was specified.")
+        logger.debug("External Tools not loaded from PYDM_TOOLS_PATH as no path was specified.")
         return
 
     logger.debug("Looking for external tools at: %s", tools_path)

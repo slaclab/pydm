@@ -3,6 +3,7 @@ Loads all the data plugins available at the given PYDM_DATA_PLUGINS_PATH
 environment variable and subfolders that follows the *_plugin.py and have
 classes that inherits from the pydm.data_plugins.PyDMPlugin class.
 """
+
 import inspect
 import logging
 import os
@@ -140,7 +141,7 @@ def add_plugin(plugin: Type[PyDMPlugin]) -> Optional[PyDMPlugin]:
 
 @log_failures(
     logger,
-    explanation=("Unable to import plugin file: {args[0]}.  " "This plugin will be skipped."),
+    explanation=("Unable to import plugin file: {args[0]}.  This plugin will be skipped."),
     include_traceback=True,
 )
 def _get_plugins_from_source(source_filename: str) -> List[Type[PyDMPlugin]]:
@@ -208,7 +209,7 @@ def find_plugins_from_entrypoints(
             continue
 
         if not _is_valid_plugin_class(plugin_cls):
-            logger.warning("Invalid plugin class specified in entrypoint " "%s: %s", entry.name, plugin_cls)
+            logger.warning("Invalid plugin class specified in entrypoint %s: %s", entry.name, plugin_cls)
             continue
 
         yield plugin_cls

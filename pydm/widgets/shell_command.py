@@ -504,7 +504,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         ----------
         value : str
         """
-        warnings.warn("'PyDMShellCommand.command' is deprecated, " "use 'PyDMShellCommand.commands' instead.")
+        warnings.warn("'PyDMShellCommand.command' is deprecated, use 'PyDMShellCommand.commands' instead.")
         if not self._commands:
             if value:
                 self.commands = [value]

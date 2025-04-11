@@ -4,6 +4,7 @@ Main Application Module
 Contains our PyDMApplication class with core connection and loading logic and
 our PyDMMainWindow class with navigation logic.
 """
+
 import os
 import signal
 import subprocess
@@ -151,7 +152,7 @@ class PyDMApplication(QApplication):
         return super().exec_()
 
     def is_read_only(self):
-        warnings.warn("'PyDMApplication.is_read_only' is deprecated, " "use 'pydm.data_plugins.is_read_only' instead.")
+        warnings.warn("'PyDMApplication.is_read_only' is deprecated, use 'pydm.data_plugins.is_read_only' instead.")
         return data_plugins.is_read_only()
 
     @Slot()
@@ -267,7 +268,7 @@ class PyDMApplication(QApplication):
         PyDMPlugin
         """
         warnings.warn(
-            "'PyDMApplication.plugin_for_channel' is deprecated, " "use 'pydm.data_plugins.plugin_for_address' instead."
+            "'PyDMApplication.plugin_for_channel' is deprecated, use 'pydm.data_plugins.plugin_for_address' instead."
         )
         if channel.address is None or channel.address == "":
             return None
@@ -281,7 +282,7 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        warnings.warn("'PyDMApplication.add_connection' is deprecated, " "use PyDMConnection.connect()")
+        warnings.warn("'PyDMApplication.add_connection' is deprecated, use PyDMConnection.connect()")
         channel.connect()
 
     def remove_connection(self, channel):
@@ -292,17 +293,15 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        warnings.warn("'PyDMApplication.remove_connection' is deprecated, " "use PyDMConnection.disconnect()")
+        warnings.warn("'PyDMApplication.remove_connection' is deprecated, use PyDMConnection.disconnect()")
         channel.disconnect()
 
     def eventFilter(self, obj, event):
-        warnings.warn("'PyDMApplication.eventFilter' is deprecated, " " this function is now found on PyDMWidget")
+        warnings.warn("'PyDMApplication.eventFilter' is deprecated,  this function is now found on PyDMWidget")
         obj.eventFilter(obj, event)
 
     def show_address_tooltip(self, obj, event):
-        warnings.warn(
-            "'PyDMApplication.show_address_tooltip' is deprecated, " " this function is now found on PyDMWidget"
-        )
+        warnings.warn("'PyDMApplication.show_address_tooltip' is deprecated,  this function is now found on PyDMWidget")
         obj.show_address_tooltip(event)
 
     def establish_widget_connections(self, widget):

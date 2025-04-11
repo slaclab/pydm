@@ -567,9 +567,7 @@ def copy_to_clipboard(text: str, *, quiet: bool = False):
             app.sendEvent(clipboard, event)
 
     if not quiet:
-        logger.warning(
-            ("Copied text to clipboard:\n" "-------------------------\n" "%s\n" "-------------------------\n"), text
-        )
+        logger.warning(("Copied text to clipboard:\n-------------------------\n%s\n-------------------------\n"), text)
 
 
 def get_clipboard_text() -> str:
