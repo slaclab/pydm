@@ -4,6 +4,7 @@
 import pytest
 import numpy as np
 import logging
+import warnings
 
 from ...utilities import is_pydm_app
 from ...widgets.label import PyDMLabel
@@ -480,50 +481,55 @@ def test_label_connection_changes_with_alarm_and_no_channel(
     tooltip : str
         The tooltip for the widget. This can be an empty string
     """
-    pydm_label = PyDMLabel()
-    qtbot.addWidget(pydm_label)
+    # Ignore warnings on pyside6: 'RuntimeWarning: Failed to disconnect ... from signal "timeout()"', which seems to just be
+    # some odd issue related to pytest-qt's waitSignal().
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=RuntimeWarning)
+        
+        pydm_label = PyDMLabel()
+        qtbot.addWidget(pydm_label)
 
-    pydm_label.alarmSensitiveContent = alarm_sensitive_content
-    pydm_label.alarmSensitiveBorder = alarm_sensitive_border
-    pydm_label.setToolTip(tooltip)
+        pydm_label.alarmSensitiveContent = alarm_sensitive_content
+        pydm_label.alarmSensitiveBorder = alarm_sensitive_border
+        pydm_label.setToolTip(tooltip)
 
-    # Do not the channel, but set the alarm severity to normal (NONE)
-    pydm_label.channel = None
-    signals.new_severity_signal.connect(pydm_label.alarmSeverityChanged)
-    signals.new_severity_signal.emit(PyDMWidget.ALARM_NONE)
+        # Do not the channel, but set the alarm severity to normal (NONE)
+        pydm_label.channel = None
+        signals.new_severity_signal.connect(pydm_label.alarmSeverityChanged)
+        signals.new_severity_signal.emit(PyDMWidget.ALARM_NONE)
 
-    # Set the connection as enabled (True)
-    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
+        # Set the connection as enabled (True)
+        signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
 
-    blocker = qtbot.waitSignal(signals.connection_state_signal, timeout=1000)
-    signals.connection_state_signal.emit(True)
-    blocker.wait()
+        blocker = qtbot.waitSignal(signals.connection_state_signal, timeout=1000)
+        signals.connection_state_signal.emit(True)
+        blocker.wait()
 
-    # Confirm alarm severity, style, connection state, enabling state, and tooltip
-    assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
-    assert pydm_label._connected is True
-    assert pydm_label.toolTip() == tooltip
-    assert pydm_label.isEnabled() is True
+        # Confirm alarm severity, style, connection state, enabling state, and tooltip
+        assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
+        assert pydm_label._connected is True
+        assert pydm_label.toolTip() == tooltip
+        assert pydm_label.isEnabled() is True
 
-    # Next, disconnect the alarm, and check for the alarm severity, style, connection state, enabling state, and
-    # tooltip
-    signals.connection_state_signal.emit(False)
-    blocker.wait()
-    assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
+        # Next, disconnect the alarm, and check for the alarm severity, style, connection state, enabling state, and
+        # tooltip
+        signals.connection_state_signal.emit(False)
+        blocker.wait()
+        assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
 
-    assert pydm_label._connected is False
-    assert pydm_label.toolTip() == tooltip
-    assert pydm_label.isEnabled() is True
+        assert pydm_label._connected is False
+        assert pydm_label.toolTip() == tooltip
+        assert pydm_label.isEnabled() is True
 
-    # Finally, reconnect the alarm, and check for the same attributes
-    signals.connection_state_signal.emit(True)
-    blocker.wait()
+        # Finally, reconnect the alarm, and check for the same attributes
+        signals.connection_state_signal.emit(True)
+        blocker.wait()
 
-    # Confirm alarm severity, style, connection state, enabling state, and tooltip
-    assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
-    assert pydm_label._connected is True
-    assert pydm_label.toolTip() == tooltip
-    assert pydm_label.isEnabled() is True
+        # Confirm alarm severity, style, connection state, enabling state, and tooltip
+        assert pydm_label._alarm_state == PyDMWidget.ALARM_NONE
+        assert pydm_label._connected is True
+        assert pydm_label.toolTip() == tooltip
+        assert pydm_label.isEnabled() is True
 
 
 # --------------------

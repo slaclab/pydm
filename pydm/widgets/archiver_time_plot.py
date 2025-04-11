@@ -2,6 +2,7 @@ import json
 import re
 import time
 import numpy as np
+import warnings
 from collections import OrderedDict
 from typing import List, Optional, Union
 from pyqtgraph import DateAxisItem, ErrorBarItem, PlotCurveItem
@@ -999,8 +1000,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             return
         if enable:
             try:
-                self.plotItem.sigXRangeChanged.disconnect(self.updateXAxis)
-                self.plotItem.sigXRangeChangedManually.disconnect(self.updateXAxis)
+                # Catch the warnings when sigXRangeChanged and sigXRangeChangedManually were not connected yet.
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", category=RuntimeWarning)   
+                    self.plotItem.sigXRangeChanged.disconnect(self.updateXAxis)
+                    self.plotItem.sigXRangeChangedManually.disconnect(self.updateXAxis)
             except TypeError:
                 pass
         else:
