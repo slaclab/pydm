@@ -38,6 +38,8 @@ Argument                     Description
 ============================ ================================================================================
 DISPLAY_FILE (positional)    | Loads a display from this file to show once PyDM has started.
 -h, --help                   | Show the PyDM help message and exit.
+-r, --recurse                | Recursively search for the provided DISPLAY_FILE in the current working
+                             | directory and subfolders.
 --homefile FILE              | Path to a PyDM file to return to when the home button is clicked in the
                              | navigation bar. This display remains loaded at all times, and is loaded
                              | even when a display file is specified separately. If the specified
