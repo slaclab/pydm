@@ -8,7 +8,7 @@ from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialo
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
 from qtpy import QtDesigner
-from .base import PyDMWidget, only_if_channel_set
+from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
 from ..utilities import IconFont, find_file, is_pydm_app
 from ..utilities.macro import parse_macro_string
 from ..utilities.stylesheet import merge_widget_stylesheet
@@ -86,6 +86,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
         # Retain references to subdisplays to avoid garbage collection
         self._subdisplays = []
+
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     @only_if_channel_set
     def check_enable_state(self) -> None:
@@ -197,7 +202,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         Yields
         ------
         item : dict
-            Containing filename, title, and macros/empy macros
+            Containing filename, title, and macros/empty macros
             Only containing valid entries or nothing
 
         """
@@ -458,7 +463,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             self._shift_key_was_down = True
         else:
             self._shift_key_was_down = False
-        super(PyDMRelatedDisplayButton, self).mousePressEvent(event)
+        super().mousePressEvent(event)
 
     def push_button_release_event(self, mouse_event: QMouseEvent) -> None:
         """
@@ -477,7 +482,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
         """
         if mouse_event.button() != Qt.LeftButton:
-            return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
+            return super().mouseReleaseEvent(mouse_event)
         if self.menu() is not None:
             return super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
         try:
@@ -487,11 +492,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         except Exception:
             logger.exception("Failed to open display.")
         finally:
-            super(PyDMRelatedDisplayButton, self).mouseReleaseEvent(mouse_event)
+            super().mouseReleaseEvent(mouse_event)
 
     def validate_password(self) -> bool:
         """
-        If the widget is ```passwordProtected```, this method will propmt
+        If the widget is ```passwordProtected```, this method will prompt
         the user for the correct password.
 
         Returns
@@ -616,7 +621,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
     def context_menu(self):
         try:
-            menu = super(PyDMRelatedDisplayButton, self).context_menu()
+            menu = super().context_menu()
         except Exception:
             menu = QMenu(self)
         if len(menu.findChildren(QAction)) > 0:

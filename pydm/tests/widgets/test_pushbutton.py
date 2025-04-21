@@ -104,7 +104,7 @@ def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_
 
         # verify that qt standard icons can be set through our custom property
         style = pydm_pushbutton.style()
-        test_icon = style.standardIcon(style.SP_DesktopIcon)
+        test_icon = style.standardIcon(style.StandardPixmap.SP_DesktopIcon)
         test_icon_image = test_icon.pixmap(size).toImage()
 
         pydm_pushbutton.PyDMIcon = "SP_DesktopIcon"
@@ -264,7 +264,7 @@ def test_validate_password(
     Test password validation.
 
     Expectations:
-    1. The user-provided password to the QInputDialog produces the same message disgest like that of the existing
+    1. The user-provided password to the QInputDialog produces the same message digest like that of the existing
         password's message digest.
     2. If the user-provided password to the QInputDialog is empty, or if the QInputDialog returns False, the validation
         must fail
@@ -560,7 +560,7 @@ def test_send_on_release_value(qtbot, monkeypatch, signals, initial_value, press
 
     Expectations:
     1. If writeOnRelease is True, a value will be written on release
-    2. If writeOnRelease is Fale, no value will be written on the release
+    2. If writeOnRelease is False, no value will be written on the release
 
     Parameters
     ----------

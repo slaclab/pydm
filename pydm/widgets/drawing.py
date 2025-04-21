@@ -7,7 +7,7 @@ from qtpy.QtWidgets import QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygonF, QPixmap, QMovie
 from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
 from qtpy.QtDesigner import QDesignerFormWindowInterface
-from .base import PyDMWidget
+from .base import PyDMWidget, PostParentClassInitSetup
 from ..utilities import is_qt_designer, find_file
 from typing import List, Optional
 
@@ -92,6 +92,10 @@ class PyDMDrawing(QWidget, PyDMWidget):
         QWidget.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.alarmSensitiveBorder = False
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def sizeHint(self):
         return QSize(100, 100)
@@ -289,7 +293,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
 
         Returns
         -------
-        int
+        Qt.PenStyle
             Index at Qt.PenStyle enum
         """
         return self._pen_style
@@ -301,7 +305,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
 
         Parameters
         ----------
-        new_style : int
+        new_style : Qt.PenStyle
             Index at Qt.PenStyle enum
         """
         if self._alarm_state == PyDMWidget.ALARM_NONE:
@@ -471,7 +475,7 @@ class PyDMDrawingLineBase(PyDMDrawing):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingLineBase, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
         self.penStyle = Qt.SolidLine
         self.penWidth = 1
         self._arrow_size = 6  # 6 is arbitrary size that looked good for default, not in any specific 'units'
@@ -641,14 +645,14 @@ class PyDMDrawingLine(PyDMDrawingLineBase):
     new_properties = _penRuleProperties
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingLine, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
 
     def draw_item(self, painter) -> None:
         """
         Draws the line after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingLine, self).draw_item(painter)
+        super().draw_item(painter)
         x, y, w, h = self.get_bounds()
 
         # Figure out how long to make the line to touch the bounding box
@@ -723,7 +727,7 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingPolyline, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
         self._points = []
 
     def draw_item(self, painter) -> None:
@@ -731,7 +735,7 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
         Draws the segmented line after setting up the canvas with a call to
         ``PyDMDrawing.draw_item``.
         """
-        super(PyDMDrawingPolyline, self).draw_item(painter)
+        super().draw_item(painter)
         x, y, w, h = self.get_bounds()
 
         def p2d(pt):
@@ -885,14 +889,14 @@ class PyDMDrawingImage(PyDMDrawing):
     null_color = Qt.gray
 
     def __init__(self, parent=None, init_channel=None, filename=""):
-        super(PyDMDrawingImage, self).__init__(parent, init_channel)
-        hint = super(PyDMDrawingImage, self).sizeHint()
+        super().__init__(parent, init_channel)
+        hint = super().sizeHint()
         self._pixmap = QPixmap(hint)
         self._pixmap.fill(self.null_color)
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self._movie = None
         self._file = None
-        # Make sure we don't set a non-existant file
+        # Make sure we don't set a non-existent file
         if filename:
             self.filename = filename
         # But we always have an internal value to reference
@@ -993,7 +997,7 @@ class PyDMDrawingImage(PyDMDrawing):
 
     def sizeHint(self):
         if self._pixmap.size().isEmpty():
-            return super(PyDMDrawingImage, self).sizeHint()
+            return super().sizeHint()
         return self._pixmap.size()
 
     @Property(Qt.AspectRatioMode)
@@ -1029,7 +1033,7 @@ class PyDMDrawingImage(PyDMDrawing):
         Draws the image after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingImage, self).draw_item(painter)
+        super().draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
         if not isinstance(self._pixmap, QMovie):
             _scaled = self._pixmap.scaled(int(w), int(h), self._aspect_ratio_mode, Qt.SmoothTransformation)
@@ -1090,14 +1094,14 @@ class PyDMDrawingRectangle(PyDMDrawing):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingRectangle, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
 
     def draw_item(self, painter):
         """
         Draws the rectangle after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingRectangle, self).draw_item(painter)
+        super().draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True)
         painter.drawRect(QRectF(x, y, w, h))
 
@@ -1116,7 +1120,7 @@ class PyDMDrawingTriangle(PyDMDrawing):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingTriangle, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
 
     def _calculate_drawing_points(self, x, y, w, h):
         return [QPointF(x, h / 2.0), QPointF(x, y), QPointF(w / 2.0, y)]
@@ -1126,7 +1130,7 @@ class PyDMDrawingTriangle(PyDMDrawing):
         Draws the triangle after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingTriangle, self).draw_item(painter)
+        super().draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True)
         points = self._calculate_drawing_points(x, y, w, h)
 
@@ -1147,14 +1151,14 @@ class PyDMDrawingEllipse(PyDMDrawing):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingEllipse, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
 
     def draw_item(self, painter):
         """
         Draws the ellipse after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingEllipse, self).draw_item(painter)
+        super().draw_item(painter)
         maxsize = not self.is_square()
         _, _, w, h = self.get_bounds(maxsize=maxsize)
         painter.drawEllipse(QPoint(0, 0), w / 2.0, h / 2.0)
@@ -1174,7 +1178,7 @@ class PyDMDrawingCircle(PyDMDrawing):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingCircle, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
 
     def _calculate_radius(self, width, height):
         return min(width, height) / 2.0
@@ -1184,7 +1188,7 @@ class PyDMDrawingCircle(PyDMDrawing):
         Draws the circle after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingCircle, self).draw_item(painter)
+        super().draw_item(painter)
         _, _, w, h = self.get_bounds()
         r = self._calculate_radius(w, h)
         painter.drawEllipse(QPoint(0, 0), r, r)
@@ -1203,8 +1207,10 @@ class PyDMDrawingArc(PyDMDrawing):
         The channel to be used by the widget.
     """
 
+    new_properties = {"Start Angle": ["startAngle", float], "Span Angle": ["spanAngle", float]}
+
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingArc, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
         self.penStyle = Qt.SolidLine
         self.penWidth = 1.0
         self._start_angle = 0
@@ -1267,7 +1273,7 @@ class PyDMDrawingArc(PyDMDrawing):
         Draws the arc after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingArc, self).draw_item(painter)
+        super().draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
         painter.drawArc(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
@@ -1287,14 +1293,14 @@ class PyDMDrawingPie(PyDMDrawingArc):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingPie, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
 
     def draw_item(self, painter):
         """
         Draws the pie after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingPie, self).draw_item(painter)
+        super().draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
         painter.drawPie(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
@@ -1314,14 +1320,14 @@ class PyDMDrawingChord(PyDMDrawingArc):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingChord, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
 
     def draw_item(self, painter):
         """
         Draws the chord after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingChord, self).draw_item(painter)
+        super().draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
         painter.drawChord(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
@@ -1341,7 +1347,7 @@ class PyDMDrawingPolygon(PyDMDrawing):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        super(PyDMDrawingPolygon, self).__init__(parent, init_channel)
+        super().__init__(parent, init_channel)
         self._num_points = 3
 
     @Property(int)
@@ -1380,7 +1386,7 @@ class PyDMDrawingPolygon(PyDMDrawing):
         Draws the Polygon after setting up the canvas with a call to
         ```PyDMDrawing.draw_item```.
         """
-        super(PyDMDrawingPolygon, self).draw_item(painter)
+        super().draw_item(painter)
         not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=not self.is_square())
         poly = self._calculate_drawing_points(x, y, w, h)
@@ -1405,10 +1411,10 @@ class PyDMDrawingIrregularPolygon(PyDMDrawingPolyline):
     """
 
     def getPoints(self):
-        return super(PyDMDrawingIrregularPolygon, self).getPoints()
+        return super().getPoints()
 
     def resetPoints(self):
-        super(PyDMDrawingIrregularPolygon, self).resetPoints()
+        super().resetPoints()
 
     def setPoints(self, points):
         verified = self._validator(points)

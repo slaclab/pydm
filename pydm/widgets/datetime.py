@@ -1,7 +1,7 @@
 import logging
 from qtpy import QtWidgets, QtCore
 
-from .base import PyDMWritableWidget, PyDMWidget
+from .base import PyDMWritableWidget, PyDMWidget, PostParentClassInitSetup
 from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
@@ -92,7 +92,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
             self._block_past_date = block
 
     def keyPressEvent(self, key_event):
-        ret = super(PyDMDateTimeEdit, self).keyPressEvent(key_event)
+        ret = super().keyPressEvent(key_event)
         if key_event.key() in [QtCore.Qt.Key_Return, QtCore.Qt.Key_Enter]:
             self.returnPressed.emit()
         return ret
@@ -114,7 +114,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         self.send_value_signal.emit(new_value)
 
     def value_changed(self, new_val):
-        super(PyDMDateTimeEdit, self).value_changed(new_val)
+        super().value_changed(new_val)
 
         if self.timeBase == TimeBase.Seconds:
             new_val *= 1000
@@ -159,6 +159,11 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
         self._text_format = "yyyy/MM/dd hh:mm:ss.zzz"
         self.setText("")
 
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
+
     @QtCore.Property(str)
     def textFormat(self):
         """The format to use when displaying the date/time values."""
@@ -194,7 +199,7 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
             self._relative = checked
 
     def value_changed(self, new_val):
-        super(PyDMDateTimeLabel, self).value_changed(new_val)
+        super().value_changed(new_val)
 
         if self.timeBase == TimeBase.Seconds:
             new_val *= 1000

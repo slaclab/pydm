@@ -90,7 +90,7 @@
 
 
     relative : bool, optional
-        Choice to have the button peform a relative put, instead of always
+        Choice to have the button perform a relative put, instead of always
         setting to an absolute value
     </string>
         </property>
@@ -196,7 +196,7 @@
 
 
     relative : bool, optional
-        Choice to have the button peform a relative put, instead of always
+        Choice to have the button perform a relative put, instead of always
         setting to an absolute value
     </string>
         </property>
@@ -324,7 +324,7 @@
 
 
     relative : bool, optional
-        Choice to have the button peform a relative put, instead of always
+        Choice to have the button perform a relative put, instead of always
         setting to an absolute value
     </string>
         </property>

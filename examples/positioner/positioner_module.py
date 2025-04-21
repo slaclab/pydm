@@ -8,7 +8,7 @@ from pydm import Display
 
 class Positioner(Display):
     def __init__(self, parent=None, args=None):
-        super(Positioner, self).__init__(parent=parent, args=args)
+        super().__init__(parent=parent, args=args)
         self.moving = False
         self.ui.pushButton.clicked.connect(self.move_motors)
         self.motor1pv = epics.PV("MOTOR:1:VAL")

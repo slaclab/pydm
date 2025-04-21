@@ -143,7 +143,7 @@ class Connection(PyDMConnection):
         :param parent: PyQt widget that this widget is inside of.
         :type parent:  QWidget
         """
-        super(Connection, self).__init__(channel, pv, protocol, parent)
+        super().__init__(channel, pv, protocol, parent)
         self.python_type = None
         self.pv = setup_pv(
             pv, con_cb=self.connected_cb, mon_cb=self.monitor_cb, rwaccess_cb=self.rwaccess_cb, control=True
@@ -164,7 +164,7 @@ class Connection(PyDMConnection):
         self.epics_type = None
         self.read_access = False
         self.write_access = False
-        # Auxilliary info to help with throttling
+        # Auxiliary info to help with throttling
         self.scan_pv = setup_pv(pv + ".SCAN", mon_cb=self.scan_pv_cb, mon_cb_once=True)
         self.throttle = QTimer(self)
         self.throttle.timeout.connect(self.throttle_cb)
@@ -524,7 +524,7 @@ class Connection(PyDMConnection):
         :param channel: The channel to connect.
         :type channel:  :class:`PyDMChannel`
         """
-        super(Connection, self).add_listener(channel)
+        super().add_listener(channel)
         # If we are adding a listener to an already existing PV, we need to
         # manually send the signals indicating that the PV is connected, what
         # the latest value is, etc.
@@ -538,22 +538,13 @@ class Connection(PyDMConnection):
             self.send_access_state()
             self.send_ctrl_vars()
         if channel.value_signal is not None:
-            try:
-                channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
-            try:
-                channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
-            try:
-                channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
-            try:
-                channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
+            for signal_type in (str, int, float, np.ndarray):
+                try:
+                    channel.value_signal[signal_type].connect(self.put_value, Qt.QueuedConnection)
+                # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
+                # If signal type exists but doesn't match the slot, TypeError gets thrown.
+                except (KeyError, IndexError, TypeError):
+                    pass
 
     def close(self):
         """

@@ -7,7 +7,7 @@ from pyqtgraph import mkPen
 
 class ImageViewer(Display):
     def __init__(self, parent=None, args=None):
-        super(ImageViewer, self).__init__(parent=parent, args=args)
+        super().__init__(parent=parent, args=args)
         self.markers_lock = threading.Lock()
         self.ui.imageView.process_image = self.process_image
         self.ui.imageView.newImageSignal.connect(self.draw_markers)

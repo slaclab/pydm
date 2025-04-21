@@ -4,11 +4,12 @@ from collections import OrderedDict
 from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
-from qtpy.QtGui import QColor
+from qtpy.QtGui import QColor, QCursor
 from qtpy.QtCore import Signal, Slot, Property, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from ..utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from datetime import datetime
 
 import logging
 
@@ -22,6 +23,9 @@ DEFAULT_Y_MIN = 0
 
 DEFAULT_TIME_SPAN = 5.0
 DEFAULT_UPDATE_INTERVAL = 1000  # Plot update rate for fixed rate mode in milliseconds
+
+DEFAULT_SEVERITY_RAW = -1
+DEFAULT_SEVERITY_STRING = "N/A"
 
 
 class updateMode(object):
@@ -76,6 +80,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
 
     _channels = ("channel",)
     unitSignal = Signal(str)
+    severitySignal = Signal(int)
     live_channel_connection = Signal(bool)
 
     def __init__(self, channel_address=None, plot_by_timestamps=True, plot_style="Line", **kws):
@@ -115,12 +120,15 @@ class TimePlotCurveItem(BasePlotCurveItem):
         self.channel = None
         self.units = ""
 
-        super(TimePlotCurveItem, self).__init__(**kws)
+        self.severity_raw = DEFAULT_SEVERITY_RAW
+        self.severity = DEFAULT_SEVERITY_STRING
+
+        super().__init__(**kws)
         self.address = channel_address
 
     def to_dict(self):
         dic_ = OrderedDict([("channel", self.address), ("plot_style", self.plot_style)])
-        dic_.update(super(TimePlotCurveItem, self).to_dict())
+        dic_.update(super().to_dict())
         return dic_
 
     @property
@@ -146,6 +154,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             connection_slot=self.connectionStateChanged,
             value_slot=self.receiveNewValue,
             unit_slot=self.unitsChanged,
+            severity_slot=self.severityChanged,
         )
         self.channel.connect()
 
@@ -194,6 +203,37 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """Slot to handle when units are received from the PyDMChannel."""
         self.units = units
         self.unitSignal.emit(units)
+
+    @Slot(int)
+    def severityChanged(self, severity: int):
+        """Slot to handle when severity are received from the PyDMChannel."""
+        self.severity_raw = severity
+        self.alarm_severity_changed(severity)
+        self.severitySignal.emit(severity)
+
+    def alarm_severity_changed(self, new_alarm_severity):
+        """
+        Callback invoked when the Channel alarm severity is changed.
+        Sets self.severity to a string representation based on the integer value.
+
+        Parameters
+        ----------
+        new_alarm_severity : int or str
+            The new severity where:
+                0 = NO_ALARM
+                1 = MINOR
+                2 = MAJOR
+                3 = INVALID
+        """
+        severity_map = {0: "NO_ALARM", 1: "MINOR", 2: "MAJOR", 3: "INVALID"}
+
+        try:
+            severity_int = int(new_alarm_severity)
+        except (ValueError, TypeError):
+            severity_int = -1
+
+        self.severity = severity_map.get(severity_int, DEFAULT_SEVERITY_STRING)
+        return self.severity
 
     @Slot(bool)
     def connectionStateChanged(self, connected):
@@ -490,9 +530,7 @@ class PyDMTimePlot(BasePlot):
             self.starting_epoch_time = time.time()
             self._bottom_axis = AxisItem("bottom")
 
-        super(PyDMTimePlot, self).__init__(
-            parent=parent, background=background, axisItems={"bottom": self._bottom_axis}
-        )
+        super().__init__(parent=parent, background=background, axisItems={"bottom": self._bottom_axis})
 
         # Removing the downsampling while PR 763 is not merged at pyqtgraph
         # Reference: https://github.com/pyqtgraph/pyqtgraph/pull/763
@@ -529,7 +567,7 @@ class PyDMTimePlot(BasePlot):
         """Adds attribute specific to TimePlot to add onto BasePlot's to_dict.
         This helps to recreate the Plot Config if we import a save file of it"""
         dic_ = OrderedDict([("refreshInterval", self.auto_scroll_timer.interval() / 1000)])
-        dic_.update(super(PyDMTimePlot, self).to_dict())
+        dic_.update(super().to_dict())
         return dic_
 
     def initialize_for_designer(self):
@@ -553,7 +591,7 @@ class PyDMTimePlot(BasePlot):
         thresholdColor=None,
         yAxisName=None,
         useArchiveData=False,
-        **kwargs
+        **kwargs,
     ):
         """
         Adds a new curve to the current plot
@@ -614,7 +652,7 @@ class PyDMTimePlot(BasePlot):
             color=color,
             yAxisName=yAxisName,
             useArchiveData=useArchiveData,
-            **plot_opts
+            **plot_opts,
         )
         new_curve.setUpdatesAsynchronously(self.updateMode)
         new_curve.setBufferSize(self._bufferSize)
@@ -672,18 +710,31 @@ class PyDMTimePlot(BasePlot):
     @Slot()
     def redrawPlot(self):
         """
-        Redraw the graph
+        Redraw the graph and ensure the crosshair remains aligned.
         """
         if not self._needs_redraw:
             return
 
         self.updateXAxis()
-        # The minimum and maximum x-axis timestamps visible to the user
+
         min_x = self.plotItem.getViewBox().state["viewRange"][0][0]
         max_x = self.plotItem.getViewBox().state["viewRange"][0][1]
+
         for curve in self._curves:
             curve.redrawCurve(min_x=min_x, max_x=max_x)
             self.plot_redrawn_signal.emit(curve)
+
+        if self.crosshair:
+            global_pos = QCursor.pos()  # Screen coords
+            local_pos = self.mapFromGlobal(global_pos)  # Widget coords
+            scene_pos = self.mapToScene(local_pos)  # Scene coords
+
+            if self.plotItem.sceneBoundingRect().contains(scene_pos):
+                mapped_point = self.plotItem.vb.mapSceneToView(scene_pos)  # Data coords
+                self.vertical_crosshair_line.setPos(mapped_point.x())
+                self.horizontal_crosshair_line.setPos(mapped_point.y())
+                self.crosshair_position_updated.emit(scene_pos.x(), scene_pos.y())
+
         self._needs_redraw = False
 
     def updateXAxis(self, update_immediately=False):
@@ -722,7 +773,7 @@ class PyDMTimePlot(BasePlot):
         """
         Remove all curves from the graph.
         """
-        super(PyDMTimePlot, self).clear()
+        super().clear()
 
     def getCurves(self):
         """
@@ -998,7 +1049,7 @@ class PyDMTimePlot(BasePlot):
     def setTimeSpan(self, value):
         """
         Set the extent of the x-axis of the chart, in seconds.
-        In aynchronous mode, the chart will allocate enough buffer for the new time span duration.
+        In asynchronous mode, the chart will allocate enough buffer for the new time span duration.
         Data arriving after each duration will be recorded into the buffer
         having been rotated.
 
@@ -1071,14 +1122,14 @@ class PyDMTimePlot(BasePlot):
     def getAutoRangeX(self):
         if self._plot_by_timestamps:
             return False
-        return super(PyDMTimePlot, self).getAutoRangeX()
+        return super().getAutoRangeX()
 
     def setAutoRangeX(self, value):
         if self._plot_by_timestamps:
             self._auto_range_x = False
             self.plotItem.enableAutoRange(ViewBox.XAxis, enable=self._auto_range_x)
         else:
-            super(PyDMTimePlot, self).setAutoRangeX(value)
+            super().setAutoRangeX(value)
 
     def channels(self):
         return [curve.channel for curve in self._curves]
@@ -1143,7 +1194,7 @@ class PyDMTimePlot(BasePlot):
         horizontal_movable : bool
             True if the user can move the horizontal line; False if not
         """
-        super(PyDMTimePlot, self).enableCrosshair(
+        super().enableCrosshair(
             is_enabled,
             starting_x_pos,
             starting_y_pos,
@@ -1153,6 +1204,38 @@ class PyDMTimePlot(BasePlot):
             horizontal_movable,
         )
 
+    def updateLabel(self, x_val: float, y_val: float) -> None:
+        """
+        Update the label for each curve with severity information, if available.
+
+        This method first calls the parent class's `updateLabel` to handle general
+        label updates and positioning. It then appends severity information to the
+        label of each curve that contains a valid `severity_raw` attribute.
+
+        Parameters
+        ----------
+        x_val : float
+            The x-coordinate value at which the label is being updated.
+        y_val : float
+            The y-coordinate value at which the label is being updated.
+
+        Returns
+        -------
+        None
+        """
+        super().updateLabel(x_val, y_val)
+
+        for curve, label in self.textItems.items():
+            if getattr(curve, "severity_raw", -1) != -1:
+                old_text = label.toPlainText()
+                label.setText(old_text + "\n" + str(curve.severity))
+
+    def getFormattedX(self, real_x: float) -> str:
+        """
+        For time plots, interpret `real_x` as a UNIX timestamp and return HH:MM:SS.
+        """
+        return datetime.fromtimestamp(real_x).strftime("%H:%M:%S")
+
 
 class TimeAxisItem(AxisItem):
     """
@@ -1160,7 +1243,7 @@ class TimeAxisItem(AxisItem):
     """
 
     def __init__(self, *args, **kwargs):
-        super(TimeAxisItem, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.enableAutoSIPrefix(False)
 
     def tickStrings(self, values, scale, spacing):

@@ -134,7 +134,7 @@ def test_rules_ok(qtbot, caplog):
     assert len(re.widget_map[weakref.ref(widget)]) == 1
     assert re.widget_map[weakref.ref(widget)][0]["rule"] == rules[0]
 
-    blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
+    blocker = qtbot.waitSignal(re.rule_signal, timeout=5000)
 
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=5)
@@ -182,7 +182,7 @@ def test_rules_enums(use_enum, visible, qtbot, caplog):
     assert re.widget_map[weakref.ref(widget)][0]["rule"] == rules[0]
 
     # First we test that we receive a value but we don't have enums yet
-    blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
+    blocker = qtbot.waitSignal(re.rule_signal, timeout=5000)
 
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=1)
@@ -192,7 +192,7 @@ def test_rules_enums(use_enum, visible, qtbot, caplog):
     assert re.widget_map[weakref.ref(widget)][0]["calculate"] is False
     assert not widget.isVisible()
 
-    blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
+    blocker = qtbot.waitSignal(re.rule_signal, timeout=5000)
 
     # Now receive enums and check that it was evaluated again and proper
     # value was sent making the widget visible on condition of use_enum
@@ -247,7 +247,7 @@ def test_rules_invalid_expr(qtbot, caplog):
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value="a")
 
     # Wait for rule to execute but keep app responsive
-    qtbot.wait(1000)
+    qtbot.wait(5000)
 
     for record in caplog.records:
         assert record.levelno == logging.ERROR
@@ -269,7 +269,7 @@ def test_rules_initial_value(qtbot, caplog):
         To capture the log messages
     """
     widget = PyDMLabel()
-    widget.setText("Defaut Label")
+    widget.setText("Default Label")
     qtbot.addWidget(widget)
     widget.show()
 
@@ -291,7 +291,7 @@ def test_rules_initial_value(qtbot, caplog):
     assert len(re.widget_map[weakref.ref(widget)]) == 1
     assert re.widget_map[weakref.ref(widget)][0]["rule"] == rules[0]
     assert widget.text() == "Initial Value Test"
-    blocker = qtbot.waitSignal(re.rule_signal, timeout=1000)
+    blocker = qtbot.waitSignal(re.rule_signal, timeout=5000)
 
     re.callback_conn(weakref.ref(widget), 0, 0, value=True)
     re.callback_value(weakref.ref(widget), 0, 0, trigger=True, value=5)

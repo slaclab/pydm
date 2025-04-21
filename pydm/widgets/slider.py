@@ -325,7 +325,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         if self._ignore_mouse_wheel:
             e.ignore()
         else:
-            super(PyDMSlider, self).wheelEvent(e)
+            super().wheelEvent(e)
         return
 
     def mousePressEvent(self, mouse_event):
@@ -515,7 +515,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         Parameters
         ----------
-        new_orientation : int
+        new_orientation : Qt.Orientation
             Qt.Horizontal or Qt.Vertical
         """
         self._orientation = new_orientation
@@ -527,7 +527,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         Parameters
         ----------
-        new_orientation : int
+        new_orientation : Qt.Orientation
             Qt.Horizontal or Qt.Vertical
         """
         if new_orientation not in (Qt.Horizontal, Qt.Vertical):
@@ -604,7 +604,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             self._parameters_menu_flag = False
         else:
             # if no defaults. create a linear space from min to max from default num_steps = 101,
-            # this means we cant step to max, but also cant call create map without a value
+            # this means we can't step to max, but also can't call create map without a value
             self._slider_position_to_value_map = np.linspace(self.minimum, self.maximum, num=self._num_steps)
 
             if is_channel_valid(self.step_size_channel):
@@ -719,7 +719,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self.step_size = (self.maximum - self.minimum) / self.num_steps
         if self.step_size == 0:
             self._slider.setEnabled(False)
-            raise ValueError("step size is zero afte calc step step size")
+            raise ValueError("step size is zero after calc step step size")
 
     def find_closest_slider_position_to_value(self, val):
         """
@@ -751,7 +751,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             return
         # When we set the slider to the closest value, it may end up at a slightly
         # different position than val (if val is not in self._slider_position_to_value_map)
-        # We don't want that slight difference to get broacast out and put the channel
+        # We don't want that slight difference to get broadcast out and put the channel
         # somewhere new.    For example, if the slider can only be at 0.4 or 0.5, but a
         # new value comes in of 0.45, its more important to keep the 0.45 than to change
         # it to where the slider gets set.  Therefore, we mute the internal slider changes
@@ -773,7 +773,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         connected : int
             When this value is 0 the channel is disconnected, 1 otherwise.
         """
-        super(PyDMSlider, self).connection_changed(connected)
+        super().connection_changed(connected)
         self.set_enable_state()
 
     def write_access_changed(self, new_write_access):
@@ -787,7 +787,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_write_access : bool
             True if write operations to the channel are allowed.
         """
-        super(PyDMSlider, self).write_access_changed(new_write_access)
+        super().write_access_changed(new_write_access)
         self.set_enable_state()
 
     def value_changed(self, new_val):
@@ -849,7 +849,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             The format string to be used including or not the precision
             and unit
         """
-        fs = super(PyDMSlider, self).update_format_string()
+        fs = super().update_format_string()
         self.update_labels()
         return fs
 

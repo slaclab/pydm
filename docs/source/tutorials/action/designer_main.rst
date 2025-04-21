@@ -166,7 +166,7 @@ The finished result will look like this:
 
   * **Step 3.8.**
 
-    The eigth widget that we will add is a ``PyDMEmbeddedDisplay``, which will
+    The eighth widget that we will add is a ``PyDMEmbeddedDisplay``, which will
     display the ``inline_motor.ui`` with information for our second motor axis:
 
     #. Drag and drop a ``PyDMEmbeddedDisplay`` into the ``Frame`` added in **Step 3.7**.

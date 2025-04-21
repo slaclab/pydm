@@ -161,7 +161,7 @@ class CharIconEngine(QIconEngine):
     """Subclass of QIconEngine that is designed to draw characters from icon fonts."""
 
     def __init__(self, icon_font, char, color=None):
-        super(CharIconEngine, self).__init__()
+        super().__init__()
         self.icon_font = icon_font
         self.char = char
         if color is None:

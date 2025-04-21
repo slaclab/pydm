@@ -33,7 +33,7 @@ Alarm Region Configuration
 ==========================
 Alarm regions can be fetched from the channel or hard coded in designer.
 
-Alarm region color change is not tied ot the alarmSensitiveContent property.  If the color change is not
+Alarm region color change is not tied to the alarmSensitiveContent property.  If the color change is not
 desired set the alarm colors to be the same as the alarm region color.
 
 There are a few methods of not drawing alarm regions.

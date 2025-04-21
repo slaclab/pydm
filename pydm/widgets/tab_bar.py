@@ -1,7 +1,7 @@
 from qtpy.QtWidgets import QTabBar, QTabWidget
 from qtpy.QtGui import QIcon, QColor
 from qtpy.QtCore import QByteArray
-from .base import PyDMWidget
+from .base import PyDMWidget, PostParentClassInitSetup
 from .channel import PyDMChannel
 from qtpy.QtCore import Property
 from functools import partial
@@ -12,7 +12,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
     """PyDMTabBar is used internally by PyDMTabWidget, and shouldn't be directly used on its own."""
 
     def __init__(self, parent=None):
-        super(PyDMTabBar, self).__init__(parent=parent)
+        super().__init__(parent=parent)
         self.tab_channels = {}
         self.tab_connection_status = {}
         self.tab_alarm_severity = {}
@@ -24,6 +24,11 @@ class PyDMTabBar(QTabBar, PyDMWidget):
         self._disconnected_alarm_icon_color = QColor(255, 255, 255)
         self.alarm_icons = None
         self.generate_alarm_icons()
+
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     @Property(str)
     def currentTabAlarmChannel(self):
@@ -104,7 +109,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
             self.setTabIcon(index, self.alarm_icons[icon_index])
 
     def tabInserted(self, index):
-        super(PyDMTabBar, self).tabInserted(index)
+        super().tabInserted(index)
         if index not in self.tab_channels:
             self.tab_channels[index] = {"address": ""}
         self.set_initial_icon_for_tab(index)
@@ -184,7 +189,7 @@ class PyDMTabWidget(QTabWidget):
     """
 
     def __init__(self, parent=None):
-        super(PyDMTabWidget, self).__init__(parent=parent)
+        super().__init__(parent=parent)
         self.tb = PyDMTabBar(parent=self)
         self.setTabBar(self.tb)
 

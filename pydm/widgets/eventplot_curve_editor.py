@@ -10,7 +10,7 @@ class PyDMEventPlotCurvesModel(BasePlotCurvesModel):
     """
 
     def __init__(self, plot, parent=None):
-        super(PyDMEventPlotCurvesModel, self).__init__(plot, parent=parent)
+        super().__init__(plot, parent=parent)
         self._column_names = ("Channel", "Y Index", "X Index") + self._column_names
         self._column_names += ("Buffer Size", "Buffer Size Channel")
 
@@ -31,7 +31,7 @@ class PyDMEventPlotCurvesModel(BasePlotCurvesModel):
             return curve.getBufferSize()
         elif column_name == "Buffer Size Channel":
             return curve.bufferSizeChannelAddress or ""
-        return super(PyDMEventPlotCurvesModel, self).get_data(column_name, curve)
+        return super().get_data(column_name, curve)
 
     def set_data(self, column_name, curve, value):
         if column_name == "Channel":
@@ -47,7 +47,7 @@ class PyDMEventPlotCurvesModel(BasePlotCurvesModel):
                 value = None
             curve.bufferSizeChannelAddress = str(value)
         else:
-            return super(PyDMEventPlotCurvesModel, self).set_data(column_name=column_name, curve=curve, value=value)
+            return super().set_data(column_name=column_name, curve=curve, value=value)
         return True
 
     def append(self, channel=None, y_idx=None, x_idx=None, name=None, color=None):
@@ -73,7 +73,7 @@ class EventPlotCurveEditorDialog(BasePlotCurveEditorDialog):
     TABLE_MODEL_CLASS = PyDMEventPlotCurvesModel
 
     def __init__(self, plot, parent=None):
-        super(EventPlotCurveEditorDialog, self).__init__(plot, parent)
+        super().__init__(plot, parent)
 
         plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
         plot_style_delegate.hideColumns(hide_line_columns=False, hide_bar_columns=True)

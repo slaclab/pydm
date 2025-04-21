@@ -45,7 +45,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             kws["symbol"] = "o"
         if "lineStyle" not in kws.keys():
             kws["lineStyle"] = Qt.NoPen
-        super(ScatterPlotCurveItem, self).__init__(**kws)
+        super().__init__(**kws)
         self.bufferSizeChannelAddress = bufferSizeChannelAddress
 
     def to_dict(self):
@@ -59,7 +59,7 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             needed to recreate this curve.
         """
         dic_ = OrderedDict([("y_channel", self.y_address), ("x_channel", self.x_address)])
-        dic_.update(super(ScatterPlotCurveItem, self).to_dict())
+        dic_.update(super().to_dict())
         dic_["redraw_mode"] = self.redraw_mode
         dic_["buffer_size"] = self.getBufferSize()
         dic_["bufferSizeChannelAddress"] = self.bufferSizeChannelAddress
@@ -341,7 +341,7 @@ class PyDMScatterPlot(BasePlot):
     """
 
     def __init__(self, parent=None, init_x_channels=[], init_y_channels=[], background="default"):
-        super(PyDMScatterPlot, self).__init__(parent, background)
+        super().__init__(parent, background)
         # If the user supplies a single string instead of a list,
         # wrap it in a list.
         if isinstance(init_x_channels, str):
@@ -364,6 +364,10 @@ class PyDMScatterPlot(BasePlot):
     def initialize_for_designer(self):
         # If we are in Qt Designer, don't update the plot continuously.
         # This function gets called by PyDMTimePlot's designer plugin.
+        pass
+
+    def updateLabel(self, x_val: float, y_val: float) -> None:
+        # Do nothing — disabling labels for this class. method would need to be implemented if labels are desired.
         pass
 
     def addChannel(
@@ -440,7 +444,7 @@ class PyDMScatterPlot(BasePlot):
             color=color,
             yAxisName=yAxisName,
             bufferSizeChannelAddress=bufferSizeChannelAddress,
-            **plot_opts
+            **plot_opts,
         )
         if buffer_size is not None:
             curve.setBufferSize(buffer_size)
@@ -495,7 +499,7 @@ class PyDMScatterPlot(BasePlot):
         """
         Remove all curves from the plot.
         """
-        super(PyDMScatterPlot, self).clear()
+        super().clear()
 
     def getCurves(self):
         """

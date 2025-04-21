@@ -1,10 +1,13 @@
 import functools
+import numpy as np
 import weakref
 import threading
 
 from typing import Optional, Callable
+from urllib.parse import ParseResult
 
 from ..utilities.remove_protocol import parsed_address
+from ..widgets import PyDMChannel
 from qtpy.compat import isalive
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
@@ -12,23 +15,23 @@ from .. import config
 
 
 class PyDMConnection(QObject):
-    new_value_signal = Signal([float], [int], [str], [bool], [object])
+    new_value_signal = Signal((float,), (int,), (str,), (bool,), (object,))
     connection_state_signal = Signal(bool)
     new_severity_signal = Signal(int)
     write_access_signal = Signal(bool)
     enum_strings_signal = Signal(tuple)
     unit_signal = Signal(str)
     prec_signal = Signal(int)
-    upper_ctrl_limit_signal = Signal([float], [int])
-    lower_ctrl_limit_signal = Signal([float], [int])
-    upper_alarm_limit_signal = Signal([float], [int])
-    lower_alarm_limit_signal = Signal([float], [int])
-    upper_warning_limit_signal = Signal([float], [int])
-    lower_warning_limit_signal = Signal([float], [int])
+    upper_ctrl_limit_signal = Signal((float,), (int,))
+    lower_ctrl_limit_signal = Signal((float,), (int,))
+    upper_alarm_limit_signal = Signal((float,), (int,))
+    lower_alarm_limit_signal = Signal((float,), (int,))
+    upper_warning_limit_signal = Signal((float,), (int,))
+    lower_warning_limit_signal = Signal((float,), (int,))
     timestamp_signal = Signal(float)
 
     def __init__(self, channel, address, protocol=None, parent=None):
-        super(PyDMConnection, self).__init__(parent)
+        super().__init__(parent)
         self.protocol = protocol
         self.address = address
         self.connected = False
@@ -42,26 +45,14 @@ class PyDMConnection(QObject):
             self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
 
         if channel.value_slot is not None:
-            try:
-                self.new_value_signal[int].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[float].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[str].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[bool].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[object].connect(channel.value_slot, Qt.QueuedConnection)
-            except TypeError:
-                pass
+            for signal_type in (int, float, str, bool, object):
+                try:
+                    self.new_value_signal[signal_type].connect(channel.value_slot, Qt.QueuedConnection)
+                # If the signal exists (always does in this case since we define it for all 'signal_type' values above)
+                # but doesn't match slot, TypeError is thrown. We also don't need to catch KeyError/IndexError here,
+                # since those are only thrown when signal type doesn't exist.
+                except TypeError:
+                    pass
 
         if channel.severity_slot is not None:
             self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
@@ -121,26 +112,14 @@ class PyDMConnection(QObject):
                 pass
 
         if self._should_disconnect(channel.value_slot, destroying):
-            try:
-                self.new_value_signal[int].disconnect(channel.value_slot)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[float].disconnect(channel.value_slot)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[str].disconnect(channel.value_slot)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[bool].disconnect(channel.value_slot)
-            except TypeError:
-                pass
-            try:
-                self.new_value_signal[object].disconnect(channel.value_slot)
-            except TypeError:
-                pass
+            for signal_type in (int, float, str, bool, object):
+                try:
+                    self.new_value_signal[signal_type].disconnect(channel.value_slot)
+                # If the signal exists (always does in this case since we define it for all 'signal_type' earlier)
+                # but doesn't match slot, TypeError is thrown. We also don't need to catch KeyError/IndexError here,
+                # since those are only thrown when signal type doesn't exist.
+                except TypeError:
+                    pass
 
         if self._should_disconnect(channel.severity_slot, destroying):
             try:
@@ -214,6 +193,15 @@ class PyDMConnection(QObject):
             except (KeyError, TypeError):
                 pass
 
+        if not destroying and channel.value_signal is not None and hasattr(self, "put_value"):
+            for signal_type in (str, int, float, np.ndarray, dict):
+                try:
+                    channel.value_signal[signal_type].disconnect(self.put_value)
+                # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
+                # If signal type exists but doesn't match the slot, TypeError gets thrown.
+                except (KeyError, IndexError, TypeError):
+                    pass
+
         self.listener_count = self.listener_count - 1
         if self.listener_count < 1:
             self.close()
@@ -251,12 +239,12 @@ class PyDMPlugin(object):
         self.lock = threading.Lock()
 
     @staticmethod
-    def get_parsed_address(channel):
+    def get_parsed_address(channel: PyDMChannel) -> ParseResult:
         parsed_addr = parsed_address(channel.address)
         return parsed_addr
 
     @staticmethod
-    def get_full_address(channel):
+    def get_full_address(channel: PyDMChannel) -> Optional[str]:
         parsed_addr = parsed_address(channel.address)
 
         if parsed_addr:
@@ -267,14 +255,14 @@ class PyDMPlugin(object):
         return full_addr
 
     @staticmethod
-    def get_address(channel):
+    def get_address(channel: PyDMChannel) -> str:
         parsed_addr = parsed_address(channel.address)
         addr = parsed_addr.netloc
 
         return addr
 
     @staticmethod
-    def get_subfield(channel):
+    def get_subfield(channel: PyDMChannel) -> Optional[str]:
         parsed_addr = parsed_address(channel.address)
 
         if parsed_addr:
@@ -288,10 +276,10 @@ class PyDMPlugin(object):
         return subfield
 
     @staticmethod
-    def get_connection_id(channel):
+    def get_connection_id(channel: PyDMChannel) -> Optional[str]:
         return PyDMPlugin.get_full_address(channel)
 
-    def add_connection(self, channel):
+    def add_connection(self, channel: PyDMChannel) -> None:
         from pydm.utilities import is_qt_designer
 
         with self.lock:
@@ -311,7 +299,7 @@ class PyDMPlugin(object):
             else:
                 self.connections[connection_id] = self.connection_class(channel, address, self.protocol)
 
-    def remove_connection(self, channel, destroying=False):
+    def remove_connection(self, channel: PyDMChannel, destroying: bool = False) -> None:
         with self.lock:
             connection_id = self.get_connection_id(channel)
             if connection_id in self.connections and channel in self.channels:

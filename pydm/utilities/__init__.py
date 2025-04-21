@@ -31,6 +31,7 @@ __all__ = [
     "IconFont",
     "protocol_and_address",
     "remove_protocol",
+    "BasicURI",
     "parsed_address",
     "convert",
     "find_unit_options",

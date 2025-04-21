@@ -40,7 +40,7 @@ float_types = set(
 
 class Connection(PyDMConnection):
     def __init__(self, channel, pv, protocol=None, parent=None):
-        super(Connection, self).__init__(channel, pv, protocol, parent)
+        super().__init__(channel, pv, protocol, parent)
         self.app = QApplication.instance()
         self._value = None
         self._severity = None
@@ -115,7 +115,7 @@ class Connection(PyDMConnection):
         precision=None,
         timestamp=None,
         *args,
-        **kws
+        **kws,
     ):
         if severity is not None and self._severity != severity:
             self._severity = severity
@@ -194,7 +194,7 @@ class Connection(PyDMConnection):
                 logger.exception("Unable to put %s to %s.  Exception: %s", new_val, self.pv.pvname, str(e))
 
     def add_listener(self, channel):
-        super(Connection, self).add_listener(channel)
+        super().add_listener(channel)
         # If we are adding a listener to an already existing PV, we need to
         # manually send the signals indicating that the PV is connected, what the latest value is, etc.
         if self.pv.connected:
@@ -204,22 +204,13 @@ class Connection(PyDMConnection):
             self.send_connection_state(conn=False)
         # If the channel is used for writing to PVs, hook it up to the 'put' methods.
         if channel.value_signal is not None:
-            try:
-                channel.value_signal[str].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
-            try:
-                channel.value_signal[int].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
-            try:
-                channel.value_signal[float].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
-            try:
-                channel.value_signal[np.ndarray].connect(self.put_value, Qt.QueuedConnection)
-            except KeyError:
-                pass
+            for signal_type in (str, int, float, np.ndarray):
+                try:
+                    channel.value_signal[signal_type].connect(self.put_value, Qt.QueuedConnection)
+                # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
+                # If signal type exists but doesn't match the slot, TypeError gets thrown.
+                except (KeyError, IndexError, TypeError):
+                    pass
 
     def close(self):
         self.pv.disconnect()

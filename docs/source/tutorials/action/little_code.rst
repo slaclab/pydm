@@ -14,7 +14,7 @@ the coordinates in a label.
 To do so, we will need to add some Python code to our main screen developed at
 the :ref:`Main` section.
 
-Since we already have the screen designed in the UI file, we can re-use it in
+Since we already have the screen designed in the UI file, we can reuse it in
 our Python-based display, and hook up code to interact with widgets.
 
 This is accomplished by subclassing `pydm.Display` (See :ref:`Display` for more details).
@@ -40,7 +40,7 @@ This is accomplished by subclassing `pydm.Display` (See :ref:`Display` for more 
       class BeamPositioning(Display):
 
           def __init__(self, parent=None, args=None, macros=None):
-              super(BeamPositioning, self).__init__(parent=parent, args=args, macros=None)
+              super().__init__(parent=parent, args=args, macros=None)
               # Attach our custom process_image method
               self.ui.imageView.process_image = self.process_image
               # Hook up to the newImageSignal so we can update

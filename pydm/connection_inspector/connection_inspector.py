@@ -19,7 +19,7 @@ from .. import data_plugins
 
 class ConnectionInspector(QWidget):
     def __init__(self, parent=None):
-        super(ConnectionInspector, self).__init__(parent, Qt.Window)
+        super().__init__(parent, Qt.Window)
         connections = self.fetch_data()
         self.table_view = ConnectionTableView(connections, self)
         self.setLayout(QVBoxLayout(self))
@@ -45,6 +45,10 @@ class ConnectionInspector(QWidget):
 
     def update_data(self):
         self.table_view.model().connections = self.fetch_data()
+        self.table_view.sortByColumn(
+            self.table_view.horizontalHeader().sortIndicatorSection(),
+            self.table_view.horizontalHeader().sortIndicatorOrder(),
+        )
 
     def fetch_data(self):
         plugins = data_plugins.plugin_modules
@@ -59,8 +63,11 @@ class ConnectionInspector(QWidget):
 
     @Slot()
     def save_list_to_file(self):
-        filename, filters = QFileDialog.getSaveFileName(self, "Save connection list", "", "Text Files (*.txt)")
+        filename, _ = QFileDialog.getSaveFileName(self, "Save connection list", "", "Text Files (*.txt)")
         try:
+            if len(filename) == 0:
+                # User hit Cancel
+                return
             with open(filename, "w") as f:
                 for conn in self.table_view.model().connections:
                     f.write("{p}://{a}\n".format(p=conn.protocol, a=conn.address))
@@ -89,7 +96,7 @@ class ConnectionInspector(QWidget):
 
 class ConnectionTableView(QTableView):
     def __init__(self, connections=[], parent=None):
-        super(ConnectionTableView, self).__init__(parent)
+        super().__init__(parent)
         self.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContentsOnFirstShow)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.horizontalHeader().setStretchLastSection(True)

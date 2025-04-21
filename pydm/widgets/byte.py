@@ -2,7 +2,7 @@ from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QSt
 from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QPaintEvent, QBrush
 from qtpy.QtCore import Property, Qt, QSize, QPoint
 from typing import List, Optional
-from .base import PyDMWidget
+from .base import PyDMWidget, PostParentClassInitSetup
 
 
 class PyDMBitIndicator(QWidget):
@@ -17,7 +17,7 @@ class PyDMBitIndicator(QWidget):
     """
 
     def __init__(self, parent: Optional[QWidget] = None, circle: bool = False):
-        super(PyDMBitIndicator, self).__init__(parent)
+        super().__init__(parent)
         self.circle = circle
         self._painter = QPainter()
         self._brush = QBrush(Qt.SolidPattern)
@@ -95,7 +95,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
 
         self._orientation = Qt.Vertical
 
-        # This is kind of ridiculous, importing QTabWidget just to get a 4-item enum thats usable in Designer.
+        # This is kind of ridiculous, importing QTabWidget just to get a 4-item enum that's usable in Designer.
         # PyQt5 lets you define custom enums that you can use in designer with QtCore.Q_ENUMS(), doesn't exist in PyQt4.
         self._labels = []
         self._show_labels = True
@@ -113,6 +113,11 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.numBits = 1  # Need to set the property to initialize
         # _labels and _indicators setting numBits there also performs
         # the first rebuild_layout.
+
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def init_for_designer(self) -> None:
         """
@@ -134,7 +139,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         connected : bool
             When this value is False the channel is disconnected, True otherwise.
         """
-        super(PyDMByteIndicator, self).connection_changed(connected)
+        super().connection_changed(connected)
         self.update_indicators()
 
     def rebuild_layout(self) -> None:
@@ -201,7 +206,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         else:
             value = int(self.value) >> self._shift
 
-        # also display value when negative (these values are repesented by bits in Two's Complement form)
+        # also display value when negative (these values are represented by bits in Two's Complement form)
 
         bits = [(value >> i) & 1 for i in range(self._num_bits)]
         for bit, indicator in zip(bits, self._indicators):
@@ -508,7 +513,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         new_val : int
             The new value from the channel.
         """
-        super(PyDMByteIndicator, self).value_changed(new_val)
+        super().value_changed(new_val)
         try:
             int(new_val)
             self.update_indicators()
@@ -549,7 +554,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         if new_alarm_severity == self._alarm_state:
             return
         else:
-            super(PyDMByteIndicator, self).alarm_severity_changed(new_alarm_severity)
+            super().alarm_severity_changed(new_alarm_severity)
 
             # Checks if _shift attribute exits because base class can call method
             # before the object constructor is complete
@@ -580,6 +585,10 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         self._brush = QBrush(Qt.SolidPattern)
         self._pen = QPen(Qt.SolidLine)
         self._render_as_rectangle = False
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     # whether or not we render the widget as a circle (default) or a rectangle
     @Property(bool)
@@ -599,7 +608,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         new_val : int
             The new value from the channel.
         """
-        super(PyDMMultiStateIndicator, self).value_changed(new_val)
+        super().value_changed(new_val)
         try:
             int(new_val)
             if new_val >= 0 and new_val <= 15:  # use states 0-15 (16 total states)

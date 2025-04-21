@@ -1,5 +1,5 @@
 from pyqtgraph import BarGraphItem
-from qtpy.QtGui import QColor
+from qtpy.QtGui import QColor, QCursor
 from qtpy.QtCore import Slot, Property
 import numpy as np
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
@@ -75,7 +75,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         self.latest_y = None
         self.plot_style = plot_style
 
-        super(WaveformCurveItem, self).__init__(**kws)
+        super().__init__(**kws)
 
     def to_dict(self):
         """
@@ -89,7 +89,7 @@ class WaveformCurveItem(BasePlotCurveItem):
         dic_ = OrderedDict(
             [("y_channel", self.y_address), ("x_channel", self.x_address), ("plot_style", self.plot_style)]
         )
-        dic_.update(super(WaveformCurveItem, self).to_dict())
+        dic_.update(super().to_dict())
         dic_["redraw_mode"] = self.redraw_mode
         return dic_
 
@@ -337,7 +337,7 @@ class PyDMWaveformPlot(BasePlot):
     """
 
     def __init__(self, parent=None, init_x_channels=[], init_y_channels=[], background="default"):
-        super(PyDMWaveformPlot, self).__init__(parent, background)
+        super().__init__(parent, background)
         # If the user supplies a single string instead of a list,
         # wrap it in a list.
         if isinstance(init_x_channels, str):
@@ -443,7 +443,7 @@ class PyDMWaveformPlot(BasePlot):
             name=name,
             color=color,
             yAxisName=yAxisName,
-            **plot_opts
+            **plot_opts,
         )
         self.channel_pairs[(y_channel, x_channel)] = curve
         if plot_style == "Bar":
@@ -500,11 +500,22 @@ class PyDMWaveformPlot(BasePlot):
             curve.redrawCurve()
         self._needs_redraw = False
 
+        if self.crosshair:
+            global_pos = QCursor.pos()
+            local_pos = self.mapFromGlobal(global_pos)
+            scene_pos = self.mapToScene(local_pos)
+
+            if self.plotItem.sceneBoundingRect().contains(scene_pos):
+                mapped_point = self.plotItem.vb.mapSceneToView(scene_pos)
+                self.vertical_crosshair_line.setPos(mapped_point.x())
+                self.horizontal_crosshair_line.setPos(mapped_point.y())
+                self.crosshair_position_updated.emit(scene_pos.x(), scene_pos.y())
+
     def clearCurves(self):
         """
         Remove all curves from the plot.
         """
-        super(PyDMWaveformPlot, self).clear()
+        super().clear()
 
     def getCurves(self):
         """

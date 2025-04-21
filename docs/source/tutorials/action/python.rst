@@ -61,7 +61,7 @@ Here is how it will look once we are done:
 
      class AllMotorsDisplay(Display):
          def __init__(self, parent=None, args=[], macros=None):
-             super(AllMotorsDisplay, self).__init__(parent=parent, args=args, macros=None)
+             super().__init__(parent=parent, args=args, macros=None)
              # Placeholder for data to filter
              self.data = []
              # Reference to the PyDMApplication
@@ -85,7 +85,7 @@ Here is how it will look once we are done:
   #. The constructor of the class will call the ``load_data`` method that is
      responsible for opening our database and adding the information to our
      placeholder, ``self.data``, for later filtering, as well as the ``setup_ui``
-     method in which the widgets be constructed and configuered.
+     method in which the widgets be constructed and configured.
   #. ``minimumSizeHint`` returns the suggested minimum dimensions for the display.
   #. ``ui_filepath`` will return ``None``, as no ``ui`` file is being used in this
      case.

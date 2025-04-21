@@ -17,7 +17,7 @@ class QScaleAlarmed(QScale):
     """
 
     def __init__(self, parent=None):
-        super(QScaleAlarmed, self).__init__(parent)
+        super().__init__(parent)
         self._lower_minor_alarm = 0
         self._upper_minor_alarm = 0
         self._lower_major_alarm = 0
@@ -83,10 +83,10 @@ class QScaleAlarmed(QScale):
             self._painter_scale_x = 1
 
         if self._flip_scale:
-            self._flip_traslation_y = self._widget_height
+            self._flip_translation_y = self._widget_height
             self._flip_scale_y = -1
         else:
-            self._flip_traslation_y = 0
+            self._flip_translation_y = 0
             self._flip_scale_y = 1
 
     def draw_ticks(self):
@@ -262,7 +262,7 @@ class QScaleAlarmed(QScale):
         self._painter.translate(self._painter_translation_x, 0)  # Invert appearance if needed
         self._painter.scale(self._painter_scale_x, 1)
 
-        self._painter.translate(0, self._flip_traslation_y)  # Invert scale if needed
+        self._painter.translate(0, self._flip_translation_y)  # Invert scale if needed
         self._painter.scale(1, self._flip_scale_y)
 
         self._painter.setRenderHint(QPainter.Antialiasing)
@@ -438,7 +438,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Callback updates the lower minor alarm boundary
         """
-        super(PyDMAnalogIndicator, self).lower_warning_limit_changed(new_minor_alarm)
+        super().lower_warning_limit_changed(new_minor_alarm)
         if self.minorAlarmFromChannel:
             self.scale_indicator.set_lower_minor_alarm(new_minor_alarm)
             self.update_labels()
@@ -447,7 +447,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Callback updates the upper minor alarm boundary
         """
-        super(PyDMAnalogIndicator, self).upper_warning_limit_changed(new_minor_alarm)
+        super().upper_warning_limit_changed(new_minor_alarm)
         if self.minorAlarmFromChannel:
             self.scale_indicator.set_upper_minor_alarm(new_minor_alarm)
             self.update_labels()
@@ -456,7 +456,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Callback updates the lower major alarm boundary
         """
-        super(PyDMAnalogIndicator, self).lower_alarm_limit_changed(new_major_alarm)
+        super().lower_alarm_limit_changed(new_major_alarm)
         if self.majorAlarmFromChannel:
             self.scale_indicator.set_lower_major_alarm(new_major_alarm)
             self.update_labels()
@@ -465,7 +465,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         Callback updates the upper major alarm boundary
         """
-        super(PyDMAnalogIndicator, self).upper_alarm_limit_changed(new_major_alarm)
+        super().upper_alarm_limit_changed(new_major_alarm)
         if self.majorAlarmFromChannel:
             self.scale_indicator.set_upper_major_alarm(new_major_alarm)
             self.update_labels()

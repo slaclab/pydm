@@ -2,16 +2,16 @@
 Configuration
 ========================
 
-In order to make PyDM a flexible tool a couple of Environment Variables are used
+In order to make PyDM a flexible tool, a couple of environment variables are used
 for configuration and customization.
 
-The following table describe the environment variable as well as its usage and
+The following table describes the environment variables as well as their usage and
 default values.
 
 =============================== ==================================================================================
 Variable                        What is it used for?
 =============================== ==================================================================================
-PYDM_DEFAULT_PROTOCOL           | The default protocol to be used when specifing channels.
+PYDM_DEFAULT_PROTOCOL           | The default protocol to be used when specifying channels.
                                 | This option eliminates the need for users to specify the protocol
                                 | for a given Data Plugin. E.g.: `ca`.
                                 | **Default:** None

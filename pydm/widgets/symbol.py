@@ -6,7 +6,7 @@ from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
 from ..utilities import find_file
-from .base import PyDMWidget
+from .base import PyDMWidget, PostParentClassInitSetup
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +37,11 @@ class PyDMSymbol(QWidget, PyDMWidget):
         self._aspect_ratio_mode = Qt.KeepAspectRatio
         self._sizeHint = self.minimumSizeHint()
         self._painter = QPainter()
+
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def init_for_designer(self):
         """
@@ -106,14 +111,14 @@ class PyDMSymbol(QWidget, PyDMWidget):
             qInstallMessageHandler(self.qt_message_handler)
             svg = QSvgRenderer()
             svg.repaintNeeded.connect(self.update)
-            if svg.load(file_path):
+            if file_path is not None and svg.load(file_path):
                 self._state_images[int(state)] = (filename, svg)
                 self._sizeHint = self._sizeHint.expandedTo(svg.defaultSize())
                 qInstallMessageHandler(None)
                 continue
             qInstallMessageHandler(None)
             # SVG didn't work, lets try QPixmap
-            image = QPixmap(file_path)
+            image = QPixmap(file_path) if file_path is not None else QPixmap()
             if not image.isNull():
                 self._state_images[int(state)] = (filename, image)
                 self._sizeHint = self._sizeHint.expandedTo(image.size())
@@ -157,7 +162,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
         connected : int
             When this value is 0 the channel is disconnected, 1 otherwise.
         """
-        super(PyDMSymbol, self).connection_changed(connected)
+        super().connection_changed(connected)
         self.update()
 
     def value_changed(self, new_val):
@@ -169,7 +174,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
         new_val : int
             The new value from the channel.
         """
-        super(PyDMSymbol, self).value_changed(new_val)
+        super().value_changed(new_val)
         self._current_key = new_val
         self.update()
 
