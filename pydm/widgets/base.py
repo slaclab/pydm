@@ -675,6 +675,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._connected = False
             self.alarmSeverityChanged(self.ALARM_DISCONNECTED)
 
+    def eventFilter(self, obj, event):
+        return super().eventFilter(obj, event)
+
     def widget_ctx_menu(self):
         """
         Fetch the Widget specific context menu which will be populated with additional tools by `assemble_tools_menu`.
@@ -1385,6 +1388,9 @@ class PyDMWritableWidget(PyDMWidget):
         self._disable_put = False
         self._monitor_disp = False
         super().__init__(init_channel=init_channel)
+
+    def eventFilter(self, obj, event):
+        return super().eventFilter(obj, event)
 
     def init_for_designer(self):
         """

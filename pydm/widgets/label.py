@@ -61,6 +61,9 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
 
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self, obj, event)
+
     @Property(bool)
     def enableRichText(self):
         return self._enable_rich_text

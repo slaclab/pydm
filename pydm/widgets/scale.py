@@ -412,6 +412,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
 
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self. obj, event)
+
     def update_labels(self) -> None:
         """
         Update the limits and value labels with the correct values.
