@@ -25,6 +25,7 @@ from .embedded_display import PyDMEmbeddedDisplay
 from .enum_button import PyDMEnumButton
 from .enum_combo_box import PyDMEnumComboBox
 from .frame import PyDMFrame
+from .window import PyDMWindow
 from .image import PyDMImageView
 from .label import PyDMLabel
 from .line_edit import PyDMLineEdit
@@ -199,6 +200,11 @@ PyDMEnumComboBoxPlugin = qtplugin_factory(
 # Frame plugin
 PyDMFramePlugin = qtplugin_factory(
     PyDMFrame, group=WidgetCategory.CONTAINER, is_container=True, extensions=BASE_EXTENSIONS, icon=ifont.icon("expand")
+)
+
+# Window plugin
+PyDMWindowPlugin = qtplugin_factory(
+    PyDMWindow, group=WidgetCategory.CONTAINER, is_container=True, extensions=BASE_EXTENSIONS, icon=ifont.icon("expand")
 )
 
 # Image plugin
