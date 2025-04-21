@@ -10,9 +10,30 @@ from ..conftest import ConnectionSignals
 from ...utilities import is_pydm_app
 from ... import data_plugins
 from ...widgets.base import AlarmLimit, is_channel_valid, PyDMWidget
-from ...widgets.label import PyDMLabel
-from ...widgets.line_edit import PyDMLineEdit
-from ...widgets.channel import PyDMChannel
+from ...widgets import (
+    PyDMChannel,
+    PyDMLineEdit,
+    PyDMLabel,
+    PyDMPushButton,
+    PyDMByteIndicator,
+    PyDMEmbeddedDisplay,
+    PyDMByteIndicator,
+    PyDMMultiStateIndicator,
+    PyDMCheckbox,
+    PyDMDateTimeEdit,
+    PyDMDateTimeLabel, 
+    PyDMDrawing,
+    PyDMEnumButton,
+    PyDMEnumComboBox,
+    PyDMFrame,
+    PyDMImageView,
+    PyDMRelatedDisplayButton,
+    PyDMScaleIndicator,
+    PyDMShellCommand,
+    PyDMSpinbox,
+    PyDMSymbol,
+    PyDMWaveformTable
+)
 
 logger = logging.getLogger(__name__)
 
@@ -203,14 +224,42 @@ def test_open_context_menu(qtbot, monkeypatch, caplog):
     assert "Context Menu displayed." in caplog.text
 
 
+
+@pytest.mark.parametrize("widget_class", [
+    # middle-click functionality should work for all classes that call 'PostParentClassInitSetup(self)',
+    # or in other words are subclasses of PyDMWritableWidget or PyDMWidget. 
+    PyDMLabel,
+    PyDMPushButton,
+    PyDMLineEdit,
+    PyDMByteIndicator,
+    PyDMMultiStateIndicator,
+    PyDMCheckbox,
+    PyDMDateTimeEdit,
+    PyDMDateTimeLabel, 
+    PyDMDrawing,
+    PyDMEnumButton,
+    PyDMEnumComboBox,
+    PyDMFrame,
+    PyDMRelatedDisplayButton,
+    PyDMScaleIndicator,
+    PyDMShellCommand,
+    PyDMSpinbox,
+    PyDMSymbol,
+    #PyDMImageView -> testing this causes some occasional segfaults (only when running tests all in sequence)?? 
+    # my guess is something weird with subclassing pyqtgraph's ImageView
+    #PyDMWaveformTable -> child of PyDMWritableWidget, but never had middle click functionality
+])
 @pytest.mark.parametrize("init_channel, expected_clipboard_text", [("CA://MA_TEST", "MA_TEST"), (None, "")])
-def test_middle_click(qtbot, monkeypatch, init_channel, expected_clipboard_text):
+def test_middle_click(qtbot, monkeypatch, widget_class, init_channel, expected_clipboard_text):
     """
     Verify that when a middle click happens on a PyDM widget, the PV name of the channel connected to will be
     copied to the clipboard as expected. Also verify the copy does not happen if there is no connected channel.
     """
-    pydm_label = PyDMLabel(init_channel=init_channel)
-    qtbot.addWidget(pydm_label)
+    if widget_class == PyDMImageView:
+        widget = widget_class(image_channel=init_channel)
+    else: 
+        widget = widget_class(init_channel=init_channel)
+    qtbot.addWidget(widget)
     copied_text = ""
 
     # Create a function that will store what would have been copied to the clipboard instead of
@@ -223,8 +272,8 @@ def test_middle_click(qtbot, monkeypatch, init_channel, expected_clipboard_text)
     monkeypatch.setattr(QClipboard, "setText", mock_copy)
 
     # Perform the middle click and verify the correct text (if any) was copied
-    qtbot.waitExposed(pydm_label)
-    qtbot.mouseClick(pydm_label, Qt.MiddleButton)
+    qtbot.waitExposed(widget)
+    qtbot.mouseClick(widget, Qt.MiddleButton)
     assert copied_text == expected_clipboard_text
 
 

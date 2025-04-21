@@ -8,7 +8,7 @@ from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
 from qtpy.QtCore import Property, Qt
 from qtpy.QtGui import QFocusEvent
 from .. import utilities
-from .base import PyDMWritableWidget, TextFormatter, str_types
+from .base import PyDMWritableWidget, TextFormatter, str_types, PostParentClassInitSetup
 from .display_format import DisplayFormat, parse_value_for_display
 from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
@@ -59,6 +59,10 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
         self._user_set_read_only = False  # Are we *really* read only?
         if utilities.is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     @Property(DisplayFormat)
     def displayFormat(self):
