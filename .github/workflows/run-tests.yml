@@ -28,38 +28,7 @@ jobs:
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup conda
-      uses: conda-incubator/setup-miniconda@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-        miniforge-variant: Miniforge3
-        miniforge-version: latest
-        activate-environment: pydm-env
-        conda-remove-defaults: true
-        architecture: x64  # Ensure macOS finds PyQt 5.12.3 which isn't available with osx-arm64
-
-    - name: Install PyDM with Mamba
-      shell: bash -el {0}
-      run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} git p4p pyca
-        else
-          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} pyca
-        fi
-
-    - name: Install additional Python dependencies with pip
-      shell: bash -el {0}
-      run: |
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          pip install .[test]
-        else
-          pip install .[test-no-optional]
-        fi
-
-    - name: Install packages for testing a PyQt app on Linux
+    - name: Install packages for testing a gui app on linux
       shell: bash -el {0}
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
@@ -71,10 +40,93 @@ jobs:
           sleep 1
         fi
 
-    - name: Test with pytest
+    - uses: actions/checkout@v4
+
+    - name: Setup conda env for pyqt5
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+        miniforge-variant: Miniforge3
+        miniforge-version: latest
+        activate-environment: pyqt5-env
+        conda-remove-defaults: true
+        architecture: x64  # Ensure macOS finds PyQt 5.12.3 which isn't available with osx-arm64
+
+    - name: Install PyDM and PyQt5 with Mamba (if running windows, use conda)
+      shell: bash -el {0}
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} git p4p pyca
+        else
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} pyca
+        fi
+
+    - name: Install additional Python dependencies for with pip for PyQt5 PyDM
+      shell: bash -el {0}
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          pip install .[test]
+        else
+          pip install .[test-no-optional]
+        fi
+
+    - name: Test PyQt5 PyDM with pytest
       shell: bash -el {0}
       timeout-minutes: 30 # timeout applies to single run of run_tests.py, not all os/python combos
       run: |
+        echo "Running PyQt tests with QT_API=$QT_API"
+        python -c "import PyQt5.QtCore; print('PyQt5 is installed and working')"
+
+    - name: Remove existing Miniconda installation on Windows (workaround for setting up 2 conda envs in a row with gh-actions on windows)
+      if: runner.os == 'Windows'
+      shell: powershell
+      run: |
+        $condaPath = "C:\Users\runneradmin\miniconda3"
+        if (Test-Path $condaPath) {
+          Remove-Item -Recurse -Force $condaPath
+        }
+
+    - name: Setup conda env for pyside6
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+        miniforge-variant: Miniforge3
+        miniforge-version: latest
+        activate-environment: pyside6-env
+        conda-remove-defaults: true
+        architecture: x64
+        auto-update-conda: true
+
+    - name: Install pyside6 and pydm with mamba (if windows use conda)
+      shell: bash -el {0}
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          conda install -c conda-forge pyside6
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          mamba install -c conda-forge pyside6 git p4p pyca
+        else
+          mamba install -c conda-forge pyside6 pyca
+        fi
+
+    - name: Install additional Python dependencies with pip for pyside6 pydm
+      shell: bash -el {0}
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          pip install .[test]
+        else
+          pip install .[test-no-optional]
+        fi
+
+    - name: Run pyside6 tests with pytest
+      env:
+        QT_API: pyside6
+      shell: bash -el {0}
+      timeout-minutes: 30
+      run: |
+        echo "Running PySide6 tests with QT_API=$QT_API"
+        python -c "import PySide6.QtCore; print('PySide6 is installed and working')"
         if [ "$RUNNER_OS" == "macOS" ]; then
           python run_tests.py --ignore=pydm/tests/widgets/test_slider.py # disable just for now, until fix intermittent issue
         else 
