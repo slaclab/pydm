@@ -84,9 +84,13 @@ def test_construct(qtbot):
     assert equal_result is False and not_equal_result is True
 
 
-def test_pydm_connection(test_plugin):
+@pytest.mark.parametrize("address", [
+    "tst://Tst:this3",
+    "TST://Tst:this3"
+])
+def test_pydm_connection(address, test_plugin):
     # Plugin, Channel and Registry
-    chan = PyDMChannel("tst://Tst:this3")
+    chan = PyDMChannel(address)
     plugin = plugin_for_address(chan.address)
     plugin_no = len(plugin.connections)
 
