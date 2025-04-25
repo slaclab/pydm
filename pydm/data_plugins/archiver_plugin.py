@@ -3,7 +3,7 @@ import json
 import logging
 import numpy as np
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from pydm.widgets.channel import PyDMChannel
@@ -65,8 +65,8 @@ class Connection(PyDMConnection):
             return
 
         # Archiver expects timestamps to be in utc by default
-        from_dt = datetime.utcfromtimestamp(from_date)
-        to_dt = datetime.utcfromtimestamp(to_date)
+        from_dt = datetime.fromtimestamp(from_date, tz=timezone.utc)
+        to_dt = datetime.fromtimestamp(to_date, tz=timezone.utc)
 
         # Put the dates into the form expected by the archiver in the request url, see here for more details:
         # http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
