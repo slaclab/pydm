@@ -6,7 +6,7 @@ from pyqtgraph import AxisItem, BarGraphItem
 from unittest import mock
 from ...widgets.channel import PyDMChannel
 from ...widgets.timeplot import TimePlotCurveItem, PyDMTimePlot, TimeAxisItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
-from ...utilities import remove_protocol
+from ...utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from qtpy.QtTest import QSignalSpy
 from unittest.mock import MagicMock
 
@@ -44,9 +44,12 @@ def test_timeplotcurveitem_severityChanged_updates_attributes_and_emits(timeplot
     assert timeplotcurveitem_widget.severity_raw == 2
     assert timeplotcurveitem_widget.severity == "MAJOR"
 
-    assert len(severity_spy) == 1
-    assert severity_spy[0] == [2]
-
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        assert len(severity_spy) == 1
+        assert severity_spy[0] == [2]
+    else:
+        assert severity_spy.count() == 1
+        assert severity_spy.at(0) == [2]
 
 def test_timeplotcurveitem_alarm_severity_changed_valid_values(timeplotcurveitem_widget):
     """
