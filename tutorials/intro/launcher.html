@@ -180,7 +180,14 @@ and sends them to the instantiated PyDMApplication.</p>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>–homefile FILE</p></td>
+<tr class="row-even"><td><p>-r, –recurse</p></td>
+<td><div class="line-block">
+<div class="line">Recursively search for the provided DISPLAY_FILE in the current working</div>
+<div class="line">directory and subfolders.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>–homefile FILE</p></td>
 <td><div class="line-block">
 <div class="line">Path to a PyDM file to return to when the home button is clicked in the</div>
 <div class="line">navigation bar. This display remains loaded at all times, and is loaded</div>
@@ -191,55 +198,55 @@ and sends them to the instantiated PyDMApplication.</p>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>–perfmon</p></td>
+<tr class="row-even"><td><p>–perfmon</p></td>
 <td><div class="line-block">
 <div class="line">Enable performance monitoring, and print CPU usage to the terminal.</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>–profile</p></td>
+<tr class="row-odd"><td><p>–profile</p></td>
 <td><div class="line-block">
 <div class="line">Enable cProfile function profiling, printing on exit.</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>–faulthandler</p></td>
+<tr class="row-even"><td><p>–faulthandler</p></td>
 <td><div class="line-block">
 <div class="line">Enable faulthandler to trace segmentation faults.</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>–hide-nav-bar</p></td>
+<tr class="row-odd"><td><p>–hide-nav-bar</p></td>
 <td><div class="line-block">
 <div class="line">Start PyDM with the navigation bar hidden.</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>–hide-menu-bar</p></td>
+<tr class="row-even"><td><p>–hide-menu-bar</p></td>
 <td><div class="line-block">
 <div class="line">Start PyDM with the menu bar hidden.</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>–hide-status-bar</p></td>
+<tr class="row-odd"><td><p>–hide-status-bar</p></td>
 <td><div class="line-block">
 <div class="line">Start PyDM with the status bar hidden.</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>–fullscreen</p></td>
+<tr class="row-even"><td><p>–fullscreen</p></td>
 <td><div class="line-block">
 <div class="line">Start PyDM in fullscreen mode.</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>–read-only</p></td>
+<tr class="row-odd"><td><p>–read-only</p></td>
 <td><div class="line-block">
 <div class="line">Start PyDM in read-only mode.</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>–log_level LEVEL</p></td>
+<tr class="row-even"><td><p>–log_level LEVEL</p></td>
 <td><div class="line-block">
 <div class="line">Configure level of log display.</div>
 <div class="line"><strong>Choices:</strong> DEBUG, INFO, WARNING, ERROR, CRITICAL</div>
@@ -247,13 +254,13 @@ and sends them to the instantiated PyDMApplication.</p>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>–version</p></td>
+<tr class="row-odd"><td><p>–version</p></td>
 <td><div class="line-block">
 <div class="line">Show PyDM’s version number and exit.</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>-m, –macro STRING</p></td>
+<tr class="row-even"><td><p>-m, –macro STRING</p></td>
 <td><div class="line-block">
 <div class="line">Specify macro replacements to use, in JSON object format. Reminder: JSON</div>
 <div class="line">requires double quotes for strings, so you should wrap this whole argument</div>
@@ -267,7 +274,7 @@ and sends them to the instantiated PyDMApplication.</p>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><p>–stylesheet FILE</p></td>
+<tr class="row-odd"><td><p>–stylesheet FILE</p></td>
 <td><div class="line-block">
 <div class="line">Specify the full path to a CSS stylesheet file, which can be used to customize</div>
 <div class="line">the appearance of PyDM and Qt widgets.</div>
@@ -275,7 +282,7 @@ and sends them to the instantiated PyDMApplication.</p>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>DISPLAY_ARGS… (positional)</p></td>
+<tr class="row-even"><td><p>DISPLAY_ARGS… (positional)</p></td>
 <td><div class="line-block">
 <div class="line">Arguments to be passed to the PyDM client application (which is a QApplication</div>
 <div class="line">subclass).</div>
