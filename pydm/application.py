@@ -60,6 +60,10 @@ class PyDMApplication(QApplication):
     macros : dict, optional
         A dictionary of macro variables to be forwarded to the display class
         being loaded.
+    recursive_display_search : bool, optional
+        Whether or not to search for a provided display file recursively
+        in subfolders relative to the current working directory. Does not
+        apply to the homefile parameter.
     use_main_window : bool, optional
         If ui_file is note given, this parameter controls whether or not to
         create a PyDMMainWindow in the initialization (Default is True).
@@ -83,6 +87,7 @@ class PyDMApplication(QApplication):
         hide_status_bar=False,
         read_only=False,
         macros=None,
+        recursive_display_search=False,
         use_main_window=True,
         stylesheet_path=None,
         fullscreen=False,
@@ -116,6 +121,7 @@ class PyDMApplication(QApplication):
                 stylesheet_path=stylesheet_path,
                 home_file=self.home_file,
                 macros=macros,
+                recursive_display_search=recursive_display_search,
                 command_line_args=command_line_args,
             )
             if ui_file is not None and self.home_file is not None:
@@ -228,7 +234,7 @@ class PyDMApplication(QApplication):
             args.extend(command_line_args)
         subprocess.Popen(args, shell=False)
 
-    def make_main_window(self, stylesheet_path=None, home_file=None, macros=None, command_line_args=None):
+    def make_main_window(self, stylesheet_path=None, home_file=None, macros=None, recursive_display_search=False, command_line_args=None):
         """
         Instantiate a new PyDMMainWindow, add it to the application's
         list of windows. Typically, this function is only called as part
@@ -241,6 +247,7 @@ class PyDMApplication(QApplication):
             hide_status_bar=self.hide_status_bar,
             home_file=home_file,
             macros=macros,
+            recursive_display_search=recursive_display_search,
             command_line_args=command_line_args,
         )
 
