@@ -1,6 +1,7 @@
 import pytest
 
 from qtpy.QtCore import Qt, QSize
+from qtpy.QtWidgets import QWidget
 
 from ...widgets.enum_button import PyDMEnumButton, WidgetType, class_for_type
 from ... import data_plugins
@@ -18,14 +19,22 @@ def test_construct(qtbot):
     qtbot : fixture
         pytest-qt window for widget test
     """
-    widget = PyDMEnumButton()
+    parent = QWidget()
+    qtbot.addWidget(parent)
+
+    widget = PyDMEnumButton(parent)
     qtbot.addWidget(widget)
 
     assert widget._has_enums is False
     assert widget.orientation == Qt.Vertical
     assert widget.widgetType == WidgetType.PushButton
     assert widget.minimumSizeHint() == QSize(50, 100)
+    assert widget.parent() == parent
 
+    # This prevents pyside6 from deleting the internal c++ object 
+    # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
+    parent.deleteLater()
+    widget.deleteLater()
 
 @pytest.mark.parametrize("widget_type", [WidgetType.PushButton, WidgetType.RadioButton])
 def test_widget_type(qtbot, widget_type):

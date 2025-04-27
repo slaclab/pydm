@@ -67,7 +67,7 @@ class GuiHandler(QObject, logging.Handler):
 
     def __init__(self, level=logging.NOTSET, parent=None):
         logging.Handler.__init__(self, level=level)
-        QObject.__init__(self, parent=parent)
+        QObject.__init__(self, parent)
 
     def emit(self, record):
         """Emit formatted log messages when received but only if level is set."""
@@ -173,7 +173,7 @@ class PyDMLogDisplay(QWidget):
     default_level = logging.INFO
 
     def __init__(self, parent=None, logname=None, level=logging.NOTSET):
-        QWidget.__init__(self, parent=parent)
+        QWidget.__init__(self, parent)
         # Create Widgets
         self.label = QLabel("Minimum displayed log level: ", parent=self)
         self.combo = QComboBox(parent=self)
@@ -192,7 +192,7 @@ class PyDMLogDisplay(QWidget):
         # Allow QCombobox to control log level
         for log_level, value in LogLevels.as_dict().items():
             self.combo.addItem(log_level, value)
-        self.combo.currentIndexChanged[str].connect(self.setLevel)
+        self.combo.currentTextChanged.connect(self.setLevel)
         # Allow QPushButton to clear log text
         self.clear_btn.clicked.connect(self.clear)
         # Create a handler with the default format

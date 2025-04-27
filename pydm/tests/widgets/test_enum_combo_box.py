@@ -4,6 +4,7 @@ import pytest
 from logging import ERROR
 
 from qtpy.QtCore import Qt
+from qtpy.QtWidgets import QWidget
 
 from ...widgets.enum_combo_box import PyDMEnumComboBox
 from ... import data_plugins
@@ -26,13 +27,21 @@ def test_construct(qtbot):
     qtbot : fixture
         pytest-qt window for widget test
     """
-    pydm_enumcombobox = PyDMEnumComboBox()
+    parent = QWidget()
+    qtbot.addWidget(parent)
+
+    pydm_enumcombobox = PyDMEnumComboBox(parent)
     qtbot.addWidget(pydm_enumcombobox)
 
     assert pydm_enumcombobox._has_enums is False
     assert pydm_enumcombobox.contextMenuPolicy() == Qt.DefaultContextMenu
     assert pydm_enumcombobox.contextMenuEvent == pydm_enumcombobox.open_context_menu
+    assert pydm_enumcombobox.parent() == parent
 
+    # This prevents pyside6 from deleting the internal c++ object 
+    # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
+    parent.deleteLater()
+    pydm_enumcombobox.deleteLater()
 
 @pytest.mark.parametrize(
     "enums",

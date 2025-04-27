@@ -1,6 +1,7 @@
 import pytest
 import logging
 
+from qtpy.QtWidgets import QApplication, QWidget
 from pydm.widgets.logdisplay import PyDMLogDisplay
 
 
@@ -11,11 +12,16 @@ def log():
 
 
 def test_write(qtbot, log):
-    logd = PyDMLogDisplay(parent=None, logname=log.name, level=logging.INFO)
+    parent = QWidget()
+    qtbot.addWidget(parent)
+    
+    logd = PyDMLogDisplay(parent=parent, logname=log.name, level=logging.INFO)
     qtbot.addWidget(logd)
     logd.show()
     assert logd.logLevel == logging.INFO
     assert logd.logName == log.name
+    assert logd.parent() == parent
+
     # Watch our error message show up in the log
     err_msg = "This is a test of the emergency broadcast system"
     log.error(err_msg)
@@ -38,7 +44,9 @@ def test_write(qtbot, log):
     logd.clear()
     assert logd.text.toPlainText() == ""
 
-
+    # Calling .deleteLater() here on pyside6 causes weird behavior with the underlying c++ object in next testcase,
+    # maybe since the logger is associated with the previous logd instance when it gets deleted? 
+    
 def test_handler_cleanup(qtbot, log):
     logd = PyDMLogDisplay(logname=log.name, level=logging.DEBUG)
     qtbot.addWidget(logd)

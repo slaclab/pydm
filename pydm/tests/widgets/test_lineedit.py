@@ -9,6 +9,8 @@ from logging import ERROR
 from qtpy.QtCore import QEvent, Qt
 from qtpy.QtGui import QFocusEvent
 from qtpy.QtWidgets import QMenu
+from qtpy.QtWidgets import QWidget
+
 from ...widgets.line_edit import PyDMLineEdit
 from ...data_plugins import set_read_only
 from ...utilities import is_pydm_app, find_unit_options
@@ -42,7 +44,10 @@ def test_construct(qtbot, init_channel):
         The data channel to be used by the widget
 
     """
-    pydm_lineedit = PyDMLineEdit(init_channel=init_channel)
+    parent = QWidget()
+    qtbot.addWidget(parent)
+
+    pydm_lineedit = PyDMLineEdit(parent=parent, init_channel=init_channel)
     qtbot.addWidget(pydm_lineedit)
 
     if init_channel:
@@ -53,6 +58,7 @@ def test_construct(qtbot, init_channel):
     assert pydm_lineedit._scale == 1
     assert pydm_lineedit._prec == 0
     assert pydm_lineedit.showUnits is False
+    assert pydm_lineedit.parent() == parent
 
     assert pydm_lineedit.unitMenu is None
     pydm_lineedit.widget_ctx_menu()
@@ -63,6 +69,10 @@ def test_construct(qtbot, init_channel):
 
     assert find_action_from_menu(pydm_lineedit.unitMenu, "No Unit Conversions found")
 
+    # This prevents pyside6 from deleting the internal c++ object 
+    # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
+    parent.deleteLater()
+    pydm_lineedit.deleteLater()
 
 @pytest.mark.parametrize(
     "display_format",

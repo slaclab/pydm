@@ -1,6 +1,7 @@
 # Unit Tests for the PyDMCheckbox Widget
 
 import pytest
+from qtpy.QtWidgets import QWidget
 from ...widgets.checkbox import PyDMCheckbox
 
 
@@ -31,11 +32,19 @@ def test_construct(qtbot, init_channel):
     init_channel : str
         The data channel to be used by the widget
     """
-    pydm_checkbox = PyDMCheckbox(init_channel=init_channel)
+    parent = QWidget()
+    qtbot.addWidget(parent)
+    
+    pydm_checkbox = PyDMCheckbox(parent=parent, init_channel=init_channel)
     qtbot.addWidget(pydm_checkbox)
 
     assert not pydm_checkbox.isChecked()
+    assert pydm_checkbox.parent() == parent
 
+    # This prevents pyside6 from deleting the internal c++ object 
+    # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
+    parent.deleteLater()
+    pydm_checkbox.deleteLater()
 
 @pytest.mark.parametrize(
     "init_checked_status, new_value",

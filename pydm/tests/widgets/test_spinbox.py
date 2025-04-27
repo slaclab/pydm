@@ -3,7 +3,7 @@
 
 import pytest
 
-from qtpy.QtWidgets import QApplication
+from qtpy.QtWidgets import QApplication, QWidget
 from qtpy.QtGui import QKeyEvent
 from qtpy.QtCore import QEvent, Qt
 
@@ -28,7 +28,10 @@ def test_construct(qtbot):
     qtbot : fixture
         Window for widget testing
     """
-    pydm_spinbox = PyDMSpinbox()
+    parent = QWidget()
+    qtbot.addWidget(parent)
+
+    pydm_spinbox = PyDMSpinbox(parent)
     qtbot.addWidget(pydm_spinbox)
 
     assert pydm_spinbox.valueBeingSet is False
@@ -39,6 +42,12 @@ def test_construct(qtbot):
     assert pydm_spinbox.app == QApplication.instance()
     assert pydm_spinbox.isAccelerated() is True
     assert pydm_spinbox._write_on_press is False
+    assert pydm_spinbox.parent() == parent
+
+    # This prevents pyside6 from deleting the internal c++ object 
+    # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
+    parent.deleteLater()
+    pydm_spinbox.deleteLater()
 
 
 @pytest.mark.parametrize(

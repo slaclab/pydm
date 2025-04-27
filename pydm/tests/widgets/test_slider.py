@@ -2,7 +2,7 @@ import pytest
 from logging import ERROR
 import numpy as np
 
-from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QApplication, QSlider
+from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QApplication, QSlider, QWidget
 from qtpy.QtCore import Qt, QMargins, QPoint, QEvent, QRect, QSize
 from qtpy.QtGui import QMouseEvent
 from ...widgets.slider import PyDMSlider, PyDMPrimitiveSlider
@@ -216,7 +216,10 @@ def test_construct(qtbot):
     qtbot : fixture
         Window for widget testing
     """
-    pydm_slider = PyDMSlider()
+    parent = QWidget()
+    qtbot.addWidget(parent)
+
+    pydm_slider = PyDMSlider(parent)
     assert checkObjectProperties(pydm_slider, expected_slider_properties) is True
     qtbot.addWidget(pydm_slider)
 
@@ -250,6 +253,13 @@ def test_construct(qtbot):
     assert pydm_slider._slider_position_to_value_map is None
     assert pydm_slider._mute_internal_slider_changes is False
     assert pydm_slider._orientation == Qt.Horizontal
+    assert pydm_slider.parent() == parent
+
+    # This prevents pyside6 from deleting the internal c++ object 
+    # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
+    parent.deleteLater()
+    pydm_slider.deleteLater()
+
 
 
 def test_init_for_designer(qtbot):
