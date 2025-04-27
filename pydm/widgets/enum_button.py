@@ -89,6 +89,11 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         self._widgets = []
         self.rebuild_widgets()
 
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWritableWidget.eventFilter(self, obj, event)
+
     def minimumSizeHint(self):
         """
         This property holds the recommended minimum size for the widget.

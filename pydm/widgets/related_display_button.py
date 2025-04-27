@@ -92,6 +92,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
 
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self, obj, event)
+ 
     @only_if_channel_set
     def check_enable_state(self) -> None:
         """

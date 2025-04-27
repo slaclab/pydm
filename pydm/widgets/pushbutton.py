@@ -83,6 +83,11 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         # but standard icons are already colored and can not be set.
         self._pydm_icon_color = QColor(90, 90, 90)
 
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWritableWidget.eventFilter(self, obj, event)
+ 
     @Property(str)
     def PyDMIcon(self) -> str:
         """

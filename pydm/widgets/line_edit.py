@@ -60,6 +60,11 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
         if utilities.is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
 
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWritableWidget.eventFilter(self, obj, event)
+
     @Property(DisplayFormat)
     def displayFormat(self):
         return self._display_format_type
