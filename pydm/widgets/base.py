@@ -9,7 +9,7 @@ import json
 import copy
 import numpy as np
 from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect, QToolTip, QWidget
-from qtpy.QtGui import QCursor, QIcon
+from qtpy.QtGui import QCursor, QIcon, QClipboard
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
 from .. import data_plugins, tools, config
@@ -237,10 +237,10 @@ class PyDMPrimitiveWidget(object):
 
         clipboard = QApplication.clipboard()
 
-        mode = clipboard.Clipboard
+        mode = QClipboard.Clipboard
         if platform.system() == "Linux":
             # Mode Selection is only valid for X11.
-            mode = clipboard.Selection
+            mode = QClipboard.Selection
 
         clipboard.setText(clipboard_text, mode=mode)
         event = QEvent(QEvent.Clipboard)
