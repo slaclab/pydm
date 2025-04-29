@@ -62,6 +62,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         self.setCursor(QCursor(self._icon.pixmap(16, 16)))
         self._display_menu_items = None
         self._display_filename = ""
+        self._recursive_display_search = False
         self._macro_string = None
         self._open_in_new_window = False
         self.open_in_new_window_action = QAction("Open in New Window", self)
@@ -302,6 +303,32 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             file_list = [value]
             self.filenames = self.filenames + file_list
         self._display_filename = ""
+
+    @Property(bool)
+    def recursiveDisplaySearch(self) -> bool:
+        """
+        Whether or not to search for a provided display file recursively
+        in subfolders relative to the location of this display.
+
+        Returns
+        -------
+        bool
+            If recursive search is enabled.
+        """
+        return self._recursive_display_search
+
+    @recursiveDisplaySearch.setter
+    def recursiveDisplaySearch(self, new_value) -> None:
+        """
+        Set whether or not to search for a provided display file recursively
+        in subfolders relative to the location of this display.
+
+        Parameters
+        ----------
+        new_value
+            If recursive search should be enabled.
+        """
+        self._recursive_display_search = new_value
 
     @Property("QStringList")
     def macros(self) -> List[str]:
@@ -582,7 +609,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             base_path = os.path.dirname(parent_file_path)
             macros = copy.copy(parent_display.macros())
 
-        fname = find_file(filename, base_path=base_path, raise_if_not_found=True)
+        fname = find_file(
+            filename, base_path=base_path, raise_if_not_found=True, subdir_scan_enabled=self._recursive_display_search
+        )
         widget_macros = parse_macro_string(macro_string)
         macros.update(widget_macros)
 

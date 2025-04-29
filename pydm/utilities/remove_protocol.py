@@ -1,3 +1,4 @@
+import collections
 import re
 import urllib
 from pydm import config
@@ -46,9 +47,12 @@ def protocol_and_address(address):
     return protocol, addr
 
 
+BasicURI = collections.namedtuple("BasicURI", ["scheme", "netloc", "path", "query"])
+
+
 def parsed_address(address):
     """
-    Returns the given address parsed into a 6-tuple. The parsing is done by urllib.parse.urlparse
+    Returns the given address parsed into a BasicURI named tuple.
 
     Parameters
     ----------
@@ -63,11 +67,20 @@ def parsed_address(address):
         return None
 
     match = re.match(".*?://", address)
-    parsed_address = None
+    if not match:
+        if not config.DEFAULT_PROTOCOL:
+            return None
+        address = config.DEFAULT_PROTOCOL + "://" + address
 
-    if match:
-        parsed_address = urllib.parse.urlparse(address)
-    elif config.DEFAULT_PROTOCOL:
-        parsed_address = urllib.parse.urlparse(config.DEFAULT_PROTOCOL + "://" + address)
+    # scheme://netloc/path?query will decompose into "scheme", "netloc", "/path", "query"
+    # scheme is required. netloc, path, and query are each optional but have to appear in this order
+    components = re.match(r"(.*?)://([^/?]*)(?:(/[^?]*)?(?:\?(.*))?)?", address)
+    if not components:
+        return None
 
-    return parsed_address
+    return BasicURI(
+        scheme=(components.group(1) or ""),
+        netloc=(components.group(2) or ""),
+        path=(components.group(3) or ""),
+        query=(components.group(4) or ""),
+    )

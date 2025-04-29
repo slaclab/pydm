@@ -92,7 +92,7 @@ def plugin_for_address(address: str) -> Optional[PyDMPlugin]:
     if protocol:
         initialize_plugins_if_needed()
         try:
-            return plugin_modules[str(protocol)]
+            return plugin_modules[(str(protocol)).lower()]
         except KeyError:
             logger.exception("Could not find protocol for %r", address)
     # Catch all in case of improper plugin specification
