@@ -7,8 +7,8 @@ import webbrowser
 from qtpy import QtCore
 from qtpy.QtWidgets import QMessageBox, QTableWidgetSelectionRange
 
-from ...widgets.base import PyDMPrimitiveWidget
-from ...widgets.rules_editor import RulesEditor
+from pydm.widgets.base import PyDMPrimitiveWidget
+from pydm.widgets.rules_editor import RulesEditor
 
 
 class DummyWidget:

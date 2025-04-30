@@ -2,8 +2,8 @@ import os
 import pytest
 import logging
 
-from ... import config
-from ...utilities import stylesheet
+from pydm import config
+from pydm.utilities import stylesheet
 from qtpy.QtWidgets import QApplication
 
 # The path to the stylesheet used in these unit tests

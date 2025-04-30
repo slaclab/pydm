@@ -6,11 +6,11 @@ import numpy as np
 import logging
 import warnings
 
-from ...utilities import is_pydm_app
-from ...widgets.label import PyDMLabel
-from ...widgets.base import PyDMWidget
-from ...widgets.display_format import parse_value_for_display, DisplayFormat
-from ...utilities import checkObjectProperties
+from pydm.utilities import is_pydm_app
+from pydm.widgets.label import PyDMLabel
+from pydm.widgets.base import PyDMWidget
+from pydm.widgets.display_format import parse_value_for_display, DisplayFormat
+from pydm.utilities import checkObjectProperties
 
 from qtpy.QtWidgets import QApplication, QStyleOption
 from qtpy.QtCore import Qt

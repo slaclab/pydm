@@ -1,6 +1,6 @@
 import pytest
 
-from ...widgets.byte import PyDMByteIndicator
+from pydm.widgets.byte import PyDMByteIndicator
 
 
 @pytest.mark.parametrize(

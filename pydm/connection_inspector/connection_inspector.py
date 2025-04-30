@@ -14,7 +14,7 @@ from qtpy.QtWidgets import (
 )
 from qtpy.QtCore import Qt, Slot, QTimer
 from .connection_table_model import ConnectionTableModel
-from .. import data_plugins
+from pydm import data_plugins
 
 
 class ConnectionInspector(QWidget):

@@ -1,3 +1,4 @@
+import collections
 import functools
 import importlib
 import importlib.util
@@ -7,6 +8,7 @@ import os
 import platform
 import shlex
 import sys
+import time
 import types
 import uuid
 import errno
@@ -31,6 +33,7 @@ __all__ = [
     "IconFont",
     "protocol_and_address",
     "remove_protocol",
+    "BasicURI",
     "parsed_address",
     "convert",
     "find_unit_options",
@@ -110,7 +113,7 @@ def is_pydm_app(app=None):
     """
     from qtpy.QtWidgets import QApplication
 
-    from ..application import PyDMApplication
+    from pydm.application import PyDMApplication
 
     if app is None:
         app = QApplication.instance()
@@ -129,7 +132,7 @@ def is_qt_designer():
     bool
         True if inside Designer, False otherwise.
     """
-    from ..qtdesigner import DesignerHooks
+    from pydm.qtdesigner import DesignerHooks
 
     return DesignerHooks().form_editor is not None
 
@@ -147,7 +150,7 @@ def get_designer_current_path():
     if not is_qt_designer():
         return None
 
-    from ..qtdesigner import DesignerHooks
+    from pydm.qtdesigner import DesignerHooks
 
     form_editor = DesignerHooks().form_editor
     win_manager = form_editor.formWindowManager()
@@ -227,7 +230,14 @@ def _screen_file_extensions(preferred_extension):
     return extensions
 
 
-def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_found=False):
+def find_file(
+    fname,
+    base_path=None,
+    mode=None,
+    raise_if_not_found=False,
+    subdir_scan_enabled=False,
+    subdir_scan_base_path_only=True,
+):
     """
     Look for files at the search paths common to PyDM.
 
@@ -237,7 +247,6 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_fo
     * Qt Designer Path - the path for the current form as reported by the
       designer
     * The current working directory
-    * Directories listed in ``extra_path``
     * Directories listed in the environment variable ``PYDM_DISPLAYS_PATH``
 
     Parameters
@@ -250,11 +259,15 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_fo
     mode : int
         The mode required for the file, defaults to os.F_OK | os.R_OK.
         Which ensure that the file exists and we can read it.
-    extra_path : list
-        Additional paths to look for file.
     raise_if_not_found : bool
         Flag which if False will add a check that raises a FileNotFoundError
         instead of returning None when the file is not found.
+    subdir_scan_enabled : bool
+        If the file cannot be found in the given directories, check
+        subdirectories. Defaults to False.
+    subdir_scan_base_path_only : bool
+        If it is necessary to scan subdirectories for the requested file,
+        only scan subdirectories of the base_path. Defaults to True.
 
     Returns
     -------
@@ -266,23 +279,19 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_fo
     if mode is None:
         mode = os.F_OK | os.R_OK
 
-    x_path = []
+    x_path = collections.deque()
 
     if base_path:
-        x_path.extend([os.path.abspath(base_path)])
+        base_path = os.path.abspath(base_path)
+        x_path.append(base_path)
 
     if is_qt_designer():
         designer_path = get_designer_current_path()
         if designer_path:
-            x_path.extend([designer_path])
+            x_path.append(designer_path)
 
     # Current working directory
-    x_path.extend([os.getcwd()])
-    if extra_path:
-        if not isinstance(extra_path, (list, tuple)):
-            extra_path = [extra_path]
-        extra_path = [os.path.expanduser(os.path.expandvars(x)) for x in extra_path]
-        x_path.extend(extra_path)
+    x_path.append(os.getcwd())
 
     pydm_search_path = os.getenv("PYDM_DISPLAYS_PATH", None)
     if pydm_search_path:
@@ -293,15 +302,43 @@ def find_file(fname, base_path=None, mode=None, extra_path=None, raise_if_not_fo
 
     root, ext = os.path.splitext(fname)
 
-    # loop through the possible screen file extensions
-    for e in _screen_file_extensions(ext):
-        file_path = which(str(root) + str(e), mode=mode, pathext=e, extra_path=x_path)
-        if file_path is not None:
-            break  # pick the first screen file found
+    # 3 seconds should be more than generous enough
+    SUBDIR_SCAN_TIME_LIMIT = 3
+    start_time = time.perf_counter()
 
-    if raise_if_not_found:
-        if not file_path:
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), fname)
+    file_path = None
+    while file_path is None and len(x_path) > 0:
+        # Loop through the possible screen file extensions
+        for e in _screen_file_extensions(ext):
+            file_path = which(str(root) + str(e), mode=mode, pathext=e, extra_path=x_path)
+            if file_path is not None:
+                break  # pick the first screen file found
+
+        if not subdir_scan_enabled or time.perf_counter() - start_time >= SUBDIR_SCAN_TIME_LIMIT:
+            if not file_path and raise_if_not_found:
+                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), fname)
+            break
+
+        # Only search recursively under base path
+        if subdir_scan_base_path_only:
+            if base_path is None or len(base_path) == 0:
+                break
+            x_path.clear()
+            x_path.append(os.path.expanduser(os.path.expandvars(base_path)))
+            # Prevent entering this block again
+            subdir_scan_base_path_only = False
+
+        # This might get large in some situations, but it's the easiest way to do BFS without
+        # changing too much of the existing logic, and ideally recursion isn't needed
+        path_count = len(x_path)
+        for _ in range(path_count):
+            for subdir in os.listdir(x_path[0]):
+                if subdir.startswith(".") or subdir.startswith("__pycache__"):
+                    continue
+                new_path = os.path.join(x_path[0], subdir)
+                if os.path.isdir(new_path):
+                    x_path.append(new_path)
+            x_path.popleft()
 
     return file_path
 
@@ -370,9 +407,6 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None, extra_path=None)
         return None
     path = path.split(os.pathsep)
 
-    if extra_path is not None:
-        path = extra_path + path
-
     if sys.platform == "win32":
         # The current directory takes precedence on Windows.
         if os.curdir not in path:
@@ -396,14 +430,17 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None, pathext=None, extra_path=None)
         files = [cmd]
 
     seen = set()
-    for dir_ in path:
-        normdir = os.path.normcase(dir_)
-        if normdir not in seen:
-            seen.add(normdir)
-            for thefile in files:
-                name = os.path.join(dir_, thefile)
-                if _access_check(name, mode):
-                    return name
+    for paths in extra_path, path:
+        if paths is None:
+            continue
+        for dir_ in paths:
+            normdir = os.path.normcase(dir_)
+            if normdir not in seen:
+                seen.add(normdir)
+                for thefile in files:
+                    name = os.path.join(dir_, thefile)
+                    if _access_check(name, mode):
+                        return name
     return None
 
 
@@ -567,9 +604,7 @@ def copy_to_clipboard(text: str, *, quiet: bool = False):
             app.sendEvent(clipboard, event)
 
     if not quiet:
-        logger.warning(
-            ("Copied text to clipboard:\n" "-------------------------\n" "%s\n" "-------------------------\n"), text
-        )
+        logger.warning(("Copied text to clipboard:\n-------------------------\n%s\n-------------------------\n"), text)
 
 
 def get_clipboard_text() -> str:

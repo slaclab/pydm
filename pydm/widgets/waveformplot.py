@@ -7,7 +7,7 @@ from .channel import PyDMChannel
 import itertools
 import json
 from collections import OrderedDict
-from ..utilities import remove_protocol
+from pydm.utilities import remove_protocol
 
 
 class WaveformCurveItem(BasePlotCurveItem):

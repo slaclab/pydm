@@ -4,7 +4,7 @@ from typing import Any
 import logging
 import warnings
 
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -107,8 +107,9 @@ def parse_value_for_display(
             r = fmt_string.format(value)
         except (ValueError, TypeError):
             logger.error(
-                "Could not display value '{0}' using displayFormat 'Exponential' at widget named "
-                "'{1}'.".format(value, widget_name)
+                "Could not display value '{0}' using displayFormat 'Exponential' at widget named '{1}'.".format(
+                    value, widget_name
+                )
             )
             r = value
         return r
@@ -117,8 +118,9 @@ def parse_value_for_display(
             r = hex(int(math.floor(value)))
         except (ValueError, TypeError):
             logger.error(
-                "Could not display value '{0}' using displayFormat 'Hex' at widget named "
-                "'{1}'.".format(value, widget_name)
+                "Could not display value '{0}' using displayFormat 'Hex' at widget named '{1}'.".format(
+                    value, widget_name
+                )
             )
             r = value
         return r
@@ -127,8 +129,9 @@ def parse_value_for_display(
             r = bin(int(math.floor(value)))
         except (ValueError, TypeError):
             logger.error(
-                "Could not display value '{0}' using displayFormat 'Binary' at widget named "
-                "'{1}'.".format(value, widget_name)
+                "Could not display value '{0}' using displayFormat 'Binary' at widget named '{1}'.".format(
+                    value, widget_name
+                )
             )
             r = value
         return r

@@ -7,7 +7,7 @@ import os.path
 import logging
 from .base import PyDMPrimitiveWidget
 from .baseplot import BasePlot
-from ..utilities import (
+from pydm.utilities import (
     is_pydm_app,
     establish_widget_connections,
     close_widget_connections,
@@ -15,7 +15,7 @@ from ..utilities import (
     is_qt_designer,
     find_file,
 )
-from ..display import load_file, ScreenTarget
+from pydm.display import load_file, ScreenTarget
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +40,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         PyDMPrimitiveWidget.__init__(self)
         self.app = QApplication.instance()
         self._filename = None
+        self._recursive_display_search = False
         self._macros = None
         self._embedded_widget = None
         self._disconnect_when_hidden = True
@@ -168,6 +169,32 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
                 self.clear_error_text()
         self.load_if_needed()
 
+    @Property(bool)
+    def recursiveDisplaySearch(self) -> bool:
+        """
+        Whether or not to search for a provided display file recursively
+        in subfolders relative to the location of this display.
+
+        Returns
+        -------
+        bool
+            If recursive search is enabled.
+        """
+        return self._recursive_display_search
+
+    @recursiveDisplaySearch.setter
+    def recursiveDisplaySearch(self, new_value) -> None:
+        """
+        Set whether or not to search for a provided display file recursively
+        in subfolders relative to the location of this display.
+
+        Parameters
+        ----------
+        new_value
+            If recursive search should be enabled.
+        """
+        self._recursive_display_search = new_value
+
     def set_macros_and_filename(self, new_filename, new_macros):
         """
         A method to change both macros and the filename of an embedded display.
@@ -229,7 +256,12 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
                     parent_file_path = os.path.realpath(parent_file_path)
                 base_path = os.path.dirname(parent_file_path)
 
-            fname = find_file(self.filename, base_path=base_path, raise_if_not_found=True)
+            fname = find_file(
+                self.filename,
+                base_path=base_path,
+                raise_if_not_found=True,
+                subdir_scan_enabled=self._recursive_display_search,
+            )
             w = load_file(fname, macros=self.parsed_macros(), target=None)
             self._needs_load = False
             self.clear_error_text()
@@ -420,7 +452,21 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """Open the embedded display in a new window"""
         if not self.filename:
             return
-        file_path = find_file(self.filename, base_path="", raise_if_not_found=True)
+
+        parent_display = self.find_parent_display()
+        base_path = ""
+        if parent_display:
+            parent_file_path = parent_display.loaded_file()
+            if self._follow_symlinks:
+                parent_file_path = os.path.realpath(parent_file_path)
+            base_path = os.path.dirname(parent_file_path)
+
+        file_path = find_file(
+            self.filename,
+            base_path=base_path,
+            raise_if_not_found=True,
+            subdir_scan_enabled=self._recursive_display_search,
+        )
         macros = self.parsed_macros()
 
         if is_pydm_app():
