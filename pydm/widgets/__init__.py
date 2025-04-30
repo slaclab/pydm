@@ -1,7 +1,7 @@
 __all__ = [
     "PyDMChannel",
     "PyDMByteIndicator",
-    "PyDMMultiStateIndicator"
+    "PyDMMultiStateIndicator",
     "PyDMCheckbox",
     "PyDMDrawingLine",
     "PyDMDrawingRectangle",
@@ -17,7 +17,7 @@ __all__ = [
     "PyDMDrawingIrregularPolygon",
     "PyDMEmbeddedDisplay",
     "PyDMEnumComboBox",
-    "PyDMEnumButton"
+    "PyDMEnumButton",
     "PyDMImageView",
     "PyDMLabel",
     "PyDMLineEdit",
@@ -40,7 +40,7 @@ __all__ = [
     "PyDMDateTimeEdit",
     "PyDMDateTimeLabel",
     "PyDMDrawing",
-    "PyDMFrame"
+    "PyDMFrame",
 ]
 
 from .channel import PyDMChannel
