@@ -87,7 +87,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     # will not propagate to the parent classes properly.
     def eventFilter(self, obj, event):
         return PyDMWritableWidget.eventFilter(self, obj, event)
- 
+
     @Property(str)
     def PyDMIcon(self) -> str:
         """

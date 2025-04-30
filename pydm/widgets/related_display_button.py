@@ -97,7 +97,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
     # will not propagate to the parent classes properly.
     def eventFilter(self, obj, event):
         return PyDMWidget.eventFilter(self, obj, event)
- 
+
     @only_if_channel_set
     def check_enable_state(self) -> None:
         """

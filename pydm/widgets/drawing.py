@@ -101,7 +101,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
     # will not propagate to the parent classes properly.
     def eventFilter(self, obj, event):
         return PyDMWidget.eventFilter(self, obj, event)
-        
+
     def sizeHint(self):
         return QSize(100, 100)
 
