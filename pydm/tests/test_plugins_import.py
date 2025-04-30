@@ -1,5 +1,9 @@
-from ..widgets.qtplugin_base import qtplugin_factory
+import pytest
+from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    pytest.skip("pydm with pyside6 does not support custom pydm-widgets yet in pyside6-designer!", allow_module_level=True)
 
+from ..widgets.qtplugin_base import qtplugin_factory
 
 def test_import_byte_plugin():
     # Byte plugin

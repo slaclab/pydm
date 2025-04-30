@@ -4,7 +4,7 @@ from os import path
 from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QAction, QMessageBox
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo, QCoreApplication
 from qtpy.QtGui import QKeySequence
-from .utilities import IconFont, find_file, establish_widget_connections, close_widget_connections
+from .utilities import IconFont, find_file, establish_widget_connections, close_widget_connections, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from .pydm_ui import Ui_MainWindow
 from .display import Display, ScreenTarget, load_file, clear_compiled_ui_file_cache
 from .connection_inspector import ConnectionInspector
@@ -111,11 +111,14 @@ class PyDMMainWindow(QMainWindow):
             QLibraryInfo.location(QLibraryInfo.BinariesPath),
             QLibraryInfo.location(QLibraryInfo.LibraryExecutablesPath),
         )
+
+        # look into mac and windows naming later
+        executable_name = "designer" if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5 else "pyside6-designer"
         for bin_path in possible_designer_bin_paths:
             if platform.system() == "Darwin":
                 designer_path = os.path.join(bin_path, "Designer.app/Contents/MacOS/Designer")
             elif platform.system() == "Linux":
-                designer_path = os.path.join(bin_path, "designer")
+                designer_path = os.path.join(bin_path, executable_name)
             else:
                 designer_path = os.path.join(bin_path, "designer.exe")
             if os.path.isfile(designer_path):
