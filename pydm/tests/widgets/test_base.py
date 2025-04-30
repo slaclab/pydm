@@ -198,11 +198,11 @@ def test_open_context_menu(qtbot, monkeypatch, caplog):
 
     mouse_event = QMouseEvent(
         QMouseEvent.MouseButtonRelease,
-        pydm_label.rect().center(), # localPos
-        pydm_label.rect().center(), # globalPos
-        Qt.RightButton, # button
-        Qt.RightButton, # buttons
-        Qt.ShiftModifier # modifiers
+        pydm_label.rect().center(),  # localPos
+        pydm_label.rect().center(),  # globalPos
+        Qt.RightButton,  # button
+        Qt.RightButton,  # buttons
+        Qt.ShiftModifier,  # modifiers
     )
     pydm_label.open_context_menu(mouse_event)
     assert "Context Menu displayed." in caplog.text

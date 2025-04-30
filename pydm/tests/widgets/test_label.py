@@ -485,7 +485,7 @@ def test_label_connection_changes_with_alarm_and_no_channel(
     # some odd issue related to pytest-qt's waitSignal().
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=RuntimeWarning)
-        
+
         pydm_label = PyDMLabel()
         qtbot.addWidget(pydm_label)
 

@@ -1002,7 +1002,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             try:
                 # Catch the warnings when sigXRangeChanged and sigXRangeChangedManually were not connected yet.
                 with warnings.catch_warnings():
-                    warnings.simplefilter("ignore", category=RuntimeWarning)   
+                    warnings.simplefilter("ignore", category=RuntimeWarning)
                     self.plotItem.sigXRangeChanged.disconnect(self.updateXAxis)
                     self.plotItem.sigXRangeChangedManually.disconnect(self.updateXAxis)
             except TypeError:

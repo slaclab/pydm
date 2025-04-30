@@ -86,32 +86,35 @@ def test_mouseMoveEvent(slider_fixture, qtbot, request):
     initial_value = test_slider.value()
 
     press_event = QMouseEvent(
-        QEvent.MouseButtonPress, 
-        start_pos, # localPos
-        start_pos, # globalPos
-        Qt.LeftButton, # button
-        Qt.LeftButton, # buttons
-        Qt.NoModifier) # modifiers
+        QEvent.MouseButtonPress,
+        start_pos,  # localPos
+        start_pos,  # globalPos
+        Qt.LeftButton,  # button
+        Qt.LeftButton,  # buttons
+        Qt.NoModifier,
+    )  # modifiers
     QApplication.postEvent(test_slider, press_event)
     QApplication.processEvents()
 
     move_event = QMouseEvent(
         QEvent.MouseMove,
-        end_pos, # localPos
-        end_pos, # globalPos
-        Qt.LeftButton, # button
-        Qt.LeftButton, # buttons
-        Qt.NoModifier) # modifiers
+        end_pos,  # localPos
+        end_pos,  # globalPos
+        Qt.LeftButton,  # button
+        Qt.LeftButton,  # buttons
+        Qt.NoModifier,
+    )  # modifiers
     QApplication.postEvent(test_slider, move_event)
     QApplication.processEvents()
 
     release_event = QMouseEvent(
         QEvent.MouseButtonRelease,
-        end_pos, # localPos
-        end_pos, # globalPos
-        Qt.LeftButton, # button
-        Qt.LeftButton, # buttons
-        Qt.NoModifier) # modifier
+        end_pos,  # localPos
+        end_pos,  # globalPos
+        Qt.LeftButton,  # button
+        Qt.LeftButton,  # buttons
+        Qt.NoModifier,
+    )  # modifier
     QApplication.postEvent(test_slider, release_event)
     QApplication.processEvents()
 
