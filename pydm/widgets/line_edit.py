@@ -7,10 +7,10 @@ from functools import partial
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
 from qtpy.QtCore import Property, Qt
 from qtpy.QtGui import QFocusEvent
-from .. import utilities
 from .base import PyDMWritableWidget, TextFormatter, str_types, PostParentClassInitSetup
+from pydm import utilities
 from .display_format import DisplayFormat, parse_value_for_display
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 

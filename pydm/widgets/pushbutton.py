@@ -5,7 +5,7 @@ from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit, QS
 from qtpy.QtCore import Slot, Property
 from qtpy import QtDesigner
 from .base import PyDMWritableWidget, PostParentClassInitSetup
-from ..utilities import IconFont
+from pydm.utilities import IconFont
 import logging
 
 logger = logging.getLogger(__name__)

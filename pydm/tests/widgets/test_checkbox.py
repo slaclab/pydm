@@ -1,7 +1,7 @@
 # Unit Tests for the PyDMCheckbox Widget
 
 import pytest
-from ...widgets.checkbox import PyDMCheckbox
+from pydm.widgets.checkbox import PyDMCheckbox
 
 
 # --------------------

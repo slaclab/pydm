@@ -218,7 +218,6 @@ class ColorColumnDelegate(QStyledItemDelegate):
 
 
 class AxisColumnDelegate(QStyledItemDelegate):
-
     """
     AxisColumnDelegate draws a QComboBox with the allowed values for the axis orientation
     column value, which must map to the values expected by PyQtGraph. Helps ensure that the

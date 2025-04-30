@@ -4,6 +4,7 @@ Main Application Module
 Contains our PyDMApplication class with core connection and loading logic and
 our PyDMMainWindow class with navigation logic.
 """
+
 import os
 import signal
 import subprocess
@@ -60,6 +61,10 @@ class PyDMApplication(QApplication):
     macros : dict, optional
         A dictionary of macro variables to be forwarded to the display class
         being loaded.
+    recursive_display_search : bool, optional
+        Whether or not to search for a provided display file recursively
+        in subfolders relative to the current working directory. Does not
+        apply to the homefile parameter.
     use_main_window : bool, optional
         If ui_file is note given, this parameter controls whether or not to
         create a PyDMMainWindow in the initialization (Default is True).
@@ -83,6 +88,7 @@ class PyDMApplication(QApplication):
         hide_status_bar=False,
         read_only=False,
         macros=None,
+        recursive_display_search=False,
         use_main_window=True,
         stylesheet_path=None,
         fullscreen=False,
@@ -116,6 +122,7 @@ class PyDMApplication(QApplication):
                 stylesheet_path=stylesheet_path,
                 home_file=self.home_file,
                 macros=macros,
+                recursive_display_search=recursive_display_search,
                 command_line_args=command_line_args,
             )
             if ui_file is not None and self.home_file is not None:
@@ -150,7 +157,7 @@ class PyDMApplication(QApplication):
         return super().exec_()
 
     def is_read_only(self):
-        warnings.warn("'PyDMApplication.is_read_only' is deprecated, " "use 'pydm.data_plugins.is_read_only' instead.")
+        warnings.warn("'PyDMApplication.is_read_only' is deprecated, use 'pydm.data_plugins.is_read_only' instead.")
         return data_plugins.is_read_only()
 
     @Slot()
@@ -228,7 +235,9 @@ class PyDMApplication(QApplication):
             args.extend(command_line_args)
         subprocess.Popen(args, shell=False)
 
-    def make_main_window(self, stylesheet_path=None, home_file=None, macros=None, command_line_args=None):
+    def make_main_window(
+        self, stylesheet_path=None, home_file=None, macros=None, recursive_display_search=False, command_line_args=None
+    ):
         """
         Instantiate a new PyDMMainWindow, add it to the application's
         list of windows. Typically, this function is only called as part
@@ -241,6 +250,7 @@ class PyDMApplication(QApplication):
             hide_status_bar=self.hide_status_bar,
             home_file=home_file,
             macros=macros,
+            recursive_display_search=recursive_display_search,
             command_line_args=command_line_args,
         )
 
@@ -266,7 +276,7 @@ class PyDMApplication(QApplication):
         PyDMPlugin
         """
         warnings.warn(
-            "'PyDMApplication.plugin_for_channel' is deprecated, " "use 'pydm.data_plugins.plugin_for_address' instead."
+            "'PyDMApplication.plugin_for_channel' is deprecated, use 'pydm.data_plugins.plugin_for_address' instead."
         )
         if channel.address is None or channel.address == "":
             return None
@@ -280,7 +290,7 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        warnings.warn("'PyDMApplication.add_connection' is deprecated, " "use PyDMConnection.connect()")
+        warnings.warn("'PyDMApplication.add_connection' is deprecated, use PyDMConnection.connect()")
         channel.connect()
 
     def remove_connection(self, channel):
@@ -291,17 +301,15 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        warnings.warn("'PyDMApplication.remove_connection' is deprecated, " "use PyDMConnection.disconnect()")
+        warnings.warn("'PyDMApplication.remove_connection' is deprecated, use PyDMConnection.disconnect()")
         channel.disconnect()
 
     def eventFilter(self, obj, event):
-        warnings.warn("'PyDMApplication.eventFilter' is deprecated, " " this function is now found on PyDMWidget")
+        warnings.warn("'PyDMApplication.eventFilter' is deprecated,  this function is now found on PyDMWidget")
         obj.eventFilter(obj, event)
 
     def show_address_tooltip(self, obj, event):
-        warnings.warn(
-            "'PyDMApplication.show_address_tooltip' is deprecated, " " this function is now found on PyDMWidget"
-        )
+        warnings.warn("'PyDMApplication.show_address_tooltip' is deprecated,  this function is now found on PyDMWidget")
         obj.show_address_tooltip(event)
 
     def establish_widget_connections(self, widget):

@@ -14,8 +14,8 @@ from qtpy.QtWidgets import (
 )
 
 from .base import PyDMWritableWidget, PostParentClassInitSetup
-from .. import data_plugins
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm import data_plugins
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 
 class WidgetType(object):

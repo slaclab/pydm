@@ -14,7 +14,7 @@
 # work.  If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 import numpy as np
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 __all__ = ["magma", "inferno", "plasma", "viridis", "jet", "monochrome", "hot"]
 

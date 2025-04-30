@@ -2,8 +2,8 @@ import logging
 import pytest
 import weakref
 
-from ...widgets.rules import RulesDispatcher
-from ...widgets.label import PyDMLabel
+from pydm.widgets.rules import RulesDispatcher
+from pydm.widgets.label import PyDMLabel
 
 
 def test_rules_dispatcher(qapp, caplog):

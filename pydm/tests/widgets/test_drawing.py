@@ -9,8 +9,8 @@ from qtpy.QtWidgets import QApplication
 from qtpy.QtCore import Qt, QSize
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 
-from ...widgets.base import PyDMWidget
-from ...widgets.drawing import (
+from pydm.widgets.base import PyDMWidget
+from pydm.widgets.drawing import (
     deg_to_qt,
     qt_to_deg,
     PyDMDrawing,
@@ -27,7 +27,7 @@ from ...widgets.drawing import (
     PyDMDrawingPolyline,
     PyDMDrawingIrregularPolygon,
 )
-from ...utilities import checkObjectProperties
+from pydm.utilities import checkObjectProperties
 
 
 # --------------------

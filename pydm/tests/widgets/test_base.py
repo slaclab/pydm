@@ -6,11 +6,11 @@ import logging
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QMenu
 from qtpy.QtGui import QClipboard, QColor, QMouseEvent
-from ..conftest import ConnectionSignals
-from ...utilities import is_pydm_app
-from ... import data_plugins
-from ...widgets.base import AlarmLimit, is_channel_valid, PyDMWidget
-from ...widgets import (
+from pydm.tests.conftest import ConnectionSignals
+from pydm.utilities import is_pydm_app
+from pydm import data_plugins
+from pydm.widgets.base import AlarmLimit, is_channel_valid, PyDMWidget
+from pydm.widgets import (
     PyDMChannel,
     PyDMLineEdit,
     PyDMLabel,
@@ -21,7 +21,7 @@ from ...widgets import (
     PyDMMultiStateIndicator,
     PyDMCheckbox,
     PyDMDateTimeEdit,
-    PyDMDateTimeLabel, 
+    PyDMDateTimeLabel,
     PyDMDrawing,
     PyDMEnumButton,
     PyDMEnumComboBox,
@@ -32,7 +32,7 @@ from ...widgets import (
     PyDMShellCommand,
     PyDMSpinbox,
     PyDMSymbol,
-    PyDMWaveformTable
+    PyDMWaveformTable,
 )
 
 logger = logging.getLogger(__name__)
@@ -224,31 +224,33 @@ def test_open_context_menu(qtbot, monkeypatch, caplog):
     assert "Context Menu displayed." in caplog.text
 
 
-
-@pytest.mark.parametrize("widget_class", [
-    # middle-click functionality should work for all classes that call 'PostParentClassInitSetup(self)',
-    # or in other words are subclasses of PyDMWritableWidget or PyDMWidget. 
-    PyDMLabel,
-    PyDMPushButton,
-    PyDMLineEdit,
-    PyDMByteIndicator,
-    PyDMMultiStateIndicator,
-    PyDMCheckbox,
-    PyDMDateTimeEdit,
-    PyDMDateTimeLabel, 
-    PyDMDrawing,
-    PyDMEnumButton,
-    PyDMEnumComboBox,
-    PyDMFrame,
-    PyDMRelatedDisplayButton,
-    PyDMScaleIndicator,
-    PyDMShellCommand,
-    PyDMSpinbox,
-    PyDMSymbol,
-    #PyDMImageView -> testing this causes some occasional segfaults (only when running tests all in sequence)?? 
-    # my guess is something weird with subclassing pyqtgraph's ImageView
-    #PyDMWaveformTable -> child of PyDMWritableWidget, but never had middle click functionality
-])
+@pytest.mark.parametrize(
+    "widget_class",
+    [
+        # middle-click functionality should work for all classes that call 'PostParentClassInitSetup(self)',
+        # or in other words are subclasses of PyDMWritableWidget or PyDMWidget.
+        PyDMLabel,
+        PyDMPushButton,
+        PyDMLineEdit,
+        PyDMByteIndicator,
+        PyDMMultiStateIndicator,
+        PyDMCheckbox,
+        PyDMDateTimeEdit,
+        PyDMDateTimeLabel,
+        PyDMDrawing,
+        PyDMEnumButton,
+        PyDMEnumComboBox,
+        PyDMFrame,
+        PyDMRelatedDisplayButton,
+        PyDMScaleIndicator,
+        PyDMShellCommand,
+        PyDMSpinbox,
+        PyDMSymbol,
+        # PyDMImageView -> testing this causes some occasional segfaults (only when running tests all in sequence)??
+        # my guess is something weird with subclassing pyqtgraph's ImageView
+        # PyDMWaveformTable -> child of PyDMWritableWidget, but never had middle click functionality
+    ],
+)
 @pytest.mark.parametrize("init_channel, expected_clipboard_text", [("CA://MA_TEST", "MA_TEST"), (None, "")])
 def test_middle_click(qtbot, monkeypatch, widget_class, init_channel, expected_clipboard_text):
     """
@@ -257,7 +259,7 @@ def test_middle_click(qtbot, monkeypatch, widget_class, init_channel, expected_c
     """
     if widget_class == PyDMImageView:
         widget = widget_class(image_channel=init_channel)
-    else: 
+    else:
         widget = widget_class(init_channel=init_channel)
     qtbot.addWidget(widget)
     copied_text = ""
