@@ -1,5 +1,5 @@
 import pytest
-from ...utilities import iconfont
+from pydm.utilities import iconfont
 from qtpy import QtGui, QtCore
 
 

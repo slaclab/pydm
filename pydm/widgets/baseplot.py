@@ -7,7 +7,7 @@ from abc import abstractmethod
 from qtpy.QtGui import QColor, QFont, QBrush
 from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect, QPointF
 from qtpy.QtWidgets import QToolTip, QWidget
-from .. import utilities
+from pydm import utilities
 from pyqtgraph import (
     AxisItem,
     PlotWidget,

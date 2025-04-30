@@ -5,7 +5,7 @@ from .base import PyDMWidget, PostParentClassInitSetup
 from .channel import PyDMChannel
 from qtpy.QtCore import Property
 from functools import partial
-from ..utilities.iconfont import IconFont
+from pydm.utilities.iconfont import IconFont
 
 
 class PyDMTabBar(QTabBar, PyDMWidget):

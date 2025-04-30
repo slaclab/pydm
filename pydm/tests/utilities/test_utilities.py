@@ -5,7 +5,7 @@ import tempfile
 
 from qtpy import QtWidgets
 
-from ...utilities import find_display_in_path, is_pydm_app, is_qt_designer, log_failures, path_info, which
+from pydm.utilities import find_display_in_path, find_file, is_pydm_app, is_qt_designer, log_failures, path_info, which
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ def test_path_info():
 def test_find_display_in_path():
     temp, file_path = tempfile.mkstemp(suffix=".ui", prefix="display_")
     direc, fname, _ = path_info(file_path)
-    # Try to find the file as is... is should not find it.
+    # Try to find the file as is... it should not find it.
     assert find_display_in_path(fname) is None
 
     # Try to find the file passing the path
@@ -49,6 +49,27 @@ def test_find_display_in_path():
     expected = "{}{}{}".format(direc, os.sep, rel_name)
     disp_path = find_display_in_path(rel_name, mode=None, path=direc)
     assert disp_path == expected
+
+
+def test_find_file():
+    parent_lvl1 = tempfile.mkdtemp()
+    parent_lvl2 = tempfile.mkdtemp(dir=parent_lvl1)
+    temp, file_path = tempfile.mkstemp(suffix=".ui", prefix="display_", dir=parent_lvl2)
+    direc, fname, _ = path_info(file_path)
+    # Try to find the file as is... it should not find it.
+    assert find_file(fname) is None
+
+    # Try to find the file under base_path
+    disp_path = find_file(fname, base_path=direc)
+    assert disp_path == file_path
+
+    # Try to find the file under the parent folder without recursion (fail)
+    disp_path = find_file(fname, base_path=parent_lvl1)
+    assert disp_path == None
+
+    # Try to find the file under the parent folder with recursion (succeed)
+    disp_path = find_file(fname, base_path=parent_lvl1, subdir_scan_enabled=True)
+    assert disp_path == file_path
 
 
 def test_which():

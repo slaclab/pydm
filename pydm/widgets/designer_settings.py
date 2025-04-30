@@ -5,8 +5,8 @@ from typing import Any, List, Optional
 
 from qtpy import QtCore, QtDesigner, QtWidgets
 
-from ..utilities import copy_to_clipboard, get_clipboard_text
-from ..utilities.macro import parse_macro_string
+from pydm.utilities import copy_to_clipboard, get_clipboard_text
+from pydm.utilities.macro import parse_macro_string
 
 logger = logging.getLogger(__name__)
 

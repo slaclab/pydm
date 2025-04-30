@@ -42,12 +42,18 @@ def main():
         default=None,
     )
     parser.add_argument(
+        "-r",
+        "--recurse",
+        action="store_true",
+        help="Recursively search for the provided displayfile in the current working directory and subfolders",
+    )
+    parser.add_argument(
         "--homefile", help="Path to a PyDM file to return to when the home button is clicked in the navigation bar"
     )
     parser.add_argument(
         "--perfmon",
         action="store_true",
-        help="Enable performance monitoring," + " and print CPU usage to the terminal.",
+        help="Enable performance monitoring, and print CPU usage to the terminal.",
     )
     parser.add_argument("--profile", action="store_true", help="Enable cProfile function profiling, printing on exit.")
     parser.add_argument("--faulthandler", action="store_true", help="Enable faulthandler to trace segmentation faults.")
@@ -121,6 +127,7 @@ def main():
         fullscreen=pydm_args.fullscreen,
         read_only=pydm_args.read_only,
         macros=macros,
+        recursive_display_search=pydm_args.recurse,
         stylesheet_path=pydm_args.stylesheet,
         home_file=pydm_args.homefile,
     )

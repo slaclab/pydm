@@ -3,6 +3,7 @@ Loads all the data plugins available at the given PYDM_DATA_PLUGINS_PATH
 environment variable and subfolders that follows the *_plugin.py and have
 classes that inherits from the pydm.data_plugins.PyDMPlugin class.
 """
+
 import inspect
 import logging
 import os
@@ -13,8 +14,8 @@ from typing import Any, Dict, Generator, List, Optional, Type
 import entrypoints
 from qtpy.QtWidgets import QApplication
 
-from .. import config
-from ..utilities import import_module_by_filename, log_failures, parsed_address
+from pydm import config
+from pydm.utilities import import_module_by_filename, log_failures, parsed_address
 from .plugin import PyDMPlugin
 
 logger = logging.getLogger(__name__)
@@ -91,7 +92,7 @@ def plugin_for_address(address: str) -> Optional[PyDMPlugin]:
     if protocol:
         initialize_plugins_if_needed()
         try:
-            return plugin_modules[str(protocol)]
+            return plugin_modules[(str(protocol)).lower()]
         except KeyError:
             logger.exception("Could not find protocol for %r", address)
     # Catch all in case of improper plugin specification
@@ -140,7 +141,7 @@ def add_plugin(plugin: Type[PyDMPlugin]) -> Optional[PyDMPlugin]:
 
 @log_failures(
     logger,
-    explanation=("Unable to import plugin file: {args[0]}.  " "This plugin will be skipped."),
+    explanation=("Unable to import plugin file: {args[0]}.  This plugin will be skipped."),
     include_traceback=True,
 )
 def _get_plugins_from_source(source_filename: str) -> List[Type[PyDMPlugin]]:
@@ -208,7 +209,7 @@ def find_plugins_from_entrypoints(
             continue
 
         if not _is_valid_plugin_class(plugin_cls):
-            logger.warning("Invalid plugin class specified in entrypoint " "%s: %s", entry.name, plugin_cls)
+            logger.warning("Invalid plugin class specified in entrypoint %s: %s", entry.name, plugin_cls)
             continue
 
         yield plugin_cls

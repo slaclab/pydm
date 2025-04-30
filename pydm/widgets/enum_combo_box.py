@@ -3,7 +3,7 @@ import six
 from qtpy.QtWidgets import QComboBox
 from qtpy.QtCore import Slot, Qt
 from .base import PyDMWritableWidget
-from .. import data_plugins
+from pydm import data_plugins
 
 logger = logging.getLogger(__name__)
 
@@ -181,7 +181,7 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
                 # findText return -1 when we can not find the text inside the
                 # QComboBox
                 if idx == -1:
-                    logger.error("Can not change value to %r. " "Not an option in PyDMComboBox", new_val)
+                    logger.error("Can not change value to %r. Not an option in PyDMComboBox", new_val)
                     return
             # Handle bool, float, and ndarray
             else:

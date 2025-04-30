@@ -1,6 +1,7 @@
 import collections
 import re
-from .. import config
+import urllib
+from pydm import config
 
 
 def remove_protocol(addr):
