@@ -68,7 +68,14 @@
 <li class="toctree-l1"><a class="reference internal" href="widgets/widget_rules/index.html">Widget Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_data_plugins.html">Including Data Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application.html">Application</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Channel</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Channel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#channel.PyDMChannel"><code class="docutils literal notranslate"><span class="pre">PyDMChannel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#channel.PyDMChannel.connect"><code class="docutils literal notranslate"><span class="pre">PyDMChannel.connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#channel.PyDMChannel.disconnect"><code class="docutils literal notranslate"><span class="pre">PyDMChannel.disconnect()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
@@ -118,6 +125,71 @@
              
   <section id="channel">
 <h1>Channel<a class="headerlink" href="#channel" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="channel.PyDMChannel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">channel.</span></span><span class="sig-name descname"><span class="pre">PyDMChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">severity_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_access_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enum_strings_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_ctrl_limit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_ctrl_limit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_alarm_limit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_alarm_limit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_warning_limit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_warning_limit_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_signal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp_slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#channel.PyDMChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Object to hold signals and slots for a PyDM Widget interface to an
+external plugin</p>
+<p>The purpose of this class is to create a templated slot and signals
+list that can be sent to an external plugin. The type of plugin is
+determined by the PyDMApplication based on the identifier placed at
+the beginning of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">address</span></code> attribute. This allows a generic
+way to connect slots and signals to functionality within your PyDM
+Widget. Slots should be connected to functions on your created widget
+that perform actions upon changes. For instance, the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code>
+will be automatically called every time a new value is found by the
+plugin. This should probably linked to a function that updates the
+display to report the new value. Signals perform the reverse operation.
+These should be used to send new values back to the plugin to update
+the source.</p>
+<p>Using this structure to interface with plugins allows your created PyDM
+Widget a greater flexibility in choosing its underlying source. For
+instance, returning to the example of the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code>,
+getting a value to display from channel access or from the EPICS Archiver
+are very different operations. However, actually displaying the value
+should be identical. By simply attaching your PyDM Widget’s display
+functionality to the <code class="xref py py-attr docutils literal notranslate"><span class="pre">value_slot</span></code> you have created a
+Widget that can do either interchangeably, all the user has to do is
+specify the correct address signature and the rest of the work is done
+by the underlying plugins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the address to be used by the plugin. This
+should usually be a user inputted field when a specific
+PyDM widget is initialized</p></li>
+<li><p><strong>connection_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the connection state
+changes</p></li>
+<li><p><strong>value_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the value updates</p></li>
+<li><p><strong>severity_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the severity changes</p></li>
+<li><p><strong>write_access_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the write access changes</p></li>
+<li><p><strong>enum_strings_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the enum_strings change</p></li>
+<li><p><strong>unit_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the unit changes</p></li>
+<li><p><strong>prec_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the precision value changes</p></li>
+<li><p><strong>upper_alarm_limit_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the upper alarm limit changes</p></li>
+<li><p><strong>lower_alarm_limit_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the lower alarm limit changes</p></li>
+<li><p><strong>upper_warning_limit_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the upper warning limit changes</p></li>
+<li><p><strong>lower_warning_limit_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the lower warning limit changes</p></li>
+<li><p><strong>value_signal</strong> (<em>Signal</em><em>, </em><em>optional</em>) – Attach a signal here that emits a desired value to be sent
+through the plugin</p></li>
+<li><p><strong>timestamp_slot</strong> (<em>Slot</em><em>, </em><em>optional</em>) – A function to be run when the timestamp updates</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="channel.PyDMChannel.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#channel.PyDMChannel.connect" title="Permalink to this definition"></a></dt>
+<dd><p>Connect a PyDMChannel to the proper PyDMPlugin</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="channel.PyDMChannel.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destroying</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/channel.html#PyDMChannel.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#channel.PyDMChannel.disconnect" title="Permalink to this definition"></a></dt>
+<dd><p>Disconnect a PyDMChannel</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>channel &mdash; PyDM 1.27.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyDM
+          </a>
+              <div class="version">
+                1.27.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorial</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Customizing the Look and Feel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help_files.html">Adding Help Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/index.html">Widget Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add_data_plugins.html">Including Data Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data Plugins</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/local_plugin.html">Local Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/calc_plugin.html">Calc Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/p4p_plugin.html">P4P Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_plugins/external_plugins.html">External Data Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/development.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/external_tools.html">External Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/widget_rules/customizing.html">Customizing Properties for Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/designer_widgets.html">Designer Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/resources.html">Recommended Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab/pydm">PyDM GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/slaclab">SLAC-wide GitHub</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">channel</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for channel</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pydm.data_plugins</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">clear_channel_address</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
+    <span class="c1"># We must remove spaces, \n, \t and other crap from</span>
+    <span class="c1"># channel address</span>
+    <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="PyDMChannel"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMChannel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object to hold signals and slots for a PyDM Widget interface to an</span>
+<span class="sd">    external plugin</span>
+
+<span class="sd">    The purpose of this class is to create a templated slot and signals</span>
+<span class="sd">    list that can be sent to an external plugin. The type of plugin is</span>
+<span class="sd">    determined by the PyDMApplication based on the identifier placed at</span>
+<span class="sd">    the beginning of the :attr:`.address` attribute. This allows a generic</span>
+<span class="sd">    way to connect slots and signals to functionality within your PyDM</span>
+<span class="sd">    Widget. Slots should be connected to functions on your created widget</span>
+<span class="sd">    that perform actions upon changes. For instance, the :attr:`.value_slot`</span>
+<span class="sd">    will be automatically called every time a new value is found by the</span>
+<span class="sd">    plugin. This should probably linked to a function that updates the</span>
+<span class="sd">    display to report the new value. Signals perform the reverse operation.</span>
+<span class="sd">    These should be used to send new values back to the plugin to update</span>
+<span class="sd">    the source.</span>
+
+<span class="sd">    Using this structure to interface with plugins allows your created PyDM</span>
+<span class="sd">    Widget a greater flexibility in choosing its underlying source. For</span>
+<span class="sd">    instance, returning to the example of the :attr:`.value_slot`,</span>
+<span class="sd">    getting a value to display from channel access or from the EPICS Archiver</span>
+<span class="sd">    are very different operations. However, actually displaying the value</span>
+<span class="sd">    should be identical. By simply attaching your PyDM Widget&#39;s display</span>
+<span class="sd">    functionality to the :attr:`.value_slot` you have created a</span>
+<span class="sd">    Widget that can do either interchangeably, all the user has to do is</span>
+<span class="sd">    specify the correct address signature and the rest of the work is done</span>
+<span class="sd">    by the underlying plugins.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    address : str, optional</span>
+<span class="sd">        The name of the address to be used by the plugin. This</span>
+<span class="sd">        should usually be a user inputted field when a specific</span>
+<span class="sd">        PyDM widget is initialized</span>
+
+<span class="sd">    connection_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the connection state</span>
+<span class="sd">        changes</span>
+
+<span class="sd">    value_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the value updates</span>
+
+<span class="sd">    severity_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the severity changes</span>
+
+<span class="sd">    write_access_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the write access changes</span>
+
+<span class="sd">    enum_strings_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the enum_strings change</span>
+
+<span class="sd">    unit_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the unit changes</span>
+
+<span class="sd">    prec_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the precision value changes</span>
+
+<span class="sd">    upper_alarm_limit_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the upper alarm limit changes</span>
+
+<span class="sd">    lower_alarm_limit_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the lower alarm limit changes</span>
+
+<span class="sd">    upper_warning_limit_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the upper warning limit changes</span>
+
+<span class="sd">    lower_warning_limit_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the lower warning limit changes</span>
+
+<span class="sd">    value_signal : Signal, optional</span>
+<span class="sd">        Attach a signal here that emits a desired value to be sent</span>
+<span class="sd">        through the plugin</span>
+
+<span class="sd">    timestamp_slot : Slot, optional</span>
+<span class="sd">        A function to be run when the timestamp updates</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">connection_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">value_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">severity_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">write_access_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">enum_strings_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">unit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">prec_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">upper_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lower_ctrl_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">upper_alarm_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lower_alarm_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">upper_warning_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lower_warning_limit_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">value_signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">timestamp_slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_address</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection_slot</span> <span class="o">=</span> <span class="n">connection_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_slot</span> <span class="o">=</span> <span class="n">value_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">severity_slot</span> <span class="o">=</span> <span class="n">severity_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_access_slot</span> <span class="o">=</span> <span class="n">write_access_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enum_strings_slot</span> <span class="o">=</span> <span class="n">enum_strings_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit_slot</span> <span class="o">=</span> <span class="n">unit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prec_slot</span> <span class="o">=</span> <span class="n">prec_slot</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper_ctrl_limit_slot</span> <span class="o">=</span> <span class="n">upper_ctrl_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower_ctrl_limit_slot</span> <span class="o">=</span> <span class="n">lower_ctrl_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper_alarm_limit_slot</span> <span class="o">=</span> <span class="n">upper_alarm_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower_alarm_limit_slot</span> <span class="o">=</span> <span class="n">lower_alarm_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper_warning_limit_slot</span> <span class="o">=</span> <span class="n">upper_warning_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower_warning_limit_slot</span> <span class="o">=</span> <span class="n">lower_warning_limit_slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_slot</span> <span class="o">=</span> <span class="n">timestamp_slot</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="o">=</span> <span class="n">value_signal</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_address</span>
+
+    <span class="nd">@address</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_address</span> <span class="o">=</span> <span class="n">clear_channel_address</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMChannel.connect"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel.connect">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Connect a PyDMChannel to the proper PyDMPlugin</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Connecting </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+        <span class="c1"># Connect to proper PyDMPlugin</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pydm</span><span class="o">.</span><span class="n">data_plugins</span><span class="o">.</span><span class="n">establish_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to make proper connection for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMChannel.disconnect"><a class="viewcode-back" href="../channel.html#channel.PyDMChannel.disconnect">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destroying</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Disconnect a PyDMChannel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">plugin</span> <span class="o">=</span> <span class="n">pydm</span><span class="o">.</span><span class="n">data_plugins</span><span class="o">.</span><span class="n">plugin_for_address</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">plugin</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">plugin</span><span class="o">.</span><span class="n">remove_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destroying</span><span class="o">=</span><span class="n">destroying</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to remove connection for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="n">address_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">address</span>
+            <span class="n">connection_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">connection_slot</span>
+            <span class="n">value_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value_slot</span>
+            <span class="n">severity_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">severity_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">severity_slot</span>
+            <span class="n">enum_strings_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">enum_strings_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">enum_strings_slot</span>
+            <span class="n">unit_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">unit_slot</span>
+            <span class="n">prec_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">prec_slot</span>
+            <span class="n">upper_ctrl_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_ctrl_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">upper_ctrl_limit_slot</span>
+            <span class="n">lower_ctrl_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_ctrl_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lower_ctrl_limit_slot</span>
+            <span class="n">upper_alarm_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_alarm_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">upper_alarm_limit_slot</span>
+            <span class="n">lower_alarm_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_alarm_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lower_alarm_limit_slot</span>
+            <span class="n">upper_warning_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_warning_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">upper_warning_limit_slot</span>
+            <span class="n">lower_warning_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_warning_limit_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">lower_warning_limit_slot</span>
+            <span class="n">write_access_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_access_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">write_access_slot</span>
+            <span class="n">timestamp_slot_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_slot</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">timestamp_slot</span>
+
+            <span class="n">value_signal_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYQT5</span><span class="p">:</span>
+                    <span class="n">value_signal_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span><span class="o">.</span><span class="n">signal</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span><span class="o">.</span><span class="n">signal</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># PySide6 changes how we do signal comparison, if we try to use .signal it throws error:</span>
+                    <span class="c1"># &quot;AttributeError: &#39;PySide6.QtCore.SignalInstance&#39; object has no attribute &#39;signal&#39;&quot;</span>
+                    <span class="c1"># Instead we can do &#39;signalA is signalB&#39; or &#39;signalA == SignalB&#39; to compare.</span>
+                    <span class="n">value_signal_matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_signal</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value_signal</span>
+
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">address_matched</span>
+                <span class="ow">and</span> <span class="n">connection_slot_matched</span>
+                <span class="ow">and</span> <span class="n">value_slot_matched</span>
+                <span class="ow">and</span> <span class="n">severity_slot_matched</span>
+                <span class="ow">and</span> <span class="n">enum_strings_slot_matched</span>
+                <span class="ow">and</span> <span class="n">unit_slot_matched</span>
+                <span class="ow">and</span> <span class="n">prec_slot_matched</span>
+                <span class="ow">and</span> <span class="n">upper_ctrl_slot_matched</span>
+                <span class="ow">and</span> <span class="n">lower_ctrl_slot_matched</span>
+                <span class="ow">and</span> <span class="n">upper_alarm_slot_matched</span>
+                <span class="ow">and</span> <span class="n">lower_alarm_slot_matched</span>
+                <span class="ow">and</span> <span class="n">upper_warning_slot_matched</span>
+                <span class="ow">and</span> <span class="n">lower_warning_slot_matched</span>
+                <span class="ow">and</span> <span class="n">write_access_slot_matched</span>
+                <span class="ow">and</span> <span class="n">value_signal_matched</span>
+                <span class="ow">and</span> <span class="n">timestamp_slot_matched</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">equality_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">equality_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">NotImplemented</span><span class="p">:</span>
+            <span class="k">return</span> <span class="ow">not</span> <span class="n">equality_result</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;PyDMChannel (</span><span class="si">{:}</span><span class="s2">)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, hhslepicka, trendahl, zlentz, yektay, nstelter.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

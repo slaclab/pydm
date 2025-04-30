@@ -385,7 +385,7 @@ removal, then the PyDMConnection will be closed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>channel</strong> (<em>PyDMChannel</em>) – The PyDMChannel containing the signals/slots that were being used to listen to the connected address.</p></li>
+<li><p><strong>channel</strong> (<a class="reference internal" href="../channel.html#channel.PyDMChannel" title="channel.PyDMChannel"><em>PyDMChannel</em></a>) – The PyDMChannel containing the signals/slots that were being used to listen to the connected address.</p></li>
 <li><p><strong>destroying</strong> (<em>bool</em><em>, </em><em>optional</em>) – Should be set to True if this method is being invoked from a flow in which the PyDMWidget using this
 channel is being destroyed. Since Qt will automatically handle the disconnect of signals/slots when a
 QObject is destroyed, setting this to True ensures we do not try to do the disconnection a second time.
