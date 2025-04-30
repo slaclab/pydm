@@ -7,9 +7,9 @@ from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint
 from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer
 import pydm.data_plugins
-from ..utilities import find_file
-from ..display import load_file
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import find_file
+from pydm.display import load_file
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -377,7 +377,12 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
                         base_path = None
                         if parent_display:
                             base_path = os.path.dirname(parent_display.loaded_file())
-                        fname = find_file(self._data_source, base_path=base_path, raise_if_not_found=True, subdir_scan_enabled=self._recursive_data_search)
+                        fname = find_file(
+                            self._data_source,
+                            base_path=base_path,
+                            raise_if_not_found=True,
+                            subdir_scan_enabled=self._recursive_data_search,
+                        )
 
                         if not fname:
                             if not is_qt_designer():
@@ -447,7 +452,12 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         base_path = None
         if parent_display:
             base_path = os.path.dirname(parent_display.loaded_file())
-        fname = find_file(self.templateFilename, base_path=base_path, raise_if_not_found=True, subdir_scan_enabled=self._recursive_template_search)
+        fname = find_file(
+            self.templateFilename,
+            base_path=base_path,
+            raise_if_not_found=True,
+            subdir_scan_enabled=self._recursive_template_search,
+        )
 
         if self._parent_macros is None:
             self._parent_macros = {}
