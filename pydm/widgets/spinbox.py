@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QDoubleSpinBox, QApplication, QLineEdit
 from qtpy.QtCore import Property, Qt
-from .base import PyDMWritableWidget, TextFormatter
+from .base import PyDMWritableWidget, TextFormatter, PostParentClassInitSetup
 
 
 class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
@@ -35,6 +35,11 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         # in order to catch the click events
         child = self.findChild(QLineEdit)
         child.installEventFilter(self)
+
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
     # will not propagate to the parent classes properly.

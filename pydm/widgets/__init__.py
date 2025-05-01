@@ -1,6 +1,7 @@
 __all__ = [
     "PyDMChannel",
     "PyDMByteIndicator",
+    "PyDMMultiStateIndicator",
     "PyDMCheckbox",
     "PyDMDrawingLine",
     "PyDMDrawingRectangle",
@@ -16,6 +17,7 @@ __all__ = [
     "PyDMDrawingIrregularPolygon",
     "PyDMEmbeddedDisplay",
     "PyDMEnumComboBox",
+    "PyDMEnumButton",
     "PyDMImageView",
     "PyDMLabel",
     "PyDMLineEdit",
@@ -35,12 +37,18 @@ __all__ = [
     "PyDMTabWidget",
     "PyDMTemplateRepeater",
     "PyDMNTTable",
+    "PyDMDateTimeEdit",
+    "PyDMDateTimeLabel",
+    "PyDMDrawing",
+    "PyDMFrame",
 ]
 
 from .channel import PyDMChannel
 from .byte import PyDMByteIndicator
+from .byte import PyDMMultiStateIndicator
 from .checkbox import PyDMCheckbox
 from .drawing import (
+    PyDMDrawing,
     PyDMDrawingLine,
     PyDMDrawingRectangle,
     PyDMDrawingTriangle,
@@ -56,6 +64,7 @@ from .drawing import (
 )
 from .embedded_display import PyDMEmbeddedDisplay
 from .enum_combo_box import PyDMEnumComboBox
+from .enum_button import PyDMEnumButton
 from .image import PyDMImageView
 from .label import PyDMLabel
 from .line_edit import PyDMLineEdit
@@ -75,3 +84,6 @@ from .eventplot import PyDMEventPlot
 from .tab_bar import PyDMTabWidget
 from .template_repeater import PyDMTemplateRepeater
 from .nt_table import PyDMNTTable
+from .datetime import PyDMDateTimeEdit
+from .datetime import PyDMDateTimeLabel
+from .frame import PyDMFrame

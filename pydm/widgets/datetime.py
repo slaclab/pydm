@@ -57,6 +57,10 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         self.setDateTime(QtCore.QDateTime.currentDateTime())
         self.setCalendarPopup(True)
         self.returnPressed.connect(self.send_value)
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
     # will not propagate to the parent classes properly.
