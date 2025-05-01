@@ -223,6 +223,8 @@ class PyDMPrimitiveWidget(object):
         addrs = []
         no_proto_addrs = []
         for ch in channels:
+            if not ch:
+                continue
             addr = ch.address
             if not addr:
                 continue

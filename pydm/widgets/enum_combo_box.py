@@ -2,7 +2,7 @@ import logging
 import six
 from qtpy.QtWidgets import QComboBox
 from qtpy.QtCore import Slot, Qt
-from .base import PyDMWritableWidget
+from .base import PyDMWritableWidget, PostParentClassInitSetup
 from pydm import data_plugins
 
 logger = logging.getLogger(__name__)
@@ -44,6 +44,10 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         # and then resetting that title to the actual text), we can't distinguish it from the regular title change.
         # This flag helps tracking title change followed immediately after adding a new item.
         self._new_item_added = False
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def wheelEvent(self, e):
         # To ignore mouse wheel events
