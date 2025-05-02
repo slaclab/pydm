@@ -12,9 +12,9 @@ from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect, QToolTip
 from qtpy.QtGui import QCursor, QIcon
 from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
 from .channel import PyDMChannel
-from .. import data_plugins, tools, config
-from ..utilities import is_qt_designer, remove_protocol
-from ..display import Display
+from pydm import data_plugins, tools, config
+from pydm.utilities import is_qt_designer, remove_protocol
+from pydm.display import Display
 from .rules import RulesDispatcher
 from datetime import datetime
 from typing import Optional
@@ -223,6 +223,8 @@ class PyDMPrimitiveWidget(object):
         addrs = []
         no_proto_addrs = []
         for ch in channels:
+            if not ch:
+                continue
             addr = ch.address
             if not addr:
                 continue
@@ -317,7 +319,7 @@ class PyDMPrimitiveWidget(object):
 
         except Exception:
             logger.error(
-                "Error at Rule: %s. Could not execute method %s with " "value %s and type as %s.",
+                "Error at Rule: %s. Could not execute method %s with value %s and type as %s.",
                 name,
                 method_name,
                 value,

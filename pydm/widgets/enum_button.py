@@ -13,9 +13,9 @@ from qtpy.QtWidgets import (
     QAbstractButton,
 )
 
-from .base import PyDMWritableWidget
-from .. import data_plugins
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from .base import PyDMWritableWidget, PostParentClassInitSetup
+from pydm import data_plugins
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 
 class WidgetType(object):
@@ -88,6 +88,10 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         self._orientation = Qt.Vertical
         self._widgets = []
         self.rebuild_widgets()
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
 
     def minimumSizeHint(self):
         """

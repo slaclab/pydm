@@ -5,9 +5,9 @@ import numpy as np
 from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QApplication, QSlider, QWidget
 from qtpy.QtCore import Qt, QMargins, QPoint, QEvent, QRect, QSize
 from qtpy.QtGui import QMouseEvent
-from ...widgets.slider import PyDMSlider, PyDMPrimitiveSlider
-from ...widgets.base import PyDMWidget
-from ...utilities import checkObjectProperties
+from pydm.widgets.slider import PyDMSlider, PyDMPrimitiveSlider
+from pydm.widgets.base import PyDMWidget
+from pydm.utilities import checkObjectProperties
 
 # Unit Tests for the PyDMPrimitiveSlider class
 
@@ -255,11 +255,10 @@ def test_construct(qtbot):
     assert pydm_slider._orientation == Qt.Horizontal
     assert pydm_slider.parent() == parent
 
-    # This prevents pyside6 from deleting the internal c++ object 
+    # This prevents pyside6 from deleting the internal c++ object
     # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
     parent.deleteLater()
     pydm_slider.deleteLater()
-
 
 
 def test_init_for_designer(qtbot):

@@ -11,10 +11,10 @@ from qtpy.QtGui import QFocusEvent
 from qtpy.QtWidgets import QMenu
 from qtpy.QtWidgets import QWidget
 
-from ...widgets.line_edit import PyDMLineEdit
-from ...data_plugins import set_read_only
-from ...utilities import is_pydm_app, find_unit_options
-from ...widgets.display_format import DisplayFormat, parse_value_for_display
+from pydm.widgets.line_edit import PyDMLineEdit
+from pydm.data_plugins import set_read_only
+from pydm.utilities import is_pydm_app, find_unit_options
+from pydm.widgets.display_format import DisplayFormat, parse_value_for_display
 
 
 # --------------------
@@ -69,10 +69,11 @@ def test_construct(qtbot, init_channel):
 
     assert find_action_from_menu(pydm_lineedit.unitMenu, "No Unit Conversions found")
 
-    # This prevents pyside6 from deleting the internal c++ object 
+    # This prevents pyside6 from deleting the internal c++ object
     # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
     parent.deleteLater()
     pydm_lineedit.deleteLater()
+
 
 @pytest.mark.parametrize(
     "display_format",
@@ -832,7 +833,7 @@ def test_apply_conversion_wrong_unit(qtbot, caplog, value, precision, initial_un
 
 
 @pytest.mark.parametrize(
-    "init_value, user_typed_value, display_format, precision, scale, unit," "show_units, expected_errors",
+    "init_value, user_typed_value, display_format, precision, scale, unit,show_units, expected_errors",
     [
         (123, 345.678, DisplayFormat.Default, 0, 1, "s", True, ("Error trying to set data ", "with type ", "int'>")),
     ],

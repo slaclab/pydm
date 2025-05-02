@@ -7,8 +7,8 @@ from qtpy.QtWidgets import QApplication, QWidget
 from qtpy.QtGui import QKeyEvent
 from qtpy.QtCore import QEvent, Qt
 
-from ...widgets.spinbox import PyDMSpinbox
-from ...tests.widgets.test_lineedit import find_action_from_menu
+from pydm.widgets.spinbox import PyDMSpinbox
+from pydm.tests.widgets.test_lineedit import find_action_from_menu
 
 
 # --------------------
@@ -44,7 +44,7 @@ def test_construct(qtbot):
     assert pydm_spinbox._write_on_press is False
     assert pydm_spinbox.parent() == parent
 
-    # This prevents pyside6 from deleting the internal c++ object 
+    # This prevents pyside6 from deleting the internal c++ object
     # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
     parent.deleteLater()
     pydm_spinbox.deleteLater()

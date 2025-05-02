@@ -6,8 +6,8 @@ from logging import ERROR
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget
 
-from ...widgets.enum_combo_box import PyDMEnumComboBox
-from ... import data_plugins
+from pydm.widgets.enum_combo_box import PyDMEnumComboBox
+from pydm import data_plugins
 
 
 # --------------------
@@ -38,10 +38,11 @@ def test_construct(qtbot):
     assert pydm_enumcombobox.contextMenuEvent == pydm_enumcombobox.open_context_menu
     assert pydm_enumcombobox.parent() == parent
 
-    # This prevents pyside6 from deleting the internal c++ object 
+    # This prevents pyside6 from deleting the internal c++ object
     # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
     parent.deleteLater()
     pydm_enumcombobox.deleteLater()
+
 
 @pytest.mark.parametrize(
     "enums",

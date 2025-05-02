@@ -3,7 +3,7 @@
 
 import numpy as np
 
-from ...widgets.colormaps import (
+from pydm.widgets.colormaps import (
     PyDMColorMap,
     cmaps,
     magma,

@@ -5,11 +5,11 @@ import pytest
 import numpy as np
 import logging
 
-from ...utilities import is_pydm_app
-from ...widgets.label import PyDMLabel
-from ...widgets.base import PyDMWidget
-from ...widgets.display_format import parse_value_for_display, DisplayFormat
-from ...utilities import checkObjectProperties
+from pydm.utilities import is_pydm_app
+from pydm.widgets.label import PyDMLabel
+from pydm.widgets.base import PyDMWidget
+from pydm.widgets.display_format import parse_value_for_display, DisplayFormat
+from pydm.utilities import checkObjectProperties
 
 from qtpy.QtWidgets import QApplication, QStyleOption, QWidget
 from qtpy.QtCore import Qt
@@ -39,7 +39,7 @@ def test_construct(qtbot):
     """
     parent = QWidget()
     qtbot.addWidget(parent)
-    
+
     pydm_label = PyDMLabel(parent)
     assert checkObjectProperties(pydm_label, expected_label_properties) is True
 
@@ -50,10 +50,11 @@ def test_construct(qtbot):
     assert pydm_label._string_encoding == pydm_label.app.get_string_encoding() if is_pydm_app() else "utf_8"
     assert pydm_label.parent() == parent
 
-    # This prevents pyside6 from deleting the internal c++ object 
+    # This prevents pyside6 from deleting the internal c++ object
     # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
     parent.deleteLater()
     pydm_label.deleteLater()
+
 
 def test_enable_rich_text(qtbot):
     """

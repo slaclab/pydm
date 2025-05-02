@@ -4,10 +4,10 @@
 import pytest
 from qtpy.QtWidgets import QWidget
 
-from ...widgets.base import is_channel_valid
-from ... import data_plugins
-from ...widgets.base import PyDMWidget
-from ...widgets.frame import PyDMFrame
+from pydm.widgets.base import is_channel_valid
+from pydm import data_plugins
+from pydm.widgets.base import PyDMWidget
+from pydm.widgets.frame import PyDMFrame
 
 
 # --------------------
@@ -37,10 +37,11 @@ def test_construct(qtbot):
     assert pydm_frame.alarmSensitiveBorder is False
     assert pydm_frame.parent() == parent
 
-    # This prevents pyside6 from deleting the internal c++ object 
+    # This prevents pyside6 from deleting the internal c++ object
     # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
     parent.deleteLater()
     pydm_frame.deleteLater()
+
 
 @pytest.mark.parametrize("init_value, new_value", [(False, True), (True, False), (False, False), (True, True)])
 def test_disable_on_disconnect(qtbot, init_value, new_value):

@@ -4,9 +4,9 @@ import sys
 import warnings
 from qtpy.QtCore import Qt, QSize
 from qtpy.QtWidgets import QApplication
-from ...utilities.stylesheet import global_style
-from ...widgets.related_display_button import PyDMRelatedDisplayButton
-from ...utilities import IconFont, checkObjectProperties
+from pydm.utilities.stylesheet import global_style
+from pydm.widgets.related_display_button import PyDMRelatedDisplayButton
+from pydm.utilities import IconFont, checkObjectProperties
 
 test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../test_data", "test.ui")
 test_ui_path_with_stylesheet = os.path.join(

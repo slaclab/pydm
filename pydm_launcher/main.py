@@ -45,7 +45,7 @@ def main():
         "-r",
         "--recurse",
         action="store_true",
-        help="Recursively search for the provided displayfile in the current working directory and subfolders"
+        help="Recursively search for the provided displayfile in the current working directory and subfolders",
     )
     parser.add_argument(
         "--homefile", help="Path to a PyDM file to return to when the home button is clicked in the navigation bar"

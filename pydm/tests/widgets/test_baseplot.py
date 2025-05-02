@@ -10,7 +10,7 @@ from qtpy.QtCore import QTimer, Qt, QPointF
 from qtpy.QtWidgets import QWidget
 
 from collections import OrderedDict
-from ...widgets.baseplot import BasePlotCurveItem, BasePlot
+from pydm.widgets.baseplot import BasePlotCurveItem, BasePlot
 
 
 logger = logging.getLogger(__name__)
@@ -145,7 +145,7 @@ def test_baseplot_no_added_y_axes(qtbot):
     """Confirm that if the user does not name or create any new y-axes, the plot will still work just fine"""
     parent = QWidget()
     qtbot.addWidget(parent)
-    
+
     base_plot = BasePlot(parent)
     base_plot.clear()
 
@@ -176,10 +176,11 @@ def test_baseplot_no_added_y_axes(qtbot):
     assert base_plot.plotItem.axes["top"]["item"].orientation == "top"
     assert base_plot.plotItem.axes["right"]["item"].orientation == "right"
 
-    # This prevents pyside6 from deleting the internal c++ object 
+    # This prevents pyside6 from deleting the internal c++ object
     # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
     parent.deleteLater()
     base_plot.deleteLater()
+
 
 def test_timeplot_add_multiple_axes(qtbot):
     """Similar to the multiple y axes test above, but this one creates the new axes first, and invokes the setters

@@ -12,8 +12,8 @@ from qtpy import QtCore
 from qtpy.QtCore import QSize
 from qtpy.QtWidgets import QMenu, QAction, QWidget
 
-from ...widgets.shell_command import PyDMShellCommand, TermOutputMode
-from ...utilities import IconFont
+from pydm.widgets.shell_command import PyDMShellCommand, TermOutputMode
+from pydm.utilities import IconFont
 
 
 # --------------------
@@ -101,7 +101,7 @@ def test_construct(qtbot, command, title):
     assert test_icon_image == shell_cmd_icon_image
     assert pydm_shell_command.parent() == parent
 
-    # This prevents pyside6 from deleting the internal c++ object 
+    # This prevents pyside6 from deleting the internal c++ object
     # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
     parent.deleteLater()
     pydm_shell_command.deleteLater()
