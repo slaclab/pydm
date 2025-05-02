@@ -14,7 +14,7 @@ def log():
 def test_write(qtbot, log):
     parent = QWidget()
     qtbot.addWidget(parent)
-    
+
     logd = PyDMLogDisplay(parent=parent, logname=log.name, level=logging.INFO)
     qtbot.addWidget(logd)
     logd.show()
@@ -45,8 +45,9 @@ def test_write(qtbot, log):
     assert logd.text.toPlainText() == ""
 
     # Calling .deleteLater() here on pyside6 causes weird behavior with the underlying c++ object in next testcase,
-    # maybe since the logger is associated with the previous logd instance when it gets deleted? 
-    
+    # maybe since the logger is associated with the previous logd instance when it gets deleted?
+
+
 def test_handler_cleanup(qtbot, log):
     logd = PyDMLogDisplay(logname=log.name, level=logging.DEBUG)
     qtbot.addWidget(logd)
