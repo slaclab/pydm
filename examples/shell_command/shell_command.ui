@@ -76,6 +76,74 @@
     </widget>
    </item>
    <item>
+    <widget class="PyDMShellCommand" name="PyDMShellCommand_4">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Run Long-running Command</string>
+     </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="PyDMToolTip" stdset="0">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string/>
+     </property>
+     <property name="PyDMIcon" stdset="0">
+      <string/>
+     </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="runCommandsInFullShell" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="confirmMessage" stdset="0">
+      <string>Are you sure you want to proceed?</string>
+     </property>
+     <property name="environmentVariables" stdset="0">
+      <string/>
+     </property>
+     <property name="showIcon" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="stdout" stdset="0">
+      <enum>PyDMShellCommand::SHOW</enum>
+     </property>
+     <property name="stderr" stdset="0">
+      <enum>PyDMShellCommand::SHOW</enum>
+     </property>
+     <property name="allowMultipleExecutions" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="titles" stdset="0">
+      <stringlist>
+       <string></string>
+      </stringlist>
+     </property>
+     <property name="commands" stdset="0">
+      <stringlist>
+       <string>for i in {1..5}; do echo $i; sleep 1; done</string>
+      </stringlist>
+     </property>
+     <property name="passwordProtected" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="password" stdset="0">
+      <string/>
+     </property>
+     <property name="protectedPassword" stdset="0">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -106,20 +174,64 @@
      <property name="text">
       <string>Multiple Shell Command Menu</string>
      </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="PyDMToolTip" stdset="0">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string/>
+     </property>
+     <property name="PyDMIcon" stdset="0">
+      <string/>
+     </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="runCommandsInFullShell" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="confirmMessage" stdset="0">
+      <string>Are you sure you want to proceed?</string>
+     </property>
+     <property name="environmentVariables" stdset="0">
+      <string/>
+     </property>
+     <property name="showIcon" stdset="0">
+      <bool>true</bool>
+     </property>
      <property name="redirectCommandOutput" stdset="0">
       <bool>true</bool>
+     </property>
+     <property name="allowMultipleExecutions" stdset="0">
+      <bool>false</bool>
      </property>
      <property name="titles" stdset="0">
       <stringlist>
        <string>Print &quot;Hello, World!&quot; to terminal</string>
        <string>Print current working directory to terminal</string>
+       <string>Run Long-running Command</string>
       </stringlist>
      </property>
      <property name="commands" stdset="0">
       <stringlist>
        <string>echo &quot;Hello, World!&quot;</string>
        <string>pwd</string>
+       <string>for i in {1..5}; do echo $i; sleep 1; done</string>
       </stringlist>
+     </property>
+     <property name="passwordProtected" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="password" stdset="0">
+      <string/>
+     </property>
+     <property name="protectedPassword" stdset="0">
+      <string/>
      </property>
     </widget>
    </item>

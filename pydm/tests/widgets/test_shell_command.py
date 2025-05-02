@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import pytest
+import time
 
 import platform
 from logging import ERROR
@@ -216,6 +217,143 @@ def test_mouse_release_event(qtbot, caplog, cmd, retcode, stdout):
     else:
         qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
         assert pydm_shell_command.process is None
+
+
+def test_long_running_command_shows_currently_running_text(qtbot):
+    """
+    Test that the button is updated to indicate when a command is currently running.
+    These indications are:
+        - Prepend "(Running...) " to the button's text
+        - Make button text italic
+        - Disable button while cmd is running (unless allowMultipleExecutions is set True)
+        - Set button icon to hourglass symbol
+    And the button should be reset back to it's original state after the command is done.
+    """
+    pydm_shell_command = PyDMShellCommand()
+    qtbot.addWidget(pydm_shell_command)
+    pydm_shell_command.stdout = TermOutputMode.HIDE
+
+    # Long running cmd, which we will kill after checking button state while its running
+    pydm_shell_command.commands = ["for i in {1..100}; do echo $i; sleep 1; done"]
+
+    original_text = "Run Long Cmd"
+    pydm_shell_command.setText(original_text)
+    pydm_shell_command.runCommandsInFullShell = True
+
+    # Execute the cmd
+    qtbot.mouseClick(pydm_shell_command, QtCore.Qt.LeftButton)
+    # Give the command some time to start
+    qtbot.wait(100)  # wait 0.1 seconds
+
+    # Check icon is updated while cmd is running
+    icon_size = QSize(16, 16)
+    default_icon = IconFont().icon("hourglass-start")
+    default_icon_pixmap = default_icon.pixmap(icon_size)
+    curr_icon_pixmap = pydm_shell_command.icon().pixmap(icon_size)
+    assert curr_icon_pixmap.toImage() == default_icon_pixmap.toImage()
+
+    assert pydm_shell_command.font().italic()
+    assert pydm_shell_command.text() == f"(Running...) {original_text}"
+
+    assert not pydm_shell_command.isEnabled()
+
+    # End process since we are done checking the 'running' state of the button
+    if pydm_shell_command.process:
+        pydm_shell_command.process.kill()
+
+    # Wait a bit for things to update
+    qtbot.wait(100)  # Wait 0.1 seconds
+
+    # Check icon is reverted back after cmd stops running
+    default_icon = IconFont().icon("cog")
+    default_icon_pixmap = default_icon.pixmap(icon_size)
+    curr_icon_pixmap = pydm_shell_command.icon().pixmap(icon_size)
+    assert curr_icon_pixmap.toImage() == default_icon_pixmap.toImage()
+
+    assert not pydm_shell_command.font().italic()
+    assert pydm_shell_command.text() == original_text
+
+    assert pydm_shell_command.isEnabled()
+
+
+def test_long_running_command_shows_currently_running_text_dropdown(qtbot):
+    """
+    Test that A button with multiple-cmds (so it has a drop-down menu) is updated to indicate
+    a drop-down menu command is currently running.
+    These indications are:
+        - Prepend "(Submenu cmd running...) " to the button's text
+        - Prepend "(Running...) " to the curr running drop-down item
+        - Make button and curr running drop-down text italic
+        - Disable button and all drop-down menu items while cmd is running (unless allowMultipleExecutions is set True)
+        - Set both button and curr running drop-down icons to hourglass symbol
+    And the button should be reset back to it's original state after the command is done.
+    """
+    pydm_shell_command = PyDMShellCommand()
+    qtbot.addWidget(pydm_shell_command)
+    pydm_shell_command.stdout = TermOutputMode.SHOW
+
+    original_button_text = "Run Long Cmd"
+    # Text of the specific item in drop-down we want to check the state of
+    original_action_text = "for i in {1..50}; do echo $i; sleep 1; done"
+    pydm_shell_command.setText(original_button_text)
+    pydm_shell_command.runCommandsInFullShell = True
+
+    pydm_shell_command.commands = ["echo 'command 1'", "echo 'command 2'", original_action_text]
+
+    # We need to execute the shell-cmd's mousePressEvent() so it can build the drop-down menu,
+    # and right-click since left-click seems to cause this test to then display the drop-down menu
+    # and just pauses waiting for user interaction.
+    qtbot.mouseClick(pydm_shell_command, QtCore.Qt.RightButton)
+
+    actions = pydm_shell_command.menu().actions()
+    assert len(actions) >= 3
+
+    # Activate drop-down menu button cmd
+    actions[2].trigger()
+    # Wait a bit for things to update
+    qtbot.wait(100)  # Wait 0.1 seconds
+
+    # Check button icon is changed while cmd is running
+    icon_size = QSize(16, 16)
+    default_icon = IconFont().icon("hourglass-start")
+    default_icon_pixmap = default_icon.pixmap(icon_size)
+    curr_icon_pixmap = pydm_shell_command.icon().pixmap(icon_size)
+    assert curr_icon_pixmap.toImage() == default_icon_pixmap.toImage()
+
+    assert pydm_shell_command.text() == f"(Submenu cmd running...) {original_button_text}"
+    assert pydm_shell_command.font().italic()
+
+    # Check state of action buttons in drop-down menu
+    # Check icon is changed on curr running action button while cmd is running
+    default_icon = IconFont().icon("hourglass-start")
+    default_icon_pixmap = default_icon.pixmap(icon_size)
+    curr_icon_pixmap = actions[2].icon().pixmap(icon_size)
+    assert curr_icon_pixmap.toImage() == default_icon_pixmap.toImage()
+
+    assert actions[2].text() == f"(Running...) {original_action_text}"
+    assert actions[2].font().italic()
+
+    assert all(not action.isEnabled() for action in actions)
+
+    # End process since we are done checking the 'running' state of the button
+    if pydm_shell_command.process:
+        pydm_shell_command.process.kill()
+
+    # Wait a bit for things to update
+    qtbot.wait(100)  # wait 0.1 seconds
+
+    # Check button icon is reverted back after cmd stops running
+    default_icon = IconFont().icon("cog")
+    default_icon_pixmap = default_icon.pixmap(icon_size)
+    curr_icon_pixmap = pydm_shell_command.icon().pixmap(icon_size)
+    assert curr_icon_pixmap.toImage() == default_icon_pixmap.toImage()
+
+    assert pydm_shell_command.text() == original_button_text
+    assert not pydm_shell_command.font().italic()
+
+    # Check drop-down menu icon is reverted
+    actions[2].icon().isNull()  # Drop-down menu cmds have no icon by default
+    assert all(action.isEnabled() for action in actions)
 
 
 @pytest.mark.parametrize(
