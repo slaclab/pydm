@@ -2,7 +2,7 @@ import os
 import pytest
 from pydm import Display
 from pydm.display import load_file, load_py_file, _compile_ui_file, _load_compiled_ui_into_display, ScreenTarget
-from qtpy.QtWidgets import QLabel
+from qtpy.QtWidgets import QLabel, QWidget
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 # The path to the .ui file used in these tests
@@ -22,8 +22,18 @@ valid_display_test_py_path = os.path.join(
 
 def test_ui_filename_arg(qtbot):
     """If you supply a valid filename argument, you shouldn't get any exceptions."""
-    my_display = Display(parent=None, ui_filename=test_ui_path)
+    parent = QWidget()
+    qtbot.addWidget(parent)
+
+    my_display = Display(parent=parent, ui_filename=test_ui_path)
     qtbot.addWidget(my_display)
+
+    assert my_display.parent() == parent
+
+    # This prevents pyside6 from deleting the internal c++ object
+    # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
+    parent.deleteLater()
+    my_display.deleteLater()
 
 
 def test_reimplemented_ui_filename(qtbot):

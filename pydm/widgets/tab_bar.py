@@ -12,7 +12,7 @@ class PyDMTabBar(QTabBar, PyDMWidget):
     """PyDMTabBar is used internally by PyDMTabWidget, and shouldn't be directly used on its own."""
 
     def __init__(self, parent=None):
-        super().__init__(parent=parent)
+        super().__init__(parent)
         self.tab_channels = {}
         self.tab_connection_status = {}
         self.tab_alarm_severity = {}
@@ -189,7 +189,7 @@ class PyDMTabWidget(QTabWidget):
     """
 
     def __init__(self, parent=None):
-        super().__init__(parent=parent)
+        super().__init__(parent)
         self.tb = PyDMTabBar(parent=self)
         self.setTabBar(self.tb)
 

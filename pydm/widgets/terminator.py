@@ -20,7 +20,7 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
     """
 
     def __init__(self, parent=None, timeout=60, *args, **kwargs):
-        super().__init__(parent=parent, *args, **kwargs)
+        super().__init__(parent, *args, **kwargs)
         self.setText("")
         self._hook_setup = False
         self._timeout = 60

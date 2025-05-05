@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class PythonTableModel(QtCore.QAbstractTableModel):
     def __init__(self, column_names, initial_list=None, parent=None, edit_method=None, can_edit_method=None):
-        super().__init__(parent=parent)
+        super().__init__(parent)
         self.parent = parent
         self._list = None
         self._column_names = column_names
@@ -185,7 +185,7 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
     def __init__(self, parent=None, init_channel=None):
         self._read_only = True
 
-        super().__init__(parent=parent)
+        super().__init__(parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.setLayout(QtWidgets.QVBoxLayout())
         self._table = QtWidgets.QTableView(self)

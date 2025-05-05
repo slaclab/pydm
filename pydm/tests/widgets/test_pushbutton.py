@@ -9,7 +9,8 @@ import logging
 
 from qtpy.QtCore import QSize, Qt
 from qtpy.QtGui import QColor
-from qtpy.QtWidgets import QInputDialog, QMessageBox
+from qtpy.QtWidgets import QInputDialog, QMessageBox, QWidget
+
 from pydm.widgets.pushbutton import PyDMPushButton
 from pydm.utilities.iconfont import IconFont
 
@@ -78,8 +79,11 @@ def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_
     if icon_font_name:
         icon = IconFont().icon(icon_font_name, icon_color)
 
+    parent = QWidget()
+    qtbot.addWidget(parent)
+
     pydm_pushbutton = PyDMPushButton(
-        label=label, pressValue=press_value, relative=relative, init_channel=init_channel, icon=icon
+        parent=parent, label=label, pressValue=press_value, relative=relative, init_channel=init_channel, icon=icon
     )
     qtbot.addWidget(pydm_pushbutton)
 
@@ -129,6 +133,12 @@ def test_construct(qtbot, label, press_value, relative, init_channel, icon_font_
     assert pydm_pushbutton.passwordProtected is False
     assert pydm_pushbutton.password == ""
     assert pydm_pushbutton.protectedPassword == ""
+    assert pydm_pushbutton.parent() == parent
+
+    # This prevents pyside6 from deleting the internal c++ object
+    # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
+    parent.deleteLater()
+    pydm_pushbutton.deleteLater()
 
 
 @pytest.mark.parametrize(
