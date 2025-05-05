@@ -128,6 +128,11 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
 
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self, obj, event)
+
     def confirmDialog(self) -> bool:
         """
         Show the confirmation dialog with the proper message in case

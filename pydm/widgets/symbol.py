@@ -43,6 +43,11 @@ class PyDMSymbol(QWidget, PyDMWidget):
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
 
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self, obj, event)
+
     def init_for_designer(self):
         """
         Method called after the constructor to tweak configurations for
