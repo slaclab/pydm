@@ -1096,12 +1096,13 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
            recorded yet, then defaults to the timestamp at which the plot was first rendered.
         """
         req_queued = False
+        requested_max = max_x
         if min_x is None:
             min_x = self._min_x
         for curve in self._curves:
             processing_command = ""
             if curve.use_archive_data:
-                if max_x is None:
+                if requested_max is None:  # If the caller didn't request a max, use the oldest data from the curve
                     max_x = curve.min_x()
                 if not self._cache_data:
                     max_x = min(max_x, self._max_x)
