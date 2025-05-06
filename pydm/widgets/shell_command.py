@@ -12,7 +12,7 @@ from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Property, QSize, Qt, QTimer
 from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
-from ..utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from typing import Optional, Union, List
 
 logger = logging.getLogger(__name__)
@@ -127,6 +127,11 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         # and after it's parent __init__ calls have completed.
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
+
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self, obj, event)
 
     def confirmDialog(self) -> bool:
         """
@@ -504,7 +509,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         ----------
         value : str
         """
-        warnings.warn("'PyDMShellCommand.command' is deprecated, " "use 'PyDMShellCommand.commands' instead.")
+        warnings.warn("'PyDMShellCommand.command' is deprecated, use 'PyDMShellCommand.commands' instead.")
         if not self._commands:
             if value:
                 self.commands = [value]
@@ -649,7 +654,14 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             menu.addAction("Display Command", lambda: QMessageBox.information(self, "Shell Command", self.commands[0]))
             menu.addAction("Copy Command", lambda: QApplication.clipboard().setText(self.commands[0]))
         else:
-            menu.addAction("Display Commands", lambda: QMessageBox.information(self, "Shell Commands", "\n\n".join([f"{name}:\n{cmd}" for name, cmd in zip(self.titles, self.commands)])))
+            menu.addAction(
+                "Display Commands",
+                lambda: QMessageBox.information(
+                    self,
+                    "Shell Commands",
+                    "\n\n".join([f"{name}:\n{cmd}" for name, cmd in zip(self.titles, self.commands)]),
+                ),
+            )
 
         return menu
 

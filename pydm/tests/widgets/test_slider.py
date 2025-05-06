@@ -5,9 +5,9 @@ import numpy as np
 from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QApplication, QSlider
 from qtpy.QtCore import Qt, QMargins, QPoint, QEvent, QRect, QSize
 from qtpy.QtGui import QMouseEvent
-from ...widgets.slider import PyDMSlider, PyDMPrimitiveSlider
-from ...widgets.base import PyDMWidget
-from ...utilities import checkObjectProperties
+from pydm.widgets.slider import PyDMSlider, PyDMPrimitiveSlider
+from pydm.widgets.base import PyDMWidget
+from pydm.utilities import checkObjectProperties
 
 # Unit Tests for the PyDMPrimitiveSlider class
 
@@ -85,15 +85,36 @@ def test_mouseMoveEvent(slider_fixture, qtbot, request):
 
     initial_value = test_slider.value()
 
-    press_event = QMouseEvent(QEvent.MouseButtonPress, start_pos, Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+    press_event = QMouseEvent(
+        QEvent.MouseButtonPress,
+        start_pos,  # localPos
+        start_pos,  # globalPos
+        Qt.LeftButton,  # button
+        Qt.LeftButton,  # buttons
+        Qt.NoModifier,
+    )  # modifiers
     QApplication.postEvent(test_slider, press_event)
     QApplication.processEvents()
 
-    move_event = QMouseEvent(QEvent.MouseMove, end_pos, Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+    move_event = QMouseEvent(
+        QEvent.MouseMove,
+        end_pos,  # localPos
+        end_pos,  # globalPos
+        Qt.LeftButton,  # button
+        Qt.LeftButton,  # buttons
+        Qt.NoModifier,
+    )  # modifiers
     QApplication.postEvent(test_slider, move_event)
     QApplication.processEvents()
 
-    release_event = QMouseEvent(QEvent.MouseButtonRelease, end_pos, Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+    release_event = QMouseEvent(
+        QEvent.MouseButtonRelease,
+        end_pos,  # localPos
+        end_pos,  # globalPos
+        Qt.LeftButton,  # button
+        Qt.LeftButton,  # buttons
+        Qt.NoModifier,
+    )  # modifier
     QApplication.postEvent(test_slider, release_event)
     QApplication.processEvents()
 

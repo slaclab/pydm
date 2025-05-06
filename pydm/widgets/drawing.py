@@ -8,7 +8,7 @@ from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygonF, QPixmap, QMovi
 from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget, PostParentClassInitSetup
-from ..utilities import is_qt_designer, find_file
+from pydm.utilities import is_qt_designer, find_file
 from typing import List, Optional
 
 logger = logging.getLogger(__name__)
@@ -96,6 +96,11 @@ class PyDMDrawing(QWidget, PyDMWidget):
         # and after it's parent __init__ calls have completed.
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
+
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self, obj, event)
 
     def sizeHint(self):
         return QSize(100, 100)

@@ -2,7 +2,7 @@ import logging
 from qtpy import QtWidgets, QtCore
 
 from .base import PyDMWritableWidget, PyDMWidget, PostParentClassInitSetup
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -24,16 +24,6 @@ if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
 
 
 class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
-    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
-        from PyQt5.QtCore import Q_ENUM
-
-        Q_ENUM(TimeBase)
-
-    # Make enum definitions known to this class
-    Milliseconds = TimeBase.Milliseconds
-    Seconds = TimeBase.Seconds
-
-    returnPressed = QtCore.Signal()
     """
     A QDateTimeEdit with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
@@ -46,6 +36,17 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         The channel to be used by the widget.
     """
 
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(TimeBase)
+
+    # Make enum definitions known to this class
+    Milliseconds = TimeBase.Milliseconds
+    Seconds = TimeBase.Seconds
+
+    returnPressed = QtCore.Signal()
+
     def __init__(self, parent=None, init_channel=None):
         self._block_past_date = True
         self._relative = True
@@ -57,6 +58,15 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         self.setDateTime(QtCore.QDateTime.currentDateTime())
         self.setCalendarPopup(True)
         self.returnPressed.connect(self.send_value)
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
+
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWritableWidget.eventFilter(self, obj, event)
 
     @QtCore.Property(TimeBase)
     def timeBase(self):
@@ -111,10 +121,11 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
 
         if self.timeBase == TimeBase.Seconds:
             new_value /= 1000.0
-        self.send_value_signal.emit(new_value)
+        self.send_value_signal[self.channeltype].emit(new_value)
 
     def value_changed(self, new_val):
         super().value_changed(new_val)
+        new_val = int(new_val)
 
         if self.timeBase == TimeBase.Seconds:
             new_val *= 1000
@@ -128,15 +139,6 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
 
 
 class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
-    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
-        from PyQt5.QtCore import Q_ENUM
-
-        Q_ENUM(TimeBase)
-
-    # Make enum definitions known to this class
-    Milliseconds = TimeBase.Milliseconds
-    Seconds = TimeBase.Seconds
-
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
@@ -149,11 +151,19 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
         The channel to be used by the widget.
     """
 
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(TimeBase)
+
+    # Make enum definitions known to this class
+    Milliseconds = TimeBase.Milliseconds
+    Seconds = TimeBase.Seconds
+
     def __init__(self, parent=None, init_channel=None):
         QtWidgets.QLabel.__init__(self, parent=parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
 
-        self._block_past_date = True
         self._relative = True
         self._time_base = TimeBase.Milliseconds
         self._text_format = "yyyy/MM/dd hh:mm:ss.zzz"
@@ -164,6 +174,11 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
 
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self, obj, event)
+
     @QtCore.Property(str)
     def textFormat(self):
         """The format to use when displaying the date/time values."""
@@ -173,7 +188,8 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
     def textFormat(self, text_format):
         if self._text_format != text_format:
             self._text_format = text_format
-            self.value_changed(self.value)
+            if self.value is not None:
+                self.value_changed(self.value)
 
     @QtCore.Property(TimeBase)
     def timeBase(self):
@@ -200,6 +216,7 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
 
     def value_changed(self, new_val):
         super().value_changed(new_val)
+        new_val = int(new_val)
 
         if self.timeBase == TimeBase.Seconds:
             new_val *= 1000

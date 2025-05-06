@@ -390,7 +390,13 @@ class PyDMMainWindow(QMainWindow):
             curr_display = self.display_widget()
             if curr_display:
                 base_path = os.path.dirname(curr_display.loaded_file())
-            filename = find_file(filename, base_path=base_path, raise_if_not_found=True, subdir_scan_enabled=self._recursive_display_search, subdir_scan_base_path_only=False)
+            filename = find_file(
+                filename,
+                base_path=base_path,
+                raise_if_not_found=True,
+                subdir_scan_enabled=self._recursive_display_search,
+                subdir_scan_base_path_only=False,
+            )
         new_widget = load_file(filename, macros=macros, args=args, target=target)
         if new_widget:
             if self.home_widget is None:

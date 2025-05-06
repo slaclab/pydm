@@ -2,7 +2,7 @@ import logging
 
 import pydm.data_plugins
 
-from ..utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 logger = logging.getLogger(__name__)
 
@@ -153,7 +153,7 @@ class PyDMChannel(object):
         try:
             pydm.data_plugins.establish_connection(self)
         except Exception:
-            logger.exception("Unable to make proper connection " "for %r", self)
+            logger.exception("Unable to make proper connection for %r", self)
 
     def disconnect(self, destroying=False):
         """
@@ -165,7 +165,7 @@ class PyDMChannel(object):
                 return
             plugin.remove_connection(self, destroying=destroying)
         except Exception:
-            logger.exception("Unable to remove connection " "for %r", self)
+            logger.exception("Unable to remove connection for %r", self)
 
     def __eq__(self, other):
         if isinstance(self, other.__class__):

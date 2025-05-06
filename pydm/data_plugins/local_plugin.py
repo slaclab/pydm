@@ -1,4 +1,5 @@
 """Local Plugin."""
+
 import decimal
 import logging
 import ast

@@ -4,8 +4,8 @@ from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit, QStyle
 from qtpy.QtCore import Slot, Property
 from qtpy import QtDesigner
-from .base import PyDMWritableWidget
-from ..utilities import IconFont
+from .base import PyDMWritableWidget, PostParentClassInitSetup
+from pydm.utilities import IconFont
 import logging
 
 logger = logging.getLogger(__name__)
@@ -82,6 +82,15 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         # The color of "Font Awesome" icons can be set,
         # but standard icons are already colored and can not be set.
         self._pydm_icon_color = QColor(90, 90, 90)
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        # (so we can avoid pyside6 throwing an error, see func def for more info)
+        PostParentClassInitSetup(self)
+
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWritableWidget.eventFilter(self, obj, event)
 
     @Property(str)
     def PyDMIcon(self) -> str:

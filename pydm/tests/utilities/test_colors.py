@@ -1,6 +1,6 @@
 import pytest
 
-from ...utilities import colors
+from pydm.utilities import colors
 
 
 def test_read_file():

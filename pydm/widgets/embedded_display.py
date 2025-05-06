@@ -7,7 +7,7 @@ import os.path
 import logging
 from .base import PyDMPrimitiveWidget
 from .baseplot import BasePlot
-from ..utilities import (
+from pydm.utilities import (
     is_pydm_app,
     establish_widget_connections,
     close_widget_connections,
@@ -15,7 +15,7 @@ from ..utilities import (
     is_qt_designer,
     find_file,
 )
-from ..display import load_file, ScreenTarget
+from pydm.display import load_file, ScreenTarget
 
 logger = logging.getLogger(__name__)
 
@@ -256,7 +256,12 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
                     parent_file_path = os.path.realpath(parent_file_path)
                 base_path = os.path.dirname(parent_file_path)
 
-            fname = find_file(self.filename, base_path=base_path, raise_if_not_found=True, subdir_scan_enabled=self._recursive_display_search)
+            fname = find_file(
+                self.filename,
+                base_path=base_path,
+                raise_if_not_found=True,
+                subdir_scan_enabled=self._recursive_display_search,
+            )
             w = load_file(fname, macros=self.parsed_macros(), target=None)
             self._needs_load = False
             self.clear_error_text()
@@ -456,7 +461,12 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
                 parent_file_path = os.path.realpath(parent_file_path)
             base_path = os.path.dirname(parent_file_path)
 
-        file_path = find_file(self.filename, base_path=base_path, raise_if_not_found=True, subdir_scan_enabled=self._recursive_display_search)
+        file_path = find_file(
+            self.filename,
+            base_path=base_path,
+            raise_if_not_found=True,
+            subdir_scan_enabled=self._recursive_display_search,
+        )
         macros = self.parsed_macros()
 
         if is_pydm_app():

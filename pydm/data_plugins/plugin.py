@@ -2,16 +2,17 @@ import functools
 import numpy as np
 import weakref
 import threading
+import warnings
 
 from typing import Optional, Callable
 from urllib.parse import ParseResult
 
-from ..utilities.remove_protocol import parsed_address
-from ..widgets import PyDMChannel
+from pydm.utilities.remove_protocol import parsed_address
+from pydm.widgets import PyDMChannel
 from qtpy.compat import isalive
 from qtpy.QtCore import Signal, QObject, Qt
 from qtpy.QtWidgets import QApplication
-from .. import config
+from pydm import config
 
 
 class PyDMConnection(QObject):
@@ -105,102 +106,105 @@ class PyDMConnection(QObject):
             QObject is destroyed, setting this to True ensures we do not try to do the disconnection a second time.
             If set to False, any active signals/slots on the channel will be manually disconnected here.
         """
-        if self._should_disconnect(channel.connection_slot, destroying):
-            try:
-                self.connection_state_signal.disconnect(channel.connection_slot)
-            except TypeError:
-                pass
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
 
-        if self._should_disconnect(channel.value_slot, destroying):
-            for signal_type in (int, float, str, bool, object):
+            if self._should_disconnect(channel.connection_slot, destroying):
                 try:
-                    self.new_value_signal[signal_type].disconnect(channel.value_slot)
-                # If the signal exists (always does in this case since we define it for all 'signal_type' earlier)
-                # but doesn't match slot, TypeError is thrown. We also don't need to catch KeyError/IndexError here,
-                # since those are only thrown when signal type doesn't exist.
+                    self.connection_state_signal.disconnect(channel.connection_slot)
                 except TypeError:
                     pass
 
-        if self._should_disconnect(channel.severity_slot, destroying):
-            try:
-                self.new_severity_signal.disconnect(channel.severity_slot)
-            except (KeyError, TypeError):
-                pass
+            if self._should_disconnect(channel.value_slot, destroying):
+                for signal_type in (int, float, str, bool, object):
+                    try:
+                        self.new_value_signal[signal_type].disconnect(channel.value_slot)
+                    # If the signal exists (always does in this case since we define it for all 'signal_type' earlier)
+                    # but doesn't match slot, TypeError is thrown. We also don't need to catch KeyError/IndexError here,
+                    # since those are only thrown when signal type doesn't exist.
+                    except TypeError:
+                        pass
 
-        if self._should_disconnect(channel.write_access_slot, destroying):
-            try:
-                self.write_access_signal.disconnect(channel.write_access_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if self._should_disconnect(channel.enum_strings_slot, destroying):
-            try:
-                self.enum_strings_signal.disconnect(channel.enum_strings_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if self._should_disconnect(channel.unit_slot, destroying):
-            try:
-                self.unit_signal.disconnect(channel.unit_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if self._should_disconnect(channel.upper_ctrl_limit_slot, destroying):
-            try:
-                self.upper_ctrl_limit_signal.disconnect(channel.upper_ctrl_limit_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if self._should_disconnect(channel.lower_ctrl_limit_slot, destroying):
-            try:
-                self.lower_ctrl_limit_signal.disconnect(channel.lower_ctrl_limit_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if self._should_disconnect(channel.upper_alarm_limit_slot, destroying):
-            try:
-                self.upper_alarm_limit_signal.disconnect(channel.upper_alarm_limit_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if self._should_disconnect(channel.lower_alarm_limit_slot, destroying):
-            try:
-                self.lower_alarm_limit_signal.disconnect(channel.lower_alarm_limit_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if self._should_disconnect(channel.upper_warning_limit_slot, destroying):
-            try:
-                self.upper_warning_limit_signal.disconnect(channel.upper_warning_limit_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if self._should_disconnect(channel.lower_warning_limit_slot, destroying):
-            try:
-                self.lower_warning_limit_signal.disconnect(channel.lower_warning_limit_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if self._should_disconnect(channel.prec_slot, destroying):
-            try:
-                self.prec_signal.disconnect(channel.prec_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if self._should_disconnect(channel.timestamp_slot, destroying):
-            try:
-                self.timestamp_signal.disconnect(channel.timestamp_slot)
-            except (KeyError, TypeError):
-                pass
-
-        if not destroying and channel.value_signal is not None and hasattr(self, "put_value"):
-            for signal_type in (str, int, float, np.ndarray, dict):
+            if self._should_disconnect(channel.severity_slot, destroying):
                 try:
-                    channel.value_signal[signal_type].disconnect(self.put_value)
-                # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
-                # If signal type exists but doesn't match the slot, TypeError gets thrown.
-                except (KeyError, IndexError, TypeError):
+                    self.new_severity_signal.disconnect(channel.severity_slot)
+                except (KeyError, TypeError):
                     pass
+
+            if self._should_disconnect(channel.write_access_slot, destroying):
+                try:
+                    self.write_access_signal.disconnect(channel.write_access_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if self._should_disconnect(channel.enum_strings_slot, destroying):
+                try:
+                    self.enum_strings_signal.disconnect(channel.enum_strings_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if self._should_disconnect(channel.unit_slot, destroying):
+                try:
+                    self.unit_signal.disconnect(channel.unit_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if self._should_disconnect(channel.upper_ctrl_limit_slot, destroying):
+                try:
+                    self.upper_ctrl_limit_signal.disconnect(channel.upper_ctrl_limit_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if self._should_disconnect(channel.lower_ctrl_limit_slot, destroying):
+                try:
+                    self.lower_ctrl_limit_signal.disconnect(channel.lower_ctrl_limit_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if self._should_disconnect(channel.upper_alarm_limit_slot, destroying):
+                try:
+                    self.upper_alarm_limit_signal.disconnect(channel.upper_alarm_limit_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if self._should_disconnect(channel.lower_alarm_limit_slot, destroying):
+                try:
+                    self.lower_alarm_limit_signal.disconnect(channel.lower_alarm_limit_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if self._should_disconnect(channel.upper_warning_limit_slot, destroying):
+                try:
+                    self.upper_warning_limit_signal.disconnect(channel.upper_warning_limit_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if self._should_disconnect(channel.lower_warning_limit_slot, destroying):
+                try:
+                    self.lower_warning_limit_signal.disconnect(channel.lower_warning_limit_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if self._should_disconnect(channel.prec_slot, destroying):
+                try:
+                    self.prec_signal.disconnect(channel.prec_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if self._should_disconnect(channel.timestamp_slot, destroying):
+                try:
+                    self.timestamp_signal.disconnect(channel.timestamp_slot)
+                except (KeyError, TypeError):
+                    pass
+
+            if not destroying and channel.value_signal is not None and hasattr(self, "put_value"):
+                for signal_type in (str, int, float, np.ndarray, dict):
+                    try:
+                        channel.value_signal[signal_type].disconnect(self.put_value)
+                    # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
+                    # If signal type exists but doesn't match the slot, TypeError gets thrown.
+                    except (KeyError, IndexError, TypeError):
+                        pass
 
         self.listener_count = self.listener_count - 1
         if self.listener_count < 1:

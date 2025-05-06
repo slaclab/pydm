@@ -5,7 +5,7 @@ from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
 from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
-from ..utilities import find_file
+from pydm.utilities import find_file
 from .base import PyDMWidget, PostParentClassInitSetup
 
 logger = logging.getLogger(__name__)
@@ -42,6 +42,11 @@ class PyDMSymbol(QWidget, PyDMWidget):
         # and after it's parent __init__ calls have completed.
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
+
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self, obj, event)
 
     def init_for_designer(self):
         """
