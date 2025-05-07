@@ -528,6 +528,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         Additional parameters supported by pyqtgraph.PlotDataItem.
     """
 
+    _channels = ("channel",)
     archive_data_request_signal = Signal(float, float, str)
     archive_data_received_signal = Signal()
     live_channel_connection = Signal(bool)
@@ -668,7 +669,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             self.data_buffer = np.array([[APPROX_SECONDS_300_YEARS], [eval(self._trueFormula)]])
             self.points_accumulated = self.archive_points_accumulated = 1
             return
-        if not (self.connected and self.arch_connected):
+        if not (self.connected or self.arch_connected):
             return
         pvArchiveData = dict()
         pvLiveData = dict()
@@ -925,6 +926,8 @@ class FormulaCurveItem(BasePlotCurveItem):
             maxx = min(self.pvs[curve].min_archiver_x(), maxx)
         return maxx
 
+    def channels(self):
+        return [self.channel]
 
 class PyDMArchiverTimePlot(PyDMTimePlot):
     """
