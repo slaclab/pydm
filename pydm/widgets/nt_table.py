@@ -195,6 +195,11 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
         self._table_values = []
         self.edit_method = None
 
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWritableWidget.eventFilter(self, obj, event)
+
     @QtCore.Property(bool)
     def readOnly(self):
         return self._read_only
