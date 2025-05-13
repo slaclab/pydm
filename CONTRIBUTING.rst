@@ -63,7 +63,7 @@ Ready to contribute? Here's how to set up `pydm` for local development.
 
 3. Install your local copy into a new conda environment. Assuming you have conda installed, this is how you set up your fork for local development::
 
-    $ conda create -n pydm-environment python=3.8 pyqt=5.12.3 pip numpy scipy six psutil pyqtgraph -c conda-forge
+    $ conda create -n pydm-environment python=3.10 pyqt=5.12.3 pip numpy scipy six psutil pyqtgraph -c conda-forge
     $ cd pydm/
     $ pip install -e .
 
