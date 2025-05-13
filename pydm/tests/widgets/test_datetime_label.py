@@ -6,7 +6,7 @@ import platform
 import pytest
 import time
 
-from ...widgets.datetime import PyDMDateTimeLabel, TimeBase
+from pydm.widgets.datetime import PyDMDateTimeLabel, TimeBase
 
 # --------------------
 # POSITIVE TEST CASES
@@ -40,17 +40,17 @@ def test_construct(qtbot):
     "value, text_format, expected_value",
     [
         # Assuming the time is localized to EST
-        (0,          "yyyy-MM-dd",              "1969-12-31"),
-        (0,          "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-00-00-000"),
-        (1000,       "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-00-01-000"),
-        (60000,      "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-01-00-000"),
-        (3600000,    "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-20-00-00-000"),
-        (18000000,   "yyyy-MM-dd-hh-mm-ss-zzz", "1970-01-01-00-00-00-000"),
-        (0.0,        "yyyy-MM-dd",              "1969-12-31"),
-        (0.0,        "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-00-00-000"),
-        (1000.0,     "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-00-01-000"),
-        (60000.0,    "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-01-00-000"),
-        (3600000.0,  "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-20-00-00-000"),
+        (0, "yyyy-MM-dd", "1969-12-31"),
+        (0, "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-00-00-000"),
+        (1000, "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-00-01-000"),
+        (60000, "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-01-00-000"),
+        (3600000, "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-20-00-00-000"),
+        (18000000, "yyyy-MM-dd-hh-mm-ss-zzz", "1970-01-01-00-00-00-000"),
+        (0.0, "yyyy-MM-dd", "1969-12-31"),
+        (0.0, "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-00-00-000"),
+        (1000.0, "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-00-01-000"),
+        (60000.0, "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-19-01-00-000"),
+        (3600000.0, "yyyy-MM-dd-hh-mm-ss-zzz", "1969-12-31-20-00-00-000"),
         (18000000.0, "yyyy-MM-dd-hh-mm-ss-zzz", "1970-01-01-00-00-00-000"),
     ],
 )
@@ -77,10 +77,10 @@ def test_value_changed(qtbot, signals, value, text_format, expected_value):
         The expected displayed value of the widget
     """
     # These tests will fail on Windows, we can't easily modify time
-    if platform.system() == 'Windows':
+    if platform.system() == "Windows":
         return
 
-    os.environ['TZ'] = 'US/Eastern'
+    os.environ["TZ"] = "US/Eastern"
     time.tzset()
 
     pydm_label = PyDMDateTimeLabel()
