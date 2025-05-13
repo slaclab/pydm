@@ -36,6 +36,11 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
 
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWritableWidget.eventFilter(self, obj, event)
+
     def value_changed(self, new_waveform):
         """
         Callback invoked when the Channel value is changed.

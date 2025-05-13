@@ -377,10 +377,9 @@ class PyDMMainWindow(QMainWindow):
             self, "Change Stylesheet...", folder, "PyDM Stylesheets (*.qss *.css)"
         )
 
-        if ss_filename:
-            ss_filename = str(ss_filename)
-            self.ss_path = ss_filename.split("'")
-            style = open(self.ss_path[1], "r")
+        ss_path = str(ss_filename[0])
+        if ss_path:
+            style = open(ss_path, "r")
             style = style.read()
             self.setStyleSheet(style)
 

@@ -239,12 +239,11 @@ class PyDMPrimitiveWidget(object):
 
         clipboard = QApplication.clipboard()
 
-        mode = clipboard.Clipboard
         if platform.system() == "Linux":
             # Mode Selection is only valid for X11.
-            mode = clipboard.Selection
+            clipboard.setText(clipboard_text, mode=clipboard.Selection)
 
-        clipboard.setText(clipboard_text, mode=mode)
+        clipboard.setText(clipboard_text, mode=clipboard.Clipboard)
         event = QEvent(QEvent.Clipboard)
         self.app.sendEvent(clipboard, event)
 

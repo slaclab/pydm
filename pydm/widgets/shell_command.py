@@ -6,7 +6,6 @@ import sys
 import logging
 import warnings
 import hashlib
-import sip
 from ast import literal_eval
 from qtpy.QtWidgets import QApplication, QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
@@ -128,6 +127,11 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         # and after it's parent __init__ calls have completed.
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
+
+    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self, obj, event)
 
     def confirmDialog(self) -> bool:
         """
@@ -844,10 +848,6 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         original_action_text : str
             Shell command
         """
-        # It's possible the object could already be out of scope as it's c++ internal object deleted by sip,
-        # just do nothing if this is the case .
-        if sip.isdeleted(self):
-            return
         # If process is not done running, do nothing.
         if self.process and self.process.poll() is not None:
             if self.process:
