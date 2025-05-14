@@ -8,7 +8,7 @@ from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
 from qtpy.QtCore import Property, Qt
 from qtpy.QtGui import QFocusEvent
 from .base import PyDMWritableWidget, TextFormatter, str_types, PostParentClassInitSetup
-from pydm import utilities
+from pydm import utilities, config
 from .display_format import DisplayFormat, parse_value_for_display
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, is_qt_designer
 
