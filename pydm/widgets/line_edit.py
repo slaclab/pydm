@@ -184,7 +184,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
                 shouldSetReadOnly = False
             else:
                 shouldSetReadOnly = not new_write_access
-            super().setReadOnly(not new_write_access)
+            super().setReadOnly(shouldSetReadOnly)
 
     def unit_changed(self, new_unit):
         """
