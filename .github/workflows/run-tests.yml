@@ -22,6 +22,9 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ['3.9', '3.10']
         pyqt-version: [5.12.3, 5.15.9]
+        exclude:
+          - os: macos-latest
+            pyqt-version: 5.12.3  # Version 5.12.3 of PyQT is not available for osx-arm64
     env:
       DISPLAY: ':99.0'
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
@@ -36,7 +39,6 @@ jobs:
         miniforge-version: latest
         activate-environment: pydm-env
         conda-remove-defaults: true
-        architecture: x64  # Ensure macOS finds PyQt 5.12.3 which isn't available with osx-arm64
 
     - name: Install PyDM with Mamba
       shell: bash -el {0}
