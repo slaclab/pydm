@@ -2,6 +2,7 @@
 
 
 import pytest
+from qtpy.QtWidgets import QWidget
 
 from pydm.widgets.base import is_channel_valid
 from pydm import data_plugins
@@ -26,11 +27,20 @@ def test_construct(qtbot):
     qtbot : fixture
         pytest-qt window for widget test
     """
-    pydm_frame = PyDMFrame()
+    parent = QWidget()
+    qtbot.addWidget(parent)
+
+    pydm_frame = PyDMFrame(parent)
     qtbot.addWidget(pydm_frame)
 
     assert pydm_frame._disable_on_disconnect is False
     assert pydm_frame.alarmSensitiveBorder is False
+    assert pydm_frame.parent() == parent
+
+    # This prevents pyside6 from deleting the internal c++ object
+    # ("Internal C++ object (PyDMDateTimeLabel) already deleted")
+    parent.deleteLater()
+    pydm_frame.deleteLater()
 
 
 @pytest.mark.parametrize("init_value, new_value", [(False, True), (True, False), (False, False), (True, True)])
