@@ -929,6 +929,7 @@ class FormulaCurveItem(BasePlotCurveItem):
     def channels(self):
         return [self.channel]
 
+
 class PyDMArchiverTimePlot(PyDMTimePlot):
     """
     PyDMArchiverTimePlot is a PyDMTimePlot with support for receiving data from
