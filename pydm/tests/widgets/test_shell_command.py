@@ -240,6 +240,7 @@ def test_long_running_command_shows_currently_running_text(qtbot):
     """
     pydm_shell_command = PyDMShellCommand()
     pydm_shell_command.stdout = TermOutputMode.HIDE
+    pydm_shell_command.showCurrentlyRunningIndication = True
     qtbot.addWidget(pydm_shell_command)
 
     # Long running cmd, which we will kill after checking button state while its running
@@ -298,8 +299,9 @@ def test_long_running_command_shows_currently_running_text_dropdown(qtbot):
     And the button should be reset back to it's original state after the command is done.
     """
     pydm_shell_command = PyDMShellCommand()
-    qtbot.addWidget(pydm_shell_command)
     pydm_shell_command.stdout = TermOutputMode.SHOW
+    pydm_shell_command.showCurrentlyRunningIndication = True
+    qtbot.addWidget(pydm_shell_command)
 
     original_button_text = "Run Long Cmd"
     # Text of the specific item in drop-down we want to check the state of

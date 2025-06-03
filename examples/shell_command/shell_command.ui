@@ -41,16 +41,61 @@
      <property name="text">
       <string>Run Shell Command</string>
      </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="PyDMToolTip" stdset="0">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string/>
+     </property>
+     <property name="PyDMIcon" stdset="0">
+      <string/>
+     </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="runCommandsInFullShell" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="confirmMessage" stdset="0">
+      <string>Are you sure you want to proceed?</string>
+     </property>
+     <property name="environmentVariables" stdset="0">
+      <string/>
+     </property>
+     <property name="showIcon" stdset="0">
+      <bool>true</bool>
+     </property>
      <property name="redirectCommandOutput" stdset="0">
       <bool>true</bool>
      </property>
      <property name="allowMultipleExecutions" stdset="0">
       <bool>false</bool>
      </property>
+     <property name="titles" stdset="0">
+      <stringlist/>
+     </property>
      <property name="commands" stdset="0">
       <stringlist>
        <string>echo &quot;Hello World!&quot;</string>
       </stringlist>
+     </property>
+     <property name="passwordProtected" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="password" stdset="0">
+      <string/>
+     </property>
+     <property name="protectedPassword" stdset="0">
+      <string/>
+     </property>
+     <property name="showCurrentlyRunningIndication" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -65,13 +110,58 @@
      <property name="text">
       <string>Run Invalid Command</string>
      </property>
+     <property name="alarmSensitiveContent" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alarmSensitiveBorder" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="PyDMToolTip" stdset="0">
+      <string/>
+     </property>
+     <property name="channel" stdset="0">
+      <string/>
+     </property>
+     <property name="PyDMIcon" stdset="0">
+      <string/>
+     </property>
+     <property name="showConfirmDialog" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="runCommandsInFullShell" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="confirmMessage" stdset="0">
+      <string>Are you sure you want to proceed?</string>
+     </property>
+     <property name="environmentVariables" stdset="0">
+      <string/>
+     </property>
+     <property name="showIcon" stdset="0">
+      <bool>true</bool>
+     </property>
      <property name="allowMultipleExecutions" stdset="0">
       <bool>false</bool>
+     </property>
+     <property name="titles" stdset="0">
+      <stringlist/>
      </property>
      <property name="commands" stdset="0">
       <stringlist>
        <string>fooo</string>
       </stringlist>
+     </property>
+     <property name="passwordProtected" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="password" stdset="0">
+      <string/>
+     </property>
+     <property name="protectedPassword" stdset="0">
+      <string/>
+     </property>
+     <property name="showCurrentlyRunningIndication" stdset="0">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -140,6 +230,9 @@
      </property>
      <property name="protectedPassword" stdset="0">
       <string/>
+     </property>
+     <property name="showCurrentlyRunningIndication" stdset="0">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -232,6 +325,9 @@
      </property>
      <property name="protectedPassword" stdset="0">
       <string/>
+     </property>
+     <property name="showCurrentlyRunningIndication" stdset="0">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

@@ -115,6 +115,8 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self._show_confirm_dialog = False
         self._confirm_message = PyDMShellCommand.DEFAULT_CONFIRM_MESSAGE
 
+        self._show_currently_running_indication = False
+
         # Standard icons (which come with the qt install, and work cross-platform),
         # and icons from the "Font Awesome" icon set (https://fontawesome.com/)
         # can not be set with a widget's "icon" property in designer, only in python.
@@ -599,6 +601,31 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self._protected_password != value:
             self._protected_password = value
 
+    @Property(bool)
+    def showCurrentlyRunningIndication(self) -> bool:
+        """
+        Whether or not to have a button's visuals change to indicate when the command is running.
+        It's nice to enable this when you know your button's command runs long.
+
+        Returns
+        -------
+        bool
+        """
+        return self._show_currently_running_indication
+
+    @showCurrentlyRunningIndication.setter
+    def showCurrentlyRunningIndication(self, value: bool) -> None:
+        """
+        Whether or not to have a button's visuals change to indicate when the command is running.
+        It's nice to enable this when you know your button's command runs long.
+
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._show_currently_running_indication != value:
+            self._show_currently_running_indication = value
+
     def _rebuild_menu(self) -> None:
         if not any(self._commands):
             self._commands = []
@@ -773,11 +800,11 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
                 else:
                     env_var = None
 
-                # Disable button and change it's look while cmd is running.
+                # Disable button and change how it looks while the cmd is actively running.
                 # Note: since for buttons with drop-down menu of multiple-cmds we only allow a single cmd to run at once,
                 # disable both the specific drop-down item running and the overall multiple-cmd button.
                 # Having an action means this is a multiple-cmd dropdown button (action is the specific selected drop-down cmd, self is the top-level button)
-                if not self._allow_multiple:
+                if self._show_currently_running_indication and not self._allow_multiple:
                     if action:
                         # Update button for when cmd is running.
                         self.set_object_font_italic(self, True)
@@ -803,7 +830,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
                     args, stdout=stdout, stderr=stderr, env=env_var, shell=self._run_commands_in_full_shell
                 )
 
-                if not self._allow_multiple:
+                if self._show_currently_running_indication and not self._allow_multiple:
                     # Start polling to check when it's done.
                     self.timer = QTimer()
                     # Check if cmd completed every 50 ms (time is arbitrary and can be adjusted if feels laggy)
@@ -816,7 +843,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             except Exception as exc:
                 logger.error("Error in shell command: %s", exc)
                 self.show_warning_icon()
-                if not self._allow_multiple:
+                if self._show_currently_running_indication and not self._allow_multiple:
                     # Restore button state when cmd is done running.
                     # (but dont restore icon, show_warning_icon() will after displaying the warning icon for a bit)
                     self.set_object_font_italic(self, False)
