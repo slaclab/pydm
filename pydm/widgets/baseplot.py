@@ -799,8 +799,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         return dic_
 
     def eventFilter(self, obj: QObject, event: QEvent) -> bool:
-        """Display a tool tip upon mousing over the plot in Qt designer explaining how to edit curves on it"""
+        """Display a tool tip upon mousing over the plot in Qt designer explaining how to edit curves on it
+        Also handle mouse leave events to hide crosshair labels when the mouse leaves the plot area."""
         ret = super().eventFilter(obj, event)
+
         if utilities.is_qt_designer():
             if event.type() == QEvent.Enter:
                 QToolTip.showText(
@@ -811,9 +813,12 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                     4000,
                 )
         else:
-            # Somehow super here is not invoking the PyDMPrimitiveWidget
-            # eventFilter
             ret = PyDMPrimitiveWidget.eventFilter(self, obj, event)
+
+        if self.crosshair and hasattr(self, "textItems"):
+            if event.type() == QEvent.Leave:
+                for label in self.textItems.values():
+                    label.hide()
 
         return ret
 
@@ -1591,8 +1596,17 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.textItems = {}
             self.init_label = True
             self.crosshair_position_updated.connect(self.updateLabel)
+
+            self.installEventFilter(self)
+
         else:
             self.clearCurveLabels()
+            self.init_label = False
+
+            try:
+                self.crosshair_position_updated.disconnect(self.updateLabel)
+            except Exception:
+                pass
 
             if self.vertical_crosshair_line in self.plotItem.items:
                 self.plotItem.removeItem(self.vertical_crosshair_line)
@@ -1608,6 +1622,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                 except Exception:
                     pass
 
+            self.removeEventFilter(self)
+            self.crosshair = False
+
     def initializeCurveLabels(self, font: str = "arial", font_size: int = 8) -> None:
         """
         Create a TextItem for each PlotDataItem in the plot and stores them in self.textItems.
@@ -1616,38 +1633,49 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         -------
         None
         """
-        self.clearCurveLabels()
-        self.init_label = False
+        if not hasattr(self, "textItems"):
+            self.textItems = {}
 
         for item in self.plotItem.listDataItems():
             if not isinstance(item, PlotDataItem):
                 continue
 
-            label: TextItem = TextItem(
-                text="No data", color="w", border=mkPen(color="w", width=2), fill=mkBrush(0, 0, 0, 150)
-            )
+            if item not in self.textItems:
+                label: TextItem = TextItem(
+                    text="No data", color="w", border=mkPen(color="w", width=2), fill=mkBrush(0, 0, 0, 150)
+                )
 
-            label.setPos(0, 0)
-            label.setAnchor((0.5, 0.5))
-            label.setFont(QFont(font, font_size))
+                label.setPos(0, 0)
+                label.setAnchor((0.5, 0.5))
+                label.setFont(QFont(font, font_size))
 
-            self.textItems[item] = label
+                self.textItems[item] = label
+
+        self.init_label = False
 
     def clearCurveLabels(self) -> None:
         """
         Remove all existing curve labels from the plot and clear the textItems dictionary.
 
         This method iterates through all TextItem objects stored in the `textItems` attribute,
-        removes each one from the plot (via `plotItem.removeItem`), clears the dictionary, and
-        sets the `init_label` flag to True.
+        removes each one from the correct ViewBox, clears the dictionary, and sets the
+        `init_label` flag to True.
 
         Returns
         -------
         None
         """
         if hasattr(self, "textItems"):
-            for label in self.textItems.values():
-                self.plotItem.removeItem(label)
+            for curve, label in self.textItems.items():
+                label.hide()
+
+                if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.plotItem.axes:
+                    curve_vb = self.plotItem.getViewBoxForAxis(curve.y_axis_name)
+                    if label in curve_vb.addedItems:
+                        curve_vb.removeItem(label)
+                elif label in self.getViewBox().addedItems:
+                    self.getViewBox().removeItem(label)
+
             self.textItems.clear()
             self.init_label = True
 
@@ -1674,11 +1702,14 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         -------
         None
         """
-        if self.init_label:
+        if self.init_label or len(self.plotItem.listDataItems()) != len(self.textItems):
             self.initializeCurveLabels()
-            self.init_label = False
 
         for curve, label in self.textItems.items():
+            if not curve.isVisible():
+                label.hide()
+                continue
+
             if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.plotItem.axes:
                 curve_vb = self.plotItem.getViewBoxForAxis(curve.y_axis_name)
             else:
@@ -1725,7 +1756,14 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
         The default is numeric, but child classes (e.g., time plots) can override this.
         """
-        return f"{real_x:.2f}"
+        if real_x == 0:
+            return "0"
+
+        abs_x = abs(real_x)
+        if abs_x < 1e-3 or abs_x >= 1e6:
+            return f"{real_x:.2e}"
+        else:
+            return f"{real_x:.2f}"
 
     def getFormattedY(self, real_y: float) -> str:
         """
@@ -1733,4 +1771,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
         The default is numeric, but child classes (e.g., time plots) can override this.
         """
-        return f"{real_y:.2f}"
+        if real_y == 0:
+            return "0"
+
+        abs_y = abs(real_y)
+        if abs_y < 1e-3 or abs_y >= 1e6:
+            return f"{real_y:.2e}"
+        else:
+            return f"{real_y:.2f}"
