@@ -5,3 +5,4 @@ pytest-cov
 pytest-timeout
 p4p
 pre-commit
+pyca-epics
