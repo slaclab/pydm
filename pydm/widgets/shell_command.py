@@ -9,7 +9,7 @@ import hashlib
 from ast import literal_eval
 from qtpy.QtWidgets import QApplication, QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
-from qtpy.QtCore import Property, QSize, Qt, QTimer
+from qtpy.QtCore import Property, QSize, Qt, QTimer, Signal
 from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
 from pydm.utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
@@ -80,7 +80,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.iconFont = IconFont()
         self._icon = self.iconFont.icon("cog")
-        self._warning_icon = self.iconFont.icon("exclamation-circle")
+        self._warning_icon = self.iconFont.icon("exclamation-circle", color=QColor("red"))
         self.setIconSize(QSize(16, 16))
         self.setIcon(self._icon)
         self.setCursor(QCursor(self._icon.pixmap(16, 16)))
@@ -114,6 +114,8 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
         self._show_confirm_dialog = False
         self._confirm_message = PyDMShellCommand.DEFAULT_CONFIRM_MESSAGE
+
+        self._show_currently_running_indication = False
 
         # Standard icons (which come with the qt install, and work cross-platform),
         # and icons from the "Font Awesome" icon set (https://fontawesome.com/)
@@ -599,6 +601,31 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self._protected_password != value:
             self._protected_password = value
 
+    @Property(bool)
+    def showCurrentlyRunningIndication(self) -> bool:
+        """
+        Whether or not to have a button's visuals change to indicate when the command is running.
+        It's nice to enable this when you know your button's command runs long.
+
+        Returns
+        -------
+        bool
+        """
+        return self._show_currently_running_indication
+
+    @showCurrentlyRunningIndication.setter
+    def showCurrentlyRunningIndication(self, value: bool) -> None:
+        """
+        Whether or not to have a button's visuals change to indicate when the command is running.
+        It's nice to enable this when you know your button's command runs long.
+
+        Parameters
+        ----------
+        value : bool
+        """
+        if self._show_currently_running_indication != value:
+            self._show_currently_running_indication = value
+
     def _rebuild_menu(self) -> None:
         if not any(self._commands):
             self._commands = []
@@ -617,7 +644,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             else:
                 title = self._titles[i]
             action = menu.addAction(title)
-            action.triggered.connect(partial(self.execute_command, command))
+            action.triggered.connect(partial(self.execute_command, command, action))
         self.setMenu(menu)
         self._menu_needs_rebuild = False
 
@@ -668,6 +695,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
     def show_warning_icon(self) -> None:
         """Show the warning icon.  This is called when a shell command fails
         (i.e. exits with nonzero status)"""
+
         self.setIcon(self._warning_icon)
         QTimer.singleShot(5000, self.hide_warning_icon)
 
@@ -713,7 +741,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             return False
         return True
 
-    def execute_command(self, command: str) -> None:
+    def execute_command(self, command: str, action=None) -> None:
         """
         Execute the shell command given by ```command```.
         The process is available through the ```process``` member.
@@ -722,6 +750,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         ----------
         command : str
             Shell command
+        action : QAction
+            Drop-down menu item that was selected in order to run ```command```.
+            Will be ```None``` if a button without a drop-down (only has a single command) was selected.
         """
         if not command:
             logger.info("The command is not set, so no command was executed.")
@@ -733,10 +764,14 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if not self.confirmDialog():
             return None
 
+        original_text = ""
+        original_button_text = self.text()
+        original_action_text = action.text() if action else ""
+
         if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
             cmd = os.path.expanduser(os.path.expandvars(command))
             args = shlex.split(cmd, posix="win" not in sys.platform)
-            # when shell enabled, Popen should take the cmds as a single string (not list)
+            # When shell enabled, Popen should take the cmds as a single string (not list)
             if self._run_commands_in_full_shell:
                 args = cmd
             try:
@@ -765,12 +800,129 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
                 else:
                     env_var = None
 
+                # Disable button and change how it looks while the cmd is actively running.
+                # Note: since for buttons with drop-down menu of multiple-cmds we only allow a single cmd to run at once,
+                # disable both the specific drop-down item running and the overall multiple-cmd button.
+                # Having an action means this is a multiple-cmd dropdown button (action is the specific selected drop-down cmd, self is the top-level button)
+                if self._show_currently_running_indication and not self._allow_multiple:
+                    if action:
+                        # Update button for when cmd is running.
+                        self.set_object_font_italic(self, True)
+                        self.set_object_icon(self, "hourglass-start")
+                        self.setText(f"(Submenu cmd running...) {original_button_text}")
+                        # Don't disable button when has drop-down menu, since this stops ability to open drop-down.
+
+                        # Update drop-down items for when cmd is running.
+                        self.set_object_font_italic(action, True)
+                        self.set_object_icon(action, "hourglass-start")
+                        action.setText(f"(Running...) {original_action_text}")
+                        actions = self.menu().actions()
+                        for curr_action in actions:
+                            curr_action.setEnabled(False)
+                    else:  # When button has just single cmd (no drop-down menu).
+                        # Update button for when cmd is running.
+                        self.set_object_font_italic(self, True)
+                        self.set_object_icon(self, "hourglass-start")
+                        self.setText(f"(Running...) {original_button_text}")
+                        self.setEnabled(False)
+
                 self.process = subprocess.Popen(
                     args, stdout=stdout, stderr=stderr, env=env_var, shell=self._run_commands_in_full_shell
                 )
 
+                if self._show_currently_running_indication and not self._allow_multiple:
+                    # Start polling to check when it's done.
+                    self.timer = QTimer()
+                    # Check if cmd completed every 50 ms (time is arbitrary and can be adjusted if feels laggy)
+                    self.timer.setInterval(50)
+                    self.timer.timeout.connect(
+                        lambda: self._check_process_done(action, original_button_text, original_action_text)
+                    )
+                    self.timer.start()
+
             except Exception as exc:
-                self.show_warning_icon()
                 logger.error("Error in shell command: %s", exc)
+                self.show_warning_icon()
+                if self._show_currently_running_indication and not self._allow_multiple:
+                    # Restore button state when cmd is done running.
+                    # (but dont restore icon, show_warning_icon() will after displaying the warning icon for a bit)
+                    self.set_object_font_italic(self, False)
+                    self.setText(original_button_text)
+                    self.setEnabled(True)
+
+                    # Restore drop-down items for when cmd is done running.
+                    if action:
+                        self.set_object_font_italic(action, False)
+                        action.setText(original_action_text)
+                        self.set_object_icon(action, "")
+                        actions = self.menu().actions()
+                        for curr_action in actions:
+                            curr_action.setEnabled(True)
         else:
+            # This case is when the cmd is already running and user clicks button again,
+            # or when have multiple-cmd button and user tries to click a 2nd cmd while the 1st cmd is still running.
             logger.error("Command '%s' already active.", command)
+
+    def _check_process_done(self, action, original_button_text, original_action_text):
+        """
+        Execute the shell command given by ```command```.
+        The process is available through the ```process``` member.
+
+        Parameters
+        ----------
+        original_button_text : str
+            Shell command
+        original_action_text : str
+            Shell command
+        """
+        # If process is not done running, do nothing.
+        if self.process and self.process.poll() is not None:
+            if self.process:
+                self.timer.stop()
+
+            # Restore button state when cmd is done running.
+            self.set_object_font_italic(self, False)
+            self.setText(original_button_text)
+            self.set_object_icon(self, "cog")
+            self.setEnabled(True)
+
+            # Restore drop-down items for when cmd is done running.
+            if action:
+                self.set_object_font_italic(action, False)
+                action.setText(original_action_text)
+                self.set_object_icon(action, "")
+                actions = self.menu().actions()
+                for curr_action in actions:
+                    curr_action.setEnabled(True)
+
+    def set_object_font_italic(self, object, italic):
+        """
+        Enable or disable the italic font of an object.
+
+        Parameters
+        ----------
+        object : QWidget
+            Object which will have it's font set
+        italic : bool
+            Whether to enable or disable the object's italic font
+        """
+        font = object.font()
+        font.setItalic(italic)
+        object.setFont(font)
+
+    def set_object_icon(self, object, iconName):
+        """
+        Set the icon of an object.
+        If empty string is passed, set the object to have no visible icon.
+
+        Parameters
+        ----------
+        object : QWidget
+            Shell command
+        iconName : str
+            Shell command
+        """
+        if iconName == "":
+            object.setIcon(QIcon())
+        else:
+            object.setIcon(self.iconFont.icon(iconName))
