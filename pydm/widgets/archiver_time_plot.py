@@ -59,9 +59,9 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     def __init__(
         self,
         channel_address: Optional[str] = None,
-        use_archive_data: bool = True,
+        useArchiveData: bool = True,
         liveData: bool = True,
-        show_extension_line: bool = False,
+        showExtensionLine: bool = False,
         **kws,
     ):
         # Attributes that must exist before super().__init__() call
@@ -71,13 +71,13 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
         super().__init__(**kws)
 
-        self.use_archive_data = use_archive_data
+        self.use_archive_data = useArchiveData
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
         self._liveData = liveData
 
-        self._show_extension_line = show_extension_line
+        self._show_extension_line = showExtensionLine
         if not self._show_extension_line:
             self._extension_line.hide()
 
@@ -1248,15 +1248,15 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         lowerThreshold=None,
         thresholdColor=None,
         yAxisName=None,
-        useArchiveData=False,
+        useArchiveData=True,
         liveData=True,
-        show_extension_line=None,
+        showExtensionLine=None,
     ) -> ArchivePlotCurveItem:
         """
         Overrides timeplot addYChannel method to be able to pass the liveData flag.
         """
-        if show_extension_line is None:
-            show_extension_line = self._show_extension_lines
+        if showExtensionLine is None:
+            showExtensionLine = self._show_extension_lines
 
         curve = super().addYChannel(
             y_channel=y_channel,
@@ -1274,7 +1274,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             yAxisName=yAxisName,
             useArchiveData=useArchiveData,
             liveData=liveData,
-            show_extension_line=show_extension_line,
+            showExtensionLine=showExtensionLine,
         )
         if not is_qt_designer():
             self.requestDataFromArchiver()
