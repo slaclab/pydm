@@ -567,13 +567,27 @@ class FormulaCurveItem(BasePlotCurveItem):
 
         self.connected, self.arch_connected = None, None
         self.live_connections, self.arch_connections = {}, {}
+
         for curve in self.pvs.values():
             self.live_connections[curve] = curve.connected
             self.arch_connections[curve] = curve.arch_connected
 
             curve.live_channel_connection.connect(self.live_conn_change)
             curve.archive_channel_connection.connect(self.arch_conn_change)
+
+            if hasattr(curve, "archive_data_received_signal"):
+                curve.archive_data_received_signal.connect(self.on_dependency_archive_data_received)
+
+            if hasattr(curve, "data_changed"):
+                curve.data_changed.connect(self.on_dependency_data_changed)
+
         self.connection_status_check()
+        QTimer.singleShot(100, self.initial_evaluation)
+
+    def initial_evaluation(self):
+        """Perform initial evaluation after dependencies are set up"""
+        self.evaluate()
+        self.redrawCurve()
 
     def to_dict(self) -> OrderedDict:
         """Returns an OrderedDict representation with values for all properties needed to recreate this curve."""
@@ -669,8 +683,10 @@ class FormulaCurveItem(BasePlotCurveItem):
             self.data_buffer = np.array([[APPROX_SECONDS_300_YEARS], [eval(self._trueFormula)]])
             self.points_accumulated = self.archive_points_accumulated = 1
             return
+
         if not (self.connected or self.arch_connected):
             return
+
         pvArchiveData = dict()
         pvLiveData = dict()
         pvIndices = dict()
@@ -731,84 +747,106 @@ class FormulaCurveItem(BasePlotCurveItem):
         self, formula: str, pvData: dict, pvValues: dict, pvIndices: dict, archive: bool
     ) -> np.ndarray:
         """This is where the actual computation takes place. We are going to go through
-        the data step by step and calculate our formula at each timestamp available
+        the data step by step and calculate our formula at each timestamp available.
 
         Parameters
-        ----------------
+        ----------
         formula: str
             The formula to compute
-
         pvData: dict
             A dictionary containing all of the Archive or Live data for each curve
-
         pvValues: dict
             The value of each curve at the current timestep. At the start of this function,
             each is set to their respective last seen values when the time is equal to the
             latest start time of all of the curves.
-
         pvIndices: dict
             A dictionary storing where in each curve's data buffer we are currently at while calculating
-
         archive: bool
-            Whether or not this is computing for the Archive or for Live"""
+            Whether or not this is computing for the Archive or for Live
 
-        current_time = self.min_archiver_x
+        Returns
+        -------
+        output: np.ndarray
+            formula curve data
+        """
+
         output = np.zeros((2, 0), order="f", dtype=float)
+
         while True:
             if archive:
                 self.archive_points_accumulated += 1
             else:
                 self.points_accumulated += 1
+
             minPV = None
-            # Find the next x point out of all of our rows.
-            # Update only that row's value, use the previous value of other rows for calcs.
             current_time = 0
             min_pv_current_index = 0
+
             for pv in self.pvs.keys():
                 pv_times = pvData[pv][0]
                 pv_current_index = pvIndices[pv]
+
+                if pv_current_index >= len(pv_times):
+                    continue
+
                 if minPV is None or pv_times[pv_current_index] < current_time:
                     minPV = pv
                     current_time = pv_times[pv_current_index]
                     min_pv_current_index = pv_current_index
 
+            if minPV is None:
+                break
+
             pvValues[minPV] = pvData[minPV][1][min_pv_current_index]
+
             try:
-                temp = np.array([[current_time], [eval(formula)]])
-            except ValueError:
-                logger.warning("Evaluate failed (domain errors? unknown function?)")
-                temp = np.array([[current_time], [0]])
+                formula_value = eval(formula)
+            except (ValueError, ZeroDivisionError, OverflowError):
+                logger.warning("Formula evaluation failed")
+                formula_value = 0
+
+            temp = np.array([[current_time], [formula_value]])
             output = np.append(output, temp, axis=1)
+
             pvIndices[minPV] += 1
-            # If we are out of data for this row, stop!
+
             if pvIndices[minPV] >= len(pvData[minPV][0]):
                 break
+
         return output
 
     @Slot()
     def redrawCurve(self, min_x=None, max_x=None) -> None:
-        """
-        Redraw the curve with any new data added since the last draw call.
-        """
+        """Redraw the curve with any new data added since the last draw call."""
         self.evaluate()
         try:
-            x = np.concatenate(
-                (
-                    self.archive_data_buffer[0, -self.archive_points_accumulated :].astype(float),
-                    self.data_buffer[0, -self.points_accumulated :].astype(float),
-                )
-            )
+            archive_x = self.archive_data_buffer[0, -self.archive_points_accumulated :].astype(float)
+            archive_y = self.archive_data_buffer[1, -self.archive_points_accumulated :].astype(float)
+            live_x = self.data_buffer[0, -self.points_accumulated :].astype(float)
+            live_y = self.data_buffer[1, -self.points_accumulated :].astype(float)
 
-            y = np.concatenate(
-                (
-                    self.archive_data_buffer[1, -self.archive_points_accumulated :].astype(float),
-                    self.data_buffer[1, -self.points_accumulated :].astype(float),
-                )
-            )
+            x = np.concatenate((archive_x, live_x))
+            y = np.concatenate((archive_y, live_y))
+
+            if len(x) > 0:
+                valid_mask = x > 0
+                x = x[valid_mask]
+                y = y[valid_mask]
+
+                # Remove near-duplicate timestamps
+                if len(x) > 1:
+                    sort_indices = np.argsort(x)
+                    x_sorted = x[sort_indices]
+                    y_sorted = y[sort_indices]
+
+                    x_diff = np.diff(x_sorted)
+                    significant_diff = np.concatenate(([True], x_diff > 0.001))
+
+                    x = x_sorted[significant_diff]
+                    y = y_sorted[significant_diff]
 
             self.setData(y=y, x=x)
         except (ZeroDivisionError, OverflowError, TypeError):
-            # Solve an issue with pyqtgraph and initial downsampling
             pass
 
     def connection_status_check(self):
@@ -850,6 +888,40 @@ class FormulaCurveItem(BasePlotCurveItem):
         curve = self.sender()
         self.arch_connections[curve] = status
         self.connection_status_check()
+
+    @Slot()
+    def on_dependency_archive_data_received(self):
+        """Called when any dependency curve receives new archive data"""
+
+        if self.use_archive_data and self.pvs:
+            # Use a timer to batch updates if multiple dependencies update at once
+            if not hasattr(self, "_update_timer"):
+                self._update_timer = QTimer()
+                self._update_timer.timeout.connect(self._delayed_update)
+                self._update_timer.setSingleShot(True)
+
+            self._update_timer.stop()
+            self._update_timer.start(50)  # 50ms delay to batch updates
+
+    @Slot()
+    def on_dependency_data_changed(self):
+        """Called when any dependency curve's data changes (live or archive)"""
+        if self.pvs:
+            if not hasattr(self, "_update_timer"):
+                self._update_timer = QTimer()
+                self._update_timer.timeout.connect(self._delayed_update)
+                self._update_timer.setSingleShot(True)
+
+            self._update_timer.stop()
+            self._update_timer.start(50)
+
+    def _delayed_update(self):
+        """Perform the actual update after batching signals"""
+        self.evaluate()
+        self.redrawCurve()
+        # Emit our own archive data received signal to propagate to dependent formulas
+        if self.archive_points_accumulated > 0:
+            self.archive_data_received_signal.emit()
 
     def getBufferSize(self):
         return self._bufferSize
@@ -928,6 +1000,7 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def channels(self):
         return [self.channel]
+
 
 class PyDMArchiverTimePlot(PyDMTimePlot):
     """
@@ -1282,6 +1355,11 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
 
     def addFormulaChannel(self, yAxisName: str, **kwargs) -> FormulaCurveItem:
         """Creates a FormulaCurveItem and links it to the given y axis"""
-        FormulaCurve = FormulaCurveItem(yAxisName=yAxisName, **kwargs)
-        self.plotItem.linkDataToAxis(FormulaCurve, yAxisName)
-        return FormulaCurve
+        formula_curve = FormulaCurveItem(yAxisName=yAxisName, **kwargs)
+
+        self._curves.append(formula_curve)
+
+        self.plotItem.addItem(formula_curve)
+        self.plotItem.linkDataToAxis(formula_curve, yAxisName)
+
+        return formula_curve
