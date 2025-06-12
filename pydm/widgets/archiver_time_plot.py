@@ -527,43 +527,43 @@ class FormulaCurveItem(BasePlotCurveItem):
         **kws,
     ):
         super(FormulaCurveItem, self).__init__(**kws)
-        self.formula = formula  
+        self.color = color
+        self.formula = formula
         self.pvs = pvs if pvs else {}
         self.use_archive_data = use_archive_data
         self._liveData = liveData
         self.plot_style = plot_style
-        self.color = color
-        
+
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self._bufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self.points_accumulated = 0
         self.archive_points_accumulated = 0
-        
+
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
         self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
-        
-        self.connected = True if not self.pvs else False 
+
+        self.connected = True if not self.pvs else False
         self.arch_connected = True if not self.pvs else False
         self.live_connections, self.arch_connections = {}, {}
-        
+
         for curve in self.pvs.values():
-            self.live_connections[curve] = getattr(curve, 'connected', True)
-            self.arch_connections[curve] = getattr(curve, 'arch_connected', True)
-            
-            if hasattr(curve, 'live_channel_connection'):
+            self.live_connections[curve] = getattr(curve, "connected", True)
+            self.arch_connections[curve] = getattr(curve, "arch_connected", True)
+
+            if hasattr(curve, "live_channel_connection"):
                 curve.live_channel_connection.connect(self.live_conn_change)
-            if hasattr(curve, 'archive_channel_connection'):
+            if hasattr(curve, "archive_channel_connection"):
                 curve.archive_channel_connection.connect(self.arch_conn_change)
             if hasattr(curve, "archive_data_received_signal"):
                 curve.archive_data_received_signal.connect(self.on_dependency_archive_data_received)
             if hasattr(curve, "data_changed"):
                 curve.data_changed.connect(self.on_dependency_data_changed)
-        
+
         self.connection_status_check()
-        
+
         self._view_range_connection = None
         self._updating = False
-        
+
         QTimer.singleShot(200, self.initial_evaluation)
 
     def initial_evaluation(self):
@@ -572,10 +572,10 @@ class FormulaCurveItem(BasePlotCurveItem):
             viewBox = self.getViewBox()
             if viewBox and not self._view_range_connection:
                 self._view_range_connection = viewBox.sigRangeChanged.connect(self.handleViewRangeChanged)
-        
+
         self.evaluate()
         self.redrawCurve()
-        
+
         if not self.pvs:
             self.live_channel_connection.emit(True)
             self.archive_channel_connection.emit(True)
@@ -583,7 +583,7 @@ class FormulaCurveItem(BasePlotCurveItem):
     def setParentItem(self, parent):
         """Override to connect to view range changes when added to a plot"""
         super().setParentItem(parent)
-        
+
         if not self.pvs and parent is not None:
             QTimer.singleShot(100, self._connectToViewRangeChanges)
 
@@ -600,76 +600,75 @@ class FormulaCurveItem(BasePlotCurveItem):
     def handleViewRangeChanged(self):
         """Called when the view range changes - update constant formulas to ensure visibility"""
         if not self.pvs and (self.archive_points_accumulated > 0 or self.points_accumulated > 0):
-            if not hasattr(self, '_redraw_timer'):
+            if not hasattr(self, "_redraw_timer"):
                 self._redraw_timer = QTimer()
                 self._redraw_timer.setSingleShot(True)
                 self._redraw_timer.timeout.connect(self.redrawCurve)
-            
+
             self._redraw_timer.stop()
-            self._redraw_timer.start(100)  
+            self._redraw_timer.start(100)
 
     def compute_evaluation(
         self, formula: str, pvData: dict, pvValues: dict, pvIndices: dict, archive: bool
     ) -> np.ndarray:
         """This is where the actual computation takes place."""
-        
+
         output = np.zeros((2, 0), order="f", dtype=float)
-        
+
         if not self.pvs:  # Constant formula
             try:
                 constant_value = eval(formula)
             except Exception as e:
                 logger.error(f"Failed to evaluate constant formula: {e}")
                 return output
-            
+
             import time as time_module
+
             current_time = time_module.time()
-            
+
             start_time = current_time - 3600
             end_time = current_time + 3600
-            
-            if hasattr(self, 'getViewBox') and self.getViewBox() is not None:
-                try:
-                    view_range = self.getViewBox().viewRange()
-                    if view_range and len(view_range) > 0 and len(view_range[0]) >= 2:
-                        x_min, x_max = view_range[0]
-                        padding = (x_max - x_min) * 0.1
-                        start_time = x_min - padding
-                        end_time = x_max + padding
-                except:
-                    pass
-            
+
+            if hasattr(self, "getViewBox") and self.getViewBox() is not None:
+                view_range = self.getViewBox().viewRange()
+                if view_range and len(view_range) > 0 and len(view_range[0]) >= 2:
+                    x_min, x_max = view_range[0]
+                    padding = (x_max - x_min) * 0.1
+                    start_time = x_min - padding
+                    end_time = x_max + padding
+
+
             if archive:
-                num_points = 2  
+                num_points = 2
                 timestamps = np.array([start_time, end_time])
                 values = np.full(num_points, constant_value)
-                
+
                 output = np.vstack([timestamps, values])
                 self.archive_points_accumulated = num_points
             else:
                 timestamps = np.array([current_time])
                 values = np.array([constant_value])
-                
+
                 output = np.vstack([timestamps, values])
                 self.points_accumulated = 1
-            
+
             return output
-        
+
         for pv in self.pvs.keys():
             curve = self.pvs[pv]
-            
+
             if archive:
-                if hasattr(curve, 'archive_data_buffer') and hasattr(curve, 'archive_points_accumulated'):
+                if hasattr(curve, "archive_data_buffer") and hasattr(curve, "archive_points_accumulated"):
                     if curve.archive_points_accumulated > 0:
-                        timestamps = curve.archive_data_buffer[0, -curve.archive_points_accumulated:]
-                        values = curve.archive_data_buffer[1, -curve.archive_points_accumulated:]
-                        
+                        timestamps = curve.archive_data_buffer[0, -curve.archive_points_accumulated :]
+                        values = curve.archive_data_buffer[1, -curve.archive_points_accumulated :]
+
                         for i, ts in enumerate(timestamps):
                             if ts <= 0:
                                 continue
-                            
+
                             pvValues[pv] = values[i]
-                            
+
                             try:
                                 result = eval(formula)
                                 temp = np.array([[ts], [result]])
@@ -677,65 +676,66 @@ class FormulaCurveItem(BasePlotCurveItem):
                             except Exception:
                                 continue
             else:
-                if hasattr(curve, 'data_buffer') and hasattr(curve, 'points_accumulated'):
+                if hasattr(curve, "data_buffer") and hasattr(curve, "points_accumulated"):
                     if curve.points_accumulated > 0:
-                        timestamps = curve.data_buffer[0, -curve.points_accumulated:]
-                        values = curve.data_buffer[1, -curve.points_accumulated:]
-                        
+                        timestamps = curve.data_buffer[0, -curve.points_accumulated :]
+                        values = curve.data_buffer[1, -curve.points_accumulated :]
+
                         if len(timestamps) > 0 and timestamps[-1] > 0:
                             pvValues[pv] = values[-1]
-        
+
         if not archive and self.pvs and pvValues:
             try:
                 import time as time_module
+
                 result = eval(formula)
                 output = np.array([[time_module.time()], [result]])
                 self.points_accumulated = 1
             except Exception:
                 pass
-        
+
         if archive:
             self.archive_points_accumulated = output.shape[1]
         else:
             self.points_accumulated = output.shape[1]
-        
+
         return output
 
     @Slot()
     def redrawCurve(self, min_x=None, max_x=None) -> None:
         """Redraw the curve with any new data added since the last draw call."""
-        if hasattr(self, '_updating') and self._updating:
+        if hasattr(self, "_updating") and self._updating:
             return
-            
+
         self._updating = True
         self.evaluate()
-        
+
         x_data = []
         y_data = []
-        
+
         if self.archive_points_accumulated > 0:
-            x_data.extend(self.archive_data_buffer[0, -self.archive_points_accumulated:])
-            y_data.extend(self.archive_data_buffer[1, -self.archive_points_accumulated:])
-        
+            x_data.extend(self.archive_data_buffer[0, -self.archive_points_accumulated :])
+            y_data.extend(self.archive_data_buffer[1, -self.archive_points_accumulated :])
+
         if self.points_accumulated > 0:
-            x_data.extend(self.data_buffer[0, -self.points_accumulated:])
-            y_data.extend(self.data_buffer[1, -self.points_accumulated:])
-        
+            x_data.extend(self.data_buffer[0, -self.points_accumulated :])
+            y_data.extend(self.data_buffer[1, -self.points_accumulated :])
+
         if x_data:
             x = np.array(x_data)
             y = np.array(y_data)
-            
+
             valid = x > 0
             x = x[valid]
             y = y[valid]
-            
+
             if len(x) > 0:
                 sort_idx = np.argsort(x)
                 x = x[sort_idx]
                 y = y[sort_idx]
-                
+
                 self.setData(y=y, x=x)
-            
+
         self._updating = False
 
     def to_dict(self) -> OrderedDict:
@@ -761,7 +761,7 @@ class FormulaCurveItem(BasePlotCurveItem):
     @property
     def address(self):
         """Return the formula as the address for compatibility"""
-        return self.formula if hasattr(self, 'formula') else None
+        return self.formula if hasattr(self, "formula") else None
 
     @property
     def units(self):
@@ -807,7 +807,7 @@ class FormulaCurveItem(BasePlotCurveItem):
     def checkFormula(self) -> bool:
         """Make sure that our formula is still valid."""
         for curve in self.pvs.values():
-            if not hasattr(curve, 'address') and not hasattr(curve, 'formula'):
+            if not hasattr(curve, "address") and not hasattr(curve, "formula"):
                 return False
         return True
 
@@ -817,7 +817,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         if not self.formula or not self.formula.startswith(prefix):
             logger.warning("Invalid Formula")
             return None
-        formula = self.formula[len(prefix):]
+        formula = self.formula[len(prefix) :]
         formula = re.sub(r"{(.+?)}", r'pvValues["\g<1>"]', formula)
         formula = re.sub(r"\^", r"**", formula)
         formula = re.sub(r"mean\((.+?)\)", r"mean([\g<1>])", formula)
@@ -891,7 +891,7 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def connection_status_check(self):
         """Check the connection status of all dependencies."""
-        if not self.pvs:  
+        if not self.pvs:
             self.connected = True
             self.arch_connected = True
             self.live_channel_connection.emit(True)
@@ -979,35 +979,37 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def max_x(self):
         """Get the maximum x value."""
-        if not self.pvs:  
+        if not self.pvs:
             if self.points_accumulated > 0 and self.data_buffer.shape[1] > 0:
                 return self.data_buffer[0, -1]
             elif self.archive_points_accumulated > 0:
                 return self.archive_data_buffer[0, -1]
             else:
                 import time
+
                 return time.time()
-        
-        maxx = float('inf')
+
+        maxx = float("inf")
         for curve in self.pvs.values():
-            if hasattr(curve, 'max_x'):
+            if hasattr(curve, "max_x"):
                 maxx = min(curve.max_x(), maxx)
-        return maxx if maxx != float('inf') else time.time()
+        return maxx if maxx != float("inf") else time.time()
 
     def min_x(self):
         """Get the minimum x value."""
-        if not self.pvs:  
+        if not self.pvs:
             if self.archive_points_accumulated > 0:
                 return self.archive_data_buffer[0, 0]
             elif self.points_accumulated > 0:
                 return self.data_buffer[0, 0]
             else:
                 import time
+
                 return time.time() - 3600
-        
+
         minx = 0
         for curve in self.pvs.values():
-            if hasattr(curve, 'min_x'):
+            if hasattr(curve, "min_x"):
                 minx = max(curve.min_x(), minx)
         return minx
 
@@ -1018,11 +1020,12 @@ class FormulaCurveItem(BasePlotCurveItem):
                 return self.archive_data_buffer[0, 0]
             else:
                 import time
+
                 return time.time() - 3600
-        
+
         minx = 0
         for curve in self.pvs.values():
-            if hasattr(curve, 'min_archiver_x'):
+            if hasattr(curve, "min_archiver_x"):
                 minx = max(curve.min_archiver_x(), minx)
         return minx
 
@@ -1033,13 +1036,14 @@ class FormulaCurveItem(BasePlotCurveItem):
                 return self.archive_data_buffer[0, -1]
             else:
                 import time
+
                 return time.time()
-        
-        maxx = float('inf')
+
+        maxx = float("inf")
         for curve in self.pvs.values():
-            if hasattr(curve, 'max_archiver_x'):
+            if hasattr(curve, "max_archiver_x"):
                 maxx = min(curve.max_archiver_x(), maxx)
-        return maxx if maxx != float('inf') else time.time()
+        return maxx if maxx != float("inf") else time.time()
 
     def channels(self):
         """Return list of channels (empty for formulas)."""
