@@ -507,6 +507,23 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 class FormulaCurveItem(BasePlotCurveItem):
     """
     FormulaCurveItem is a BasePlotCurve that takes in a formula of curves and evaluates to graph a function.
+
+    To use, instead of typing in a PV channel, this takes in the prefix 'f://' to indicate a function, then
+    uses curly braces '{<PV row header>}' to find which curves to use as inputs. Other than that, FormulaCurveItems
+    have the capacity to handle basic arithmetic functions and also special functions like log() and trigonometry.
+    Finally, when populating its data buffers, it uses the union of the timesteps for each of its input curves, and uses
+    last seen data to fill in the gaps when calculating.
+    Parameters
+    ----------
+    formula : str
+        The formula that we are graphing
+    use_archive_data : bool
+        If True, requests will be made to archiver appliance for archived data when
+        the plot is zoomed or scrolled to the left.
+    pvs: dict[str: BasePlotCurveItem]
+        Has all the information for our FormulaCurveItem to evaluate the value at every timestep
+    **kws : dict[str: any]
+        Additional parameters supported by pyqtgraph.PlotDataItem.
     """
 
     _channels = ("channel",)
@@ -531,13 +548,14 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.formula = formula
         self.pvs = pvs if pvs else {}
         self.use_archive_data = use_archive_data
-        self._liveData = liveData
-        self.plot_style = plot_style
 
-        self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
-        self._bufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
         self.points_accumulated = 0
         self.archive_points_accumulated = 0
+        self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
+        self._bufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
+
+        self._liveData = liveData
+        self.plot_style = plot_style
 
         self.archive_data_buffer = np.zeros((2, self._archiveBufferSize), order="f", dtype=float)
         self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
@@ -564,7 +582,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         self._view_range_connection = None
         self._updating = False
 
-        QTimer.singleShot(200, self.initial_evaluation)
+        self.initial_evaluation()
 
     def initial_evaluation(self):
         """Perform initial evaluation after dependencies are set up"""
@@ -615,7 +633,7 @@ class FormulaCurveItem(BasePlotCurveItem):
 
         output = np.zeros((2, 0), order="f", dtype=float)
 
-        if not self.pvs:  # Constant formula
+        if not self.pvs:  
             try:
                 constant_value = eval(formula)
             except Exception as e:
