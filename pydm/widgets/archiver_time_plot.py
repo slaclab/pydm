@@ -355,6 +355,15 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         dotted_pen = QPen(self._pen)
         dotted_pen.setStyle(Qt.DotLine)
         self._extension_line.setPen(dotted_pen)
+    
+    def setOptimizedDataBins(self, n_bins: int) -> None:
+        try:
+            n_bins = int(n_bins)
+        except (ValueError, TypeError) as e:
+            logger.error(f"Invalid number of bins: {n_bins}. Error: {e}")
+            return
+
+        self.optimized_data_bins = n_bins
 
     def initializeArchiveBuffer(self) -> None:
         """
