@@ -22,6 +22,9 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ['3.9', '3.10']
         pyqt-version: [5.12.3, 5.15.9]
+        exclude:
+          - os: macos-latest
+            pyqt-version: 5.12.3  # Version 5.12.3 of PyQT is not available for osx-arm64
     env:
       DISPLAY: ':99.0'
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
@@ -36,7 +39,6 @@ jobs:
         miniforge-version: latest
         activate-environment: pydm-env
         conda-remove-defaults: true
-        architecture: x64  # Ensure macOS finds PyQt 5.12.3 which isn't available with osx-arm64
 
     - name: Install PyDM with Mamba
       shell: bash -el {0}
@@ -44,18 +46,18 @@ jobs:
         if [ "$RUNNER_OS" == "Windows" ]; then
           conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
         elif [ "$RUNNER_OS" == "macOS" ]; then
-          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} git p4p pyca
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} git
         else
-          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} pyca
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
         fi
 
     - name: Install additional Python dependencies with pip
       shell: bash -el {0}
       run: |
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          pip install .[test]
-        else
+        if [ "$RUNNER_OS" == "Windows" ]; then
           pip install .[test-no-optional]
+        else
+          pip install .[test]
         fi
 
     - name: Install packages for testing a PyQt app on Linux
