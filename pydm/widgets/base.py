@@ -1156,7 +1156,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             return new_tip
 
         if not self._tool_tip_substrings:
-            list_of_attributes = [substring.start() for substring in re.finditer("\$\(", new_tip)]
+            list_of_attributes = [substring.start() for substring in re.finditer(r"\$\(", new_tip)]
             tool_tip_substrings = []
 
             for index in list_of_attributes:
