@@ -355,7 +355,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         dotted_pen = QPen(self._pen)
         dotted_pen.setStyle(Qt.DotLine)
         self._extension_line.setPen(dotted_pen)
-    
+
     def setOptimizedDataBins(self, n_bins: int) -> None:
         try:
             n_bins = int(n_bins)
@@ -1205,7 +1205,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 # Max amount of raw data to return before using optimized data
                 max_data_request = int(0.80 * self.getArchiveBufferSize())
                 if requested_seconds > max_data_request:
-                    optimized_data_bins = curve.optimized_data_bins if curve.optimized_data_bins else self.optimized_data_bins
+                    optimized_data_bins = (
+                        curve.optimized_data_bins if curve.optimized_data_bins else self.optimized_data_bins
+                    )
                     processing_command = "optimized_" + str(optimized_data_bins)
                 curve.archive_data_request_signal.emit(min_x, max_x - 1, processing_command)
                 req_queued |= True
