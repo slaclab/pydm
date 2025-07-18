@@ -46,7 +46,7 @@ def test_substitute_in_file(text, macros, expected):
         ("A=$(other_macro),B=2,C=3", {"A": "$(other_macro)", "B": "2", "C": "3"}),
         ("A=$(other_macro=3)", {"A": "$(other_macro=3)"}),
         ("TITLE='1,2', B=2, C=3", {"TITLE": "1,2", "B": "2", "C": "3"}),
-        ("TITLE=1\,2,B=2,C=3", {"TITLE": "1,2", "B": "2", "C": "3"}),
+        (r"TITLE=1\,2,B=2,C=3", {"TITLE": "1,2", "B": "2", "C": "3"}),
         ('TITLE="e=mc^2",B=2,C=3', {"TITLE": "e=mc^2", "B": "2", "C": "3"}),
         ("", {}),
         (None, {}),
