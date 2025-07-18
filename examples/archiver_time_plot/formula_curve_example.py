@@ -1,63 +1,88 @@
 from pydm import Display
-
 from qtpy import QtCore
-from qtpy.QtWidgets import QHBoxLayout, QApplication, QCheckBox, QLineEdit, QPushButton
+from qtpy.QtWidgets import QVBoxLayout, QHBoxLayout, QCheckBox, QApplication
 from pydm.widgets import PyDMArchiverTimePlot
 
 
-class archiver_time_plot_example(Display):
+class SimpleFormulaExample(Display):
+    """
+    Simple example showing:
+    1. Two base PV curves (Sin and Cos)
+    2. One formula that adds them together (Sum = Sin + Cos)
+
+    This demonstrates the basic concept without the complexity.
+    """
+
     def __init__(self, parent=None, args=None, macros=None):
         super().__init__(parent=parent, args=args, macros=macros)
         self.app = QApplication.instance()
         self.setup_ui()
 
     def minimumSizeHint(self):
-        return QtCore.QSize(100, 100)
+        return QtCore.QSize(800, 600)
 
     def ui_filepath(self):
         return None
 
     def setup_ui(self):
-        self.main_layout = QHBoxLayout()
+        # Main layout
+        self.main_layout = QVBoxLayout()
         self.setLayout(self.main_layout)
+
+        # Create the plot
         self.plot = PyDMArchiverTimePlot(background=[255, 255, 255, 255])
-        self.chkbx_live = QCheckBox()
-        self.chkbx_live.setChecked(True)
-        self.formula_box = QLineEdit(self)
-        self.formula_box.setText("f://{A}")
-        self.ok_button = QPushButton("OK", self)
-        self.ok_button.clicked.connect(self.set_formula)
-        self.main_layout.addWidget(self.formula_box)
-        self.main_layout.addWidget(self.ok_button)
-        self.main_layout.addWidget(self.chkbx_live)
+
+        # Simple controls
+        self.control_layout = QHBoxLayout()
+        self.chkbx_sin = QCheckBox("Sin (red)")
+        self.chkbx_sin.setChecked(True)
+        self.chkbx_cos = QCheckBox("Cos (blue)")
+        self.chkbx_cos.setChecked(True)
+        self.chkbx_sum = QCheckBox("Sum = Sin + Cos (green)")
+        self.chkbx_sum.setChecked(True)
+
+        self.control_layout.addWidget(self.chkbx_sin)
+        self.control_layout.addWidget(self.chkbx_cos)
+        self.control_layout.addWidget(self.chkbx_sum)
+        self.control_layout.addStretch()
+
+        # Add to main layout
+        self.main_layout.addLayout(self.control_layout)
         self.main_layout.addWidget(self.plot)
-        self.curve = self.plot.addYChannel(
-            y_channel="ca://MTEST:Float",
-            name="name",
+
+        # Create base PV curves
+        self.sin_curve = self.plot.addYChannel(
+            y_channel="ca://MTEST:SinVal",
+            name="Sin",
             color="red",
-            yAxisName="Axis",
+            yAxisName="Amplitude",
             useArchiveData=True,
             liveData=True,
         )
 
-        pvdict = dict()
-        pvdict["A"] = self.curve
-        self.formula_curve = self.plot.addFormulaChannel(
-            formula=r"f://2*{A}",
-            pvs=pvdict,
-            yAxisName="Axis",
+        self.cos_curve = self.plot.addYChannel(
+            y_channel="ca://MTEST:CosVal",
+            name="Cos",
+            color="blue",
+            yAxisName="Amplitude",
+            useArchiveData=True,
+            liveData=True,
+        )
+
+        # Create a formula that adds the two PVs
+        base_pvs = {"Sin": self.sin_curve, "Cos": self.cos_curve}
+
+        self.sum_formula = self.plot.addFormulaChannel(
+            yAxisName="Amplitude",
+            formula="f://{Sin} + {Cos}",
+            pvs=base_pvs,
+            use_archive_data=True,
+            liveData=True,
             color="green",
-            useArchiveData=True,
-            liveData=True,
+            plot_style="Line",
         )
-        self.chkbx_live.stateChanged.connect(lambda x: self.set_live(self.curve, self.formula_curve, x))
 
-    @staticmethod
-    def set_live(curve, formula_curve, live):
-        curve.liveData = live
-        formula_curve.liveData = live
-
-    def set_formula(self):
-        print("assuming formula is valid, attempting to use formula")
-        self.formula_curve.formula = self.formula_box.text()
-        self.formula_curve.redrawCurve()
+        # Connect checkboxes to show/hide curves
+        self.chkbx_sin.stateChanged.connect(lambda state: self.sin_curve.setVisible(state == 2))
+        self.chkbx_cos.stateChanged.connect(lambda state: self.cos_curve.setVisible(state == 2))
+        self.chkbx_sum.stateChanged.connect(lambda state: self.sum_formula.setVisible(state == 2))
