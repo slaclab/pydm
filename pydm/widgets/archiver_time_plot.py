@@ -816,7 +816,7 @@ class FormulaCurveItem(BasePlotCurveItem):
 
             for pv in self.pvs.keys():
                 if pv in constant_curves:
-                    continue  
+                    continue
 
                 pv_times = pvData[pv][0]
                 pv_current_index = pvIndices[pv]
