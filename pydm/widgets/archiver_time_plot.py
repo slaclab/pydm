@@ -655,16 +655,12 @@ class FormulaCurveItem(BasePlotCurveItem):
             logger.warning("Invalid Formula")
             return None
         formula = self.formula[len(prefix) :]
-        # custom function to clean up the formula. First thing replace rows with data entries
         formula = re.sub(r"{(.+?)}", r'pvValues["\g<1>"]', formula)
         formula = re.sub(r"\^", r"**", formula)
         formula = re.sub(r"mean\((.+?)\)", r"mean([\g<1>])", formula)
-        # mean() requires a list of values, so just put brackets around the item
         formula = re.sub(r"ln\((.+?)\)", r"log(\g<1>)", formula)
-        # ln is more intuitive than log
         return formula
 
-    @Slot(np.ndarray)
     def evaluate(self) -> None:
         """
         Use our formula and input curves to calculate our value at each timestep.
@@ -676,12 +672,35 @@ class FormulaCurveItem(BasePlotCurveItem):
             logger.error("invalid formula")
             self.formula_invalid_signal.emit()
             return
+
         if not self.pvs:
-            # If we are just a constant, then store a straight line from 1970 to ~2200
-            # Known Bug: Constants are hidden if the plot's x-axis range is between 30m and 1.5hr
-            self.archive_data_buffer = np.array([[0], [eval(self._trueFormula)]])
-            self.data_buffer = np.array([[APPROX_SECONDS_300_YEARS], [eval(self._trueFormula)]])
-            self.points_accumulated = self.archive_points_accumulated = 1
+            try:
+                constant_value = eval(self._trueFormula)
+
+                current_time = time.time()
+
+                time_span = 365 * 24 * 60 * 60
+                start_time = current_time - time_span
+                end_time = current_time + time_span
+
+                num_points = 100
+                timestamps = np.linspace(start_time, end_time, num_points)
+                values = np.full(num_points, constant_value)
+
+                mid_point = num_points // 2
+
+                self.archive_data_buffer = np.array([timestamps[:mid_point], values[:mid_point]])
+                self.data_buffer = np.array([timestamps[mid_point:], values[mid_point:]])
+
+                self.archive_points_accumulated = mid_point
+                self.points_accumulated = num_points - mid_point
+
+            except Exception as e:
+                logger.error(f"Error evaluating constant formula: {e}")
+                self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
+                self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
+                self.points_accumulated = 0
+                self.archive_points_accumulated = 0
             return
 
         if not (self.connected or self.arch_connected):
@@ -694,10 +713,8 @@ class FormulaCurveItem(BasePlotCurveItem):
 
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
         self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
-        # Reset buffers
         self.points_accumulated = 0
         self.archive_points_accumulated = 0
-        # Populate new dictionaries, simply for ease of access and readability
         pvIndices = self.set_up_eval(archive=True)
         for pv in self.pvs.keys():
             pvArchiveData[pv] = self.pvs[pv].archive_data_buffer
@@ -710,7 +727,6 @@ class FormulaCurveItem(BasePlotCurveItem):
             self.points_accumulated = 0
             pvIndices = self.set_up_eval(archive=False)
             pvValues = dict()
-            # Do literally the exact same thing for live data
             for pv in self.pvs.keys():
                 pvLiveData[pv] = self.pvs[pv].data_buffer
                 pvValues[pv] = pvLiveData[pv][1][pvIndices[pv] - 1]
@@ -730,17 +746,22 @@ class FormulaCurveItem(BasePlotCurveItem):
             Whether this is setting up for Archive Data or Live Data"""
         pvIndices = dict()
         for pv in self.pvs.keys():
-            pv_current_index = 0
-            if archive:
-                pv_times = self.pvs[pv].archive_data_buffer[0]
-                while pv_current_index < len(pv_times) - 1 and pv_times[pv_current_index] < self.min_archiver_x():
-                    pv_current_index += 1
-                # Shift starting indices for each row to our minimum
+            curve = self.pvs[pv]
+            is_constant = isinstance(curve, FormulaCurveItem) and not curve.pvs
+
+            if is_constant:
+                pvIndices[pv] = 0
             else:
-                pv_times = self.pvs[pv].data_buffer[0]
-                while pv_current_index < len(pv_times) - 1 and pv_times[pv_current_index] < self.min_x():
-                    pv_current_index += 1
-            pvIndices[pv] = pv_current_index
+                pv_current_index = 0
+                if archive:
+                    pv_times = curve.archive_data_buffer[0]
+                    while pv_current_index < len(pv_times) - 1 and pv_times[pv_current_index] < self.min_archiver_x():
+                        pv_current_index += 1
+                else:
+                    pv_times = curve.data_buffer[0]
+                    while pv_current_index < len(pv_times) - 1 and pv_times[pv_current_index] < self.min_x():
+                        pv_current_index += 1
+                pvIndices[pv] = pv_current_index
         return pvIndices
 
     def compute_evaluation(
@@ -769,8 +790,19 @@ class FormulaCurveItem(BasePlotCurveItem):
         output: np.ndarray
             formula curve data
         """
-
         output = np.zeros((2, 0), order="f", dtype=float)
+
+        constant_curves = set()
+        for pv in self.pvs.keys():
+            curve = self.pvs[pv]
+            if isinstance(curve, FormulaCurveItem) and not curve.pvs:
+                constant_curves.add(pv)
+                if archive and curve.archive_points_accumulated > 0:
+                    pvValues[pv] = curve.archive_data_buffer[1][0]
+                elif not archive and curve.points_accumulated > 0:
+                    pvValues[pv] = curve.data_buffer[1][0]
+                else:
+                    pvValues[pv] = 0
 
         while True:
             if archive:
@@ -783,6 +815,9 @@ class FormulaCurveItem(BasePlotCurveItem):
             min_pv_current_index = 0
 
             for pv in self.pvs.keys():
+                if pv in constant_curves:
+                    continue  
+
                 pv_times = pvData[pv][0]
                 pv_current_index = pvIndices[pv]
 
@@ -833,7 +868,6 @@ class FormulaCurveItem(BasePlotCurveItem):
                 x = x[valid_mask]
                 y = y[valid_mask]
 
-                # Remove near-duplicate timestamps
                 if len(x) > 1:
                     sort_indices = np.argsort(x)
                     x_sorted = x[sort_indices]
@@ -892,16 +926,14 @@ class FormulaCurveItem(BasePlotCurveItem):
     @Slot()
     def on_dependency_archive_data_received(self):
         """Called when any dependency curve receives new archive data"""
-
         if self.use_archive_data and self.pvs:
-            # Use a timer to batch updates if multiple dependencies update at once
             if not hasattr(self, "_update_timer"):
                 self._update_timer = QTimer()
                 self._update_timer.timeout.connect(self._delayed_update)
                 self._update_timer.setSingleShot(True)
 
             self._update_timer.stop()
-            self._update_timer.start(50)  # 50ms delay to batch updates
+            self._update_timer.start(50)
 
     @Slot()
     def on_dependency_data_changed(self):
@@ -919,7 +951,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         """Perform the actual update after batching signals"""
         self.evaluate()
         self.redrawCurve()
-        # Emit our own archive data received signal to propagate to dependent formulas
+
         if self.archive_points_accumulated > 0:
             self.archive_data_received_signal.emit()
 
@@ -950,16 +982,15 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def max_x(self):
         if not self.pvs:
-            # We don't want our constants to affect the x axis at all, let them draw as required
-            return 0
+            return time.time()
         maxx = APPROX_SECONDS_300_YEARS
         for curve in self.pvs.keys():
-            maxx = min(self.pvs[curve].min_x(), maxx)
+            maxx = min(self.pvs[curve].max_x(), maxx)
         return maxx
 
     def min_x(self):
         if not self.pvs:
-            return APPROX_SECONDS_300_YEARS
+            return time.time() - DEFAULT_TIME_SPAN
         minx = 0
         for curve in self.pvs.keys():
             minx = max(self.pvs[curve].min_x(), minx)
@@ -975,7 +1006,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             The timestamp of the oldest data point in the archiver data buffer.
         """
         if not self.pvs:
-            return APPROX_SECONDS_300_YEARS
+            return time.time() - DEFAULT_TIME_SPAN
         minx = 0
         for curve in self.pvs.keys():
             minx = max(self.pvs[curve].min_archiver_x(), minx)
@@ -992,10 +1023,10 @@ class FormulaCurveItem(BasePlotCurveItem):
             The timestamp of the most recent data point in the archiver data buffer.
         """
         if not self.pvs:
-            return 0
+            return time.time()
         maxx = APPROX_SECONDS_300_YEARS
         for curve in self.pvs.keys():
-            maxx = min(self.pvs[curve].min_archiver_x(), maxx)
+            maxx = min(self.pvs[curve].max_archiver_x(), maxx)
         return maxx
 
     def channels(self):
