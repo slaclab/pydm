@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.shell_command &mdash; PyDM 1.27.0 documentation</title>
+  <title>pydm.widgets.shell_command &mdash; PyDM 1.27.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.0
+                1.27.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -123,12 +123,12 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ast</span><span class="w"> </span><span class="kn">import</span> <span class="n">literal_eval</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QMouseEvent</span><span class="p">,</span> <span class="n">QColor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Signal</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtDesigner</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">only_if_channel_set</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">IconFont</span><span class="p">,</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">IconFont</span><span class="p">,</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -158,7 +158,7 @@
 
 <div class="viewcode-block" id="PyDMShellCommand"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMShellCommand</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A QPushButton capable of execute shell commands.</span>
+<span class="sd">    A QPushButton capable of executing shell commands.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -196,7 +196,7 @@
         <span class="n">PyDMWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iconFont</span> <span class="o">=</span> <span class="n">IconFont</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_icon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iconFont</span><span class="o">.</span><span class="n">icon</span><span class="p">(</span><span class="s2">&quot;cog&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_warning_icon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iconFont</span><span class="o">.</span><span class="n">icon</span><span class="p">(</span><span class="s2">&quot;exclamation-circle&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warning_icon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iconFont</span><span class="o">.</span><span class="n">icon</span><span class="p">(</span><span class="s2">&quot;exclamation-circle&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">QColor</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setIconSize</span><span class="p">(</span><span class="n">QSize</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_icon</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="n">QCursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_icon</span><span class="o">.</span><span class="n">pixmap</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">)))</span>
@@ -231,6 +231,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">=</span> <span class="n">PyDMShellCommand</span><span class="o">.</span><span class="n">DEFAULT_CONFIRM_MESSAGE</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span> <span class="o">=</span> <span class="kc">False</span>
+
         <span class="c1"># Standard icons (which come with the qt install, and work cross-platform),</span>
         <span class="c1"># and icons from the &quot;Font Awesome&quot; icon set (https://fontawesome.com/)</span>
         <span class="c1"># can not be set with a widget&#39;s &quot;icon&quot; property in designer, only in python.</span>
@@ -243,6 +245,11 @@
         <span class="c1"># and after it&#39;s parent __init__ calls have completed.</span>
         <span class="c1"># (so we can avoid pyside6 throwing an error, see func def for more info)</span>
         <span class="n">PostParentClassInitSetup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="c1"># On pyside6, we need to expilcity call pydm&#39;s base class&#39;s eventFilter() call or events</span>
+    <span class="c1"># will not propagate to the parent classes properly.</span>
+<div class="viewcode-block" id="PyDMShellCommand.eventFilter"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.eventFilter">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMShellCommand.confirmDialog"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.confirmDialog">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">confirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -620,7 +627,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        value : str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMShellCommand.command&#39; is deprecated, &quot;</span> <span class="s2">&quot;use &#39;PyDMShellCommand.commands&#39; instead.&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;PyDMShellCommand.command&#39; is deprecated, use &#39;PyDMShellCommand.commands&#39; instead.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
@@ -710,6 +717,31 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="n">value</span>
 
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">showCurrentlyRunningIndication</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not to have a button&#39;s visuals change to indicate when the command is running.</span>
+<span class="sd">        It&#39;s nice to enable this when you know your button&#39;s command runs long.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span>
+
+    <span class="nd">@showCurrentlyRunningIndication</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">showCurrentlyRunningIndication</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not to have a button&#39;s visuals change to indicate when the command is running.</span>
+<span class="sd">        It&#39;s nice to enable this when you know your button&#39;s command runs long.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span> <span class="o">=</span> <span class="n">value</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">_rebuild_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span> <span class="o">=</span> <span class="p">[]</span>
@@ -728,7 +760,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-            <span class="n">action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">,</span> <span class="n">command</span><span class="p">))</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">action</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setMenu</span><span class="p">(</span><span class="n">menu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -756,9 +788,30 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span><span class="n">mouse_event</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="PyDMShellCommand.generate_context_menu"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.generate_context_menu">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">generate_context_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">generate_context_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">menu</span><span class="o">.</span><span class="n">actions</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s2">&quot;Display Command&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Shell Command&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s2">&quot;Copy Command&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span>
+                <span class="s2">&quot;Display Commands&quot;</span><span class="p">,</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="p">,</span>
+                    <span class="s2">&quot;Shell Commands&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">titles</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">)]),</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">menu</span></div>
+
 <div class="viewcode-block" id="PyDMShellCommand.show_warning_icon"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.show_warning_icon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">show_warning_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Show the warning icon.  This is called when a shell command fails</span>
 <span class="sd">        (i.e. exits with nonzero status)&quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_warning_icon</span><span class="p">)</span>
         <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_warning_icon</span><span class="p">)</span></div>
 
@@ -804,7 +857,7 @@
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="PyDMShellCommand.execute_command"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.execute_command">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.execute_command"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.execute_command">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Execute the shell command given by ```command```.</span>
 <span class="sd">        The process is available through the ```process``` member.</span>
@@ -813,6 +866,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        command : str</span>
 <span class="sd">            Shell command</span>
+<span class="sd">        action : QAction</span>
+<span class="sd">            Drop-down menu item that was selected in order to run ```command```.</span>
+<span class="sd">            Will be ```None``` if a button without a drop-down (only has a single command) was selected.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">command</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;The command is not set, so no command was executed.&quot;</span><span class="p">)</span>
@@ -824,10 +880,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirmDialog</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">None</span>
 
+        <span class="n">original_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">original_button_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">original_action_text</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">if</span> <span class="n">action</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span><span class="p">:</span>
             <span class="n">cmd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="n">command</span><span class="p">))</span>
             <span class="n">args</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">posix</span><span class="o">=</span><span class="s2">&quot;win&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="p">)</span>
-            <span class="c1"># when shell enabled, Popen should take the cmds as a single string (not list)</span>
+            <span class="c1"># When shell enabled, Popen should take the cmds as a single string (not list)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_commands_in_full_shell</span><span class="p">:</span>
                 <span class="n">args</span> <span class="o">=</span> <span class="n">cmd</span>
             <span class="k">try</span><span class="p">:</span>
@@ -856,15 +916,132 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">env_var</span> <span class="o">=</span> <span class="kc">None</span>
 
+                <span class="c1"># Disable button and change how it looks while the cmd is actively running.</span>
+                <span class="c1"># Note: since for buttons with drop-down menu of multiple-cmds we only allow a single cmd to run at once,</span>
+                <span class="c1"># disable both the specific drop-down item running and the overall multiple-cmd button.</span>
+                <span class="c1"># Having an action means this is a multiple-cmd dropdown button (action is the specific selected drop-down cmd, self is the top-level button)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">action</span><span class="p">:</span>
+                        <span class="c1"># Update button for when cmd is running.</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_font_italic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;hourglass-start&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(Submenu cmd running...) </span><span class="si">{</span><span class="n">original_button_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="c1"># Don&#39;t disable button when has drop-down menu, since this stops ability to open drop-down.</span>
+
+                        <span class="c1"># Update drop-down items for when cmd is running.</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_font_italic</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_icon</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="s2">&quot;hourglass-start&quot;</span><span class="p">)</span>
+                        <span class="n">action</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(Running...) </span><span class="si">{</span><span class="n">original_action_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="p">()</span><span class="o">.</span><span class="n">actions</span><span class="p">()</span>
+                        <span class="k">for</span> <span class="n">curr_action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+                            <span class="n">curr_action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c1"># When button has just single cmd (no drop-down menu).</span>
+                        <span class="c1"># Update button for when cmd is running.</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_font_italic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;hourglass-start&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(Running...) </span><span class="si">{</span><span class="n">original_button_text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
                 <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
                     <span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">stderr</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env_var</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_commands_in_full_shell</span>
                 <span class="p">)</span>
 
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span><span class="p">:</span>
+                    <span class="c1"># Start polling to check when it&#39;s done.</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
+                    <span class="c1"># Check if cmd completed every 50 ms (time is arbitrary and can be adjusted if feels laggy)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                        <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_process_done</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">original_button_text</span><span class="p">,</span> <span class="n">original_action_text</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">show_warning_icon</span><span class="p">()</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error in shell command: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">show_warning_icon</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span><span class="p">:</span>
+                    <span class="c1"># Restore button state when cmd is done running.</span>
+                    <span class="c1"># (but dont restore icon, show_warning_icon() will after displaying the warning icon for a bit)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_object_font_italic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">original_button_text</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+                    <span class="c1"># Restore drop-down items for when cmd is done running.</span>
+                    <span class="k">if</span> <span class="n">action</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_font_italic</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                        <span class="n">action</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">original_action_text</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_icon</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                        <span class="n">actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="p">()</span><span class="o">.</span><span class="n">actions</span><span class="p">()</span>
+                        <span class="k">for</span> <span class="n">curr_action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+                            <span class="n">curr_action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Command &#39;</span><span class="si">%s</span><span class="s2">&#39; already active.&quot;</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span></div></div>
+            <span class="c1"># This case is when the cmd is already running and user clicks button again,</span>
+            <span class="c1"># or when have multiple-cmd button and user tries to click a 2nd cmd while the 1st cmd is still running.</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Command &#39;</span><span class="si">%s</span><span class="s2">&#39; already active.&quot;</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_process_done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">original_button_text</span><span class="p">,</span> <span class="n">original_action_text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the shell command given by ```command```.</span>
+<span class="sd">        The process is available through the ```process``` member.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        original_button_text : str</span>
+<span class="sd">            Shell command</span>
+<span class="sd">        original_action_text : str</span>
+<span class="sd">            Shell command</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># If process is not done running, do nothing.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+            <span class="c1"># Restore button state when cmd is done running.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_object_font_italic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">original_button_text</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_object_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;cog&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># Restore drop-down items for when cmd is done running.</span>
+            <span class="k">if</span> <span class="n">action</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_object_font_italic</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="n">action</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">original_action_text</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_object_icon</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="p">()</span><span class="o">.</span><span class="n">actions</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">curr_action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+                    <span class="n">curr_action</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.set_object_font_italic"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.set_object_font_italic">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_object_font_italic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">italic</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enable or disable the italic font of an object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        object : QWidget</span>
+<span class="sd">            Object which will have it&#39;s font set</span>
+<span class="sd">        italic : bool</span>
+<span class="sd">            Whether to enable or disable the object&#39;s italic font</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">font</span><span class="p">()</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setItalic</span><span class="p">(</span><span class="n">italic</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMShellCommand.set_object_icon"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.set_object_icon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_object_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">iconName</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the icon of an object.</span>
+<span class="sd">        If empty string is passed, set the object to have no visible icon.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        object : QWidget</span>
+<span class="sd">            Shell command</span>
+<span class="sd">        iconName : str</span>
+<span class="sd">            Shell command</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">iconName</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="nb">object</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">object</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iconFont</span><span class="o">.</span><span class="n">icon</span><span class="p">(</span><span class="n">iconName</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>

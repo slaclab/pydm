@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.template_repeater &mdash; PyDM 1.27.0 documentation</title>
+  <title>pydm.widgets.template_repeater &mdash; PyDM 1.27.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.0
+                1.27.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -123,9 +123,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMPrimitiveWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_qt_designer</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pydm.data_plugins</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_file</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..display</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_file</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -289,9 +289,11 @@
         <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_template_search</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_count_shown_in_designer</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_data_search</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cached_template</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parent_macros</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span> <span class="o">=</span> <span class="n">LayoutType</span><span class="o">.</span><span class="n">Vertical</span>
@@ -402,6 +404,32 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveTemplateSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not to search for a provided template file recursively</span>
+<span class="sd">        in subfolders relative to the location of this widget.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            If recursive search is enabled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_template_search</span>
+
+    <span class="nd">@recursiveTemplateSearch</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveTemplateSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set whether or not to search for a provided template file recursively</span>
+<span class="sd">        in subfolders relative to the location of this widget.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_value</span>
+<span class="sd">            If recursive search should be enabled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_template_search</span> <span class="o">=</span> <span class="n">new_value</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">_is_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validate if the string source is a valid json.</span>
@@ -465,7 +493,12 @@
                         <span class="n">base_path</span> <span class="o">=</span> <span class="kc">None</span>
                         <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
                             <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">())</span>
-                        <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">,</span> <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span><span class="p">,</span>
+                            <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">,</span>
+                            <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">subdir_scan_enabled</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_recursive_data_search</span><span class="p">,</span>
+                        <span class="p">)</span>
 
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">fname</span><span class="p">:</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">():</span>
@@ -489,6 +522,32 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveDataSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not to search for a provided data file recursively</span>
+<span class="sd">        in subfolders relative to the location of this widget.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            If recursive search is enabled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_data_search</span>
+
+    <span class="nd">@recursiveDataSearch</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveDataSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set whether or not to search for a provided data file recursively</span>
+<span class="sd">        in subfolders relative to the location of this widget.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_value</span>
+<span class="sd">            If recursive search should be enabled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_data_search</span> <span class="o">=</span> <span class="n">new_value</span>
+
 <div class="viewcode-block" id="PyDMTemplateRepeater.open_template_file"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">open_template_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Opens the widget specified in the templateFilename property.</span>
@@ -509,7 +568,12 @@
         <span class="n">base_path</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
             <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">())</span>
-        <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">templateFilename</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">,</span> <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">templateFilename</span><span class="p">,</span>
+            <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">,</span>
+            <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">subdir_scan_enabled</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_recursive_template_search</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_macros</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parent_macros</span> <span class="o">=</span> <span class="p">{}</span>

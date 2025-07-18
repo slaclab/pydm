@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.byte &mdash; PyDM 1.27.0 documentation</title>
+  <title>pydm.widgets.byte &mdash; PyDM 1.27.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.0
+                1.27.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -211,7 +211,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span>
 
-        <span class="c1"># This is kind of ridiculous, importing QTabWidget just to get a 4-item enum thats usable in Designer.</span>
+        <span class="c1"># This is kind of ridiculous, importing QTabWidget just to get a 4-item enum that&#39;s usable in Designer.</span>
         <span class="c1"># PyQt5 lets you define custom enums that you can use in designer with QtCore.Q_ENUMS(), doesn&#39;t exist in PyQt4.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_labels</span> <span class="o">=</span> <span class="kc">True</span>
@@ -234,6 +234,11 @@
         <span class="c1"># and after it&#39;s parent __init__ calls have completed.</span>
         <span class="c1"># (so we can avoid pyside6 throwing an error, see func def for more info)</span>
         <span class="n">PostParentClassInitSetup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="c1"># On pyside6, we need to expilcity call pydm&#39;s base class&#39;s eventFilter() call or events</span>
+    <span class="c1"># will not propagate to the parent classes properly.</span>
+<div class="viewcode-block" id="PyDMByteIndicator.eventFilter"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.eventFilter">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMByteIndicator.init_for_designer"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.init_for_designer">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">init_for_designer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -322,7 +327,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span>
 
-        <span class="c1"># also display value when negative (these values are repesented by bits in Two&#39;s Complement form)</span>
+        <span class="c1"># also display value when negative (these values are represented by bits in Two&#39;s Complement form)</span>
 
         <span class="n">bits</span> <span class="o">=</span> <span class="p">[(</span><span class="n">value</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_bits</span><span class="p">)]</span>
         <span class="k">for</span> <span class="n">bit</span><span class="p">,</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span><span class="p">):</span>
@@ -705,6 +710,11 @@
         <span class="c1"># and after it&#39;s parent __init__ calls have completed.</span>
         <span class="c1"># (so we can avoid pyside6 throwing an error, see func def for more info)</span>
         <span class="n">PostParentClassInitSetup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="c1"># On pyside6, we need to expilcity call pydm&#39;s base class&#39;s eventFilter() call or events</span>
+    <span class="c1"># will not propagate to the parent classes properly.</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.eventFilter"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.eventFilter">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
     <span class="c1"># whether or not we render the widget as a circle (default) or a rectangle</span>
     <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>

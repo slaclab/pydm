@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.embedded_display &mdash; PyDM 1.27.0 documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM 1.27.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.0
+                1.27.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -123,7 +123,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMPrimitiveWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.baseplot</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePlot</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">is_pydm_app</span><span class="p">,</span>
     <span class="n">establish_widget_connections</span><span class="p">,</span>
     <span class="n">close_widget_connections</span><span class="p">,</span>
@@ -131,7 +131,7 @@
     <span class="n">is_qt_designer</span><span class="p">,</span>
     <span class="n">find_file</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..display</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">ScreenTarget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">ScreenTarget</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -156,6 +156,7 @@
         <span class="n">PyDMPrimitiveWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_embedded_widget</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_when_hidden</span> <span class="o">=</span> <span class="kc">True</span>
@@ -284,6 +285,32 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear_error_text</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_if_needed</span><span class="p">()</span>
 
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveDisplaySearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether or not to search for a provided display file recursively</span>
+<span class="sd">        in subfolders relative to the location of this display.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            If recursive search is enabled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span>
+
+    <span class="nd">@recursiveDisplaySearch</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveDisplaySearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set whether or not to search for a provided display file recursively</span>
+<span class="sd">        in subfolders relative to the location of this display.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_value</span>
+<span class="sd">            If recursive search should be enabled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span> <span class="o">=</span> <span class="n">new_value</span>
+
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.set_macros_and_filename"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.set_macros_and_filename">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_macros_and_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_filename</span><span class="p">,</span> <span class="n">new_macros</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method to change both macros and the filename of an embedded display.</span>
@@ -345,7 +372,12 @@
                     <span class="n">parent_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">parent_file_path</span><span class="p">)</span>
                 <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_file_path</span><span class="p">)</span>
 
-            <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">,</span> <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+                <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">,</span>
+                <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">subdir_scan_enabled</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">macros</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">(),</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clear_error_text</span><span class="p">()</span>
@@ -536,7 +568,21 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Open the embedded display in a new window&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">file_path</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">base_path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">parent_display</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_parent_display</span><span class="p">()</span>
+        <span class="n">base_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">parent_display</span><span class="p">:</span>
+            <span class="n">parent_file_path</span> <span class="o">=</span> <span class="n">parent_display</span><span class="o">.</span><span class="n">loaded_file</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span><span class="p">:</span>
+                <span class="n">parent_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">parent_file_path</span><span class="p">)</span>
+            <span class="n">base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_file_path</span><span class="p">)</span>
+
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+            <span class="n">base_path</span><span class="o">=</span><span class="n">base_path</span><span class="p">,</span>
+            <span class="n">raise_if_not_found</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">subdir_scan_enabled</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">macros</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsed_macros</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">is_pydm_app</span><span class="p">():</span>
@@ -551,7 +597,7 @@
 
         <span class="n">menu</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Plot widgets use their own custom event handling, so we check to see if they were</span>
-        <span class="c1"># clicked on here. If so, just re-use the context menu they already have built. (Not</span>
+        <span class="c1"># clicked on here. If so, just reuse the context menu they already have built. (Not</span>
         <span class="c1"># specifically checking for these would clobber their context menus)</span>
         <span class="n">plot_widgets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findChildren</span><span class="p">(</span><span class="n">BasePlot</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="n">plot_widgets</span><span class="p">:</span>

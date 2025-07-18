@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMShellCommand &mdash; PyDM 1.27.0 documentation</title>
+  <title>PyDMShellCommand &mdash; PyDM 1.27.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.0
+                1.27.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -147,7 +147,7 @@
 <dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.shell_command.</span></span><span class="sig-name descname"><span class="pre">PyDMShellCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QPushButton</span></code>, <a class="reference internal" href="PyDMWidget.html#pydm.widgets.base.PyDMWidget" title="pydm.widgets.base.PyDMWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMWidget</span></code></a></p>
-<p>A QPushButton capable of execute shell commands.</p>
+<p>A QPushButton capable of executing shell commands.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -268,13 +268,35 @@ is False.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.eventFilter">
+<span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QObject</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QEvent</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.eventFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.eventFilter" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.execute_command">
-<span class="sig-name descname"><span class="pre">execute_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.execute_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.execute_command" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">execute_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.execute_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.execute_command" title="Permalink to this definition"></a></dt>
 <dd><p>Execute the shell command given by <code class="docutils literal notranslate"><span class="pre">`command`</span></code>.
 The process is available through the <code class="docutils literal notranslate"><span class="pre">`process`</span></code> member.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – Shell command</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> (<em>str</em>) – Shell command</p></li>
+<li><p><strong>action</strong> (<em>QAction</em>) – Drop-down menu item that was selected in order to run <code class="docutils literal notranslate"><span class="pre">`command`</span></code>.
+Will be <code class="docutils literal notranslate"><span class="pre">`None`</span></code> if a button without a drop-down (only has a single command) was selected.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.generate_context_menu">
+<span class="sig-name descname"><span class="pre">generate_context_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.generate_context_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.generate_context_menu" title="Permalink to this definition"></a></dt>
+<dd><p>Generates the custom context menu, and populates it with any external
+tools that have been loaded.  PyDMWidget subclasses should override
+this method (after calling superclass implementation) to add the menu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QMenu</p>
 </dd>
 </dl>
 </dd></dl>
@@ -369,10 +391,51 @@ compatibility.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.set_object_font_italic">
+<span class="sig-name descname"><span class="pre">set_object_font_italic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">italic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.set_object_font_italic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.set_object_font_italic" title="Permalink to this definition"></a></dt>
+<dd><p>Enable or disable the italic font of an object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object</strong> (<em>QWidget</em>) – Object which will have it’s font set</p></li>
+<li><p><strong>italic</strong> (<em>bool</em>) – Whether to enable or disable the object’s italic font</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.set_object_icon">
+<span class="sig-name descname"><span class="pre">set_object_icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iconName</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.set_object_icon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.set_object_icon" title="Permalink to this definition"></a></dt>
+<dd><p>Set the icon of an object.
+If empty string is passed, set the object to have no visible icon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object</strong> (<em>QWidget</em>) – Shell command</p></li>
+<li><p><strong>iconName</strong> (<em>str</em>) – Shell command</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.showConfirmDialog">
 <span class="sig-name descname"><span class="pre">showConfirmDialog</span></span><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.showConfirmDialog" title="Permalink to this definition"></a></dt>
 <dd><p>Whether or not to display a confirmation dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.showCurrentlyRunningIndication">
+<span class="sig-name descname"><span class="pre">showCurrentlyRunningIndication</span></span><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.showCurrentlyRunningIndication" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to have a button’s visuals change to indicate when the command is running.
+It’s nice to enable this when you know your button’s command runs long.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>

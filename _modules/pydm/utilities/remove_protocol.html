@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.utilities.remove_protocol &mdash; PyDM 1.27.0 documentation</title>
+  <title>pydm.utilities.remove_protocol &mdash; PyDM 1.27.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.0
+                1.27.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -114,9 +114,10 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pydm.utilities.remove_protocol</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">urllib</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
 
 
 <div class="viewcode-block" id="remove_protocol"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.remove_protocol">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">remove_protocol</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
@@ -162,9 +163,12 @@
     <span class="k">return</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">addr</span></div>
 
 
+<span class="n">BasicURI</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;BasicURI&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;scheme&quot;</span><span class="p">,</span> <span class="s2">&quot;netloc&quot;</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">])</span>
+
+
 <div class="viewcode-block" id="parsed_address"><a class="viewcode-back" href="../../../utilities/index.html#pydm.utilities.parsed_address">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">parsed_address</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the given address parsed into a 6-tuple. The parsing is done by urllib.parse.urlparse</span>
+<span class="sd">    Returns the given address parsed into a BasicURI named tuple.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -179,14 +183,23 @@
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;.*?://&quot;</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
-    <span class="n">parsed_address</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">address</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span> <span class="o">+</span> <span class="s2">&quot;://&quot;</span> <span class="o">+</span> <span class="n">address</span>
 
-    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-        <span class="n">parsed_address</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span><span class="p">:</span>
-        <span class="n">parsed_address</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_PROTOCOL</span> <span class="o">+</span> <span class="s2">&quot;://&quot;</span> <span class="o">+</span> <span class="n">address</span><span class="p">)</span>
+    <span class="c1"># scheme://netloc/path?query will decompose into &quot;scheme&quot;, &quot;netloc&quot;, &quot;/path&quot;, &quot;query&quot;</span>
+    <span class="c1"># scheme is required. netloc, path, and query are each optional but have to appear in this order</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(.*?)://([^/?]*)(?:(/[^?]*)?(?:\?(.*))?)?&quot;</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">components</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">return</span> <span class="n">parsed_address</span></div>
+    <span class="k">return</span> <span class="n">BasicURI</span><span class="p">(</span>
+        <span class="n">scheme</span><span class="o">=</span><span class="p">(</span><span class="n">components</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">netloc</span><span class="o">=</span><span class="p">(</span><span class="n">components</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">path</span><span class="o">=</span><span class="p">(</span><span class="n">components</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="n">query</span><span class="o">=</span><span class="p">(</span><span class="n">components</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+    <span class="p">)</span></div>
 </pre></div>
 
            </div>

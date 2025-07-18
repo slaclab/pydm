@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.qtplugin_base &mdash; PyDM 1.27.0 documentation</title>
+  <title>pydm.widgets.qtplugin_base &mdash; PyDM 1.27.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.0
+                1.27.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -134,6 +134,7 @@
 <span class="sd">affect any of your widgets, but it will be annoying.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">enum</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
@@ -142,8 +143,8 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">entrypoints</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtDesigner</span><span class="p">,</span> <span class="n">QtGui</span><span class="p">,</span> <span class="n">QtWidgets</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..qtdesigner</span><span class="w"> </span><span class="kn">import</span> <span class="n">DesignerHooks</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.qtdesigner</span><span class="w"> </span><span class="kn">import</span> <span class="n">DesignerHooks</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.qtplugin_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMExtensionFactory</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -206,7 +207,7 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">PyDMDesignerPlugin</span><span class="p">(</span><span class="n">QtDesigner</span><span class="o">.</span><span class="n">QPyDesignerCustomWidgetPlugin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parent class to standardize how pydm plugins are accessed in qt designer.</span>
-<span class="sd">    All functions have default returns that can be overriden as necessary.</span>
+<span class="sd">    All functions have default returns that can be overridden as necessary.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -365,7 +366,7 @@
         <span class="n">designer_kwargs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">widget_cls</span><span class="p">,</span> <span class="s2">&quot;_qt_designer_&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="k">return</span> <span class="n">qtplugin_factory</span><span class="p">(</span><span class="n">widget_cls</span><span class="p">,</span> <span class="o">**</span><span class="n">designer_kwargs</span><span class="p">)</span>
 
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected a PyDMDesignerPlugin or a QWidget subclass, &quot;</span> <span class="sa">f</span><span class="s2">&quot;got a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">widget_cls</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected a PyDMDesignerPlugin or a QWidget subclass, got a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">widget_cls</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_widgets_from_entrypoints</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ENTRYPOINT_WIDGET</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="n">PyDMDesignerPlugin</span><span class="p">]]:</span>
@@ -394,7 +395,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">designer_widget</span> <span class="o">=</span> <span class="n">create_designer_widget_from_widget</span><span class="p">(</span><span class="n">plugin_cls</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Invalid widget class specified in entrypoint &quot;</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">plugin_cls</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Invalid widget class specified in entrypoint </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">plugin_cls</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">widgets</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">designer_widget</span>
 

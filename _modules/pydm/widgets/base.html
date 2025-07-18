@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.base &mdash; PyDM 1.27.0 documentation</title>
+  <title>pydm.widgets.base &mdash; PyDM 1.27.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.0
+                1.27.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -125,12 +125,12 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QGraphicsOpacityEffect</span><span class="p">,</span> <span class="n">QToolTip</span><span class="p">,</span> <span class="n">QWidget</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QIcon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QClipboard</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QEvent</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.channel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMChannel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_plugins</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">config</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_qt_designer</span><span class="p">,</span> <span class="n">remove_protocol</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_plugins</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_qt_designer</span><span class="p">,</span> <span class="n">remove_protocol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.rules</span><span class="w"> </span><span class="kn">import</span> <span class="n">RulesDispatcher</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
@@ -339,6 +339,8 @@
         <span class="n">addrs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">no_proto_addrs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">channels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ch</span><span class="p">:</span>
+                <span class="k">continue</span>
             <span class="n">addr</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">address</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">addr</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -353,12 +355,11 @@
 
         <span class="n">clipboard</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span>
 
-        <span class="n">mode</span> <span class="o">=</span> <span class="n">clipboard</span><span class="o">.</span><span class="n">Clipboard</span>
         <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Linux&quot;</span><span class="p">:</span>
             <span class="c1"># Mode Selection is only valid for X11.</span>
-            <span class="n">mode</span> <span class="o">=</span> <span class="n">clipboard</span><span class="o">.</span><span class="n">Selection</span>
+            <span class="n">clipboard</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">clipboard_text</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">QClipboard</span><span class="o">.</span><span class="n">Selection</span><span class="p">)</span>
 
-        <span class="n">clipboard</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">clipboard_text</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="n">clipboard</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">clipboard_text</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">QClipboard</span><span class="o">.</span><span class="n">Clipboard</span><span class="p">)</span>
         <span class="n">event</span> <span class="o">=</span> <span class="n">QEvent</span><span class="p">(</span><span class="n">QEvent</span><span class="o">.</span><span class="n">Clipboard</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">sendEvent</span><span class="p">(</span><span class="n">clipboard</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
 
@@ -433,7 +434,7 @@
 
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Error at Rule: </span><span class="si">%s</span><span class="s2">. Could not execute method </span><span class="si">%s</span><span class="s2"> with &quot;</span> <span class="s2">&quot;value </span><span class="si">%s</span><span class="s2"> and type as </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Error at Rule: </span><span class="si">%s</span><span class="s2">. Could not execute method </span><span class="si">%s</span><span class="s2"> with value </span><span class="si">%s</span><span class="s2"> and type as </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span>
                 <span class="n">name</span><span class="p">,</span>
                 <span class="n">method_name</span><span class="p">,</span>
                 <span class="n">value</span><span class="p">,</span>

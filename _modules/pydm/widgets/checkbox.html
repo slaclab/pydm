@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.checkbox &mdash; PyDM 1.27.0 documentation</title>
+  <title>pydm.widgets.checkbox &mdash; PyDM 1.27.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.0
+                1.27.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -115,7 +115,7 @@
              
   <h1>Source code for pydm.widgets.checkbox</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCheckBox</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWritableWidget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
 
 
 <div class="viewcode-block" id="PyDMCheckbox"><a class="viewcode-back" href="../../../widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMCheckbox</span><span class="p">(</span><span class="n">QCheckBox</span><span class="p">,</span> <span class="n">PyDMWritableWidget</span><span class="p">):</span>
@@ -135,6 +135,15 @@
         <span class="n">QCheckBox</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_channel</span><span class="o">=</span><span class="n">init_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_value</span><span class="p">)</span>
+        <span class="c1"># Execute setup calls that must be done here in the widget class&#39;s __init__,</span>
+        <span class="c1"># and after it&#39;s parent __init__ calls have completed.</span>
+        <span class="c1"># (so we can avoid pyside6 throwing an error, see func def for more info)</span>
+        <span class="n">PostParentClassInitSetup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="c1"># On pyside6, we need to expilcity call pydm&#39;s base class&#39;s eventFilter() call or events</span>
+    <span class="c1"># will not propagate to the parent classes properly.</span>
+<div class="viewcode-block" id="PyDMCheckbox.eventFilter"><a class="viewcode-back" href="../../../widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox.eventFilter">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMCheckbox.value_changed"><a class="viewcode-back" href="../../../widgets/checkbox.html#pydm.widgets.checkbox.PyDMCheckbox.value_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

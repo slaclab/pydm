@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.slider &mdash; PyDM 1.27.0 documentation</title>
+  <title>pydm.widgets.slider &mdash; PyDM 1.27.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.0
+                1.27.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -434,6 +434,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_step_size_channel</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel_pv</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="c1"># On pyside6, we need to expilcity call pydm&#39;s base class&#39;s eventFilter() call or events</span>
+    <span class="c1"># will not propagate to the parent classes properly.</span>
+<div class="viewcode-block" id="PyDMSlider.eventFilter"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.eventFilter">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="PyDMSlider.wheelEvent"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.wheelEvent">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to specifically ignore mouse wheel events.</span>
@@ -720,7 +725,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_menu_flag</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># if no defaults. create a linear space from min to max from default num_steps = 101,</span>
-            <span class="c1"># this means we cant step to max, but also cant call create map without a value</span>
+            <span class="c1"># this means we can&#39;t step to max, but also can&#39;t call create map without a value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_slider_position_to_value_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">is_channel_valid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_size_channel</span><span class="p">):</span>
@@ -835,7 +840,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;step size is zero afte calc step step size&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;step size is zero after calc step step size&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PyDMSlider.find_closest_slider_position_to_value"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.find_closest_slider_position_to_value">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">find_closest_slider_position_to_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -867,7 +872,7 @@
             <span class="k">return</span>
         <span class="c1"># When we set the slider to the closest value, it may end up at a slightly</span>
         <span class="c1"># different position than val (if val is not in self._slider_position_to_value_map)</span>
-        <span class="c1"># We don&#39;t want that slight difference to get broacast out and put the channel</span>
+        <span class="c1"># We don&#39;t want that slight difference to get broadcast out and put the channel</span>
         <span class="c1"># somewhere new.    For example, if the slider can only be at 0.4 or 0.5, but a</span>
         <span class="c1"># new value comes in of 0.45, its more important to keep the 0.45 than to change</span>
         <span class="c1"># it to where the slider gets set.  Therefore, we mute the internal slider changes</span>
