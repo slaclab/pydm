@@ -46,6 +46,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     show_extension_line : bool
         If True, shows a line that extends from the right-most point to the future.
         Defaults to False.
+    optimized_data_bins : int, optional
+        The number of data bins to use for optimized data retrieval from the archiver.
     **kws : dict[str: any]
         Additional parameters supported by pyqtgraph.PlotDataItem.
     """
@@ -62,6 +64,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         useArchiveData: bool = True,
         liveData: bool = True,
         showExtensionLine: bool = False,
+        optimized_data_bins: Optional[int] = None,
         **kws,
     ):
         # Attributes that must exist before super().__init__() call
@@ -71,6 +74,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
         super().__init__(**kws)
 
+        self.optimized_data_bins = optimized_data_bins
         self.use_archive_data = useArchiveData
         self.archive_points_accumulated = 0
         self._archiveBufferSize = DEFAULT_ARCHIVE_BUFFER_SIZE
@@ -351,6 +355,15 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         dotted_pen = QPen(self._pen)
         dotted_pen.setStyle(Qt.DotLine)
         self._extension_line.setPen(dotted_pen)
+
+    def setOptimizedDataBins(self, n_bins: int) -> None:
+        try:
+            n_bins = int(n_bins)
+        except (ValueError, TypeError) as e:
+            logger.error(f"Invalid number of bins: {n_bins}. Error: {e}")
+            return
+
+        self.optimized_data_bins = n_bins
 
     def initializeArchiveBuffer(self) -> None:
         """
@@ -1192,7 +1205,10 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 # Max amount of raw data to return before using optimized data
                 max_data_request = int(0.80 * self.getArchiveBufferSize())
                 if requested_seconds > max_data_request:
-                    processing_command = "optimized_" + str(self.optimized_data_bins)
+                    optimized_data_bins = (
+                        curve.optimized_data_bins if curve.optimized_data_bins else self.optimized_data_bins
+                    )
+                    processing_command = "optimized_" + str(optimized_data_bins)
                 curve.archive_data_request_signal.emit(min_x, max_x - 1, processing_command)
                 req_queued |= True
 
