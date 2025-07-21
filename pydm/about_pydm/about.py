@@ -1,5 +1,6 @@
 from qtpy.QtWidgets import QWidget, QTableWidgetItem
 from qtpy.QtCore import Qt, qVersion
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 from .about_ui import Ui_Form
 from numpy import __version__ as numpyver
 from pyqtgraph import __version__ as pyqtgraphver
@@ -10,13 +11,13 @@ import inspect
 import qtpy
 
 # get Qt binding and version
-PYQT_VERSION = ""
+PYTHON_BINDING_VERSION = ""
 if "PyQt" in qtpy.API_NAME:
-    PYQT_VERSION = qtpy.QtCore.PYQT_VERSION_STR
+    PYTHON_BINDING_VERSION = qtpy.QtCore.PYQT_VERSION_STR
 elif "PySide" in qtpy.API_NAME:
-    PYQT_VERSION = qtpy.QtCore.__version__
+    PYTHON_BINDING_VERSION = qtpy.QtCore.__version__
 else:
-    PYQT_VERSION = "Unknown version"
+    PYTHON_BINDING_VERSION = "Unknown version"
 
 
 class AboutWindow(QWidget):
@@ -26,9 +27,15 @@ class AboutWindow(QWidget):
         self.ui.setupUi(self)
         self.ui.pydmVersionLabel.setText(str(self.ui.pydmVersionLabel.text()).format(version=pydm.__version__))
         pyver = ".".join([str(v) for v in sys.version_info[0:3]])
+        python_binding_name = "PyQt" if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5 else "PySide"
         self.ui.modulesVersionLabel.setText(
             str(self.ui.modulesVersionLabel.text()).format(
-                pyver=pyver, numpyver=numpyver, pyqtgraphver=pyqtgraphver, pyqtver=PYQT_VERSION, qtver=qVersion()
+                pyver=pyver,
+                python_binding=python_binding_name,
+                python_binding_ver=PYTHON_BINDING_VERSION,
+                qtver=qVersion(),
+                pyqtgraphver=pyqtgraphver,
+                numpyver=numpyver,
             )
         )
         self.populate_external_tools_list()

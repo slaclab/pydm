@@ -99,8 +99,7 @@ class Ui_Form(object):
         self.modulesVersionLabel.setText(
             _translate(
                 "Form",
-                """Using Python v{pyver}, Numpy v{numpyver}, PyQt v{pyqtver}, Qt v{qtver},
-                 and PyQtGraph v{pyqtgraphver}.""",
+                """Using Python v{pyver}, {python_binding} v{python_binding_ver}, Qt v{qtver}, Numpy v{numpyver}, and PyQtGraph v{pyqtgraphver}.""",
             )
         )
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.versionTab), _translate("Form", "Version"))
