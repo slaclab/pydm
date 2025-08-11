@@ -5,10 +5,16 @@ import logging
 
 from qtpy.QtWidgets import QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygonF, QPixmap, QMovie
-from qtpy.QtCore import Property, Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
+from qtpy.QtCore import Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget, PostParentClassInitSetup
 from pydm.utilities import is_qt_designer, find_file
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 from typing import List, Optional
 
 logger = logging.getLogger(__name__)
@@ -291,10 +297,9 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._brush = new_brush
             self.update()
 
-    @Property(Qt.PenStyle)
-    def penStyle(self):
+    def readPenStyle(self):
         """
-        PyQT Property for the pen style to be used when drawing the border
+        Property for the pen style to be used when drawing the border
 
         Returns
         -------
@@ -303,22 +308,26 @@ class PyDMDrawing(QWidget, PyDMWidget):
         """
         return self._pen_style
 
-    @penStyle.setter
-    def penStyle(self, new_style):
+    def setPenStyle(self, new_style):
         """
-        PyQT Property for the pen style to be used when drawing the border
+        Property for the pen style to be used when drawing the border
 
         Parameters
         ----------
         new_style : Qt.PenStyle
             Index at Qt.PenStyle enum
         """
+        # pyside6 enums are more strict and will error if passed int
+        if isinstance(new_style, int):
+            new_style = Qt.PenStyle(new_style)
         if self._alarm_state == PyDMWidget.ALARM_NONE:
             self._original_pen_style = new_style
         if new_style != self._pen_style:
             self._pen_style = new_style
             self._pen.setStyle(new_style)
             self.update()
+
+    penStyle = Property(int, readPenStyle, setPenStyle)
 
     @Property(Qt.PenCapStyle)
     def penCapStyle(self):
