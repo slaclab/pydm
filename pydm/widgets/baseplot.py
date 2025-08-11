@@ -5,7 +5,7 @@ import numpy as np
 import weakref
 from abc import abstractmethod
 from qtpy.QtGui import QColor, QFont, QBrush
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect, QPointF
+from qtpy.QtCore import Signal, Slot, QTimer, Qt, QEvent, QObject, QRect, QPointF
 from qtpy.QtWidgets import QToolTip, QWidget
 from pydm import utilities
 from pyqtgraph import (
@@ -23,6 +23,12 @@ from collections import OrderedDict
 from typing import Dict, List, Optional, Union, Any
 from .base import PyDMPrimitiveWidget, widget_destroyed
 from .multi_axis_plot import MultiAxisPlot
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 
 class NoDataError(Exception):
@@ -787,10 +793,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         dic_ = OrderedDict(
             [
                 ("title", self.getPlotTitle()),
-                ("xGrid", self.getShowXGrid()),
-                ("yGrid", self.getShowYGrid()),
+                ("xGrid", self.readShowXGrid()),
+                ("yGrid", self.readShowYGrid()),
                 ("opacity", self.getPlotItem().ctrl.gridAlphaSlider.value()),
-                ("backgroundColor", self.getBackgroundColor().name()),
+                ("backgroundColor", self.readBackgroundColor().name()),
                 ("legend", self.getShowLegend()),
                 ("crosshair", self.vertical_crosshair_line),
                 ("mouseMode", self.plotItem.getViewBox().state["mouseMode"]),
@@ -1014,7 +1020,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def redrawPlot(self) -> None:
         pass
 
-    def getShowXGrid(self) -> bool:
+    def readShowXGrid(self) -> bool:
         """True if showing x grid lines on the plot, False otherwise"""
         return self._show_x_grid
 
@@ -1035,9 +1041,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def resetShowXGrid(self) -> None:
         self.setShowXGrid(False)
 
-    showXGrid = Property("bool", getShowXGrid, setShowXGrid, resetShowXGrid)
+    showXGrid = Property("bool", readShowXGrid, setShowXGrid, resetShowXGrid)
 
-    def getShowYGrid(self) -> bool:
+    def readShowYGrid(self) -> bool:
         return self._show_y_grid
 
     def setShowYGrid(self, value: bool, alpha: Optional[float] = None) -> None:
@@ -1057,27 +1063,27 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     def resetShowYGrid(self) -> None:
         self.setShowYGrid(False)
 
-    showYGrid = Property("bool", getShowYGrid, setShowYGrid, resetShowYGrid)
+    showYGrid = Property("bool", readShowYGrid, setShowYGrid, resetShowYGrid)
 
-    def getBackgroundColor(self) -> QColor:
+    def readBackgroundColor(self) -> QColor:
         return self.backgroundBrush().color()
 
     def setBackgroundColor(self, color: QColor) -> None:
         if self.backgroundBrush().color() != color:
             self.setBackgroundBrush(QBrush(color))
 
-    backgroundColor = Property(QColor, getBackgroundColor, setBackgroundColor)
+    backgroundColor = Property(QColor, readBackgroundColor, setBackgroundColor)
 
-    def getAxisColor(self) -> QColor:
+    def readAxisColor(self) -> QColor:
         return self.getAxis("bottom")._pen.color()
 
     def setAxisColor(self, color: QColor) -> None:
         for axis in self.plotItem.axes.values():
             axis["item"].setPen(color)
 
-    axisColor = Property(QColor, getAxisColor, setAxisColor)
+    axisColor = Property(QColor, readAxisColor, setAxisColor)
 
-    def getYAxes(self) -> List[str]:
+    def readYAxes(self) -> List[str]:
         """
         Dump the current list of axes and each axis's settings into a list
         of JSON-formatted strings.
@@ -1124,15 +1130,15 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if "bottom" in self.plotItem.axes:
             # Ensure the added y axes get the color that was set
             self.setAxisColor(self.getAxis("bottom")._pen.color())
-        if self.getShowYGrid() or self.getShowXGrid():
+        if self.readShowYGrid() or self.readShowXGrid():
             self.plotItem.updateGrid()
 
-    yAxes = Property("QStringList", getYAxes, setYAxes, designable=False)
+    yAxes = Property("QStringList", readYAxes, setYAxes, designable=False)
 
     def getBottomAxisLabel(self) -> str:
         return self.getAxis("bottom").labelText
 
-    def getShowRightAxis(self) -> bool:
+    def readShowRightAxis(self) -> bool:
         """
         Provide whether the right y-axis is being shown.
 
@@ -1158,7 +1164,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             self.hideAxis("right")
         self._show_right_axis = show
 
-    showRightAxis = Property("bool", getShowRightAxis, setShowRightAxis)
+    showRightAxis = Property("bool", readShowRightAxis, setShowRightAxis)
 
     def getPlotTitle(self) -> str:
         if self._title is None:
@@ -1409,8 +1415,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._max_y = new_max_y_range
         self.plotItem.setYRange(self._min_y, self._max_y, padding=0)
 
-    @Property(bool)
-    def mouseEnabledX(self) -> bool:
+    def readMouseEnabledX(self) -> bool:
         """
         Whether or not mouse interactions are enabled for the X-axis.
 
@@ -1420,8 +1425,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self.plotItem.getViewBox().state["mouseEnabled"][0]
 
-    @mouseEnabledX.setter
-    def mouseEnabledX(self, x_enabled: bool) -> None:
+    def setMouseEnabledX(self, x_enabled: bool) -> None:
         """
         Whether or not mouse interactions are enabled for the X-axis.
 
@@ -1431,8 +1435,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         self.plotItem.setMouseEnabled(x=x_enabled)
 
-    @Property(bool)
-    def mouseEnabledY(self) -> bool:
+    mouseEnabledX = Property(bool, readMouseEnabledX, setMouseEnabledX)
+
+    def readMouseEnabledY(self) -> bool:
         """
         Whether or not mouse interactions are enabled for the Y-axis.
 
@@ -1442,8 +1447,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self.plotItem.getViewBox().state["mouseEnabled"][1]
 
-    @mouseEnabledY.setter
-    def mouseEnabledY(self, y_enabled: bool) -> None:
+    def setMouseEnabledY(self, y_enabled: bool) -> None:
         """
         Whether or not mouse interactions are enabled for the Y-axis.
 
@@ -1453,8 +1457,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         self.plotItem.setMouseEnabled(y=y_enabled)
 
-    @Property(int)
-    def maxRedrawRate(self) -> int:
+    mouseEnabledY = Property(bool, readMouseEnabledY, setMouseEnabledY)
+
+    def readMaxRedrawRate(self) -> int:
         """
         The maximum rate (in Hz) at which the plot will be redrawn.
         The plot will not be redrawn if there is not new data to draw.
@@ -1465,8 +1470,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self._redraw_rate
 
-    @maxRedrawRate.setter
-    def maxRedrawRate(self, redraw_rate: int) -> None:
+    def setMaxRedrawRate(self, redraw_rate: int) -> None:
         """
         The maximum rate (in Hz) at which the plot will be redrawn.
         The plot will not be redrawn if there is not new data to draw.
@@ -1477,6 +1481,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         self._redraw_rate = redraw_rate
         self.redraw_timer.setInterval(int((1.0 / self._redraw_rate) * 1000))
+
+    maxRedrawRate = Property(int, readMaxRedrawRate, setMaxRedrawRate)
 
     def pausePlotting(self) -> bool:
         (self.redraw_timer.stop() if self.redraw_timer.isActive() else self.redraw_timer.start())

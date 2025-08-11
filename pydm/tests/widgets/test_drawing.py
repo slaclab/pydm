@@ -1161,7 +1161,7 @@ def test_pydmdrawingpolyline_getpoints(qapp, qtbot, x, y, width, height, num_poi
 
     assert drawing.numberOfPoints == num_points
 
-    the_points = drawing.getPoints()
+    the_points = drawing.readPoints()
 
     for idx, p in enumerate(the_points):
         assert p.x() == pytest.approx(expected_points[idx][0], 0.1)
@@ -1221,7 +1221,7 @@ def test_pydmdrawingpolyline_setpoints(qapp, qtbot, monkeypatch, width, height, 
     monkeypatch.setattr(PyDMDrawing, "height", lambda *args: height)
 
     drawing.setPoints(points)
-    assert len(drawing.getPoints()) == num_points
+    assert len(drawing.readPoints()) == num_points
 
     drawing.show()
 
@@ -1249,7 +1249,7 @@ def test_pydmdrawingpolyline_arrows(qapp, qtbot, points, num_points):
 
     # make sure points seutp correctly before drawing arrows
     polyLine.setPoints(points)
-    assert len(polyLine.getPoints()) == num_points
+    assert len(polyLine.readPoints()) == num_points
 
     # enable all arrow options
     polyLine._arrow_end_point_selection = True
@@ -1324,10 +1324,10 @@ def test_pydmdrawingirregularpolygon_get_set_resetpoints(qapp, qtbot, num_points
     drawing = PyDMDrawingIrregularPolygon()
     qtbot.addWidget(drawing)
 
-    assert drawing.getPoints() == []
+    assert drawing.readPoints() == []
 
     drawing.setPoints(points)
-    vertices = drawing.getPoints()
+    vertices = drawing.readPoints()
     if num_points is None:
         assert vertices == []
     else:
@@ -1335,7 +1335,7 @@ def test_pydmdrawingirregularpolygon_get_set_resetpoints(qapp, qtbot, num_points
         assert vertices[0] == vertices[-1]  # closed polygon
 
     drawing.resetPoints()
-    assert drawing.getPoints() == []
+    assert drawing.readPoints() == []
 
     drawing.show()
 

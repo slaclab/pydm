@@ -4,6 +4,11 @@ from qtpy import QtWidgets, QtCore
 from .base import PyDMWritableWidget, PyDMWidget, PostParentClassInitSetup
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
+
 logger = logging.getLogger(__name__)
 
 
@@ -68,38 +73,38 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
     def eventFilter(self, obj, event):
         return PyDMWritableWidget.eventFilter(self, obj, event)
 
-    @QtCore.Property(TimeBase)
-    def timeBase(self):
+    def readTimeBase(self) -> TimeBase:
         """Whether to use milliseconds or seconds as time base for the widget"""
         return self._time_base
 
-    @timeBase.setter
-    def timeBase(self, base):
+    def setTimeBase(self, base) -> None:
         if self._time_base != base:
             self._time_base = base
 
-    @QtCore.Property(bool)
-    def relative(self):
+    timeBase = Property(TimeBase, readTimeBase, setTimeBase)
+
+    def readRelative(self) -> bool:
         """
         Whether the value in milliseconds is relative to current date or if it
         is milliseconds since epoch.
         """
         return self._relative
 
-    @relative.setter
-    def relative(self, checked):
+    def setRelative(self, checked) -> None:
         if self._relative != checked:
             self._relative = checked
 
-    @QtCore.Property(bool)
-    def blockPastDate(self):
+    relative = Property(bool, readRelative, setRelative)
+
+    def readBlockPastDate(self) -> bool:
         """Error out if user tries to set value to a date older than current."""
         return self._block_past_date
 
-    @blockPastDate.setter
-    def blockPastDate(self, block):
+    def setBlockPastDate(self, block) -> None:
         if block != self._block_past_date:
             self._block_past_date = block
+
+    blockPastDate = Property(bool, readBlockPastDate, setBlockPastDate)
 
     def keyPressEvent(self, key_event):
         ret = super().keyPressEvent(key_event)
@@ -180,40 +185,40 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
     def eventFilter(self, obj, event):
         return PyDMWidget.eventFilter(self, obj, event)
 
-    @QtCore.Property(str)
-    def textFormat(self):
+    def readTextFormat(self) -> str:
         """The format to use when displaying the date/time values."""
         return self._text_format
 
-    @textFormat.setter
-    def textFormat(self, text_format):
+    def setTextFormat(self, text_format) -> None:
         if self._text_format != text_format:
             self._text_format = text_format
             if self.value is not None:
                 self.value_changed(self.value)
 
-    @QtCore.Property(TimeBase)
-    def timeBase(self):
+    textFormat = Property(str, readTextFormat, setTextFormat)
+
+    def readTimeBase(self) -> TimeBase:
         """Whether to use milliseconds or seconds as time base for the widget"""
         return self._time_base
 
-    @timeBase.setter
-    def timeBase(self, base):
+    def setTimeBase(self, base) -> None:
         if self._time_base != base:
             self._time_base = base
 
-    @QtCore.Property(bool)
-    def relative(self):
+    timeBase = Property(TimeBase, readTimeBase, setTimeBase)
+
+    def readRelative(self) -> None:
         """
         Whether the value in milliseconds is relative to current date or if it
         is milliseconds since epoch.
         """
         return self._relative
 
-    @relative.setter
-    def relative(self, checked):
+    def setRelative(self, checked) -> None:
         if self._relative != checked:
             self._relative = checked
+
+    relative = Property(bool, readRelative, setRelative)
 
     def value_changed(self, new_val):
         super().value_changed(new_val)

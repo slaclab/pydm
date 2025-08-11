@@ -1,6 +1,11 @@
 from qtpy.QtWidgets import QFrame
-from qtpy.QtCore import Property
 from .base import PyDMWidget, PostParentClassInitSetup
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 
 class PyDMFrame(QFrame, PyDMWidget):
@@ -33,8 +38,7 @@ class PyDMFrame(QFrame, PyDMWidget):
     def eventFilter(self, obj, event):
         return PyDMWidget.eventFilter(self, obj, event)
 
-    @Property(bool)
-    def disableOnDisconnect(self):
+    def readDisableOnDisconnect(self) -> bool:
         """
         Whether or not the PyDMFrame should be disabled in case the
         channel is disconnected.
@@ -46,8 +50,7 @@ class PyDMFrame(QFrame, PyDMWidget):
         """
         return self._disable_on_disconnect
 
-    @disableOnDisconnect.setter
-    def disableOnDisconnect(self, new_val):
+    def setDisableOnDisconnect(self, new_val) -> None:
         """
         Whether or not the PyDMFrame should be disabled in case the
         channel is disconnected.
@@ -60,6 +63,8 @@ class PyDMFrame(QFrame, PyDMWidget):
         if self._disable_on_disconnect != bool(new_val):
             self._disable_on_disconnect = new_val
             self.check_enable_state()
+
+    disableOnDisconnect = Property(bool, readDisableOnDisconnect, setDisableOnDisconnect)
 
     def check_enable_state(self):
         """

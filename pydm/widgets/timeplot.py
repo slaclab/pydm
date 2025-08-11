@@ -5,11 +5,17 @@ from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor, QCursor
-from qtpy.QtCore import Signal, Slot, Property, QTimer
+from qtpy.QtCore import Signal, Slot, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from pydm.utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from datetime import datetime
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 import logging
 
@@ -1009,8 +1015,7 @@ class PyDMTimePlot(BasePlot):
         "bool", getUpdatesAsynchronously, setUpdatesAsynchronously, resetUpdatesAsynchronously, designable=False
     )
 
-    @Property(updateMode)
-    def updateMode(self):
+    def readUpdateMode(self):
         """
         The updateMode to be used as property to set plot update mode.
 
@@ -1020,8 +1025,7 @@ class PyDMTimePlot(BasePlot):
         """
         return self._updateMode
 
-    @updateMode.setter
-    def updateMode(self, new_type):
+    def setUpdateMode(self, new_type) -> None:
         """
         The updateMode to be used as property to set plot update mode.
 
@@ -1032,6 +1036,8 @@ class PyDMTimePlot(BasePlot):
         if new_type != self._updateMode:
             self._updateMode = new_type
             self.setUpdatesAsynchronously(self._updateMode)
+
+    updateMode = Property(str, readUpdateMode, setUpdateMode)
 
     def getTimeSpan(self):
         """
@@ -1046,7 +1052,7 @@ class PyDMTimePlot(BasePlot):
         """
         return float(self._time_span)
 
-    def setTimeSpan(self, value):
+    def setTimeSpan(self, value) -> float:
         """
         Set the extent of the x-axis of the chart, in seconds.
         In asynchronous mode, the chart will allocate enough buffer for the new time span duration.
@@ -1068,7 +1074,7 @@ class PyDMTimePlot(BasePlot):
 
             self.updateXAxis(update_immediately=True)
 
-    def resetTimeSpan(self):
+    def resetTimeSpan(self) -> None:
         """
         Reset the timespan to the default value.
         """
@@ -1091,7 +1097,7 @@ class PyDMTimePlot(BasePlot):
         """
         return float(self._update_interval) / 1000.0
 
-    def setUpdateInterval(self, value):
+    def setUpdateInterval(self, value) -> float:
         """
         Set a new update interval for the chart and update its data buffer size.
 
@@ -1107,7 +1113,7 @@ class PyDMTimePlot(BasePlot):
             if self.getUpdatesAsynchronously():
                 self.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
 
-    def resetUpdateInterval(self):
+    def resetUpdateInterval(self) -> None:
         """
         Reset the chart's update interval to the default.
         """

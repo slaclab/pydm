@@ -1,6 +1,7 @@
 import json
 import itertools
 from collections import OrderedDict
+from typing import List
 import numpy as np
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Slot, Property, Qt
@@ -501,13 +502,13 @@ class PyDMScatterPlot(BasePlot):
         """
         super().clear()
 
-    def getCurves(self):
+    def readCurves(self) -> List[str]:
         """
         Get a list of json representations for each curve.
         """
         return [json.dumps(curve.to_dict()) for curve in self._curves]
 
-    def setCurves(self, new_list):
+    def getCurves(self, new_list) -> None:
         """
         Replace all existing curves with new ones.  This function
         is mostly used as a way to load curves from a .ui file, and
@@ -544,7 +545,7 @@ class PyDMScatterPlot(BasePlot):
                 yAxisName=d.get("yAxisName"),
             )
 
-    curves = Property("QStringList", getCurves, setCurves, designable=False)
+    curves = Property("QStringList", readCurves, getCurves, designable=False)
 
     def channels(self):
         """
