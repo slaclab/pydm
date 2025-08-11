@@ -9,11 +9,17 @@ import hashlib
 from ast import literal_eval
 from qtpy.QtWidgets import QApplication, QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
-from qtpy.QtCore import Property, QSize, Qt, QTimer, Signal
+from qtpy.QtCore import QSize, Qt, QTimer, Signal
 from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
 from pydm.utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from typing import Optional, Union, List
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 logger = logging.getLogger(__name__)
 
@@ -161,8 +167,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
         return True
 
-    @Property(str)
-    def PyDMIcon(self) -> str:
+    def readPyDMIcon(self) -> str:
         """
         Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
         See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
@@ -174,8 +179,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._pydm_icon_name
 
-    @PyDMIcon.setter
-    def PyDMIcon(self, value: str) -> None:
+    def setPyDMIcon(self, value: str) -> None:
         """
         Name of icon to be set from Qt provided standard icons or from the "Font Awesome" icon-set.
         See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
@@ -201,8 +205,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
         self._pydm_icon_name = value
 
-    @Property(QColor)
-    def PyDMIconColor(self) -> QColor:
+    PyDMIcon = Property(str, readPyDMIcon, setPyDMIcon)
+
+    def readPyDMIconColor(self) -> QColor:
         """
         The color of the icon (color is only applied if using icon from the "Font Awesome" set)
         Returns
@@ -211,8 +216,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._pydm_icon_color
 
-    @PyDMIconColor.setter
-    def PyDMIconColor(self, state_color: QColor) -> None:
+    def setPyDMIconColor(self, state_color: QColor) -> None:
         """
         The color of the icon (color is only applied if using icon from the "Font Awesome" set)
         Parameters
@@ -229,8 +233,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             except Exception:
                 return
 
-    @Property(bool)
-    def showConfirmDialog(self) -> bool:
+    PyDMIconColor = Property(QColor, readPyDMIconColor, setPyDMIconColor)
+
+    def readShowConfirmDialog(self) -> bool:
         """
         Whether or not to display a confirmation dialog.
 
@@ -240,8 +245,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._show_confirm_dialog
 
-    @showConfirmDialog.setter
-    def showConfirmDialog(self, value: bool) -> None:
+    def setShowConfirmDialog(self, value: bool) -> None:
         """
         Whether or not to display a confirmation dialog.
 
@@ -252,8 +256,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self._show_confirm_dialog != value:
             self._show_confirm_dialog = value
 
-    @Property(bool)
-    def runCommandsInFullShell(self) -> bool:
+    showConfirmDialog = Property(bool, readShowConfirmDialog, setShowConfirmDialog)
+
+    def readRunCommandsInFullShell(self) -> bool:
         """
         Whether or not to run cmds with Popen's option for running them through a shell subprocess.
 
@@ -263,8 +268,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._run_commands_in_full_shell
 
-    @runCommandsInFullShell.setter
-    def runCommandsInFullShell(self, value: bool) -> None:
+    def setRunCommandsInFullShell(self, value: bool) -> None:
         """
         Whether or not to run cmds with Popen's option for running them through a shell subprocess.
 
@@ -275,8 +279,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self._run_commands_in_full_shell != value:
             self._run_commands_in_full_shell = value
 
-    @Property(str)
-    def confirmMessage(self) -> str:
+    runCommandsInFullShell = Property(bool, readRunCommandsInFullShell, setRunCommandsInFullShell)
+
+    def readConfirmMessage(self) -> str:
         """
         Message to be displayed at the Confirmation dialog.
 
@@ -286,8 +291,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._confirm_message
 
-    @confirmMessage.setter
-    def confirmMessage(self, value: str) -> None:
+    def setConfirmMessage(self, value: str) -> None:
         """
         Message to be displayed at the Confirmation dialog.
 
@@ -297,6 +301,8 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         if self._confirm_message != value:
             self._confirm_message = value
+
+    confirmMessage = Property(str, readConfirmMessage, setConfirmMessage)
 
     @only_if_channel_set
     def check_enable_state(self) -> None:
@@ -315,8 +321,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
 
         self.setToolTip(tooltip)
 
-    @Property(str)
-    def environmentVariables(self) -> str:
+    def readEnvironmentVariables(self) -> str:
         """
         Return the environment variables which would be set along with the shell command.
 
@@ -326,8 +331,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self.env_var
 
-    @environmentVariables.setter
-    def environmentVariables(self, new_dict: str) -> None:
+    def setEnvironmentVariables(self, new_dict: str) -> None:
         """
         Set environment variables which would be set along with the shell command.
 
@@ -338,8 +342,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self.env_var != new_dict:
             self.env_var = new_dict
 
-    @Property(bool)
-    def showIcon(self) -> bool:
+    environmentVariables = Property(str, readEnvironmentVariables, setEnvironmentVariables)
+
+    def readShowIcon(self) -> bool:
         """
         Whether or not we should show the selected Icon.
 
@@ -349,8 +354,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._show_icon
 
-    @showIcon.setter
-    def showIcon(self, value: bool) -> None:
+    def setShowIcon(self, value: bool) -> None:
         """
         Whether or not we should show the selected Icon.
 
@@ -367,8 +371,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
                 self._icon = self.icon()
                 self.setIcon(QIcon())
 
-    @Property(bool, designable=False)
-    def redirectCommandOutput(self) -> bool:
+    showIcon = Property(bool, readShowIcon, setShowIcon)
+
+    def readRedirectCommandOutput(self) -> bool:
         """
         Whether or not we should redirect the output of command to the shell.
 
@@ -382,8 +387,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._stdout == TermOutputMode.SHOW
 
-    @redirectCommandOutput.setter
-    def redirectCommandOutput(self, value: bool) -> None:
+    def setRedirectCommandOutput(self, value: bool) -> None:
         if self._uses_stdout_intf:
             logger.warning(
                 f"In PydmShellCommand named {self.objectName()}, "
@@ -396,8 +400,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         else:
             self._stdout = TermOutputMode.HIDE
 
-    @Property(TermOutputMode)
-    def stdout(self) -> TermOutputMode:
+    redirectCommandOutput = Property(bool, readRedirectCommandOutput, setRedirectCommandOutput, designable=False)
+
+    def readStdout(self) -> TermOutputMode:
         """
         The behavior of the subprocess's standard output stream.
 
@@ -415,13 +420,13 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._stdout
 
-    @stdout.setter
-    def stdout(self, value: TermOutputMode) -> None:
+    def setStdout(self, value: TermOutputMode) -> None:
         self._uses_stdout_intf = True
         self._stdout = value
 
-    @Property(TermOutputMode)
-    def stderr(self) -> TermOutputMode:
+    stdout = Property(TermOutputMode, readStdout, setStdout)
+
+    def readStderr(self) -> TermOutputMode:
         """
         The behavior of the subprocess's standard error stream.
 
@@ -433,12 +438,12 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._stderr
 
-    @stderr.setter
-    def stderr(self, value: TermOutputMode) -> None:
+    def setStderr(self, value: TermOutputMode) -> None:
         self._stderr = value
 
-    @Property(bool)
-    def allowMultipleExecutions(self) -> bool:
+    stderr = Property(TermOutputMode, readStderr, setStderr)
+
+    def readAllowMultipleExecutions(self) -> bool:
         """
         Whether or not we should allow the same command
         to be executed even if it is still running.
@@ -449,8 +454,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._allow_multiple
 
-    @allowMultipleExecutions.setter
-    def allowMultipleExecutions(self, value: bool) -> None:
+    def setAllowMultipleExecutions(self, value: bool) -> None:
         """
         Whether or not we should allow the same command
         to be executed even if it is still running.
@@ -462,29 +466,30 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self._allow_multiple != value:
             self._allow_multiple = value
 
-    @Property("QStringList")
-    def titles(self) -> List[str]:
+    allowMultipleExecutions = Property(bool, readAllowMultipleExecutions, setAllowMultipleExecutions)
+
+    def readTitles(self) -> List[str]:
         return self._titles
 
-    @titles.setter
-    def titles(self, val: List[str]) -> None:
+    def setTitles(self, val: List[str]) -> None:
         self._titles = val
         self._menu_needs_rebuild = True
 
-    @Property("QStringList")
-    def commands(self) -> List[str]:
+    titles = Property("QStringList", readTitles, setTitles)
+
+    def readCommands(self) -> List[str]:
         return self._commands
 
-    @commands.setter
-    def commands(self, val: List[str]) -> None:
+    def setCommands(self, val: List[str]) -> None:
         if not val:
             self._commands = []
         else:
             self._commands = val
         self._menu_needs_rebuild = True
 
-    @Property(str, designable=False)
-    def command(self) -> str:
+    commands = Property("QStringList", readCommands, setCommands)
+
+    def readCommand(self) -> str:
         """
         DEPRECATED: use the 'commands' property.
         This property simply returns the first command from the 'commands'
@@ -499,8 +504,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             return ""
         return self.commands[0]
 
-    @command.setter
-    def command(self, value: str) -> None:
+    def setCommand(self, value: str) -> None:
         """
         DEPRECATED: Use the 'commands' property instead.
         This property only has an effect if the 'commands' property is empty.
@@ -518,8 +522,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             else:
                 self.commands = []
 
-    @Property(bool)
-    def passwordProtected(self) -> bool:
+    command = Property(str, readCommand, setCommand, designable=False)
+
+    def readPasswordProtected(self) -> bool:
         """
         Whether or not this button is password protected.
 
@@ -530,8 +535,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._password_protected
 
-    @passwordProtected.setter
-    def passwordProtected(self, value: bool) -> None:
+    def setPasswordProtected(self, value: bool) -> None:
         """
         Whether or not this button is password protected.
 
@@ -542,8 +546,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self._password_protected != value:
             self._password_protected = value
 
-    @Property(str)
-    def password(self) -> str:
+    passwordProtected = Property(bool, readPasswordProtected, setPasswordProtected)
+
+    def readPassword(self) -> str:
         """
         Password to be encrypted using SHA256.
 
@@ -556,8 +561,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return ""
 
-    @password.setter
-    def password(self, value: str) -> None:
+    def setPassword(self, value: str) -> None:
         """
         Password to be encrypted using SHA256.
 
@@ -578,8 +582,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             if formWindow:
                 formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
 
-    @Property(str)
-    def protectedPassword(self) -> str:
+    password = Property(str, readPassword, setPassword)
+
+    def readProtectedPassword(self) -> str:
         """
         The encrypted password.
 
@@ -589,8 +594,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._protected_password
 
-    @protectedPassword.setter
-    def protectedPassword(self, value: str) -> None:
+    def setProtectedPassword(self, value: str) -> None:
         """
         Setter for the encrypted password.
 
@@ -601,8 +605,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         if self._protected_password != value:
             self._protected_password = value
 
-    @Property(bool)
-    def showCurrentlyRunningIndication(self) -> bool:
+    protectedPassword = Property(str, readProtectedPassword, setProtectedPassword)
+
+    def readShowCurrentlyRunningIndication(self) -> bool:
         """
         Whether or not to have a button's visuals change to indicate when the command is running.
         It's nice to enable this when you know your button's command runs long.
@@ -613,8 +618,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         return self._show_currently_running_indication
 
-    @showCurrentlyRunningIndication.setter
-    def showCurrentlyRunningIndication(self, value: bool) -> None:
+    def setShowCurrentlyRunningIndication(self, value: bool) -> None:
         """
         Whether or not to have a button's visuals change to indicate when the command is running.
         It's nice to enable this when you know your button's command runs long.
@@ -625,6 +629,10 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         """
         if self._show_currently_running_indication != value:
             self._show_currently_running_indication = value
+
+    showCurrentlyRunningIndication = Property(
+        bool, readShowCurrentlyRunningIndication, setShowCurrentlyRunningIndication
+    )
 
     def _rebuild_menu(self) -> None:
         if not any(self._commands):

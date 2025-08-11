@@ -3,7 +3,7 @@ import functools
 
 from collections import OrderedDict
 
-from qtpy.QtCore import QObject, Slot, Signal, Property, QSize
+from qtpy.QtCore import QObject, Slot, Signal, QSize
 from qtpy.QtWidgets import (
     QWidget,
     QPlainTextEdit,
@@ -16,8 +16,12 @@ from qtpy.QtWidgets import (
     QStyle,
 )
 from qtpy.QtGui import QPainter
-
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 logger = logging.getLogger(__name__)
 
@@ -209,24 +213,22 @@ class PyDMLogDisplay(QWidget):
     def sizeHint(self):
         return QSize(400, 300)
 
-    @Property(LogLevels)
-    def logLevel(self):
+    def readLogLevel(self) -> LogLevels:
         return self.level
 
-    @logLevel.setter
-    def logLevel(self, level):
+    def setLogLevel(self, level) -> None:
         if level != self.level:
             self.level = level
             idx = self.combo.findData(level)
             self.combo.setCurrentIndex(idx)
 
-    @Property(str)
-    def logName(self):
+    logLevel = Property(LogLevels, readLogLevel, setLogLevel)
+
+    def readLogName(self) -> str:
         """Name of associated log"""
         return self.log.name
 
-    @logName.setter
-    def logName(self, name):
+    def setLogName(self, name) -> None:
         # Disconnect prior log from handler
         if self.log:
             self.log.removeHandler(self.handler)
@@ -239,14 +241,16 @@ class PyDMLogDisplay(QWidget):
         # Attach preconfigured handler
         self.log.addHandler(self.handler)
 
-    @Property(str)
-    def logFormat(self):
+    logName = Property(str, readLogName, setLogName)
+
+    def readLogFormat(self) -> str:
         """Format for log messages"""
         return self.handler.formatter._fmt
 
-    @logFormat.setter
-    def logFormat(self, fmt):
+    def setLogFormat(self, fmt) -> None:
         self.handler.setFormatter(logging.Formatter(fmt))
+
+    logFormat = Property(str, readLogFormat, setLogFormat)
 
     @Slot(str)
     def write(self, message):

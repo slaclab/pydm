@@ -6,10 +6,10 @@ import logging
 from qtpy.QtWidgets import QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygonF, QPixmap, QMovie
 from qtpy.QtCore import Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget, PostParentClassInitSetup
 from pydm.utilities import is_qt_designer, find_file
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -269,8 +269,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             h = w0 * c
         return w, h
 
-    @Property(QBrush)
-    def brush(self):
+    def readBrush(self) -> QBrush:
         """
         PyQT Property for the brush object to be used when coloring the
         drawing
@@ -281,8 +280,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         """
         return self._brush
 
-    @brush.setter
-    def brush(self, new_brush):
+    def setBrush(self, new_brush) -> None:
         """
         PyQT Property for the brush object to be used when coloring the
         drawing
@@ -297,7 +295,9 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._brush = new_brush
             self.update()
 
-    def readPenStyle(self):
+    brush = Property(QBrush, readBrush, setBrush)
+
+    def readPenStyle(self) -> int | Qt.PenStyle:
         """
         Property for the pen style to be used when drawing the border
 
@@ -308,13 +308,13 @@ class PyDMDrawing(QWidget, PyDMWidget):
         """
         return self._pen_style
 
-    def setPenStyle(self, new_style):
+    def setPenStyle(self, new_style) -> None:
         """
         Property for the pen style to be used when drawing the border
 
         Parameters
         ----------
-        new_style : Qt.PenStyle
+        new_style : Qt.PenStyle or int
             Index at Qt.PenStyle enum
         """
         # pyside6 enums are more strict and will error if passed int
@@ -327,10 +327,10 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setStyle(new_style)
             self.update()
 
-    penStyle = Property(int, readPenStyle, setPenStyle)
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.PenStyle
+    penStyle = Property(prop_type, readPenStyle, setPenStyle)
 
-    @Property(Qt.PenCapStyle)
-    def penCapStyle(self):
+    def readPenCapStyle(self) -> int | Qt.PenCapStyle:
         """
         PyQT Property for the pen cap to be used when drawing the border
 
@@ -341,23 +341,27 @@ class PyDMDrawing(QWidget, PyDMWidget):
         """
         return self._pen_cap_style
 
-    @penCapStyle.setter
-    def penCapStyle(self, new_style):
+    def setPenCapStyle(self, new_style) -> None:
         """
         PyQT Property for the pen cap style to be used when drawing the border
 
         Parameters
         ----------
         new_style : int
-            Index at Qt.PenStyle enum
+            Index at Qt.PenStyle enum or int
         """
+        # pyside6 enums are more strict and will error if passed int
+        # if isinstance(new_style, int):
+        #    new_style = Qt.PenStyle(new_style)
         if new_style != self._pen_cap_style:
             self._pen_cap_style = new_style
             self._pen.setCapStyle(new_style)
             self.update()
 
-    @Property(Qt.PenJoinStyle)
-    def penJoinStyle(self):
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.PenCapStyle
+    penCapStyle = Property(prop_type, readPenCapStyle, setPenCapStyle)
+
+    def readPenJoinStyle(self) -> int | Qt.PenJoinStyle:
         """
         PyQT Property for the pen join style to be used when drawing the border
 
@@ -368,23 +372,24 @@ class PyDMDrawing(QWidget, PyDMWidget):
         """
         return self._pen_join_style
 
-    @penJoinStyle.setter
-    def penJoinStyle(self, new_style):
+    def setPenJoinStyle(self, new_style) -> None:
         """
         PyQT Property for the pen join style to be used when drawing the border
 
         Parameters
         ----------
         new_style : int
-            Index at Qt.PenStyle enum
+            Index at Qt.PenStyle enum or int
         """
         if new_style != self._pen_join_style:
             self._pen_join_style = new_style
             self._pen.setJoinStyle(new_style)
             self.update()
 
-    @Property(QColor)
-    def penColor(self):
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.PenJoinStyle
+    penJoinStyle = Property(prop_type, readPenJoinStyle, setPenJoinStyle)
+
+    def readPenColor(self) -> QColor:
         """
         PyQT Property for the pen color to be used when drawing the border
 
@@ -394,8 +399,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         """
         return self._pen_color
 
-    @penColor.setter
-    def penColor(self, new_color):
+    def setPenColor(self, new_color) -> None:
         """
         PyQT Property for the pen color to be used when drawing the border
 
@@ -411,8 +415,9 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setColor(new_color)
             self.update()
 
-    @Property(float)
-    def penWidth(self):
+    penColor = Property(QColor, readPenColor, setPenColor)
+
+    def readPenWidth(self) -> float:
         """
         PyQT Property for the pen width to be used when drawing the border
 
@@ -422,8 +427,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         """
         return self._pen_width
 
-    @penWidth.setter
-    def penWidth(self, new_width):
+    def setPenWidth(self, new_width) -> None:
         """
         PyQT Property for the pen width to be used when drawing the border
 
@@ -438,8 +442,9 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setWidthF(float(self._pen_width))
             self.update()
 
-    @Property(float)
-    def rotation(self):
+    penWidth = Property(float, readPenWidth, setPenWidth)
+
+    def readRotation(self) -> float:
         """
         PyQT Property for the counter-clockwise rotation in degrees
         to be applied to the drawing.
@@ -450,8 +455,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
         """
         return self._rotation
 
-    @rotation.setter
-    def rotation(self, new_angle):
+    def setRotation(self, new_angle) -> None:
         """
         PyQT Property for the counter-clockwise rotation in degrees
         to be applied to the drawing.
@@ -463,6 +467,8 @@ class PyDMDrawing(QWidget, PyDMWidget):
         if new_angle != self._rotation:
             self._rotation = new_angle
             self.update()
+
+    rotation = Property(float, readRotation, setRotation)
 
     def alarm_severity_changed(self, new_alarm_severity):
         PyDMWidget.alarm_severity_changed(self, new_alarm_severity)
@@ -498,8 +504,7 @@ class PyDMDrawingLineBase(PyDMDrawing):
         self._arrow_mid_point_selection = False
         self._arrow_mid_point_flipped = False
 
-    @Property(int)
-    def arrowSize(self) -> int:
+    def readArrowSize(self) -> int:
         """
         Size to render line arrows.
 
@@ -509,8 +514,7 @@ class PyDMDrawingLineBase(PyDMDrawing):
         """
         return self._arrow_size
 
-    @arrowSize.setter
-    def arrowSize(self, new_size) -> None:
+    def setArrowSize(self, new_size) -> None:
         """
         Size to render line arrows.
 
@@ -522,8 +526,9 @@ class PyDMDrawingLineBase(PyDMDrawing):
             self._arrow_size = new_size
             self.update()
 
-    @Property(bool)
-    def arrowEndPoint(self) -> bool:
+    arrowSize = Property(int, readArrowSize, setArrowSize)
+
+    def readArrowEndPoint(self) -> bool:
         """
         If True, an arrow will be drawn at the end of the line.
 
@@ -533,8 +538,7 @@ class PyDMDrawingLineBase(PyDMDrawing):
         """
         return self._arrow_end_point_selection
 
-    @arrowEndPoint.setter
-    def arrowEndPoint(self, new_selection) -> None:
+    def setArrowEndPoint(self, new_selection) -> None:
         """
         If True, an arrow will be drawn at the end of the line.
 
@@ -546,8 +550,9 @@ class PyDMDrawingLineBase(PyDMDrawing):
             self._arrow_end_point_selection = new_selection
             self.update()
 
-    @Property(bool)
-    def arrowStartPoint(self) -> bool:
+    arrowEndPoint = Property(bool, readArrowEndPoint, setArrowEndPoint)
+
+    def readArrowStartPoint(self) -> bool:
         """
         If True, an arrow will be drawn at the start of the line.
 
@@ -557,8 +562,7 @@ class PyDMDrawingLineBase(PyDMDrawing):
         """
         return self._arrow_start_point_selection
 
-    @arrowStartPoint.setter
-    def arrowStartPoint(self, new_selection) -> None:
+    def setArrowStartPoint(self, new_selection) -> None:
         """
         If True, an arrow will be drawn at the start of the line.
 
@@ -570,8 +574,9 @@ class PyDMDrawingLineBase(PyDMDrawing):
             self._arrow_start_point_selection = new_selection
             self.update()
 
-    @Property(bool)
-    def arrowMidPoint(self) -> bool:
+    arrowStartPoint = Property(bool, readArrowStartPoint, setArrowStartPoint)
+
+    def readArrowMidPoint(self) -> bool:
         """
         If True, an arrow will be drawn at the midpoint of the line.
         Returns
@@ -580,8 +585,7 @@ class PyDMDrawingLineBase(PyDMDrawing):
         """
         return self._arrow_mid_point_selection
 
-    @arrowMidPoint.setter
-    def arrowMidPoint(self, new_selection) -> None:
+    def setArrowMidPoint(self, new_selection) -> None:
         """
         If True, an arrow will be drawn at the midpoint of the line.
         Parameters
@@ -592,8 +596,9 @@ class PyDMDrawingLineBase(PyDMDrawing):
             self._arrow_mid_point_selection = new_selection
             self.update()
 
-    @Property(bool)
-    def flipMidPointArrow(self) -> bool:
+    arrowMidPoint = Property(bool, readArrowMidPoint, setArrowMidPoint)
+
+    def readFlipMidPointArrow(self) -> bool:
         """
         Flips the direction of the midpoint arrow.
 
@@ -603,8 +608,7 @@ class PyDMDrawingLineBase(PyDMDrawing):
         """
         return self._arrow_mid_point_flipped
 
-    @flipMidPointArrow.setter
-    def flipMidPointArrow(self, new_selection) -> None:
+    def setFlipMidPointArrow(self, new_selection) -> None:
         """
         Flips the direction of the midpoint arrow.
 
@@ -615,6 +619,8 @@ class PyDMDrawingLineBase(PyDMDrawing):
         if self._arrow_mid_point_flipped != new_selection:
             self._arrow_mid_point_flipped = new_selection
             self.update()
+
+    flipMidPointArrow = Property(bool, readFlipMidPointArrow, setFlipMidPointArrow)
 
     @staticmethod
     def _arrow_points(startpoint, endpoint, height, width) -> QPolygonF:
@@ -939,8 +945,7 @@ class PyDMDrawingImage(PyDMDrawing):
     def reload_image(self) -> None:
         self.filename = self._file
 
-    @Property(bool)
-    def recursiveImageSearch(self) -> bool:
+    def readRecursiveImageSearch(self) -> bool:
         """
         Whether or not to search for a provided image file recursively
         in subfolders relative to the location of this display.
@@ -952,8 +957,7 @@ class PyDMDrawingImage(PyDMDrawing):
         """
         return self._recursive_image_search
 
-    @recursiveImageSearch.setter
-    def recursiveImageSearch(self, new_value) -> None:
+    def setRecursiveImageSearch(self, new_value) -> None:
         """
         Set whether or not to search for a provided image file recursively
         in subfolders relative to the location of this image.
@@ -965,8 +969,9 @@ class PyDMDrawingImage(PyDMDrawing):
         """
         self._recursive_image_search = new_value
 
-    @Property(str)
-    def filename(self) -> str:
+    recursiveImageSearch = Property(bool, readRecursiveImageSearch, setRecursiveImageSearch)
+
+    def readFilename(self) -> str:
         """
         The filename of the image to be displayed.
         This can be an absolute or relative path to the image file.
@@ -978,8 +983,7 @@ class PyDMDrawingImage(PyDMDrawing):
         """
         return self._file
 
-    @filename.setter
-    def filename(self, new_file) -> None:
+    def setFilename(self, new_file) -> None:
         """
         The filename of the image to be displayed.
 
@@ -1036,13 +1040,14 @@ class PyDMDrawingImage(PyDMDrawing):
             self._pixmap = pixmap
             self.update()
 
+    filename = Property(str, readFilename, setFilename)
+
     def sizeHint(self):
         if self._pixmap.size().isEmpty():
             return super().sizeHint()
         return self._pixmap.size()
 
-    @Property(Qt.AspectRatioMode)
-    def aspectRatioMode(self):
+    def readAspectRatioMode(self) -> int | Qt.AspectRatioMode:
         """
         PyQT Property for aspect ratio mode to be used when rendering
         the image
@@ -1054,8 +1059,7 @@ class PyDMDrawingImage(PyDMDrawing):
         """
         return self._aspect_ratio_mode
 
-    @aspectRatioMode.setter
-    def aspectRatioMode(self, new_mode):
+    def setAspectRatioMode(self, new_mode) -> None:
         """
         PyQT Property for aspect ratio mode to be used when rendering
         the image
@@ -1068,6 +1072,9 @@ class PyDMDrawingImage(PyDMDrawing):
         if new_mode != self._aspect_ratio_mode:
             self._aspect_ratio_mode = new_mode
             self.update()
+
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.AspectRatioMode
+    aspectRatioMode = Property(prop_type, readAspectRatioMode, setAspectRatioMode)
 
     def draw_item(self, painter):
         """
@@ -1257,8 +1264,7 @@ class PyDMDrawingArc(PyDMDrawing):
         self._start_angle = 0
         self._span_angle = deg_to_qt(90)
 
-    @Property(float)
-    def startAngle(self):
+    def readStartAngle(self) -> None:
         """
         PyQT Property for the start angle in degrees
 
@@ -1269,8 +1275,7 @@ class PyDMDrawingArc(PyDMDrawing):
         """
         return qt_to_deg(self._start_angle)
 
-    @startAngle.setter
-    def startAngle(self, new_angle):
+    def setStartAngle(self, new_angle) -> None:
         """
         PyQT Property for the start angle in degrees
 
@@ -1283,8 +1288,9 @@ class PyDMDrawingArc(PyDMDrawing):
             self._start_angle = deg_to_qt(new_angle)
             self.update()
 
-    @Property(float)
-    def spanAngle(self):
+    startAngle = Property(float, readStartAngle, setStartAngle)
+
+    def readSpanAngle(self) -> float:
         """
         PyQT Property for the span angle in degrees
 
@@ -1295,8 +1301,7 @@ class PyDMDrawingArc(PyDMDrawing):
         """
         return qt_to_deg(self._span_angle)
 
-    @spanAngle.setter
-    def spanAngle(self, new_angle):
+    def setSpanAngle(self, new_angle) -> None:
         """
         PyQT Property for the span angle in degrees
 
@@ -1308,6 +1313,8 @@ class PyDMDrawingArc(PyDMDrawing):
         if deg_to_qt(new_angle) != self._span_angle:
             self._span_angle = deg_to_qt(new_angle)
             self.update()
+
+    spanAngle = Property(float, readSpanAngle, setSpanAngle)
 
     def draw_item(self, painter):
         """
@@ -1391,8 +1398,7 @@ class PyDMDrawingPolygon(PyDMDrawing):
         super().__init__(parent, init_channel)
         self._num_points = 3
 
-    @Property(int)
-    def numberOfPoints(self):
+    def readNumberOfPoints(self) -> int:
         """
         PyQT Property for the number of points
 
@@ -1403,11 +1409,12 @@ class PyDMDrawingPolygon(PyDMDrawing):
         """
         return self._num_points
 
-    @numberOfPoints.setter
-    def numberOfPoints(self, points):
+    def setNumberOfPoints(self, points) -> None:
         if points >= 3 and points != self._num_points:
             self._num_points = points
             self.update()
+
+    numberOfPoints = Property(int, readNumberOfPoints, setNumberOfPoints)
 
     def _calculate_drawing_points(self, x, y, w, h):
         # (x + r*cos(theta), y + r*sin(theta))

@@ -3,10 +3,17 @@ import json
 import logging
 from qtpy.QtWidgets import QApplication, QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QPainter, QPixmap
-from qtpy.QtCore import Property, Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
+from qtpy.QtCore import Qt, QSize, QSizeF, QRectF, qInstallMessageHandler
 from qtpy.QtSvg import QSvgRenderer
 from pydm.utilities import find_file
 from .base import PyDMWidget, PostParentClassInitSetup
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
+
 
 logger = logging.getLogger(__name__)
 
@@ -69,8 +76,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
             self._current_key = current_key
             self.update()
 
-    @Property(str)
-    def imageFiles(self):
+    def readImageFiles(self) -> str:
         """
         JSON-formatted dictionary keyed on states (integers), with filenames
         of the image file to display for the state.
@@ -83,8 +89,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
             return self._state_images_string
         return json.dumps({str(state): val[0] for (state, val) in self._state_images.items()})
 
-    @imageFiles.setter
-    def imageFiles(self, new_files):
+    def setImageFiles(self, new_files) -> None:
         """
         JSON-formatted dictionary keyed on states (integers), with filenames
         of the image file to display for the state.
@@ -132,8 +137,9 @@ class PyDMSymbol(QWidget, PyDMWidget):
             logger.error("Could not load image: {}".format(filename))
             self._state_images[int(state)] = (filename, None)
 
-    @Property(Qt.AspectRatioMode)
-    def aspectRatioMode(self):
+    imageFiles = Property(str, readImageFiles, setImageFiles)
+
+    def readAspectRatioMode(self) -> int | Qt.AspectRatioMode:
         """
         Which aspect ratio mode to use.
 
@@ -143,8 +149,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
         """
         return self._aspect_ratio_mode
 
-    @aspectRatioMode.setter
-    def aspectRatioMode(self, new_mode):
+    def setAspectRatioMode(self, new_mode):
         """
         Which aspect ratio mode to use.
 
@@ -155,6 +160,9 @@ class PyDMSymbol(QWidget, PyDMWidget):
         if new_mode != self._aspect_ratio_mode:
             self._aspect_ratio_mode = new_mode
             self.update()
+
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.AspectRatioMode
+    aspectRatioMode = Property(prop_type, readAspectRatioMode, setAspectRatioMode)
 
     def connection_changed(self, connected):
         """

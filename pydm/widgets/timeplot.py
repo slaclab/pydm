@@ -5,11 +5,17 @@ from typing import Optional
 from pyqtgraph import BarGraphItem, ViewBox, AxisItem
 import numpy as np
 from qtpy.QtGui import QColor, QCursor
-from qtpy.QtCore import Signal, Slot, Property, QTimer
+from qtpy.QtCore import Signal, Slot, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from pydm.utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from datetime import datetime
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 import logging
 
@@ -1009,8 +1015,7 @@ class PyDMTimePlot(BasePlot):
         "bool", getUpdatesAsynchronously, setUpdatesAsynchronously, resetUpdatesAsynchronously, designable=False
     )
 
-    @Property(updateMode)
-    def updateMode(self):
+    def readUpdateMode(self) -> updateMode:
         """
         The updateMode to be used as property to set plot update mode.
 
@@ -1020,8 +1025,7 @@ class PyDMTimePlot(BasePlot):
         """
         return self._updateMode
 
-    @updateMode.setter
-    def updateMode(self, new_type):
+    def setUpdateMode(self, new_type) -> None:
         """
         The updateMode to be used as property to set plot update mode.
 
@@ -1032,6 +1036,8 @@ class PyDMTimePlot(BasePlot):
         if new_type != self._updateMode:
             self._updateMode = new_type
             self.setUpdatesAsynchronously(self._updateMode)
+
+    updateMode = Property(updateMode, readUpdateMode, setUpdateMode)
 
     def getTimeSpan(self):
         """
