@@ -412,13 +412,13 @@ class PyDMEventPlot(BasePlot):
         """
         super().clear()
 
-    def getCurves(self):
+    def getCurves(self) -> list[str]:
         """
         Get a list of json representations for each curve.
         """
         return [json.dumps(curve.to_dict()) for curve in self._curves]
 
-    def setCurves(self, new_list):
+    def setCurves(self, new_list) -> None:
         """
         Replace all existing curves with new ones.  This function
         is mostly used as a way to load curves from a .ui file, and
