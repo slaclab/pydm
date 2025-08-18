@@ -1,11 +1,18 @@
 import math
 import logging
-from qtpy.QtCore import QTimer, Property, QEvent
+from qtpy.QtCore import QTimer, QEvent
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QLabel, QMessageBox, QApplication
 
 from .base import PyDMPrimitiveWidget, get_icon_file
 from pydm.utilities import is_qt_designer
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
+
 
 logger = logging.getLogger(__name__)
 
@@ -154,8 +161,7 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
         text = self._get_time_text(rem_time_s)
         self.setText("This screen will close in {}.".format(text))
 
-    @Property(int)
-    def timeout(self):
+    def readTimeout(self) -> int:
         """
         Timeout in seconds.
 
@@ -165,12 +171,13 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
         """
         return self._timeout
 
-    @timeout.setter
-    def timeout(self, seconds):
+    def setTimeout(self, seconds) -> None:
         self.stop()
         if seconds and seconds > 0:
             self._timeout = seconds
             self.reset()
+
+    timeout = Property(int, readTimeout, setTimeout)
 
     def handle_timeout(self):
         """
