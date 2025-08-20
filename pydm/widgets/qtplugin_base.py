@@ -29,9 +29,17 @@ from qtpy import QtCore, QtDesigner, QtGui, QtWidgets
 
 from pydm import config
 from pydm.qtdesigner import DesignerHooks
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 from .qtplugin_extensions import PyDMExtensionFactory
 
 logger = logging.getLogger(__name__)
+
+
+BASE_PLUGIN_CLASS = type
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    BASE_PLUGIN_CLASS = QtDesigner.QPyDesignerCustomWidgetPlugin
+elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    BASE_PLUGIN_CLASS = QtDesigner.QDesignerCustomWidgetInterface
 
 
 class WidgetCategory(str, enum.Enum):
@@ -88,7 +96,7 @@ def qtplugin_factory(
     return Plugin
 
 
-class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
+class PyDMDesignerPlugin(BASE_PLUGIN_CLASS):
     """
     Parent class to standardize how pydm plugins are accessed in qt designer.
     All functions have default returns that can be overridden as necessary.
@@ -108,7 +116,7 @@ class PyDMDesignerPlugin(QtDesigner.QPyDesignerCustomWidgetPlugin):
         :param cls: Class of the widget to use
         :type cls:  QWidget
         """
-        QtDesigner.QPyDesignerCustomWidgetPlugin.__init__(self)
+        super().__init__()
         self.initialized = False
         self.is_container = is_container
         self.cls = cls
