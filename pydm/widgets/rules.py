@@ -3,7 +3,7 @@ import logging
 import functools
 import weakref
 
-from qtpy.QtCore import QThread, QMutex, Signal
+from qtpy.QtCore import Qt, QThread, QMutex, Signal, Slot
 from qtpy.QtWidgets import QWidget, QApplication
 from qtpy.QtGui import QColor, QBrush
 from pydm.utilities import is_qt_designer
@@ -148,6 +148,7 @@ class RulesEngine(QThread):
     """
 
     rule_signal = Signal(dict)
+    disconnect_request = Signal(object, bool)  # channel, destroying
 
     def __init__(self):
         QThread.__init__(self)
@@ -155,6 +156,7 @@ class RulesEngine(QThread):
         self.app.aboutToQuit.connect(self.requestInterruption)
         self.map_lock = QMutex()
         self.widget_map = dict()
+        self.disconnect_request.connect(self._on_disconnect_request, Qt.QueuedConnection)
 
     def widget_destroyed(self, ref):
         self.unregister(ref)
@@ -202,6 +204,11 @@ class RulesEngine(QThread):
                 for ch in rule["channels"]:
                     ch.connect()
 
+    @Slot(object, bool)
+    def _on_disconnect_request(self, channel, destroying):
+        """To be run using Qt.QueuedConnection to ensure it doesn't deadlock with connection management in plugin.py"""
+        channel.disconnect(destroying=destroying)
+
     def unregister(self, widget_ref):
         # If hash() is called the first time only after the object was
         # deleted, the call will raise TypeError.
@@ -217,7 +224,8 @@ class RulesEngine(QThread):
 
         for rule in w_data:
             for ch in rule["channels"]:
-                ch.disconnect(destroying=widget_ref() is None)
+                destroying = widget_ref() is None
+                self.disconnect_request.emit(ch, destroying)
 
         del w_data
 
