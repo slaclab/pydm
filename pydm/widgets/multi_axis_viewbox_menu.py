@@ -45,6 +45,7 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
         self.insertAction(self.viewAll, self.restoreRangesAction)
         self.removeAction(self.viewAll)
         self.insertAction(self.restoreRangesAction, self.viewAll)
+        self.viewAll.triggered.connect(self.autoRange)
 
     def set3ButtonMode(self):
         """Change the mouse left-click functionality to pan the plot"""
