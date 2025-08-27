@@ -20,8 +20,16 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.9', '3.10']
-        pyqt-version: [5.12.3, 5.15.9]
+        # eventually we should just run 3.10 + pyqt 5.12.3 (or if fix designer issue, latest pyqt5 and latest python that works with it),
+        # and latest-python + latest-pyside6
+        python-version: ["3.10", "3.12"]
+        pyqt-version: ["5.12.3", "5.15.11"]  # we still use 5.12.3 since newer conda versions have designer plugin issues
+        exclude:
+          # don't run these
+          - python-version: "3.10"  # 5.15.11 is newest pyqt5, so use newest python (3.12) 
+            pyqt-version: "5.15.11" 
+          - python-version: "3.12"  # max python version for 5.12.3 is 3.10 (3.12 errors during conda env creation)
+            pyqt-version: "5.12.3" 
     env:
       DISPLAY: ':99.0'
       QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
