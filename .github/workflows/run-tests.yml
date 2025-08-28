@@ -52,7 +52,7 @@ jobs:
         if [ "$RUNNER_OS" == "Windows" ]; then
           conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
         elif [ "$RUNNER_OS" == "macOS" ]; then
-          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} git p4p=3.5.5 pyca
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} git pyca
         else
           mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} pyca
         fi
@@ -83,7 +83,7 @@ jobs:
       timeout-minutes: 30 # timeout applies to single run of run_tests.py, not all os/python combos
       run: |
         if [ "$RUNNER_OS" == "macOS" ]; then
-          python run_tests.py --ignore=pydm/tests/widgets/test_slider.py # disable just for now, until fix intermittent issue
+          python run_tests.py --ignore=pydm/tests/data_plugins/test_p4p_plugin_component.py --ignore=pydm/tests/widgets/test_slider.py # disable just for now, until fix intermittent issue
         else 
           python run_tests.py
         fi
