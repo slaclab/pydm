@@ -415,7 +415,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        QFrame.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         PyDMScaleIndicator.__init__(self, parent)
         self._show_limits = False

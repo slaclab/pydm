@@ -1,4 +1,3 @@
-import weakref
 from pyqtgraph import AxisItem, PlotDataItem, PlotItem, ViewBox
 from typing import List, Optional
 from qtpy.QtCore import Qt, Signal
@@ -36,7 +35,7 @@ class MultiAxisPlot(PlotItem):
         # A set containing view boxes which are stacked underneath the top level view. These views will be needed
         # in order to support multiple axes on the same plot. This set will remain empty if the plot has only
         # one set of axes
-        self.stackedViews = weakref.WeakSet()
+        self.stackedViews = set()
         viewBox.sigResized.connect(self.updateStackedViews, Qt.QueuedConnection)
 
         # Signals that will be emitted when mouse wheel or mouse drag events happen
