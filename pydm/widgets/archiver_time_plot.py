@@ -707,7 +707,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         pvIndices = dict()
         pvValues = dict()
         self.archive_data_buffer = np.zeros((2, 0), order="f", dtype=float)
-        self.data_buffer = np.zeros((2, 0), order="f", dtype=float)                
+        self.data_buffer = np.zeros((2, 0), order="f", dtype=float)
         # Reset buffers
         self.points_accumulated = 0
         self.archive_points_accumulated = 0
