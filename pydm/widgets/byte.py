@@ -1,8 +1,14 @@
 from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QPaintEvent, QBrush
-from qtpy.QtCore import Property, Qt, QSize, QPoint
+from qtpy.QtCore import Qt, QSize, QPoint
 from typing import List, Optional
 from .base import PyDMWidget, PostParentClassInitSetup
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 
 class PyDMBitIndicator(QWidget):
@@ -224,8 +230,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
                 c = self._disconnected_color
             indicator.setColor(c)
 
-    @Property(QColor)
-    def onColor(self) -> QColor:
+    def readOnColor(self) -> QColor:
         """
         The color for a bit in the 'on' state.
 
@@ -235,8 +240,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return self._on_color
 
-    @onColor.setter
-    def onColor(self, new_color: QColor) -> None:
+    def setOnColor(self, new_color: QColor) -> None:
         """
         The color for a bit in the 'on' state.
 
@@ -248,8 +252,9 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             self._on_color = new_color
             self.update_indicators()
 
-    @Property(QColor)
-    def offColor(self) -> QColor:
+    onColor = Property(QColor, readOnColor, setOnColor)
+
+    def readOffColor(self) -> QColor:
         """
         The color for a bit in the 'off' state.
 
@@ -259,8 +264,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return self._off_color
 
-    @offColor.setter
-    def offColor(self, new_color: QColor) -> None:
+    def setOffColor(self, new_color: QColor) -> None:
         """
         The color for a bit in the 'off' state.
 
@@ -272,8 +276,9 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             self._off_color = new_color
             self.update_indicators()
 
-    @Property(Qt.Orientation)
-    def orientation(self) -> Qt.Orientation:
+    offColor = Property(QColor, readOffColor, setOffColor)
+
+    def readOrientation(self) -> int | Qt.Orientation:
         """
         Whether to lay out the bit indicators vertically or horizontally.
 
@@ -283,8 +288,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return self._orientation
 
-    @orientation.setter
-    def orientation(self, new_orientation: Qt.Orientation) -> None:
+    def setOrientation(self, new_orientation: Qt.Orientation) -> None:
         """
         Whether to lay out the bit indicators vertically or horizontally.
 
@@ -295,6 +299,9 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self._orientation = new_orientation
         self.set_spacing()
         self.rebuild_layout()
+
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Orientation
+    orientation = Property(prop_type, readOrientation, setOrientation)
 
     def set_spacing(self) -> None:
         """
@@ -315,8 +322,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             self.layout().setHorizontalSpacing(label_spacing)
             self.layout().setVerticalSpacing(indicator_spacing)
 
-    @Property(bool)
-    def showLabels(self) -> bool:
+    def readShowLabels(self) -> bool:
         """
         Whether or not to show labels next to each bit indicator.
 
@@ -326,8 +332,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return self._show_labels
 
-    @showLabels.setter
-    def showLabels(self, show: bool) -> None:
+    def setShowLabels(self, show: bool) -> None:
         """
         Whether or not to show labels next to each bit indicator.
 
@@ -340,8 +345,9 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         for label in self._labels:
             label.setVisible(show)
 
-    @Property(bool)
-    def bigEndian(self) -> bool:
+    showLabels = Property(bool, readShowLabels, setShowLabels)
+
+    def readBigEndian(self) -> bool:
         """
         Whether the most significant bit is at the start or end of the widget.
 
@@ -351,8 +357,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return self._big_endian
 
-    @bigEndian.setter
-    def bigEndian(self, is_big_endian: bool) -> None:
+    def setBigEndian(self, is_big_endian: bool) -> None:
         """
         Whether the most significant bit is at the start or end of the widget.
 
@@ -374,8 +379,9 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.layout().setOriginCorner(origin)
         self.rebuild_layout()
 
-    @Property(bool)
-    def circles(self) -> bool:
+    bigEndian = Property(bool, readBigEndian, setBigEndian)
+
+    def readCircles(self) -> bool:
         """
         Draw indicators as circles, rather than rectangles.
 
@@ -385,8 +391,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return self._circles
 
-    @circles.setter
-    def circles(self, draw_circles: bool) -> None:
+    def setCircles(self, draw_circles: bool) -> None:
         """
         Draw indicators as circles, rather than rectangles.
 
@@ -401,8 +406,9 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             indicator.circle = self._circles
         self.update_indicators()
 
-    @Property(QTabWidget.TabPosition)
-    def labelPosition(self) -> QTabWidget.TabPosition:
+    circles = Property(bool, readCircles, setCircles)
+
+    def readLabelPosition(self) -> QTabWidget.TabPosition:
         """
         The side of the widget to display labels on.
 
@@ -412,8 +418,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return self._label_position
 
-    @labelPosition.setter
-    def labelPosition(self, new_pos: QTabWidget.TabPosition) -> None:
+    def setLabelPosition(self, new_pos: QTabWidget.TabPosition) -> None:
         """
         The side of the widget to display labels on.
 
@@ -424,8 +429,9 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self._label_position = new_pos
         self.rebuild_layout()
 
-    @Property(int)
-    def numBits(self) -> int:
+    labelPosition = Property(QTabWidget.TabPosition, readLabelPosition, setLabelPosition)
+
+    def readNumBits(self) -> int:
         """
         Number of bits to interpret.
 
@@ -435,8 +441,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return self._num_bits
 
-    @numBits.setter
-    def numBits(self, new_num_bits: int) -> None:
+    def setNumBits(self, new_num_bits: int) -> None:
         """
         Number of bits to interpret.
 
@@ -458,8 +463,9 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             new_labels[i] = old_label
         self.labels = new_labels
 
-    @Property(int)
-    def shift(self) -> int:
+    numBits = Property(int, readNumBits, setNumBits)
+
+    def readShift(self) -> int:
         """
         Bit shift.
 
@@ -469,8 +475,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return self._shift
 
-    @shift.setter
-    def shift(self, new_shift: int) -> None:
+    def setShift(self, new_shift: int) -> None:
         """
         Bit shift.
 
@@ -479,10 +484,10 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         new_shift : int
         """
         self._shift = new_shift
-        self.update_indicators()
 
-    @Property("QStringList")
-    def labels(self) -> List[str]:
+    shift = Property(int, readShift, setShift)
+
+    def readLabels(self) -> List[str]:
         """
         Labels for each bit.
 
@@ -492,8 +497,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return [str(currLabel.text()) for currLabel in self._labels]
 
-    @labels.setter
-    def labels(self, new_labels: List[str]) -> None:
+    def setLabels(self, new_labels: List[str]) -> None:
         """
         Labels for each bit.
 
@@ -508,6 +512,8 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         # Have to reset showLabels to hide or show all the new labels we just made.
         self.showLabels = self._show_labels
         self.rebuild_layout()
+
+    labels = Property("QStringList", readLabels, setLabels)
 
     def value_changed(self, new_val: int) -> None:
         """
@@ -601,14 +607,14 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         return PyDMWidget.eventFilter(self, obj, event)
 
     # whether or not we render the widget as a circle (default) or a rectangle
-    @Property(bool)
-    def renderAsRectangle(self) -> bool:
+    def readRenderAsRectangle(self) -> bool:
         return self._render_as_rectangle
 
-    @renderAsRectangle.setter
-    def renderAsRectangle(self, new_val: bool) -> None:
+    def setRenderAsRectangle(self, new_val: bool) -> None:
         if new_val != self._render_as_rectangle:
             self._render_as_rectangle = new_val
+
+    renderAsRectangle = Property(bool, readRenderAsRectangle, setRenderAsRectangle)
 
     def value_changed(self, new_val: int) -> None:
         """
@@ -658,8 +664,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         self._painter.end()
 
     # color state setters/getters
-    @Property(int)
-    def currentValue(self) -> int:
+    def readCurrentValue(self) -> int:
         """
         The color for when widget is in state 0
         Returns
@@ -668,8 +673,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._curr_state
 
-    @currentValue.setter
-    def currentValue(self, new_state: int) -> None:
+    def setCurrentValue(self, new_state: int) -> None:
         """
         The color for when widget is in state 0
         Parameters
@@ -680,9 +684,10 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
             self._curr_state = new_state
             self.value_changed(new_state)
 
+    currentValue = Property(int, readCurrentValue, setCurrentValue)
+
     # color state setters/getters
-    @Property(QColor)
-    def state0Color(self) -> QColor:
+    def readState0Color(self) -> QColor:
         """
         The color for when widget is in state 0
         Returns
@@ -691,8 +696,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[0]
 
-    @state0Color.setter
-    def state0Color(self, state_color: QColor) -> None:
+    def setState0Color(self, state_color: QColor) -> None:
         """
         The color for when widget is in state 0
         Parameters
@@ -702,8 +706,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if state_color != self._state_colors[0]:
             self._state_colors[0] = state_color
 
-    @Property(QColor)
-    def state1Color(self) -> QColor:
+    state0Color = Property(QColor, readState0Color, setState0Color)
+
+    def readState1Color(self) -> QColor:
         """
         The color for when widget is in state 1
         Returns
@@ -712,8 +717,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[1]
 
-    @state1Color.setter
-    def state1Color(self, state_color: QColor) -> None:
+    def setState1Color(self, state_color: QColor) -> None:
         """
         The color for when widget is in state 1
         Parameters
@@ -723,8 +727,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if state_color != self._state_colors[1]:
             self._state_colors[1] = state_color
 
-    @Property(QColor)
-    def state2Color(self) -> QColor:
+    state1Color = Property(QColor, readState1Color, setState1Color)
+
+    def readState2Color(self) -> QColor:
         """
         The color for when widget is in state 2
         Returns
@@ -733,8 +738,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[2]
 
-    @state2Color.setter
-    def state2Color(self, new_color: QColor) -> None:
+    def setState2Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 2
         Parameters
@@ -744,8 +748,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[2]:
             self._state_colors[2] = new_color
 
-    @Property(QColor)
-    def state3Color(self) -> QColor:
+    state2Color = Property(QColor, readState2Color, setState2Color)
+
+    def readState3Color(self) -> QColor:
         """
         The color for when widget is in state 3
         Returns
@@ -754,8 +759,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[3]
 
-    @state3Color.setter
-    def state3Color(self, new_color: QColor) -> None:
+    def setState3Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 3
         Parameters
@@ -765,8 +769,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[3]:
             self._state_colors[3] = new_color
 
-    @Property(QColor)
-    def state4Color(self) -> QColor:
+    state3Color = Property(QColor, readState3Color, setState3Color)
+
+    def readState4Color(self) -> QColor:
         """
         The color for when widget is in state 4
         Returns
@@ -775,8 +780,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[4]
 
-    @state4Color.setter
-    def state4Color(self, new_color: QColor) -> None:
+    def setState4Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 4
         Parameters
@@ -786,8 +790,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[4]:
             self._state_colors[4] = new_color
 
-    @Property(QColor)
-    def state5Color(self) -> QColor:
+    state4Color = Property(QColor, readState4Color, setState4Color)
+
+    def readState5Color(self) -> QColor:
         """
         The color for when widget is in state 5
         Returns
@@ -796,8 +801,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[5]
 
-    @state5Color.setter
-    def state5Color(self, new_color: QColor) -> None:
+    def setState5Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 5
         Parameters
@@ -807,8 +811,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[5]:
             self._state_colors[5] = new_color
 
-    @Property(QColor)
-    def state6Color(self) -> QColor:
+    state5Color = Property(QColor, readState5Color, setState5Color)
+
+    def readState6Color(self) -> QColor:
         """
         The color for when widget is in state 6
         Returns
@@ -817,8 +822,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[6]
 
-    @state6Color.setter
-    def state6Color(self, new_color: QColor) -> None:
+    def setState6Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 6
         Parameters
@@ -828,8 +832,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[6]:
             self._state_colors[6] = new_color
 
-    @Property(QColor)
-    def state7Color(self) -> QColor:
+    state6Color = Property(QColor, readState6Color, setState6Color)
+
+    def readState7Color(self) -> QColor:
         """
         The color for when widget is in state 7
         Returns
@@ -838,8 +843,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[7]
 
-    @state7Color.setter
-    def state7Color(self, new_color: QColor) -> None:
+    def setState7Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 7
         Parameters
@@ -849,8 +853,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[7]:
             self._state_colors[7] = new_color
 
-    @Property(QColor)
-    def state8Color(self) -> QColor:
+    state7Color = Property(QColor, readState7Color, setState7Color)
+
+    def readState8Color(self) -> QColor:
         """
         The color for when widget is in state 8
         Returns
@@ -859,8 +864,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[8]
 
-    @state8Color.setter
-    def state8Color(self, new_color: QColor) -> None:
+    def setState8Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 8
         Parameters
@@ -870,8 +874,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[8]:
             self._state_colors[8] = new_color
 
-    @Property(QColor)
-    def state9Color(self) -> QColor:
+    state8Color = Property(QColor, readState8Color, setState8Color)
+
+    def readState9Color(self) -> QColor:
         """
         The color for when widget is in state 9
         Returns
@@ -880,8 +885,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[9]
 
-    @state9Color.setter
-    def state9Color(self, new_color: QColor) -> None:
+    def setState9Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 9
         Parameters
@@ -891,8 +895,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[9]:
             self._state_colors[9] = new_color
 
-    @Property(QColor)
-    def state10Color(self) -> QColor:
+    state9Color = Property(QColor, readState9Color, setState9Color)
+
+    def readState10Color(self) -> QColor:
         """
         The color for when widget is in state 10
         Returns
@@ -901,8 +906,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[10]
 
-    @state10Color.setter
-    def state10Color(self, new_color: QColor) -> None:
+    def setState10Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 10
         Parameters
@@ -912,8 +916,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[10]:
             self._state_colors[10] = new_color
 
-    @Property(QColor)
-    def state11Color(self) -> QColor:
+    state10Color = Property(QColor, readState10Color, setState10Color)
+
+    def readState11Color(self) -> QColor:
         """
         The color for when widget is in state 11
         Returns
@@ -922,8 +927,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[11]
 
-    @state11Color.setter
-    def state11Color(self, new_color: QColor) -> None:
+    def setState11Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 11
         Parameters
@@ -933,8 +937,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[11]:
             self._state_colors[11] = new_color
 
-    @Property(QColor)
-    def state12Color(self) -> QColor:
+    state11Color = Property(QColor, readState11Color, setState11Color)
+
+    def readState12Color(self) -> QColor:
         """
         The color for when widget is in state 12
         Returns
@@ -943,8 +948,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[12]
 
-    @state12Color.setter
-    def state12Color(self, new_color: QColor) -> None:
+    def setState12Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 12
         Parameters
@@ -954,8 +958,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[12]:
             self._state_colors[12] = new_color
 
-    @Property(QColor)
-    def state13Color(self) -> QColor:
+    state12Color = Property(QColor, readState12Color, setState12Color)
+
+    def readState13Color(self) -> QColor:
         """
         The color for when widget is in state 13
         Returns
@@ -964,8 +969,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[13]
 
-    @state13Color.setter
-    def state13Color(self, new_color: QColor) -> None:
+    def setState13Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 13
         Parameters
@@ -975,8 +979,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[13]:
             self._state_colors[13] = new_color
 
-    @Property(QColor)
-    def state14Color(self) -> QColor:
+    state13Color = Property(QColor, readState13Color, setState13Color)
+
+    def readState14Color(self) -> QColor:
         """
         The color for when widget is in state 14
         Returns
@@ -985,8 +990,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[14]
 
-    @state14Color.setter
-    def state14Color(self, new_color: QColor) -> None:
+    def setState14Color(self, new_color: QColor) -> None:
         """
         The color for when widget is in state 14
         Parameters
@@ -996,8 +1000,9 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         if new_color != self._state_colors[14]:
             self._state_colors[14] = new_color
 
-    @Property(QColor)
-    def state15Color(self) -> QColor:
+    state14Color = Property(QColor, readState14Color, setState14Color)
+
+    def readState15Color(self) -> QColor:
         """
         The color for when widget is in state 15
         Returns
@@ -1006,8 +1011,7 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         return self._state_colors[15]
 
-    @state15Color.setter
-    def state15Color(self, state_color: QColor) -> None:
+    def setState15Color(self, state_color: QColor) -> None:
         """
         The color for when widget is in state 15
         Parameters
@@ -1016,3 +1020,5 @@ class PyDMMultiStateIndicator(QWidget, PyDMWidget):
         """
         if state_color != self._state_colors[15]:
             self._state_colors[15] = state_color
+
+    state15Color = Property(QColor, readState15Color, setState15Color)

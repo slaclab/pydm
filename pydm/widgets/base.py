@@ -10,11 +10,17 @@ import copy
 import numpy as np
 from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect, QToolTip, QWidget
 from qtpy.QtGui import QCursor, QIcon, QClipboard
-from qtpy.QtCore import Qt, QEvent, Signal, Slot, Property
+from qtpy.QtCore import Qt, QEvent, Signal, Slot
 from .channel import PyDMChannel
 from pydm import data_plugins, tools, config
 from pydm.utilities import is_qt_designer, remove_protocol
 from pydm.display import Display
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 from .rules import RulesDispatcher
 from datetime import datetime
 from typing import Optional
@@ -325,8 +331,7 @@ class PyDMPrimitiveWidget(object):
                 data_type.__name__,
             )
 
-    @Property(str, designable=False)
-    def rules(self):
+    def readRules(self) -> str:
         """
         JSON-formatted list of dictionaries, with rules for the widget.
 
@@ -336,8 +341,7 @@ class PyDMPrimitiveWidget(object):
         """
         return self._rules
 
-    @rules.setter
-    def rules(self, new_rules):
+    def setRules(self, new_rules) -> None:
         """
         JSON-formatted list of dictionaries, with rules for the widget.
 
@@ -358,6 +362,8 @@ class PyDMPrimitiveWidget(object):
                     RulesDispatcher().register(self, rules_list)
             except JSONDecodeError:
                 logger.exception("Invalid format for Rules")
+
+    rules = Property(str, readRules, setRules, designable=False)
 
     def find_parent_display(self):
         widget = self.parent()
@@ -436,8 +442,7 @@ class TextFormatter(object):
         """
         self.precision_changed(new_prec)
 
-    @Property(int)
-    def precision(self):
+    def readPrecision(self) -> int:
         """
         The precision to be used when formatting the output of the PV
 
@@ -450,8 +455,7 @@ class TextFormatter(object):
             return self._prec
         return self._user_prec
 
-    @precision.setter
-    def precision(self, new_prec):
+    def setPrecision(self, new_prec) -> None:
         """
         The precision to be used when formatting the output of the PV.
         This has no effect when ```precisionFromPV``` is True.
@@ -469,6 +473,8 @@ class TextFormatter(object):
             self._user_prec = int(new_prec)
             if not is_qt_designer() or config.DESIGNER_ONLINE:
                 self.value_changed(self.value)
+
+    precision = Property(int, readPrecision, setPrecision)
 
     @Slot(str)
     def unitChanged(self, new_unit):
@@ -499,8 +505,7 @@ class TextFormatter(object):
             if self.value is not None:
                 self.value_changed(self.value)
 
-    @Property(bool)
-    def showUnits(self):
+    def readShowUnits(self) -> bool:
         """
         A choice whether or not to show the units given by the channel
 
@@ -516,8 +521,7 @@ class TextFormatter(object):
         """
         return self._show_units
 
-    @showUnits.setter
-    def showUnits(self, show_units):
+    def setShowUnits(self, show_units) -> None:
         """
         A choice whether or not to show the units given by the channel
 
@@ -535,8 +539,9 @@ class TextFormatter(object):
             self._show_units = show_units
             self.update_format_string()
 
-    @Property(bool)
-    def precisionFromPV(self):
+    showUnits = Property(bool, readShowUnits, setShowUnits)
+
+    def readPrecisionFromPV(self):
         """
         A choice whether or not to use the precision given by channel.
 
@@ -559,8 +564,7 @@ class TextFormatter(object):
         """
         return self._precision_from_pv if self._precision_from_pv is not None else self.default_precision_from_pv
 
-    @precisionFromPV.setter
-    def precisionFromPV(self, value):
+    def setPrecisionFromPV(self, value) -> bool:
         """
         A choice whether or not to use the precision given by channel.
 
@@ -584,6 +588,8 @@ class TextFormatter(object):
         if self._precision_from_pv is None or self._precision_from_pv != bool(value):
             self._precision_from_pv = value
             self.update_format_string()
+
+    precisionFromPV = Property(bool, readPrecisionFromPV, setPrecisionFromPV)
 
     def value_changed(self, new_val):
         """
@@ -771,14 +777,14 @@ class PyDMWidget(PyDMPrimitiveWidget):
             except NameError:
                 pass
 
-    @Property(int, designable=False)
-    def alarmSeverity(self):
+    def readAlarmSeverity(self) -> int:
         return self._alarm_state
 
-    @alarmSeverity.setter
-    def alarmSeverity(self, new_severity):
+    def setAlarmSeverity(self, new_severity) -> None:
         if self._alarm_state != new_severity:
             self._alarm_state = new_severity
+
+    alarmSeverity = Property(int, readAlarmSeverity, setAlarmSeverity, designable=False)
 
     def alarm_severity_changed(self, new_alarm_severity):
         """
@@ -1054,8 +1060,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         point.setY(new_y)
         self.move(point)
 
-    @Property(bool)
-    def alarmSensitiveContent(self):
+    def readAlarmSensitiveContent(self) -> bool:
         """
         Whether or not the content color changes when alarm severity
         changes.
@@ -1068,8 +1073,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         return self._alarm_sensitive_content
 
-    @alarmSensitiveContent.setter
-    def alarmSensitiveContent(self, checked):
+    def setAlarmSensitiveContent(self, checked) -> None:
         """
         Whether or not the content color changes when alarm severity
         changes.
@@ -1083,8 +1087,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_content = checked
         self.alarm_severity_changed(self._alarm_state)
 
-    @Property(bool)
-    def alarmSensitiveBorder(self):
+    alarmSensitiveContent = Property(bool, readAlarmSensitiveContent, setAlarmSensitiveContent)
+
+    def readAlarmSensitiveBorder(self) -> bool:
         """
         Whether or not the border color changes when alarm severity changes.
 
@@ -1096,8 +1101,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         return self._alarm_sensitive_border
 
-    @alarmSensitiveBorder.setter
-    def alarmSensitiveBorder(self, checked):
+    def setAlarmSensitiveBorder(self, checked) -> None:
         """
         Whether or not the border color changes when alarm severity
         changes.
@@ -1111,8 +1115,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_border = checked
         self.alarm_severity_changed(self._alarm_state)
 
-    @Property(str)
-    def PyDMToolTip(self):
+    alarmSensitiveBorder = Property(bool, readAlarmSensitiveBorder, setAlarmSensitiveBorder)
+
+    def readPyDMToolTip(self) -> str:
         """
         The tooltip for this widget.
 
@@ -1123,8 +1128,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
         """
         return self._pydm_tool_tip
 
-    @PyDMToolTip.setter
-    def PyDMToolTip(self, new_tip):
+    def setPyDMToolTip(self, new_tip) -> None:
         """
         The tooltip for this widget.
 
@@ -1137,6 +1141,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
             self._pydm_tool_tip = str(new_tip)
             parsed_tool_tip = self.parseTip(new_tip)
             self.setToolTip(parsed_tool_tip)
+
+    PyDMToolTip = Property(str, readPyDMToolTip, setPyDMToolTip)
 
     def parseTip(self, new_tip):
         """
@@ -1196,8 +1202,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
 
         return tip_with_attribute_info
 
-    @Property(str)
-    def channel(self):
+    def readChannel(self) -> str:
         """
         The channel address in use for this widget.
 
@@ -1210,8 +1215,7 @@ class PyDMWidget(PyDMPrimitiveWidget):
             return str(self._channel)
         return None
 
-    @channel.setter
-    def channel(self, value):
+    def setChannel(self, value) -> None:
         """
         The channel address to use for this widget.
 
@@ -1221,6 +1225,8 @@ class PyDMWidget(PyDMPrimitiveWidget):
             Channel address
         """
         self.set_channel(value)
+
+    channel = Property(str, readChannel, setChannel)
 
     def set_channel(self, value):
         """A setter method without a pyqt decorator so subclasses can use this functionality"""
@@ -1425,15 +1431,13 @@ class PyDMWritableWidget(PyDMWidget):
 
         return PyDMWidget.eventFilter(self, obj, event)
 
-    @Property(bool)
-    def monitorDisp(self) -> bool:
+    def readMonitorDisp(self) -> bool:
         """
         Whether to monitor the DISP field for this widget's channel
         """
         return self._monitor_disp
 
-    @monitorDisp.setter
-    def monitorDisp(self, monitor_disp: bool) -> None:
+    def setMonitorDisp(self, monitor_disp: bool) -> None:
         """
         Whether to monitor the DISP field for this widget's channel
         """
@@ -1445,8 +1449,9 @@ class PyDMWritableWidget(PyDMWidget):
                 else:
                     self._disp_channel.disconnect()
 
-    @Property(str)
-    def channel(self) -> Optional[str]:
+    monitorDisp = Property(bool, readMonitorDisp, setMonitorDisp)
+
+    def readChannel(self) -> Optional[str]:
         """
         The channel address in use for this widget.
 
@@ -1459,8 +1464,7 @@ class PyDMWritableWidget(PyDMWidget):
             return str(self._channel)
         return None
 
-    @channel.setter
-    def channel(self, value: str) -> None:
+    def setChannel(self, value: str) -> None:
         """
         The channel address in use for this widget. Also sets up a monitor on the DISP field.
         """
@@ -1475,6 +1479,8 @@ class PyDMWritableWidget(PyDMWidget):
                     self._disp_channel.disconnect()
                 self._disp_channel = PyDMChannel(address=f"{base_channel}.DISP", value_slot=self.disp_value_changed)
                 self._disp_channel.connect()
+
+    channel = Property(str, readChannel, setChannel)
 
     def disp_value_changed(self, new_disp_value: int) -> None:
         """Callback function to receive changes to the DISP field of the monitored channel"""

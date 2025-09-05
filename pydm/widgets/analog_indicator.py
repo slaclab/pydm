@@ -1,8 +1,14 @@
 from .base import PyDMWidget
 from qtpy.QtGui import QColor, QPolygon, QPainter, QFontMetrics
 from qtpy.QtWidgets import QFrame, QSizePolicy
-from qtpy.QtCore import Qt, QPoint, Property, QSize
+from qtpy.QtCore import Qt, QPoint, QSize
 from .scale import QScale, PyDMScaleIndicator
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 
 class QScaleAlarmed(QScale):
@@ -471,8 +477,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
 
     # Reject barIndicator setter and getter
 
-    @Property(QColor)
-    def minorAlarmRegionColor(self):
+    def readMinorAlarmRegionColor(self) -> QColor:
         """
         The color of the scale background.
         Returns
@@ -481,8 +486,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return self.scale_indicator.get_minor_alarm_region_color()
 
-    @minorAlarmRegionColor.setter
-    def minorAlarmRegionColor(self, color):
+    def setMinorAlarmRegionColor(self, color) -> None:
         """
         The color of the scale background.
         Parameters
@@ -491,8 +495,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         self.scale_indicator.set_minor_alarm_region_color(color)
 
-    @Property(QColor)
-    def minorAlarmColor(self):
+    minorAlarmRegionColor = Property(QColor, readMinorAlarmRegionColor, setMinorAlarmRegionColor)
+
+    def readMinorAlarmColor(self) -> QColor:
         """
         The color of the scale background.
         Returns
@@ -501,8 +506,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return self.scale_indicator.get_minor_alarm_color()
 
-    @minorAlarmColor.setter
-    def minorAlarmColor(self, color):
+    def setMinorAlarmColor(self, color) -> None:
         """
         The color of the scale background.
         Parameters
@@ -511,8 +515,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         self.scale_indicator.set_minor_alarm_color(color)
 
-    @Property(QColor)
-    def majorAlarmRegionColor(self):
+    minorAlarmColor = Property(QColor, readMinorAlarmColor, setMinorAlarmColor)
+
+    def readMajorAlarmRegionColor(self) -> QColor:
         """
         The color of the scale background.
         Returns
@@ -521,8 +526,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return self.scale_indicator.get_major_alarm_region_color()
 
-    @majorAlarmRegionColor.setter
-    def majorAlarmRegionColor(self, color):
+    def setMajorAlarmRegionColor(self, color) -> None:
         """
         The color of the scale background.
         Parameters
@@ -531,8 +535,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         self.scale_indicator.set_major_alarm_region_color(color)
 
-    @Property(QColor)
-    def majorAlarmColor(self):
+    majorAlarmRegionColor = Property(QColor, readMajorAlarmRegionColor, setMajorAlarmRegionColor)
+
+    def readMajorAlarmColor(self) -> QColor:
         """
         The color of the scale background.
         Returns
@@ -541,8 +546,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return self.scale_indicator.get_major_alarm_color()
 
-    @majorAlarmColor.setter
-    def majorAlarmColor(self, color):
+    def setMajorAlarmColor(self, color) -> None:
         """
         The color of the scale background.
         Parameters
@@ -551,8 +555,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         self.scale_indicator.set_major_alarm_color(color)
 
-    @Property(bool)
-    def minorAlarmFromChannel(self):
+    majorAlarmColor = Property(QColor, readMajorAlarmColor, setMajorAlarmColor)
+
+    def readMinorAlarmFromChannel(self) -> bool:
         """
         Whether or not the scale indicator should use the minor alarm information
         from the channel.
@@ -562,8 +567,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return self._minor_alarm_from_channel
 
-    @minorAlarmFromChannel.setter
-    def minorAlarmFromChannel(self, checked):
+    def setMinorAlarmFromChannel(self, checked) -> None:
         """
         Whether or not the scale indicator should use the minor alarm information
         from the channel.
@@ -585,8 +589,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
                 self.scale_indicator.set_upper_minor_alarm(self._user_upper_minor_alarm)
             self.update_labels()
 
-    @Property(float)
-    def userUpperMinorAlarm(self):
+    minorAlarmFromChannel = Property(bool, readMinorAlarmFromChannel, setMinorAlarmFromChannel)
+
+    def readUserUpperMinorAlarm(self) -> float:
         """
         The user-defined upper minor alarm for the scale.
         Returns
@@ -595,8 +600,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return self._user_upper_minor_alarm
 
-    @userUpperMinorAlarm.setter
-    def userUpperMinorAlarm(self, value):
+    def setUserUpperMinorAlarm(self, value) -> None:
         """
         The user-defined upper minor alarm for the scale.
         Parameters
@@ -612,8 +616,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         self.scale_indicator.set_upper_minor_alarm(self._user_upper_minor_alarm)
         self.update_labels()
 
-    @Property(float)
-    def userLowerMinorAlarm(self):
+    userUpperMinorAlarm = Property(float, readUserUpperMinorAlarm, setUserUpperMinorAlarm)
+
+    def readUserLowerMinorAlarm(self) -> float:
         """
         The user-defined lower minor alarm for the scale.
         Returns
@@ -622,8 +627,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return self._user_lower_minor_alarm
 
-    @userLowerMinorAlarm.setter
-    def userLowerMinorAlarm(self, value):
+    def setUserLowerMinorAlarm(self, value) -> None:
         """
         The user-defined lower minor alarm for the scale.
         Parameters
@@ -639,8 +643,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         self.scale_indicator.set_lower_minor_alarm(self._user_lower_minor_alarm)
         self.update_labels()
 
-    @Property(bool)
-    def majorAlarmFromChannel(self):
+    userLowerMinorAlarm = Property(float, readUserLowerMinorAlarm, setUserLowerMinorAlarm)
+
+    def readMajorAlarmFromChannel(self) -> bool:
         """
         Whether or not the scale indicator should use the major alarm information
         from the channel.
@@ -650,8 +655,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return self._major_alarm_from_channel
 
-    @majorAlarmFromChannel.setter
-    def majorAlarmFromChannel(self, checked):
+    def setMajorAlarmFromChannel(self, checked) -> None:
         """
         Whether or not the scale indicator should use the minor alarm information
         from the channel.
@@ -677,8 +681,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
             self.scale_indicator.set_upper_major_alarm(self.upper_alarm_limit)
             self.update_labels()
 
-    @Property(float)
-    def userUpperMajorAlarm(self):
+    majorAlarmFromChannel = Property(bool, readMajorAlarmFromChannel, setMajorAlarmFromChannel)
+
+    def readUserUpperMajorAlarm(self) -> float:
         """
         The user-defined upper major alarm for the scale.
         Returns
@@ -687,8 +692,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return self._user_upper_major_alarm
 
-    @userUpperMajorAlarm.setter
-    def userUpperMajorAlarm(self, value):
+    def setUserUpperMajorAlarm(self, value) -> None:
         """
         The user-defined upper major alarm for the scale.
         Parameters
@@ -703,8 +707,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         self._user_upper_major_alarm = value
         self.scale_indicator.set_upper_major_alarm(self._user_upper_major_alarm)
 
-    @Property(float)
-    def userLowerMajorAlarm(self):
+    userUpperMajorAlarm = Property(float, readUserUpperMajorAlarm, setUserUpperMajorAlarm)
+
+    def readUserLowerMajorAlarm(self) -> float:
         """
         The user-defined lower major alarm for the scale.
         Returns
@@ -713,8 +718,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return self._user_lower_major_alarm
 
-    @userLowerMajorAlarm.setter
-    def userLowerMajorAlarm(self, value):
+    def setUserLowerMajorAlarm(self, value) -> None:
         """
         The user-defined lower major alarm for the scale.
         Parameters
@@ -728,6 +732,8 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
 
         self._user_lower_major_alarm = value
         self.scale_indicator.set_lower_major_alarm(self._user_lower_major_alarm)
+
+    userLowerMajorAlarm = Property(float, readUserLowerMajorAlarm, setUserLowerMajorAlarm)
 
     # Two properties available on PyDMScaleIndicator we don't support for PyDMAnalogIndicator
     originAtZero = Property(bool, None, None, designable=False)

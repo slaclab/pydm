@@ -1,6 +1,7 @@
 import logging
+from typing import List
 
-from qtpy.QtCore import Qt, QSize, Property, Slot, QMargins
+from qtpy.QtCore import Qt, QSize, Slot, QMargins
 from qtpy.QtGui import QPainter
 from qtpy.QtWidgets import (
     QWidget,
@@ -16,6 +17,11 @@ from qtpy.QtWidgets import (
 from .base import PyDMWritableWidget, PostParentClassInitSetup
 from pydm import data_plugins
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 
 class WidgetType(object):
@@ -109,8 +115,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         # This is totally arbitrary, I just want *some* visible nonzero size
         return QSize(50, 100)
 
-    @Property("QStringList")
-    def items(self):
+    def readItems(self) -> List[str]:
         """
         Items to be displayed in the button group.
 
@@ -123,12 +128,12 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self.enum_strings or []
 
-    @items.setter
-    def items(self, value):
+    def setItems(self, value) -> None:
         self.enum_strings_changed(value)
 
-    @Property(bool)
-    def useCustomOrder(self):
+    items = Property("QStringList", readItems, setItems)
+
+    def readUseCustomOrder(self) -> bool:
         """
         Whether or not to use custom order for the button group.
 
@@ -138,14 +143,14 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._use_custom_order
 
-    @useCustomOrder.setter
-    def useCustomOrder(self, value):
+    def setUseCustomOrder(self, value) -> None:
         if value != self._use_custom_order:
             self._use_custom_order = value
             self.rebuild_layout()
 
-    @Property(bool)
-    def invertOrder(self):
+    useCustomOrder = Property(bool, readUseCustomOrder, setUseCustomOrder)
+
+    def readInvertOrder(self) -> bool:
         """
         Whether or not to invert the order for the button group.
 
@@ -155,15 +160,15 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._invert_order
 
-    @invertOrder.setter
-    def invertOrder(self, value):
+    def setInvertOrder(self, value) -> None:
         if value != self._invert_order:
             self._invert_order = value
             if self._has_enums:
                 self.rebuild_layout()
 
-    @Property("QStringList")
-    def customOrder(self):
+    invertOrder = Property(bool, readInvertOrder, setInvertOrder)
+
+    def readCustomOrder(self) -> List[str]:
         """
         Index list in which items are to be displayed in the button group.
 
@@ -173,8 +178,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._custom_order
 
-    @customOrder.setter
-    def customOrder(self, value):
+    def setCustomOOrder(self, value) -> None:
         if value != self._custom_order:
             try:
                 [int(v) for v in value]
@@ -185,8 +189,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             if self.useCustomOrder and self._has_enums:
                 self.rebuild_layout()
 
-    @Property(WidgetType)
-    def widgetType(self):
+    customOrder = Property("QStringList", readCustomOrder, setCustomOOrder)
+
+    def readWidgetType(self) -> WidgetType:
         """
         The widget type to be used when composing the group.
 
@@ -196,8 +201,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._widget_type
 
-    @widgetType.setter
-    def widgetType(self, new_type):
+    def setWidgetType(self, new_type) -> None:
         """
         The widget type to be used when composing the group.
 
@@ -209,8 +213,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             self._widget_type = new_type
             self.rebuild_widgets()
 
-    @Property(Qt.Orientation)
-    def orientation(self):
+    widgetType = Property(WidgetType, readWidgetType, setWidgetType)
+
+    def readOrientation(self) -> int | Qt.Orientation:
         """
         Whether to lay out the bit indicators vertically or horizontally.
 
@@ -220,8 +225,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._orientation
 
-    @orientation.setter
-    def orientation(self, new_orientation):
+    def setOrientation(self, new_orientation) -> None:
         """
         Whether to lay out the bit indicators vertically or horizontally.
 
@@ -233,8 +237,10 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             self._orientation = new_orientation
             self.rebuild_layout()
 
-    @Property(int)
-    def marginTop(self):
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Orientation
+    orientation = Property(prop_type, readOrientation, setOrientation)
+
+    def readMarginTop(self) -> int:
         """
         The top margin of the QGridLayout of buttons.
 
@@ -244,8 +250,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._layout_margins.top()
 
-    @marginTop.setter
-    def marginTop(self, new_margin):
+    def setMarginTop(self, new_margin) -> None:
         """
         Set the top margin of the QGridLayout of buttons.
 
@@ -257,8 +262,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         self._layout_margins.setTop(new_margin)
         self.layout().setContentsMargins(self._layout_margins)
 
-    @Property(int)
-    def marginBottom(self):
+    marginTop = Property(int, readMarginTop, setMarginTop)
+
+    def readMarginBottom(self) -> int:
         """
         The bottom margin of the QGridLayout of buttons.
 
@@ -268,8 +274,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._layout_margins.bottom()
 
-    @marginBottom.setter
-    def marginBottom(self, new_margin):
+    def setMarginBottom(self, new_margin) -> None:
         """
         Set the bottom margin of the QGridLayout of buttons.
 
@@ -281,8 +286,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         self._layout_margins.setBottom(new_margin)
         self.layout().setContentsMargins(self._layout_margins)
 
-    @Property(int)
-    def marginLeft(self):
+    marginBottom = Property(int, readMarginBottom, setMarginBottom)
+
+    def readMarginLeft(self) -> int:
         """
         The left margin of the QGridLayout of buttons.
 
@@ -292,8 +298,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._layout_margins.left()
 
-    @marginLeft.setter
-    def marginLeft(self, new_margin):
+    def setMarginLeft(self, new_margin) -> None:
         """
         Set the left margin of the QGridLayout of buttons.
 
@@ -305,8 +310,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         self._layout_margins.setLeft(new_margin)
         self.layout().setContentsMargins(self._layout_margins)
 
-    @Property(int)
-    def marginRight(self):
+    marginLeft = Property(int, readMarginLeft, setMarginLeft)
+
+    def readMarginRight(self) -> int:
         """
         The right margin of the QGridLayout of buttons.
 
@@ -316,8 +322,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._layout_margins.right()
 
-    @marginRight.setter
-    def marginRight(self, new_margin):
+    def setMarginRight(self, new_margin) -> None:
         """
         Set the right margin of the QGridLayout of buttons.
 
@@ -329,8 +334,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         self._layout_margins.setRight(new_margin)
         self.layout().setContentsMargins(self._layout_margins)
 
-    @Property(int)
-    def horizontalSpacing(self):
+    marginRight = Property(int, readMarginRight, setMarginRight)
+
+    def readHorizontalSpacing(self) -> int:
         """
         The horizontal gap of the QGridLayout containing the QButtonGroup.
 
@@ -340,8 +346,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._layout_spacing_horizontal
 
-    @horizontalSpacing.setter
-    def horizontalSpacing(self, new_spacing):
+    def setHorizontalSpacing(self, new_spacing) -> None:
         """
         Set the layout horizontal gap between buttons.
 
@@ -354,8 +359,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             self._layout_spacing_horizontal = new_spacing
             self.layout().setHorizontalSpacing(new_spacing)
 
-    @Property(int)
-    def verticalSpacing(self):
+    horizontalSpacing = Property(int, readHorizontalSpacing, setHorizontalSpacing)
+
+    def readVerticalSpacing(self) -> int:
         """
         The vertical gap of the QGridLayout containing the QButtonGroup.
 
@@ -365,8 +371,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._layout_spacing_vertical
 
-    @verticalSpacing.setter
-    def verticalSpacing(self, new_spacing):
+    def setVerticalSpacing(self, new_spacing) -> None:
         """
         Set the layout vertical gap between buttons.
 
@@ -379,8 +384,9 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
             self._layout_spacing_vertical = new_spacing
             self.layout().setVerticalSpacing(new_spacing)
 
-    @Property(bool)
-    def checkable(self):
+    verticalSpacing = Property(int, readVerticalSpacing, setVerticalSpacing)
+
+    def readCheckable(self) -> bool:
         """
         Whether or not the button should be checkable.
 
@@ -390,12 +396,13 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         """
         return self._checkable
 
-    @checkable.setter
-    def checkable(self, value):
+    def setCheckable(self, value) -> None:
         if value != self._checkable:
             self._checkable = value
             for widget in self._widgets:
                 widget.setCheckable(value)
+
+    checkable = Property(bool, readCheckable, setCheckable)
 
     @Slot(QAbstractButton)
     def handle_button_clicked(self, button):

@@ -1,7 +1,7 @@
 import logging
 import numpy as np
 from decimal import Decimal
-from qtpy.QtCore import Qt, Signal, Slot, Property, QRect, QPoint, QSize
+from qtpy.QtCore import Qt, Signal, Slot, QRect, QPoint, QSize
 from qtpy.QtWidgets import (
     QFrame,
     QLabel,
@@ -18,6 +18,12 @@ from qtpy.QtWidgets import (
 from pydm.widgets import PyDMLabel
 from .base import PyDMWritableWidget, TextFormatter, is_channel_valid
 from .channel import PyDMChannel
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 logger = logging.getLogger(__name__)
 _step_size_properties = {
@@ -501,8 +507,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         self.value = 0.0
 
-    @Property(Qt.Orientation)
-    def orientation(self):
+    def readOrientation(self) -> int | Qt.Orientation:
         """
         The slider orientation (Horizontal or Vertical)
 
@@ -513,8 +518,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._orientation
 
-    @orientation.setter
-    def orientation(self, new_orientation):
+    def setOrientation(self, new_orientation) -> None:
         """
         The slider orientation (Horizontal or Vertical)
 
@@ -525,6 +529,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         self._orientation = new_orientation
         self.setup_widgets_for_orientation(new_orientation)
+
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Orientation
+    orientation = Property(prop_type, readOrientation, setOrientation)
 
     def setup_widgets_for_orientation(self, new_orientation):
         """
@@ -922,8 +929,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             except IndexError:
                 pass
 
-    @Property(bool)
-    def tracking(self):
+    def readTracking(self) -> bool:
         """
         If tracking is enabled (the default), the slider emits new values
         while the slider is being dragged.  If tracking is disabled, it will
@@ -935,9 +941,10 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._slider.hasTracking()
 
-    @tracking.setter
-    def tracking(self, checked):
+    def setTracking(self, checked) -> None:
         self._slider.setTracking(checked)
+
+    tracking = Property(bool, readTracking, setTracking)
 
     def hasTracking(self):
         """
@@ -953,8 +960,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         self.tracking = checked
 
-    @Property(bool)
-    def ignoreMouseWheel(self):
+    def readIgnoreMouseWheel(self) -> bool:
         """
         If true, the mouse wheel will not change the value of the slider.
         This is useful if you want to put sliders inside a scroll view, and
@@ -962,16 +968,16 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._ignore_mouse_wheel
 
-    @ignoreMouseWheel.setter
-    def ignoreMouseWheel(self, checked):
+    def setIgnoreMouseWheel(self, checked) -> None:
         self._ignore_mouse_wheel = checked
         if checked:
             self._slider.wheelEvent = self.wheelEvent
         else:
             self._slider.wheelEvent = self._orig_wheel_event
 
-    @Property(bool)
-    def showLimitLabels(self):
+    ignoreMouseWheel = Property(bool, readIgnoreMouseWheel, setIgnoreMouseWheel)
+
+    def readShowLimitLabels(self) -> bool:
         """
         Whether or not the high and low limits should be displayed on the slider.
 
@@ -981,8 +987,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._show_limit_labels
 
-    @showLimitLabels.setter
-    def showLimitLabels(self, checked):
+    def setShowLimitLabels(self, checked) -> None:
         """
         Whether or not the high and low limits should be displayed on the slider.
 
@@ -998,8 +1003,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             self.low_lim_label.hide()
             self.high_lim_label.hide()
 
-    @Property(bool)
-    def showValueLabel(self):
+    showLimitLabels = Property(bool, readShowLimitLabels, setShowLimitLabels)
+
+    def readShowValueLabel(self) -> bool:
         """
         Whether or not the current value should be displayed on the slider.
 
@@ -1009,8 +1015,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._show_value_label
 
-    @showValueLabel.setter
-    def showValueLabel(self, checked):
+    def setShowValueLabel(self, checked) -> None:
         """
         Whether or not the current value should be displayed on the slider.
 
@@ -1024,8 +1029,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         else:
             self.value_label.hide()
 
-    @Property(QSlider.TickPosition)
-    def tickPosition(self):
+    showValueLabel = Property(bool, readShowValueLabel, setShowValueLabel)
+
+    def readTickPosition(self) -> QSlider.TickPosition:
         """
         Where to draw tick marks for the slider.
 
@@ -1035,8 +1041,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._slider.tickPosition()
 
-    @tickPosition.setter
-    def tickPosition(self, position):
+    def setTickPosition(self, position) -> None:
         """
         Where to draw tick marks for the slider.
 
@@ -1046,8 +1051,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         self._slider.setTickPosition(position)
 
-    @Property(bool)
-    def userDefinedLimits(self):
+    tickPosition = Property(QSlider.TickPosition, readTickPosition, setTickPosition)
+
+    def readUserDefinedLimits(self) -> bool:
         """
         Whether or not to use limits defined by the user and not from the
         channel
@@ -1058,8 +1064,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._user_defined_limits
 
-    @userDefinedLimits.setter
-    def userDefinedLimits(self, user_defined_limits):
+    def setUserDefinedLimits(self, user_defined_limits) -> None:
         """
         Whether or not to use limits defined by the user and not from the
         channel
@@ -1071,8 +1076,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self._user_defined_limits = user_defined_limits
         self.reset_slider_limits()
 
-    @Property(float)
-    def userMinimum(self):
+    userDefinedLimits = Property(bool, readUserDefinedLimits, setUserDefinedLimits)
+
+    def readUserMinimum(self) -> float:
         """
         Lower user defined limit value
 
@@ -1082,8 +1088,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._user_minimum
 
-    @userMinimum.setter
-    def userMinimum(self, new_min):
+    def setUserMinimum(self, new_min) -> None:
         """
         Lower user defined limit value
 
@@ -1095,8 +1100,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         if self.userDefinedLimits:
             self.reset_slider_limits()
 
-    @Property(float)
-    def userMaximum(self):
+    userMinimum = Property(float, readUserMinimum, setUserMinimum)
+
+    def readUserMaximum(self) -> float:
         """
         Upper user defined limit value
 
@@ -1106,8 +1112,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._user_maximum
 
-    @userMaximum.setter
-    def userMaximum(self, new_max):
+    def setUserMaximum(self, new_max) -> None:
         """
         Upper user defined limit value
 
@@ -1118,6 +1123,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self._user_maximum = float(new_max) if new_max is not None else None
         if self.userDefinedLimits:
             self.reset_slider_limits()
+
+    userMaximum = Property(float, readUserMaximum, setUserMaximum)
 
     @property
     def minimum(self):
@@ -1145,8 +1152,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             return self._user_maximum
         return self._upper_ctrl_limit
 
-    @Property(int)
-    def num_steps(self):
+    def read_num_steps(self) -> int:
         """
         The number of steps on the slider
 
@@ -1156,8 +1162,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         """
         return self._num_steps
 
-    @num_steps.setter
-    def num_steps(self, new_steps):
+    def set_num_steps(self, new_steps) -> None:
         """
         The number of steps on the slider
 
@@ -1169,8 +1174,9 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         self._num_steps = int(new_steps)
         self.reset_slider_limits()
 
-    @Property(float)
-    def step_size(self):
+    num_steps = Property(int, read_num_steps, set_num_steps)
+
+    def read_step_size(self) -> int:
         """
         The number of steps on the slider
 
@@ -1181,8 +1187,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         return self._step_size
 
-    @step_size.setter
-    def step_size(self, new_step_size):
+    def set_step_size(self, new_step_size) -> None:
         """
         The number of steps on the slider
 
@@ -1202,6 +1207,8 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         return True
 
+    step_size = Property(float, read_step_size, set_step_size)
+
     @Slot(str)
     @Slot(float)
     def step_size_changed(self, new_val):
@@ -1218,16 +1225,16 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         except ValueError:
             logger.debug("cannot cast PV value as float")
 
-    @Property(str)
-    def step_size_channel(self):
+    def read_step_size_channel(self) -> None:
         """
         String to connect to pydm channel after initialization
         """
         return self._step_size_channel
 
-    @step_size_channel.setter
-    def step_size_channel(self, step_size_channel):
+    def set_step_size_channel(self, step_size_channel):
         self._step_size_channel = step_size_channel
+
+    step_size_channel = Property(str, read_step_size_channel, set_step_size_channel)
 
     @property
     def value(self):

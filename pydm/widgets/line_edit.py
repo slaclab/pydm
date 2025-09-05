@@ -5,12 +5,17 @@ import shlex
 import logging
 from functools import partial
 from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
-from qtpy.QtCore import Property, Qt
+from qtpy.QtCore import Qt
 from qtpy.QtGui import QFocusEvent
 from .base import PyDMWritableWidget, TextFormatter, str_types, PostParentClassInitSetup
 from pydm import utilities
 from .display_format import DisplayFormat, parse_value_for_display
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 logger = logging.getLogger(__name__)
 
@@ -69,16 +74,16 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
     def eventFilter(self, obj, event):
         return PyDMWritableWidget.eventFilter(self, obj, event)
 
-    @Property(DisplayFormat)
-    def displayFormat(self):
+    def readDisplayFormat(self) -> DisplayFormat:
         return self._display_format_type
 
-    @displayFormat.setter
-    def displayFormat(self, new_type):
+    def setDisplayFormat(self, new_type) -> None:
         if self._display_format_type != new_type:
             self._display_format_type = new_type
             # Trigger the update of display format
             self.value_changed(self.value)
+
+    displayFormat = Property(DisplayFormat, readDisplayFormat, setDisplayFormat)
 
     def value_changed(self, new_val):
         """

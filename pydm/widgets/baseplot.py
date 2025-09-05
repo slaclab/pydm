@@ -5,7 +5,7 @@ import numpy as np
 import weakref
 from abc import abstractmethod
 from qtpy.QtGui import QColor, QFont, QBrush
-from qtpy.QtCore import Signal, Slot, Property, QTimer, Qt, QEvent, QObject, QRect, QPointF
+from qtpy.QtCore import Signal, Slot, QTimer, Qt, QEvent, QObject, QRect, QPointF
 from qtpy.QtWidgets import QToolTip, QWidget
 from pydm import utilities
 from pyqtgraph import (
@@ -23,6 +23,12 @@ from collections import OrderedDict
 from typing import Dict, List, Optional, Union, Any
 from .base import PyDMPrimitiveWidget, widget_destroyed
 from .multi_axis_plot import MultiAxisPlot
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 
 class NoDataError(Exception):
@@ -1409,8 +1415,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         self._max_y = new_max_y_range
         self.plotItem.setYRange(self._min_y, self._max_y, padding=0)
 
-    @Property(bool)
-    def mouseEnabledX(self) -> bool:
+    def readMouseEnabledX(self) -> bool:
         """
         Whether or not mouse interactions are enabled for the X-axis.
 
@@ -1420,8 +1425,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self.plotItem.getViewBox().state["mouseEnabled"][0]
 
-    @mouseEnabledX.setter
-    def mouseEnabledX(self, x_enabled: bool) -> None:
+    def setMouseEnabledX(self, x_enabled: bool) -> None:
         """
         Whether or not mouse interactions are enabled for the X-axis.
 
@@ -1431,8 +1435,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         self.plotItem.setMouseEnabled(x=x_enabled)
 
-    @Property(bool)
-    def mouseEnabledY(self) -> bool:
+    mouseEnabledX = Property(bool, readMouseEnabledX, setMouseEnabledX)
+
+    def readMouseEnabledY(self) -> bool:
         """
         Whether or not mouse interactions are enabled for the Y-axis.
 
@@ -1442,8 +1447,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self.plotItem.getViewBox().state["mouseEnabled"][1]
 
-    @mouseEnabledY.setter
-    def mouseEnabledY(self, y_enabled: bool) -> None:
+    def setMouseEnabledY(self, y_enabled: bool) -> None:
         """
         Whether or not mouse interactions are enabled for the Y-axis.
 
@@ -1453,8 +1457,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         self.plotItem.setMouseEnabled(y=y_enabled)
 
-    @Property(int)
-    def maxRedrawRate(self) -> int:
+    mouseEnabledY = Property(bool, readMouseEnabledY, setMouseEnabledY)
+
+    def readMaxRedrawRate(self) -> int:
         """
         The maximum rate (in Hz) at which the plot will be redrawn.
         The plot will not be redrawn if there is not new data to draw.
@@ -1465,8 +1470,7 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         return self._redraw_rate
 
-    @maxRedrawRate.setter
-    def maxRedrawRate(self, redraw_rate: int) -> None:
+    def setMaxRedrawRate(self, redraw_rate: int) -> None:
         """
         The maximum rate (in Hz) at which the plot will be redrawn.
         The plot will not be redrawn if there is not new data to draw.
@@ -1477,6 +1481,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
         self._redraw_rate = redraw_rate
         self.redraw_timer.setInterval(int((1.0 / self._redraw_rate) * 1000))
+
+    maxRedrawRate = Property(int, readMaxRedrawRate, setMaxRedrawRate)
 
     def pausePlotting(self) -> bool:
         (self.redraw_timer.stop() if self.redraw_timer.isActive() else self.redraw_timer.start())

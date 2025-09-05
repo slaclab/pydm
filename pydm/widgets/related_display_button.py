@@ -6,7 +6,7 @@ from functools import partial
 import hashlib
 from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
-from qtpy.QtCore import Slot, Property, Qt, QSize, QPoint
+from qtpy.QtCore import Slot, Qt, QSize, QPoint
 from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
 from pydm.utilities import IconFont, find_file, is_pydm_app
@@ -14,6 +14,12 @@ from pydm.utilities.macro import parse_macro_string
 from pydm.utilities.stylesheet import merge_widget_stylesheet
 from pydm.display import load_file, ScreenTarget
 from typing import Optional, List
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 logger = logging.getLogger(__name__)
 
@@ -115,8 +121,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
         self.setToolTip(tooltip)
 
-    @Property(str)
-    def PyDMIcon(self) -> str:
+    def readPyDMIcon(self) -> str:
         """
         Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
         See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
@@ -128,8 +133,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         return self._pydm_icon_name
 
-    @PyDMIcon.setter
-    def PyDMIcon(self, value: str) -> None:
+    def setPyDMIcon(self, value: str) -> None:
         """
         Name of icon to be set from Qt provided standard icons or from the "Font Awesome" icon-set.
         See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
@@ -155,8 +159,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
         self._pydm_icon_name = value
 
-    @Property(QColor)
-    def PyDMIconColor(self) -> QColor:
+    PyDMIcon = Property(str, readPyDMIcon, setPyDMIcon)
+
+    def readPyDMIconColor(self) -> QColor:
         """
         The color of the icon (color is only applied if using icon from the "Font Awesome" set)
         Returns
@@ -165,8 +170,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         return self._pydm_icon_color
 
-    @PyDMIconColor.setter
-    def PyDMIconColor(self, state_color: QColor) -> None:
+    def setPyDMIconColor(self, state_color: QColor) -> None:
         """
         The color of the icon (color is only applied if using icon from the "Font Awesome" set)
         Parameters
@@ -183,23 +187,25 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             except Exception:
                 return
 
-    @Property("QStringList")
-    def filenames(self) -> List[str]:
+    PyDMIconColor = Property(QColor, readPyDMIconColor, setPyDMIconColor)
+
+    def readFilenames(self) -> List[str]:
         return self._filenames
 
-    @filenames.setter
-    def filenames(self, val: List[str]) -> None:
+    def setFilenames(self, val: List[str]) -> None:
         self._filenames = val
         self._menu_needs_rebuild = True
 
-    @Property("QStringList")
-    def titles(self) -> List[str]:
+    filenames = Property("QStringList", readFilenames, setFilenames)
+
+    def readTitles(self) -> List[str]:
         return self._titles
 
-    @titles.setter
-    def titles(self, val: List[str]) -> None:
+    def setTitles(self, val: List[str]) -> None:
         self._titles = val
         self._menu_needs_rebuild = True
+
+    titles = Property("QStringList", readTitles, setTitles)
 
     def _get_items(self):
         """
@@ -242,8 +248,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         self.setMenu(menu)
         self._menu_needs_rebuild = False
 
-    @Property(bool)
-    def showIcon(self) -> bool:
+    def readShowIcon(self) -> bool:
         """
         Whether or not we should show the selected Icon.
 
@@ -253,8 +258,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         return self._show_icon
 
-    @showIcon.setter
-    def showIcon(self, value: bool) -> None:
+    def setShowIcon(self, value: bool) -> None:
         """
         Whether or not we should show the selected Icon.
 
@@ -271,8 +275,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
                 self._icon = self.icon()
                 self.setIcon(QIcon())
 
-    @Property(str, designable=False)
-    def displayFilename(self) -> str:
+    showIcon = Property(bool, readShowIcon, setShowIcon)
+
+    def readDisplayFilename(self) -> str:
         """
         DEPRECATED: use the 'filenames' property.
         This property simply returns the first filename from the 'filenames'
@@ -287,8 +292,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             return ""
         return self.filenames[0]
 
-    @displayFilename.setter
-    def displayFilename(self, value: str) -> None:
+    def setDisplayFilename(self, value: str) -> None:
         """
         DEPRECATED: use the 'filenames' property.
         Any value set to this property is appended to the 'filenames'
@@ -309,8 +313,14 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             self.filenames = self.filenames + file_list
         self._display_filename = ""
 
-    @Property(bool)
-    def recursiveDisplaySearch(self) -> bool:
+    displayFilename = Property(
+        str,
+        readDisplayFilename,
+        setDisplayFilename,
+        designable=False,
+    )
+
+    def readRecursiveDisplaySearch(self) -> bool:
         """
         Whether or not to search for a provided display file recursively
         in subfolders relative to the location of this display.
@@ -322,8 +332,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         return self._recursive_display_search
 
-    @recursiveDisplaySearch.setter
-    def recursiveDisplaySearch(self, new_value) -> None:
+    def setRecursiveDisplaySearch(self, new_value) -> None:
         """
         Set whether or not to search for a provided display file recursively
         in subfolders relative to the location of this display.
@@ -335,8 +344,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         self._recursive_display_search = new_value
 
-    @Property("QStringList")
-    def macros(self) -> List[str]:
+    recursiveDisplaySearch = Property(bool, readRecursiveDisplaySearch, setRecursiveDisplaySearch)
+
+    def readMacros(self) -> List[str]:
         """
         The macro substitutions to use when launching the display, in JSON object format.
 
@@ -346,8 +356,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         return self._macros
 
-    @macros.setter
-    def macros(self, new_macros: List[str]) -> None:
+    def setMacros(self, new_macros: List[str]) -> None:
         """
         The macro substitutions to use when launching the display, in JSON object format.
 
@@ -360,8 +369,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             new_macros = [new_macros]
         self._macros = new_macros
 
-    @Property(bool)
-    def openInNewWindow(self) -> bool:
+    macros = Property("QStringList", readMacros, setMacros)
+
+    def readOpenInNewWindow(self) -> bool:
         """
         If true, the button will open the display in a new window, rather than in the existing window.
 
@@ -371,8 +381,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         return self._open_in_new_window
 
-    @openInNewWindow.setter
-    def openInNewWindow(self, open_in_new: bool) -> None:
+    def setOpenInNewWindow(self, open_in_new: bool) -> None:
         """
         If true, the button will open the display in a new window, rather than in the existing window.
 
@@ -382,8 +391,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         self._open_in_new_window = open_in_new
 
-    @Property(bool)
-    def passwordProtected(self) -> bool:
+    openInNewWindow = Property(bool, readOpenInNewWindow, setOpenInNewWindow)
+
+    def readPasswordProtected(self) -> bool:
         """
         Whether or not this button is password protected.
 
@@ -394,8 +404,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         return self._password_protected
 
-    @passwordProtected.setter
-    def passwordProtected(self, value: bool) -> None:
+    def setPasswordProtected(self, value: bool) -> None:
         """
         Whether or not this button is password protected.
 
@@ -406,8 +415,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         if self._password_protected != value:
             self._password_protected = value
 
-    @Property(str)
-    def password(self) -> str:
+    passwordProtected = Property(bool, readPasswordProtected, setPasswordProtected)
+
+    def readPassword(self) -> str:
         """
         Password to be encrypted using SHA256.
 
@@ -420,8 +430,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         return ""
 
-    @password.setter
-    def password(self, value: str) -> None:
+    def setPassword(self, value: str) -> None:
         """
         Password to be encrypted using SHA256.
 
@@ -442,8 +451,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             if formWindow:
                 formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
 
-    @Property(str)
-    def protectedPassword(self) -> str:
+    password = Property(str, readPassword, setPassword)
+
+    def readProtectedPassword(self) -> str:
         """
         The encrypted password.
 
@@ -453,13 +463,13 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         return self._protected_password
 
-    @protectedPassword.setter
-    def protectedPassword(self, value: str) -> None:
+    def setProtectedPassword(self, value: str) -> None:
         if self._protected_password != value:
             self._protected_password = value
 
-    @Property(bool)
-    def followSymlinks(self) -> bool:
+    protectedPassword = Property(str, readProtectedPassword, setProtectedPassword)
+
+    def readFollowSymlinks(self) -> bool:
         """
         If True, any symlinks in the path to filename (including the base path of the parent display) will be followed,
         so that it will always use the canonical path. If False (default), the file will be searched without
@@ -473,8 +483,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         return self._follow_symlinks
 
-    @followSymlinks.setter
-    def followSymlinks(self, follow_symlinks: bool) -> None:
+    def setFollowSymlinks(self, follow_symlinks: bool) -> None:
         """
         If True, any symlinks in the path to filename (including the base path of the parent display)
         will be followed, so that it will always use the canonical path.
@@ -487,6 +496,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         follow_symlinks : bool
         """
         self._follow_symlinks = follow_symlinks
+
+    followSymlinks = Property(bool, readFollowSymlinks, setFollowSymlinks)
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if self._menu_needs_rebuild:
