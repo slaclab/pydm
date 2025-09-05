@@ -48,6 +48,7 @@ def test_reimplemented_ui_filename(qtbot):
     qtbot.addWidget(my_display)
 
 
+# @QT_WRAPPER_SPECIFIC
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
 
     def test_nonexistent_ui_file_raises_pyqt5(qtbot):

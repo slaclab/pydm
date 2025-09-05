@@ -9,9 +9,21 @@ from scratch is probably using the Conda system. We recommended using Conda from
 python environment, and want to install PyDM for use with that, you can do that
 with pip.
 
+PyDM runs using python bindings ontop of Qt, and works with either PyQt5 (to run on Qt5) or PySide6 (to run on Qt6). For now, PyQt5 is the recommended choice to run with, 
+whereas PySide6 provides future-proofing and the potential for new Qt6 specific features.
+(Note: currently functionality is the same between PyQt and PySide6)
+
+In general, running PyDm with a chosen python binding is as simple as follows: 
+loading a conda environment that has installed PyDM and PyQt5 or PySide6 (along with the other required packages), 
+and then setting the QT_API environment variable accordingly ("pyqt5" or "pyside6".)
+Then when you run PyDM it will automatically use your selected binding.
+(Note: It's not recommended to try installing both PyQt5 and PySide6 into the same conda environment, as this might cause issues with the underlying Qt libraries.)
+
+Instructions for setting up conda environments for PyQt5 and for PySide6 are provided later on this page.
+
 Please note, this guide is written with Unix in mind, so there are probably some differences when installing on Windows.
 
-Installing PyDM and Prerequisites with Conda
+Installing PyDM and Prerequisites with Conda (PyQt5)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. warning::
@@ -48,7 +60,24 @@ Now, you can use 'open' to open Designer.app::
 
     $ export QT_MAC_WANTS_LAYER=1
 
-Installing Manually, Without Anaconda
+Installing PyDM and Prerequisites with Conda (PySide6)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+After installing Miniforge (see https://conda-forge.org/download/), create a new
+environment for PyDM::
+
+.. note::
+  Pyside6 is installed with into the conda environment with pip b/c the conda install doesn't provide the pyside6-designer bin currently.
+  
+  $ conda create -n pydm-environment-pyside python pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
+  $ source activate pydm-environment
+  $ pip install PySide6
+
+Once you've installed and activated the environment, you should be able to run 'pydm' to launch PyDM, or run 'pyside6-designer' to launch Qt Designer. 
+
+MacOS and Windows instructions coming soon...
+
+Installing Manually, Without Anaconda (PyQt5)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This alternate installation method is only recommended for large 'site' installations that want to avoid using Anaconda.
 
@@ -77,6 +106,10 @@ PyQt5
 and extract the archive.  Follow `the provided instructions <http://pyqt.sourceforge.net/Docs/PyQt5/installation.html#building-and-installing-from-source>`_ to
 build and install it.  Note that you may need to manually set the '--qmake' option to point to the
 qmake binary you created when you built Qt5.
+
+Installing Manually, Without Anaconda (PySide6)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Coming soon...
 
 Installing PyDM with PIP
 ++++++++++++++++++++++++
