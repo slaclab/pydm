@@ -35,7 +35,7 @@ as the abstraction layer for the Qt Python wrappers (PyQt5/PyQt4/PySide2/PySide)
 **All tests are performed with PyQt5**.
 
 # Prerequisites
-* Python 3.9+
+* Python 3.10+
 * Qt 5.6 or higher
 * qtpy
 * PyQt5 >= 5.7 or any other Qt Python wrapper.
