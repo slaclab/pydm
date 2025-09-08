@@ -1,6 +1,6 @@
 from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from qtpy.QtWidgets import QAction, QFrame, QApplication, QLabel, QMenu, QVBoxLayout
-from qtpy.QtCore import QPoint, Qt, QSize, Property, QTimer
+from qtpy.QtCore import QPoint, Qt, QSize, QTimer
 
 import copy
 import os.path
@@ -16,6 +16,12 @@ from pydm.utilities import (
     find_file,
 )
 from pydm.display import load_file, ScreenTarget
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 logger = logging.getLogger(__name__)
 
@@ -102,8 +108,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         # This is totally arbitrary, I just want *some* visible nonzero size
         return QSize(100, 100)
 
-    @Property(str)
-    def macros(self):
+    def readMacros(self) -> str:
         """
         JSON-formatted string containing macro variables to pass to the embedded file.
 
@@ -115,8 +120,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             return ""
         return self._macros
 
-    @macros.setter
-    def macros(self, new_macros):
+    def setMacros(self, new_macros) -> None:
         """
         JSON-formatted string containing macro variables to pass to the embedded file.
 
@@ -135,8 +139,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             self._needs_load = True
         self.load_if_needed()
 
-    @Property(str)
-    def filename(self):
+    macros = Property(str, readMacros, setMacros)
+
+    def readFilename(self) -> str:
         """
         Filename of the display to embed.
 
@@ -148,8 +153,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             return ""
         return self._filename
 
-    @filename.setter
-    def filename(self, filename):
+    def setFilename(self, filename) -> None:
         """
         Filename of the display to embed.
 
@@ -169,8 +173,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
                 self.clear_error_text()
         self.load_if_needed()
 
-    @Property(bool)
-    def recursiveDisplaySearch(self) -> bool:
+    filename = Property(str, readFilename, setFilename)
+
+    def readRecursiveDisplaySearch(self) -> bool:
         """
         Whether or not to search for a provided display file recursively
         in subfolders relative to the location of this display.
@@ -182,8 +187,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         return self._recursive_display_search
 
-    @recursiveDisplaySearch.setter
-    def recursiveDisplaySearch(self, new_value) -> None:
+    def setRecursiveDisplaySearch(self, new_value) -> None:
         """
         Set whether or not to search for a provided display file recursively
         in subfolders relative to the location of this display.
@@ -194,6 +198,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
             If recursive search should be enabled.
         """
         self._recursive_display_search = new_value
+
+    recursiveDisplaySearch = Property(bool, readRecursiveDisplaySearch, setRecursiveDisplaySearch)
 
     def set_macros_and_filename(self, new_filename, new_macros):
         """
@@ -341,8 +347,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         close_widget_connections(self.embedded_widget)
         self._is_connected = False
 
-    @Property(bool)
-    def loadWhenShown(self):
+    def readLoadWhenShown(self) -> bool:
         """
         If True, only load and display the file once the
         PyDMEmbeddedDisplayWidget is visible on screen.  This is very useful
@@ -359,13 +364,13 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         return self._only_load_when_shown
 
-    @loadWhenShown.setter
-    def loadWhenShown(self, val):
+    def setLoadWhenShown(self, val) -> None:
         self._only_load_when_shown = val
         self.load_if_needed()
 
-    @Property(bool)
-    def disconnectWhenHidden(self):
+    loadWhenShown = Property(bool, readLoadWhenShown, setLoadWhenShown)
+
+    def readDisconnectWhenHidden(self) -> bool:
         """
         Disconnect from PVs when this widget is not visible.
 
@@ -375,8 +380,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         return self._disconnect_when_hidden
 
-    @disconnectWhenHidden.setter
-    def disconnectWhenHidden(self, disconnect_when_hidden):
+    def setDisconnectWhenHidden(self, disconnect_when_hidden) -> None:
         """
         Disconnect from PVs when this widget is not visible.
 
@@ -386,8 +390,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         self._disconnect_when_hidden = disconnect_when_hidden
 
-    @Property(bool)
-    def followSymlinks(self) -> bool:
+    disconnectWhenHidden = Property(bool, readDisconnectWhenHidden, setDisconnectWhenHidden)
+
+    def readFollowSymlinks(self) -> bool:
         """
         If True, any symlinks in the path to filename (including the base path of the parent display)
         will be followed, so that it will always use the canonical path. If False (default),
@@ -401,8 +406,7 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         return self._follow_symlinks
 
-    @followSymlinks.setter
-    def followSymlinks(self, follow_symlinks: bool) -> None:
+    def setFollowSymlinks(self, follow_symlinks: bool) -> None:
         """
         If True, any symlinks in the path to filename (including the base path of the parent display)
         will be followed, so that it will always use the canonical path.
@@ -415,6 +419,8 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         follow_symlinks : bool
         """
         self._follow_symlinks = follow_symlinks
+
+    followSymlinks = Property(bool, readFollowSymlinks, setFollowSymlinks)
 
     def showEvent(self, e):
         """

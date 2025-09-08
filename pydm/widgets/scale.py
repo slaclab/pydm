@@ -1,8 +1,14 @@
 from .base import PyDMWidget, TextFormatter, PostParentClassInitSetup
 from qtpy.QtGui import QColor, QPolygon, QPen, QPainter, QPaintEvent
 from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
-from qtpy.QtCore import Qt, QPoint, Property
+from qtpy.QtCore import Qt, QPoint
 from typing import Optional
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 
 class QScale(QFrame):
@@ -621,8 +627,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.widget_layout.setContentsMargins(1, 1, 1, 1)
         self.setLayout(self.widget_layout)
 
-    @Property(bool)
-    def showValue(self) -> bool:
+    def readShowValue(self) -> bool:
         """
         Whether or not the current value should be displayed on the scale.
 
@@ -632,8 +637,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self._show_value
 
-    @showValue.setter
-    def showValue(self, checked: bool) -> None:
+    def setShowValue(self, checked: bool) -> None:
         """
         Whether or not the current value should be displayed on the scale.
 
@@ -648,8 +652,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         else:
             self.value_label.hide()
 
-    @Property(bool)
-    def showLimits(self) -> bool:
+    showValue = Property(bool, readShowValue, setShowValue)
+
+    def readShowLimits(self) -> bool:
         """
         Whether or not the high and low limits should be displayed on the scale.
 
@@ -659,8 +664,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self._show_limits
 
-    @showLimits.setter
-    def showLimits(self, checked: bool) -> None:
+    def setShowLimits(self, checked: bool) -> None:
         """
         Whether or not the high and low limits should be displayed on the scale.
 
@@ -677,8 +681,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             self.lower_label.hide()
             self.upper_label.hide()
 
-    @Property(bool)
-    def showTicks(self) -> bool:
+    showLimits = Property(bool, readShowLimits, setShowLimits)
+
+    def readShowTicks(self) -> bool:
         """
         Whether or not the tick marks should be displayed on the scale.
 
@@ -688,8 +693,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_show_ticks()
 
-    @showTicks.setter
-    def showTicks(self, checked: bool) -> None:
+    def setShowTicks(self, checked: bool) -> None:
         """
         Whether or not the tick marks should be displayed on the scale.
 
@@ -699,8 +703,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.scale_indicator.set_show_ticks(checked)
 
-    @Property(Qt.Orientation)
-    def orientation(self) -> Qt.Orientation:
+    showTicks = Property(bool, readShowTicks, setShowTicks)
+
+    def readOrientation(self) -> int | Qt.Orientation:
         """
         The scale orientation (Horizontal or Vertical)
 
@@ -711,8 +716,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_orientation()
 
-    @orientation.setter
-    def orientation(self, orientation: Qt.Orientation) -> None:
+    def setOrientation(self, orientation: Qt.Orientation) -> None:
         """
         The scale orientation (Horizontal or Vertical)
 
@@ -724,8 +728,10 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_orientation(orientation)
         self.setup_widgets_for_orientation(orientation, self.flipScale, self.invertedAppearance, self._value_position)
 
-    @Property(bool)
-    def flipScale(self) -> bool:
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Orientation
+    orientation = Property(prop_type, readOrientation, setOrientation)
+
+    def readFlipScale(self) -> bool:
         """
         Whether or not the scale should be flipped.
 
@@ -735,8 +741,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_flip_scale()
 
-    @flipScale.setter
-    def flipScale(self, checked: bool) -> None:
+    def setFlipScale(self, checked: bool) -> None:
         """
         Whether or not the scale should be flipped.
 
@@ -747,8 +752,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_flip_scale(checked)
         self.setup_widgets_for_orientation(self.orientation, checked, self.invertedAppearance, self._value_position)
 
-    @Property(bool)
-    def invertedAppearance(self) -> bool:
+    flipScale = Property(bool, readFlipScale, setFlipScale)
+
+    def readInvertedAppearance(self) -> bool:
         """
         Whether or not the scale appearance should be inverted.
 
@@ -758,8 +764,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_inverted_appearance()
 
-    @invertedAppearance.setter
-    def invertedAppearance(self, inverted: bool) -> None:
+    def setInvertedAppearance(self, inverted: bool) -> None:
         """
         Whether or not the scale appearance should be inverted.
 
@@ -770,8 +775,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_inverted_appearance(inverted)
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, inverted, self._value_position)
 
-    @Property(bool)
-    def barIndicator(self) -> bool:
+    invertedAppearance = Property(bool, readInvertedAppearance, setInvertedAppearance)
+
+    def readBarIndicator(self) -> bool:
         """
         Whether or not the scale indicator should be a bar instead of a pointer.
 
@@ -781,8 +787,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_bar_indicator()
 
-    @barIndicator.setter
-    def barIndicator(self, checked: bool) -> None:
+    def setBarIndicator(self, checked: bool) -> None:
         """
         Whether or not the scale indicator should be a bar instead of a pointer.
 
@@ -792,8 +797,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.scale_indicator.set_bar_indicator(checked)
 
-    @Property(QColor)
-    def backgroundColor(self) -> QColor:
+    barIndicator = Property(bool, readBarIndicator, setBarIndicator)
+
+    def getBackgroundColor(self) -> QColor:
         """
         The color of the scale background.
 
@@ -803,8 +809,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_background_color()
 
-    @backgroundColor.setter
-    def backgroundColor(self, color: QColor) -> None:
+    def setBackgroundColor(self, color: QColor) -> None:
         """
         The color of the scale background.
 
@@ -814,8 +819,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.scale_indicator.set_background_color(color)
 
-    @Property(QColor)
-    def indicatorColor(self) -> QColor:
+    backgroundColor = Property(QColor, getBackgroundColor, setBackgroundColor)
+
+    def readIndicatorColor(self) -> QColor:
         """
         The color of the scale indicator.
 
@@ -825,8 +831,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_indicator_color()
 
-    @indicatorColor.setter
-    def indicatorColor(self, color: QColor) -> None:
+    def setIndicatorColor(self, color: QColor) -> None:
         """
         The color of the scale indicator.
 
@@ -836,8 +841,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.scale_indicator.set_indicator_color(color)
 
-    @Property(QColor)
-    def tickColor(self) -> QColor:
+    indicatorColor = Property(QColor, readIndicatorColor, setIndicatorColor)
+
+    def readTickColor(self) -> QColor:
         """
         The color of the scale tick marks.
 
@@ -847,8 +853,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_tick_color()
 
-    @tickColor.setter
-    def tickColor(self, color: QColor) -> None:
+    def setTickColor(self, color: QColor) -> None:
         """
         The color of the scale tick marks.
 
@@ -858,8 +863,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.scale_indicator.set_tick_color(color)
 
-    @Property(float)
-    def backgroundSizeRate(self) -> float:
+    tickColor = Property(QColor, readTickColor, setTickColor)
+
+    def getBackgroundSizeRate(self) -> float:
         """
         The rate of background height size (from top to bottom).
 
@@ -869,8 +875,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_background_size_rate()
 
-    @backgroundSizeRate.setter
-    def backgroundSizeRate(self, rate: float) -> None:
+    def setBackgroundSizeRate(self, rate: float) -> None:
         """
         The rate of background height size (from top to bottom).
 
@@ -881,8 +886,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.scale_indicator.set_background_size_rate(rate)
 
-    @Property(float)
-    def tickSizeRate(self) -> float:
+    backgroundSizeRate = Property(float, getBackgroundSizeRate, setBackgroundSizeRate)
+
+    def readTickSizeRate(self) -> float:
         """
         The rate of tick marks height size (from bottom to top).
 
@@ -892,8 +898,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_tick_size_rate()
 
-    @tickSizeRate.setter
-    def tickSizeRate(self, rate: float) -> None:
+    def setTickSizeRate(self, rate: float) -> None:
         """
         The rate of tick marks height size (from bottom to top).
 
@@ -904,8 +909,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.scale_indicator.set_tick_size_rate(rate)
 
-    @Property(int)
-    def numDivisions(self) -> int:
+    tickSizeRate = Property(float, readTickSizeRate, setTickSizeRate)
+
+    def readNumDivisions(self) -> int:
         """
         The number in which the scale is divided.
 
@@ -915,8 +921,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_num_divisions()
 
-    @numDivisions.setter
-    def numDivisions(self, divisions: int) -> None:
+    def setNumDivisions(self, divisions: int) -> None:
         """
         The number in which the scale is divided.
 
@@ -927,8 +932,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.scale_indicator.set_num_divisions(divisions)
 
-    @Property(int)
-    def scaleHeight(self) -> int:
+    numDivisions = Property(int, readNumDivisions, setNumDivisions)
+
+    def readScaleHeight(self) -> int:
         """
         The scale height, fixed so it do not wiggle when value label resizes.
 
@@ -938,8 +944,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_scale_height()
 
-    @scaleHeight.setter
-    def scaleHeight(self, value: int) -> None:
+    def setScaleHeight(self, value: int) -> None:
         """
         The scale height, fixed so it do not wiggle when value label resizes.
 
@@ -950,8 +955,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.scale_indicator.set_scale_height(value)
 
-    @Property(Qt.Edge)
-    def valuePosition(self) -> Qt.Edge:
+    scaleHeight = Property(int, readScaleHeight, setScaleHeight)
+
+    def readValuePosition(self) -> Qt.Edge:
         """
         The position of the value label (Top, Bottom, Left or Right).
 
@@ -962,8 +968,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self._value_position
 
-    @valuePosition.setter
-    def valuePosition(self, position: Qt.Edge) -> None:
+    def setValuePosition(self, position: Qt.Edge) -> None:
         """
         The position of the value label (Top, Bottom, Left or Right).
 
@@ -975,8 +980,10 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self._value_position = position
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, self.invertedAppearance, position)
 
-    @Property(bool)
-    def originAtZero(self) -> bool:
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Edge
+    valuePosition = Property(prop_type, readValuePosition, setValuePosition)
+
+    def readOriginAtZero(self) -> bool:
         """
         Whether or not the scale indicator should start at zero value.
         Applies only for bar indicator.
@@ -987,8 +994,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self.scale_indicator.get_origin_at_zero()
 
-    @originAtZero.setter
-    def originAtZero(self, checked: bool) -> None:
+    def setOriginAtZero(self, checked: bool) -> None:
         """
         Whether or not the scale indicator should start at zero value.
         Applies only for bar indicator.
@@ -999,8 +1005,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.scale_indicator.set_origin_at_zero(checked)
 
-    @Property(bool)
-    def limitsFromChannel(self) -> bool:
+    originAtZero = Property(bool, readOriginAtZero, setOriginAtZero)
+
+    def readLimitsFromChannel(self) -> bool:
         """
         Whether or not the scale indicator should use the limits information
         from the channel.
@@ -1011,8 +1018,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self._limits_from_channel
 
-    @limitsFromChannel.setter
-    def limitsFromChannel(self, checked: bool) -> None:
+    def setLimitsFromChannel(self, checked: bool) -> None:
         """
         Whether or not the scale indicator should use the limits information
         from the channel.
@@ -1035,8 +1041,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
                 self.scale_indicator.set_upper_limit(self._user_upper_limit)
             self.update_labels()
 
-    @Property(float)
-    def userLowerLimit(self) -> float:
+    limitsFromChannel = Property(bool, readLimitsFromChannel, setLimitsFromChannel)
+
+    def readUserLowerLimit(self) -> float:
         """
         The user-defined lower limit for the scale.
 
@@ -1046,8 +1053,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self._user_lower_limit
 
-    @userLowerLimit.setter
-    def userLowerLimit(self, value: float) -> None:
+    def setUserLowerLimit(self, value: float) -> None:
         """
         The user-defined lower limit for the scale.
 
@@ -1062,8 +1068,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.scale_indicator.set_lower_limit(self._user_lower_limit)
         self.update_labels()
 
-    @Property(float)
-    def userUpperLimit(self) -> float:
+    userLowerLimit = Property(float, readUserLowerLimit, setUserLowerLimit)
+
+    def readUserUpperLimit(self) -> float:
         """
         The user-defined upper limit for the scale.
 
@@ -1073,8 +1080,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         return self._user_upper_limit
 
-    @userUpperLimit.setter
-    def userUpperLimit(self, value: float) -> None:
+    def setUserUpperLimit(self, value: float) -> None:
         """
         The user-defined upper limit for the scale.
 
@@ -1088,3 +1094,5 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self._user_upper_limit = value
         self.scale_indicator.set_upper_limit(self._user_upper_limit)
         self.update_labels()
+
+    userUpperLimit = Property(float, readUserUpperLimit, setUserUpperLimit)

@@ -3,13 +3,19 @@ import json
 import copy
 import logging
 from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QHBoxLayout, QWidget, QStyle, QSizePolicy, QLayout
-from qtpy.QtCore import Qt, QSize, QRect, Property, QPoint
+from qtpy.QtCore import Qt, QSize, QRect, QPoint
 from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer
 import pydm.data_plugins
 from pydm.utilities import find_file
 from pydm.display import load_file
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 logger = logging.getLogger(__name__)
 
@@ -185,8 +191,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         self.app = QApplication.instance()
         self.rebuild()
 
-    @Property(LayoutType)
-    def layoutType(self):
+    def readLayoutType(self) -> LayoutType:
         """
         The layout type to use.
 
@@ -196,8 +201,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         """
         return self._layout_type
 
-    @layoutType.setter
-    def layoutType(self, new_type):
+    def setLayoutType(self, new_type) -> None:
         """
         The layout type to use.
         Options are:
@@ -214,20 +218,21 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
             self._layout_type = new_type
             self.rebuild()
 
-    @Property(int)
-    def layoutSpacing(self):
+    layoutType = Property(LayoutType, readLayoutType, setLayoutType)
+
+    def readLayoutSpacing(self) -> int:
         if self.layout():
             return self.layout().spacing()
         return self._temp_layout_spacing
 
-    @layoutSpacing.setter
-    def layoutSpacing(self, new_spacing):
+    def setLayoutSpacing(self, new_spacing) -> None:
         self._temp_layout_spacing = new_spacing
         if self.layout():
             self.layout().setSpacing(new_spacing)
 
-    @Property(int)
-    def countShownInDesigner(self):
+    layoutSpacing = Property(int, readLayoutSpacing, setLayoutSpacing)
+
+    def readCountShownInDesigner(self) -> int:
         """
         The number of instances to show in Qt Designer.  This property has no
         effect outside of Designer.
@@ -238,8 +243,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         """
         return self._count_shown_in_designer
 
-    @countShownInDesigner.setter
-    def countShownInDesigner(self, new_count):
+    def setCountShownInDesigner(self, new_count) -> None:
         """
         The number of instances to show in Qt Designer.  This property has no
         effect outside of Designer.
@@ -260,8 +264,9 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
             self._count_shown_in_designer = new_count
             self.rebuild()
 
-    @Property(str)
-    def templateFilename(self):
+    countShownInDesigner = Property(int, readCountShownInDesigner, setCountShownInDesigner)
+
+    def readTemplateFilename(self) -> str:
         """
         The path to the .ui file to use as a template.
 
@@ -271,8 +276,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         """
         return self._template_filename
 
-    @templateFilename.setter
-    def templateFilename(self, new_filename):
+    def setTemplateFilename(self, new_filename) -> None:
         """
         The path to the .ui file to use as a template.
 
@@ -288,8 +292,9 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
             else:
                 self.clear()
 
-    @Property(bool)
-    def recursiveTemplateSearch(self) -> bool:
+    templateFilename = Property(str, readTemplateFilename, setTemplateFilename)
+
+    def readRecursiveTemplateSearch(self) -> bool:
         """
         Whether or not to search for a provided template file recursively
         in subfolders relative to the location of this widget.
@@ -301,8 +306,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         """
         return self._recursive_template_search
 
-    @recursiveTemplateSearch.setter
-    def recursiveTemplateSearch(self, new_value) -> None:
+    def setRecursiveTemplateSearch(self, new_value) -> None:
         """
         Set whether or not to search for a provided template file recursively
         in subfolders relative to the location of this widget.
@@ -313,6 +317,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
             If recursive search should be enabled.
         """
         self._recursive_template_search = new_value
+
+    recursiveTemplateSearch = Property(bool, readRecursiveTemplateSearch, setRecursiveTemplateSearch)
 
     def _is_json(self, source):
         """
@@ -335,8 +341,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         except Exception as ex:
             return False, ex
 
-    @Property(str)
-    def dataSource(self):
+    def readDataSource(self) -> str:
         """
         The path to the JSON file or a valid JSON string to fill in each
         instance of the template.
@@ -347,8 +352,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         """
         return self._data_source
 
-    @dataSource.setter
-    def dataSource(self, data_source):
+    def setDataSource(self, data_source) -> None:
         """
         Sets the path to the JSON file or a valid JSON string to fill in each
         instance of the template.
@@ -406,8 +410,9 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
             else:
                 self.clear()
 
-    @Property(bool)
-    def recursiveDataSearch(self) -> bool:
+    dataSource = Property(str, readDataSource, setDataSource)
+
+    def readRecursiveDataSearch(self) -> bool:
         """
         Whether or not to search for a provided data file recursively
         in subfolders relative to the location of this widget.
@@ -419,8 +424,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         """
         return self._recursive_data_search
 
-    @recursiveDataSearch.setter
-    def recursiveDataSearch(self, new_value) -> None:
+    def setRecursiveDataSearch(self, new_value) -> None:
         """
         Set whether or not to search for a provided data file recursively
         in subfolders relative to the location of this widget.
@@ -431,6 +435,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
             If recursive search should be enabled.
         """
         self._recursive_data_search = new_value
+
+    recursiveDataSearch = Property(bool, readRecursiveDataSearch, setRecursiveDataSearch)
 
     def open_template_file(self, variables=None):
         """

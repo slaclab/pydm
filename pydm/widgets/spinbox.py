@@ -1,6 +1,12 @@
 from qtpy.QtWidgets import QDoubleSpinBox, QApplication, QLineEdit
-from qtpy.QtCore import Property, Qt
+from qtpy.QtCore import Qt
 from .base import PyDMWritableWidget, TextFormatter, PostParentClassInitSetup
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 
 class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
@@ -168,8 +174,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         if not self.valueBeingSet:
             self.send_value_signal[float].emit(value)
 
-    @Property(bool)
-    def userDefinedLimits(self) -> bool:
+    def readUserDefinedLimits(self) -> bool:
         """
         True if the range of the spinbox should be set based on user-defined limits, False if
         it should be set based on the limits received from the channel
@@ -180,8 +185,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         """
         return self._user_defined_limits
 
-    @userDefinedLimits.setter
-    def userDefinedLimits(self, user_defined_limits: bool) -> None:
+    def setUserDefinedLimits(self, user_defined_limits: bool) -> None:
         """
         Whether or not to set the range of the spinbox based on user-defined limits. Will also reset
         the range of the spinbox in case this is called while the application is running to ensure it matches
@@ -194,8 +198,9 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         self._user_defined_limits = user_defined_limits
         self.reset_limits()
 
-    @Property(float)
-    def userMinimum(self) -> float:
+    userDefinedLimits = Property(bool, readUserDefinedLimits, setUserDefinedLimits)
+
+    def readUserMinimum(self) -> float:
         """
         Lower user-defined limit value
 
@@ -205,8 +210,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         """
         return self._user_minimum
 
-    @userMinimum.setter
-    def userMinimum(self, new_min: float) -> None:
+    def setUserMinimum(self, new_min: float) -> None:
         """
         Set the Lower user-defined limit value, updates the range of the spinbox if needed
 
@@ -217,8 +221,9 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         self._user_minimum = new_min
         self.reset_limits()
 
-    @Property(float)
-    def userMaximum(self) -> float:
+    userMinimum = Property(float, readUserMinimum, setUserMinimum)
+
+    def readUserMaximum(self) -> float:
         """
         Upper user-defined limit value
 
@@ -228,8 +233,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         """
         return self._user_maximum
 
-    @userMaximum.setter
-    def userMaximum(self, new_max: float) -> None:
+    def setUserMaximum(self, new_max: float) -> None:
         """
         Set the upper user-defined limit value, updates the range of the spinbox if needed
 
@@ -239,6 +243,8 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         """
         self._user_maximum = new_max
         self.reset_limits()
+
+    userMaximum = Property(float, readUserMaximum, setUserMaximum)
 
     def reset_limits(self) -> None:
         """
@@ -290,15 +296,13 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         super().precision_changed(new_precision)
         self.setDecimals(self.precision)
 
-    @Property(int)
-    def precision(self):
+    def readPrecision(self) -> int:
         if self.precisionFromPV:
             return self._prec
         else:
             return self._user_prec
 
-    @precision.setter
-    def precision(self, new_prec):
+    def setPrecision(self, new_prec) -> None:
         if self.precisionFromPV:
             return
         if new_prec and self._user_prec != int(new_prec) and new_prec >= 0:
@@ -306,8 +310,9 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
             self.value_changed(self.value)
             self.setDecimals(new_prec)
 
-    @Property(bool)
-    def showStepExponent(self):
+    precision = Property(int, readPrecision, setPrecision)
+
+    def readShowStepExponent(self) -> bool:
         """
         Whether to show or not the step exponent
 
@@ -317,8 +322,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         """
         return self._show_step_exponent
 
-    @showStepExponent.setter
-    def showStepExponent(self, val):
+    def setShowStepExponent(self, val) -> None:
         """
         Whether to show or not the step exponent
 
@@ -329,8 +333,9 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         self._show_step_exponent = val
         self.update_format_string()
 
-    @Property(bool)
-    def writeOnPress(self):
+    showStepExponent = Property(bool, readShowStepExponent, setShowStepExponent)
+
+    def readWriteOnPress(self) -> bool:
         """
         Whether to write value on key press
 
@@ -340,8 +345,7 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         """
         return self._write_on_press
 
-    @writeOnPress.setter
-    def writeOnPress(self, val):
+    def setWriteOnPress(self, val) -> None:
         """
         Whether value to write on key press.
 
@@ -350,3 +354,5 @@ class PyDMSpinbox(QDoubleSpinBox, TextFormatter, PyDMWritableWidget):
         val : bool
         """
         self._write_on_press = val
+
+    writeOnPress = Property(bool, readWriteOnPress, setWriteOnPress)

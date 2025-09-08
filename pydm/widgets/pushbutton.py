@@ -2,11 +2,18 @@ import hashlib
 
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QPushButton, QMessageBox, QInputDialog, QLineEdit, QStyle
-from qtpy.QtCore import Slot, Property
+from qtpy.QtCore import Slot
 from qtpy import QtDesigner
 from .base import PyDMWritableWidget, PostParentClassInitSetup
 from pydm.utilities import IconFont
 import logging
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
+
 
 logger = logging.getLogger(__name__)
 
@@ -92,8 +99,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     def eventFilter(self, obj, event):
         return PyDMWritableWidget.eventFilter(self, obj, event)
 
-    @Property(str)
-    def PyDMIcon(self) -> str:
+    def readPyDMIcon(self) -> str:
         """
         Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
         See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
@@ -105,8 +111,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return self._pydm_icon_name
 
-    @PyDMIcon.setter
-    def PyDMIcon(self, value: str) -> None:
+    def setPyDMIcon(self, value: str) -> None:
         """
         Name of icon to be set from Qt provided standard icons or from the "Font Awesome" icon-set.
         See "enum QStyle::StandardPixmap" in Qt's QStyle documentation for full list of usable standard icons.
@@ -132,8 +137,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
         self._pydm_icon_name = value
 
-    @Property(QColor)
-    def PyDMIconColor(self) -> QColor:
+    PyDMIcon = Property(str, readPyDMIcon, setPyDMIcon)
+
+    def readPyDMIconColor(self) -> QColor:
         """
         The color of the icon (color is only applied if using icon from the "Font Awesome" set)
         Returns
@@ -142,8 +148,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return self._pydm_icon_color
 
-    @PyDMIconColor.setter
-    def PyDMIconColor(self, state_color: QColor) -> None:
+    def setPyDMIconColor(self, state_color: QColor) -> None:
         """
         The color of the icon (color is only applied if using icon from the "Font Awesome" set)
         Parameters
@@ -160,8 +165,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             except Exception:
                 return
 
-    @Property(bool)
-    def passwordProtected(self):
+    PyDMIconColor = Property(QColor, readPyDMIconColor, setPyDMIconColor)
+
+    def readPasswordProtected(self):
         """
         Whether or not this button is password protected.
 
@@ -171,8 +177,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return self._password_protected
 
-    @passwordProtected.setter
-    def passwordProtected(self, value):
+    def setPasswordProtected(self, value):
         """
         Whether or not this button is password protected.
 
@@ -183,8 +188,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if self._password_protected != value:
             self._password_protected = value
 
-    @Property(str)
-    def password(self):
+    passwordProtected = Property(bool, readPasswordProtected, setPasswordProtected)
+
+    def readPassword(self) -> str:
         """
         Password to be encrypted using SHA256.
 
@@ -198,8 +204,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return ""
 
-    @password.setter
-    def password(self, value):
+    def setPassword(self, value) -> None:
         """
         Password to be encrypted using SHA256.
 
@@ -220,8 +225,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             if formWindow:
                 formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
 
-    @Property(str)
-    def protectedPassword(self):
+    password = Property(str, readPassword, setPassword)
+
+    def readProtectedPassword(self) -> str:
         """
         The encrypted password.
 
@@ -231,13 +237,13 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return self._protected_password
 
-    @protectedPassword.setter
-    def protectedPassword(self, value):
+    def setProtectedPassword(self, value) -> None:
         if self._protected_password != value:
             self._protected_password = value
 
-    @Property(bool)
-    def showConfirmDialog(self):
+    protectedPassword = Property(str, readProtectedPassword, setProtectedPassword)
+
+    def readShowConfirmDialog(self) -> bool:
         """
         Whether or not to display a confirmation dialog.
 
@@ -247,8 +253,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return self._show_confirm_dialog
 
-    @showConfirmDialog.setter
-    def showConfirmDialog(self, value):
+    def setShowConfirmDialog(self, value) -> None:
         """
         Whether or not to display a confirmation dialog.
 
@@ -259,8 +264,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if self._show_confirm_dialog != value:
             self._show_confirm_dialog = value
 
-    @Property(str)
-    def confirmMessage(self):
+    showConfirmDialog = Property(bool, readShowConfirmDialog, setShowConfirmDialog)
+
+    def readConfirmMessage(self) -> str:
         """
         Message to be displayed at the Confirmation dialog.
 
@@ -270,8 +276,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return self._confirm_message
 
-    @confirmMessage.setter
-    def confirmMessage(self, value):
+    def setConfirmMessage(self, value) -> None:
         """
         Message to be displayed at the Confirmation dialog.
 
@@ -282,8 +287,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if self._confirm_message != value:
             self._confirm_message = value
 
-    @Property(str)
-    def pressValue(self):
+    confirmMessage = Property(str, readConfirmMessage, setConfirmMessage)
+
+    def readPressValue(self) -> str:
         """
         This property holds the value to send back through the channel.
 
@@ -297,8 +303,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return str(self._pressValue)
 
-    @pressValue.setter
-    def pressValue(self, value):
+    def setPressValue(self, value) -> None:
         """
         This property holds the value to send back through the channel.
 
@@ -313,8 +318,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if str(value) != self._pressValue:
             self._pressValue = str(value)
 
-    @Property(str)
-    def releaseValue(self):
+    pressValue = Property(str, readPressValue, setPressValue)
+
+    def readReleaseValue(self) -> str:
         """
         This property holds the value to send back through the channel.
 
@@ -328,8 +334,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return str(self._releaseValue)
 
-    @releaseValue.setter
-    def releaseValue(self, value):
+    def setReleaseValue(self, value) -> None:
         """
         This property holds the value to send back through the channel.
 
@@ -344,8 +349,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if str(value) != self._releaseValue:
             self._releaseValue = str(value)
 
-    @Property(bool)
-    def relativeChange(self):
+    releaseValue = Property(str, readReleaseValue, setReleaseValue)
+
+    def readRelativeChange(self) -> bool:
         """
         The mode of operation of the PyDMPushButton.
 
@@ -364,8 +370,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return self._relative
 
-    @relativeChange.setter
-    def relativeChange(self, choice):
+    def setRelativeChange(self, choice) -> None:
         """
         The mode of operation of the PyDMPushButton.
 
@@ -384,6 +389,8 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         if self._relative != choice:
             self._relative = choice
+
+    relativeChange = Property(bool, readRelativeChange, setRelativeChange)
 
     def confirm_dialog(self, is_release=False):
         """
@@ -572,8 +579,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         except (ValueError, TypeError):
             logger.error("'{0}' is not a valid pressValue for '{1}'.".format(value, self.channel))
 
-    @Property(bool)
-    def writeWhenRelease(self):
+    def readWriteWhenRelease(self) -> bool:
         """
         Whether or not to write releaseValue on release
 
@@ -583,8 +589,7 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         """
         return self._write_when_release
 
-    @writeWhenRelease.setter
-    def writeWhenRelease(self, value):
+    def setWriteWhenRelease(self, value) -> None:
         """
         Whether or not to write releaseValue on release
 
@@ -600,6 +605,8 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             self.clicked.disconnect()
             self.pressed.connect(self.sendValue)
             self.released.connect(self.sendReleaseValue)
+
+    writeWhenRelease = Property(bool, readWriteWhenRelease, setWriteWhenRelease)
 
     @Slot(int)
     @Slot(float)

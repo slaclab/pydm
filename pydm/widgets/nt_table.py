@@ -3,6 +3,12 @@ import numpy as np
 from operator import itemgetter
 from pydm.widgets.base import PyDMWidget, PyDMWritableWidget
 from qtpy import QtCore, QtWidgets
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 logger = logging.getLogger(__name__)
 
@@ -200,14 +206,14 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
     def eventFilter(self, obj, event):
         return PyDMWritableWidget.eventFilter(self, obj, event)
 
-    @QtCore.Property(bool)
-    def readOnly(self):
+    def readReadOnly(self) -> bool:
         return self._read_only
 
-    @readOnly.setter
-    def readOnly(self, value):
+    def setReadOnly(self, value) -> None:
         if self._read_only != value:
             self._read_only = value
+
+    readOnly = Property(bool, readReadOnly, setReadOnly)
 
     def check_enable_state(self):
         """

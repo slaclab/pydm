@@ -1,10 +1,16 @@
 from .base import PyDMWidget, TextFormatter, str_types, PostParentClassInitSetup
 from qtpy.QtWidgets import QLabel, QApplication
-from qtpy.QtCore import Qt, Property
+from qtpy.QtCore import Qt
 from .display_format import DisplayFormat, parse_value_for_display
 from pydm.utilities import is_pydm_app, is_qt_designer, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from pydm import config
 from pydm.widgets.base import only_if_channel_set
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 _labelRuleProperties = {"Text": ["value_changed", str]}
 
@@ -66,12 +72,10 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
     def eventFilter(self, obj, event):
         return PyDMWidget.eventFilter(self, obj, event)
 
-    @Property(bool)
-    def enableRichText(self):
+    def readEnableRichText(self):
         return self._enable_rich_text
 
-    @enableRichText.setter
-    def enableRichText(self, new_value):
+    def setEnableRichText(self, new_value):
         if self._enable_rich_text == new_value:
             return
         self._enable_rich_text = new_value
@@ -81,8 +85,9 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         else:
             self.setTextFormat(Qt.PlainText)
 
-    @Property(DisplayFormat)
-    def displayFormat(self):
+    enableRichText = Property(bool, readEnableRichText, setEnableRichText)
+
+    def readDisplayFormat(self):
         """
         displayFormat property.
 
@@ -92,14 +97,15 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         """
         return self._display_format_type
 
-    @displayFormat.setter
-    def displayFormat(self, new_type):
+    def setDisplayFormat(self, new_type):
         if self._display_format_type == new_type:
             return
         self._display_format_type = new_type
         if not is_qt_designer() or config.DESIGNER_ONLINE:
             # Trigger the update of display format
             self.value_changed(self.value)
+
+    displayFormat = Property(DisplayFormat, readDisplayFormat, setDisplayFormat)
 
     def value_changed(self, new_value):
         """

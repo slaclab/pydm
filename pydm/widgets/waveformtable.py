@@ -1,8 +1,14 @@
 from qtpy.QtWidgets import QTableWidget, QTableWidgetItem, QApplication
 from qtpy.QtGui import QCursor
-from qtpy.QtCore import Slot, Property, Qt, QEvent
+from qtpy.QtCore import Slot, Qt, QEvent
 import numpy as np
 from .base import PyDMWritableWidget, PostParentClassInitSetup
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import Property
+else:
+    from PyQt5.QtCore import pyqtProperty as Property
 
 
 class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
@@ -114,19 +120,17 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
             QApplication.setOverrideCursor(QCursor(Qt.ForbiddenCursor))
         return False
 
-    @Property("QStringList")
-    def columnHeaderLabels(self):
+    def readColumnHeaderLabels(self) -> list[str]:
         """
         Return the list of labels for the columns of the Table.
 
         Returns
         -------
-        list of strings
+        list[str]
         """
         return self._columnHeaders
 
-    @columnHeaderLabels.setter
-    def columnHeaderLabels(self, new_labels):
+    def setColumnHeaderLabels(self, new_labels) -> None:
         """
         Set the list of labels for the columns of the Table.
 
@@ -141,19 +145,19 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         self._columnHeaders = new_labels
         self.setHorizontalHeaderLabels(self._columnHeaders)
 
-    @Property("QStringList")
-    def rowHeaderLabels(self):
+    columnHeaderLabels = Property("QStringList", readColumnHeaderLabels, setColumnHeaderLabels)
+
+    def readRowHeaderLabels(self) -> list[str]:
         """
         Return the list of labels for the rows of the Table.
 
         Returns
         -------
-        list of strings
+        list[str]
         """
         return self._rowHeaders
 
-    @rowHeaderLabels.setter
-    def rowHeaderLabels(self, new_labels):
+    def setRowHeaderLabels(self, new_labels) -> None:
         """
         Set the list of labels for the rows of the Table.
 
@@ -167,3 +171,5 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
             new_labels += (self.rowCount() - len(new_labels)) * [""]
         self._rowHeaders = new_labels
         self.setVerticalHeaderLabels(self._rowHeaders)
+
+    rowHeaderLabels = Property("QStringList", readRowHeaderLabels, setRowHeaderLabels)
