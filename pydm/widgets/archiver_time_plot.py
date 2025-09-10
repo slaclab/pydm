@@ -88,7 +88,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.error_bar_data = None
 
         self.destroyed.connect(lambda: self.remove_error_bar())
-        self.destroyed.connect(lambda: self.remove_extenstion_line())
+        self.destroyed.connect(lambda: self.remove_extension_line())
         self.address = channel_address
 
     def to_dict(self) -> OrderedDict:
@@ -149,7 +149,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.remove_error_bar()
         self.getViewBox().addItem(self.error_bar)
 
-        self.remove_extenstion_line()
+        self.remove_extension_line()
         self.getViewBox().addItem(self._extension_line)
 
     @BasePlotCurveItem.color.setter
@@ -312,6 +312,10 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
                     )
                 )
 
+                idx = np.where(x == self.base_time)
+                y = np.delete(y, idx)
+                x = np.delete(x, idx)
+                
                 self.setData(y=y, x=x)
 
             except (ZeroDivisionError, OverflowError, TypeError):
@@ -344,20 +348,17 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self._extension_line.setData(x=x_line, y=y_line)
 
     @Slot()
-    def remove_extenstion_line(self):
+    def remove_extension_line(self):
         """Remove the curve's error bar when the curve is deleted."""
         line = getattr(self, "_extension_line", None)
         if not line:
             return
         try:
             vb = line.getViewBox()
-            if vb is None or vb.scene() is None:
-                return
-            vb.removeItem(line)
+            if vb is not None and vb.scene() is not None:
+                vb.removeItem(line)
         except RuntimeError:
             pass
-        finally:
-            self._extension_line = None
 
     def refresh_extension_line_pen(self) -> None:
         dotted_pen = QPen(self._pen)
@@ -428,13 +429,10 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             return
         try:
             vb = bar.getViewBox()
-            if vb is None or vb.scene() is None:
-                return
-            vb.removeItem(bar)
+            if vb is not None and vb.scene() is not None:
+                vb.removeItem(bar)
         except RuntimeError:
             pass
-        finally:
-            self.error_bar = None
 
     def refresh_error_bar_pen(self) -> None:
         solid_pen = QPen(self._pen)
@@ -593,7 +591,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.pvs = pvs if pvs else {}
         self._liveData = liveData
         self.plot_style = plot_style
-
+        self.base_time = time.time()
         self.connected, self.arch_connected = None, None
         self.live_connections, self.arch_connections = {}, {}
 
@@ -887,7 +885,6 @@ class FormulaCurveItem(BasePlotCurveItem):
             archive_y = self.archive_data_buffer[1, -self.archive_points_accumulated :].astype(float)
             live_x = self.data_buffer[0, -self.points_accumulated :].astype(float)
             live_y = self.data_buffer[1, -self.points_accumulated :].astype(float)
-
             x = np.concatenate((archive_x, live_x))
             y = np.concatenate((archive_y, live_y))
 
@@ -1074,6 +1071,29 @@ class FormulaCurveItem(BasePlotCurveItem):
     def channels(self):
         return [self.channel]
 
+    @property
+    def address(self) -> str:
+        """Alias so tools expecting .address (like ArchivePlotCurveItem) work."""
+        return self._formula or ""
+
+    @address.setter
+    def address(self, val: str) -> None:
+        self.formula = val
+
+    @property
+    def units(self) -> str:
+        if not self.pvs:
+            return ""
+        child_units = [getattr(curve, "units", "") or "" for curve in self.pvs.values()]
+        non_empty = [u for u in child_units if u]
+        if not non_empty:
+            return ""
+        first = non_empty[0]
+        return first if all(u == first for u in non_empty) else ""
+
+    @units.setter
+    def units(self, _value: str) -> None:
+        pass
 
 class PyDMArchiverTimePlot(PyDMTimePlot):
     """

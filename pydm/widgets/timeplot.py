@@ -126,6 +126,8 @@ class TimePlotCurveItem(BasePlotCurveItem):
         super().__init__(**kws)
         self.address = channel_address
 
+        self.base_time = time.time()
+
     def to_dict(self):
         dic_ = OrderedDict([("channel", self.address), ("plot_style", self.plot_style)])
         dic_.update(super().to_dict())
@@ -320,7 +322,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         # If you don't specify dtype=float, you don't have enough
         # resolution for the timestamp data.
         self.data_buffer = np.zeros((2, self._bufferSize), order="f", dtype=float)
-        self.data_buffer[0].fill(time.time())
+        self.data_buffer[0].fill(self.base_time)
 
     def getBufferSize(self):
         return int(self._bufferSize)
