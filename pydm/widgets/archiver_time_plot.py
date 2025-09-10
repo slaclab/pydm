@@ -315,7 +315,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
                 idx = np.where(x == self.base_time)
                 y = np.delete(y, idx)
                 x = np.delete(x, idx)
-                
+
                 self.setData(y=y, x=x)
 
             except (ZeroDivisionError, OverflowError, TypeError):
@@ -1031,6 +1031,7 @@ class FormulaCurveItem(BasePlotCurveItem):
         for curve in self.pvs.keys():
             minx = max(self.pvs[curve].min_x(), minx)
         return minx
+
     def min_archiver_x(self):
         """
         Provide the the oldest valid timestamp from the archiver data buffer.
@@ -1094,6 +1095,7 @@ class FormulaCurveItem(BasePlotCurveItem):
     @units.setter
     def units(self, _value: str) -> None:
         pass
+
 
 class PyDMArchiverTimePlot(PyDMTimePlot):
     """
@@ -1285,7 +1287,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 # Max amount of raw data to return before using optimized data
                 max_data_request = int(0.80 * self.getArchiveBufferSize())
                 if requested_seconds > max_data_request:
-                    if hasattr(curve, 'optimized_data_bins') and curve.optimized_data_bins:
+                    if hasattr(curve, "optimized_data_bins") and curve.optimized_data_bins:
                         optimized_data_bins = curve.optimized_data_bins
                     else:
                         optimized_data_bins = self.optimized_data_bins
@@ -1455,8 +1457,6 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         formula_curve = FormulaCurveItem(yAxisName=yAxisName, **kwargs)
 
         self._curves.append(formula_curve)
-
-        # self.plotItem.addItem(formula_curve)
         self.plotItem.linkDataToAxis(formula_curve, yAxisName)
 
         return formula_curve
