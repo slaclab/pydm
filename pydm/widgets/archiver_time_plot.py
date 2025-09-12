@@ -721,7 +721,34 @@ class FormulaCurveItem(BasePlotCurveItem):
 
             return
 
-        if not (self.connected or self.arch_connected):
+        # If all dependencies are constant formula curves, synthesize a constant series.
+        if self.pvs and all(isinstance(c, FormulaCurveItem) and not c.pvs for c in self.pvs.values()):
+            # Build pvValues from child constant buffers if present (fallback 0.0)
+            pvValues = {}
+            for name, c in self.pvs.items():
+                if c.points_accumulated > 0:
+                    pvValues[name] = float(c.data_buffer[1, 0])
+                elif c.archive_points_accumulated > 0:
+                    pvValues[name] = float(c.archive_data_buffer[1, 0])
+                else:
+                    pvValues[name] = 0.0
+
+            constant_value = eval(self._trueFormula, globals(), {"pvValues": pvValues})
+
+            now = time.time()
+            span = 365 * 24 * 60 * 60
+            ts = np.linspace(now - span, now + span, 100)
+            vals = np.full(ts.shape[0], constant_value)
+
+            mid = ts.shape[0] // 2
+            self.archive_data_buffer = np.array([ts[:mid], vals[:mid]])
+            self.data_buffer = np.array([ts[mid:], vals[mid:]])
+            self.archive_points_accumulated = mid
+            self.points_accumulated = ts.shape[0] - mid
+            return
+        
+        all_constants = all(isinstance(c, FormulaCurveItem) and not c.pvs for c in self.pvs.values())
+        if not all_constants and not (self.connected or self.arch_connected):
             return
 
         pvArchiveData = dict()
