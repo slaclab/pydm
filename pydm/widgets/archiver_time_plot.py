@@ -746,7 +746,7 @@ class FormulaCurveItem(BasePlotCurveItem):
             self.archive_points_accumulated = mid
             self.points_accumulated = ts.shape[0] - mid
             return
-        
+
         all_constants = all(isinstance(c, FormulaCurveItem) and not c.pvs for c in self.pvs.values())
         if not all_constants and not (self.connected or self.arch_connected):
             return
