@@ -301,14 +301,18 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
                 x = np.concatenate(
                     (
                         self.archive_data_buffer[0, -self.archive_points_accumulated :].astype(float),
-                        self.data_buffer[0, -self.points_accumulated :].astype(float),
+                        self.data_buffer[0, -self.points_accumulated :].astype(float)
+                        if self.points_accumulated > 0
+                        else np.empty(0, dtype=float),  # If there is no live data, just show the archive data only
                     )
                 )
 
                 y = np.concatenate(
                     (
                         self.archive_data_buffer[1, -self.archive_points_accumulated :].astype(float),
-                        self.data_buffer[1, -self.points_accumulated :].astype(float),
+                        self.data_buffer[1, -self.points_accumulated :].astype(float)
+                        if self.points_accumulated > 0
+                        else np.empty(0, dtype=float),
                     )
                 )
 
