@@ -312,10 +312,6 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
                     )
                 )
 
-                idx = np.where(x == self.base_time)
-                y = np.delete(y, idx)
-                x = np.delete(x, idx)
-
                 self.setData(y=y, x=x)
 
             except (ZeroDivisionError, OverflowError, TypeError):
@@ -591,7 +587,6 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.pvs = pvs if pvs else {}
         self._liveData = liveData
         self.plot_style = plot_style
-        self.base_time = time.time()
         self.connected, self.arch_connected = None, None
         self.live_connections, self.arch_connections = {}, {}
 
