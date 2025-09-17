@@ -2,7 +2,6 @@
 import os
 import sys
 import pytest
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 if __name__ == "__main__":
     # Show output results from every test function
@@ -23,10 +22,6 @@ if __name__ == "__main__":
     if os.name == "nt":
         args.append("--ignore=pydm/tests/data_plugins/test_p4p_plugin_component.py")
         args.append("--ignore=pydm/tests/data_plugins/test_psp_plugin_component.py")
-
-    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-        args.append("--ignore=pydm/tests/data_plugins")
-        args.append("--ignore=pydm/tests/widgets/test_baseplot.py")
 
     print("pytest arguments: {}".format(args))
 
