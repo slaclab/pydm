@@ -13,8 +13,8 @@ permissions:
   contents: read
 
 jobs:
-  build-pyqt5:
-    if: ${{ github.repository == 'slac/pydm' }}
+  test-pyqt5:
+    if: ${{ github.repository == 'slaclab/pydm' }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
