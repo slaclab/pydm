@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PyDMDrawing Widgets &mdash; PyDM 1.27.2 documentation</title>
@@ -193,41 +193,11 @@ This class inherits from PyDMDrawing.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingImage.aspectRatioMode">
-<span class="sig-name descname"><span class="pre">aspectRatioMode</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.aspectRatioMode" title="Permalink to this definition"></a></dt>
-<dd><p>PyQT Property for aspect ratio mode to be used when rendering
-the image</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Index at Qt.AspectRatioMode enum</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingImage.draw_item">
 <span class="sig-name descname"><span class="pre">draw_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">painter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingImage.draw_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.draw_item" title="Permalink to this definition"></a></dt>
 <dd><p>Draws the image after setting up the canvas with a call to
 <code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingImage.filename">
-<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.filename" title="Permalink to this definition"></a></dt>
-<dd><p>The filename of the image to be displayed.
-This can be an absolute or relative path to the image file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The filename configured.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -251,21 +221,6 @@ This can be an absolute or relative path to the image file.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingImage.recursiveImageSearch">
-<span class="sig-name descname"><span class="pre">recursiveImageSearch</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingImage.recursiveImageSearch" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not to search for a provided image file recursively
-in subfolders relative to the location of this display.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If recursive search is enabled.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -390,34 +345,6 @@ This class inherits from PyDMDrawing.</p>
 <code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingArc.spanAngle">
-<span class="sig-name descname"><span class="pre">spanAngle</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.spanAngle" title="Permalink to this definition"></a></dt>
-<dd><p>PyQT Property for the span angle in degrees</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Angle in degrees</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingArc.startAngle">
-<span class="sig-name descname"><span class="pre">startAngle</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingArc.startAngle" title="Permalink to this definition"></a></dt>
-<dd><p>PyQT Property for the start angle in degrees</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Angle in degrees</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -487,20 +414,6 @@ This class inherits from PyDMDrawing.</p>
 <code class="docutils literal notranslate"><span class="pre">`PyDMDrawing.draw_item`</span></code>.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolygon.numberOfPoints">
-<span class="sig-name descname"><span class="pre">numberOfPoints</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolygon.numberOfPoints" title="Permalink to this definition"></a></dt>
-<dd><p>PyQT Property for the number of points</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of Points</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -530,12 +443,6 @@ This class inherits from PyDMDrawingLineBase.</p>
 <dd><p>Convert internal points representation for use as QStringList.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingPolyline.points">
-<span class="sig-name descname"><span class="pre">points</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingPolyline.points" title="Permalink to this definition"></a></dt>
-<dd><p>Convert internal points representation for use as QStringList.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -559,11 +466,6 @@ the last point is always identical to the first point.</p>
 <span class="sig-name descname"><span class="pre">getPoints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/drawing.html#PyDMDrawingIrregularPolygon.getPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.getPoints" title="Permalink to this definition"></a></dt>
 <dd><p>Convert internal points representation for use as QStringList.</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.drawing.PyDMDrawingIrregularPolygon.points">
-<span class="sig-name descname"><span class="pre">points</span></span><a class="headerlink" href="#pydm.widgets.drawing.PyDMDrawingIrregularPolygon.points" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 

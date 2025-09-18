@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PyDMSpinbox &mdash; PyDM 1.27.2 documentation</title>
@@ -198,11 +198,6 @@ to the value;</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.precision">
-<span class="sig-name descname"><span class="pre">precision</span></span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.precision" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.precision_changed">
 <span class="sig-name descname"><span class="pre">precision_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_precision</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.precision_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.precision_changed" title="Permalink to this definition"></a></dt>
@@ -229,17 +224,6 @@ do not attempt the update.</p>
 <span class="sig-name descname"><span class="pre">send_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.send_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.send_value" title="Permalink to this definition"></a></dt>
 <dd><p>Method invoked to send the current value on the QDoubleSpinBox to
 the channel using the <cite>send_value_signal</cite>.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.showStepExponent">
-<span class="sig-name descname"><span class="pre">showStepExponent</span></span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.showStepExponent" title="Permalink to this definition"></a></dt>
-<dd><p>Whether to show or not the step exponent</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -272,40 +256,6 @@ output value.</p>
 <dd><p>Update the Single Step size on the QDoubleSpinBox.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.userDefinedLimits">
-<span class="sig-name descname"><span class="pre">userDefinedLimits</span></span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.userDefinedLimits" title="Permalink to this definition"></a></dt>
-<dd><p>True if the range of the spinbox should be set based on user-defined limits, False if
-it should be set based on the limits received from the channel</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.userMaximum">
-<span class="sig-name descname"><span class="pre">userMaximum</span></span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.userMaximum" title="Permalink to this definition"></a></dt>
-<dd><p>Upper user-defined limit value</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.userMinimum">
-<span class="sig-name descname"><span class="pre">userMinimum</span></span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.userMinimum" title="Permalink to this definition"></a></dt>
-<dd><p>Lower user-defined limit value</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.value_changed">
 <span class="sig-name descname"><span class="pre">value_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/spinbox.html#PyDMSpinbox.value_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.value_changed" title="Permalink to this definition"></a></dt>
@@ -327,17 +277,6 @@ it should be set based on the limits received from the channel</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>QMenu or None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.spinbox.PyDMSpinbox.writeOnPress">
-<span class="sig-name descname"><span class="pre">writeOnPress</span></span><a class="headerlink" href="#pydm.widgets.spinbox.PyDMSpinbox.writeOnPress" title="Permalink to this definition"></a></dt>
-<dd><p>Whether to write value on key press</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>

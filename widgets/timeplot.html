@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PyDMTimePlot &mdash; PyDM 1.27.2 documentation</title>
@@ -224,53 +224,16 @@ doesn’t yet exist</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.autoRangeY">
-<span class="sig-name descname"><span class="pre">autoRangeY</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.autoRangeY" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not the Y-axis automatically rescales to fit the data.
-If true, the values in minYRange and maxYRange are ignored.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.auto_scroll">
 <span class="sig-name descname"><span class="pre">auto_scroll</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.auto_scroll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.auto_scroll" title="Permalink to this definition"></a></dt>
 <dd><p>Autoscrolling slot to be called by the autoscroll QTimer.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.bufferSize">
-<span class="sig-name descname"><span class="pre">bufferSize</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.bufferSize" title="Permalink to this definition"></a></dt>
-<dd><p>Get the size of the data buffer for the entire chart.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>size</strong> – The chart’s data buffer size.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.clearCurves">
 <span class="sig-name descname"><span class="pre">clearCurves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.clearCurves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.clearCurves" title="Permalink to this definition"></a></dt>
 <dd><p>Remove all curves from the graph.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.curves">
-<span class="sig-name descname"><span class="pre">curves</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.curves" title="Permalink to this definition"></a></dt>
-<dd><p>Dump the current list of curves and each curve’s settings into a list
-of JSON-formatted strings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>settings</strong> – A list of JSON-formatted strings, each containing a curve’s
-settings</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -380,18 +343,6 @@ edge.</p>
 <dd class="field-even"><p>float</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.maxYRange">
-<span class="sig-name descname"><span class="pre">maxYRange</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.maxYRange" title="Permalink to this definition"></a></dt>
-<dd><p>Maximum Y-axis value visible on the plot.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.minYRange">
-<span class="sig-name descname"><span class="pre">minYRange</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.minYRange" title="Permalink to this definition"></a></dt>
-<dd><p>Minimum Y-axis value visible on the plot.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -547,41 +498,11 @@ collect data for, before rotating the buffer.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.timeSpan">
-<span class="sig-name descname"><span class="pre">timeSpan</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.timeSpan" title="Permalink to this definition"></a></dt>
-<dd><p>The extent of the x-axis of the chart, in seconds.  In other words,
-how long a data point stays on the plot before falling off the left
-edge.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>time_span</strong> – The extent of the x-axis of the chart, in seconds.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.to_dict">
 <span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OrderedDict</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/timeplot.html#PyDMTimePlot.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.to_dict" title="Permalink to this definition"></a></dt>
 <dd><p>Adds attribute specific to TimePlot to add onto BasePlot’s to_dict.
 This helps to recreate the Plot Config if we import a save file of it</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.updateInterval">
-<span class="sig-name descname"><span class="pre">updateInterval</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.updateInterval" title="Permalink to this definition"></a></dt>
-<dd><p>Get the update interval for the chart.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>interval</strong> – The update interval of the chart.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -600,17 +521,6 @@ label of each curve that contains a valid <cite>severity_raw</cite> attribute.</
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.timeplot.PyDMTimePlot.updateMode">
-<span class="sig-name descname"><span class="pre">updateMode</span></span><a class="headerlink" href="#pydm.widgets.timeplot.PyDMTimePlot.updateMode" title="Permalink to this definition"></a></dt>
-<dd><p>The updateMode to be used as property to set plot update mode.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>updateMode</p>
 </dd>
 </dl>
 </dd></dl>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PyDMEmbeddedDisplay &mdash; PyDM 1.27.2 documentation</title>
@@ -167,17 +167,6 @@ the channels associated with it.</p>
 associated with it.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.disconnectWhenHidden">
-<span class="sig-name descname"><span class="pre">disconnectWhenHidden</span></span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.disconnectWhenHidden" title="Permalink to this definition"></a></dt>
-<dd><p>Disconnect from PVs when this widget is not visible.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.embedded_widget">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">embedded_widget</span></span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.embedded_widget" title="Permalink to this definition"></a></dt>
@@ -189,31 +178,6 @@ associated with it.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.filename">
-<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.filename" title="Permalink to this definition"></a></dt>
-<dd><p>Filename of the display to embed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.followSymlinks">
-<span class="sig-name descname"><span class="pre">followSymlinks</span></span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.followSymlinks" title="Permalink to this definition"></a></dt>
-<dd><p>If True, any symlinks in the path to filename (including the base path of the parent display)
-will be followed, so that it will always use the canonical path. If False (default),
-the file will be searched without canonicalizing the path beforehand.</p>
-<p>Note that it will not work on Windows if you’re using a Python version prior to 3.8.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hideEvent">
 <span class="sig-name descname"><span class="pre">hideEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/embedded_display.html#PyDMEmbeddedDisplay.hideEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.hideEvent" title="Permalink to this definition"></a></dt>
@@ -221,34 +185,6 @@ the file will be searched without canonicalizing the path beforehand.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>event</strong> (<em>QHideEvent</em>) – </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.loadWhenShown">
-<span class="sig-name descname"><span class="pre">loadWhenShown</span></span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.loadWhenShown" title="Permalink to this definition"></a></dt>
-<dd><p>If True, only load and display the file once the
-PyDMEmbeddedDisplayWidget is visible on screen.  This is very useful
-if you have many different PyDMEmbeddedWidgets in different tabs of a
-QTabBar or PyDMTabBar: only the tab that the user is looking at will
-be loaded, which can greatly speed up the launch time of a display.</p>
-<p>If this property is changed from ‘True’ to ‘False’, and the file has
-not been loaded yet, it will be loaded immediately.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.macros">
-<span class="sig-name descname"><span class="pre">macros</span></span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.macros" title="Permalink to this definition"></a></dt>
-<dd><p>JSON-formatted string containing macro variables to pass to the embedded file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -291,21 +227,6 @@ not been loaded yet, it will be loaded immediately.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.embedded_display.PyDMEmbeddedDisplay.recursiveDisplaySearch">
-<span class="sig-name descname"><span class="pre">recursiveDisplaySearch</span></span><a class="headerlink" href="#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.recursiveDisplaySearch" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not to search for a provided display file recursively
-in subfolders relative to the location of this display.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If recursive search is enabled.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PyDMSlider &mdash; PyDM 1.27.2 documentation</title>
@@ -241,14 +241,6 @@ for a given value.</p>
 Qt provides for QSlider.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.ignoreMouseWheel">
-<span class="sig-name descname"><span class="pre">ignoreMouseWheel</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.ignoreMouseWheel" title="Permalink to this definition"></a></dt>
-<dd><p>If true, the mouse wheel will not change the value of the slider.
-This is useful if you want to put sliders inside a scroll view, and
-don’t want to accidentally change the slider as you are scrolling.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.init_for_designer">
 <span class="sig-name descname"><span class="pre">init_for_designer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.init_for_designer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.init_for_designer" title="Permalink to this definition"></a></dt>
@@ -339,31 +331,6 @@ unless <cite>mute_internal_slider_changes</cite> is True.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.num_steps">
-<span class="sig-name descname"><span class="pre">num_steps</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.num_steps" title="Permalink to this definition"></a></dt>
-<dd><p>The number of steps on the slider</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.orientation">
-<span class="sig-name descname"><span class="pre">orientation</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.orientation" title="Permalink to this definition"></a></dt>
-<dd><p>The slider orientation (Horizontal or Vertical)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Qt.Horizontal or Qt.Vertical</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.reset_slider_limits">
 <span class="sig-name descname"><span class="pre">reset_slider_limits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.reset_slider_limits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.reset_slider_limits" title="Permalink to this definition"></a></dt>
@@ -406,28 +373,6 @@ on the write access, connection state and presence of limits information</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.showLimitLabels">
-<span class="sig-name descname"><span class="pre">showLimitLabels</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.showLimitLabels" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not the high and low limits should be displayed on the slider.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.showValueLabel">
-<span class="sig-name descname"><span class="pre">showValueLabel</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.showValueLabel" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not the current value should be displayed on the slider.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.slider_parameters_menu">
 <span class="sig-name descname"><span class="pre">slider_parameters_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_of_click</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.slider_parameters_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.slider_parameters_menu" title="Permalink to this definition"></a></dt>
@@ -438,17 +383,6 @@ on the write access, connection state and presence of limits information</p>
 <li><p>precision or if precision is defined from a channel</p></li>
 <li><p>format of numbers on slider (min, max, value) - float or exp</p></li>
 </ol>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.step_size">
-<span class="sig-name descname"><span class="pre">step_size</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.step_size" title="Permalink to this definition"></a></dt>
-<dd><p>The number of steps on the slider</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -465,12 +399,6 @@ This slot sends the value to the step_size setter.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.step_size_channel">
-<span class="sig-name descname"><span class="pre">step_size_channel</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.step_size_channel" title="Permalink to this definition"></a></dt>
-<dd><p>String to connect to pydm channel after initialization</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.step_size_to_slider_positions_value_map">
 <span class="sig-name descname"><span class="pre">step_size_to_slider_positions_value_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.step_size_to_slider_positions_value_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.step_size_to_slider_positions_value_map" title="Permalink to this definition"></a></dt>
@@ -478,29 +406,6 @@ This slot sends the value to the step_size setter.</p>
 Repeat with decrementer until self.minimum, take results and create a linear
 array of allowed values where the length of the array is the number of slider positions.
 and the slider position i has value array[i].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.tickPosition">
-<span class="sig-name descname"><span class="pre">tickPosition</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.tickPosition" title="Permalink to this definition"></a></dt>
-<dd><p>Where to draw tick marks for the slider.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>QSlider.TickPosition</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.tracking">
-<span class="sig-name descname"><span class="pre">tracking</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.tracking" title="Permalink to this definition"></a></dt>
-<dd><p>If tracking is enabled (the default), the slider emits new values
-while the slider is being dragged.  If tracking is disabled, it will
-only emit new values when the user releases the slider.  Tracking can
-cause PyDM to rapidly send new values to the channel.  If you are using
-the slider to control physical hardware, consider whether the device
-you want to control can handle large amounts of changes in a short
-timespan.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -523,40 +428,6 @@ and unit</p>
 <dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.update_labels">
 <span class="sig-name descname"><span class="pre">update_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/slider.html#PyDMSlider.update_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.update_labels" title="Permalink to this definition"></a></dt>
 <dd><p>Update the limits and value labels with the correct values.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.userDefinedLimits">
-<span class="sig-name descname"><span class="pre">userDefinedLimits</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.userDefinedLimits" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not to use limits defined by the user and not from the
-channel</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.userMaximum">
-<span class="sig-name descname"><span class="pre">userMaximum</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.userMaximum" title="Permalink to this definition"></a></dt>
-<dd><p>Upper user defined limit value</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.slider.PyDMSlider.userMinimum">
-<span class="sig-name descname"><span class="pre">userMinimum</span></span><a class="headerlink" href="#pydm.widgets.slider.PyDMSlider.userMinimum" title="Permalink to this definition"></a></dt>
-<dd><p>Lower user defined limit value</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py property">

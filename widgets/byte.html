@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PyDMByteIndicator &mdash; PyDM 1.27.2 documentation</title>
@@ -170,28 +170,6 @@ and 3 = INVALID</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.bigEndian">
-<span class="sig-name descname"><span class="pre">bigEndian</span></span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.bigEndian" title="Permalink to this definition"></a></dt>
-<dd><p>Whether the most significant bit is at the start or end of the widget.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.circles">
-<span class="sig-name descname"><span class="pre">circles</span></span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.circles" title="Permalink to this definition"></a></dt>
-<dd><p>Draw indicators as circles, rather than rectangles.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.clear">
 <span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.clear" title="Permalink to this definition"></a></dt>
@@ -223,72 +201,6 @@ and also trigger the change on alarm severity to ALARM_DISCONNECTED.</p>
 when using the widget with the Qt Designer</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.labelPosition">
-<span class="sig-name descname"><span class="pre">labelPosition</span></span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.labelPosition" title="Permalink to this definition"></a></dt>
-<dd><p>The side of the widget to display labels on.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.labels">
-<span class="sig-name descname"><span class="pre">labels</span></span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.labels" title="Permalink to this definition"></a></dt>
-<dd><p>Labels for each bit.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.numBits">
-<span class="sig-name descname"><span class="pre">numBits</span></span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.numBits" title="Permalink to this definition"></a></dt>
-<dd><p>Number of bits to interpret.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.offColor">
-<span class="sig-name descname"><span class="pre">offColor</span></span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.offColor" title="Permalink to this definition"></a></dt>
-<dd><p>The color for a bit in the ‘off’ state.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>QColor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.onColor">
-<span class="sig-name descname"><span class="pre">onColor</span></span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.onColor" title="Permalink to this definition"></a></dt>
-<dd><p>The color for a bit in the ‘on’ state.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>QColor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.orientation">
-<span class="sig-name descname"><span class="pre">orientation</span></span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.orientation" title="Permalink to this definition"></a></dt>
-<dd><p>Whether to lay out the bit indicators vertically or horizontally.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.paintEvent">
 <span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.paintEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.paintEvent" title="Permalink to this definition"></a></dt>
@@ -316,28 +228,6 @@ according to the layout property values.</p>
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.set_spacing">
 <span class="sig-name descname"><span class="pre">set_spacing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.set_spacing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.set_spacing" title="Permalink to this definition"></a></dt>
 <dd><p>Configures the correct spacing given the selected orientation.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.shift">
-<span class="sig-name descname"><span class="pre">shift</span></span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.shift" title="Permalink to this definition"></a></dt>
-<dd><p>Bit shift.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.showLabels">
-<span class="sig-name descname"><span class="pre">showLabels</span></span><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.showLabels" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not to show labels next to each bit indicator.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">

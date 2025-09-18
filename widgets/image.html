@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PyDMImageView &mdash; PyDM 1.27.2 documentation</title>
@@ -151,8 +151,8 @@
 <p>A PyQtGraph ImageView with support for Channels and more from PyDM.</p>
 <p>If there is no <code class="xref py py-attr docutils literal notranslate"><span class="pre">channelWidth</span></code> it is possible to define the width of
 the image with the <code class="xref py py-attr docutils literal notranslate"><span class="pre">width</span></code> property.</p>
-<p>The <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.normalizeData" title="pydm.widgets.image.PyDMImageView.normalizeData"><code class="xref py py-attr docutils literal notranslate"><span class="pre">normalizeData</span></code></a> property defines if the colors of the images are
-relative to the <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.colorMapMin" title="pydm.widgets.image.PyDMImageView.colorMapMin"><code class="xref py py-attr docutils literal notranslate"><span class="pre">colorMapMin</span></code></a> and <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.colorMapMax" title="pydm.widgets.image.PyDMImageView.colorMapMax"><code class="xref py py-attr docutils literal notranslate"><span class="pre">colorMapMax</span></code></a> property or to
+<p>The <code class="xref py py-attr docutils literal notranslate"><span class="pre">normalizeData</span></code> property defines if the colors of the images are
+relative to the <code class="xref py py-attr docutils literal notranslate"><span class="pre">colorMapMin</span></code> and <code class="xref py py-attr docutils literal notranslate"><span class="pre">colorMapMax</span></code> property or to
 the minimum and maximum values of the image.</p>
 <p>Use the <code class="xref py py-attr docutils literal notranslate"><span class="pre">newImageSignal</span></code> to hook up to a signal that is emitted when a new
 image is rendered in the widget.</p>
@@ -195,23 +195,6 @@ to see the ordering of values in its ‘dimension’ array.</p>
 <p>Class to build ReadingOrder ENUM property.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.autoDownsample">
-<span class="sig-name descname"><span class="pre">autoDownsample</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.autoDownsample" title="Permalink to this definition"></a></dt>
-<dd><p>Return if we should or not apply the
-autoDownsample option to PyQtGraph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.channel">
-<span class="sig-name descname"><span class="pre">channel</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.channel" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.channels">
 <span class="sig-name descname"><span class="pre">channels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.channels" title="Permalink to this definition"></a></dt>
@@ -232,80 +215,10 @@ autoDownsample option to PyQtGraph.</p>
 <dd><p>Return channels for tools.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.colorMap">
-<span class="sig-name descname"><span class="pre">colorMap</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMap" title="Permalink to this definition"></a></dt>
-<dd><p>Return the color map used by the ImageView.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>PyDMColorMap</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.colorMapMax">
-<span class="sig-name descname"><span class="pre">colorMapMax</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMapMax" title="Permalink to this definition"></a></dt>
-<dd><p>Maximum value for the colormap.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.colorMapMin">
-<span class="sig-name descname"><span class="pre">colorMapMin</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.colorMapMin" title="Permalink to this definition"></a></dt>
-<dd><p>Minimum value for the colormap.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.dimensionOrder">
-<span class="sig-name descname"><span class="pre">dimensionOrder</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.dimensionOrder" title="Permalink to this definition"></a></dt>
-<dd><p>Return the dimension order of the <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.imageChannel" title="pydm.widgets.image.PyDMImageView.imageChannel"><code class="xref py py-attr docutils literal notranslate"><span class="pre">imageChannel</span></code></a> array.
-(for more info see DimensionOrder class definition)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pydm.widgets.image.PyDMImageView.DimensionOrder" title="pydm.widgets.image.PyDMImageView.DimensionOrder">DimensionOrder</a></p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.eventFilter">
 <span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QObject</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QEvent</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.eventFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.eventFilter" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.imageChannel">
-<span class="sig-name descname"><span class="pre">imageChannel</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.imageChannel" title="Permalink to this definition"></a></dt>
-<dd><p>The channel address in use for the image data .</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Channel address</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.imageWidth">
-<span class="sig-name descname"><span class="pre">imageWidth</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.imageWidth" title="Permalink to this definition"></a></dt>
-<dd><p>Return the width of the image.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.image_connection_state_changed">
@@ -350,29 +263,6 @@ a flag requesting that the image be redrawn.</p>
 <dd><p>Handle keypress events.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.maxRedrawRate">
-<span class="sig-name descname"><span class="pre">maxRedrawRate</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.maxRedrawRate" title="Permalink to this definition"></a></dt>
-<dd><p>The maximum rate (in Hz) at which the plot will be redrawn.</p>
-<p>The plot will not be redrawn if there is not new data to draw.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.normalizeData">
-<span class="sig-name descname"><span class="pre">normalizeData</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.normalizeData" title="Permalink to this definition"></a></dt>
-<dd><p>Return True if the colors are relative to data maximum and minimum.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.process_image">
 <span class="sig-name descname"><span class="pre">process_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.process_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.process_image" title="Permalink to this definition"></a></dt>
@@ -397,38 +287,11 @@ to QWidgets.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.readingOrder">
-<span class="sig-name descname"><span class="pre">readingOrder</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.readingOrder" title="Permalink to this definition"></a></dt>
-<dd><p>Return the reading order of the <a class="reference internal" href="#pydm.widgets.image.PyDMImageView.imageChannel" title="pydm.widgets.image.PyDMImageView.imageChannel"><code class="xref py py-attr docutils literal notranslate"><span class="pre">imageChannel</span></code></a> array.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pydm.widgets.image.PyDMImageView.ReadingOrder" title="pydm.widgets.image.PyDMImageView.ReadingOrder">ReadingOrder</a></p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.redrawImage">
 <span class="sig-name descname"><span class="pre">redrawImage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/image.html#PyDMImageView.redrawImage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.redrawImage" title="Permalink to this definition"></a></dt>
 <dd><p>Set the image data into the ImageItem, if needed.</p>
 <p>If necessary, reshape the image to 2D first.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.scaleXAxis">
-<span class="sig-name descname"><span class="pre">scaleXAxis</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.scaleXAxis" title="Permalink to this definition"></a></dt>
-<dd><p>Sets the scale for the X Axis.</p>
-<p>For example, if your image has 100 pixels per millimeter, you can set
-xAxisScale to 1/100 = 0.01 to make the X Axis report in millimeter units.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.scaleYAxis">
-<span class="sig-name descname"><span class="pre">scaleYAxis</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.scaleYAxis" title="Permalink to this definition"></a></dt>
-<dd><p>Sets the scale for the Y Axis.</p>
-<p>For example, if your image has 100 pixels per millimeter, you can set
-yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -454,12 +317,6 @@ yAxisScale to 1/100 = 0.01 to make the Y Axis report in millimeter units.</p>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.showAxes">
-<span class="sig-name descname"><span class="pre">showAxes</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.showAxes" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not axes should be shown on the widget.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -489,20 +346,6 @@ pause redrawing the image, and resume later if needed.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>QMenu or None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.image.PyDMImageView.widthChannel">
-<span class="sig-name descname"><span class="pre">widthChannel</span></span><a class="headerlink" href="#pydm.widgets.image.PyDMImageView.widthChannel" title="Permalink to this definition"></a></dt>
-<dd><p>The channel address in use for the image width .</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Channel address</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PyDMTemplateRepeater &mdash; PyDM 1.27.2 documentation</title>
@@ -168,47 +168,12 @@ with the data that describes all of the magnets.</p>
 the widget.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.template_repeater.PyDMTemplateRepeater.countShownInDesigner">
-<span class="sig-name descname"><span class="pre">countShownInDesigner</span></span><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.countShownInDesigner" title="Permalink to this definition"></a></dt>
-<dd><p>The number of instances to show in Qt Designer.  This property has no
-effect outside of Designer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="pydm.widgets.template_repeater.PyDMTemplateRepeater.data">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.data" title="Permalink to this definition"></a></dt>
 <dd><p>The dictionary used by the widget to fill in each instance of the template.
 This property will be overwritten if the user changes the dataSource
 property.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.template_repeater.PyDMTemplateRepeater.dataSource">
-<span class="sig-name descname"><span class="pre">dataSource</span></span><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.dataSource" title="Permalink to this definition"></a></dt>
-<dd><p>The path to the JSON file or a valid JSON string to fill in each
-instance of the template.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.template_repeater.PyDMTemplateRepeater.layoutType">
-<span class="sig-name descname"><span class="pre">layoutType</span></span><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.layoutType" title="Permalink to this definition"></a></dt>
-<dd><p>The layout type to use.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>LayoutType</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -234,47 +199,6 @@ to all the macros specified on the template repeater widget.</p>
 <span class="sig-name descname"><span class="pre">rebuild</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/template_repeater.html#PyDMTemplateRepeater.rebuild"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.rebuild" title="Permalink to this definition"></a></dt>
 <dd><p>Clear out all existing widgets, and populate the list using the
 template file and data source.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.template_repeater.PyDMTemplateRepeater.recursiveDataSearch">
-<span class="sig-name descname"><span class="pre">recursiveDataSearch</span></span><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.recursiveDataSearch" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not to search for a provided data file recursively
-in subfolders relative to the location of this widget.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If recursive search is enabled.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.template_repeater.PyDMTemplateRepeater.recursiveTemplateSearch">
-<span class="sig-name descname"><span class="pre">recursiveTemplateSearch</span></span><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.recursiveTemplateSearch" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not to search for a provided template file recursively
-in subfolders relative to the location of this widget.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If recursive search is enabled.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.template_repeater.PyDMTemplateRepeater.templateFilename">
-<span class="sig-name descname"><span class="pre">templateFilename</span></span><a class="headerlink" href="#pydm.widgets.template_repeater.PyDMTemplateRepeater.templateFilename" title="Permalink to this definition"></a></dt>
-<dd><p>The path to the .ui file to use as a template.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>

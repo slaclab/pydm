@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PyDMEnumButton &mdash; PyDM 1.27.2 documentation</title>
@@ -175,32 +175,10 @@ This method also disables the widget and add a Tool Tip
 with the reason why it is disabled.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.checkable">
-<span class="sig-name descname"><span class="pre">checkable</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.checkable" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not the button should be checkable.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.clear">
 <span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.clear" title="Permalink to this definition"></a></dt>
 <dd><p>Remove all inner widgets from the layout</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.customOrder">
-<span class="sig-name descname"><span class="pre">customOrder</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.customOrder" title="Permalink to this definition"></a></dt>
-<dd><p>Index list in which items are to be displayed in the button group.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[str]</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -232,85 +210,6 @@ new enum values to be broadcasted.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.horizontalSpacing">
-<span class="sig-name descname"><span class="pre">horizontalSpacing</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.horizontalSpacing" title="Permalink to this definition"></a></dt>
-<dd><p>The horizontal gap of the QGridLayout containing the QButtonGroup.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.invertOrder">
-<span class="sig-name descname"><span class="pre">invertOrder</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.invertOrder" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not to invert the order for the button group.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.items">
-<span class="sig-name descname"><span class="pre">items</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.items" title="Permalink to this definition"></a></dt>
-<dd><p>Items to be displayed in the button group.</p>
-<p>This property can be overridden by the items coming from the control system.
-Because C++ QStringList expects a list type, we need to make sure that None is never returned.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[str]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.marginBottom">
-<span class="sig-name descname"><span class="pre">marginBottom</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.marginBottom" title="Permalink to this definition"></a></dt>
-<dd><p>The bottom margin of the QGridLayout of buttons.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.marginLeft">
-<span class="sig-name descname"><span class="pre">marginLeft</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.marginLeft" title="Permalink to this definition"></a></dt>
-<dd><p>The left margin of the QGridLayout of buttons.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.marginRight">
-<span class="sig-name descname"><span class="pre">marginRight</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.marginRight" title="Permalink to this definition"></a></dt>
-<dd><p>The right margin of the QGridLayout of buttons.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.marginTop">
-<span class="sig-name descname"><span class="pre">marginTop</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.marginTop" title="Permalink to this definition"></a></dt>
-<dd><p>The top margin of the QGridLayout of buttons.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.minimumSizeHint">
 <span class="sig-name descname"><span class="pre">minimumSizeHint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.minimumSizeHint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.minimumSizeHint" title="Permalink to this definition"></a></dt>
@@ -318,17 +217,6 @@ Because C++ QStringList expects a list type, we need to make sure that None is n
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>QSize</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.orientation">
-<span class="sig-name descname"><span class="pre">orientation</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.orientation" title="Permalink to this definition"></a></dt>
-<dd><p>Whether to lay out the bit indicators vertically or horizontally.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -363,17 +251,6 @@ according to the layout property values.</p>
 list of fake strings so we can see something at Designer.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.useCustomOrder">
-<span class="sig-name descname"><span class="pre">useCustomOrder</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.useCustomOrder" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not to use custom order for the button group.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.value_changed">
 <span class="sig-name descname"><span class="pre">value_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/enum_button.html#PyDMEnumButton.value_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.value_changed" title="Permalink to this definition"></a></dt>
@@ -381,28 +258,6 @@ list of fake strings so we can see something at Designer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_val</strong> (<em>int</em>) – The new value from the channel.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.verticalSpacing">
-<span class="sig-name descname"><span class="pre">verticalSpacing</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.verticalSpacing" title="Permalink to this definition"></a></dt>
-<dd><p>The vertical gap of the QGridLayout containing the QButtonGroup.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.enum_button.PyDMEnumButton.widgetType">
-<span class="sig-name descname"><span class="pre">widgetType</span></span><a class="headerlink" href="#pydm.widgets.enum_button.PyDMEnumButton.widgetType" title="Permalink to this definition"></a></dt>
-<dd><p>The widget type to be used when composing the group.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>WidgetType</p>
 </dd>
 </dl>
 </dd></dl>

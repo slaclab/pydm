@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PyDMPushButton &mdash; PyDM 1.27.2 documentation</title>
@@ -151,10 +151,10 @@
 <p>The PyDMPushButton is meant to hold a specific value, and send that value
 to a channel when it is clicked, much like the MessageButton does in EDM.
 The PyDMPushButton works in two different modes of operation, first, a
-fixed value can be given to the <a class="reference internal" href="#pydm.widgets.pushbutton.PyDMPushButton.pressValue" title="pydm.widgets.pushbutton.PyDMPushButton.pressValue"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pressValue</span></code></a> attribute, whenever the
+fixed value can be given to the <code class="xref py py-attr docutils literal notranslate"><span class="pre">pressValue</span></code> attribute, whenever the
 button is clicked a signal containing this value will be sent to the
 connected channel. This is the default behavior of the button. However, if
-the <a class="reference internal" href="#pydm.widgets.pushbutton.PyDMPushButton.relativeChange" title="pydm.widgets.pushbutton.PyDMPushButton.relativeChange"><code class="xref py py-attr docutils literal notranslate"><span class="pre">relativeChange</span></code></a> is set to True, the fixed value will be added
+the <code class="xref py py-attr docutils literal notranslate"><span class="pre">relativeChange</span></code> is set to True, the fixed value will be added
 to the current value of the channel. This means that the button will
 increment a channel by a fixed amount with every click, a consistent
 relative move</p>
@@ -171,37 +171,6 @@ setting to an absolute value</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.PyDMIcon">
-<span class="sig-name descname"><span class="pre">PyDMIcon</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.PyDMIcon" title="Permalink to this definition"></a></dt>
-<dd><p>Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
-See “enum QStyle::StandardPixmap” in Qt’s QStyle documentation for full list of usable standard icons.
-See https://fontawesome.com/icons?d=gallery for list of usable fontawesome icons.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.PyDMIconColor">
-<span class="sig-name descname"><span class="pre">PyDMIconColor</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.PyDMIconColor" title="Permalink to this definition"></a></dt>
-<dd><p>The color of the icon (color is only applied if using icon from the “Font Awesome” set)
-:rtype: QColor</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.confirmMessage">
-<span class="sig-name descname"><span class="pre">confirmMessage</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.confirmMessage" title="Permalink to this definition"></a></dt>
-<dd><p>Message to be displayed at the Confirmation dialog.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog">
 <span class="sig-name descname"><span class="pre">confirm_dialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.confirm_dialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog" title="Permalink to this definition"></a></dt>
@@ -222,90 +191,6 @@ is False.</p>
 <dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.eventFilter">
 <span class="sig-name descname"><span class="pre">eventFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QObject</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QEvent</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.eventFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.eventFilter" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.password">
-<span class="sig-name descname"><span class="pre">password</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.password" title="Permalink to this definition"></a></dt>
-<dd><p>Password to be encrypted using SHA256.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>To avoid issues exposing the password this method
-always returns an empty string.</p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.passwordProtected">
-<span class="sig-name descname"><span class="pre">passwordProtected</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.passwordProtected" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not this button is password protected.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.pressValue">
-<span class="sig-name descname"><span class="pre">pressValue</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.pressValue" title="Permalink to this definition"></a></dt>
-<dd><p>This property holds the value to send back through the channel.</p>
-<p>The type of this value does not matter because it is automatically
-converted to match the preexisting value type of the channel. However,
-the sign of the value matters for both the fixed and relative modes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.protectedPassword">
-<span class="sig-name descname"><span class="pre">protectedPassword</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.protectedPassword" title="Permalink to this definition"></a></dt>
-<dd><p>The encrypted password.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.relativeChange">
-<span class="sig-name descname"><span class="pre">relativeChange</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.relativeChange" title="Permalink to this definition"></a></dt>
-<dd><p>The mode of operation of the PyDMPushButton.</p>
-<p>If set to True, the <a class="reference internal" href="#pydm.widgets.pushbutton.PyDMPushButton.pressValue" title="pydm.widgets.pushbutton.PyDMPushButton.pressValue"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pressValue</span></code></a> will be added to the current
-value of the channel. If False, the <a class="reference internal" href="#pydm.widgets.pushbutton.PyDMPushButton.pressValue" title="pydm.widgets.pushbutton.PyDMPushButton.pressValue"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pressValue</span></code></a> will be sent
-without any operation.</p>
-<p>This flag will be ignored if the connected channel sends a str type
-value to <code class="xref py py-meth docutils literal notranslate"><span class="pre">receiveValue()</span></code>. This is designed to eliminate the
-undesirable behavior of concatenating strings as opposed to doing
-mathematical addition.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.releaseValue">
-<span class="sig-name descname"><span class="pre">releaseValue</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.releaseValue" title="Permalink to this definition"></a></dt>
-<dd><p>This property holds the value to send back through the channel.</p>
-<p>The type of this value does not matter because it is automatically
-converted to match the preexisting value type of the channel. However,
-the sign of the value matters for both the fixed and relative modes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.sendReleaseValue">
@@ -370,17 +255,6 @@ if the relative flag is True, and the channel type is not a str</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.showConfirmDialog">
-<span class="sig-name descname"><span class="pre">showConfirmDialog</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.showConfirmDialog" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not to display a confirmation dialog.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.updatePressValue">
 <span class="sig-name descname"><span class="pre">updatePressValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.updatePressValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.updatePressValue" title="Permalink to this definition"></a></dt>
@@ -423,17 +297,6 @@ password protected.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.writeWhenRelease">
-<span class="sig-name descname"><span class="pre">writeWhenRelease</span></span><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.writeWhenRelease" title="Permalink to this definition"></a></dt>
-<dd><p>Whether or not to write releaseValue on release</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>

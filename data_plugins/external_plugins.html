@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>External Data Plugins &mdash; PyDM 1.27.2 documentation</title>
@@ -88,7 +88,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.connectNotify"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.connectNotify()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.customEvent"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.customEvent()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.deleteLater"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.deleteLater()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.destroyed"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.destroyed</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.disconnect"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.disconnect()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.disconnectNotify"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.disconnectNotify()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.dumpObjectInfo"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.dumpObjectInfo()</span></code></a></li>
@@ -107,7 +106,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.metaObject"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.metaObject()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.moveToThread"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.moveToThread()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.objectName"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.objectName()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.objectNameChanged"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.objectNameChanged</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.parent"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.parent()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.property"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.property()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pydm.data_plugins.plugin.PyDMConnection.pyqtConfigure"><code class="docutils literal notranslate"><span class="pre">PyDMConnection.pyqtConfigure()</span></code></a></li>
@@ -221,17 +219,6 @@ following:</p>
 <span class="sig-name descname"><span class="pre">deleteLater</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydm.data_plugins.plugin.PyDMConnection.deleteLater" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.data_plugins.plugin.PyDMConnection.destroyed">
-<span class="sig-name descname"><span class="pre">destroyed</span></span><a class="headerlink" href="#pydm.data_plugins.plugin.PyDMConnection.destroyed" title="Permalink to this definition"></a></dt>
-<dd><p>Optional[QObject] = None) [signal]</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>destroyed(self, object</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.data_plugins.plugin.PyDMConnection.disconnect">
 <span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMetaObject.Connection</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pydm.data_plugins.plugin.PyDMConnection.disconnect" title="Permalink to this definition"></a></dt>
@@ -335,17 +322,6 @@ following:</p>
 <dt class="sig sig-object py" id="pydm.data_plugins.plugin.PyDMConnection.objectName">
 <span class="sig-name descname"><span class="pre">objectName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pydm.data_plugins.plugin.PyDMConnection.objectName" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydm.data_plugins.plugin.PyDMConnection.objectNameChanged">
-<span class="sig-name descname"><span class="pre">objectNameChanged</span></span><a class="headerlink" href="#pydm.data_plugins.plugin.PyDMConnection.objectNameChanged" title="Permalink to this definition"></a></dt>
-<dd><p>Optional[str]) [signal]</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>objectNameChanged(self, objectName</p>
-</dd>
-</dl>
-</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.data_plugins.plugin.PyDMConnection.parent">
