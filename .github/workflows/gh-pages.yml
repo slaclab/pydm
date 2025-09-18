@@ -11,12 +11,11 @@ jobs:
     if: ${{ github.repository == 'slaclab/pydm' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: 3.10
-          mamba-version: "*"
-          channels: conda-forge
+          python-version: "3.12"
+          miniforge-version: latest
           activate-environment: pydm-docs
 
       - name: Install python packages
