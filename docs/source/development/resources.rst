@@ -8,6 +8,10 @@ Packages We Recommend
 * `Flake8 <http://flake8.pycqa.org/en/latest>`_ -- Style Enforcement
 * `Sphinx <http://www.sphinx-doc.org/en/stable>`_ -- Automated HTML Documentation
 
+Converters
+==========
+* `PyDMConverter <https://github.com/slaclab/pydm-converter-tool>`_ -- EDM to PyDM Converter
+
 External Tutorials and Guides
 =============================
 * `Git Tutorial <http://swcarpentry.github.io/git-novice>`_ -- Thorough Git beginner guide
