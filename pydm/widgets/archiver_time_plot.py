@@ -88,7 +88,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.error_bar_data = None
 
         self.destroyed.connect(lambda: self.remove_error_bar())
-        self.destroyed.connect(lambda: self.remove_extenstion_line())
+        self.destroyed.connect(lambda: self.remove_extension_line())
         self.address = channel_address
 
     def to_dict(self) -> OrderedDict:
@@ -149,7 +149,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self.remove_error_bar()
         self.getViewBox().addItem(self.error_bar)
 
-        self.remove_extenstion_line()
+        self.remove_extension_line()
         self.getViewBox().addItem(self._extension_line)
 
     @BasePlotCurveItem.color.setter
@@ -344,12 +344,17 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         self._extension_line.setData(x=x_line, y=y_line)
 
     @Slot()
-    def remove_extenstion_line(self):
+    def remove_extension_line(self):
         """Remove the curve's error bar when the curve is deleted."""
-        if self._extension_line is None:
+        line = getattr(self, "_extension_line", None)
+        if not line:
             return
-        if vb := self._extension_line.getViewBox():
-            vb.removeItem(self._extension_line)
+        try:
+            vb = line.getViewBox()
+            if vb is not None and vb.scene() is not None:
+                vb.removeItem(line)
+        except RuntimeError:
+            pass
 
     def refresh_extension_line_pen(self) -> None:
         dotted_pen = QPen(self._pen)
@@ -415,10 +420,15 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     @Slot()
     def remove_error_bar(self):
         """Remove the curve's error bar when the curve is deleted."""
-        if self.error_bar is None:
+        bar = getattr(self, "error_bar", None)
+        if not bar:
             return
-        if vb := self.error_bar.getViewBox():
-            vb.removeItem(self.error_bar)
+        try:
+            vb = bar.getViewBox()
+            if vb is not None and vb.scene() is not None:
+                vb.removeItem(bar)
+        except RuntimeError:
+            pass
 
     def refresh_error_bar_pen(self) -> None:
         solid_pen = QPen(self._pen)
@@ -577,7 +587,6 @@ class FormulaCurveItem(BasePlotCurveItem):
         self.pvs = pvs if pvs else {}
         self._liveData = liveData
         self.plot_style = plot_style
-
         self.connected, self.arch_connected = None, None
         self.live_connections, self.arch_connections = {}, {}
 
@@ -712,7 +721,34 @@ class FormulaCurveItem(BasePlotCurveItem):
 
             return
 
-        if not (self.connected or self.arch_connected):
+        # If all dependencies are constant formula curves, synthesize a constant series.
+        if self.pvs and all(isinstance(c, FormulaCurveItem) and not c.pvs for c in self.pvs.values()):
+            # Build pvValues from child constant buffers if present (fallback 0.0)
+            pvValues = {}
+            for name, c in self.pvs.items():
+                if c.points_accumulated > 0:
+                    pvValues[name] = float(c.data_buffer[1, 0])
+                elif c.archive_points_accumulated > 0:
+                    pvValues[name] = float(c.archive_data_buffer[1, 0])
+                else:
+                    pvValues[name] = 0.0
+
+            constant_value = eval(self._trueFormula, globals(), {"pvValues": pvValues})
+
+            now = time.time()
+            span = 365 * 24 * 60 * 60
+            ts = np.linspace(now - span, now + span, 100)
+            vals = np.full(ts.shape[0], constant_value)
+
+            mid = ts.shape[0] // 2
+            self.archive_data_buffer = np.array([ts[:mid], vals[:mid]])
+            self.data_buffer = np.array([ts[mid:], vals[mid:]])
+            self.archive_points_accumulated = mid
+            self.points_accumulated = ts.shape[0] - mid
+            return
+
+        all_constants = all(isinstance(c, FormulaCurveItem) and not c.pvs for c in self.pvs.values())
+        if not all_constants and not (self.connected or self.arch_connected):
             return
 
         pvArchiveData = dict()
@@ -871,7 +907,6 @@ class FormulaCurveItem(BasePlotCurveItem):
             archive_y = self.archive_data_buffer[1, -self.archive_points_accumulated :].astype(float)
             live_x = self.data_buffer[0, -self.points_accumulated :].astype(float)
             live_y = self.data_buffer[1, -self.points_accumulated :].astype(float)
-
             x = np.concatenate((archive_x, live_x))
             y = np.concatenate((archive_y, live_y))
 
@@ -997,6 +1032,10 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def max_x(self):
         if not self.pvs:
+            if self.points_accumulated > 0:
+                return float(self.data_buffer[0, -1])
+            if self.archive_points_accumulated > 0:
+                return float(self.archive_data_buffer[0, -1])
             return time.time()
         maxx = APPROX_SECONDS_300_YEARS
         for curve in self.pvs.keys():
@@ -1005,8 +1044,12 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def min_x(self):
         if not self.pvs:
+            if self.archive_points_accumulated > 0:
+                return float(self.archive_data_buffer[0, 0])
+            if self.points_accumulated > 0:
+                return float(self.data_buffer[0, 0])
             return time.time() - DEFAULT_TIME_SPAN
-        minx = 0
+        minx = 0.0
         for curve in self.pvs.keys():
             minx = max(self.pvs[curve].min_x(), minx)
         return minx
@@ -1021,8 +1064,10 @@ class FormulaCurveItem(BasePlotCurveItem):
             The timestamp of the oldest data point in the archiver data buffer.
         """
         if not self.pvs:
+            if self.archive_points_accumulated > 0:
+                return float(self.archive_data_buffer[0, 0])
             return time.time() - DEFAULT_TIME_SPAN
-        minx = 0
+        minx = 0.0
         for curve in self.pvs.keys():
             minx = max(self.pvs[curve].min_archiver_x(), minx)
         return minx
@@ -1038,6 +1083,8 @@ class FormulaCurveItem(BasePlotCurveItem):
             The timestamp of the most recent data point in the archiver data buffer.
         """
         if not self.pvs:
+            if self.archive_points_accumulated > 0:
+                return float(self.archive_data_buffer[0, -1])
             return time.time()
         maxx = APPROX_SECONDS_300_YEARS
         for curve in self.pvs.keys():
@@ -1046,6 +1093,30 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     def channels(self):
         return [self.channel]
+
+    @property
+    def address(self) -> str:
+        """Alias so tools expecting .address (like ArchivePlotCurveItem) work."""
+        return self._formula or ""
+
+    @address.setter
+    def address(self, val: str) -> None:
+        self.formula = val
+
+    @property
+    def units(self) -> str:
+        if not self.pvs:
+            return ""
+        child_units = [getattr(curve, "units", "") or "" for curve in self.pvs.values()]
+        non_empty = [u for u in child_units if u]
+        if not non_empty:
+            return ""
+        first = non_empty[0]
+        return first if all(u == first for u in non_empty) else ""
+
+    @units.setter
+    def units(self, _value: str) -> None:
+        pass
 
 
 class PyDMArchiverTimePlot(PyDMTimePlot):
@@ -1238,9 +1309,10 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 # Max amount of raw data to return before using optimized data
                 max_data_request = int(0.80 * self.getArchiveBufferSize())
                 if requested_seconds > max_data_request:
-                    optimized_data_bins = (
-                        curve.optimized_data_bins if curve.optimized_data_bins else self.optimized_data_bins
-                    )
+                    if hasattr(curve, "optimized_data_bins") and curve.optimized_data_bins:
+                        optimized_data_bins = curve.optimized_data_bins
+                    else:
+                        optimized_data_bins = self.optimized_data_bins
                     processing_command = "optimized_" + str(optimized_data_bins)
                 curve.archive_data_request_signal.emit(min_x, max_x - 1, processing_command)
                 req_queued |= True
@@ -1407,8 +1479,6 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         formula_curve = FormulaCurveItem(yAxisName=yAxisName, **kwargs)
 
         self._curves.append(formula_curve)
-
-        self.plotItem.addItem(formula_curve)
         self.plotItem.linkDataToAxis(formula_curve, yAxisName)
 
         return formula_curve
