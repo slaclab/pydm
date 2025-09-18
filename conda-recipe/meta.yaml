@@ -16,14 +16,14 @@ build:
 
 requirements:
   host:
-    - python >=3.9
+    - python >=3.10
     - pip
     - setuptools
     - setuptools_scm
     - pyqt =5
     - qtpy >=2.2.0
   run:
-    - python >=3.9
+    - python >=3.10
     - six
     - numpy
     - scipy
