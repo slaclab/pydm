@@ -204,6 +204,8 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         self.data_buffer[1, -1] = self.latest_y_value
         if self.points_accumulated < self._bufferSize:
             self.points_accumulated = self.points_accumulated + 1
+        self.needs_new_x = True
+        self.needs_new_y = True
         self.data_changed.emit()
 
     def initialize_buffer(self):
@@ -287,8 +289,6 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             x=self.data_buffer[0, -self.points_accumulated :].astype(float),
             y=self.data_buffer[1, -self.points_accumulated :].astype(float),
         )
-        self.needs_new_x = True
-        self.needs_new_y = True
 
     def limits(self):
         """
