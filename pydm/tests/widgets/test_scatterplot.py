@@ -120,6 +120,13 @@ def test_scatterplotcurveitem_connection_state_changed(qtbot, signals):
 )
 def test_scatterplotcurveitem_receive_values(qtbot, signals, redraw_mode, new_data):
     # REDRAW_ON_X, REDRAW_ON_Y, REDRAW_ON_EITHER, REDRAW_ON_BOTH
+    assert redraw_mode in [
+        ScatterPlotCurveItem.REDRAW_ON_X,
+        ScatterPlotCurveItem.REDRAW_ON_Y,
+        ScatterPlotCurveItem.REDRAW_ON_EITHER,
+        ScatterPlotCurveItem.REDRAW_ON_BOTH,
+    ]
+
     plot_curve_item = ScatterPlotCurveItem(None, None, redraw_mode=redraw_mode)
 
     expected_data_buffer = np.zeros((2, plot_curve_item._bufferSize), order="f", dtype=float)
@@ -133,11 +140,45 @@ def test_scatterplotcurveitem_receive_values(qtbot, signals, redraw_mode, new_da
 
         plot_curve_item.receiveXValue(new_x)
         assert plot_curve_item.latest_x_value == new_x
-        assert plot_curve_item.points_accumulated == 2 * i
+
+        if redraw_mode == ScatterPlotCurveItem.REDRAW_ON_X:
+            if i == 0:
+                # No point will be added as there is no y value available yet
+                assert plot_curve_item.points_accumulated == 0
+            else:
+                # If a y value exists, a point is added every iteration
+                assert plot_curve_item.points_accumulated == i + 1
+        elif redraw_mode == ScatterPlotCurveItem.REDRAW_ON_Y:
+            # Only care about y so no point added yet
+            assert plot_curve_item.points_accumulated == i
+        elif redraw_mode == ScatterPlotCurveItem.REDRAW_ON_EITHER:
+            if i == 0:
+                # No point will be added as there is no y value available yet
+                assert plot_curve_item.points_accumulated == 0
+            else:
+                # If a y value exists, two points are added every iteration (one for x update, one for y update),
+                # but no point for x receive was added in first iteration!
+                assert plot_curve_item.points_accumulated == 2 * i
+        elif redraw_mode == ScatterPlotCurveItem.REDRAW_ON_BOTH:
+            # Exactly one point added per iteration, after both x and y received
+            assert plot_curve_item.points_accumulated == i
 
         plot_curve_item.receiveYValue(new_y)
         assert plot_curve_item.latest_y_value == new_y
-        assert plot_curve_item.points_accumulated == 2 * i + 1
+        if redraw_mode == ScatterPlotCurveItem.REDRAW_ON_X:
+            # Once y value is available, a point will be added, so same check for every iteration
+            assert plot_curve_item.points_accumulated == i + 1
+        elif redraw_mode == ScatterPlotCurveItem.REDRAW_ON_Y:
+            # Only care about y so a point added here every iteration (x already available)
+            assert plot_curve_item.points_accumulated == i + 1
+        elif redraw_mode == ScatterPlotCurveItem.REDRAW_ON_EITHER:
+            # If a y value exists, two points are added every iteration (one for x update, one for y update),
+            # but the first iteration only added one (so add 1)
+            assert plot_curve_item.points_accumulated == 2 * i + 1
+        elif redraw_mode == ScatterPlotCurveItem.REDRAW_ON_BOTH:
+            # Exactly one point added per iteration, after both x and y received, so here add one to 
+            # account for point added after y receive
+            assert plot_curve_item.points_accumulated == i + 1
 
 
 def test_scatterplotcurve_initialize_buffer(qtbot):
