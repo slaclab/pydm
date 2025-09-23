@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pydm"
-description = "A PyQt-based framework for building user interfaces for control systems"
+description = "A Python-Qt based framework for building user interfaces for control systems"
 readme = "README.md"
 authors = [ {name = "SLAC National Accelerator Laboratory"} ]
 classifiers = [

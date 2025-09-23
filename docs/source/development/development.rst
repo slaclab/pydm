@@ -139,3 +139,27 @@ should look like this:
    working on that branch. The rebasing process re-writes the commit history so
    any other checkout of the same branch referring to the old history will
    create duplicates of all the commits.
+
+Qt Wrapper Dependent Code
+===========================
+PyDM is written in Python using wrappers around the C++ Qt library. PyDM currently supports two different python wrappers: PyQt5 and PySide6.
+PyQt5 runs on the older Qt version Qt5, and PySide6 runs the on the newest Qt version Qt6.
+But atm, the functionality of PyDM should be the same regardless of if PyQt5 or PySide6 is used.
+
+PyDM also runs on-top of an abstraction layer called "qtpy" (https://github.com/spyder-ide/qtpy), which ideally allows for a codebase to run
+on both PyQt and PySide6 without any wrapper-specific modifications.
+
+But in reality, there are still places in the PyDM codebase where it was needed to implement
+PyQt5/PySide6 specific code, either b/c qtpy was lacking an abstraction around certainn Qt features
+or b/c the code worked abstraction layer in the past and is difficult to change.
+
+These wrapper-specific sections are noted in the codebase by the ``@QT_WRAPPER_SPECIFIC`` string. There are also comments in
+these sections explaining the differences between the PyQt and Pyside6 implementations.
+
+When changing code marked with ``@QT_WRAPPER_SPECIFIC``, developers must take special care to ensure their changes work on both PyQt and PySide6.
+It should be the case that automated testing on GitHub will run with both wrappers before any code is merged.
+But, if changing a ``@QT_WRAPPER_SPECIFIC`` section it's recommended to have setup a conda environments with both PyQt and
+PySide6 installed so you can test PyDM locally with both wrappers. Also, ew sections of PyQt5/PySide6 specific code should also marked with the ``@QT_WRAPPER_SPECIFIC`` string.
+
+If any new features are added to PyDM that utilize new Qt6 functionality (and therefore will only work on PySide6),
+these sections should also get denoted with the ``@QT_WRAPPER_SPECIFIC`` string.

@@ -8,7 +8,7 @@
 </p>
 
 <p align="left">
-  PyDM is a PyQt-based framework for building user interfaces for control systems.
+  PyDM is a Python Qt based framework for building user interfaces for control systems.
   The goal is to provide a no-code, drag-and-drop system to make simple screens,
   as well as a straightforward Python framework to build complex applications.
   <br>
@@ -31,18 +31,18 @@
 
 # Python Qt Wrapper
 PyDM project uses the [qtpy](https://github.com/spyder-ide/qtpy)
-as the abstraction layer for the Qt Python wrappers (PyQt5/PyQt4/PySide2/PySide).
-**All tests are performed with PyQt5**.
+as the abstraction layer for the Qt Python wrappers.
+**All tests are performed with PyQt5 and PySide6**.
 
 # Prerequisites
 * Python 3.10+
 * Qt 5.6 or higher
 * qtpy
-* PyQt5 >= 5.7 or any other Qt Python wrapper.
+* PyQt5 >= 5.7 or PySide6 >= 6.9.
 > **Note:**
 > If you'd like to use Qt Designer (drag-and-drop tool to build interfaces) you'll
-> need to make sure you have the PyQt plugin for Designer installed.  This usually
-> happens automatically when you install PyQt from source, but if you install it
+> need to make sure you have the PyQt/PySide6 plugin for Designer installed. This usually
+> happens automatically when you install PyQt/PySide6 from source, but if you install it
 > from a package manager, it may be left out.
 
 Python package requirements are listed in the requirements.txt file, which can
@@ -104,11 +104,16 @@ Documentation is available at http://slaclab.github.io/pydm/.  Documentation is
 somewhat sparse right now, unfortunately.
 
 # Widget Designer Plugins
-pydm widgets are written in Python, and are loaded into Qt Designer via the PyQt
+PyDM widgets are written in Python, and are loaded into Qt Designer via the PyQt/PySide6.
 Designer Plugin.
-If you want to use the pydm widgets in Qt Designer, add the pydm directory
-(which holds designer_plugin.py) to your PYQTDESIGNERPATH environment variable.
-Eventually, this will happen automatically in some kind of setup script.
+
+This should happen automatically if you use conda to install PyDM on Linux.
+For PyQt5, will automatically define the `PYQTDESIGNERPATH` environment variable to point to /etc/pydm which
+will have a file named `designer_plugin.py`  which will make all the PyDM widgets available to the Qt Designer.
+For PySide6, `PYSIDE_DESIGNER_PLUGINS` (on Pyside6) will point to /etc/pydm where `register_pydm_designer_plugin.py` is found.
+For more information please see our <a href="https://slaclab.github.io/pydm/installation.html">installation guide</a>.
+
+To do this manually, add the pydm directory to your PYQTDESIGNERPATH environment variable.
 
 # Easy Installing PyDM
 ## Using the source code
@@ -117,11 +122,3 @@ git clone https://github.com/slaclab/pydm.git
 cd pydm
 pip install .[all]
 ```
-
-## Using Anaconda
-
-When using Anaconda to install PyDM at a Linux Environment it will automatically
-define the PYQTDESIGNERPATH environment variable pointing to /etc/pydm which
-will have a file named designer_plugin.py which will make all the PyDM widgets
-available to the Qt Designer. For more information please see
-our <a href="https://slaclab.github.io/pydm/installation.html">installation guide</a>.

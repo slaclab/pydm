@@ -110,6 +110,7 @@ class BasePlotCurveItem(PlotDataItem):
         if lineWidth is not None:
             self._pen.setWidth(lineWidth)
         if lineStyle is not None:
+            # @QT_WRAPPER_SPECIFIC
             # The type hint for 'Optional' for lineStyle arg, which has allowed for some screens to
             # pass int value for lineStyle. pyqt5 doesn't mind the int, but pyside6 complains so lets
             # convert any ints here to the proper Qt.PenStyle enums. The int values get converted to enums

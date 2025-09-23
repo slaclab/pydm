@@ -1,11 +1,11 @@
 # pydm-examples: Python Display Manager Examples
-[PyDM](https://github.com/slaclab/pydm) is a PyQt-based framework for building user interfaces for control systems.  The goal is to provide a no-code, drag-and-drop system to make simple screens, as well as a straightforward python framework to build complex applications.
+[PyDM](https://github.com/slaclab/pydm) is a Python-Qt based framework for building user interfaces for control systems.  The goal is to provide a no-code, drag-and-drop system to make simple screens, as well as a straightforward python framework to build complex applications.
 
 # Prerequisites for the examples
-* Python 3.6+
+* Python 3.10+
 * pydm
 * Qt 5.7 or higher
-* PyQt5 >= 5.7
+* PyQt5 >= 5.7 or PySide6 6.9
 * pcaspy (Optional)
 pcaspy is needed for the `pydm-testing-ioc` used in most of the examples.
 

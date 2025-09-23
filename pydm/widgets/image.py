@@ -26,6 +26,7 @@ class ReadingOrder(object):
     Clike = 1
 
 
+# @QT_WRAPPER_SPECIFIC
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
     from enum import Enum
@@ -59,6 +60,7 @@ class DimensionOrder(object):
     WidthFirst = 1
 
 
+# @QT_WRAPPER_SPECIFIC
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
     from enum import Enum
