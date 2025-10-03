@@ -116,7 +116,7 @@ class PyDMMainWindow(QMainWindow):
             QLibraryInfo.location(QLibraryInfo.BinariesPath),
             QLibraryInfo.location(QLibraryInfo.LibraryExecutablesPath),
             # this last location allows us to get a valid designer path on pyside6.
-            # it returns something like:
+            # 'QLibraryInfo.location(QLibraryInfo.PrefixPath)' returns something like:
             # ".../miniforge3/envs/pydm-environment/lib/python3.13/site-packages/PySide6/Qt/",
             # but the designer bin is actually located in something like:
             # ".../miniforge3/envs/pydm-environment/lib/python3.13/site-packages/PySide6/,
