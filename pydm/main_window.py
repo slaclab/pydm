@@ -9,8 +9,6 @@ from .utilities import (
     find_file,
     establish_widget_connections,
     close_widget_connections,
-    ACTIVE_QT_WRAPPER,
-    QtWrapperTypes,
 )
 from .pydm_ui import Ui_MainWindow
 from .display import Display, ScreenTarget, load_file, clear_compiled_ui_file_cache
