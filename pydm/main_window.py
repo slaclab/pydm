@@ -1,7 +1,6 @@
 import os
 from os import path
 
-# from PySide6.QtCore import QLibraryInfo
 from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QAction, QMessageBox
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo, QCoreApplication
 from qtpy.QtGui import QKeySequence
