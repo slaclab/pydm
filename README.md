@@ -48,6 +48,11 @@ as the abstraction layer for the Qt Python wrappers (PyQt5/PyQt4/PySide2/PySide)
 Python package requirements are listed in the requirements.txt file, which can
 be used to install all requirements from pip: 'pip install -r requirements.txt'
 
+# Related Projects
+[PyDMConverter](https://github.com/slaclab/pydm-converter-tool): A new tool for converting legacy control system displays (eg. EDM) into PyDM.
+
+[Related Projects](RELATED_PROJECTS.md): a list of some active projects built using PyDM.
+
 # Getting Started
 For developers who wish to contribute to PyDM and modify the source code, please follow the "Getting Started!"
 instructions found here: https://github.com/slaclab/pydm/blob/master/CONTRIBUTING.rst#get-started.
