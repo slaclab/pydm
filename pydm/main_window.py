@@ -4,7 +4,12 @@ from os import path
 from qtpy.QtWidgets import QApplication, QMainWindow, QFileDialog, QAction, QMessageBox
 from qtpy.QtCore import Qt, QTimer, Slot, QSize, QLibraryInfo, QCoreApplication
 from qtpy.QtGui import QKeySequence
-from .utilities import IconFont, find_file, establish_widget_connections, close_widget_connections
+from .utilities import (
+    IconFont,
+    find_file,
+    establish_widget_connections,
+    close_widget_connections,
+)
 from .pydm_ui import Ui_MainWindow
 from .display import Display, ScreenTarget, load_file, clear_compiled_ui_file_cache
 from .connection_inspector import ConnectionInspector
@@ -110,7 +115,15 @@ class PyDMMainWindow(QMainWindow):
         possible_designer_bin_paths = (
             QLibraryInfo.location(QLibraryInfo.BinariesPath),
             QLibraryInfo.location(QLibraryInfo.LibraryExecutablesPath),
+            # this last location allows us to get a valid designer path on pyside6.
+            # 'QLibraryInfo.location(QLibraryInfo.PrefixPath)' returns something like:
+            # ".../miniforge3/envs/pydm-environment/lib/python3.13/site-packages/PySide6/Qt/",
+            # but the designer bin is actually located in something like:
+            # ".../miniforge3/envs/pydm-environment/lib/python3.13/site-packages/PySide6/,
+            # so as a quick fix we just remove "Qt/" from the end of the path.
+            QLibraryInfo.location(QLibraryInfo.PrefixPath)[:-3],
         )
+
         for bin_path in possible_designer_bin_paths:
             if platform.system() == "Darwin":
                 designer_path = os.path.join(bin_path, "Designer.app/Contents/MacOS/Designer")
