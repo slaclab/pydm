@@ -1,0 +1,89 @@
+# This workflow will install pydm dependencies and run the test suite using PyQt5 for all combinations
+# of operating systems and version numbers specified in the matrix
+
+name: PyQt5 Testing
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  test-pyqt5:
+    if: ${{ github.repository == 'slaclab/pydm' }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        # eventually we should just run 3.10 + pyqt 5.12.3 (or if fix designer issue, latest pyqt5 and latest python that works with it),
+        # and latest-python + latest-pyside6
+        python-version: ["3.10", "3.12"]
+        pyqt-version: ["5.12.3", "5.15.11"]  # we still use 5.12.3 since newer conda versions have designer plugin issues
+        exclude:
+          # don't run these
+          - python-version: "3.10"  # 5.15.11 is newest pyqt5, so use newest python (3.12) 
+            pyqt-version: "5.15.11" 
+          - python-version: "3.12"  # max python version for 5.12.3 is 3.10 (3.12 errors during conda env creation)
+            pyqt-version: "5.12.3" 
+    env:
+      DISPLAY: ':99.0'
+      QT_MAC_WANTS_LAYER: 1  # PyQT gui tests involving qtbot interaction on macOS will fail without this
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup conda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+        miniforge-variant: Miniforge3
+        miniforge-version: latest
+        activate-environment: pydm-env
+        conda-remove-defaults: true
+        architecture: x64  # Ensure macOS finds PyQt 5.12.3 which isn't available with osx-arm64
+
+    - name: Install PyDM with PyQt5
+      shell: bash -el {0}
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          conda install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }}
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} git pyca
+        else
+          mamba install -c conda-forge pydm pyqt=${{ matrix.pyqt-version }} pyca
+        fi
+
+    - name: Install additional Python dependencies with pip
+      shell: bash -el {0}
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          pip install .[test]
+        else
+          pip install .[test-no-optional]
+        fi
+
+    - name: Install packages for testing a PyQt/PySide app on Linux
+      shell: bash -el {0}
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo apt update
+          sudo apt install -y xvfb herbstluftwm libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 x11-utils
+          sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1024x768x24 -ac +extension GLX +render -noreset
+          sleep 3
+          sudo /sbin/start-stop-daemon --start --pidfile /tmp/custom_herbstluftwm_99.pid --make-pidfile --background --exec /usr/bin/herbstluftwm
+          sleep 1
+        fi
+
+    - name: Test with pytest
+      shell: bash -el {0}
+      timeout-minutes: 30 # timeout applies to single run of run_tests.py, not all os/python combos
+      run: |
+        if [ "$RUNNER_OS" == "macOS" ]; then
+          python run_tests.py --ignore=pydm/tests/data_plugins/test_p4p_plugin_component.py --ignore=pydm/tests/widgets/test_slider.py # disable just for now, until fix intermittent issue
+        else 
+          python run_tests.py
+        fi
