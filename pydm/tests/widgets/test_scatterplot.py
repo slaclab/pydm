@@ -176,7 +176,7 @@ def test_scatterplotcurveitem_receive_values(qtbot, signals, redraw_mode, new_da
             # but the first iteration only added one (so add 1)
             assert plot_curve_item.points_accumulated == 2 * i + 1
         elif redraw_mode == ScatterPlotCurveItem.REDRAW_ON_BOTH:
-            # Exactly one point added per iteration, after both x and y received, so here add one to 
+            # Exactly one point added per iteration, after both x and y received, so here add one to
             # account for point added after y receive
             assert plot_curve_item.points_accumulated == i + 1
 
