@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMDateTimeEdit &mdash; PyDM 1.27.2 documentation</title>
+  <title>PyDMDateTimeEdit &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -171,6 +171,25 @@ through the PyDM Rules system.</p>
 <dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit.keyPressEvent">
 <span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QKeyEvent</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/datetime.html#PyDMDateTimeEdit.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit.keyPressEvent" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit.readBlockPastDate">
+<span class="sig-name descname"><span class="pre">readBlockPastDate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/datetime.html#PyDMDateTimeEdit.readBlockPastDate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit.readBlockPastDate" title="Permalink to this definition"></a></dt>
+<dd><p>Error out if user tries to set value to a date older than current.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit.readRelative">
+<span class="sig-name descname"><span class="pre">readRelative</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/datetime.html#PyDMDateTimeEdit.readRelative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit.readRelative" title="Permalink to this definition"></a></dt>
+<dd><p>Whether the value in milliseconds is relative to current date or if it
+is milliseconds since epoch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit.readTimeBase">
+<span class="sig-name descname"><span class="pre">readTimeBase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TimeBase</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/datetime.html#PyDMDateTimeEdit.readTimeBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.datetime.PyDMDateTimeEdit.readTimeBase" title="Permalink to this definition"></a></dt>
+<dd><p>Whether to use milliseconds or seconds as time base for the widget</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.datetime.PyDMDateTimeEdit.value_changed">

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.related_display_button &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.related_display_button &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -122,7 +122,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QMouseEvent</span><span class="p">,</span> <span class="n">QColor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QPoint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QPoint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtDesigner</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">only_if_channel_set</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">IconFont</span><span class="p">,</span> <span class="n">find_file</span><span class="p">,</span> <span class="n">is_pydm_app</span>
@@ -130,6 +130,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities.stylesheet</span><span class="w"> </span><span class="kn">import</span> <span class="n">merge_widget_stylesheet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">ScreenTarget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -231,8 +237,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readPyDMIcon"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPyDMIcon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.</span>
 <span class="sd">        See &quot;enum QStyle::StandardPixmap&quot; in Qt&#39;s QStyle documentation for full list of usable standard icons.</span>
@@ -242,10 +247,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span></div>
 
-    <span class="nd">@PyDMIcon</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.setPyDMIcon"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPyDMIcon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Name of icon to be set from Qt provided standard icons or from the &quot;Font Awesome&quot; icon-set.</span>
 <span class="sd">        See &quot;enum QStyle::StandardPixmap&quot; in Qt&#39;s QStyle documentation for full list of usable standard icons.</span>
@@ -269,20 +273,20 @@
             <span class="k">if</span> <span class="n">icon</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">PyDMIcon</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readPyDMIcon</span><span class="p">,</span> <span class="n">setPyDMIcon</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readPyDMIconColor"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPyDMIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the icon (color is only applied if using icon from the &quot;Font Awesome&quot; set)</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_color</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_color</span></div>
 
-    <span class="nd">@PyDMIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.setPyDMIconColor"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPyDMIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the icon (color is only applied if using icon from the &quot;Font Awesome&quot; set)</span>
 <span class="sd">        Parameters</span>
@@ -297,25 +301,27 @@
                 <span class="n">i</span> <span class="o">=</span> <span class="n">icon_f</span><span class="o">.</span><span class="n">icon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_color</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                <span class="k">return</span>
+                <span class="k">return</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">filenames</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">PyDMIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readPyDMIconColor</span><span class="p">,</span> <span class="n">setPyDMIconColor</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">readFilenames</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filenames</span>
 
-    <span class="nd">@filenames</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">filenames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setFilenames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filenames</span> <span class="o">=</span> <span class="n">val</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">titles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">filenames</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">readFilenames</span><span class="p">,</span> <span class="n">setFilenames</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">readTitles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span>
 
-    <span class="nd">@titles</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">titles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setTitles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span> <span class="o">=</span> <span class="n">val</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">titles</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">readTitles</span><span class="p">,</span> <span class="n">setTitles</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -358,8 +364,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setMenu</span><span class="p">(</span><span class="n">menu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readShowIcon"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readShowIcon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not we should show the selected Icon.</span>
 
@@ -367,10 +372,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_icon</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_icon</span></div>
 
-    <span class="nd">@showIcon</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.setShowIcon"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setShowIcon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not we should show the selected Icon.</span>
 
@@ -385,10 +389,11 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_icon</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_icon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">icon</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">displayFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">showIcon</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readShowIcon</span><span class="p">,</span> <span class="n">setShowIcon</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readDisplayFilename"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readDisplayFilename">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readDisplayFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        DEPRECATED: use the &#39;filenames&#39; property.</span>
 <span class="sd">        This property simply returns the first filename from the &#39;filenames&#39;</span>
@@ -401,10 +406,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-    <span class="nd">@displayFilename</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">displayFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.setDisplayFilename"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setDisplayFilename">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setDisplayFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        DEPRECATED: use the &#39;filenames&#39; property.</span>
 <span class="sd">        Any value set to this property is appended to the &#39;filenames&#39;</span>
@@ -423,10 +427,16 @@
                 <span class="k">return</span>
             <span class="n">file_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span> <span class="o">+</span> <span class="n">file_list</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_display_filename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_filename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveDisplaySearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">displayFilename</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">readDisplayFilename</span><span class="p">,</span>
+        <span class="n">setDisplayFilename</span><span class="p">,</span>
+        <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readRecursiveDisplaySearch"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readRecursiveDisplaySearch">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readRecursiveDisplaySearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to search for a provided display file recursively</span>
 <span class="sd">        in subfolders relative to the location of this display.</span>
@@ -436,10 +446,9 @@
 <span class="sd">        bool</span>
 <span class="sd">            If recursive search is enabled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span></div>
 
-    <span class="nd">@recursiveDisplaySearch</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveDisplaySearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.setRecursiveDisplaySearch"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setRecursiveDisplaySearch">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setRecursiveDisplaySearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set whether or not to search for a provided display file recursively</span>
 <span class="sd">        in subfolders relative to the location of this display.</span>
@@ -449,10 +458,11 @@
 <span class="sd">        new_value</span>
 <span class="sd">            If recursive search should be enabled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span> <span class="o">=</span> <span class="n">new_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span> <span class="o">=</span> <span class="n">new_value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">macros</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">recursiveDisplaySearch</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readRecursiveDisplaySearch</span><span class="p">,</span> <span class="n">setRecursiveDisplaySearch</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readMacros"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readMacros">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readMacros</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The macro substitutions to use when launching the display, in JSON object format.</span>
 
@@ -460,10 +470,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        list of str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span></div>
 
-    <span class="nd">@macros</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">macros</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_macros</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.setMacros"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setMacros">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setMacros</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_macros</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The macro substitutions to use when launching the display, in JSON object format.</span>
 
@@ -474,10 +483,11 @@
         <span class="c1"># Handle the deprecated form of macros where it was a single string.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_macros</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">new_macros</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_macros</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span> <span class="o">=</span> <span class="n">new_macros</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span> <span class="o">=</span> <span class="n">new_macros</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">openInNewWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">macros</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">readMacros</span><span class="p">,</span> <span class="n">setMacros</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readOpenInNewWindow"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readOpenInNewWindow">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readOpenInNewWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If true, the button will open the display in a new window, rather than in the existing window.</span>
 
@@ -485,10 +495,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span></div>
 
-    <span class="nd">@openInNewWindow</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">openInNewWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">open_in_new</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.setOpenInNewWindow"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setOpenInNewWindow">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setOpenInNewWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">open_in_new</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If true, the button will open the display in a new window, rather than in the existing window.</span>
 
@@ -496,10 +505,11 @@
 <span class="sd">        ----------</span>
 <span class="sd">        open_in_new : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span> <span class="o">=</span> <span class="n">open_in_new</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_in_new_window</span> <span class="o">=</span> <span class="n">open_in_new</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">openInNewWindow</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readOpenInNewWindow</span><span class="p">,</span> <span class="n">setOpenInNewWindow</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readPasswordProtected"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPasswordProtected">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPasswordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not this button is password protected.</span>
 
@@ -508,10 +518,9 @@
 <span class="sd">        bool</span>
 <span class="sd">        -------</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span></div>
 
-    <span class="nd">@passwordProtected</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.setPasswordProtected"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPasswordProtected">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPasswordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not this button is password protected.</span>
 
@@ -520,10 +529,11 @@
 <span class="sd">        value : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">passwordProtected</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readPasswordProtected</span><span class="p">,</span> <span class="n">setPasswordProtected</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readPassword"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPassword">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Password to be encrypted using SHA256.</span>
 
@@ -534,10 +544,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
 
-    <span class="nd">@password</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.setPassword"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPassword">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Password to be encrypted using SHA256.</span>
 
@@ -556,10 +565,11 @@
             <span class="c1"># Make sure designer knows it should save the protectedPassword field</span>
             <span class="n">formWindow</span> <span class="o">=</span> <span class="n">QtDesigner</span><span class="o">.</span><span class="n">QDesignerFormWindowInterface</span><span class="o">.</span><span class="n">findFormWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">formWindow</span><span class="p">:</span>
-                <span class="n">formWindow</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;protectedPassword&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">protectedPassword</span><span class="p">)</span>
+                <span class="n">formWindow</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;protectedPassword&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">protectedPassword</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readPassword</span><span class="p">,</span> <span class="n">setPassword</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readProtectedPassword"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readProtectedPassword">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readProtectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The encrypted password.</span>
 
@@ -567,15 +577,15 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span></div>
 
-    <span class="nd">@protectedPassword</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setProtectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">followSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">protectedPassword</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readProtectedPassword</span><span class="p">,</span> <span class="n">setProtectedPassword</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.readFollowSymlinks"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readFollowSymlinks">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readFollowSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, any symlinks in the path to filename (including the base path of the parent display) will be followed,</span>
 <span class="sd">        so that it will always use the canonical path. If False (default), the file will be searched without</span>
@@ -587,10 +597,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span></div>
 
-    <span class="nd">@followSymlinks</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">followSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_symlinks</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMRelatedDisplayButton.setFollowSymlinks"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setFollowSymlinks">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setFollowSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_symlinks</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, any symlinks in the path to filename (including the base path of the parent display)</span>
 <span class="sd">        will be followed, so that it will always use the canonical path.</span>
@@ -602,7 +611,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        follow_symlinks : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span> <span class="o">=</span> <span class="n">follow_symlinks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span> <span class="o">=</span> <span class="n">follow_symlinks</span></div>
+
+    <span class="n">followSymlinks</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readFollowSymlinks</span><span class="p">,</span> <span class="n">setFollowSymlinks</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMRelatedDisplayButton.mousePressEvent"><a class="viewcode-back" href="../../../widgets/related_display_button.html#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.mousePressEvent">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">QMouseEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span><span class="p">:</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.scale &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.scale &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -117,8 +117,14 @@
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPolygon</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPaintEvent</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QGridLayout</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">Property</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QPoint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">QScale</span><span class="p">(</span><span class="n">QFrame</span><span class="p">):</span>
@@ -737,8 +743,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">widget_layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">widget_layout</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showValue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.readShowValue"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readShowValue">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowValue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the current value should be displayed on the scale.</span>
 
@@ -746,10 +751,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_value</span></div>
 
-    <span class="nd">@showValue</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setShowValue"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setShowValue">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the current value should be displayed on the scale.</span>
 
@@ -762,10 +766,11 @@
         <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">showValue</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readShowValue</span><span class="p">,</span> <span class="n">setShowValue</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readShowLimits"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readShowLimits">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the high and low limits should be displayed on the scale.</span>
 
@@ -773,10 +778,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_limits</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_limits</span></div>
 
-    <span class="nd">@showLimits</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setShowLimits"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setShowLimits">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the high and low limits should be displayed on the scale.</span>
 
@@ -791,10 +795,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">upper_label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lower_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">upper_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upper_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showTicks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">showLimits</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readShowLimits</span><span class="p">,</span> <span class="n">setShowLimits</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readShowTicks"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readShowTicks">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowTicks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the tick marks should be displayed on the scale.</span>
 
@@ -802,10 +807,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_show_ticks</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_show_ticks</span><span class="p">()</span></div>
 
-    <span class="nd">@showTicks</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showTicks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setShowTicks"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setShowTicks">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowTicks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the tick marks should be displayed on the scale.</span>
 
@@ -813,10 +817,11 @@
 <span class="sd">        ----------</span>
 <span class="sd">        checked : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_show_ticks</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_show_ticks</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">:</span>
+    <span class="n">showTicks</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readShowTicks</span><span class="p">,</span> <span class="n">setShowTicks</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readOrientation"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readOrientation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readOrientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The scale orientation (Horizontal or Vertical)</span>
 
@@ -825,10 +830,9 @@
 <span class="sd">        int</span>
 <span class="sd">            Qt.Horizontal or Qt.Vertical</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">()</span></div>
 
-    <span class="nd">@orientation</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setOrientation"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setOrientation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setOrientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The scale orientation (Horizontal or Vertical)</span>
 
@@ -838,10 +842,12 @@
 <span class="sd">            Qt.Horizontal or Qt.Vertical</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_orientation</span><span class="p">(</span><span class="n">orientation</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="n">orientation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flipScale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">invertedAppearance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="n">orientation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flipScale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">invertedAppearance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">flipScale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">prop_type</span> <span class="o">=</span> <span class="nb">int</span> <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span> <span class="k">else</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span>
+    <span class="n">orientation</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">prop_type</span><span class="p">,</span> <span class="n">readOrientation</span><span class="p">,</span> <span class="n">setOrientation</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readFlipScale"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readFlipScale">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readFlipScale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale should be flipped.</span>
 
@@ -849,10 +855,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_flip_scale</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_flip_scale</span><span class="p">()</span></div>
 
-    <span class="nd">@flipScale</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">flipScale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setFlipScale"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setFlipScale">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setFlipScale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale should be flipped.</span>
 
@@ -861,10 +866,11 @@
 <span class="sd">        checked : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_flip_scale</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">checked</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">invertedAppearance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="n">checked</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">invertedAppearance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">invertedAppearance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">flipScale</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readFlipScale</span><span class="p">,</span> <span class="n">setFlipScale</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readInvertedAppearance"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readInvertedAppearance">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readInvertedAppearance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale appearance should be inverted.</span>
 
@@ -872,10 +878,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_inverted_appearance</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_inverted_appearance</span><span class="p">()</span></div>
 
-    <span class="nd">@invertedAppearance</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">invertedAppearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inverted</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setInvertedAppearance"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setInvertedAppearance">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setInvertedAppearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inverted</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale appearance should be inverted.</span>
 
@@ -884,10 +889,11 @@
 <span class="sd">        inverted : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_inverted_appearance</span><span class="p">(</span><span class="n">inverted</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flipScale</span><span class="p">,</span> <span class="n">inverted</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flipScale</span><span class="p">,</span> <span class="n">inverted</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">barIndicator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">invertedAppearance</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readInvertedAppearance</span><span class="p">,</span> <span class="n">setInvertedAppearance</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readBarIndicator"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readBarIndicator">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readBarIndicator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should be a bar instead of a pointer.</span>
 
@@ -895,10 +901,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_bar_indicator</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_bar_indicator</span><span class="p">()</span></div>
 
-    <span class="nd">@barIndicator</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">barIndicator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setBarIndicator"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setBarIndicator">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setBarIndicator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should be a bar instead of a pointer.</span>
 
@@ -906,10 +911,11 @@
 <span class="sd">        ----------</span>
 <span class="sd">        checked : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_bar_indicator</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_bar_indicator</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">backgroundColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">barIndicator</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readBarIndicator</span><span class="p">,</span> <span class="n">setBarIndicator</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.getBackgroundColor"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.getBackgroundColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">getBackgroundColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale background.</span>
 
@@ -917,10 +923,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_background_color</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_background_color</span><span class="p">()</span></div>
 
-    <span class="nd">@backgroundColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">backgroundColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setBackgroundColor"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setBackgroundColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setBackgroundColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale background.</span>
 
@@ -928,10 +933,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_background_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_background_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">indicatorColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">backgroundColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">getBackgroundColor</span><span class="p">,</span> <span class="n">setBackgroundColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readIndicatorColor"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readIndicatorColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readIndicatorColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale indicator.</span>
 
@@ -939,10 +945,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_indicator_color</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_indicator_color</span><span class="p">()</span></div>
 
-    <span class="nd">@indicatorColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">indicatorColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setIndicatorColor"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setIndicatorColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setIndicatorColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale indicator.</span>
 
@@ -950,10 +955,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_indicator_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_indicator_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">tickColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">indicatorColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readIndicatorColor</span><span class="p">,</span> <span class="n">setIndicatorColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readTickColor"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readTickColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readTickColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale tick marks.</span>
 
@@ -961,10 +967,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_tick_color</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_tick_color</span><span class="p">()</span></div>
 
-    <span class="nd">@tickColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">tickColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setTickColor"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setTickColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setTickColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the scale tick marks.</span>
 
@@ -972,10 +977,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_tick_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_tick_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">backgroundSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">tickColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readTickColor</span><span class="p">,</span> <span class="n">setTickColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.getBackgroundSizeRate"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.getBackgroundSizeRate">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">getBackgroundSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The rate of background height size (from top to bottom).</span>
 
@@ -983,10 +989,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_background_size_rate</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_background_size_rate</span><span class="p">()</span></div>
 
-    <span class="nd">@backgroundSizeRate</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">backgroundSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setBackgroundSizeRate"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setBackgroundSizeRate">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setBackgroundSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The rate of background height size (from top to bottom).</span>
 
@@ -995,10 +1000,11 @@
 <span class="sd">        rate : float</span>
 <span class="sd">            Between 0 and 1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_background_size_rate</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_background_size_rate</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">tickSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">backgroundSizeRate</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">getBackgroundSizeRate</span><span class="p">,</span> <span class="n">setBackgroundSizeRate</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readTickSizeRate"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readTickSizeRate">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readTickSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The rate of tick marks height size (from bottom to top).</span>
 
@@ -1006,10 +1012,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_tick_size_rate</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_tick_size_rate</span><span class="p">()</span></div>
 
-    <span class="nd">@tickSizeRate</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">tickSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setTickSizeRate"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setTickSizeRate">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setTickSizeRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The rate of tick marks height size (from bottom to top).</span>
 
@@ -1018,10 +1023,11 @@
 <span class="sd">        rate : float</span>
 <span class="sd">            Between 0 and 1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_tick_size_rate</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_tick_size_rate</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">numDivisions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">tickSizeRate</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">readTickSizeRate</span><span class="p">,</span> <span class="n">setTickSizeRate</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readNumDivisions"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readNumDivisions">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readNumDivisions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number in which the scale is divided.</span>
 
@@ -1029,10 +1035,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_num_divisions</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_num_divisions</span><span class="p">()</span></div>
 
-    <span class="nd">@numDivisions</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">numDivisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">divisions</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setNumDivisions"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setNumDivisions">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setNumDivisions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">divisions</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number in which the scale is divided.</span>
 
@@ -1041,10 +1046,11 @@
 <span class="sd">        divisions : int</span>
 <span class="sd">            The number of scale divisions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_num_divisions</span><span class="p">(</span><span class="n">divisions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_num_divisions</span><span class="p">(</span><span class="n">divisions</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">scaleHeight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">numDivisions</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readNumDivisions</span><span class="p">,</span> <span class="n">setNumDivisions</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readScaleHeight"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readScaleHeight">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readScaleHeight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The scale height, fixed so it do not wiggle when value label resizes.</span>
 
@@ -1052,10 +1058,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_scale_height</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_scale_height</span><span class="p">()</span></div>
 
-    <span class="nd">@scaleHeight</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">scaleHeight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setScaleHeight"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setScaleHeight">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setScaleHeight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The scale height, fixed so it do not wiggle when value label resizes.</span>
 
@@ -1064,10 +1069,11 @@
 <span class="sd">        divisions : int</span>
 <span class="sd">            The scale height.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_scale_height</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_scale_height</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Edge</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">valuePosition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Edge</span><span class="p">:</span>
+    <span class="n">scaleHeight</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readScaleHeight</span><span class="p">,</span> <span class="n">setScaleHeight</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readValuePosition"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readValuePosition">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readValuePosition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Edge</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The position of the value label (Top, Bottom, Left or Right).</span>
 
@@ -1076,10 +1082,9 @@
 <span class="sd">        int</span>
 <span class="sd">            Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span></div>
 
-    <span class="nd">@valuePosition</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">valuePosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Edge</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setValuePosition"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setValuePosition">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setValuePosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Edge</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The position of the value label (Top, Bottom, Left or Right).</span>
 
@@ -1089,10 +1094,12 @@
 <span class="sd">             Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value_position</span> <span class="o">=</span> <span class="n">position</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flipScale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">invertedAppearance</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flipScale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">invertedAppearance</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">originAtZero</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">prop_type</span> <span class="o">=</span> <span class="nb">int</span> <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span> <span class="k">else</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Edge</span>
+    <span class="n">valuePosition</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">prop_type</span><span class="p">,</span> <span class="n">readValuePosition</span><span class="p">,</span> <span class="n">setValuePosition</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readOriginAtZero"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readOriginAtZero">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readOriginAtZero</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should start at zero value.</span>
 <span class="sd">        Applies only for bar indicator.</span>
@@ -1101,10 +1108,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_origin_at_zero</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">get_origin_at_zero</span><span class="p">()</span></div>
 
-    <span class="nd">@originAtZero</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">originAtZero</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setOriginAtZero"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setOriginAtZero">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setOriginAtZero</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should start at zero value.</span>
 <span class="sd">        Applies only for bar indicator.</span>
@@ -1113,10 +1119,11 @@
 <span class="sd">        ----------</span>
 <span class="sd">        checked : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_origin_at_zero</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_origin_at_zero</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">limitsFromChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">originAtZero</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readOriginAtZero</span><span class="p">,</span> <span class="n">setOriginAtZero</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readLimitsFromChannel"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readLimitsFromChannel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readLimitsFromChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should use the limits information</span>
 <span class="sd">        from the channel.</span>
@@ -1125,10 +1132,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limits_from_channel</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limits_from_channel</span></div>
 
-    <span class="nd">@limitsFromChannel</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">limitsFromChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setLimitsFromChannel"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setLimitsFromChannel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setLimitsFromChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the scale indicator should use the limits information</span>
 <span class="sd">        from the channel.</span>
@@ -1149,10 +1155,11 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_lower_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_lower_limit</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_upper_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_upper_limit</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">userLowerLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">limitsFromChannel</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readLimitsFromChannel</span><span class="p">,</span> <span class="n">setLimitsFromChannel</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readUserLowerLimit"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readUserLowerLimit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readUserLowerLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The user-defined lower limit for the scale.</span>
 
@@ -1160,10 +1167,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_lower_limit</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_lower_limit</span></div>
 
-    <span class="nd">@userLowerLimit</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">userLowerLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setUserLowerLimit"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setUserLowerLimit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setUserLowerLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The user-defined lower limit for the scale.</span>
 
@@ -1176,10 +1182,11 @@
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_lower_limit</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_lower_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_lower_limit</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">userUpperLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">userLowerLimit</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">readUserLowerLimit</span><span class="p">,</span> <span class="n">setUserLowerLimit</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMScaleIndicator.readUserUpperLimit"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.readUserUpperLimit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readUserUpperLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The user-defined upper limit for the scale.</span>
 
@@ -1187,10 +1194,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_upper_limit</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_upper_limit</span></div>
 
-    <span class="nd">@userUpperLimit</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">userUpperLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMScaleIndicator.setUserUpperLimit"><a class="viewcode-back" href="../../../widgets/scale.html#pydm.widgets.scale.PyDMScaleIndicator.setUserUpperLimit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setUserUpperLimit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The user-defined upper limit for the scale.</span>
 
@@ -1204,6 +1210,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_upper_limit</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_indicator</span><span class="o">.</span><span class="n">set_upper_limit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user_upper_limit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_labels</span><span class="p">()</span></div>
+
+    <span class="n">userUpperLimit</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">readUserUpperLimit</span><span class="p">,</span> <span class="n">setUserUpperLimit</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.tab_bar &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.tab_bar &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -119,9 +119,14 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QByteArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.channel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMChannel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities.iconfont</span><span class="w"> </span><span class="kn">import</span> <span class="n">IconFont</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">PyDMTabBar</span><span class="p">(</span><span class="n">QTabBar</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
@@ -151,8 +156,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">currentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">readCurrentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;A channel to use for this tab&#39;s alarm indicator.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
@@ -161,11 +165,12 @@
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="nd">@currentTabAlarmChannel</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">currentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_channel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setCurrentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_channel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_channel_for_tab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">(),</span> <span class="n">new_alarm_channel</span><span class="p">)</span>
+
+    <span class="n">currentTabAlarmChannel</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readCurrentTabAlarmChannel</span><span class="p">,</span> <span class="n">setCurrentTabAlarmChannel</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_channel_for_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
@@ -235,55 +240,55 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">tab_channels</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_initial_icon_for_tab</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">noAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">readNoAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_no_alarm_icon_color</span>
 
-    <span class="nd">@noAlarmIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">noAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setNoAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_no_alarm_icon_color</span> <span class="o">!=</span> <span class="n">new_color</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_no_alarm_icon_color</span> <span class="o">=</span> <span class="n">new_color</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">generate_alarm_icons</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">minorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">noAlarmIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readNoAlarmIconColor</span><span class="p">,</span> <span class="n">setNoAlarmIconColor</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">readMinorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minor_alarm_icon_color</span>
 
-    <span class="nd">@minorAlarmIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">minorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setMinorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minor_alarm_icon_color</span> <span class="o">!=</span> <span class="n">new_color</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_minor_alarm_icon_color</span> <span class="o">=</span> <span class="n">new_color</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">generate_alarm_icons</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">majorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">minorAlarmIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readMinorAlarmIconColor</span><span class="p">,</span> <span class="n">setMinorAlarmIconColor</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">readMajorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_major_alarm_icon_color</span>
 
-    <span class="nd">@majorAlarmIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">majorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setMajorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_major_alarm_icon_color</span> <span class="o">!=</span> <span class="n">new_color</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_major_alarm_icon_color</span> <span class="o">=</span> <span class="n">new_color</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">generate_alarm_icons</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">invalidAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">majorAlarmIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readMajorAlarmIconColor</span><span class="p">,</span> <span class="n">setMajorAlarmIconColor</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">readInvalidAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_alarm_icon_color</span>
 
-    <span class="nd">@invalidAlarmIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">invalidAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setInvalidAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_alarm_icon_color</span> <span class="o">!=</span> <span class="n">new_color</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_alarm_icon_color</span> <span class="o">=</span> <span class="n">new_color</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">generate_alarm_icons</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">disconnectedAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">invalidAlarmIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readInvalidAlarmIconColor</span><span class="p">,</span> <span class="n">setInvalidAlarmIconColor</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">readDisconnectedAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnected_alarm_icon_color</span>
 
-    <span class="nd">@disconnectedAlarmIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">disconnectedAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setDisconnectedAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnected_alarm_icon_color</span> <span class="o">!=</span> <span class="n">new_color</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_disconnected_alarm_icon_color</span> <span class="o">=</span> <span class="n">new_color</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">generate_alarm_icons</span><span class="p">()</span>
+
+    <span class="n">disconnectedAlarmIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readDisconnectedAlarmIconColor</span><span class="p">,</span> <span class="n">setDisconnectedAlarmIconColor</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_alarm_icons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alarm_icons</span> <span class="o">=</span> <span class="p">(</span>
@@ -314,8 +319,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tb</span> <span class="o">=</span> <span class="n">PyDMTabBar</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setTabBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tb</span><span class="p">)</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QByteArray</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">currentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMTabWidget.readCurrentTabAlarmChannel"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.readCurrentTabAlarmChannel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readCurrentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QByteArray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A channel to use for the current tab&#39;s alarm indicator.</span>
 
@@ -326,11 +330,12 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">currentTabAlarmChannel</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">currentTabAlarmChannel</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">bytearray</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nb">bytearray</span><span class="p">()</span></div>
 
-    <span class="nd">@currentTabAlarmChannel</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">currentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_channel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setCurrentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_channel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">currentTabAlarmChannel</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">new_alarm_channel</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+    <span class="n">currentTabAlarmChannel</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QByteArray</span><span class="p">,</span> <span class="n">readCurrentTabAlarmChannel</span><span class="p">,</span> <span class="n">setCurrentTabAlarmChannel</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMTabWidget.channels"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.channels">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -356,8 +361,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">setAlarmChannels</span><span class="p">(</span><span class="n">new_alarm_channels</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">noAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMTabWidget.readNoAlarmIconColor"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.readNoAlarmIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readNoAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_NONE severity level.</span>
 <span class="sd">        This property can be defined in a stylesheet by using &#39;qproperty-noAlarmIconColor&#39;.</span>
@@ -366,16 +370,16 @@
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">noAlarmIconColor</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">noAlarmIconColor</span></div>
 
-    <span class="nd">@noAlarmIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">noAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setNoAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">noAlarmIconColor</span> <span class="o">!=</span> <span class="n">new_color</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">noAlarmIconColor</span> <span class="o">=</span> <span class="n">new_color</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">generate_alarm_icons</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">minorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">noAlarmIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readNoAlarmIconColor</span><span class="p">,</span> <span class="n">setNoAlarmIconColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMTabWidget.readMinorAlarmIconColor"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.readMinorAlarmIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readMinorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MINOR severity level.</span>
 <span class="sd">        This property can be defined in a stylesheet by using &#39;qproperty-minorAlarmIconColor&#39;.</span>
@@ -384,14 +388,14 @@
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">minorAlarmIconColor</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">minorAlarmIconColor</span></div>
 
-    <span class="nd">@minorAlarmIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">minorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setMinorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">minorAlarmIconColor</span> <span class="o">=</span> <span class="n">new_color</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">majorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">minorAlarmIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readMinorAlarmIconColor</span><span class="p">,</span> <span class="n">setMinorAlarmIconColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMTabWidget.readMajorAlarmIconColor"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.readMajorAlarmIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readMajorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MAJOR severity level.</span>
 <span class="sd">        This property can be defined in a stylesheet by using &#39;qproperty-majorAlarmIconColor&#39;.</span>
@@ -400,14 +404,14 @@
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">majorAlarmIconColor</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">majorAlarmIconColor</span></div>
 
-    <span class="nd">@majorAlarmIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">majorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setMajorAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">majorAlarmIconColor</span> <span class="o">=</span> <span class="n">new_color</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">invalidAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">majorAlarmIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readMajorAlarmIconColor</span><span class="p">,</span> <span class="n">setMajorAlarmIconColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMTabWidget.readInvalidAlarmIconColor"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.readInvalidAlarmIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readInvalidAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_INVALID severity level.</span>
 <span class="sd">        This property can be defined in a stylesheet by using &#39;qproperty-majorAlarmIconColor&#39;.</span>
@@ -416,14 +420,14 @@
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">invalidAlarmIconColor</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">invalidAlarmIconColor</span></div>
 
-    <span class="nd">@invalidAlarmIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">invalidAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setInvalidAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">invalidAlarmIconColor</span> <span class="o">=</span> <span class="n">new_color</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">disconnectedAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">invalidAlarmIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readInvalidAlarmIconColor</span><span class="p">,</span> <span class="n">setInvalidAlarmIconColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMTabWidget.readDisconnectedAlarmIconColor"><a class="viewcode-back" href="../../../widgets/tab_widget.html#pydm.widgets.tab_bar.PyDMTabWidget.readDisconnectedAlarmIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readDisconnectedAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_DISCONNECTED severity level.</span>
 <span class="sd">        This property can be defined in a stylesheet by using &#39;qproperty-disconnectedAlarmIconColor&#39;.</span>
@@ -432,11 +436,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">disconnectedAlarmIconColor</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">disconnectedAlarmIconColor</span></div>
 
-    <span class="nd">@disconnectedAlarmIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">disconnectedAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setDisconnectedAlarmIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">disconnectedAlarmIconColor</span> <span class="o">=</span> <span class="n">new_color</span>
+
+    <span class="n">disconnectedAlarmIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readDisconnectedAlarmIconColor</span><span class="p">,</span> <span class="n">setDisconnectedAlarmIconColor</span><span class="p">)</span>
 
     <span class="n">alarmChannels</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">getAlarmChannels</span><span class="p">,</span> <span class="n">setAlarmChannels</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 

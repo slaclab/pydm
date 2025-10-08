@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.template_repeater &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.template_repeater &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -119,13 +119,19 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QLayout</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QPoint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">QPoint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMPrimitiveWidget</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_qt_designer</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pydm.data_plugins</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_file</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_file</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -301,8 +307,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">LayoutType</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">layoutType</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMTemplateRepeater.readLayoutType"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.readLayoutType">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readLayoutType</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LayoutType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The layout type to use.</span>
 
@@ -310,10 +315,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        LayoutType</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span></div>
 
-    <span class="nd">@layoutType</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">layoutType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMTemplateRepeater.setLayoutType"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.setLayoutType">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setLayoutType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The layout type to use.</span>
 <span class="sd">        Options are:</span>
@@ -328,22 +332,23 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_type</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_layout_type</span> <span class="o">=</span> <span class="n">new_type</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">layoutSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">layoutType</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">LayoutType</span><span class="p">,</span> <span class="n">readLayoutType</span><span class="p">,</span> <span class="n">setLayoutType</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">readLayoutSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">spacing</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_temp_layout_spacing</span>
 
-    <span class="nd">@layoutSpacing</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">layoutSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setLayoutSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_temp_layout_spacing</span> <span class="o">=</span> <span class="n">new_spacing</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">)</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">countShownInDesigner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">layoutSpacing</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readLayoutSpacing</span><span class="p">,</span> <span class="n">setLayoutSpacing</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMTemplateRepeater.readCountShownInDesigner"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.readCountShownInDesigner">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readCountShownInDesigner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of instances to show in Qt Designer.  This property has no</span>
 <span class="sd">        effect outside of Designer.</span>
@@ -352,10 +357,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count_shown_in_designer</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count_shown_in_designer</span></div>
 
-    <span class="nd">@countShownInDesigner</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">countShownInDesigner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_count</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMTemplateRepeater.setCountShownInDesigner"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.setCountShownInDesigner">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setCountShownInDesigner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_count</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of instances to show in Qt Designer.  This property has no</span>
 <span class="sd">        effect outside of Designer.</span>
@@ -374,10 +378,11 @@
         <span class="n">new_count</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">new_count</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">new_count</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count_shown_in_designer</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_count_shown_in_designer</span> <span class="o">=</span> <span class="n">new_count</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">templateFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">countShownInDesigner</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readCountShownInDesigner</span><span class="p">,</span> <span class="n">setCountShownInDesigner</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMTemplateRepeater.readTemplateFilename"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.readTemplateFilename">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readTemplateFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The path to the .ui file to use as a template.</span>
 
@@ -385,10 +390,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span></div>
 
-    <span class="nd">@templateFilename</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">templateFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_filename</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMTemplateRepeater.setTemplateFilename"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.setTemplateFilename">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setTemplateFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_filename</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The path to the .ui file to use as a template.</span>
 
@@ -402,10 +406,11 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_filename</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">rebuild</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveTemplateSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">templateFilename</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readTemplateFilename</span><span class="p">,</span> <span class="n">setTemplateFilename</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMTemplateRepeater.readRecursiveTemplateSearch"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.readRecursiveTemplateSearch">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readRecursiveTemplateSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to search for a provided template file recursively</span>
 <span class="sd">        in subfolders relative to the location of this widget.</span>
@@ -415,10 +420,9 @@
 <span class="sd">        bool</span>
 <span class="sd">            If recursive search is enabled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_template_search</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_template_search</span></div>
 
-    <span class="nd">@recursiveTemplateSearch</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveTemplateSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMTemplateRepeater.setRecursiveTemplateSearch"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.setRecursiveTemplateSearch">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setRecursiveTemplateSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set whether or not to search for a provided template file recursively</span>
 <span class="sd">        in subfolders relative to the location of this widget.</span>
@@ -428,7 +432,9 @@
 <span class="sd">        new_value</span>
 <span class="sd">            If recursive search should be enabled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_template_search</span> <span class="o">=</span> <span class="n">new_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_template_search</span> <span class="o">=</span> <span class="n">new_value</span></div>
+
+    <span class="n">recursiveTemplateSearch</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readRecursiveTemplateSearch</span><span class="p">,</span> <span class="n">setRecursiveTemplateSearch</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_is_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -451,8 +457,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ex</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">dataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMTemplateRepeater.readDataSource"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.readDataSource">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readDataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The path to the JSON file or a valid JSON string to fill in each</span>
 <span class="sd">        instance of the template.</span>
@@ -461,10 +466,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_source</span></div>
 
-    <span class="nd">@dataSource</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">dataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMTemplateRepeater.setDataSource"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.setDataSource">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setDataSource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_source</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the path to the JSON file or a valid JSON string to fill in each</span>
 <span class="sd">        instance of the template.</span>
@@ -520,10 +524,11 @@
                     <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveDataSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">dataSource</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readDataSource</span><span class="p">,</span> <span class="n">setDataSource</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMTemplateRepeater.readRecursiveDataSearch"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.readRecursiveDataSearch">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readRecursiveDataSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to search for a provided data file recursively</span>
 <span class="sd">        in subfolders relative to the location of this widget.</span>
@@ -533,10 +538,9 @@
 <span class="sd">        bool</span>
 <span class="sd">            If recursive search is enabled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_data_search</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_data_search</span></div>
 
-    <span class="nd">@recursiveDataSearch</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveDataSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMTemplateRepeater.setRecursiveDataSearch"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.setRecursiveDataSearch">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setRecursiveDataSearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set whether or not to search for a provided data file recursively</span>
 <span class="sd">        in subfolders relative to the location of this widget.</span>
@@ -546,7 +550,9 @@
 <span class="sd">        new_value</span>
 <span class="sd">            If recursive search should be enabled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_data_search</span> <span class="o">=</span> <span class="n">new_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_data_search</span> <span class="o">=</span> <span class="n">new_value</span></div>
+
+    <span class="n">recursiveDataSearch</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readRecursiveDataSearch</span><span class="p">,</span> <span class="n">setRecursiveDataSearch</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMTemplateRepeater.open_template_file"><a class="viewcode-back" href="../../../widgets/template_repeater.html#pydm.widgets.template_repeater.PyDMTemplateRepeater.open_template_file">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">open_template_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

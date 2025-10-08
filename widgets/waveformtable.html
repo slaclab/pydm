@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMWaveformTable &mdash; PyDM 1.27.2 documentation</title>
+  <title>PyDMWaveformTable &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -172,6 +172,28 @@ editable when we have write access.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.readColumnHeaderLabels">
+<span class="sig-name descname"><span class="pre">readColumnHeaderLabels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.readColumnHeaderLabels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.readColumnHeaderLabels" title="Permalink to this definition"></a></dt>
+<dd><p>Return the list of labels for the columns of the Table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.readRowHeaderLabels">
+<span class="sig-name descname"><span class="pre">readRowHeaderLabels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.readRowHeaderLabels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.readRowHeaderLabels" title="Permalink to this definition"></a></dt>
+<dd><p>Return the list of labels for the rows of the Table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform">
 <span class="sig-name descname"><span class="pre">send_waveform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.send_waveform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.send_waveform" title="Permalink to this definition"></a></dt>
 <dd><p>Update Channel value when cell value is changed.</p>
@@ -181,6 +203,30 @@ editable when we have write access.</p>
 <li><p><strong>row</strong> (<em>int</em>) – Row of the changed cell.</p></li>
 <li><p><strong>column</strong> (<em>int</em>) – Column of the changed cell.</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.setColumnHeaderLabels">
+<span class="sig-name descname"><span class="pre">setColumnHeaderLabels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_labels</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.setColumnHeaderLabels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.setColumnHeaderLabels" title="Permalink to this definition"></a></dt>
+<dd><p>Set the list of labels for the columns of the Table.</p>
+<p>If new_labels is empty the column numbers will be used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_labels</strong> (<em>list</em><em> of </em><em>strings</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.waveformtable.PyDMWaveformTable.setRowHeaderLabels">
+<span class="sig-name descname"><span class="pre">setRowHeaderLabels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_labels</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/waveformtable.html#PyDMWaveformTable.setRowHeaderLabels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.waveformtable.PyDMWaveformTable.setRowHeaderLabels" title="Permalink to this definition"></a></dt>
+<dd><p>Set the list of labels for the rows of the Table.</p>
+<p>If new_labels is empty the row numbers will be used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_labels</strong> (<em>list</em><em> of </em><em>strings</em>) – </p>
 </dd>
 </dl>
 </dd></dl>

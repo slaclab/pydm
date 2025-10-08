@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMSymbol &mdash; PyDM 1.27.2 documentation</title>
+  <title>PyDMSymbol &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -204,6 +204,58 @@ from the stylesheet and draws the proper image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>event</strong> (<em>QPaintEvent</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydm.widgets.symbol.PyDMSymbol.prop_type">
+<span class="sig-name descname"><span class="pre">prop_type</span></span><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.prop_type" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">AspectRatioMode</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.symbol.PyDMSymbol.readAspectRatioMode">
+<span class="sig-name descname"><span class="pre">readAspectRatioMode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PyQt5.QtCore.Qt.AspectRatioMode</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.readAspectRatioMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.readAspectRatioMode" title="Permalink to this definition"></a></dt>
+<dd><p>Which aspect ratio mode to use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Qt.AspectRatioMode</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.symbol.PyDMSymbol.readImageFiles">
+<span class="sig-name descname"><span class="pre">readImageFiles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.readImageFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.readImageFiles" title="Permalink to this definition"></a></dt>
+<dd><p>JSON-formatted dictionary keyed on states (integers), with filenames
+of the image file to display for the state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.symbol.PyDMSymbol.setAspectRatioMode">
+<span class="sig-name descname"><span class="pre">setAspectRatioMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.setAspectRatioMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.setAspectRatioMode" title="Permalink to this definition"></a></dt>
+<dd><p>Which aspect ratio mode to use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_mode</strong> (<em>Qt.AspectRatioMode</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.symbol.PyDMSymbol.setImageFiles">
+<span class="sig-name descname"><span class="pre">setImageFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_files</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/symbol.html#PyDMSymbol.setImageFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.symbol.PyDMSymbol.setImageFiles" title="Permalink to this definition"></a></dt>
+<dd><p>JSON-formatted dictionary keyed on states (integers), with filenames
+of the image file to display for the state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_files</strong> (<em>str</em>) – </p>
 </dd>
 </dl>
 </dd></dl>

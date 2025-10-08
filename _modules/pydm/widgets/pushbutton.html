@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.pushbutton &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.pushbutton &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -118,11 +118,18 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QStyle</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Slot</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtDesigner</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">IconFont</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
+
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -208,8 +215,7 @@
 <div class="viewcode-block" id="PyDMPushButton.eventFilter"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.eventFilter">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">PyDMWritableWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMPushButton.readPyDMIcon"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readPyDMIcon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.</span>
 <span class="sd">        See &quot;enum QStyle::StandardPixmap&quot; in Qt&#39;s QStyle documentation for full list of usable standard icons.</span>
@@ -219,10 +225,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span></div>
 
-    <span class="nd">@PyDMIcon</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMPushButton.setPyDMIcon"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.setPyDMIcon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Name of icon to be set from Qt provided standard icons or from the &quot;Font Awesome&quot; icon-set.</span>
 <span class="sd">        See &quot;enum QStyle::StandardPixmap&quot; in Qt&#39;s QStyle documentation for full list of usable standard icons.</span>
@@ -246,20 +251,20 @@
             <span class="k">if</span> <span class="n">icon</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">PyDMIcon</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readPyDMIcon</span><span class="p">,</span> <span class="n">setPyDMIcon</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMPushButton.readPyDMIconColor"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readPyDMIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the icon (color is only applied if using icon from the &quot;Font Awesome&quot; set)</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_color</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_color</span></div>
 
-    <span class="nd">@PyDMIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMPushButton.setPyDMIconColor"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.setPyDMIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the icon (color is only applied if using icon from the &quot;Font Awesome&quot; set)</span>
 <span class="sd">        Parameters</span>
@@ -274,10 +279,11 @@
                 <span class="n">i</span> <span class="o">=</span> <span class="n">icon_f</span><span class="o">.</span><span class="n">icon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_color</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                <span class="k">return</span>
+                <span class="k">return</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">PyDMIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readPyDMIconColor</span><span class="p">,</span> <span class="n">setPyDMIconColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMPushButton.readPasswordProtected"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readPasswordProtected">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPasswordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not this button is password protected.</span>
 
@@ -285,10 +291,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span></div>
 
-    <span class="nd">@passwordProtected</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMPushButton.setPasswordProtected"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.setPasswordProtected">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPasswordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not this button is password protected.</span>
 
@@ -297,10 +302,11 @@
 <span class="sd">        value : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">passwordProtected</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readPasswordProtected</span><span class="p">,</span> <span class="n">setPasswordProtected</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMPushButton.readPassword"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readPassword">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Password to be encrypted using SHA256.</span>
 
@@ -312,10 +318,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
 
-    <span class="nd">@password</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMPushButton.setPassword"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.setPassword">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Password to be encrypted using SHA256.</span>
 
@@ -334,10 +339,11 @@
             <span class="c1"># Make sure designer knows it should save the protectedPassword field</span>
             <span class="n">formWindow</span> <span class="o">=</span> <span class="n">QtDesigner</span><span class="o">.</span><span class="n">QDesignerFormWindowInterface</span><span class="o">.</span><span class="n">findFormWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">formWindow</span><span class="p">:</span>
-                <span class="n">formWindow</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;protectedPassword&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">protectedPassword</span><span class="p">)</span>
+                <span class="n">formWindow</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;protectedPassword&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">protectedPassword</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readPassword</span><span class="p">,</span> <span class="n">setPassword</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMPushButton.readProtectedPassword"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readProtectedPassword">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readProtectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The encrypted password.</span>
 
@@ -345,15 +351,15 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span></div>
 
-    <span class="nd">@protectedPassword</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setProtectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">protectedPassword</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readProtectedPassword</span><span class="p">,</span> <span class="n">setProtectedPassword</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMPushButton.readShowConfirmDialog"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readShowConfirmDialog">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to display a confirmation dialog.</span>
 
@@ -361,10 +367,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span></div>
 
-    <span class="nd">@showConfirmDialog</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMPushButton.setShowConfirmDialog"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.setShowConfirmDialog">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to display a confirmation dialog.</span>
 
@@ -373,10 +378,11 @@
 <span class="sd">        value : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">confirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">showConfirmDialog</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readShowConfirmDialog</span><span class="p">,</span> <span class="n">setShowConfirmDialog</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMPushButton.readConfirmMessage"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readConfirmMessage">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readConfirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Message to be displayed at the Confirmation dialog.</span>
 
@@ -384,10 +390,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span></div>
 
-    <span class="nd">@confirmMessage</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">confirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMPushButton.setConfirmMessage"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.setConfirmMessage">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setConfirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Message to be displayed at the Confirmation dialog.</span>
 
@@ -396,10 +401,11 @@
 <span class="sd">        value : str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pressValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">confirmMessage</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readConfirmMessage</span><span class="p">,</span> <span class="n">setConfirmMessage</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMPushButton.readPressValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readPressValue">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPressValue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This property holds the value to send back through the channel.</span>
 
@@ -411,10 +417,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">)</span></div>
 
-    <span class="nd">@pressValue</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">pressValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMPushButton.setPressValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.setPressValue">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPressValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This property holds the value to send back through the channel.</span>
 
@@ -427,10 +432,11 @@
 <span class="sd">        value : str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pressValue</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">releaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">pressValue</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readPressValue</span><span class="p">,</span> <span class="n">setPressValue</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMPushButton.readReleaseValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readReleaseValue">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readReleaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This property holds the value to send back through the channel.</span>
 
@@ -442,10 +448,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span><span class="p">)</span></div>
 
-    <span class="nd">@releaseValue</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">releaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMPushButton.setReleaseValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.setReleaseValue">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setReleaseValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This property holds the value to send back through the channel.</span>
 
@@ -458,10 +463,11 @@
 <span class="sd">        value : str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_releaseValue</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">relativeChange</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">releaseValue</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readReleaseValue</span><span class="p">,</span> <span class="n">setReleaseValue</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMPushButton.readRelativeChange"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readRelativeChange">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readRelativeChange</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The mode of operation of the PyDMPushButton.</span>
 
@@ -478,10 +484,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span></div>
 
-    <span class="nd">@relativeChange</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">relativeChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMPushButton.setRelativeChange"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.setRelativeChange">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setRelativeChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choice</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The mode of operation of the PyDMPushButton.</span>
 
@@ -499,7 +504,9 @@
 <span class="sd">        choice : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="o">!=</span> <span class="n">choice</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="o">=</span> <span class="n">choice</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_relative</span> <span class="o">=</span> <span class="n">choice</span></div>
+
+    <span class="n">relativeChange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readRelativeChange</span><span class="p">,</span> <span class="n">setRelativeChange</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMPushButton.confirm_dialog"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.confirm_dialog">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">confirm_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_release</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -688,8 +695,7 @@
         <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; is not a valid pressValue for &#39;</span><span class="si">{1}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">))</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">writeWhenRelease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMPushButton.readWriteWhenRelease"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.readWriteWhenRelease">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readWriteWhenRelease</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to write releaseValue on release</span>
 
@@ -697,10 +703,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_when_release</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_when_release</span></div>
 
-    <span class="nd">@writeWhenRelease</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">writeWhenRelease</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMPushButton.setWriteWhenRelease"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.setWriteWhenRelease">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setWriteWhenRelease</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to write releaseValue on release</span>
 
@@ -715,7 +720,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_when_release</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pressed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sendValue</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">released</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sendReleaseValue</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">released</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sendReleaseValue</span><span class="p">)</span></div>
+
+    <span class="n">writeWhenRelease</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readWriteWhenRelease</span><span class="p">,</span> <span class="n">setWriteWhenRelease</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMPushButton.updateReleaseValue"><a class="viewcode-back" href="../../../widgets/pushbutton.html#pydm.widgets.pushbutton.PyDMPushButton.updateReleaseValue">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>

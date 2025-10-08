@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.embedded_display &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.embedded_display &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -116,7 +116,7 @@
   <h1>Source code for pydm.widgets.embedded_display</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyqtgraph.GraphicsScene.mouseEvents</span><span class="w"> </span><span class="kn">import</span> <span class="n">MouseClickEvent</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QAction</span><span class="p">,</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QVBoxLayout</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QTimer</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
@@ -132,6 +132,12 @@
     <span class="n">find_file</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_file</span><span class="p">,</span> <span class="n">ScreenTarget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -218,8 +224,7 @@
         <span class="c1"># This is totally arbitrary, I just want *some* visible nonzero size</span>
         <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">macros</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.readMacros"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.readMacros">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readMacros</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        JSON-formatted string containing macro variables to pass to the embedded file.</span>
 
@@ -229,10 +234,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span></div>
 
-    <span class="nd">@macros</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">macros</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_macros</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.setMacros"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setMacros">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setMacros</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_macros</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        JSON-formatted string containing macro variables to pass to the embedded file.</span>
 
@@ -249,10 +253,11 @@
         <span class="k">if</span> <span class="n">new_macros</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_macros</span> <span class="o">=</span> <span class="n">new_macros</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_needs_load</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_if_needed</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_if_needed</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">macros</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readMacros</span><span class="p">,</span> <span class="n">setMacros</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.readFilename"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.readFilename">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Filename of the display to embed.</span>
 
@@ -262,10 +267,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span></div>
 
-    <span class="nd">@filename</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.setFilename"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFilename">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Filename of the display to embed.</span>
 
@@ -283,10 +287,11 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_load_error_timer</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">clear_error_text</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_if_needed</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_if_needed</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveDisplaySearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readFilename</span><span class="p">,</span> <span class="n">setFilename</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.readRecursiveDisplaySearch"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.readRecursiveDisplaySearch">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readRecursiveDisplaySearch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to search for a provided display file recursively</span>
 <span class="sd">        in subfolders relative to the location of this display.</span>
@@ -296,10 +301,9 @@
 <span class="sd">        bool</span>
 <span class="sd">            If recursive search is enabled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span></div>
 
-    <span class="nd">@recursiveDisplaySearch</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">recursiveDisplaySearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.setRecursiveDisplaySearch"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setRecursiveDisplaySearch">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setRecursiveDisplaySearch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set whether or not to search for a provided display file recursively</span>
 <span class="sd">        in subfolders relative to the location of this display.</span>
@@ -309,7 +313,9 @@
 <span class="sd">        new_value</span>
 <span class="sd">            If recursive search should be enabled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span> <span class="o">=</span> <span class="n">new_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_display_search</span> <span class="o">=</span> <span class="n">new_value</span></div>
+
+    <span class="n">recursiveDisplaySearch</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readRecursiveDisplaySearch</span><span class="p">,</span> <span class="n">setRecursiveDisplaySearch</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.set_macros_and_filename"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.set_macros_and_filename">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_macros_and_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_filename</span><span class="p">,</span> <span class="n">new_macros</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -457,8 +463,7 @@
         <span class="n">close_widget_connections</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedded_widget</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_connected</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">loadWhenShown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.readLoadWhenShown"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.readLoadWhenShown">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readLoadWhenShown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, only load and display the file once the</span>
 <span class="sd">        PyDMEmbeddedDisplayWidget is visible on screen.  This is very useful</span>
@@ -473,15 +478,15 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_only_load_when_shown</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_only_load_when_shown</span></div>
 
-    <span class="nd">@loadWhenShown</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">loadWhenShown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setLoadWhenShown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_only_load_when_shown</span> <span class="o">=</span> <span class="n">val</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_if_needed</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">disconnectWhenHidden</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">loadWhenShown</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readLoadWhenShown</span><span class="p">,</span> <span class="n">setLoadWhenShown</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.readDisconnectWhenHidden"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.readDisconnectWhenHidden">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readDisconnectWhenHidden</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disconnect from PVs when this widget is not visible.</span>
 
@@ -489,10 +494,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_when_hidden</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_when_hidden</span></div>
 
-    <span class="nd">@disconnectWhenHidden</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">disconnectWhenHidden</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">disconnect_when_hidden</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.setDisconnectWhenHidden"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setDisconnectWhenHidden">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setDisconnectWhenHidden</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">disconnect_when_hidden</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disconnect from PVs when this widget is not visible.</span>
 
@@ -500,10 +504,11 @@
 <span class="sd">        ----------</span>
 <span class="sd">        disconnect_when_hidden : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_when_hidden</span> <span class="o">=</span> <span class="n">disconnect_when_hidden</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_when_hidden</span> <span class="o">=</span> <span class="n">disconnect_when_hidden</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">followSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">disconnectWhenHidden</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readDisconnectWhenHidden</span><span class="p">,</span> <span class="n">setDisconnectWhenHidden</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.readFollowSymlinks"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.readFollowSymlinks">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readFollowSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, any symlinks in the path to filename (including the base path of the parent display)</span>
 <span class="sd">        will be followed, so that it will always use the canonical path. If False (default),</span>
@@ -515,10 +520,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span></div>
 
-    <span class="nd">@followSymlinks</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">followSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_symlinks</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMEmbeddedDisplay.setFollowSymlinks"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.setFollowSymlinks">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setFollowSymlinks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">follow_symlinks</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If True, any symlinks in the path to filename (including the base path of the parent display)</span>
 <span class="sd">        will be followed, so that it will always use the canonical path.</span>
@@ -530,7 +534,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        follow_symlinks : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span> <span class="o">=</span> <span class="n">follow_symlinks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_follow_symlinks</span> <span class="o">=</span> <span class="n">follow_symlinks</span></div>
+
+    <span class="n">followSymlinks</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readFollowSymlinks</span><span class="p">,</span> <span class="n">setFollowSymlinks</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEmbeddedDisplay.showEvent"><a class="viewcode-back" href="../../../widgets/embedded_display.html#pydm.widgets.embedded_display.PyDMEmbeddedDisplay.showEvent">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">showEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

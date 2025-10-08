@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMTabWidget &mdash; PyDM 1.27.2 documentation</title>
+  <title>PyDMTabWidget &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -208,6 +208,77 @@ channel, not the value.</p>
 when it has been created in Qt Designer.  This property isn’t directly editable
 by users, they will go through the currentTabAlarmChannel property to edit this
 information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.tab_bar.PyDMTabWidget.readCurrentTabAlarmChannel">
+<span class="sig-name descname"><span class="pre">readCurrentTabAlarmChannel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QByteArray</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/tab_bar.html#PyDMTabWidget.readCurrentTabAlarmChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.readCurrentTabAlarmChannel" title="Permalink to this definition"></a></dt>
+<dd><p>A channel to use for the current tab’s alarm indicator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.tab_bar.PyDMTabWidget.readDisconnectedAlarmIconColor">
+<span class="sig-name descname"><span class="pre">readDisconnectedAlarmIconColor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/tab_bar.html#PyDMTabWidget.readDisconnectedAlarmIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.readDisconnectedAlarmIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_DISCONNECTED severity level.
+This property can be defined in a stylesheet by using ‘qproperty-disconnectedAlarmIconColor’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QColor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.tab_bar.PyDMTabWidget.readInvalidAlarmIconColor">
+<span class="sig-name descname"><span class="pre">readInvalidAlarmIconColor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/tab_bar.html#PyDMTabWidget.readInvalidAlarmIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.readInvalidAlarmIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_INVALID severity level.
+This property can be defined in a stylesheet by using ‘qproperty-majorAlarmIconColor’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QColor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.tab_bar.PyDMTabWidget.readMajorAlarmIconColor">
+<span class="sig-name descname"><span class="pre">readMajorAlarmIconColor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/tab_bar.html#PyDMTabWidget.readMajorAlarmIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.readMajorAlarmIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MAJOR severity level.
+This property can be defined in a stylesheet by using ‘qproperty-majorAlarmIconColor’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QColor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.tab_bar.PyDMTabWidget.readMinorAlarmIconColor">
+<span class="sig-name descname"><span class="pre">readMinorAlarmIconColor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/tab_bar.html#PyDMTabWidget.readMinorAlarmIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.readMinorAlarmIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_MINOR severity level.
+This property can be defined in a stylesheet by using ‘qproperty-minorAlarmIconColor’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QColor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.tab_bar.PyDMTabWidget.readNoAlarmIconColor">
+<span class="sig-name descname"><span class="pre">readNoAlarmIconColor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/tab_bar.html#PyDMTabWidget.readNoAlarmIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.tab_bar.PyDMTabWidget.readNoAlarmIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>A color to use for alarm-sensitive tabs that have PyDMWidget.ALARM_NONE severity level.
+This property can be defined in a stylesheet by using ‘qproperty-noAlarmIconColor’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QColor</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

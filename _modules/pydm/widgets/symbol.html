@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.symbol &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.symbol &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -119,10 +119,17 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPixmap</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">,</span> <span class="n">QRectF</span><span class="p">,</span> <span class="n">qInstallMessageHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">,</span> <span class="n">QRectF</span><span class="p">,</span> <span class="n">qInstallMessageHandler</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtSvg</span><span class="w"> </span><span class="kn">import</span> <span class="n">QSvgRenderer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_file</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
+
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -185,8 +192,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_current_key</span> <span class="o">=</span> <span class="n">current_key</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">imageFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSymbol.readImageFiles"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol.readImageFiles">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readImageFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        JSON-formatted dictionary keyed on states (integers), with filenames</span>
 <span class="sd">        of the image file to display for the state.</span>
@@ -197,10 +203,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_images_string</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="nb">str</span><span class="p">(</span><span class="n">state</span><span class="p">):</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="nb">str</span><span class="p">(</span><span class="n">state</span><span class="p">):</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span></div>
 
-    <span class="nd">@imageFiles</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">imageFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_files</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSymbol.setImageFiles"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol.setImageFiles">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setImageFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_files</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        JSON-formatted dictionary keyed on states (integers), with filenames</span>
 <span class="sd">        of the image file to display for the state.</span>
@@ -246,10 +251,11 @@
                 <span class="k">continue</span>
             <span class="c1"># If we get this far, the file specified could not be loaded at all.</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not load image: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">state</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_images</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">state</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AspectRatioMode</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">aspectRatioMode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">imageFiles</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readImageFiles</span><span class="p">,</span> <span class="n">setImageFiles</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMSymbol.readAspectRatioMode"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol.readAspectRatioMode">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readAspectRatioMode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AspectRatioMode</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Which aspect ratio mode to use.</span>
 
@@ -257,10 +263,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        Qt.AspectRatioMode</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span></div>
 
-    <span class="nd">@aspectRatioMode</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">aspectRatioMode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_mode</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSymbol.setAspectRatioMode"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol.setAspectRatioMode">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setAspectRatioMode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_mode</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Which aspect ratio mode to use.</span>
 
@@ -270,7 +275,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_mode</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio_mode</span> <span class="o">=</span> <span class="n">new_mode</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+    <span class="n">prop_type</span> <span class="o">=</span> <span class="nb">int</span> <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span> <span class="k">else</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AspectRatioMode</span>
+    <span class="n">aspectRatioMode</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">prop_type</span><span class="p">,</span> <span class="n">readAspectRatioMode</span><span class="p">,</span> <span class="n">setAspectRatioMode</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMSymbol.connection_changed"><a class="viewcode-back" href="../../../widgets/symbol.html#pydm.widgets.symbol.PyDMSymbol.connection_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">connection_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connected</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

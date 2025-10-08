@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.qtplugin_base &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.qtplugin_base &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -145,9 +145,17 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.qtdesigner</span><span class="w"> </span><span class="kn">import</span> <span class="n">DesignerHooks</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.qtplugin_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMExtensionFactory</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="n">BASE_PLUGIN_CLASS</span> <span class="o">=</span> <span class="nb">type</span>
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYQT5</span><span class="p">:</span>
+    <span class="n">BASE_PLUGIN_CLASS</span> <span class="o">=</span> <span class="n">QtDesigner</span><span class="o">.</span><span class="n">QPyDesignerCustomWidgetPlugin</span>
+<span class="k">elif</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="n">BASE_PLUGIN_CLASS</span> <span class="o">=</span> <span class="n">QtDesigner</span><span class="o">.</span><span class="n">QDesignerCustomWidgetInterface</span>
 
 
 <div class="viewcode-block" id="WidgetCategory"><a class="viewcode-back" href="../../../development/designer_widgets.html#pydm.widgets.qtplugin_base.WidgetCategory">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">WidgetCategory</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
@@ -204,7 +212,7 @@
     <span class="k">return</span> <span class="n">Plugin</span></div>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">PyDMDesignerPlugin</span><span class="p">(</span><span class="n">QtDesigner</span><span class="o">.</span><span class="n">QPyDesignerCustomWidgetPlugin</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyDMDesignerPlugin</span><span class="p">(</span><span class="n">BASE_PLUGIN_CLASS</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parent class to standardize how pydm plugins are accessed in qt designer.</span>
 <span class="sd">    All functions have default returns that can be overridden as necessary.</span>
@@ -224,7 +232,7 @@
 <span class="sd">        :param cls: Class of the widget to use</span>
 <span class="sd">        :type cls:  QWidget</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">QtDesigner</span><span class="o">.</span><span class="n">QPyDesignerCustomWidgetPlugin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_container</span> <span class="o">=</span> <span class="n">is_container</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cls</span> <span class="o">=</span> <span class="bp">cls</span>

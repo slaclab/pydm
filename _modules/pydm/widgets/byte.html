@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.byte &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.byte &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -116,9 +116,15 @@
   <h1>Source code for pydm.widgets.byte</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QFontMetrics</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPaintEvent</span><span class="p">,</span> <span class="n">QBrush</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QPoint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QPoint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">PyDMBitIndicator</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
@@ -340,8 +346,7 @@
                 <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnected_color</span>
             <span class="n">indicator</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">onColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.readOnColor"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readOnColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readOnColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;on&#39; state.</span>
 
@@ -349,10 +354,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_color</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_color</span></div>
 
-    <span class="nd">@onColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">onColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.setOnColor"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setOnColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setOnColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;on&#39; state.</span>
 
@@ -362,10 +366,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_color</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_on_color</span> <span class="o">=</span> <span class="n">new_color</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">offColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">onColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readOnColor</span><span class="p">,</span> <span class="n">setOnColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readOffColor"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readOffColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readOffColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;off&#39; state.</span>
 
@@ -373,10 +378,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span></div>
 
-    <span class="nd">@offColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">offColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.setOffColor"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setOffColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setOffColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for a bit in the &#39;off&#39; state.</span>
 
@@ -386,10 +390,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span> <span class="o">=</span> <span class="n">new_color</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">:</span>
+    <span class="n">offColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readOffColor</span><span class="p">,</span> <span class="n">setOffColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readOrientation"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readOrientation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readOrientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to lay out the bit indicators vertically or horizontally.</span>
 
@@ -397,10 +402,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span></div>
 
-    <span class="nd">@orientation</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.setOrientation"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setOrientation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setOrientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">:</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to lay out the bit indicators vertically or horizontally.</span>
 
@@ -410,7 +414,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span> <span class="o">=</span> <span class="n">new_orientation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_spacing</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span></div>
+
+    <span class="n">prop_type</span> <span class="o">=</span> <span class="nb">int</span> <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span> <span class="k">else</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span>
+    <span class="n">orientation</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">prop_type</span><span class="p">,</span> <span class="n">readOrientation</span><span class="p">,</span> <span class="n">setOrientation</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMByteIndicator.set_spacing"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.set_spacing">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -431,8 +438,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setHorizontalSpacing</span><span class="p">(</span><span class="n">label_spacing</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setVerticalSpacing</span><span class="p">(</span><span class="n">indicator_spacing</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.readShowLabels"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readShowLabels">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to show labels next to each bit indicator.</span>
 
@@ -440,10 +446,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_labels</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_labels</span></div>
 
-    <span class="nd">@showLabels</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.setShowLabels"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setShowLabels">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to show labels next to each bit indicator.</span>
 
@@ -454,10 +459,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_show_labels</span> <span class="o">=</span> <span class="n">show</span>
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">:</span>
-            <span class="n">label</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="n">show</span><span class="p">)</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="n">show</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">bigEndian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">showLabels</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readShowLabels</span><span class="p">,</span> <span class="n">setShowLabels</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readBigEndian"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readBigEndian">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readBigEndian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether the most significant bit is at the start or end of the widget.</span>
 
@@ -465,10 +471,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_big_endian</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_big_endian</span></div>
 
-    <span class="nd">@bigEndian</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">bigEndian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_big_endian</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.setBigEndian"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setBigEndian">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setBigEndian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_big_endian</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether the most significant bit is at the start or end of the widget.</span>
 
@@ -488,10 +493,11 @@
 
         <span class="n">origin</span> <span class="o">=</span> <span class="n">origin_map</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bigEndian</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setOriginCorner</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">circles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">bigEndian</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readBigEndian</span><span class="p">,</span> <span class="n">setBigEndian</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readCircles"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readCircles">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readCircles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw indicators as circles, rather than rectangles.</span>
 
@@ -499,10 +505,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_circles</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_circles</span></div>
 
-    <span class="nd">@circles</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">circles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">draw_circles</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.setCircles"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setCircles">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setCircles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">draw_circles</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw indicators as circles, rather than rectangles.</span>
 
@@ -515,10 +520,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_spacing</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indicators</span><span class="p">:</span>
             <span class="n">indicator</span><span class="o">.</span><span class="n">circle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_circles</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">labelPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">:</span>
+    <span class="n">circles</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readCircles</span><span class="p">,</span> <span class="n">setCircles</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readLabelPosition"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readLabelPosition">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readLabelPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The side of the widget to display labels on.</span>
 
@@ -526,10 +532,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_position</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_position</span></div>
 
-    <span class="nd">@labelPosition</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">labelPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_pos</span><span class="p">:</span> <span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.setLabelPosition"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setLabelPosition">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setLabelPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_pos</span><span class="p">:</span> <span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The side of the widget to display labels on.</span>
 
@@ -538,10 +543,11 @@
 <span class="sd">        new_pos : QTabWidget.TabPosition, int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_label_position</span> <span class="o">=</span> <span class="n">new_pos</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">numBits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">labelPosition</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QTabWidget</span><span class="o">.</span><span class="n">TabPosition</span><span class="p">,</span> <span class="n">readLabelPosition</span><span class="p">,</span> <span class="n">setLabelPosition</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readNumBits"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readNumBits">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readNumBits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Number of bits to interpret.</span>
 
@@ -549,10 +555,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_bits</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_bits</span></div>
 
-    <span class="nd">@numBits</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">numBits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_num_bits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.setNumBits"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setNumBits">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setNumBits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_num_bits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Number of bits to interpret.</span>
 
@@ -572,10 +577,11 @@
             <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_bits</span><span class="p">:</span>
                 <span class="k">break</span>
             <span class="n">new_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">old_label</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">new_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">new_labels</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">numBits</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readNumBits</span><span class="p">,</span> <span class="n">setNumBits</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readShift"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readShift">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShift</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Bit shift.</span>
 
@@ -583,10 +589,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span></div>
 
-    <span class="nd">@shift</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.setShift"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setShift">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_shift</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Bit shift.</span>
 
@@ -594,11 +599,11 @@
 <span class="sd">        ----------</span>
 <span class="sd">        new_shift : int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span> <span class="o">=</span> <span class="n">new_shift</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span> <span class="o">=</span> <span class="n">new_shift</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">shift</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readShift</span><span class="p">,</span> <span class="n">setShift</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readLabels"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readLabels">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Labels for each bit.</span>
 
@@ -606,10 +611,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">currLabel</span><span class="o">.</span><span class="n">text</span><span class="p">())</span> <span class="k">for</span> <span class="n">currLabel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">currLabel</span><span class="o">.</span><span class="n">text</span><span class="p">())</span> <span class="k">for</span> <span class="n">currLabel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">]</span></div>
 
-    <span class="nd">@labels</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMByteIndicator.setLabels"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setLabels">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Labels for each bit.</span>
 
@@ -623,7 +627,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">QLabel</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">new_labels</span><span class="p">]</span>
         <span class="c1"># Have to reset showLabels to hide or show all the new labels we just made.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">showLabels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_labels</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span></div>
+
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">readLabels</span><span class="p">,</span> <span class="n">setLabels</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMByteIndicator.value_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.value_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -717,14 +723,14 @@
         <span class="k">return</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
     <span class="c1"># whether or not we render the widget as a circle (default) or a rectangle</span>
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">renderAsRectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">readRenderAsRectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_render_as_rectangle</span>
 
-    <span class="nd">@renderAsRectangle</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">renderAsRectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setRenderAsRectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">new_val</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_render_as_rectangle</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_render_as_rectangle</span> <span class="o">=</span> <span class="n">new_val</span>
+
+    <span class="n">renderAsRectangle</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readRenderAsRectangle</span><span class="p">,</span> <span class="n">setRenderAsRectangle</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMMultiStateIndicator.value_changed"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.value_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -774,18 +780,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_painter</span><span class="o">.</span><span class="n">end</span><span class="p">()</span></div>
 
     <span class="c1"># color state setters/getters</span>
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">currentValue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readCurrentValue"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readCurrentValue">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readCurrentValue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 0</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curr_state</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curr_state</span></div>
 
-    <span class="nd">@currentValue</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">currentValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_state</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setCurrentValue"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setCurrentValue">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setCurrentValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_state</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 0</span>
 <span class="sd">        Parameters</span>
@@ -794,21 +798,21 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_state</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_curr_state</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_curr_state</span> <span class="o">=</span> <span class="n">new_state</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span></div>
+
+    <span class="n">currentValue</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readCurrentValue</span><span class="p">,</span> <span class="n">setCurrentValue</span><span class="p">)</span>
 
     <span class="c1"># color state setters/getters</span>
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state0Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState0Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState0Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState0Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 0</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-    <span class="nd">@state0Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state0Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState0Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState0Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState0Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 0</span>
 <span class="sd">        Parameters</span>
@@ -816,20 +820,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">state_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state1Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state0Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState0Color</span><span class="p">,</span> <span class="n">setState0Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState1Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState1Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState1Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 1</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
 
-    <span class="nd">@state1Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state1Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState1Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState1Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState1Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 1</span>
 <span class="sd">        Parameters</span>
@@ -837,20 +841,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">state_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state2Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state1Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState1Color</span><span class="p">,</span> <span class="n">setState1Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState2Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState2Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState2Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 2</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
 
-    <span class="nd">@state2Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state2Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState2Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState2Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState2Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 2</span>
 <span class="sd">        Parameters</span>
@@ -858,20 +862,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state3Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state2Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState2Color</span><span class="p">,</span> <span class="n">setState2Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState3Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState3Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState3Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 3</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span></div>
 
-    <span class="nd">@state3Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state3Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState3Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState3Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState3Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 3</span>
 <span class="sd">        Parameters</span>
@@ -879,20 +883,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state4Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state3Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState3Color</span><span class="p">,</span> <span class="n">setState3Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState4Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState4Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState4Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 4</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span></div>
 
-    <span class="nd">@state4Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state4Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState4Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState4Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState4Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 4</span>
 <span class="sd">        Parameters</span>
@@ -900,20 +904,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state5Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state4Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState4Color</span><span class="p">,</span> <span class="n">setState4Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState5Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState5Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState5Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 5</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span></div>
 
-    <span class="nd">@state5Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state5Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState5Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState5Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState5Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 5</span>
 <span class="sd">        Parameters</span>
@@ -921,20 +925,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state6Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state5Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState5Color</span><span class="p">,</span> <span class="n">setState5Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState6Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState6Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState6Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 6</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span></div>
 
-    <span class="nd">@state6Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state6Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState6Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState6Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState6Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 6</span>
 <span class="sd">        Parameters</span>
@@ -942,20 +946,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state7Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state6Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState6Color</span><span class="p">,</span> <span class="n">setState6Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState7Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState7Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState7Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 7</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span></div>
 
-    <span class="nd">@state7Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state7Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState7Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState7Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState7Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 7</span>
 <span class="sd">        Parameters</span>
@@ -963,20 +967,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">7</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state8Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state7Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState7Color</span><span class="p">,</span> <span class="n">setState7Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState8Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState8Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState8Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 8</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span></div>
 
-    <span class="nd">@state8Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state8Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState8Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState8Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState8Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 8</span>
 <span class="sd">        Parameters</span>
@@ -984,20 +988,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state9Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state8Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState8Color</span><span class="p">,</span> <span class="n">setState8Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState9Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState9Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState9Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 9</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span></div>
 
-    <span class="nd">@state9Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state9Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState9Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState9Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState9Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 9</span>
 <span class="sd">        Parameters</span>
@@ -1005,20 +1009,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">9</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state10Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state9Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState9Color</span><span class="p">,</span> <span class="n">setState9Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState10Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState10Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState10Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 10</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span></div>
 
-    <span class="nd">@state10Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state10Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState10Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState10Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState10Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 10</span>
 <span class="sd">        Parameters</span>
@@ -1026,20 +1030,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state11Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state10Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState10Color</span><span class="p">,</span> <span class="n">setState10Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState11Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState11Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState11Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 11</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span></div>
 
-    <span class="nd">@state11Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state11Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState11Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState11Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState11Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 11</span>
 <span class="sd">        Parameters</span>
@@ -1047,20 +1051,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">11</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state12Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state11Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState11Color</span><span class="p">,</span> <span class="n">setState11Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState12Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState12Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState12Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 12</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span></div>
 
-    <span class="nd">@state12Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state12Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState12Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState12Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState12Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 12</span>
 <span class="sd">        Parameters</span>
@@ -1068,20 +1072,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state13Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state12Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState12Color</span><span class="p">,</span> <span class="n">setState12Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState13Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState13Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState13Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 13</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span></div>
 
-    <span class="nd">@state13Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state13Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState13Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState13Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState13Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 13</span>
 <span class="sd">        Parameters</span>
@@ -1089,20 +1093,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">13</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state14Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state13Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState13Color</span><span class="p">,</span> <span class="n">setState13Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState14Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState14Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState14Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 14</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span></div>
 
-    <span class="nd">@state14Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state14Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState14Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState14Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState14Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 14</span>
 <span class="sd">        Parameters</span>
@@ -1110,20 +1114,20 @@
 <span class="sd">        new_color : QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">14</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_color</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state15Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">state14Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState14Color</span><span class="p">,</span> <span class="n">setState14Color</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMMultiStateIndicator.readState15Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.readState15Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readState15Color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 15</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span></div>
 
-    <span class="nd">@state15Color</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">state15Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMMultiStateIndicator.setState15Color"><a class="viewcode-back" href="../../../widgets/multistate.html#pydm.widgets.byte.PyDMMultiStateIndicator.setState15Color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setState15Color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color for when widget is in state 15</span>
 <span class="sd">        Parameters</span>
@@ -1132,6 +1136,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">state_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">15</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_state_colors</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_color</span></div>
+
+    <span class="n">state15Color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readState15Color</span><span class="p">,</span> <span class="n">setState15Color</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

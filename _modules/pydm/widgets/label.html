@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.label &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.label &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -116,11 +116,17 @@
   <h1>Source code for pydm.widgets.label</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">str_types</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QApplication</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Property</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.display_format</span><span class="w"> </span><span class="kn">import</span> <span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">parse_value_for_display</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_pydm_app</span><span class="p">,</span> <span class="n">is_qt_designer</span><span class="p">,</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.widgets.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">only_if_channel_set</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
 
 <span class="n">_labelRuleProperties</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Text&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;value_changed&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]}</span>
 
@@ -182,12 +188,10 @@
 <div class="viewcode-block" id="PyDMLabel.eventFilter"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel.eventFilter">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">enableRichText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">readEnableRichText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enable_rich_text</span>
 
-    <span class="nd">@enableRichText</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">enableRichText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setEnableRichText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enable_rich_text</span> <span class="o">==</span> <span class="n">new_value</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_enable_rich_text</span> <span class="o">=</span> <span class="n">new_value</span>
@@ -197,8 +201,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setTextFormat</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PlainText</span><span class="p">)</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">displayFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">enableRichText</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readEnableRichText</span><span class="p">,</span> <span class="n">setEnableRichText</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMLabel.readDisplayFormat"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel.readDisplayFormat">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readDisplayFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        displayFormat property.</span>
 
@@ -206,16 +211,17 @@
 <span class="sd">        :setter: Sets the displayFormat</span>
 <span class="sd">        :type: int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span></div>
 
-    <span class="nd">@displayFormat</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">displayFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setDisplayFormat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">==</span> <span class="n">new_type</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_display_format_type</span> <span class="o">=</span> <span class="n">new_type</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_qt_designer</span><span class="p">()</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">DESIGNER_ONLINE</span><span class="p">:</span>
             <span class="c1"># Trigger the update of display format</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="n">displayFormat</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">DisplayFormat</span><span class="p">,</span> <span class="n">readDisplayFormat</span><span class="p">,</span> <span class="n">setDisplayFormat</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMLabel.value_changed"><a class="viewcode-back" href="../../../widgets/label.html#pydm.widgets.label.PyDMLabel.value_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

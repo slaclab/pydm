@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.archiver_time_plot &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.archiver_time_plot &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -162,6 +162,8 @@
 <span class="sd">    show_extension_line : bool</span>
 <span class="sd">        If True, shows a line that extends from the right-most point to the future.</span>
 <span class="sd">        Defaults to False.</span>
+<span class="sd">    optimized_data_bins : int, optional</span>
+<span class="sd">        The number of data bins to use for optimized data retrieval from the archiver.</span>
 <span class="sd">    **kws : dict[str: any]</span>
 <span class="sd">        Additional parameters supported by pyqtgraph.PlotDataItem.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -178,6 +180,7 @@
         <span class="n">useArchiveData</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">liveData</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">showExtensionLine</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">optimized_data_bins</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kws</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="c1"># Attributes that must exist before super().__init__() call</span>
@@ -187,6 +190,7 @@
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kws</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimized_data_bins</span> <span class="o">=</span> <span class="n">optimized_data_bins</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_archive_data</span> <span class="o">=</span> <span class="n">useArchiveData</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_archiveBufferSize</span> <span class="o">=</span> <span class="n">DEFAULT_ARCHIVE_BUFFER_SIZE</span>
@@ -200,7 +204,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">error_bar_data</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_error_bar</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_extenstion_line</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">destroyed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_extension_line</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">channel_address</span>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.to_dict"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.to_dict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderedDict</span><span class="p">:</span>
@@ -261,7 +265,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">remove_error_bar</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">remove_extenstion_line</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_extension_line</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extension_line</span><span class="p">)</span>
 
     <span class="nd">@BasePlotCurveItem</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">setter</span>
@@ -413,14 +417,18 @@
                 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
                     <span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                        <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>  <span class="c1"># If there is no live data, just show the archive data only</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
                 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
                     <span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                        <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
@@ -455,18 +463,32 @@
         <span class="n">y_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y_last</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">y_last</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_extension_line</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_line</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_line</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ArchivePlotCurveItem.remove_extenstion_line"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.remove_extenstion_line">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">remove_extenstion_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ArchivePlotCurveItem.remove_extension_line"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.remove_extension_line">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_extension_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the curve&#39;s error bar when the curve is deleted.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extension_line</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_extension_line&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">if</span> <span class="n">vb</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extension_line</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">():</span>
-            <span class="n">vb</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extension_line</span><span class="p">)</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">vb</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">vb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vb</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">vb</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">refresh_extension_line_pen</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dotted_pen</span> <span class="o">=</span> <span class="n">QPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
         <span class="n">dotted_pen</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">DotLine</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_extension_line</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="n">dotted_pen</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">setOptimizedDataBins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_bins</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">n_bins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid number of bins: </span><span class="si">{</span><span class="n">n_bins</span><span class="si">}</span><span class="s2">. Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimized_data_bins</span> <span class="o">=</span> <span class="n">n_bins</span>
 
 <div class="viewcode-block" id="ArchivePlotCurveItem.initializeArchiveBuffer"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.initializeArchiveBuffer">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">initializeArchiveBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -518,10 +540,15 @@
 <div class="viewcode-block" id="ArchivePlotCurveItem.remove_error_bar"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.ArchivePlotCurveItem.remove_error_bar">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_error_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the curve&#39;s error bar when the curve is deleted.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bar</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;error_bar&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bar</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">if</span> <span class="n">vb</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">():</span>
-            <span class="n">vb</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_bar</span><span class="p">)</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">vb</span> <span class="o">=</span> <span class="n">bar</span><span class="o">.</span><span class="n">getViewBox</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">vb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vb</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">vb</span><span class="o">.</span><span class="n">removeItem</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="k">pass</span></div>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">refresh_error_bar_pen</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">solid_pen</span> <span class="o">=</span> <span class="n">QPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="p">)</span>
@@ -680,7 +707,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span> <span class="o">=</span> <span class="n">pvs</span> <span class="k">if</span> <span class="n">pvs</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_liveData</span> <span class="o">=</span> <span class="n">liveData</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot_style</span> <span class="o">=</span> <span class="n">plot_style</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch_connected</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">live_connections</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch_connections</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
 
@@ -780,8 +806,7 @@
         <span class="c1"># ln is more intuitive than log</span>
         <span class="k">return</span> <span class="n">formula</span></div>
 
-<div class="viewcode-block" id="FormulaCurveItem.evaluate"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.FormulaCurveItem.evaluate">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="FormulaCurveItem.evaluate"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.FormulaCurveItem.evaluate">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use our formula and input curves to calculate our value at each timestep.</span>
 <span class="sd">        If one curve updates at a certain timestep and another does not, it uses the previously</span>
@@ -792,22 +817,64 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;invalid formula&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">formula_invalid_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
             <span class="k">return</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">:</span>
-            <span class="c1"># If we are just a constant, then store a straight line from 1970 to ~2200</span>
-            <span class="c1"># Known Bug: Constants are hidden if the plot&#39;s x-axis range is between 30m and 1.5hr</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span><span class="p">)]])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">APPROX_SECONDS_300_YEARS</span><span class="p">],</span> <span class="p">[</span><span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span><span class="p">)]])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">constant_value</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span><span class="p">)</span>
+
+            <span class="n">current_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+            <span class="n">time_span</span> <span class="o">=</span> <span class="mi">365</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">time_span</span>
+            <span class="n">end_time</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">+</span> <span class="n">time_span</span>
+
+            <span class="n">num_points</span> <span class="o">=</span> <span class="mi">100</span>
+            <span class="n">timestamps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="n">constant_value</span><span class="p">)</span>
+
+            <span class="n">mid_point</span> <span class="o">=</span> <span class="n">num_points</span> <span class="o">//</span> <span class="mi">2</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">timestamps</span><span class="p">[:</span><span class="n">mid_point</span><span class="p">],</span> <span class="n">values</span><span class="p">[:</span><span class="n">mid_point</span><span class="p">]])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">timestamps</span><span class="p">[</span><span class="n">mid_point</span><span class="p">:],</span> <span class="n">values</span><span class="p">[</span><span class="n">mid_point</span><span class="p">:]])</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">=</span> <span class="n">mid_point</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="n">num_points</span> <span class="o">-</span> <span class="n">mid_point</span>
+
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch_connected</span><span class="p">):</span>
+        <span class="c1"># If all dependencies are constant formula curves, synthesize a constant series.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">FormulaCurveItem</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">pvs</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="c1"># Build pvValues from child constant buffers if present (fallback 0.0)</span>
+            <span class="n">pvValues</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">pvValues</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">c</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">pvValues</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pvValues</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+            <span class="n">constant_value</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trueFormula</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="p">{</span><span class="s2">&quot;pvValues&quot;</span><span class="p">:</span> <span class="n">pvValues</span><span class="p">})</span>
+
+            <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">span</span> <span class="o">=</span> <span class="mi">365</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>
+            <span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">span</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="n">span</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">constant_value</span><span class="p">)</span>
+
+            <span class="n">mid</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ts</span><span class="p">[:</span><span class="n">mid</span><span class="p">],</span> <span class="n">vals</span><span class="p">[:</span><span class="n">mid</span><span class="p">]])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ts</span><span class="p">[</span><span class="n">mid</span><span class="p">:],</span> <span class="n">vals</span><span class="p">[</span><span class="n">mid</span><span class="p">:]])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">=</span> <span class="n">mid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">mid</span>
+            <span class="k">return</span>
+
+        <span class="n">all_constants</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">FormulaCurveItem</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">pvs</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">all_constants</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">arch_connected</span><span class="p">):</span>
             <span class="k">return</span>
 
         <span class="n">pvArchiveData</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">pvLiveData</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">pvIndices</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">pvValues</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="c1"># Reset buffers</span>
@@ -827,6 +894,7 @@
             <span class="n">pvIndices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_up_eval</span><span class="p">(</span><span class="n">archive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">pvValues</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
             <span class="c1"># Do literally the exact same thing for live data</span>
+
             <span class="k">for</span> <span class="n">pv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">pvLiveData</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span><span class="o">.</span><span class="n">data_buffer</span>
                 <span class="n">pvValues</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvLiveData</span><span class="p">[</span><span class="n">pv</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="n">pvIndices</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
@@ -846,17 +914,22 @@
 <span class="sd">            Whether this is setting up for Archive Data or Live Data&quot;&quot;&quot;</span>
         <span class="n">pvIndices</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">pv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">pv_current_index</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">if</span> <span class="n">archive</span><span class="p">:</span>
-                <span class="n">pv_times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="k">while</span> <span class="n">pv_current_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">pv_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">pv_times</span><span class="p">[</span><span class="n">pv_current_index</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_archiver_x</span><span class="p">():</span>
-                    <span class="n">pv_current_index</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="c1"># Shift starting indices for each row to our minimum</span>
+            <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span>
+            <span class="n">is_constant</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">FormulaCurveItem</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">curve</span><span class="o">.</span><span class="n">pvs</span>
+
+            <span class="k">if</span> <span class="n">is_constant</span><span class="p">:</span>
+                <span class="n">pvIndices</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">pv_times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="k">while</span> <span class="n">pv_current_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">pv_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">pv_times</span><span class="p">[</span><span class="n">pv_current_index</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_x</span><span class="p">():</span>
-                    <span class="n">pv_current_index</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">pvIndices</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_current_index</span>
+                <span class="n">pv_current_index</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">archive</span><span class="p">:</span>
+                    <span class="n">pv_times</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">while</span> <span class="n">pv_current_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">pv_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">pv_times</span><span class="p">[</span><span class="n">pv_current_index</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_archiver_x</span><span class="p">():</span>
+                        <span class="n">pv_current_index</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pv_times</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">while</span> <span class="n">pv_current_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">pv_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">pv_times</span><span class="p">[</span><span class="n">pv_current_index</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_x</span><span class="p">():</span>
+                        <span class="n">pv_current_index</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">pvIndices</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span> <span class="o">=</span> <span class="n">pv_current_index</span>
         <span class="k">return</span> <span class="n">pvIndices</span></div>
 
 <div class="viewcode-block" id="FormulaCurveItem.compute_evaluation"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.FormulaCurveItem.compute_evaluation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">compute_evaluation</span><span class="p">(</span>
@@ -885,8 +958,19 @@
 <span class="sd">        output: np.ndarray</span>
 <span class="sd">            formula curve data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="n">constant_curves</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">pv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="n">FormulaCurveItem</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">curve</span><span class="o">.</span><span class="n">pvs</span><span class="p">:</span>
+                <span class="n">constant_curves</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pv</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">archive</span> <span class="ow">and</span> <span class="n">curve</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">pvValues</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">archive</span> <span class="ow">and</span> <span class="n">curve</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">pvValues</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pvValues</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">archive</span><span class="p">:</span>
@@ -899,6 +983,9 @@
             <span class="n">min_pv_current_index</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="k">for</span> <span class="n">pv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">pv</span> <span class="ow">in</span> <span class="n">constant_curves</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
                 <span class="n">pv_times</span> <span class="o">=</span> <span class="n">pvData</span><span class="p">[</span><span class="n">pv</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">pv_current_index</span> <span class="o">=</span> <span class="n">pvIndices</span><span class="p">[</span><span class="n">pv</span><span class="p">]</span>
 
@@ -940,7 +1027,6 @@
             <span class="n">archive_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
             <span class="n">live_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
             <span class="n">live_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-
             <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">archive_x</span><span class="p">,</span> <span class="n">live_x</span><span class="p">))</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">archive_y</span><span class="p">,</span> <span class="n">live_y</span><span class="p">))</span>
 
@@ -1008,7 +1094,6 @@
 <div class="viewcode-block" id="FormulaCurveItem.on_dependency_archive_data_received"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.FormulaCurveItem.on_dependency_archive_data_received">[docs]</a>    <span class="nd">@Slot</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_dependency_archive_data_received</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Called when any dependency curve receives new archive data&quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_archive_data</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">:</span>
             <span class="c1"># Use a timer to batch updates if multiple dependencies update at once</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_update_timer&quot;</span><span class="p">):</span>
@@ -1035,6 +1120,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the actual update after batching signals&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redrawCurve</span><span class="p">()</span>
+
         <span class="c1"># Emit our own archive data received signal to propagate to dependent formulas</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">archive_data_received_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
@@ -1066,17 +1152,24 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">max_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">:</span>
-            <span class="c1"># We don&#39;t want our constants to affect the x axis at all, let them draw as required</span>
-            <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">maxx</span> <span class="o">=</span> <span class="n">APPROX_SECONDS_300_YEARS</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">maxx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">curve</span><span class="p">]</span><span class="o">.</span><span class="n">min_x</span><span class="p">(),</span> <span class="n">maxx</span><span class="p">)</span>
+            <span class="n">maxx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">curve</span><span class="p">]</span><span class="o">.</span><span class="n">max_x</span><span class="p">(),</span> <span class="n">maxx</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">maxx</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">min_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">APPROX_SECONDS_300_YEARS</span>
-        <span class="n">minx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">DEFAULT_TIME_SPAN</span>
+        <span class="n">minx</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">minx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">curve</span><span class="p">]</span><span class="o">.</span><span class="n">min_x</span><span class="p">(),</span> <span class="n">minx</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">minx</span>
@@ -1091,8 +1184,10 @@
 <span class="sd">            The timestamp of the oldest data point in the archiver data buffer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">APPROX_SECONDS_300_YEARS</span>
-        <span class="n">minx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">DEFAULT_TIME_SPAN</span>
+        <span class="n">minx</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">minx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">curve</span><span class="p">]</span><span class="o">.</span><span class="n">min_archiver_x</span><span class="p">(),</span> <span class="n">minx</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">minx</span></div>
@@ -1108,14 +1203,40 @@
 <span class="sd">            The timestamp of the most recent data point in the archiver data buffer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">archive_points_accumulated</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive_data_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">maxx</span> <span class="o">=</span> <span class="n">APPROX_SECONDS_300_YEARS</span>
         <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">maxx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">curve</span><span class="p">]</span><span class="o">.</span><span class="n">min_archiver_x</span><span class="p">(),</span> <span class="n">maxx</span><span class="p">)</span>
+            <span class="n">maxx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">[</span><span class="n">curve</span><span class="p">]</span><span class="o">.</span><span class="n">max_archiver_x</span><span class="p">(),</span> <span class="n">maxx</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">maxx</span></div>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias so tools expecting .address (like ArchivePlotCurveItem) work.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_formula</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="nd">@address</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formula</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">child_units</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvs</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="n">non_empty</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">child_units</span> <span class="k">if</span> <span class="n">u</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">non_empty</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">non_empty</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">first</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">u</span> <span class="o">==</span> <span class="n">first</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">non_empty</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="nd">@units</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="PyDMArchiverTimePlot"><a class="viewcode-back" href="../../../widgets/archiver_timeplot.html#pydm.widgets.archiver_time_plot.PyDMArchiverTimePlot">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMArchiverTimePlot</span><span class="p">(</span><span class="n">PyDMTimePlot</span><span class="p">):</span>
@@ -1308,7 +1429,11 @@
                 <span class="c1"># Max amount of raw data to return before using optimized data</span>
                 <span class="n">max_data_request</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.80</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">getArchiveBufferSize</span><span class="p">())</span>
                 <span class="k">if</span> <span class="n">requested_seconds</span> <span class="o">&gt;</span> <span class="n">max_data_request</span><span class="p">:</span>
-                    <span class="n">processing_command</span> <span class="o">=</span> <span class="s2">&quot;optimized_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimized_data_bins</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">curve</span><span class="p">,</span> <span class="s2">&quot;optimized_data_bins&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">curve</span><span class="o">.</span><span class="n">optimized_data_bins</span><span class="p">:</span>
+                        <span class="n">optimized_data_bins</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">optimized_data_bins</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">optimized_data_bins</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimized_data_bins</span>
+                    <span class="n">processing_command</span> <span class="o">=</span> <span class="s2">&quot;optimized_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">optimized_data_bins</span><span class="p">)</span>
                 <span class="n">curve</span><span class="o">.</span><span class="n">archive_data_request_signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">processing_command</span><span class="p">)</span>
                 <span class="n">req_queued</span> <span class="o">|=</span> <span class="kc">True</span>
 
@@ -1474,8 +1599,6 @@
         <span class="n">formula_curve</span> <span class="o">=</span> <span class="n">FormulaCurveItem</span><span class="p">(</span><span class="n">yAxisName</span><span class="o">=</span><span class="n">yAxisName</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_curves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">formula_curve</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">formula_curve</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plotItem</span><span class="o">.</span><span class="n">linkDataToAxis</span><span class="p">(</span><span class="n">formula_curve</span><span class="p">,</span> <span class="n">yAxisName</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">formula_curve</span></div></div>

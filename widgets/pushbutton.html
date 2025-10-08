@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMPushButton &mdash; PyDM 1.27.2 documentation</title>
+  <title>PyDMPushButton &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -193,6 +193,143 @@ is False.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readConfirmMessage">
+<span class="sig-name descname"><span class="pre">readConfirmMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readConfirmMessage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readConfirmMessage" title="Permalink to this definition"></a></dt>
+<dd><p>Message to be displayed at the Confirmation dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readPassword">
+<span class="sig-name descname"><span class="pre">readPassword</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readPassword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readPassword" title="Permalink to this definition"></a></dt>
+<dd><p>Password to be encrypted using SHA256.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To avoid issues exposing the password this method
+always returns an empty string.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readPasswordProtected">
+<span class="sig-name descname"><span class="pre">readPasswordProtected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readPasswordProtected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readPasswordProtected" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not this button is password protected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readPressValue">
+<span class="sig-name descname"><span class="pre">readPressValue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readPressValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readPressValue" title="Permalink to this definition"></a></dt>
+<dd><p>This property holds the value to send back through the channel.</p>
+<p>The type of this value does not matter because it is automatically
+converted to match the preexisting value type of the channel. However,
+the sign of the value matters for both the fixed and relative modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readProtectedPassword">
+<span class="sig-name descname"><span class="pre">readProtectedPassword</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readProtectedPassword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readProtectedPassword" title="Permalink to this definition"></a></dt>
+<dd><p>The encrypted password.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readPyDMIcon">
+<span class="sig-name descname"><span class="pre">readPyDMIcon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readPyDMIcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readPyDMIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
+See “enum QStyle::StandardPixmap” in Qt’s QStyle documentation for full list of usable standard icons.
+See https://fontawesome.com/icons?d=gallery for list of usable fontawesome icons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readPyDMIconColor">
+<span class="sig-name descname"><span class="pre">readPyDMIconColor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readPyDMIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readPyDMIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>The color of the icon (color is only applied if using icon from the “Font Awesome” set)
+:rtype: QColor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readRelativeChange">
+<span class="sig-name descname"><span class="pre">readRelativeChange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readRelativeChange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readRelativeChange" title="Permalink to this definition"></a></dt>
+<dd><p>The mode of operation of the PyDMPushButton.</p>
+<p>If set to True, the <code class="xref py py-attr docutils literal notranslate"><span class="pre">pressValue</span></code> will be added to the current
+value of the channel. If False, the <code class="xref py py-attr docutils literal notranslate"><span class="pre">pressValue</span></code> will be sent
+without any operation.</p>
+<p>This flag will be ignored if the connected channel sends a str type
+value to <code class="xref py py-meth docutils literal notranslate"><span class="pre">receiveValue()</span></code>. This is designed to eliminate the
+undesirable behavior of concatenating strings as opposed to doing
+mathematical addition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readReleaseValue">
+<span class="sig-name descname"><span class="pre">readReleaseValue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readReleaseValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readReleaseValue" title="Permalink to this definition"></a></dt>
+<dd><p>This property holds the value to send back through the channel.</p>
+<p>The type of this value does not matter because it is automatically
+converted to match the preexisting value type of the channel. However,
+the sign of the value matters for both the fixed and relative modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readShowConfirmDialog">
+<span class="sig-name descname"><span class="pre">readShowConfirmDialog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readShowConfirmDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readShowConfirmDialog" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to display a confirmation dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.readWriteWhenRelease">
+<span class="sig-name descname"><span class="pre">readWriteWhenRelease</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.readWriteWhenRelease"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.readWriteWhenRelease" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to write releaseValue on release</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.sendReleaseValue">
 <span class="sig-name descname"><span class="pre">sendReleaseValue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.sendReleaseValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.sendReleaseValue" title="Permalink to this definition"></a></dt>
 <dd><p>Send new release value to the channel.</p>
@@ -251,6 +388,128 @@ if the relative flag is True, and the channel type is not a str</p></li>
 </li>
 </ul>
 </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.setConfirmMessage">
+<span class="sig-name descname"><span class="pre">setConfirmMessage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.setConfirmMessage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.setConfirmMessage" title="Permalink to this definition"></a></dt>
+<dd><p>Message to be displayed at the Confirmation dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.setPassword">
+<span class="sig-name descname"><span class="pre">setPassword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.setPassword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.setPassword" title="Permalink to this definition"></a></dt>
+<dd><p>Password to be encrypted using SHA256.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – The password to be encrypted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.setPasswordProtected">
+<span class="sig-name descname"><span class="pre">setPasswordProtected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.setPasswordProtected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.setPasswordProtected" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not this button is password protected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.setPressValue">
+<span class="sig-name descname"><span class="pre">setPressValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.setPressValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.setPressValue" title="Permalink to this definition"></a></dt>
+<dd><p>This property holds the value to send back through the channel.</p>
+<p>The type of this value does not matter because it is automatically
+converted to match the preexisting value type of the channel. However,
+the sign of the value matters for both the fixed and relative modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.setPyDMIcon">
+<span class="sig-name descname"><span class="pre">setPyDMIcon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.setPyDMIcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.setPyDMIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Name of icon to be set from Qt provided standard icons or from the “Font Awesome” icon-set.
+See “enum QStyle::StandardPixmap” in Qt’s QStyle documentation for full list of usable standard icons.
+See https://fontawesome.com/icons?d=gallery for list of usable “Font Awesome” icons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.setPyDMIconColor">
+<span class="sig-name descname"><span class="pre">setPyDMIconColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QColor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.setPyDMIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.setPyDMIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>The color of the icon (color is only applied if using icon from the “Font Awesome” set)
+:param new_color:
+:type new_color: QColor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.setRelativeChange">
+<span class="sig-name descname"><span class="pre">setRelativeChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">choice</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.setRelativeChange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.setRelativeChange" title="Permalink to this definition"></a></dt>
+<dd><p>The mode of operation of the PyDMPushButton.</p>
+<p>If set to True, the <code class="xref py py-attr docutils literal notranslate"><span class="pre">pressValue</span></code> will be added to the current
+value of the channel. If False, the <code class="xref py py-attr docutils literal notranslate"><span class="pre">pressValue</span></code> will be sent
+without any operation.</p>
+<p>This flag will be ignored if the connected channel sends a str type
+value to <code class="xref py py-meth docutils literal notranslate"><span class="pre">receiveValue()</span></code>. This is designed to eliminate the
+undesirable behavior of concatenating strings as opposed to doing
+mathematical addition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>choice</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.setReleaseValue">
+<span class="sig-name descname"><span class="pre">setReleaseValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.setReleaseValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.setReleaseValue" title="Permalink to this definition"></a></dt>
+<dd><p>This property holds the value to send back through the channel.</p>
+<p>The type of this value does not matter because it is automatically
+converted to match the preexisting value type of the channel. However,
+the sign of the value matters for both the fixed and relative modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.setShowConfirmDialog">
+<span class="sig-name descname"><span class="pre">setShowConfirmDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.setShowConfirmDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.setShowConfirmDialog" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to display a confirmation dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.pushbutton.PyDMPushButton.setWriteWhenRelease">
+<span class="sig-name descname"><span class="pre">setWriteWhenRelease</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/pushbutton.html#PyDMPushButton.setWriteWhenRelease"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.pushbutton.PyDMPushButton.setWriteWhenRelease" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to write releaseValue on release</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
 </dd>
 </dl>
 </dd></dl>

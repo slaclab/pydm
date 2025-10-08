@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMRelatedDisplayButton &mdash; PyDM 1.27.2 documentation</title>
+  <title>PyDMRelatedDisplayButton &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -218,6 +218,261 @@ mouse button, your widget receives the release event.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mouse_event</strong> (<em>QMouseEvent</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readDisplayFilename">
+<span class="sig-name descname"><span class="pre">readDisplayFilename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readDisplayFilename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readDisplayFilename" title="Permalink to this definition"></a></dt>
+<dd><p>DEPRECATED: use the ‘filenames’ property.
+This property simply returns the first filename from the ‘filenames’
+property.
+The filename to open</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readFollowSymlinks">
+<span class="sig-name descname"><span class="pre">readFollowSymlinks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readFollowSymlinks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readFollowSymlinks" title="Permalink to this definition"></a></dt>
+<dd><p>If True, any symlinks in the path to filename (including the base path of the parent display) will be followed,
+so that it will always use the canonical path. If False (default), the file will be searched without
+canonicalizing the path beforehand.</p>
+<p>Note that it will not work on Windows if you’re using a Python version prior to 3.8.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readMacros">
+<span class="sig-name descname"><span class="pre">readMacros</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readMacros"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readMacros" title="Permalink to this definition"></a></dt>
+<dd><p>The macro substitutions to use when launching the display, in JSON object format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readOpenInNewWindow">
+<span class="sig-name descname"><span class="pre">readOpenInNewWindow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readOpenInNewWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readOpenInNewWindow" title="Permalink to this definition"></a></dt>
+<dd><p>If true, the button will open the display in a new window, rather than in the existing window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPassword">
+<span class="sig-name descname"><span class="pre">readPassword</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readPassword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPassword" title="Permalink to this definition"></a></dt>
+<dd><p>Password to be encrypted using SHA256.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To avoid issues exposing the password this method always returns an empty string.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPasswordProtected">
+<span class="sig-name descname"><span class="pre">readPasswordProtected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readPasswordProtected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPasswordProtected" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not this button is password protected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>bool</em></p></li>
+<li><p><em>——-</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readProtectedPassword">
+<span class="sig-name descname"><span class="pre">readProtectedPassword</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readProtectedPassword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readProtectedPassword" title="Permalink to this definition"></a></dt>
+<dd><p>The encrypted password.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPyDMIcon">
+<span class="sig-name descname"><span class="pre">readPyDMIcon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readPyDMIcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPyDMIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
+See “enum QStyle::StandardPixmap” in Qt’s QStyle documentation for full list of usable standard icons.
+See https://fontawesome.com/icons?d=gallery for list of usable fontawesome icons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPyDMIconColor">
+<span class="sig-name descname"><span class="pre">readPyDMIconColor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readPyDMIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readPyDMIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>The color of the icon (color is only applied if using icon from the “Font Awesome” set)
+:rtype: QColor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readRecursiveDisplaySearch">
+<span class="sig-name descname"><span class="pre">readRecursiveDisplaySearch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readRecursiveDisplaySearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readRecursiveDisplaySearch" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to search for a provided display file recursively
+in subfolders relative to the location of this display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If recursive search is enabled.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readShowIcon">
+<span class="sig-name descname"><span class="pre">readShowIcon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.readShowIcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.readShowIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not we should show the selected Icon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setDisplayFilename">
+<span class="sig-name descname"><span class="pre">setDisplayFilename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.setDisplayFilename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setDisplayFilename" title="Permalink to this definition"></a></dt>
+<dd><p>DEPRECATED: use the ‘filenames’ property.
+Any value set to this property is appended to the ‘filenames’
+property, then ‘displayFilename’ is cleared.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setFollowSymlinks">
+<span class="sig-name descname"><span class="pre">setFollowSymlinks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">follow_symlinks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.setFollowSymlinks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setFollowSymlinks" title="Permalink to this definition"></a></dt>
+<dd><p>If True, any symlinks in the path to filename (including the base path of the parent display)
+will be followed, so that it will always use the canonical path.
+If False (default), the file will be searched using the non-canonical path.</p>
+<p>Note that it will not work on Windows if you’re using a Python version prior to 3.8.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>follow_symlinks</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setMacros">
+<span class="sig-name descname"><span class="pre">setMacros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_macros</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.setMacros"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setMacros" title="Permalink to this definition"></a></dt>
+<dd><p>The macro substitutions to use when launching the display, in JSON object format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_macros</strong> (<em>list</em><em> of </em><em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setOpenInNewWindow">
+<span class="sig-name descname"><span class="pre">setOpenInNewWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">open_in_new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.setOpenInNewWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setOpenInNewWindow" title="Permalink to this definition"></a></dt>
+<dd><p>If true, the button will open the display in a new window, rather than in the existing window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>open_in_new</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPassword">
+<span class="sig-name descname"><span class="pre">setPassword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.setPassword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPassword" title="Permalink to this definition"></a></dt>
+<dd><p>Password to be encrypted using SHA256.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>str</em>) – </p></li>
+<li><p><strong>encrypted</strong> (<em>The password to be</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPasswordProtected">
+<span class="sig-name descname"><span class="pre">setPasswordProtected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.setPasswordProtected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPasswordProtected" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not this button is password protected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPyDMIcon">
+<span class="sig-name descname"><span class="pre">setPyDMIcon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.setPyDMIcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPyDMIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Name of icon to be set from Qt provided standard icons or from the “Font Awesome” icon-set.
+See “enum QStyle::StandardPixmap” in Qt’s QStyle documentation for full list of usable standard icons.
+See https://fontawesome.com/icons?d=gallery for list of usable “Font Awesome” icons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPyDMIconColor">
+<span class="sig-name descname"><span class="pre">setPyDMIconColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QColor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.setPyDMIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setPyDMIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>The color of the icon (color is only applied if using icon from the “Font Awesome” set)
+:param new_color:
+:type new_color: QColor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setRecursiveDisplaySearch">
+<span class="sig-name descname"><span class="pre">setRecursiveDisplaySearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.setRecursiveDisplaySearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setRecursiveDisplaySearch" title="Permalink to this definition"></a></dt>
+<dd><p>Set whether or not to search for a provided display file recursively
+in subfolders relative to the location of this display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_value</strong> – If recursive search should be enabled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setShowIcon">
+<span class="sig-name descname"><span class="pre">setShowIcon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/related_display_button.html#PyDMRelatedDisplayButton.setShowIcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.related_display_button.PyDMRelatedDisplayButton.setShowIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not we should show the selected Icon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
 </dd>
 </dl>
 </dd></dl>

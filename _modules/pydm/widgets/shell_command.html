@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.shell_command &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.shell_command &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -125,11 +125,17 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">ast</span><span class="w"> </span><span class="kn">import</span> <span class="n">literal_eval</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QApplication</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QStyle</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCursor</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">,</span> <span class="n">QMouseEvent</span><span class="p">,</span> <span class="n">QColor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Signal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Signal</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">QtDesigner</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">only_if_channel_set</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">IconFont</span><span class="p">,</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -277,8 +283,7 @@
 
         <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.readPyDMIcon"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readPyDMIcon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.</span>
 <span class="sd">        See &quot;enum QStyle::StandardPixmap&quot; in Qt&#39;s QStyle documentation for full list of usable standard icons.</span>
@@ -288,10 +293,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span></div>
 
-    <span class="nd">@PyDMIcon</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setPyDMIcon"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setPyDMIcon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPyDMIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Name of icon to be set from Qt provided standard icons or from the &quot;Font Awesome&quot; icon-set.</span>
 <span class="sd">        See &quot;enum QStyle::StandardPixmap&quot; in Qt&#39;s QStyle documentation for full list of usable standard icons.</span>
@@ -315,20 +319,20 @@
             <span class="k">if</span> <span class="n">icon</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+    <span class="n">PyDMIcon</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readPyDMIcon</span><span class="p">,</span> <span class="n">setPyDMIcon</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readPyDMIconColor"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readPyDMIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the icon (color is only applied if using icon from the &quot;Font Awesome&quot; set)</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        QColor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_color</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_color</span></div>
 
-    <span class="nd">@PyDMIconColor</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">PyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setPyDMIconColor"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setPyDMIconColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPyDMIconColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The color of the icon (color is only applied if using icon from the &quot;Font Awesome&quot; set)</span>
 <span class="sd">        Parameters</span>
@@ -343,10 +347,11 @@
                 <span class="n">i</span> <span class="o">=</span> <span class="n">icon_f</span><span class="o">.</span><span class="n">icon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pydm_icon_color</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                <span class="k">return</span>
+                <span class="k">return</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">PyDMIconColor</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readPyDMIconColor</span><span class="p">,</span> <span class="n">setPyDMIconColor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readShowConfirmDialog"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readShowConfirmDialog">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to display a confirmation dialog.</span>
 
@@ -354,10 +359,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span></div>
 
-    <span class="nd">@showConfirmDialog</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setShowConfirmDialog"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setShowConfirmDialog">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowConfirmDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to display a confirmation dialog.</span>
 
@@ -366,10 +370,11 @@
 <span class="sd">        value : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_show_confirm_dialog</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">runCommandsInFullShell</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">showConfirmDialog</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readShowConfirmDialog</span><span class="p">,</span> <span class="n">setShowConfirmDialog</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readRunCommandsInFullShell"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readRunCommandsInFullShell">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readRunCommandsInFullShell</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to run cmds with Popen&#39;s option for running them through a shell subprocess.</span>
 
@@ -377,10 +382,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_commands_in_full_shell</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_commands_in_full_shell</span></div>
 
-    <span class="nd">@runCommandsInFullShell</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">runCommandsInFullShell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setRunCommandsInFullShell"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setRunCommandsInFullShell">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setRunCommandsInFullShell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to run cmds with Popen&#39;s option for running them through a shell subprocess.</span>
 
@@ -389,10 +393,11 @@
 <span class="sd">        value : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_commands_in_full_shell</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_run_commands_in_full_shell</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_run_commands_in_full_shell</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">confirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">runCommandsInFullShell</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readRunCommandsInFullShell</span><span class="p">,</span> <span class="n">setRunCommandsInFullShell</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readConfirmMessage"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readConfirmMessage">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readConfirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Message to be displayed at the Confirmation dialog.</span>
 
@@ -400,10 +405,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span></div>
 
-    <span class="nd">@confirmMessage</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">confirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setConfirmMessage"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setConfirmMessage">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setConfirmMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Message to be displayed at the Confirmation dialog.</span>
 
@@ -412,7 +416,9 @@
 <span class="sd">        value : str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_message</span> <span class="o">=</span> <span class="n">value</span></div>
+
+    <span class="n">confirmMessage</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readConfirmMessage</span><span class="p">,</span> <span class="n">setConfirmMessage</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMShellCommand.check_enable_state"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.check_enable_state">[docs]</a>    <span class="nd">@only_if_channel_set</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_enable_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -431,8 +437,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">tooltip</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">environmentVariables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.readEnvironmentVariables"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readEnvironmentVariables">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readEnvironmentVariables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the environment variables which would be set along with the shell command.</span>
 
@@ -440,10 +445,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        self.env_var : str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env_var</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env_var</span></div>
 
-    <span class="nd">@environmentVariables</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">environmentVariables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setEnvironmentVariables"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setEnvironmentVariables">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setEnvironmentVariables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set environment variables which would be set along with the shell command.</span>
 
@@ -452,10 +456,11 @@
 <span class="sd">        new_dict : str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env_var</span> <span class="o">!=</span> <span class="n">new_dict</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">env_var</span> <span class="o">=</span> <span class="n">new_dict</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env_var</span> <span class="o">=</span> <span class="n">new_dict</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">environmentVariables</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readEnvironmentVariables</span><span class="p">,</span> <span class="n">setEnvironmentVariables</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readShowIcon"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readShowIcon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not we should show the selected Icon.</span>
 
@@ -463,10 +468,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_icon</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_icon</span></div>
 
-    <span class="nd">@showIcon</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setShowIcon"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setShowIcon">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowIcon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not we should show the selected Icon.</span>
 
@@ -481,10 +485,11 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_icon</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_icon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">icon</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">redirectCommandOutput</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">showIcon</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readShowIcon</span><span class="p">,</span> <span class="n">setShowIcon</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readRedirectCommandOutput"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readRedirectCommandOutput">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readRedirectCommandOutput</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not we should redirect the output of command to the shell.</span>
 
@@ -496,10 +501,9 @@
 <span class="sd">        this property will still work as it always had for backwards</span>
 <span class="sd">        compatibility.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">==</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">SHOW</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">==</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">SHOW</span></div>
 
-    <span class="nd">@redirectCommandOutput</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">redirectCommandOutput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setRedirectCommandOutput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uses_stdout_intf</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;In PydmShellCommand named </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">objectName</span><span class="p">()</span><span class="si">}</span><span class="s2">, &quot;</span>
@@ -512,8 +516,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">=</span> <span class="n">TermOutputMode</span><span class="o">.</span><span class="n">HIDE</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">TermOutputMode</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TermOutputMode</span><span class="p">:</span>
+    <span class="n">redirectCommandOutput</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readRedirectCommandOutput</span><span class="p">,</span> <span class="n">setRedirectCommandOutput</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readStdout"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readStdout">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readStdout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TermOutputMode</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The behavior of the subprocess&#39;s standard output stream.</span>
 
@@ -529,15 +534,15 @@
 <span class="sd">        the stdout, provided that stdout itself has not yet been</span>
 <span class="sd">        set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span></div>
 
-    <span class="nd">@stdout</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">stdout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">TermOutputMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setStdout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">TermOutputMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_uses_stdout_intf</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">TermOutputMode</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">stderr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TermOutputMode</span><span class="p">:</span>
+    <span class="n">stdout</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">TermOutputMode</span><span class="p">,</span> <span class="n">readStdout</span><span class="p">,</span> <span class="n">setStdout</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readStderr"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readStderr">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readStderr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TermOutputMode</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The behavior of the subprocess&#39;s standard error stream.</span>
 
@@ -547,14 +552,14 @@
 <span class="sd">        - `SHOW`: print stderr to terminal</span>
 <span class="sd">        - `STORE`: capture stderr for programmatic retrieval</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stderr</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stderr</span></div>
 
-    <span class="nd">@stderr</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">stderr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">TermOutputMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setStderr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">TermOutputMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stderr</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">allowMultipleExecutions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">stderr</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">TermOutputMode</span><span class="p">,</span> <span class="n">readStderr</span><span class="p">,</span> <span class="n">setStderr</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readAllowMultipleExecutions"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readAllowMultipleExecutions">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readAllowMultipleExecutions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not we should allow the same command</span>
 <span class="sd">        to be executed even if it is still running.</span>
@@ -563,10 +568,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span></div>
 
-    <span class="nd">@allowMultipleExecutions</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">allowMultipleExecutions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setAllowMultipleExecutions"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setAllowMultipleExecutions">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setAllowMultipleExecutions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not we should allow the same command</span>
 <span class="sd">        to be executed even if it is still running.</span>
@@ -576,31 +580,32 @@
 <span class="sd">        value : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_allow_multiple</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">titles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">allowMultipleExecutions</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readAllowMultipleExecutions</span><span class="p">,</span> <span class="n">setAllowMultipleExecutions</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">readTitles</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span>
 
-    <span class="nd">@titles</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">titles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setTitles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_titles</span> <span class="o">=</span> <span class="n">val</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">commands</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">titles</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">readTitles</span><span class="p">,</span> <span class="n">setTitles</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">readCommands</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span>
 
-    <span class="nd">@commands</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">commands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setCommands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span> <span class="o">=</span> <span class="n">val</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_menu_needs_rebuild</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">commands</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">readCommands</span><span class="p">,</span> <span class="n">setCommands</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readCommand"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readCommand">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readCommand</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        DEPRECATED: use the &#39;commands&#39; property.</span>
 <span class="sd">        This property simply returns the first command from the &#39;commands&#39;</span>
@@ -613,10 +618,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-    <span class="nd">@command</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setCommand"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setCommand">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setCommand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        DEPRECATED: Use the &#39;commands&#39; property instead.</span>
 <span class="sd">        This property only has an effect if the &#39;commands&#39; property is empty.</span>
@@ -632,10 +636,11 @@
             <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">commands</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readCommand</span><span class="p">,</span> <span class="n">setCommand</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readPasswordProtected"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readPasswordProtected">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPasswordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not this button is password protected.</span>
 
@@ -644,10 +649,9 @@
 <span class="sd">        bool</span>
 <span class="sd">        -------</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span></div>
 
-    <span class="nd">@passwordProtected</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">passwordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setPasswordProtected"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setPasswordProtected">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPasswordProtected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not this button is password protected.</span>
 
@@ -656,10 +660,11 @@
 <span class="sd">        value : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_password_protected</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">passwordProtected</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readPasswordProtected</span><span class="p">,</span> <span class="n">setPasswordProtected</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readPassword"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readPassword">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Password to be encrypted using SHA256.</span>
 
@@ -670,10 +675,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
 
-    <span class="nd">@password</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setPassword"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setPassword">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Password to be encrypted using SHA256.</span>
 
@@ -692,10 +696,11 @@
             <span class="c1"># Make sure designer knows it should save the protectedPassword field</span>
             <span class="n">formWindow</span> <span class="o">=</span> <span class="n">QtDesigner</span><span class="o">.</span><span class="n">QDesignerFormWindowInterface</span><span class="o">.</span><span class="n">findFormWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">formWindow</span><span class="p">:</span>
-                <span class="n">formWindow</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;protectedPassword&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">protectedPassword</span><span class="p">)</span>
+                <span class="n">formWindow</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;protectedPassword&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">protectedPassword</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readPassword</span><span class="p">,</span> <span class="n">setPassword</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readProtectedPassword"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readProtectedPassword">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readProtectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The encrypted password.</span>
 
@@ -703,10 +708,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span></div>
 
-    <span class="nd">@protectedPassword</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">protectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setProtectedPassword"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setProtectedPassword">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setProtectedPassword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Setter for the encrypted password.</span>
 
@@ -715,10 +719,11 @@
 <span class="sd">        value: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_protected_password</span> <span class="o">=</span> <span class="n">value</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showCurrentlyRunningIndication</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">protectedPassword</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">readProtectedPassword</span><span class="p">,</span> <span class="n">setProtectedPassword</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMShellCommand.readShowCurrentlyRunningIndication"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.readShowCurrentlyRunningIndication">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowCurrentlyRunningIndication</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to have a button&#39;s visuals change to indicate when the command is running.</span>
 <span class="sd">        It&#39;s nice to enable this when you know your button&#39;s command runs long.</span>
@@ -727,10 +732,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span></div>
 
-    <span class="nd">@showCurrentlyRunningIndication</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showCurrentlyRunningIndication</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PyDMShellCommand.setShowCurrentlyRunningIndication"><a class="viewcode-back" href="../../../widgets/shell_command.html#pydm.widgets.shell_command.PyDMShellCommand.setShowCurrentlyRunningIndication">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowCurrentlyRunningIndication</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to have a button&#39;s visuals change to indicate when the command is running.</span>
 <span class="sd">        It&#39;s nice to enable this when you know your button&#39;s command runs long.</span>
@@ -740,7 +744,11 @@
 <span class="sd">        value : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_show_currently_running_indication</span> <span class="o">=</span> <span class="n">value</span></div>
+
+    <span class="n">showCurrentlyRunningIndication</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span>
+        <span class="nb">bool</span><span class="p">,</span> <span class="n">readShowCurrentlyRunningIndication</span><span class="p">,</span> <span class="n">setShowCurrentlyRunningIndication</span>
+    <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_rebuild_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">):</span>

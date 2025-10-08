@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.slider &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.slider &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -117,7 +117,7 @@
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QSize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">QRect</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QSize</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">QFrame</span><span class="p">,</span>
     <span class="n">QLabel</span><span class="p">,</span>
@@ -134,6 +134,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.widgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMLabel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">TextFormatter</span><span class="p">,</span> <span class="n">is_channel_valid</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.channel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMChannel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">_step_size_properties</span> <span class="o">=</span> <span class="p">{</span>
@@ -617,8 +623,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">0.0</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.readOrientation"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.readOrientation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readOrientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The slider orientation (Horizontal or Vertical)</span>
 
@@ -627,10 +632,9 @@
 <span class="sd">        int</span>
 <span class="sd">            Qt.Horizontal or Qt.Vertical</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span></div>
 
-    <span class="nd">@orientation</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.setOrientation"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.setOrientation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setOrientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The slider orientation (Horizontal or Vertical)</span>
 
@@ -640,7 +644,10 @@
 <span class="sd">            Qt.Horizontal or Qt.Vertical</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span> <span class="o">=</span> <span class="n">new_orientation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="n">new_orientation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_widgets_for_orientation</span><span class="p">(</span><span class="n">new_orientation</span><span class="p">)</span></div>
+
+    <span class="n">prop_type</span> <span class="o">=</span> <span class="nb">int</span> <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span> <span class="k">else</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span>
+    <span class="n">orientation</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">prop_type</span><span class="p">,</span> <span class="n">readOrientation</span><span class="p">,</span> <span class="n">setOrientation</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMSlider.setup_widgets_for_orientation"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.setup_widgets_for_orientation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setup_widgets_for_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1038,8 +1045,7 @@
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
                 <span class="k">pass</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.readTracking"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.readTracking">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If tracking is enabled (the default), the slider emits new values</span>
 <span class="sd">        while the slider is being dragged.  If tracking is disabled, it will</span>
@@ -1049,11 +1055,12 @@
 <span class="sd">        you want to control can handle large amounts of changes in a short</span>
 <span class="sd">        timespan.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">hasTracking</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">hasTracking</span><span class="p">()</span></div>
 
-    <span class="nd">@tracking</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setTracking</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
+
+    <span class="n">tracking</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readTracking</span><span class="p">,</span> <span class="n">setTracking</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMSlider.hasTracking"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.hasTracking">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">hasTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1069,25 +1076,24 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tracking</span> <span class="o">=</span> <span class="n">checked</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">ignoreMouseWheel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.readIgnoreMouseWheel"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.readIgnoreMouseWheel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readIgnoreMouseWheel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If true, the mouse wheel will not change the value of the slider.</span>
 <span class="sd">        This is useful if you want to put sliders inside a scroll view, and</span>
 <span class="sd">        don&#39;t want to accidentally change the slider as you are scrolling.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_mouse_wheel</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_mouse_wheel</span></div>
 
-    <span class="nd">@ignoreMouseWheel</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">ignoreMouseWheel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setIgnoreMouseWheel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_mouse_wheel</span> <span class="o">=</span> <span class="n">checked</span>
         <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">wheelEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wheelEvent</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">wheelEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orig_wheel_event</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showLimitLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">ignoreMouseWheel</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readIgnoreMouseWheel</span><span class="p">,</span> <span class="n">setIgnoreMouseWheel</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMSlider.readShowLimitLabels"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.readShowLimitLabels">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowLimitLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the high and low limits should be displayed on the slider.</span>
 
@@ -1095,10 +1101,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_limit_labels</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_limit_labels</span></div>
 
-    <span class="nd">@showLimitLabels</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showLimitLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.setShowLimitLabels"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.setShowLimitLabels">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowLimitLabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the high and low limits should be displayed on the slider.</span>
 
@@ -1112,10 +1117,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">high_lim_label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">low_lim_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">high_lim_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">high_lim_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showValueLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">showLimitLabels</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readShowLimitLabels</span><span class="p">,</span> <span class="n">setShowLimitLabels</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMSlider.readShowValueLabel"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.readShowValueLabel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readShowValueLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the current value should be displayed on the slider.</span>
 
@@ -1123,10 +1129,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_value_label</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_value_label</span></div>
 
-    <span class="nd">@showValueLabel</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">showValueLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.setShowValueLabel"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.setShowValueLabel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setShowValueLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the current value should be displayed on the slider.</span>
 
@@ -1138,10 +1143,11 @@
         <span class="k">if</span> <span class="n">checked</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_label</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">QSlider</span><span class="o">.</span><span class="n">TickPosition</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">tickPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">showValueLabel</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readShowValueLabel</span><span class="p">,</span> <span class="n">setShowValueLabel</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMSlider.readTickPosition"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.readTickPosition">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readTickPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QSlider</span><span class="o">.</span><span class="n">TickPosition</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Where to draw tick marks for the slider.</span>
 
@@ -1149,10 +1155,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        QSlider.TickPosition</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">tickPosition</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">tickPosition</span><span class="p">()</span></div>
 
-    <span class="nd">@tickPosition</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">tickPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.setTickPosition"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.setTickPosition">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setTickPosition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Where to draw tick marks for the slider.</span>
 
@@ -1160,10 +1165,11 @@
 <span class="sd">        ---------</span>
 <span class="sd">        position : QSlider.TickPosition</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setTickPosition</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slider</span><span class="o">.</span><span class="n">setTickPosition</span><span class="p">(</span><span class="n">position</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">userDefinedLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">tickPosition</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QSlider</span><span class="o">.</span><span class="n">TickPosition</span><span class="p">,</span> <span class="n">readTickPosition</span><span class="p">,</span> <span class="n">setTickPosition</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMSlider.readUserDefinedLimits"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.readUserDefinedLimits">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readUserDefinedLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to use limits defined by the user and not from the</span>
 <span class="sd">        channel</span>
@@ -1172,10 +1178,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_limits</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_limits</span></div>
 
-    <span class="nd">@userDefinedLimits</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">userDefinedLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_defined_limits</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.setUserDefinedLimits"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.setUserDefinedLimits">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setUserDefinedLimits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_defined_limits</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to use limits defined by the user and not from the</span>
 <span class="sd">        channel</span>
@@ -1185,10 +1190,11 @@
 <span class="sd">        user_defined_limits : bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_defined_limits</span> <span class="o">=</span> <span class="n">user_defined_limits</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">userMinimum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">userDefinedLimits</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readUserDefinedLimits</span><span class="p">,</span> <span class="n">setUserDefinedLimits</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMSlider.readUserMinimum"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.readUserMinimum">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readUserMinimum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Lower user defined limit value</span>
 
@@ -1196,10 +1202,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_minimum</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_minimum</span></div>
 
-    <span class="nd">@userMinimum</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">userMinimum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_min</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.setUserMinimum"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.setUserMinimum">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setUserMinimum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_min</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Lower user defined limit value</span>
 
@@ -1209,10 +1214,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_minimum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_min</span><span class="p">)</span> <span class="k">if</span> <span class="n">new_min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">userDefinedLimits</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">userMaximum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">userMinimum</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">readUserMinimum</span><span class="p">,</span> <span class="n">setUserMinimum</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMSlider.readUserMaximum"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.readUserMaximum">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readUserMaximum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Upper user defined limit value</span>
 
@@ -1220,10 +1226,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_maximum</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_maximum</span></div>
 
-    <span class="nd">@userMaximum</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">userMaximum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_max</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.setUserMaximum"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.setUserMaximum">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setUserMaximum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_max</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Upper user defined limit value</span>
 
@@ -1233,7 +1238,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_maximum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">new_max</span><span class="p">)</span> <span class="k">if</span> <span class="n">new_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">userDefinedLimits</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span></div>
+
+    <span class="n">userMaximum</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">readUserMaximum</span><span class="p">,</span> <span class="n">setUserMaximum</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">minimum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1261,8 +1268,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_maximum</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_ctrl_limit</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">num_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.read_num_steps"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.read_num_steps">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">read_num_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of steps on the slider</span>
 
@@ -1270,10 +1276,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span></div>
 
-    <span class="nd">@num_steps</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">num_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_steps</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.set_num_steps"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.set_num_steps">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_num_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_steps</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of steps on the slider</span>
 
@@ -1283,10 +1288,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_steps</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_slider_limits</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">num_steps</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">read_num_steps</span><span class="p">,</span> <span class="n">set_num_steps</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMSlider.read_step_size"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.read_step_size">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">read_step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of steps on the slider</span>
 
@@ -1295,10 +1301,9 @@
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size</span></div>
 
-    <span class="nd">@step_size</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_step_size</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.set_step_size"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.set_step_size">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_step_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_step_size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The number of steps on the slider</span>
 
@@ -1316,7 +1321,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Num steps is set to zero&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="n">step_size</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">read_step_size</span><span class="p">,</span> <span class="n">set_step_size</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMSlider.step_size_changed"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.step_size_changed">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="nd">@Slot</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
@@ -1334,16 +1341,16 @@
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;cannot cast PV value as float&quot;</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">step_size_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMSlider.read_step_size_channel"><a class="viewcode-back" href="../../../widgets/slider.html#pydm.widgets.slider.PyDMSlider.read_step_size_channel">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">read_step_size_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        String to connect to pydm channel after initialization</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size_channel</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_size_channel</span></div>
 
-    <span class="nd">@step_size_channel</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">step_size_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_size_channel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_step_size_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_size_channel</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_step_size_channel</span> <span class="o">=</span> <span class="n">step_size_channel</span>
+
+    <span class="n">step_size_channel</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">read_step_size_channel</span><span class="p">,</span> <span class="n">set_step_size_channel</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

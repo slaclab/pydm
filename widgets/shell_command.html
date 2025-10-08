@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMShellCommand &mdash; PyDM 1.27.2 documentation</title>
+  <title>PyDMShellCommand &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -249,6 +249,351 @@ button, your widget receives the release event.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mouse_event</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readAllowMultipleExecutions">
+<span class="sig-name descname"><span class="pre">readAllowMultipleExecutions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readAllowMultipleExecutions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readAllowMultipleExecutions" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not we should allow the same command
+to be executed even if it is still running.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readCommand">
+<span class="sig-name descname"><span class="pre">readCommand</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readCommand" title="Permalink to this definition"></a></dt>
+<dd><p>DEPRECATED: use the ‘commands’ property.
+This property simply returns the first command from the ‘commands’
+property.
+The shell command to run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readConfirmMessage">
+<span class="sig-name descname"><span class="pre">readConfirmMessage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readConfirmMessage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readConfirmMessage" title="Permalink to this definition"></a></dt>
+<dd><p>Message to be displayed at the Confirmation dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readEnvironmentVariables">
+<span class="sig-name descname"><span class="pre">readEnvironmentVariables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readEnvironmentVariables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readEnvironmentVariables" title="Permalink to this definition"></a></dt>
+<dd><p>Return the environment variables which would be set along with the shell command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>self.env_var</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readPassword">
+<span class="sig-name descname"><span class="pre">readPassword</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readPassword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readPassword" title="Permalink to this definition"></a></dt>
+<dd><p>Password to be encrypted using SHA256.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To avoid issues exposing the password this method always returns an empty string.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readPasswordProtected">
+<span class="sig-name descname"><span class="pre">readPasswordProtected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readPasswordProtected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readPasswordProtected" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not this button is password protected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>bool</em></p></li>
+<li><p><em>——-</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readProtectedPassword">
+<span class="sig-name descname"><span class="pre">readProtectedPassword</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readProtectedPassword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readProtectedPassword" title="Permalink to this definition"></a></dt>
+<dd><p>The encrypted password.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readPyDMIcon">
+<span class="sig-name descname"><span class="pre">readPyDMIcon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readPyDMIcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readPyDMIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Name of icon to be set from Qt provided standard icons or from the fontawesome icon-set.
+See “enum QStyle::StandardPixmap” in Qt’s QStyle documentation for full list of usable standard icons.
+See https://fontawesome.com/icons?d=gallery for list of usable fontawesome icons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readPyDMIconColor">
+<span class="sig-name descname"><span class="pre">readPyDMIconColor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readPyDMIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readPyDMIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>The color of the icon (color is only applied if using icon from the “Font Awesome” set)
+:rtype: QColor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readRedirectCommandOutput">
+<span class="sig-name descname"><span class="pre">readRedirectCommandOutput</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readRedirectCommandOutput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readRedirectCommandOutput" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not we should redirect the output of command to the shell.</p>
+<p>This is deprecated in favor of the <cite>stdout</cite> property.
+If <cite>stdout</cite> has already been set, this property will be ignored
+and will log a warning when changed.</p>
+<p>If the <cite>stdout</cite> property has not been changed, setting and checking
+this property will still work as it always had for backwards
+compatibility.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readRunCommandsInFullShell">
+<span class="sig-name descname"><span class="pre">readRunCommandsInFullShell</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readRunCommandsInFullShell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readRunCommandsInFullShell" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to run cmds with Popen’s option for running them through a shell subprocess.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readShowConfirmDialog">
+<span class="sig-name descname"><span class="pre">readShowConfirmDialog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readShowConfirmDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readShowConfirmDialog" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to display a confirmation dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readShowCurrentlyRunningIndication">
+<span class="sig-name descname"><span class="pre">readShowCurrentlyRunningIndication</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readShowCurrentlyRunningIndication"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readShowCurrentlyRunningIndication" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to have a button’s visuals change to indicate when the command is running.
+It’s nice to enable this when you know your button’s command runs long.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readShowIcon">
+<span class="sig-name descname"><span class="pre">readShowIcon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readShowIcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readShowIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not we should show the selected Icon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readStderr">
+<span class="sig-name descname"><span class="pre">readStderr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pydm.widgets.shell_command.PyDMShellCommand.TermOutputMode" title="pydm.widgets.shell_command.TermOutputMode"><span class="pre">TermOutputMode</span></a></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readStderr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readStderr" title="Permalink to this definition"></a></dt>
+<dd><p>The behavior of the subprocess’s standard error stream.</p>
+<p>The options are:</p>
+<ul class="simple">
+<li><p><cite>HIDE</cite> (default): hide the stderr</p></li>
+<li><p><cite>SHOW</cite>: print stderr to terminal</p></li>
+<li><p><cite>STORE</cite>: capture stderr for programmatic retrieval</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.readStdout">
+<span class="sig-name descname"><span class="pre">readStdout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pydm.widgets.shell_command.PyDMShellCommand.TermOutputMode" title="pydm.widgets.shell_command.TermOutputMode"><span class="pre">TermOutputMode</span></a></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.readStdout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.readStdout" title="Permalink to this definition"></a></dt>
+<dd><p>The behavior of the subprocess’s standard output stream.</p>
+<p>The options are:</p>
+<ul class="simple">
+<li><p><cite>HIDE</cite> (default): hide the stdout</p></li>
+<li><p><cite>SHOW</cite>: print stdout to terminal</p></li>
+<li><p><cite>STORE</cite>: capture stdout for programmatic retrieval</p></li>
+</ul>
+<p>This is implicitly linked to the older, soft deprecated
+parameter <cite>redirectCommandOutput</cite>, which can still be
+set to <cite>False</cite> to <cite>HIDE</cite> the stdout or <cite>True</cite> to <cite>SHOW</cite>
+the stdout, provided that stdout itself has not yet been
+set.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setAllowMultipleExecutions">
+<span class="sig-name descname"><span class="pre">setAllowMultipleExecutions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setAllowMultipleExecutions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setAllowMultipleExecutions" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not we should allow the same command
+to be executed even if it is still running.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setCommand">
+<span class="sig-name descname"><span class="pre">setCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setCommand" title="Permalink to this definition"></a></dt>
+<dd><p>DEPRECATED: Use the ‘commands’ property instead.
+This property only has an effect if the ‘commands’ property is empty.
+If ‘commands’ is empty, it will be set to a single item list containing
+the value of ‘command’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setConfirmMessage">
+<span class="sig-name descname"><span class="pre">setConfirmMessage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setConfirmMessage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setConfirmMessage" title="Permalink to this definition"></a></dt>
+<dd><p>Message to be displayed at the Confirmation dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setEnvironmentVariables">
+<span class="sig-name descname"><span class="pre">setEnvironmentVariables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setEnvironmentVariables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setEnvironmentVariables" title="Permalink to this definition"></a></dt>
+<dd><p>Set environment variables which would be set along with the shell command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_dict</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setPassword">
+<span class="sig-name descname"><span class="pre">setPassword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setPassword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setPassword" title="Permalink to this definition"></a></dt>
+<dd><p>Password to be encrypted using SHA256.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – The password to be encrypted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setPasswordProtected">
+<span class="sig-name descname"><span class="pre">setPasswordProtected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setPasswordProtected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setPasswordProtected" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not this button is password protected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setProtectedPassword">
+<span class="sig-name descname"><span class="pre">setProtectedPassword</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setProtectedPassword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setProtectedPassword" title="Permalink to this definition"></a></dt>
+<dd><p>Setter for the encrypted password.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setPyDMIcon">
+<span class="sig-name descname"><span class="pre">setPyDMIcon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setPyDMIcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setPyDMIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Name of icon to be set from Qt provided standard icons or from the “Font Awesome” icon-set.
+See “enum QStyle::StandardPixmap” in Qt’s QStyle documentation for full list of usable standard icons.
+See https://fontawesome.com/icons?d=gallery for list of usable “Font Awesome” icons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setPyDMIconColor">
+<span class="sig-name descname"><span class="pre">setPyDMIconColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QColor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setPyDMIconColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setPyDMIconColor" title="Permalink to this definition"></a></dt>
+<dd><p>The color of the icon (color is only applied if using icon from the “Font Awesome” set)
+:param new_color:
+:type new_color: QColor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setRunCommandsInFullShell">
+<span class="sig-name descname"><span class="pre">setRunCommandsInFullShell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setRunCommandsInFullShell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setRunCommandsInFullShell" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to run cmds with Popen’s option for running them through a shell subprocess.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setShowConfirmDialog">
+<span class="sig-name descname"><span class="pre">setShowConfirmDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setShowConfirmDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setShowConfirmDialog" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to display a confirmation dialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setShowCurrentlyRunningIndication">
+<span class="sig-name descname"><span class="pre">setShowCurrentlyRunningIndication</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setShowCurrentlyRunningIndication"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setShowCurrentlyRunningIndication" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not to have a button’s visuals change to indicate when the command is running.
+It’s nice to enable this when you know your button’s command runs long.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.shell_command.PyDMShellCommand.setShowIcon">
+<span class="sig-name descname"><span class="pre">setShowIcon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/shell_command.html#PyDMShellCommand.setShowIcon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.shell_command.PyDMShellCommand.setShowIcon" title="Permalink to this definition"></a></dt>
+<dd><p>Whether or not we should show the selected Icon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>bool</em>) – </p>
 </dd>
 </dl>
 </dd></dl>

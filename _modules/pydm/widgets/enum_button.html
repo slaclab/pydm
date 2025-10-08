@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.enum_button &mdash; PyDM 1.27.2 documentation</title>
+  <title>pydm.widgets.enum_button &mdash; PyDM 1.28.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.27.2
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -115,8 +115,9 @@
              
   <h1>Source code for pydm.widgets.enum_button</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">QMargins</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">QMargins</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPainter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">QWidget</span><span class="p">,</span>
@@ -132,6 +133,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWritableWidget</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_plugins</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
+
+<span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PySide6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyqtProperty</span> <span class="k">as</span> <span class="n">Property</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">WidgetType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -225,8 +231,7 @@
         <span class="c1"># This is totally arbitrary, I just want *some* visible nonzero size</span>
         <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEnumButton.readItems"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readItems">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readItems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Items to be displayed in the button group.</span>
 
@@ -237,14 +242,14 @@
 <span class="sd">        -------</span>
 <span class="sd">        List[str]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enum_strings</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enum_strings</span> <span class="ow">or</span> <span class="p">[]</span></div>
 
-    <span class="nd">@items</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setItems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">enum_strings_changed</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">useCustomOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">readItems</span><span class="p">,</span> <span class="n">setItems</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readUseCustomOrder"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readUseCustomOrder">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readUseCustomOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to use custom order for the button group.</span>
 
@@ -252,16 +257,16 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_custom_order</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_custom_order</span></div>
 
-    <span class="nd">@useCustomOrder</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">useCustomOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setUseCustomOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_custom_order</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_use_custom_order</span> <span class="o">=</span> <span class="n">value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">invertOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">useCustomOrder</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readUseCustomOrder</span><span class="p">,</span> <span class="n">setUseCustomOrder</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readInvertOrder"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readInvertOrder">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readInvertOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not to invert the order for the button group.</span>
 
@@ -269,17 +274,17 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invert_order</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invert_order</span></div>
 
-    <span class="nd">@invertOrder</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">invertOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setInvertOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invert_order</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_invert_order</span> <span class="o">=</span> <span class="n">value</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">customOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">invertOrder</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readInvertOrder</span><span class="p">,</span> <span class="n">setInvertOrder</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readCustomOrder"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readCustomOrder">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readCustomOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Index list in which items are to be displayed in the button group.</span>
 
@@ -287,10 +292,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        List[str]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_order</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_order</span></div>
 
-    <span class="nd">@customOrder</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">customOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setCustomOOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_order</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
@@ -301,8 +305,9 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">useCustomOrder</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_enums</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">WidgetType</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">widgetType</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">customOrder</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">readCustomOrder</span><span class="p">,</span> <span class="n">setCustomOOrder</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readWidgetType"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readWidgetType">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readWidgetType</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WidgetType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The widget type to be used when composing the group.</span>
 
@@ -310,10 +315,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        WidgetType</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widget_type</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widget_type</span></div>
 
-    <span class="nd">@widgetType</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">widgetType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEnumButton.setWidgetType"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.setWidgetType">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setWidgetType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The widget type to be used when composing the group.</span>
 
@@ -323,10 +327,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_type</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widget_type</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_widget_type</span> <span class="o">=</span> <span class="n">new_type</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_widgets</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_widgets</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">widgetType</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">WidgetType</span><span class="p">,</span> <span class="n">readWidgetType</span><span class="p">,</span> <span class="n">setWidgetType</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readOrientation"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readOrientation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readOrientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to lay out the bit indicators vertically or horizontally.</span>
 
@@ -334,10 +339,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span></div>
 
-    <span class="nd">@orientation</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEnumButton.setOrientation"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.setOrientation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setOrientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_orientation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether to lay out the bit indicators vertically or horizontally.</span>
 
@@ -347,10 +351,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_orientation</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span> <span class="o">=</span> <span class="n">new_orientation</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">marginTop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">prop_type</span> <span class="o">=</span> <span class="nb">int</span> <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span> <span class="k">else</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span>
+    <span class="n">orientation</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">prop_type</span><span class="p">,</span> <span class="n">readOrientation</span><span class="p">,</span> <span class="n">setOrientation</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readMarginTop"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readMarginTop">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readMarginTop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The top margin of the QGridLayout of buttons.</span>
 
@@ -358,10 +364,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">top</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">top</span><span class="p">()</span></div>
 
-    <span class="nd">@marginTop</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">marginTop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEnumButton.setMarginTop"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.setMarginTop">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setMarginTop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the top margin of the QGridLayout of buttons.</span>
 
@@ -371,10 +376,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_margin</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_margin</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">setTop</span><span class="p">(</span><span class="n">new_margin</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">marginBottom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">marginTop</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readMarginTop</span><span class="p">,</span> <span class="n">setMarginTop</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readMarginBottom"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readMarginBottom">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readMarginBottom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The bottom margin of the QGridLayout of buttons.</span>
 
@@ -382,10 +388,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">bottom</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">bottom</span><span class="p">()</span></div>
 
-    <span class="nd">@marginBottom</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">marginBottom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEnumButton.setMarginBottom"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.setMarginBottom">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setMarginBottom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the bottom margin of the QGridLayout of buttons.</span>
 
@@ -395,10 +400,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_margin</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_margin</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">setBottom</span><span class="p">(</span><span class="n">new_margin</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">marginLeft</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">marginBottom</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readMarginBottom</span><span class="p">,</span> <span class="n">setMarginBottom</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readMarginLeft"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readMarginLeft">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readMarginLeft</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The left margin of the QGridLayout of buttons.</span>
 
@@ -406,10 +412,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">left</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">left</span><span class="p">()</span></div>
 
-    <span class="nd">@marginLeft</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">marginLeft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEnumButton.setMarginLeft"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.setMarginLeft">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setMarginLeft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the left margin of the QGridLayout of buttons.</span>
 
@@ -419,10 +424,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_margin</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_margin</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">setLeft</span><span class="p">(</span><span class="n">new_margin</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">marginRight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">marginLeft</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readMarginLeft</span><span class="p">,</span> <span class="n">setMarginLeft</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readMarginRight"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readMarginRight">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readMarginRight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The right margin of the QGridLayout of buttons.</span>
 
@@ -430,10 +436,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">right</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">right</span><span class="p">()</span></div>
 
-    <span class="nd">@marginRight</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">marginRight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEnumButton.setMarginRight"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.setMarginRight">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setMarginRight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_margin</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the right margin of the QGridLayout of buttons.</span>
 
@@ -443,10 +448,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_margin</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_margin</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="o">.</span><span class="n">setRight</span><span class="p">(</span><span class="n">new_margin</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_layout_margins</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">horizontalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">marginRight</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readMarginRight</span><span class="p">,</span> <span class="n">setMarginRight</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readHorizontalSpacing"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readHorizontalSpacing">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readHorizontalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The horizontal gap of the QGridLayout containing the QButtonGroup.</span>
 
@@ -454,10 +460,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_horizontal</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_horizontal</span></div>
 
-    <span class="nd">@horizontalSpacing</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">horizontalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEnumButton.setHorizontalSpacing"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.setHorizontalSpacing">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setHorizontalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the layout horizontal gap between buttons.</span>
 
@@ -468,10 +473,11 @@
         <span class="n">new_spacing</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">new_spacing</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_horizontal</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_horizontal</span> <span class="o">=</span> <span class="n">new_spacing</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setHorizontalSpacing</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setHorizontalSpacing</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">verticalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">horizontalSpacing</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readHorizontalSpacing</span><span class="p">,</span> <span class="n">setHorizontalSpacing</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readVerticalSpacing"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readVerticalSpacing">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readVerticalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The vertical gap of the QGridLayout containing the QButtonGroup.</span>
 
@@ -479,10 +485,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_vertical</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_vertical</span></div>
 
-    <span class="nd">@verticalSpacing</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">verticalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">):</span>
+<div class="viewcode-block" id="PyDMEnumButton.setVerticalSpacing"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.setVerticalSpacing">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setVerticalSpacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the layout vertical gap between buttons.</span>
 
@@ -493,10 +498,11 @@
         <span class="n">new_spacing</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">new_spacing</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_vertical</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_layout_spacing_vertical</span> <span class="o">=</span> <span class="n">new_spacing</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setVerticalSpacing</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">setVerticalSpacing</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">)</span></div>
 
-    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">checkable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">verticalSpacing</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readVerticalSpacing</span><span class="p">,</span> <span class="n">setVerticalSpacing</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMEnumButton.readCheckable"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.readCheckable">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readCheckable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether or not the button should be checkable.</span>
 
@@ -504,14 +510,15 @@
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checkable</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checkable</span></div>
 
-    <span class="nd">@checkable</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">checkable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setCheckable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checkable</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_checkable</span> <span class="o">=</span> <span class="n">value</span>
             <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widgets</span><span class="p">:</span>
                 <span class="n">widget</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="n">checkable</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readCheckable</span><span class="p">,</span> <span class="n">setCheckable</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMEnumButton.handle_button_clicked"><a class="viewcode-back" href="../../../widgets/enum_button.html#pydm.widgets.enum_button.PyDMEnumButton.handle_button_clicked">[docs]</a>    <span class="nd">@Slot</span><span class="p">(</span><span class="n">QAbstractButton</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">handle_button_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">):</span>
