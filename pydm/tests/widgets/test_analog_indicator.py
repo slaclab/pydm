@@ -2,6 +2,7 @@ import pytest
 from pydm.widgets.analog_indicator import PyDMAnalogIndicator
 from qtpy.QtWidgets import QWidget
 
+
 @pytest.mark.parametrize(
     "init_channel",
     [
