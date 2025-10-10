@@ -63,14 +63,14 @@ Ready to contribute? Here's how to set up `pydm` for local development.
 
 3. Install your local copy into a new conda environment. Assuming you have conda installed, this is how you set up your fork for local development::
 
-    $ conda create -n pydm-environment python=3.10 pyqt=5.12.3 pip numpy scipy six psutil pyqtgraph -c conda-forge
+    $ conda create -n pydm-environment python=3.10 pyqt=5.12.3 pip numpy six psutil pyqtgraph -c conda-forge
     $ conda activate pydm-environment
     $ cd pydm/
     $ pip install -e .
 
    PyDM also supports running on PySide6 (current functionality should be the same using PyQt5 or PySide6)::
 
-    $ conda create -n pydm-environment-pyside6 python=3.12 pip numpy scipy six psutil pyqtgraph -c conda-forge # or use same environment as PyQt5.
+    $ conda create -n pydm-environment-pyside6 python=3.12 pip numpy six psutil pyqtgraph -c conda-forge # or use same environment as PyQt5.
     $ conda activate pydm-environment-pyside6
     $ pip install pyside6 # for now, we suggest installing PySide6 with pip to avoid some weirdness with QtDesigner in the PySide6 conda package.
     $ cd pydm
