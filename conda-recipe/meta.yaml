@@ -26,7 +26,6 @@ requirements:
     - python >=3.10
     - six
     - numpy
-    - scipy
     - pyepics
     - pyqt =5
     - pyqtgraph
