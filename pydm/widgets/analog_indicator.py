@@ -415,8 +415,7 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     """
 
     def __init__(self, parent=None, init_channel=None):
-        PyDMWidget.__init__(self, init_channel=init_channel)
-        PyDMScaleIndicator.__init__(self, parent)
+        super().__init__(parent=parent, init_channel=init_channel)
         self._show_limits = False
         self.scale_indicator = QScaleAlarmed()
 
