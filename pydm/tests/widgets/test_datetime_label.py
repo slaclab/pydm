@@ -80,7 +80,7 @@ def test_value_changed(qtbot, signals, value, text_format, expected_value):
     if platform.system() == "Windows":
         return
 
-    os.environ["TZ"] = "US/Eastern"
+    os.environ["TZ"] = "America/New_York"
     time.tzset()
 
     pydm_label = PyDMDateTimeLabel()
