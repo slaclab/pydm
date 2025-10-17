@@ -28,6 +28,7 @@ def test_construct(qtbot):
     [
         "ca://MTEST",
         QByteArray(b"ca://MTEST"),
+        b"ca://MTEST",
         "",
     ],
 )
@@ -50,5 +51,8 @@ def test_set_current_alarm_channel(qtbot, monkeypatch, new_alarm_channel):
     monkeypatch.setattr(pydm_tab_widget.tabBar(), "currentIndex", lambda: 0)
 
     pydm_tab_widget.currentTabAlarmChannel = new_alarm_channel
-    assert pydm_tab_widget.tabBar().currentTabAlarmChannel == new_alarm_channel
+    if new_alarm_channel:
+        assert pydm_tab_widget.tabBar().currentTabAlarmChannel == "ca://MTEST"
+    else:
+        assert pydm_tab_widget.tabBar().currentTabAlarmChannel == ""
     pydm_tab_widget.deleteLater()
