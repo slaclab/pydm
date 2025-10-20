@@ -217,9 +217,9 @@ class PyDMTabWidget(QTabWidget):
             return bytearray()
 
     def setCurrentTabAlarmChannel(self, new_alarm_channel) -> None:
-        if isinstance(new_alarm_channel, QByteArray):
+        try:
             self.tabBar().currentTabAlarmChannel = bytes(new_alarm_channel).decode()
-        else:
+        except (TypeError, ValueError, AttributeError):
             self.tabBar().currentTabAlarmChannel = str(new_alarm_channel)
 
     currentTabAlarmChannel = Property(QByteArray, readCurrentTabAlarmChannel, setCurrentTabAlarmChannel)
