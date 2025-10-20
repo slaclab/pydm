@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.tab_bar &mdash; PyDM 1.28.0 documentation</title>
+  <title>pydm.widgets.tab_bar &mdash; PyDM 1.28.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.28.0
+                1.28.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -333,7 +333,10 @@
             <span class="k">return</span> <span class="nb">bytearray</span><span class="p">()</span></div>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">setCurrentTabAlarmChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_alarm_channel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">currentTabAlarmChannel</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">new_alarm_channel</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_alarm_channel</span><span class="p">,</span> <span class="n">QByteArray</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">currentTabAlarmChannel</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">new_alarm_channel</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabBar</span><span class="p">()</span><span class="o">.</span><span class="n">currentTabAlarmChannel</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_alarm_channel</span><span class="p">)</span>
 
     <span class="n">currentTabAlarmChannel</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QByteArray</span><span class="p">,</span> <span class="n">readCurrentTabAlarmChannel</span><span class="p">,</span> <span class="n">setCurrentTabAlarmChannel</span><span class="p">)</span>
 
