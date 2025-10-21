@@ -16,7 +16,7 @@ class DisplayExample(Display):
         self.button = PyDMPushButton()
         self.button.clicked.connect(self.delete_widget)
 
-        self.label = PyDMLabel(init_channel="TST:Val1")
+        self.label = PyDMLabel(init_channel="ca://TST:Val1")
 
     def print_file(self):
         print(f"{no_display_test_file}")
