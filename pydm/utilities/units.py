@@ -1,58 +1,76 @@
-from scipy import constants
+import math
+
+tera = 1e12
+giga = 1e9
+mega = 1e6
+kilo = 1e3
+centi = 1e-2
+milli = 1e-3
+micro = 1e-6
+nano = 1e-9
+pico = 1e-12
+inch = 0.0254
+foot = 12 * inch
+yard = 3 * foot
+minute = 60.0
+hour = 60 * minute
+day = 24 * hour
+week = 7 * day
+degree = math.pi / 180
 
 UNITS = {
     "length": {
         "m": 1,
-        "cm": constants.centi,
-        "mm": constants.milli,
-        "um": constants.micro,
-        "nm": constants.nano,
-        "pm": constants.pico,
-        "in": constants.inch,
-        "ft": constants.foot,
-        "yds": constants.yard,
+        "cm": centi,
+        "mm": milli,
+        "um": micro,
+        "nm": nano,
+        "pm": pico,
+        "in": inch,
+        "ft": foot,
+        "yds": yard,
     },
     "time": {
         "s": 1,
-        "ms": constants.milli,
-        "us": constants.micro,
-        "ns": constants.nano,
-        "ps": constants.pico,
-        "min": constants.minute,
-        "hr": constants.hour,
-        "weeks": constants.week,
-        "days": constants.day,
+        "ms": milli,
+        "us": micro,
+        "ns": nano,
+        "ps": pico,
+        "min": minute,
+        "hr": hour,
+        "weeks": week,
+        "days": day,
     },
     "frequency": {
         "Hz": 1,
-        "kHz": constants.kilo,
-        "MHz": constants.mega,
-        "GHz": constants.giga,
-        "THz": constants.tera,
-        "mHz": constants.milli,
+        "kHz": kilo,
+        "MHz": mega,
+        "GHz": giga,
+        "THz": tera,
+        "mHz": milli,
     },
     "angle": {
         "rad": 1,
-        "mrad": constants.milli,
-        "urad": constants.micro,
-        "nrad": constants.nano,
-        "degree": constants.degree,
-        "turn": 2 * constants.pi,
+        "mrad": milli,
+        "urad": micro,
+        "nrad": nano,
+        "degree": degree,
+        "turn": 2 * math.pi,
     },
     "voltage": {
         "V": 1,
-        "MV": constants.mega,
-        "kV": constants.kilo,
-        "mV": constants.milli,
-        "uV": constants.micro,
+        "MV": mega,
+        "kV": kilo,
+        "mV": milli,
+        "uV": micro,
     },
     "current": {
         "A": 1,
-        "MA": constants.mega,
-        "kA": constants.kilo,
-        "mA": constants.milli,
-        "uA": constants.micro,
-        "nA": constants.nano,
+        "MA": mega,
+        "kA": kilo,
+        "mA": milli,
+        "uA": micro,
+        "nA": nano,
     },
 }
 

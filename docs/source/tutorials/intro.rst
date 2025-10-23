@@ -3,6 +3,31 @@
 Tutorial Setup
 ==========================
 
+Virtual Environment
+--------------------
+
+This tutorial will use a standard conda environment for running the example code. Please follow the installation
+instructions here :ref:`pydm installation instructions<Install>` to install PyDM. Both conda and mamba will work.
+
+Once that environment has been created, there are 2 additional packages needed for this tutorial as noted below.
+
+Scipy
+------
+
+First install scipy into the environment created above. Scipy is used in some of the simulation code that we will
+use PyDM to interact with. The versions on PyPI and conda-forge will both work, so either is fine to use:
+
+.. code-block:: bash
+
+  pip install scipy
+
+Or:
+
+.. code-block:: bash
+
+  conda install scipy -c conda-forge
+
+
 PCASpy Server
 ---------------
 
@@ -13,7 +38,17 @@ The server mimics some PVs of a motor and camera, and is located as follows:
 
     examples/testing_ioc/pydm-tutorial-ioc
 
-Installing PCASpy from the documentation above and following the :ref:`pydm installation instructions<Install>` provides all needed prerequisites for this tutorial.
+Install the PCASpy package into the environment from above, again both PyPI and conda-forge will work:
+
+.. code-block:: bash
+
+  pip install pcaspy
+
+Or:
+
+.. code-block:: bash
+
+  conda install pcaspy -c conda-forge
 
 Using the PCASpy Server
 ^^^^^^^^^^^^^^^^^^^^^^^^^
