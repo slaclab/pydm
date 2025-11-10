@@ -64,7 +64,16 @@ Ready to contribute? Here's how to set up `pydm` for local development.
 3. Install your local copy into a new conda environment. Assuming you have conda installed, this is how you set up your fork for local development::
 
     $ conda create -n pydm-environment python=3.10 pyqt=5.12.3 pip numpy scipy six psutil pyqtgraph -c conda-forge
+    $ conda activate pydm-environment
     $ cd pydm/
+    $ pip install -e .
+
+   PyDM also supports running on PySide6 (current functionality should be the same using PyQt5 or PySide6)::
+
+    $ conda create -n pydm-environment-pyside6 python=3.12 pip numpy scipy six psutil pyqtgraph -c conda-forge # or use same environment as PyQt5.
+    $ conda activate pydm-environment-pyside6
+    $ pip install pyside6 # for now, we suggest installing PySide6 with pip to avoid some weirdness with QtDesigner in the PySide6 conda package.
+    $ cd pydm
     $ pip install -e .
 
 4. Install additional packages only needed for development and building the docs::
@@ -72,33 +81,39 @@ Ready to contribute? Here's how to set up `pydm` for local development.
     $ pip install -r dev-requirements.txt
     $ pip install -r docs-requirements.txt
 
-5. Create a branch for local development::
+5: Now you should be able to launch pydm as follows:
+
+    $ export QT_API=pyqt5 # or `export QT_AP=pyside6`, this determines which python wrapper pydm will use (chosen wrapper must be installed in the curr conda env).
+    $ pydm # launches an empty main-window
+    $ pydm example.ui # launches PyDM screen
+
+6. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
    Now you can make your changes locally.
 
-6. Install and enable ``pre-commit`` for this repository::
+7. Install and enable ``pre-commit`` for this repository::
 
     $ pip install pre-commit
     $ pre-commit install
 
-7. Add new tests for any additional functionality or bugs you may have discovered.  And of course, be sure that all previous tests still pass by running::
+8. Add new tests for any additional functionality or bugs you may have discovered.  And of course, be sure that all previous tests still pass by running::
 
     $ python run_tests.py
 
-8. Add documentation for any new features and algorithms into the .rst files of the /docs directory. Create a local build of the docs by running::
+9. Add documentation for any new features and algorithms into the .rst files of the /docs directory. Create a local build of the docs by running::
 
     $ cd docs
     $ make html
 
-8. Commit your changes and push your branch to GitHub::
+10. Commit your changes and push your branch to GitHub::
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-9. Submit a pull request through the GitHub website.
+11. Submit a pull request through the GitHub website.
 
 Pull Request Guidelines
 -----------------------
@@ -128,9 +143,9 @@ Commit messages should be clear and follow a few basic rules. Example:
     characters.  If the commit is related to a ticket, indicate that with
     "See #3456", "See ticket 3456", "Closes #3456" or similar.
 
-Describing the motivation for a change, the nature of a bug for bug fixes 
-or some details on what an enhancement does are also good to include in a 
-commit message. Messages should be understandable without looking at the code 
+Describing the motivation for a change, the nature of a bug for bug fixes
+or some details on what an enhancement does are also good to include in a
+commit message. Messages should be understandable without looking at the code
 changes. 
 
 Standard acronyms to start the commit message with are:

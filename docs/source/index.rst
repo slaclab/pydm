@@ -1,7 +1,7 @@
 PyDM - Python Display Manager
 =============================
 
-PyDM is a PyQt-based framework for building user interfaces for control systems.
+PyDM is a Python-Qt based framework for building user interfaces for control systems.
 
 The goal is to provide a no-code, drag-and-drop system to make simple screens,
 as well as a straightforward python framework to build complex applications.
