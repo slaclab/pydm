@@ -25,7 +25,7 @@ Installing PyDM and Prerequisites with Conda
 
 After installing Miniforge (see https://conda-forge.org/download/), create a new
 environment for PyDM::
-  
+
   $ conda create -n pydm-environment python=3.10 pyqt=5 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
   $ source activate pydm-environment
 
@@ -48,7 +48,7 @@ Now, you can use 'open' to open Designer.app::
 
     $ export QT_MAC_WANTS_LAYER=1
 
-Installing Manually, Without Anaconda
+Installing Manually, Without Anaconda (PyQt5)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This alternate installation method is only recommended for large 'site' installations that want to avoid using Anaconda.
 
@@ -78,14 +78,18 @@ and extract the archive.  Follow `the provided instructions <http://pyqt.sourcef
 build and install it.  Note that you may need to manually set the '--qmake' option to point to the
 qmake binary you created when you built Qt5.
 
+Installing Manually, Without Anaconda (PySide6)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Instructions coming soon...
+
 Installing PyDM with PIP
 ++++++++++++++++++++++++
 
 PyDM is part of the Python Package Index (PyPI), so you can install it with pip:
 
   $ pip install pydm
-  
-This will download and install all the necessary python dependencies, then will install 
+
+This will download and install all the necessary python dependencies, then will install
 PyDM.  (You'll still need the Qt and PyQt install from above).
 
 Setting Environment Variables
