@@ -28,8 +28,8 @@ widgets later in your code.
 Writing The Code For Your Display
 ---------------------------------
 
-Python-based displays in PyDM are mostly just PyQt widgets with a few extra features
-on top.  This guide expects that you have a basic familiarity with PyQt and Qt itself.
+Python-based displays in PyDM are mostly just Qt widgets with a few extra features
+on top.  This guide expects that you have a basic familiarity with PyQt or PySide and Qt itself.
 Good resources for these topics are available online.  The Qt documentation, especially,
 is very thorough, and will come in handy as you build your display.
 
@@ -38,7 +38,7 @@ is very thorough, and will come in handy as you build your display.
 Subclassing Display
 ^^^^^^^^^^^^^^^^^^^
 
-Python-based displays are just PyQt widgets, based on PyDM's 'Display' class.
+Python-based displays are just Qt widgets, based on PyDM's 'Display' class.
 Your display must subclass Display, and implement a few required methods::
 
   from os import path
@@ -128,7 +128,7 @@ from some other source of data, like a file or database.  As mentioned in
 `Handling Command Line Arguments`_, you can read in command line arguments to help
 get data into your display.
 
-Once you have a source of data, you can use PyQt to make new widgets, and add them
+Once you have a source of data, you can use Qt to make new widgets, and add them
 to your display.  For example, if you get a list of devices from somewhere, you can
 make widgets for each device, and add them to a layout you defined in the .ui file::
 

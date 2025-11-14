@@ -168,13 +168,13 @@ widgets later in your code.</p>
 </section>
 <section id="writing-the-code-for-your-display">
 <h2>Writing The Code For Your Display<a class="headerlink" href="#writing-the-code-for-your-display" title="Permalink to this heading"></a></h2>
-<p>Python-based displays in PyDM are mostly just PyQt widgets with a few extra features
-on top.  This guide expects that you have a basic familiarity with PyQt and Qt itself.
+<p>Python-based displays in PyDM are mostly just Qt widgets with a few extra features
+on top.  This guide expects that you have a basic familiarity with PyQt or PySide and Qt itself.
 Good resources for these topics are available online.  The Qt documentation, especially,
 is very thorough, and will come in handy as you build your display.</p>
 <section id="subclassing-display">
 <span id="display"></span><h3>Subclassing Display<a class="headerlink" href="#subclassing-display" title="Permalink to this heading"></a></h3>
-<p>Python-based displays are just PyQt widgets, based on PyDM’s ‘Display’ class.
+<p>Python-based displays are just Qt widgets, based on PyDM’s ‘Display’ class.
 Your display must subclass Display, and implement a few required methods:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm</span><span class="w"> </span><span class="kn">import</span> <span class="n">Display</span>
@@ -258,7 +258,7 @@ your display.</p>
 from some other source of data, like a file or database.  As mentioned in
 <a class="reference internal" href="#handling-command-line-arguments">Handling Command Line Arguments</a>, you can read in command line arguments to help
 get data into your display.</p>
-<p>Once you have a source of data, you can use PyQt to make new widgets, and add them
+<p>Once you have a source of data, you can use Qt to make new widgets, and add them
 to your display.  For example, if you get a list of devices from somewhere, you can
 make widgets for each device, and add them to a layout you defined in the .ui file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">device_name</span> <span class="ow">in</span> <span class="n">device_list</span><span class="p">:</span>
