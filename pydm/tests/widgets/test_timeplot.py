@@ -152,7 +152,7 @@ def test_timeplotcurveitem_to_dict(qtbot, channel_address, name):
         )
 
 
-@pytest.mark.parametrize("new_address", ["new_address", "", None])
+@pytest.mark.parametrize("new_address", ["ca://new_address", "", None])
 def test_timeplotcurveitem_properties_and_setters(qtbot, new_address):
     pydm_timeplot_curve_item = TimePlotCurveItem()
 
