@@ -208,6 +208,11 @@ class PyDMPrimitiveWidget(object):
             if event.button() == Qt.MiddleButton:
                 self.show_address_tooltip(event)
                 return True
+        if event.type() == QEvent.MouseButtonRelease:
+            if event.button() == Qt.MiddleButton:
+                event.ignore()
+                return True
+
         return False
 
     def show_address_tooltip(self, event):
