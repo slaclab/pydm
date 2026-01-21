@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QPaintEvent, QBrush
-from qtpy.QtCore import Qt, QSize, QPoint
+from qtpy.QtCore import Qt, QSize, QPoint, QTimer
 from typing import List, Optional
 from .base import PyDMWidget, PostParentClassInitSetup
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
@@ -569,6 +569,525 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
 
             # Checks if _shift attribute exits because base class can call method
             # before the object constructor is complete
+            if hasattr(self, "_shift"):
+                self.update_indicators()
+
+
+class PyDMBlinkByteIndicator(QWidget, PyDMWidget):
+    """
+    Widget for graphical representation of bits from an integer number
+    with blinking effect when value changes.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget for the Label
+    init_channel : str, optional
+        The channel to be used by the widget.
+    """
+
+    def __init__(self, parent: Optional[QWidget] = None, init_channel=None):
+        QWidget.__init__(self, parent)
+        PyDMWidget.__init__(self, init_channel=init_channel)
+        self.value = 0
+        self.setLayout(QGridLayout(self))
+
+        self._on_color = QColor(0, 255, 0)
+        self._off_color = QColor(100, 100, 100)
+        self._disconnected_color = QColor(255, 255, 255)
+        self._invalid_color = QColor(255, 0, 255)
+
+        # Blinking colors
+        self._blink_color_1 = QColor(255, 0, 0)  # Red
+        self._blink_color_2 = QColor(0, 255, 0)  # Green
+        self._blink_interval = 500  # ms
+
+        self._pen_style = Qt.SolidLine
+        self._line_pen = QPen(self._pen_style)
+
+        self._orientation = Qt.Vertical
+
+        self._labels = []
+        self._show_labels = True
+        self._label_position = QTabWidget.East
+
+        self._num_bits = 1
+
+        self._indicators = []
+        self._circles = False
+        self.set_spacing()
+        self.layout().setOriginCorner(Qt.TopLeftCorner)
+
+        self._big_endian = False
+        self._shift = 0
+
+        # Blinking state variables
+        self._previous_value = 0
+        self._is_blinking = False
+        self._blink_timer = QTimer(self)
+        self._blink_timer.timeout.connect(self._toggle_blink_color)
+        self._current_blink_color = self._blink_color_1
+        self._blink_state = False  # False = color1, True = color2
+
+        # Toggle mode - when True, blinking starts on 0->1 transition and stops on 1->0
+        self._toggle_mode = False
+
+        self.numBits = 1
+
+        # Execute setup calls that must be done here in the widget class's __init__,
+        # and after it's parent __init__ calls have completed.
+        PostParentClassInitSetup(self)
+
+    def _toggle_blink_color(self) -> None:
+        """
+        Toggle between blink colors for blinking effect.
+        """
+        self._blink_state = not self._blink_state
+        self._current_blink_color = self._blink_color_2 if self._blink_state else self._blink_color_1
+        self.update_indicators()
+
+    def _start_blinking(self) -> None:
+        """
+        Start the blinking timer.
+        """
+        if not self._blink_timer.isActive():
+            self._is_blinking = True
+            self._blink_timer.start(self._blink_interval)
+
+    def _stop_blinking(self) -> None:
+        """
+        Stop the blinking timer.
+        """
+        if self._blink_timer.isActive():
+            self._blink_timer.stop()
+            self._is_blinking = False
+            self._blink_state = False
+            self._current_blink_color = self._blink_color_1
+
+    # On pyside6, we need to explicitly call pydm's base class's eventFilter() call or events
+    # will not propagate to the parent classes properly.
+    def eventFilter(self, obj, event):
+        return PyDMWidget.eventFilter(self, obj, event)
+
+    def init_for_designer(self) -> None:
+        """
+        Method called after the constructor to tweak configurations for
+        when using the widget with the Qt Designer
+        """
+        self._connected = True
+        self.value = 5
+        self.update_indicators()
+
+    def connection_changed(self, connected: bool) -> None:
+        """
+        Callback invoked when the connection state of the Channel is changed.
+        This callback acts on the connection state to enable/disable the widget
+        and also trigger the change on alarm severity to ALARM_DISCONNECTED.
+
+        Parameters
+        ----------
+        connected : bool
+            When this value is False the channel is disconnected, True otherwise.
+        """
+        super().connection_changed(connected)
+        if not connected:
+            self._stop_blinking()
+        self.update_indicators()
+
+    def rebuild_layout(self) -> None:
+        """
+        Method to reorganize the top-level widget and its contents
+        according to the layout property values.
+        """
+        self.clear()
+        pairs = zip(self._labels, self._indicators)
+        # Hide labels until they are in the layout
+        for label in self._labels:
+            label.setVisible(False)
+
+        if self.orientation == Qt.Vertical:
+            for i, (label, indicator) in enumerate(pairs):
+                if self.labelPosition == QTabWidget.East:
+                    self.layout().addWidget(indicator, i, 0)
+                    self.layout().addWidget(label, i, 1, 1, 1, Qt.AlignVCenter)
+                    label.setVisible(self._show_labels)
+                elif self.labelPosition == QTabWidget.West:
+                    self.layout().addWidget(label, i, 0, 1, 1, Qt.AlignVCenter)
+                    self.layout().addWidget(indicator, i, 1)
+                    label.setVisible(self._show_labels)
+                else:
+                    self.layout().addWidget(indicator, i, 0)
+        elif self.orientation == Qt.Horizontal:
+            for i, (label, indicator) in enumerate(pairs):
+                if self.labelPosition == QTabWidget.North:
+                    self.layout().addWidget(label, 0, i, 1, 1, Qt.AlignHCenter)
+                    self.layout().addWidget(indicator, 1, i)
+                    label.setVisible(self._show_labels)
+                elif self.labelPosition == QTabWidget.South:
+                    self.layout().addWidget(indicator, 0, i)
+                    self.layout().addWidget(label, 1, i, 1, 1, Qt.AlignHCenter)
+                    label.setVisible(self._show_labels)
+                else:
+                    self.layout().addWidget(indicator, 0, i)
+        self.update_indicators()
+
+    def clear(self) -> None:
+        """
+        Remove all inner widgets from the layout
+        """
+        for col in range(0, self.layout().columnCount()):
+            for row in range(0, self.layout().rowCount()):
+                item = self.layout().itemAtPosition(row, col)
+                if item is not None:
+                    w = item.widget()
+                    if w is not None:
+                        self.layout().removeWidget(w)
+
+    def update_indicators(self) -> None:
+        """
+        Update the inner bit indicators accordingly with the new value.
+        """
+        if self._shift < 0:
+            value = int(self.value) << abs(self._shift)
+        else:
+            value = int(self.value) >> self._shift
+
+        bits = [(value >> i) & 1 for i in range(self._num_bits)]
+        for bit, indicator in zip(bits, self._indicators):
+            if self._connected:
+                if self._alarm_state == 3:
+                    c = self._invalid_color
+                else:
+                    if bit:
+                        # If in toggle mode and blinking is active, use blink color for bit=1
+                        if self._toggle_mode and self._is_blinking:
+                            c = self._current_blink_color
+                        else:
+                            c = self._on_color
+                    else:
+                        # If not in toggle mode and blinking is active, use blink color for bit=0
+                        if not self._toggle_mode and self._is_blinking:
+                            c = self._current_blink_color
+                        else:
+                            c = self._off_color
+            else:
+                c = self._disconnected_color
+            indicator.setColor(c)
+
+    def value_changed(self, new_val: int) -> None:
+        """
+        Callback invoked when the Channel value is changed.
+
+        Parameters
+        ----------
+        new_val : int
+            The new value from the channel.
+        """
+        super().value_changed(new_val)
+        try:
+            new_val_int = int(new_val)
+
+            if self._toggle_mode:
+                # Toggle mode: Start blinking on 0->1, stop on 1->0
+                if self._previous_value == 0 and new_val_int == 1:
+                    self._start_blinking()
+                elif self._previous_value == 1 and new_val_int == 0:
+                    self._stop_blinking()
+            else:
+                # Normal mode: Start blinking on 1->0, stop on 0->1
+                if self._previous_value == 1 and new_val_int == 0:
+                    self._start_blinking()
+                elif self._previous_value == 0 and new_val_int == 1:
+                    self._stop_blinking()
+
+            self._previous_value = new_val_int
+            self.update_indicators()
+        except Exception:
+            pass
+
+    def readToggleMode(self) -> bool:
+        """
+        Get the toggle mode state.
+
+        Returns
+        -------
+        bool
+            True if toggle mode is enabled, False otherwise.
+        """
+        return self._toggle_mode
+
+    def setToggleMode(self, toggle: bool) -> None:
+        """
+        Set the toggle mode.
+
+        Parameters
+        ----------
+        toggle : bool
+            If True, enables toggle mode (blink on 0->1, stop on 1->0)
+            If False, uses normal mode (blink on 1->0, stop on 0->1)
+        """
+        if toggle != self._toggle_mode:
+            self._toggle_mode = toggle
+            # Stop any current blinking when changing modes
+            self._stop_blinking()
+            self.update_indicators()
+
+    toggleMode = Property(bool, readToggleMode, setToggleMode)
+
+    def readOnColor(self) -> QColor:
+        """
+        The color for a bit in the 'on' state.
+
+        Returns
+        -------
+        QColor
+        """
+        return self._on_color
+
+    def setOnColor(self, new_color: QColor) -> None:
+        """
+        The color for a bit in the 'on' state.
+
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._on_color:
+            self._on_color = new_color
+            self.update_indicators()
+
+    onColor = Property(QColor, readOnColor, setOnColor)
+
+    def readOffColor(self) -> QColor:
+        """
+        The color for a bit in the 'off' state.
+
+        Returns
+        -------
+        QColor
+        """
+        return self._off_color
+
+    def setOffColor(self, new_color: QColor) -> None:
+        """
+        The color for a bit in the 'off' state.
+
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._off_color:
+            self._off_color = new_color
+            self.update_indicators()
+
+    offColor = Property(QColor, readOffColor, setOffColor)
+
+    def readBlinkColor1(self) -> QColor:
+        """
+        The first color for blinking effect.
+
+        Returns
+        -------
+        QColor
+        """
+        return self._blink_color_1
+
+    def setBlinkColor1(self, new_color: QColor) -> None:
+        """
+        The first color for blinking effect.
+
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._blink_color_1:
+            self._blink_color_1 = new_color
+            if self._is_blinking and not self._blink_state:
+                self._current_blink_color = new_color
+                self.update_indicators()
+
+    blinkColor1 = Property(QColor, readBlinkColor1, setBlinkColor1)
+
+    def readBlinkColor2(self) -> QColor:
+        """
+        The second color for blinking effect.
+
+        Returns
+        -------
+        QColor
+        """
+        return self._blink_color_2
+
+    def setBlinkColor2(self, new_color: QColor) -> None:
+        """
+        The second color for blinking effect.
+
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._blink_color_2:
+            self._blink_color_2 = new_color
+            if self._is_blinking and self._blink_state:
+                self._current_blink_color = new_color
+                self.update_indicators()
+
+    blinkColor2 = Property(QColor, readBlinkColor2, setBlinkColor2)
+
+    def readBlinkInterval(self) -> int:
+        """
+        The interval for blinking in milliseconds.
+
+        Returns
+        -------
+        int
+        """
+        return self._blink_interval
+
+    def setBlinkInterval(self, interval: int) -> None:
+        """
+        The interval for blinking in milliseconds.
+
+        Parameters
+        ----------
+        interval : int
+        """
+        if interval > 0 and interval != self._blink_interval:
+            self._blink_interval = interval
+            if self._blink_timer.isActive():
+                self._blink_timer.setInterval(interval)
+
+    blinkInterval = Property(int, readBlinkInterval, setBlinkInterval)
+
+    # The following methods are similar to PyDMByteIndicator and are required for compatibility
+    def readOrientation(self) -> int | Qt.Orientation:
+        return self._orientation
+
+    def setOrientation(self, new_orientation: Qt.Orientation) -> None:
+        self._orientation = new_orientation
+        self.set_spacing()
+        self.rebuild_layout()
+
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Orientation
+    orientation = Property(prop_type, readOrientation, setOrientation)
+
+    def set_spacing(self) -> None:
+        label_spacing = 5
+        if self._circles:
+            indicator_spacing = 5
+        else:
+            indicator_spacing = 0
+
+        self.layout().setContentsMargins(0, 0, 0, 0)
+
+        if self._orientation == Qt.Horizontal:
+            self.layout().setHorizontalSpacing(indicator_spacing)
+            self.layout().setVerticalSpacing(label_spacing)
+        elif self._orientation == Qt.Vertical:
+            self.layout().setHorizontalSpacing(label_spacing)
+            self.layout().setVerticalSpacing(indicator_spacing)
+
+    def readShowLabels(self) -> bool:
+        return self._show_labels
+
+    def setShowLabels(self, show: bool) -> None:
+        self._show_labels = show
+        for label in self._labels:
+            label.setVisible(show)
+
+    showLabels = Property(bool, readShowLabels, setShowLabels)
+
+    def readBigEndian(self) -> bool:
+        return self._big_endian
+
+    def setBigEndian(self, is_big_endian: bool) -> None:
+        self._big_endian = is_big_endian
+        origin_map = {
+            (Qt.Vertical, True): Qt.BottomLeftCorner,
+            (Qt.Vertical, False): Qt.TopLeftCorner,
+            (Qt.Horizontal, True): Qt.TopRightCorner,
+            (Qt.Horizontal, False): Qt.TopLeftCorner,
+        }
+        origin = origin_map[(self.orientation, self.bigEndian)]
+        self.layout().setOriginCorner(origin)
+        self.rebuild_layout()
+
+    bigEndian = Property(bool, readBigEndian, setBigEndian)
+
+    def readCircles(self) -> bool:
+        return self._circles
+
+    def setCircles(self, draw_circles: bool) -> None:
+        self._circles = draw_circles
+        self.set_spacing()
+        for indicator in self._indicators:
+            indicator.circle = self._circles
+        self.update_indicators()
+
+    circles = Property(bool, readCircles, setCircles)
+
+    def readLabelPosition(self) -> QTabWidget.TabPosition:
+        return self._label_position
+
+    def setLabelPosition(self, new_pos: QTabWidget.TabPosition) -> None:
+        self._label_position = new_pos
+        self.rebuild_layout()
+
+    labelPosition = Property(QTabWidget.TabPosition, readLabelPosition, setLabelPosition)
+
+    def readNumBits(self) -> int:
+        return self._num_bits
+
+    def setNumBits(self, new_num_bits: int) -> None:
+        if new_num_bits < 1:
+            return
+        self._num_bits = new_num_bits
+        for indicator in self._indicators:
+            indicator.deleteLater()
+        self._indicators = [PyDMBitIndicator(parent=self, circle=self.circles) for i in range(0, self._num_bits)]
+        old_labels = self.labels
+        new_labels = ["Bit {}".format(i) for i in range(0, self._num_bits)]
+        for i, old_label in enumerate(old_labels):
+            if i >= self._num_bits:
+                break
+            new_labels[i] = old_label
+        self.labels = new_labels
+
+    numBits = Property(int, readNumBits, setNumBits)
+
+    def readShift(self) -> int:
+        return self._shift
+
+    def setShift(self, new_shift: int) -> None:
+        self._shift = new_shift
+
+    shift = Property(int, readShift, setShift)
+
+    def readLabels(self) -> List[str]:
+        return [str(currLabel.text()) for currLabel in self._labels]
+
+    def setLabels(self, new_labels: List[str]) -> None:
+        for label in self._labels:
+            label.hide()
+            label.deleteLater()
+        self._labels = [QLabel(text, parent=self) for text in new_labels]
+        self.showLabels = self._show_labels
+        self.rebuild_layout()
+
+    labels = Property("QStringList", readLabels, setLabels)
+
+    def paintEvent(self, _) -> None:
+        painter = QPainter(self)
+        opt = QStyleOption()
+        opt.initFrom(self)
+        self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
+        painter.setRenderHint(QPainter.Antialiasing)
+
+    def alarm_severity_changed(self, new_alarm_severity: int) -> None:
+        if new_alarm_severity == self._alarm_state:
+            return
+        else:
+            super().alarm_severity_changed(new_alarm_severity)
             if hasattr(self, "_shift"):
                 self.update_indicators()
 
