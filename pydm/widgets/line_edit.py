@@ -8,9 +8,9 @@ from qtpy.QtWidgets import QLineEdit, QMenu, QApplication
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QFocusEvent
 from .base import PyDMWritableWidget, TextFormatter, str_types, PostParentClassInitSetup
-from pydm import utilities
+from pydm import utilities, config
 from .display_format import DisplayFormat, parse_value_for_display
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, is_qt_designer
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -167,7 +167,14 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
 
     def setReadOnly(self, readOnly):
         self._user_set_read_only = readOnly
-        super().setReadOnly(True if self._user_set_read_only else not self._write_access)
+        # When in designer and reading in live data (DESIGNER_ONLINE), don't set and therefore save to
+        # the ui file readOnly=True setting. While we do want widgets to act in read-only way in designer
+        # (so don't accidentally write data during editing), this is handled in the data_plugins themselves.
+        if is_qt_designer() and config.DESIGNER_ONLINE:
+            shouldSetReadOnly = False
+        else:
+            shouldSetReadOnly = self._user_set_read_only or not self._write_access
+        super().setReadOnly(shouldSetReadOnly)
 
     def write_access_changed(self, new_write_access):
         """
@@ -175,7 +182,14 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
         """
         super().write_access_changed(new_write_access)
         if not self._user_set_read_only:
-            super().setReadOnly(not new_write_access)
+            # When in designer and reading in live data (DESIGNER_ONLINE), don't set and therefore save to
+            # the ui file readOnly=True setting. While we do want widgets to act in read-only way in designer
+            # (so don't accidentally write data during editing), this is handled in the data_plugins themselves.
+            if is_qt_designer() and config.DESIGNER_ONLINE:
+                shouldSetReadOnly = False
+            else:
+                shouldSetReadOnly = not new_write_access
+            super().setReadOnly(shouldSetReadOnly)
 
     def unit_changed(self, new_unit):
         """
