@@ -60,6 +60,8 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#virtual-environment">Virtual Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scipy">Scipy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pcaspy-server">PCASpy Server</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#using-the-pcaspy-server">Using the PCASpy Server</a></li>
 </ul>
@@ -143,6 +145,24 @@
              
   <section id="tutorial-setup">
 <span id="setup"></span><h1>Tutorial Setup<a class="headerlink" href="#tutorial-setup" title="Permalink to this heading"></a></h1>
+<section id="virtual-environment">
+<h2>Virtual Environment<a class="headerlink" href="#virtual-environment" title="Permalink to this heading"></a></h2>
+<p>This tutorial will use a standard conda environment for running the example code. Please follow the installation
+instructions here <a class="reference internal" href="../installation.html#install"><span class="std std-ref">pydm installation instructions</span></a> to install PyDM. Both conda and mamba will work.</p>
+<p>Once that environment has been created, there are 2 additional packages needed for this tutorial as noted below.</p>
+</section>
+<section id="scipy">
+<h2>Scipy<a class="headerlink" href="#scipy" title="Permalink to this heading"></a></h2>
+<p>First install scipy into the environment created above. Scipy is used in some of the simulation code that we will
+use PyDM to interact with. The versions on PyPI and conda-forge will both work, so either is fine to use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>scipy
+</pre></div>
+</div>
+<p>Or:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>scipy<span class="w"> </span>-c<span class="w"> </span>conda-forge
+</pre></div>
+</div>
+</section>
 <section id="pcaspy-server">
 <h2>PCASpy Server<a class="headerlink" href="#pcaspy-server" title="Permalink to this heading"></a></h2>
 <p>A <a class="reference external" href="https://pcaspy.readthedocs.io/en/latest/">PCASpy</a> server provides PVs for the tutorial files to read/write.</p>
@@ -152,7 +172,14 @@
 </div>
 </dd>
 </dl>
-<p>Installing PCASpy from the documentation above and following the <a class="reference internal" href="../installation.html#install"><span class="std std-ref">pydm installation instructions</span></a> provides all needed prerequisites for this tutorial.</p>
+<p>Install the PCASpy package into the environment from above, again both PyPI and conda-forge will work:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pcaspy
+</pre></div>
+</div>
+<p>Or:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>pcaspy<span class="w"> </span>-c<span class="w"> </span>conda-forge
+</pre></div>
+</div>
 <section id="using-the-pcaspy-server">
 <h3>Using the PCASpy Server<a class="headerlink" href="#using-the-pcaspy-server" title="Permalink to this heading"></a></h3>
 <div class="admonition note">

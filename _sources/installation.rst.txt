@@ -21,12 +21,12 @@ Installing PyDM and Prerequisites with Conda
     In order to use PyDM widgets in designer, please make sure to pin the PyQt version to 5.12.3 or lower
     until this is resolved.
 
-    $ conda create -n pydm-environment python=3.12 pyqt=5.12.3 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
+    $ conda create -n pydm-environment python=3.12 pyqt=5.12.3 pip numpy six psutil pyqtgraph pydm -c conda-forge
 
 After installing Miniforge (see https://conda-forge.org/download/), create a new
 environment for PyDM::
 
-  $ conda create -n pydm-environment python=3.10 pyqt=5 pip numpy scipy six psutil pyqtgraph pydm -c conda-forge
+  $ conda create -n pydm-environment python=3.10 pyqt=5 pip numpy six psutil pyqtgraph pydm -c conda-forge
   $ source activate pydm-environment
 
 Once you've installed and activated the environment, you should be able to run 'pydm' to launch PyDM, or run 'designer' to launch Qt Designer.  If you are on Windows, run these commands from the Anaconda Prompt.
