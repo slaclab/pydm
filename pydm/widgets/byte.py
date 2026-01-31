@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QPaintEvent, QBrush
-from qtpy.QtCore import Qt, QSize, QPoint
+from qtpy.QtCore import Qt, QSize, QPoint, QTimer
 from typing import List, Optional
 from .base import PyDMWidget, PostParentClassInitSetup
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
@@ -75,7 +75,7 @@ class PyDMBitIndicator(QWidget):
 class PyDMByteIndicator(QWidget, PyDMWidget):
     """
     Widget for graphical representation of bits from an integer number
-    with support for Channels and more from PyDM
+    with support for Channels and more from PyDM, including blinking functionality.
 
     Parameters
     ----------
@@ -95,6 +95,13 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self._off_color = QColor(100, 100, 100)
         self._disconnected_color = QColor(255, 255, 255)
         self._invalid_color = QColor(255, 0, 255)
+
+        # Blinking properties
+        self._blink_color_1 = QColor(255, 0, 0)  # Red
+        self._blink_color_2 = QColor(0, 255, 0)  # Green
+        self._blink_interval = 500  # ms
+        self._blink_on_change = False
+        self._toggle_mode = False
 
         self._pen_style = Qt.SolidLine
         self._line_pen = QPen(self._pen_style)
@@ -116,6 +123,15 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
 
         self._big_endian = False
         self._shift = 0
+
+        # Blinking state variables
+        self._previous_value = 0
+        self._is_blinking = False
+        self._blink_timer = QTimer(self)
+        self._blink_timer.timeout.connect(self._toggle_blink_color)
+        self._current_blink_color = self._blink_color_1
+        self._blink_state = False  # False = color1, True = color2
+
         self.numBits = 1  # Need to set the property to initialize
         # _labels and _indicators setting numBits there also performs
         # the first rebuild_layout.
@@ -125,7 +141,33 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
 
-    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    def _toggle_blink_color(self) -> None:
+        """
+        Toggle between blink colors for blinking effect.
+        """
+        self._blink_state = not self._blink_state
+        self._current_blink_color = self._blink_color_2 if self._blink_state else self._blink_color_1
+        self.update_indicators()
+
+    def _start_blinking(self) -> None:
+        """
+        Start the blinking timer.
+        """
+        if not self._blink_timer.isActive():
+            self._is_blinking = True
+            self._blink_timer.start(self._blink_interval)
+
+    def _stop_blinking(self) -> None:
+        """
+        Stop the blinking timer.
+        """
+        if self._blink_timer.isActive():
+            self._blink_timer.stop()
+            self._is_blinking = False
+            self._blink_state = False
+            self._current_blink_color = self._blink_color_1
+
+    # On pyside6, we need to explicitly call pydm's base class's eventFilter() call or events
     # will not propagate to the parent classes properly.
     def eventFilter(self, obj, event):
         return PyDMWidget.eventFilter(self, obj, event)
@@ -151,6 +193,8 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
             When this value is False the channel is disconnected, True otherwise.
         """
         super().connection_changed(connected)
+        if not connected:
+            self._stop_blinking()
         self.update_indicators()
 
     def rebuild_layout(self) -> None:
@@ -225,10 +269,184 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
                 if self._alarm_state == 3:
                     c = self._invalid_color
                 else:
-                    c = self._on_color if bit else self._off_color
+                    if self._blink_on_change and self._is_blinking:
+                        # Determine which bits should blink based on toggle mode
+                        if self._toggle_mode:
+                            # Toggle mode: blink only bits that are 1
+                            c = self._current_blink_color if bit else self._off_color
+                        else:
+                            # Normal mode: blink only bits that are 0
+                            c = self._current_blink_color if not bit else self._on_color
+                    else:
+                        c = self._on_color if bit else self._off_color
             else:
                 c = self._disconnected_color
             indicator.setColor(c)
+
+    def value_changed(self, new_val: int) -> None:
+        """
+        Callback invoked when the Channel value is changed.
+
+        Parameters
+        ----------
+        new_val : int
+            The new value from the channel.
+        """
+        super().value_changed(new_val)
+        try:
+            new_val_int = int(new_val)
+
+            if self._blink_on_change:
+                if self._toggle_mode:
+                    # Toggle mode: Start blinking on 0->1, stop on 1->0
+                    if self._previous_value == 0 and new_val_int == 1:
+                        self._start_blinking()
+                    elif self._previous_value == 1 and new_val_int == 0:
+                        self._stop_blinking()
+                else:
+                    # Normal mode: Start blinking on 1->0, stop on 0->1
+                    if self._previous_value == 1 and new_val_int == 0:
+                        self._start_blinking()
+                    elif self._previous_value == 0 and new_val_int == 1:
+                        self._stop_blinking()
+
+            self._previous_value = new_val_int
+            self.update_indicators()
+        except Exception:
+            pass
+
+    def readBlinkOnChange(self) -> bool:
+        """
+        Whether to enable blinking on value change.
+
+        Returns
+        -------
+        bool
+        """
+        return self._blink_on_change
+
+    def setBlinkOnChange(self, blink: bool) -> None:
+        """
+        Whether to enable blinking on value change.
+
+        Parameters
+        ----------
+        blink : bool
+            If True, enables blinking on value change
+        """
+        if blink != self._blink_on_change:
+            self._blink_on_change = blink
+            if not blink:
+                self._stop_blinking()
+            self.update_indicators()
+
+    blinkOnChange = Property(bool, readBlinkOnChange, setBlinkOnChange)
+
+    def readToggleMode(self) -> bool:
+        """
+        Get the toggle mode state.
+
+        Returns
+        -------
+        bool
+            True if toggle mode is enabled, False otherwise.
+        """
+        return self._toggle_mode
+
+    def setToggleMode(self, toggle: bool) -> None:
+        """
+        Set the toggle mode.
+
+        Parameters
+        ----------
+        toggle : bool
+            If True, enables toggle mode (blink on 0->1, stop on 1->0)
+            If False, uses normal mode (blink on 1->0, stop on 0->1)
+        """
+        if toggle != self._toggle_mode:
+            self._toggle_mode = toggle
+            # Stop any current blinking when changing modes
+            self._stop_blinking()
+            self.update_indicators()
+
+    toggleMode = Property(bool, readToggleMode, setToggleMode)
+
+    def readBlinkColor1(self) -> QColor:
+        """
+        The first color for blinking effect.
+
+        Returns
+        -------
+        QColor
+        """
+        return self._blink_color_1
+
+    def setBlinkColor1(self, new_color: QColor) -> None:
+        """
+        The first color for blinking effect.
+
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._blink_color_1:
+            self._blink_color_1 = new_color
+            if self._is_blinking and not self._blink_state:
+                self._current_blink_color = new_color
+                self.update_indicators()
+
+    blinkColor1 = Property(QColor, readBlinkColor1, setBlinkColor1)
+
+    def readBlinkColor2(self) -> QColor:
+        """
+        The second color for blinking effect.
+
+        Returns
+        -------
+        QColor
+        """
+        return self._blink_color_2
+
+    def setBlinkColor2(self, new_color: QColor) -> None:
+        """
+        The second color for blinking effect.
+
+        Parameters
+        ----------
+        new_color : QColor
+        """
+        if new_color != self._blink_color_2:
+            self._blink_color_2 = new_color
+            if self._is_blinking and self._blink_state:
+                self._current_blink_color = new_color
+                self.update_indicators()
+
+    blinkColor2 = Property(QColor, readBlinkColor2, setBlinkColor2)
+
+    def readBlinkInterval(self) -> int:
+        """
+        The interval for blinking in milliseconds.
+
+        Returns
+        -------
+        int
+        """
+        return self._blink_interval
+
+    def setBlinkInterval(self, interval: int) -> None:
+        """
+        The interval for blinking in milliseconds.
+
+        Parameters
+        ----------
+        interval : int
+        """
+        if interval > 0 and interval != self._blink_interval:
+            self._blink_interval = interval
+            if self._blink_timer.isActive():
+                self._blink_timer.setInterval(interval)
+
+    blinkInterval = Property(int, readBlinkInterval, setBlinkInterval)
 
     def readOnColor(self) -> QColor:
         """
@@ -514,22 +732,6 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         self.rebuild_layout()
 
     labels = Property("QStringList", readLabels, setLabels)
-
-    def value_changed(self, new_val: int) -> None:
-        """
-        Callback invoked when the Channel value is changed.
-
-        Parameters
-        ----------
-        new_val : int
-            The new value from the channel.
-        """
-        super().value_changed(new_val)
-        try:
-            int(new_val)
-            self.update_indicators()
-        except Exception:
-            pass
 
     def paintEvent(self, _) -> None:
         """
