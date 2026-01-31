@@ -13,28 +13,36 @@ PyDMByteIndicator
    
    
    
-The PyDMBlinkByteIndicator widget extends PyDM's byte indicator functionality by adding a blinking visual effect when the displayed value changes. Here are the key features:
 
-A. Core Blinking Functionality:
-A1. Dual-mode blinking:
+# Remove the separate PyDMBlinkByteIndicator class since its functionality is now integrated into PyDMByteIndicator
+# PyDMBlinkByteIndicator is no longer needed
 
-  Normal mode: Starts blinking on a falling edge (1→0 transition) and stops on rising edge (0→1)
+1. Core Blinking Mechanism
+   - Added QTimer for timed color switching
+   - _toggle_blink_color() method alternates between two blink colors
+   - _start_blinking() and _stop_blinking() methods control blinking start/stop
 
-  Toggle mode: Starts blinking on a rising edge (0→1) and stops on falling edge (1→0)
-A2. Configurable blinking: Two alternating colors with adjustable interval
+2. Blinking Configuration Properties
+   - blinkOnChange: Enables or disables blinking functionality
+   - toggleMode: Selects blinking pattern:
+     * Normal mode: Starts blinking when value changes from 1→0, stops when 0→1
+     * Toggle mode: Starts blinking when value changes from 0→1, stops when 1→0
+   - blinkColor1 and blinkColor2: Two alternating blink colors
+   - blinkInterval: Blinking interval time in milliseconds
 
-A3. Visual feedback: Provides immediate visual indication of state transitions
+3. Value Change Handling
+   - In value_changed() method, monitors transitions between 0 and 1 values
+   - Automatically starts/stops blinking based on selected mode and value transitions
+   - Maintains previous value state for comparison
 
-B. How It Works:
-B1. Value transition detection: Monitors bit value changes
+4. Indicator Color Update
+   - In update_indicators() method, determines which bits should blink
+   - Toggle mode: Only bits with value 1 blink
+   - Normal mode: Only bits with value 0 blink
+   - Non-blinking bits display normal on/off colors
 
-B2. Timer-based animation: Uses QTimer to alternate between two colors at specified intervals
-
-B3. Flexible configuration: Multiple properties allow customization of blinking behavior
-
-C. Use Cases:
-C1. Alarm indicators: Blinking draws attention to changing states
-
-C2. Status monitoring: Visual feedback for bit transitions
-
-C3. Control system interfaces: Enhanced visibility for important state changes   
+5. Backward Compatibility
+   - Default blinkOnChange = False ensures existing code remains unaffected
+   - All original functionality (layout, orientation, endianness, labels) preserved
+   - Blinking only activates when explicitly setting blinkOnChange = True
+   - Single unified class instead of separate classes for cleaner maintenance

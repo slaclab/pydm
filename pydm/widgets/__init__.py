@@ -1,7 +1,6 @@
 __all__ = [
     "PyDMChannel",
     "PyDMByteIndicator",
-    "PyDMBlinkByteIndicator",
     "PyDMMultiStateIndicator",
     "PyDMCheckbox",
     "PyDMDrawingLine",
@@ -46,7 +45,6 @@ __all__ = [
 
 from .channel import PyDMChannel
 from .byte import PyDMByteIndicator
-from .byte import PyDMBlinkByteIndicator
 from .byte import PyDMMultiStateIndicator
 from .checkbox import PyDMCheckbox
 from .drawing import (

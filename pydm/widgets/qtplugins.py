@@ -4,7 +4,6 @@ import os
 from pydm.utilities.iconfont import IconFont
 from .archiver_time_plot import PyDMArchiverTimePlot
 from .byte import PyDMByteIndicator
-from .byte import PyDMBlinkByteIndicator
 from .byte import PyDMMultiStateIndicator
 from .checkbox import PyDMCheckbox
 from .datetime import PyDMDateTimeEdit, PyDMDateTimeLabel
@@ -117,11 +116,6 @@ PyDMEventPlotPlugin = qtplugin_factory(
 # Byte plugin
 PyDMByteIndicatorPlugin = qtplugin_factory(
     PyDMByteIndicator, group=WidgetCategory.DISPLAY, extensions=BASE_EXTENSIONS, icon=ifont.icon("ellipsis-v")
-)
-
-# Blink Byte plugin
-PyDMBlinkByteIndicatorPlugin = qtplugin_factory(
-    PyDMBlinkByteIndicator, group=WidgetCategory.DISPLAY, extensions=BASE_EXTENSIONS, icon=ifont.icon("ellipsis-v")
 )
 
 # Multi-state plugin
