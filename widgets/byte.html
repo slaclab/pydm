@@ -479,6 +479,42 @@ according to the layout property values.</p>
 <p class="admonition-title">Note</p>
 <p>See <a class="reference external" href="https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QWidget.html">QWidget Documentation</a> for all inherited properties and methods.</p>
 </div>
+<p># Remove the separate PyDMBlinkByteIndicator class since its functionality is now integrated into PyDMByteIndicator
+# PyDMBlinkByteIndicator is no longer needed</p>
+<ol class="arabic">
+<li><p>Core Blinking Mechanism
+- Added QTimer for timed color switching
+- _toggle_blink_color() method alternates between two blink colors
+- _start_blinking() and _stop_blinking() methods control blinking start/stop</p></li>
+<li><p>Blinking Configuration Properties
+- blinkOnChange: Enables or disables blinking functionality
+- toggleMode: Selects blinking pattern:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Normal mode: Starts blinking when value changes from 1→0, stops when 0→1</p></li>
+<li><p>Toggle mode: Starts blinking when value changes from 0→1, stops when 1→0</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>blinkColor1 and blinkColor2: Two alternating blink colors</p></li>
+<li><p>blinkInterval: Blinking interval time in milliseconds</p></li>
+</ul>
+</li>
+<li><p>Value Change Handling
+- In value_changed() method, monitors transitions between 0 and 1 values
+- Automatically starts/stops blinking based on selected mode and value transitions
+- Maintains previous value state for comparison</p></li>
+<li><p>Indicator Color Update
+- In update_indicators() method, determines which bits should blink
+- Toggle mode: Only bits with value 1 blink
+- Normal mode: Only bits with value 0 blink
+- Non-blinking bits display normal on/off colors</p></li>
+<li><p>Backward Compatibility
+- Default blinkOnChange = False ensures existing code remains unaffected
+- All original functionality (layout, orientation, endianness, labels) preserved
+- Blinking only activates when explicitly setting blinkOnChange = True
+- Single unified class instead of separate classes for cleaner maintenance</p></li>
+</ol>
 </section>
 
 
