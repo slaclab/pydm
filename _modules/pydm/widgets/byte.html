@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.byte &mdash; PyDM 1.28.1 documentation</title>
+  <title>pydm.widgets.byte &mdash; PyDM 1.28.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.28.1
+                1.28.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -116,7 +116,7 @@
   <h1>Source code for pydm.widgets.byte</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QStyle</span><span class="p">,</span> <span class="n">QStyleOption</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QPen</span><span class="p">,</span> <span class="n">QFontMetrics</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">,</span> <span class="n">QPaintEvent</span><span class="p">,</span> <span class="n">QBrush</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QPoint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QSize</span><span class="p">,</span> <span class="n">QPoint</span><span class="p">,</span> <span class="n">QTimer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDMWidget</span><span class="p">,</span> <span class="n">PostParentClassInitSetup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">ACTIVE_QT_WRAPPER</span><span class="p">,</span> <span class="n">QtWrapperTypes</span>
@@ -191,7 +191,7 @@
 <div class="viewcode-block" id="PyDMByteIndicator"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PyDMByteIndicator</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">PyDMWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Widget for graphical representation of bits from an integer number</span>
-<span class="sd">    with support for Channels and more from PyDM</span>
+<span class="sd">    with support for Channels and more from PyDM, including blinking functionality.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -211,6 +211,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_disconnected_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+
+        <span class="c1"># Blinking properties</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_1</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Red</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_2</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Green</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blink_interval</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># ms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blink_on_change</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_toggle_mode</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_pen_style</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">SolidLine</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_line_pen</span> <span class="o">=</span> <span class="n">QPen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pen_style</span><span class="p">)</span>
@@ -232,6 +239,15 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_big_endian</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Blinking state variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_value</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_blinking</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blink_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blink_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_toggle_blink_color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_blink_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blink_state</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># False = color1, True = color2</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">numBits</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Need to set the property to initialize</span>
         <span class="c1"># _labels and _indicators setting numBits there also performs</span>
         <span class="c1"># the first rebuild_layout.</span>
@@ -241,7 +257,33 @@
         <span class="c1"># (so we can avoid pyside6 throwing an error, see func def for more info)</span>
         <span class="n">PostParentClassInitSetup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="c1"># On pyside6, we need to expilcity call pydm&#39;s base class&#39;s eventFilter() call or events</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_toggle_blink_color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Toggle between blink colors for blinking effect.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blink_state</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_blink_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_2</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_state</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_start_blinking</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Start the blinking timer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_blinking</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_blink_timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_blink_interval</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_stop_blinking</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stop the blinking timer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_blink_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_blinking</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_blink_state</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_current_blink_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_1</span>
+
+    <span class="c1"># On pyside6, we need to explicitly call pydm&#39;s base class&#39;s eventFilter() call or events</span>
     <span class="c1"># will not propagate to the parent classes properly.</span>
 <div class="viewcode-block" id="PyDMByteIndicator.eventFilter"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.eventFilter">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">PyDMWidget</span><span class="o">.</span><span class="n">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
@@ -267,6 +309,8 @@
 <span class="sd">            When this value is False the channel is disconnected, True otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">connection_changed</span><span class="p">(</span><span class="n">connected</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">connected</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_blinking</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PyDMByteIndicator.rebuild_layout"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.rebuild_layout">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">rebuild_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -341,10 +385,184 @@
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alarm_state</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                     <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_color</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_color</span> <span class="k">if</span> <span class="n">bit</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_on_change</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_blinking</span><span class="p">:</span>
+                        <span class="c1"># Determine which bits should blink based on toggle mode</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toggle_mode</span><span class="p">:</span>
+                            <span class="c1"># Toggle mode: blink only bits that are 1</span>
+                            <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_blink_color</span> <span class="k">if</span> <span class="n">bit</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="c1"># Normal mode: blink only bits that are 0</span>
+                            <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_blink_color</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">bit</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_color</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_color</span> <span class="k">if</span> <span class="n">bit</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_off_color</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnected_color</span>
             <span class="n">indicator</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyDMByteIndicator.value_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.value_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback invoked when the Channel value is changed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_val : int</span>
+<span class="sd">            The new value from the channel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_val_int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_on_change</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toggle_mode</span><span class="p">:</span>
+                    <span class="c1"># Toggle mode: Start blinking on 0-&gt;1, stop on 1-&gt;0</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_value</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">new_val_int</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_start_blinking</span><span class="p">()</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_value</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">new_val_int</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_blinking</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Normal mode: Start blinking on 1-&gt;0, stop on 0-&gt;1</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_value</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">new_val_int</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_start_blinking</span><span class="p">()</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_value</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">new_val_int</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_blinking</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_previous_value</span> <span class="o">=</span> <span class="n">new_val_int</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readBlinkOnChange"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readBlinkOnChange">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readBlinkOnChange</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether to enable blinking on value change.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_on_change</span></div>
+
+<div class="viewcode-block" id="PyDMByteIndicator.setBlinkOnChange"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setBlinkOnChange">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setBlinkOnChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blink</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Whether to enable blinking on value change.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        blink : bool</span>
+<span class="sd">            If True, enables blinking on value change</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">blink</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_on_change</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_blink_on_change</span> <span class="o">=</span> <span class="n">blink</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">blink</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_stop_blinking</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
+
+    <span class="n">blinkOnChange</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readBlinkOnChange</span><span class="p">,</span> <span class="n">setBlinkOnChange</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readToggleMode"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readToggleMode">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readToggleMode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the toggle mode state.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if toggle mode is enabled, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toggle_mode</span></div>
+
+<div class="viewcode-block" id="PyDMByteIndicator.setToggleMode"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setToggleMode">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setToggleMode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toggle</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the toggle mode.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        toggle : bool</span>
+<span class="sd">            If True, enables toggle mode (blink on 0-&gt;1, stop on 1-&gt;0)</span>
+<span class="sd">            If False, uses normal mode (blink on 1-&gt;0, stop on 0-&gt;1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">toggle</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toggle_mode</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_toggle_mode</span> <span class="o">=</span> <span class="n">toggle</span>
+            <span class="c1"># Stop any current blinking when changing modes</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_blinking</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
+
+    <span class="n">toggleMode</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">readToggleMode</span><span class="p">,</span> <span class="n">setToggleMode</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readBlinkColor1"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readBlinkColor1">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readBlinkColor1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The first color for blinking effect.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        QColor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_1</span></div>
+
+<div class="viewcode-block" id="PyDMByteIndicator.setBlinkColor1"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setBlinkColor1">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setBlinkColor1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The first color for blinking effect.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_color : QColor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_1</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_blinking</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_state</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_current_blink_color</span> <span class="o">=</span> <span class="n">new_color</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
+
+    <span class="n">blinkColor1</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readBlinkColor1</span><span class="p">,</span> <span class="n">setBlinkColor1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readBlinkColor2"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readBlinkColor2">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readBlinkColor2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The second color for blinking effect.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        QColor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_2</span></div>
+
+<div class="viewcode-block" id="PyDMByteIndicator.setBlinkColor2"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setBlinkColor2">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setBlinkColor2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_color</span><span class="p">:</span> <span class="n">QColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The second color for blinking effect.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_color : QColor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_blink_color_2</span> <span class="o">=</span> <span class="n">new_color</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_blinking</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_state</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_current_blink_color</span> <span class="o">=</span> <span class="n">new_color</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span></div>
+
+    <span class="n">blinkColor2</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">readBlinkColor2</span><span class="p">,</span> <span class="n">setBlinkColor2</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyDMByteIndicator.readBlinkInterval"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readBlinkInterval">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readBlinkInterval</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The interval for blinking in milliseconds.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_interval</span></div>
+
+<div class="viewcode-block" id="PyDMByteIndicator.setBlinkInterval"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.setBlinkInterval">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">setBlinkInterval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The interval for blinking in milliseconds.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        interval : int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">interval</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">interval</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_interval</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_blink_interval</span> <span class="o">=</span> <span class="n">interval</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blink_timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_blink_timer</span><span class="o">.</span><span class="n">setInterval</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span></div>
+
+    <span class="n">blinkInterval</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">readBlinkInterval</span><span class="p">,</span> <span class="n">setBlinkInterval</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PyDMByteIndicator.readOnColor"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.readOnColor">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">readOnColor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QColor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -630,22 +848,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_layout</span><span class="p">()</span></div>
 
     <span class="n">labels</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s2">&quot;QStringList&quot;</span><span class="p">,</span> <span class="n">readLabels</span><span class="p">,</span> <span class="n">setLabels</span><span class="p">)</span>
-
-<div class="viewcode-block" id="PyDMByteIndicator.value_changed"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.value_changed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Callback invoked when the Channel value is changed.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        new_val : int</span>
-<span class="sd">            The new value from the channel.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">value_changed</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="nb">int</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update_indicators</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="PyDMByteIndicator.paintEvent"><a class="viewcode-back" href="../../../widgets/byte.html#pydm.widgets.byte.PyDMByteIndicator.paintEvent">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">paintEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

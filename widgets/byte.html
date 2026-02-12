@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyDMByteIndicator &mdash; PyDM 1.28.1 documentation</title>
+  <title>PyDMByteIndicator &mdash; PyDM 1.28.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -38,7 +38,7 @@
             PyDM
           </a>
               <div class="version">
-                1.28.1
+                1.28.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -149,7 +149,7 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydm.widgets.byte.</span></span><span class="sig-name descname"><span class="pre">PyDMByteIndicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">QWidget</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code>, <a class="reference internal" href="PyDMWidget.html#pydm.widgets.base.PyDMWidget" title="pydm.widgets.base.PyDMWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDMWidget</span></code></a></p>
 <p>Widget for graphical representation of bits from an integer number
-with support for Channels and more from PyDM</p>
+with support for Channels and more from PyDM, including blinking functionality.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -227,6 +227,50 @@ so the specifics can be performed for each of the drawing classes.</p>
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.readBigEndian">
 <span class="sig-name descname"><span class="pre">readBigEndian</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.readBigEndian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.readBigEndian" title="Permalink to this definition"></a></dt>
 <dd><p>Whether the most significant bit is at the start or end of the widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.readBlinkColor1">
+<span class="sig-name descname"><span class="pre">readBlinkColor1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.readBlinkColor1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.readBlinkColor1" title="Permalink to this definition"></a></dt>
+<dd><p>The first color for blinking effect.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QColor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.readBlinkColor2">
+<span class="sig-name descname"><span class="pre">readBlinkColor2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.readBlinkColor2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.readBlinkColor2" title="Permalink to this definition"></a></dt>
+<dd><p>The second color for blinking effect.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QColor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.readBlinkInterval">
+<span class="sig-name descname"><span class="pre">readBlinkInterval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.readBlinkInterval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.readBlinkInterval" title="Permalink to this definition"></a></dt>
+<dd><p>The interval for blinking in milliseconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.readBlinkOnChange">
+<span class="sig-name descname"><span class="pre">readBlinkOnChange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.readBlinkOnChange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.readBlinkOnChange" title="Permalink to this definition"></a></dt>
+<dd><p>Whether to enable blinking on value change.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
@@ -334,6 +378,20 @@ so the specifics can be performed for each of the drawing classes.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.readToggleMode">
+<span class="sig-name descname"><span class="pre">readToggleMode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.readToggleMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.readToggleMode" title="Permalink to this definition"></a></dt>
+<dd><p>Get the toggle mode state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if toggle mode is enabled, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.rebuild_layout">
 <span class="sig-name descname"><span class="pre">rebuild_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.rebuild_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.rebuild_layout" title="Permalink to this definition"></a></dt>
 <dd><p>Method to reorganize the top-level widget and its contents
@@ -347,6 +405,50 @@ according to the layout property values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>is_big_endian</strong> (<em>bool</em>) – If True, the Big Endian will be used, Little Endian otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.setBlinkColor1">
+<span class="sig-name descname"><span class="pre">setBlinkColor1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QColor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.setBlinkColor1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setBlinkColor1" title="Permalink to this definition"></a></dt>
+<dd><p>The first color for blinking effect.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_color</strong> (<em>QColor</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.setBlinkColor2">
+<span class="sig-name descname"><span class="pre">setBlinkColor2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QColor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.setBlinkColor2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setBlinkColor2" title="Permalink to this definition"></a></dt>
+<dd><p>The second color for blinking effect.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_color</strong> (<em>QColor</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.setBlinkInterval">
+<span class="sig-name descname"><span class="pre">setBlinkInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.setBlinkInterval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setBlinkInterval" title="Permalink to this definition"></a></dt>
+<dd><p>The interval for blinking in milliseconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>interval</strong> (<em>int</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.setBlinkOnChange">
+<span class="sig-name descname"><span class="pre">setBlinkOnChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blink</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.setBlinkOnChange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setBlinkOnChange" title="Permalink to this definition"></a></dt>
+<dd><p>Whether to enable blinking on value change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blink</strong> (<em>bool</em>) – If True, enables blinking on value change</p>
 </dd>
 </dl>
 </dd></dl>
@@ -446,6 +548,18 @@ according to the layout property values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>show</strong> (<em>bool</em>) – If True the widget will show a label next to the bit indicator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydm.widgets.byte.PyDMByteIndicator.setToggleMode">
+<span class="sig-name descname"><span class="pre">setToggleMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toggle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydm/widgets/byte.html#PyDMByteIndicator.setToggleMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydm.widgets.byte.PyDMByteIndicator.setToggleMode" title="Permalink to this definition"></a></dt>
+<dd><p>Set the toggle mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>toggle</strong> (<em>bool</em>) – If True, enables toggle mode (blink on 0-&gt;1, stop on 1-&gt;0)
+If False, uses normal mode (blink on 1-&gt;0, stop on 0-&gt;1)</p>
 </dd>
 </dl>
 </dd></dl>

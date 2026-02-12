@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.utilities.units &mdash; PyDM 1.28.1 documentation</title>
+  <title>pydm.utilities.units &mdash; PyDM 1.28.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.28.1
+                1.28.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -114,61 +114,79 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pydm.utilities.units</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="n">tera</span> <span class="o">=</span> <span class="mf">1e12</span>
+<span class="n">giga</span> <span class="o">=</span> <span class="mf">1e9</span>
+<span class="n">mega</span> <span class="o">=</span> <span class="mf">1e6</span>
+<span class="n">kilo</span> <span class="o">=</span> <span class="mf">1e3</span>
+<span class="n">centi</span> <span class="o">=</span> <span class="mf">1e-2</span>
+<span class="n">milli</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<span class="n">micro</span> <span class="o">=</span> <span class="mf">1e-6</span>
+<span class="n">nano</span> <span class="o">=</span> <span class="mf">1e-9</span>
+<span class="n">pico</span> <span class="o">=</span> <span class="mf">1e-12</span>
+<span class="n">inch</span> <span class="o">=</span> <span class="mf">0.0254</span>
+<span class="n">foot</span> <span class="o">=</span> <span class="mi">12</span> <span class="o">*</span> <span class="n">inch</span>
+<span class="n">yard</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">foot</span>
+<span class="n">minute</span> <span class="o">=</span> <span class="mf">60.0</span>
+<span class="n">hour</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">minute</span>
+<span class="n">day</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="n">hour</span>
+<span class="n">week</span> <span class="o">=</span> <span class="mi">7</span> <span class="o">*</span> <span class="n">day</span>
+<span class="n">degree</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
 
 <span class="n">UNITS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;m&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;cm&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">centi</span><span class="p">,</span>
-        <span class="s2">&quot;mm&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">milli</span><span class="p">,</span>
-        <span class="s2">&quot;um&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">micro</span><span class="p">,</span>
-        <span class="s2">&quot;nm&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">nano</span><span class="p">,</span>
-        <span class="s2">&quot;pm&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">pico</span><span class="p">,</span>
-        <span class="s2">&quot;in&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">inch</span><span class="p">,</span>
-        <span class="s2">&quot;ft&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">foot</span><span class="p">,</span>
-        <span class="s2">&quot;yds&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">yard</span><span class="p">,</span>
+        <span class="s2">&quot;cm&quot;</span><span class="p">:</span> <span class="n">centi</span><span class="p">,</span>
+        <span class="s2">&quot;mm&quot;</span><span class="p">:</span> <span class="n">milli</span><span class="p">,</span>
+        <span class="s2">&quot;um&quot;</span><span class="p">:</span> <span class="n">micro</span><span class="p">,</span>
+        <span class="s2">&quot;nm&quot;</span><span class="p">:</span> <span class="n">nano</span><span class="p">,</span>
+        <span class="s2">&quot;pm&quot;</span><span class="p">:</span> <span class="n">pico</span><span class="p">,</span>
+        <span class="s2">&quot;in&quot;</span><span class="p">:</span> <span class="n">inch</span><span class="p">,</span>
+        <span class="s2">&quot;ft&quot;</span><span class="p">:</span> <span class="n">foot</span><span class="p">,</span>
+        <span class="s2">&quot;yds&quot;</span><span class="p">:</span> <span class="n">yard</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;ms&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">milli</span><span class="p">,</span>
-        <span class="s2">&quot;us&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">micro</span><span class="p">,</span>
-        <span class="s2">&quot;ns&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">nano</span><span class="p">,</span>
-        <span class="s2">&quot;ps&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">pico</span><span class="p">,</span>
-        <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span>
-        <span class="s2">&quot;hr&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span>
-        <span class="s2">&quot;weeks&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">week</span><span class="p">,</span>
-        <span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+        <span class="s2">&quot;ms&quot;</span><span class="p">:</span> <span class="n">milli</span><span class="p">,</span>
+        <span class="s2">&quot;us&quot;</span><span class="p">:</span> <span class="n">micro</span><span class="p">,</span>
+        <span class="s2">&quot;ns&quot;</span><span class="p">:</span> <span class="n">nano</span><span class="p">,</span>
+        <span class="s2">&quot;ps&quot;</span><span class="p">:</span> <span class="n">pico</span><span class="p">,</span>
+        <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">minute</span><span class="p">,</span>
+        <span class="s2">&quot;hr&quot;</span><span class="p">:</span> <span class="n">hour</span><span class="p">,</span>
+        <span class="s2">&quot;weeks&quot;</span><span class="p">:</span> <span class="n">week</span><span class="p">,</span>
+        <span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="n">day</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s2">&quot;frequency&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;Hz&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;kHz&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">kilo</span><span class="p">,</span>
-        <span class="s2">&quot;MHz&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">mega</span><span class="p">,</span>
-        <span class="s2">&quot;GHz&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">giga</span><span class="p">,</span>
-        <span class="s2">&quot;THz&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">tera</span><span class="p">,</span>
-        <span class="s2">&quot;mHz&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">milli</span><span class="p">,</span>
+        <span class="s2">&quot;kHz&quot;</span><span class="p">:</span> <span class="n">kilo</span><span class="p">,</span>
+        <span class="s2">&quot;MHz&quot;</span><span class="p">:</span> <span class="n">mega</span><span class="p">,</span>
+        <span class="s2">&quot;GHz&quot;</span><span class="p">:</span> <span class="n">giga</span><span class="p">,</span>
+        <span class="s2">&quot;THz&quot;</span><span class="p">:</span> <span class="n">tera</span><span class="p">,</span>
+        <span class="s2">&quot;mHz&quot;</span><span class="p">:</span> <span class="n">milli</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s2">&quot;angle&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;rad&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;mrad&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">milli</span><span class="p">,</span>
-        <span class="s2">&quot;urad&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">micro</span><span class="p">,</span>
-        <span class="s2">&quot;nrad&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">nano</span><span class="p">,</span>
-        <span class="s2">&quot;degree&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-        <span class="s2">&quot;turn&quot;</span><span class="p">:</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+        <span class="s2">&quot;mrad&quot;</span><span class="p">:</span> <span class="n">milli</span><span class="p">,</span>
+        <span class="s2">&quot;urad&quot;</span><span class="p">:</span> <span class="n">micro</span><span class="p">,</span>
+        <span class="s2">&quot;nrad&quot;</span><span class="p">:</span> <span class="n">nano</span><span class="p">,</span>
+        <span class="s2">&quot;degree&quot;</span><span class="p">:</span> <span class="n">degree</span><span class="p">,</span>
+        <span class="s2">&quot;turn&quot;</span><span class="p">:</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s2">&quot;voltage&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;V&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;MV&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">mega</span><span class="p">,</span>
-        <span class="s2">&quot;kV&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">kilo</span><span class="p">,</span>
-        <span class="s2">&quot;mV&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">milli</span><span class="p">,</span>
-        <span class="s2">&quot;uV&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">micro</span><span class="p">,</span>
+        <span class="s2">&quot;MV&quot;</span><span class="p">:</span> <span class="n">mega</span><span class="p">,</span>
+        <span class="s2">&quot;kV&quot;</span><span class="p">:</span> <span class="n">kilo</span><span class="p">,</span>
+        <span class="s2">&quot;mV&quot;</span><span class="p">:</span> <span class="n">milli</span><span class="p">,</span>
+        <span class="s2">&quot;uV&quot;</span><span class="p">:</span> <span class="n">micro</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s2">&quot;current&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;MA&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">mega</span><span class="p">,</span>
-        <span class="s2">&quot;kA&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">kilo</span><span class="p">,</span>
-        <span class="s2">&quot;mA&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">milli</span><span class="p">,</span>
-        <span class="s2">&quot;uA&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">micro</span><span class="p">,</span>
-        <span class="s2">&quot;nA&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">nano</span><span class="p">,</span>
+        <span class="s2">&quot;MA&quot;</span><span class="p">:</span> <span class="n">mega</span><span class="p">,</span>
+        <span class="s2">&quot;kA&quot;</span><span class="p">:</span> <span class="n">kilo</span><span class="p">,</span>
+        <span class="s2">&quot;mA&quot;</span><span class="p">:</span> <span class="n">milli</span><span class="p">,</span>
+        <span class="s2">&quot;uA&quot;</span><span class="p">:</span> <span class="n">micro</span><span class="p">,</span>
+        <span class="s2">&quot;nA&quot;</span><span class="p">:</span> <span class="n">nano</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
 
