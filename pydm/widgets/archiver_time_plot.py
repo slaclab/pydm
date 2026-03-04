@@ -213,6 +213,7 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     def receiveArchiveData(self, data: np.ndarray) -> None:
         """Receive data from archiver appliance and place it into the archive data buffer.
         Will overwrite any previously existing data at the indices written to.
+        Skips processing entirely when the curve is hidden.
 
         Parameters
         ----------
@@ -222,6 +223,9 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
             Additional indices may be used as well based on the type of request made to the archiver appliance.
             For example optimized data will include standard deviations, minimums, and maximums
         """
+        if not self.isVisible():
+            return
+
         archive_data_length = len(data[0])
         max_x = data[0][archive_data_length - 1]
 
@@ -247,7 +251,8 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         if data.shape[0] == 5:  # 5 indicates optimized data was requested from the archiver
             self.error_bar_data = data
             self.set_error_bar()
-            self.error_bar.show()
+            if self.isVisible():
+                self.error_bar.show()
         else:
             self.error_bar.hide()
 
@@ -293,7 +298,11 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
     def redrawCurve(self, min_x=None, max_x=None) -> None:
         """
         Redraw the curve with any new data added since the last draw call.
+        Skips rendering if the curve is not visible.
         """
+        if not self.isVisible():
+            return
+
         if self.archive_points_accumulated == 0:
             super().redrawCurve()
         else:
@@ -502,33 +511,51 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
 
     def receiveNewValue(self, new_value: float) -> None:
         """Fill incoming live data if requested by user.
+        Skips processing when the curve is hidden.
 
         Parameters
         ----------
         new_value : float
             The new y-value to append to the live data buffer
         """
+        if not self.isVisible():
+            return
         # Ignore incoming live data depending on user request
         if self._liveData:
             super().receiveNewValue(new_value)
 
+    def viewRangeChanged(self, vb=None, ranges=None, changed=None):
+        """Skip view range updates (triggered by scroll/zoom) when curve is hidden."""
+        if not self.isVisible():
+            return
+        super().viewRangeChanged(vb, ranges, changed)
+
     def setVisible(self, visible: bool) -> None:
-        """Propagate visibility changes to extension line and error bar."""
+        """Propagate visibility changes to extension line and error bar.
+        When hiding, clears the displayed curve data so it disappears immediately.
+        When showing, triggers a redraw to re-render from data buffers."""
         super().setVisible(visible)
         self._extension_line.setVisible(visible)
         self.error_bar.setVisible(visible)
+        if not visible:
+            self.setData([], [])
+        else:
+            self.data_changed.emit()
 
     def hide(self):
         """Propagate visibility changes to extension line and error bar."""
         super().hide()
         self._extension_line.hide()
         self.error_bar.hide()
+        self.setData([], [])
 
     def show(self):
-        """Propagate visibility changes to extension line and error bar."""
+        """Propagate visibility changes to extension line and error bar.
+        Re-renders the curve from existing data buffers."""
         super().show()
         self._extension_line.show()
         self.error_bar.show()
+        self.data_changed.emit()
 
 
 class FormulaCurveItem(BasePlotCurveItem):
@@ -904,7 +931,11 @@ class FormulaCurveItem(BasePlotCurveItem):
 
     @Slot()
     def redrawCurve(self, min_x=None, max_x=None) -> None:
-        """Redraw the curve with any new data added since the last draw call."""
+        """Redraw the curve with any new data added since the last draw call.
+        Skips rendering if the curve is not visible."""
+        if not self.isVisible():
+            return
+
         self.evaluate()
         try:
             archive_x = self.archive_data_buffer[0, -self.archive_points_accumulated :].astype(float)
@@ -1302,7 +1333,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             min_x = self._min_x
         for curve in self._curves:
             processing_command = ""
-            if curve.use_archive_data:
+            if curve.use_archive_data and curve.isVisible():
                 if requested_max is None:  # If the caller didn't request a max, use the oldest data from the curve
                     max_x = curve.min_x()
                 if not self._cache_data:
