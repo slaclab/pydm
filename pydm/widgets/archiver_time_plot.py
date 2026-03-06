@@ -401,23 +401,45 @@ class ArchivePlotCurveItem(TimePlotCurveItem):
         """Update the data in the ErrorBarItem. Applies log10 to the ErrorBarItem
         based on the curve's log mode.
         """
-        x_val = self.error_bar_data[0]
 
         if self.error_bar.getViewBox() is None:
             self.getViewBox().addItem(self.error_bar)
+
+        x_val = self.error_bar_data[0].astype(float)
+        mean_val = self.error_bar_data[1].astype(float)
+        min_val = self.error_bar_data[3].astype(float)
+        max_val = self.error_bar_data[4].astype(float)
+
+        # If multiple bins in a row contain the same data, don't display the error bars for every point,
+        # otherwise it ends up looking like a rectangle that hides the actual data points
+        same = np.zeros_like(mean_val, dtype=bool)
+
+        # Find any places where the data is not changing
+        same[1:] = (mean_val[1:] == mean_val[:-1]) & (min_val[1:] == min_val[:-1]) & (max_val[1:] == max_val[:-1])
+
+        keep = np.ones_like(mean_val, dtype=bool)
+        if same.size > 2:
+            # Drop error bars for unchanged data, keeping boundaries where a change does happen
+            keep[1:-1] = ~same[1:-1]
+            boundary = same[:-1] != same[1:]
+            keep[:-1] |= boundary
+            keep[1:] |= boundary
+
+        x_val = x_val[keep]
+        filtered_bars = self.error_bar_data[:, keep]
 
         # Calculate y-value and range for error bars
         logMode = self.opts["logMode"][1]
         if logMode:
             # If the curve's log mode is enabled, then apply numpy.log10 to all y-values
             with np.errstate(divide="ignore"):
-                y_val = np.log10(self.error_bar_data[1])
-                bot_val = y_val - np.log10(self.error_bar_data[3])
-                top_val = np.log10(self.error_bar_data[4]) - y_val
+                y_val = np.log10(filtered_bars[1])
+                bot_val = y_val - np.log10(filtered_bars[3])
+                top_val = np.log10(filtered_bars[4]) - y_val
         else:
-            y_val = self.error_bar_data[1]
-            bot_val = y_val - self.error_bar_data[3]
-            top_val = self.error_bar_data[4] - y_val
+            y_val = filtered_bars[1]
+            bot_val = y_val - filtered_bars[3]
+            top_val = filtered_bars[4] - y_val
 
         self.error_bar.setData(x=x_val, y=y_val, top=top_val, bottom=bot_val, beam=0.5)
 
