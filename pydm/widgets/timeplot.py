@@ -163,11 +163,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
             severity_slot=self.severityChanged,
         )
         self.channel.connect()
-
-        # Clear the data from the previous channel and redraw the curve
-        if self.points_accumulated:
-            self.initialize_buffer()
-            self.redrawCurve()
+        QTimer.singleShot(10, self.initialize_buffer)  # removes live point receives upon connection
 
     @property
     def plotByTimeStamps(self):
