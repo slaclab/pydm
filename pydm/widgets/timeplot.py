@@ -373,7 +373,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
     @Slot()
     def redrawCurve(self, min_x: Optional[float] = None, max_x: Optional[float] = None):
         """
-        Redraw the curve with the new data.
+        Redraw the curve with the new data. Skips rendering if the curve is not visible.
 
         If plot by timestamps, plot the x-axis with the timestamps as the ticks.
 
@@ -388,6 +388,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
         max_x: float, optional
             The maximum timestamp to render when plotting as a bar graph.
         """
+        if not self.isVisible():
+            return
+
         try:
             x = self.data_buffer[0, -self.points_accumulated :].astype(float)
             y = self.data_buffer[1, -self.points_accumulated :].astype(float)

@@ -64,6 +64,10 @@ class Connection(PyDMConnection):
             logger.error(f"Cannot fetch data for invalid data range, from date={from_date} and to date={to_date}")
             return
 
+        if from_date <= 0 or to_date <= 0:
+            logger.warning(f"Ignoring archive request with invalid timestamp, from date={from_date}, to date={to_date}")
+            return
+
         # Archiver expects timestamps to be in utc by default
         from_dt = datetime.fromtimestamp(from_date, tz=timezone.utc)
         to_dt = datetime.fromtimestamp(to_date, tz=timezone.utc)
