@@ -1182,6 +1182,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
         self._min_x = self._starting_timestamp - DEFAULT_TIME_SPAN
         self._prev_x = self._min_x  # Holds the minimum x-value of the previous update of the plot
         self._archive_request_queued = False
+        self._pending_archive_responses = 0
         self.setTimeSpan(DEFAULT_TIME_SPAN)
 
     @property
@@ -1259,7 +1260,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
             self._min_x = min_x
             self._max_x = max_x
             self.setTimeSpan(max_x - min_x)
-            if not self._archive_request_queued:
+            if not self._archive_request_queued and self._pending_archive_responses == 0:
                 self._archive_request_queued = True
                 QTimer.singleShot(self.request_cooldown, self.requestDataFromArchiver)
 
@@ -1300,6 +1301,7 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
            recorded yet, then defaults to the timestamp at which the plot was first rendered.
         """
         req_queued = False
+        requests_sent = 0
         requested_max = max_x
         if min_x is None:
             min_x = self._min_x
@@ -1323,7 +1325,9 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                     processing_command = "optimized_" + str(optimized_data_bins)
                 curve.archive_data_request_signal.emit(min_x, max_x - 1, processing_command)
                 req_queued |= True
+                requests_sent += 1
 
+        self._pending_archive_responses += requests_sent
         if not req_queued:
             self._archive_request_queued = False
         else:
@@ -1367,8 +1371,13 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
     @Slot()
     def archive_data_received(self):
         """Take any action needed when this plot receives new data from archiver appliance"""
+        if self._pending_archive_responses > 0:
+            self._pending_archive_responses -= 1
+
+        if self._pending_archive_responses == 0:
+            self.archive_request_finished.emit()
+
         self._archive_request_queued = False
-        self.archive_request_finished.emit()
         if self.auto_scroll_timer.isActive() or not self._show_all:
             return
 
