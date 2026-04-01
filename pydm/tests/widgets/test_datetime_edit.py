@@ -44,7 +44,7 @@ def test_construct(qtbot, init_channel):
     assert pydm_datetimeedit.timeBase == TimeBase.Milliseconds
 
 
-@pytest.mark.xfailif(
+@pytest.mark.xfail(
     platform.system() == "Windows",
     reason="These tests will fail on Windows, we can't easily modify time",
 )
