@@ -126,6 +126,9 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
 
         if self.timeBase == TimeBase.Seconds:
             new_value /= 1000.0
+
+        # Force to the same base type as the data source, else qt can cast the pointer wrong
+        new_value = self.channeltype(new_value)
         self.send_value_signal[self.channeltype].emit(new_value)
 
     def value_changed(self, new_val):
