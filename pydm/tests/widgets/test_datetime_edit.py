@@ -84,10 +84,6 @@ def test_value_changed(qtbot, signals, value, expected_value):
     expected_value : str
         The expected displayed value of the widget
     """
-    # These tests will fail on Windows, we can't easily modify time
-    if platform.system() == "Windows":
-        return
-
     os.environ["TZ"] = "America/New_York"
     time.tzset()
 
