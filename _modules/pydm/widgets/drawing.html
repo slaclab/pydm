@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pydm.widgets.drawing &mdash; PyDM 1.28.2 documentation</title>
+  <title>pydm.widgets.drawing &mdash; PyDM 1.28.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
             PyDM
           </a>
               <div class="version">
-                1.28.2
+                1.28.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -467,8 +467,8 @@
 <span class="sd">            Index at Qt.PenStyle enum or int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># pyside6 enums are more strict and will error if passed int</span>
-        <span class="c1"># if isinstance(new_style, int):</span>
-        <span class="c1">#    new_style = Qt.PenStyle(new_style)</span>
+        <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_style</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">new_style</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">PenCapStyle</span><span class="p">(</span><span class="n">new_style</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">new_style</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_cap_style</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen_cap_style</span> <span class="o">=</span> <span class="n">new_style</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setCapStyle</span><span class="p">(</span><span class="n">new_style</span><span class="p">)</span>
@@ -497,6 +497,9 @@
 <span class="sd">        new_style : int</span>
 <span class="sd">            Index at Qt.PenStyle enum or int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># pyside6 enums are more strict and will error if passed int</span>
+        <span class="k">if</span> <span class="n">ACTIVE_QT_WRAPPER</span> <span class="o">==</span> <span class="n">QtWrapperTypes</span><span class="o">.</span><span class="n">PYSIDE6</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_style</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">new_style</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">PenJoinStyle</span><span class="p">(</span><span class="n">new_style</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">new_style</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pen_join_style</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen_join_style</span> <span class="o">=</span> <span class="n">new_style</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pen</span><span class="o">.</span><span class="n">setJoinStyle</span><span class="p">(</span><span class="n">new_style</span><span class="p">)</span>
