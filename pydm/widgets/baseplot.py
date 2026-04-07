@@ -31,6 +31,10 @@ else:
     from PyQt5.QtCore import pyqtProperty as Property
 
 
+def pen_style_to_int(pen_style) -> int:
+    return pen_style if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5 else pen_style.value
+
+
 class NoDataError(Exception):
     """NoDataError is raised when a curve tries to perform an operation,
     but does not yet have any data."""
@@ -431,7 +435,7 @@ class BasePlotCurveItem(PlotDataItem):
             [
                 ("name", self.name()),
                 ("color", self.color_string),
-                ("lineStyle", self.lineStyle.value),
+                ("lineStyle", pen_style_to_int(self.lineStyle)),
                 ("lineWidth", self.lineWidth),
                 ("symbol", self.symbol),
                 ("symbolSize", self.symbolSize),

@@ -10,7 +10,7 @@ from qtpy.QtCore import QTimer, Qt, QPointF
 from qtpy.QtWidgets import QWidget
 
 from collections import OrderedDict
-from pydm.widgets.baseplot import BasePlotCurveItem, BasePlot
+from pydm.widgets.baseplot import BasePlotCurveItem, BasePlot, pen_style_to_int
 
 
 logger = logging.getLogger(__name__)
@@ -70,7 +70,7 @@ def test_baseplotcurveitem_to_dict(qtbot):
     assert isinstance(dictionary, OrderedDict)
     assert dictionary["name"] == base_plotcurve_item.name()
     assert dictionary["color"] == base_plotcurve_item.color_string
-    assert dictionary["lineStyle"] == base_plotcurve_item.lineStyle.value
+    assert dictionary["lineStyle"] == pen_style_to_int(base_plotcurve_item.lineStyle)
     assert dictionary["lineWidth"] == base_plotcurve_item.lineWidth
     assert dictionary["symbol"] == base_plotcurve_item.symbol
     assert dictionary["symbolSize"] == base_plotcurve_item.symbolSize
