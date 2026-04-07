@@ -846,6 +846,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
                     self.timer.timeout.connect(
                         lambda: self._check_process_done(action, original_button_text, original_action_text)
                     )
+                    self.destroyed.connect(self.timer.stop)
                     self.timer.start()
 
             except Exception as exc:
