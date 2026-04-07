@@ -70,7 +70,7 @@ def test_baseplotcurveitem_to_dict(qtbot):
     assert isinstance(dictionary, OrderedDict)
     assert dictionary["name"] == base_plotcurve_item.name()
     assert dictionary["color"] == base_plotcurve_item.color_string
-    assert dictionary["lineStyle"] == base_plotcurve_item.lineStyle
+    assert dictionary["lineStyle"] == base_plotcurve_item.lineStyle.value
     assert dictionary["lineWidth"] == base_plotcurve_item.lineWidth
     assert dictionary["symbol"] == base_plotcurve_item.symbol
     assert dictionary["symbolSize"] == base_plotcurve_item.symbolSize

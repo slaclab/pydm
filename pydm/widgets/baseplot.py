@@ -431,7 +431,7 @@ class BasePlotCurveItem(PlotDataItem):
             [
                 ("name", self.name()),
                 ("color", self.color_string),
-                ("lineStyle", self.lineStyle),
+                ("lineStyle", self.lineStyle.value),
                 ("lineWidth", self.lineWidth),
                 ("symbol", self.symbol),
                 ("symbolSize", self.symbolSize),
