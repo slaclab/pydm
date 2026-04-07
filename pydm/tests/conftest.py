@@ -130,7 +130,9 @@ def qapp(qapp_args):
     if "pytest-qt-qapp" == qapp_args[0]:
         qapp_args.remove("pytest-qt-qapp")
 
-    yield PyDMApplication(use_main_window=False, *qapp_args)
+    app = PyDMApplication(use_main_window=False, *qapp_args)
+    yield app
+    app.aboutToQuit.emit()  # Force signal emission on pytest environment
 
 
 @pytest.fixture(scope="session")
