@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock
 
 from pydm.data_plugins import PyDMPlugin
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 from pydm.widgets.channel import PyDMChannel
 
 
@@ -86,7 +87,13 @@ def assert_all_signal_receivers(connection, expected_receivers):
 
     for signal_name in signals:
         signal = getattr(connection, signal_name)
-        assert connection.receivers(signal) == expected_receivers
+        if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+            from qtpy.QtCore import QMetaMethod, SIGNAL
+
+            signal_name = bytes(QMetaMethod.fromSignal(signal).methodSignature().data()).decode()
+            assert connection.receivers(SIGNAL(signal_name)) == expected_receivers
+        else:
+            assert connection.receivers(signal) == expected_receivers
 
 
 def create_channel(address, value_signal):
