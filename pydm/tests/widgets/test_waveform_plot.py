@@ -2,6 +2,7 @@ import numpy as np
 from pyqtgraph import BarGraphItem
 from unittest import mock
 from unittest.mock import MagicMock, patch
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 from pydm.widgets.waveformplot import PyDMWaveformPlot, WaveformCurveItem
 
 
@@ -180,8 +181,13 @@ def test_redrawPlot_with_crosshair():
     widget.mapFromGlobal = MagicMock(return_value=dummy_local_pos)
     widget.mapToScene = MagicMock(return_value=dummy_scene_pos)
 
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+        patch_path = "PySide6.QtGui.QCursor.pos"
+    else:
+        patch_path = "PyQt5.QtGui.QCursor.pos"
+
     # Patch QCursor.pos to return dummy_global_pos.
-    with patch("PyQt5.QtGui.QCursor.pos", return_value=dummy_global_pos):
+    with patch(patch_path, return_value=dummy_global_pos):
         # Set up a dummy plotItem with sceneBoundingRect() and vb.mapSceneToView().
         dummy_rect = MagicMock()
         dummy_rect.contains.return_value = True  # Indicate scene_pos is within bounds
