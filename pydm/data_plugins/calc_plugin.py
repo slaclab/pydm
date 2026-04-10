@@ -57,7 +57,7 @@ class CalcThread(QThread):
     def __init__(self, config, *args, **kwargs):
         QThread.__init__(self, *args, **kwargs)
         self.app = QApplication.instance()
-        self.app.aboutToQuit.connect(self.requestInterruption)
+        self.app.aboutToQuit.connect(self.close)
 
         self.config = config
         self.listen_for_update = None
@@ -113,6 +113,10 @@ class CalcThread(QThread):
                 break
             self.calculate_expression()
         self._disconnect()
+
+    def close(self):
+        self.requestInterruption()
+        self._calculate.set()
 
     def callback_value(self, name, value):
         """
@@ -238,7 +242,8 @@ class Connection(PyDMConnection):
             logger.debug("Value was not available yet for calc.")
 
     def close(self):
-        self._calc_thread.requestInterruption()
+        self._calc_thread.close()
+        self._calc_thread.wait()
 
 
 class CalculationPlugin(PyDMPlugin):
