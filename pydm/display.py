@@ -14,7 +14,9 @@ from typing import Dict, Optional, Tuple
 
 import re
 import six
-from qtpy.QtWidgets import QApplication, QWidget
+import xml.etree.ElementTree as ET
+
+from qtpy.QtWidgets import QApplication, QMainWindow, QWidget
 
 from .help_files import HelpWindow
 from .utilities import import_module_by_filename, is_pydm_app, macro, ACTIVE_QT_WRAPPER, QtWrapperTypes
@@ -186,6 +188,26 @@ def _load_compiled_ui_into_display(
     display.ui = display
 
 
+def _get_ui_root_widget_class(uifile):
+    """Return the class name of the root widget defined in a .ui file.
+
+    Parameters
+    ----------
+    uifile : str
+        Path to the .ui file.
+
+    Returns
+    -------
+    str
+        The root widget class name (e.g. ``"QWidget"``, ``"QMainWindow"``).
+    """
+    tree = ET.parse(uifile)
+    widget_elem = tree.getroot().find("widget")
+    if widget_elem is not None:
+        return widget_elem.get("class", "QWidget")
+    return "QWidget"
+
+
 def load_ui_file(uifile, macros=None, args=None):
     """
     Load a .ui file, perform macro substitution, then return the resulting QWidget.
@@ -207,7 +229,11 @@ def load_ui_file(uifile, macros=None, args=None):
     QWidget
     """
 
-    display = Display(macros=macros)
+    root_class = _get_ui_root_widget_class(uifile)
+    if root_class == "QMainWindow":
+        display = MainWindowDisplay(macros=macros)
+    else:
+        display = Display(macros=macros)
     display.load_ui_from_file(uifile, macros)
     return display
 
@@ -483,3 +509,67 @@ class Display(QWidget):
                 self._local_style = f.read()
         logger.debug("Setting stylesheet to: %s", self._local_style)
         super().setStyleSheet(self._local_style)
+
+
+class MainWindowDisplay(QMainWindow):
+    """Display subclass backed by QMainWindow for .ui files that use QMainWindow
+    as their root widget.
+
+    Provides the same interface as :class:`Display` so the rest of pydm can
+    treat it interchangeably.
+
+    Parameters
+    ----------
+    parent : QWidget, optional
+        The parent widget.
+    macros : dict, optional
+        Macro substitutions for the display.
+    """
+
+    def __init__(self, parent=None, macros=None):
+        super().__init__(parent)
+        self.ui = None
+        self.help_window = None
+        self._loaded_file = None
+        self._macros = macros
+        self._previous_display = None
+        self._next_display = None
+        self._local_style = ""
+
+    def loaded_file(self):
+        return self._loaded_file
+
+    @property
+    def previous_display(self):
+        return self._previous_display
+
+    @previous_display.setter
+    def previous_display(self, display):
+        self._previous_display = display
+
+    @property
+    def next_display(self):
+        return self._next_display
+
+    @next_display.setter
+    def next_display(self, display):
+        self._next_display = display
+
+    def macros(self):
+        if self._macros is None:
+            return {}
+        return self._macros
+
+    def load_ui_from_file(self, ui_file_path, macros=None):
+        """Load the .ui file and populate this window.
+
+        Parameters
+        ----------
+        ui_file_path : str
+            Path to the .ui file.
+        macros : dict, optional
+            Macro substitutions.
+        """
+        self._loaded_file = ui_file_path
+        code_string, class_name = _compile_ui_file(ui_file_path)
+        _load_compiled_ui_into_display(code_string, class_name, self, macros)
