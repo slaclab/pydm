@@ -281,6 +281,7 @@ PyDMTemplateRepeaterPlugin = qtplugin_factory(
 # Terminator Widget plugin
 PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator, group=WidgetCategory.MISC, extensions=BASE_EXTENSIONS)
 
+
 # **********************************************
 # NOTE: Add in new PyDM widgets above this line.
 # **********************************************
@@ -288,7 +289,9 @@ def is_designer_widget(WidgetCls: type) -> bool:
     """
     Returns True if the object is a designer plugin class that is usable in designer.
     """
-    return inspect.isclass(WidgetCls) and issubclass(WidgetCls, PyDMDesignerPlugin) and WidgetCls is not PyDMDesignerPlugin
+    return (
+        inspect.isclass(WidgetCls) and issubclass(WidgetCls, PyDMDesignerPlugin) and WidgetCls is not PyDMDesignerPlugin
+    )
 
 
 def get_pydm_custom_widgets() -> dict[str, type[PyDMDesignerPlugin]]:
