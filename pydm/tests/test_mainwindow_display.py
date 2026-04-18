@@ -39,3 +39,29 @@ def test_load_mainwindow_ui_does_not_crash(qtbot):
     qtbot.addWidget(display)
     assert hasattr(display, "setCentralWidget")
     assert display.centralWidget() is not None
+
+
+def test_mainwindow_display_has_full_display_interface(qtbot):
+    """MainWindowDisplay should have all Display methods so isinstance checks
+    and navigation/menu/macro features work correctly.
+
+    Parameters
+    ----------
+    qtbot : fixture
+        pytest-qt fixture for widget management.
+    """
+    display = load_ui_file(MAINWINDOW_UI)
+    qtbot.addWidget(display)
+
+    assert hasattr(display, "args")
+    assert hasattr(display, "macros")
+    assert hasattr(display, "loaded_file")
+    assert hasattr(display, "menu_items")
+    assert hasattr(display, "file_menu_items")
+    assert hasattr(display, "show_help")
+    assert hasattr(display, "navigate_back")
+    assert hasattr(display, "navigate_forward")
+    assert hasattr(display, "load_ui_from_file")
+    assert hasattr(display, "load_help_file")
+    assert hasattr(display, "previous_display")
+    assert hasattr(display, "next_display")

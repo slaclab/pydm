@@ -355,9 +355,26 @@ _extension_to_loader = {
 }
 
 
-class Display(QWidget):
-    def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
-        super().__init__(parent)
+class DisplayBase:
+    """Shared implementation for display-like widgets.
+
+    Provides navigation, macro handling, file loading, and stylesheet
+    support.  Mixed into both :class:`Display` (QWidget-based) and
+    :class:`MainWindowDisplay` (QMainWindow-based).
+    """
+
+    def _init_display(self, args=None, macros=None, ui_filename=None):
+        """Initialize display state.  Must be called from subclass ``__init__``.
+
+        Parameters
+        ----------
+        args : list, optional
+            Command-line arguments forwarded to the display.
+        macros : dict, optional
+            Macro substitutions.
+        ui_filename : str, optional
+            Filename of the .ui file to load.
+        """
         self.ui = None
         self.help_window = None
         self._ui_filename = ui_filename
@@ -367,8 +384,6 @@ class Display(QWidget):
         self._previous_display = None
         self._next_display = None
         self._local_style = ""
-        if ui_filename or self.ui_filename():
-            self.load_ui(macros=macros)
 
     def loaded_file(self):
         return self._loaded_file
@@ -511,12 +526,21 @@ class Display(QWidget):
         super().setStyleSheet(self._local_style)
 
 
-class MainWindowDisplay(QMainWindow):
-    """Display subclass backed by QMainWindow for .ui files that use QMainWindow
-    as their root widget.
+class Display(DisplayBase, QWidget):
+    def __init__(self, parent=None, args=None, macros=None, ui_filename=None):
+        super().__init__(parent)
+        self._init_display(args=args, macros=macros, ui_filename=ui_filename)
+        if ui_filename or self.ui_filename():
+            self.load_ui(macros=macros)
 
-    Provides the same interface as :class:`Display` so the rest of pydm can
-    treat it interchangeably.
+
+class MainWindowDisplay(DisplayBase, QMainWindow):
+    """Display backed by QMainWindow for .ui files that use QMainWindow as
+    their root widget.
+
+    Inherits the full display interface from :class:`DisplayBase` so it
+    passes ``isinstance(widget, Display)`` checks used throughout pydm for
+    navigation, menu items, macro propagation, and help support.
 
     Parameters
     ----------
@@ -528,48 +552,4 @@ class MainWindowDisplay(QMainWindow):
 
     def __init__(self, parent=None, macros=None):
         super().__init__(parent)
-        self.ui = None
-        self.help_window = None
-        self._loaded_file = None
-        self._macros = macros
-        self._previous_display = None
-        self._next_display = None
-        self._local_style = ""
-
-    def loaded_file(self):
-        return self._loaded_file
-
-    @property
-    def previous_display(self):
-        return self._previous_display
-
-    @previous_display.setter
-    def previous_display(self, display):
-        self._previous_display = display
-
-    @property
-    def next_display(self):
-        return self._next_display
-
-    @next_display.setter
-    def next_display(self, display):
-        self._next_display = display
-
-    def macros(self):
-        if self._macros is None:
-            return {}
-        return self._macros
-
-    def load_ui_from_file(self, ui_file_path, macros=None):
-        """Load the .ui file and populate this window.
-
-        Parameters
-        ----------
-        ui_file_path : str
-            Path to the .ui file.
-        macros : dict, optional
-            Macro substitutions.
-        """
-        self._loaded_file = ui_file_path
-        code_string, class_name = _compile_ui_file(ui_file_path)
-        _load_compiled_ui_into_display(code_string, class_name, self, macros)
+        self._init_display(macros=macros)

@@ -14,7 +14,7 @@ from qtpy.QtCore import Qt, QEvent, Signal, Slot
 from .channel import PyDMChannel
 from pydm import data_plugins, tools, config
 from pydm.utilities import is_qt_designer, remove_protocol
-from pydm.display import Display
+from pydm.display import Display, DisplayBase
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -368,7 +368,7 @@ class PyDMPrimitiveWidget(object):
     def find_parent_display(self):
         widget = self.parent()
         while widget is not None:
-            if isinstance(widget, Display):
+            if isinstance(widget, DisplayBase):
                 return widget
             widget = widget.parent()
         return None
