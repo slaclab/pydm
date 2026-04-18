@@ -114,7 +114,8 @@ class ImageUpdateThread(QThread):
             return
         logging.debug("ImageUpdateThread - Will Process Image")
         img = self.image_view.process_image(img)
-        if normalize_data:
+        is_rgb = len(img.shape) == 3 and img.shape[2] in (3, 4)
+        if is_rgb or normalize_data:
             mini = img.min()
             maxi = img.max()
         else:
