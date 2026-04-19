@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   test-pyqt5:
-    if: ${{ github.repository == 'slaclab/pydm' || github.repository == 'YektaY/pydm' }}
+    if: ${{ github.repository == 'slaclab/pydm' }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
