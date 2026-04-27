@@ -261,6 +261,8 @@ class QScaleAlarmed(QScale):
         ----------
         event : QPaintEvent
         """
+        if self.width() <= 0 or self.height() <= 0:
+            return
         self.adjust_transformation()
         self._painter.begin(self)
         self._painter.translate(0, self._painter_translation_y)  # Draw vertically if needed
