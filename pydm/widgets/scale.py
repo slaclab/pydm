@@ -491,6 +491,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         """
         self.limits_layout = None
         self.widget_layout = None
+        r = self._grid_row_offset()
         if new_orientation == Qt.Horizontal or new_orientation == 1:
             self.limits_layout = QHBoxLayout()
             if not inverted:
@@ -503,21 +504,21 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             self.widget_layout = QGridLayout()
             if not flipped:
                 if value_position == Qt.LeftEdge:
-                    self.widget_layout.addWidget(self.value_label, 0, 0)
-                    self.widget_layout.addWidget(self.scale_indicator, 0, 1)
-                    self.widget_layout.addItem(self.limits_layout, 1, 1)
+                    self.widget_layout.addWidget(self.value_label, r, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, r, 1)
+                    self.widget_layout.addItem(self.limits_layout, r + 1, 1)
                 elif value_position == Qt.RightEdge:
-                    self.widget_layout.addWidget(self.value_label, 0, 1)
-                    self.widget_layout.addWidget(self.scale_indicator, 0, 0)
-                    self.widget_layout.addItem(self.limits_layout, 1, 0)
+                    self.widget_layout.addWidget(self.value_label, r, 1)
+                    self.widget_layout.addWidget(self.scale_indicator, r, 0)
+                    self.widget_layout.addItem(self.limits_layout, r + 1, 0)
                 elif value_position == Qt.TopEdge:
-                    self.widget_layout.addWidget(self.value_label, 0, 0)
-                    self.widget_layout.addWidget(self.scale_indicator, 1, 0)
-                    self.widget_layout.addItem(self.limits_layout, 2, 0)
+                    self.widget_layout.addWidget(self.value_label, r, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, r + 1, 0)
+                    self.widget_layout.addItem(self.limits_layout, r + 2, 0)
                 elif value_position == Qt.BottomEdge:
-                    self.widget_layout.addWidget(self.scale_indicator, 0, 0)
-                    self.widget_layout.addItem(self.limits_layout, 1, 0)
-                    self.widget_layout.addWidget(self.value_label, 2, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, r, 0)
+                    self.widget_layout.addItem(self.limits_layout, r + 1, 0)
+                    self.widget_layout.addWidget(self.value_label, r + 2, 0)
 
                 if not inverted:
                     self.lower_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
@@ -527,21 +528,21 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
                     self.upper_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
             else:
                 if value_position == Qt.LeftEdge:
-                    self.widget_layout.addItem(self.limits_layout, 0, 1)
-                    self.widget_layout.addWidget(self.scale_indicator, 1, 1)
-                    self.widget_layout.addWidget(self.value_label, 1, 0)
+                    self.widget_layout.addItem(self.limits_layout, r, 1)
+                    self.widget_layout.addWidget(self.scale_indicator, r + 1, 1)
+                    self.widget_layout.addWidget(self.value_label, r + 1, 0)
                 elif value_position == Qt.RightEdge:
-                    self.widget_layout.addItem(self.limits_layout, 0, 0)
-                    self.widget_layout.addWidget(self.scale_indicator, 1, 0)
-                    self.widget_layout.addWidget(self.value_label, 1, 1)
+                    self.widget_layout.addItem(self.limits_layout, r, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, r + 1, 0)
+                    self.widget_layout.addWidget(self.value_label, r + 1, 1)
                 elif value_position == Qt.TopEdge:
-                    self.widget_layout.addWidget(self.value_label, 0, 0)
-                    self.widget_layout.addItem(self.limits_layout, 1, 0)
-                    self.widget_layout.addWidget(self.scale_indicator, 2, 0)
+                    self.widget_layout.addWidget(self.value_label, r, 0)
+                    self.widget_layout.addItem(self.limits_layout, r + 1, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, r + 2, 0)
                 elif value_position == Qt.BottomEdge:
-                    self.widget_layout.addItem(self.limits_layout, 0, 0)
-                    self.widget_layout.addWidget(self.scale_indicator, 1, 0)
-                    self.widget_layout.addWidget(self.value_label, 2, 0)
+                    self.widget_layout.addItem(self.limits_layout, r, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, r + 1, 0)
+                    self.widget_layout.addWidget(self.value_label, r + 2, 0)
 
                 if not inverted:
                     self.lower_label.setAlignment(Qt.AlignBottom | Qt.AlignLeft)
@@ -574,20 +575,20 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             self.widget_layout = QGridLayout()
             if not flipped:
                 if value_position == Qt.LeftEdge:
-                    self.widget_layout.addWidget(self.value_label, 0, 0)
-                    self.widget_layout.addWidget(self.scale_indicator, 0, 1)
-                    self.widget_layout.addItem(self.limits_layout, 0, 2)
+                    self.widget_layout.addWidget(self.value_label, r, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, r, 1)
+                    self.widget_layout.addItem(self.limits_layout, r, 2)
                 elif value_position == Qt.RightEdge:
-                    self.widget_layout.addWidget(self.scale_indicator, 0, 0)
-                    self.widget_layout.addItem(self.limits_layout, 0, 1)
+                    self.widget_layout.addWidget(self.scale_indicator, r, 0)
+                    self.widget_layout.addItem(self.limits_layout, r, 1)
                 elif value_position == Qt.TopEdge:
-                    self.widget_layout.addWidget(self.value_label, 0, 0, 1, 2)
-                    self.widget_layout.addWidget(self.scale_indicator, 1, 0)
-                    self.widget_layout.addItem(self.limits_layout, 1, 1)
+                    self.widget_layout.addWidget(self.value_label, r, 0, 1, 2)
+                    self.widget_layout.addWidget(self.scale_indicator, r + 1, 0)
+                    self.widget_layout.addItem(self.limits_layout, r + 1, 1)
                 elif value_position == Qt.BottomEdge:
-                    self.widget_layout.addWidget(self.scale_indicator, 0, 0)
-                    self.widget_layout.addItem(self.limits_layout, 0, 1)
-                    self.widget_layout.addWidget(self.value_label, 1, 0, 1, 2)
+                    self.widget_layout.addWidget(self.scale_indicator, r, 0)
+                    self.widget_layout.addItem(self.limits_layout, r, 1)
+                    self.widget_layout.addWidget(self.value_label, r + 1, 0, 1, 2)
 
                 if not inverted:
                     self.lower_label.setAlignment(Qt.AlignLeft | Qt.AlignBottom)
@@ -597,20 +598,20 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
                     self.upper_label.setAlignment(Qt.AlignLeft | Qt.AlignBottom)
             else:
                 if value_position == Qt.LeftEdge:
-                    self.widget_layout.addItem(self.limits_layout, 0, 1)
-                    self.widget_layout.addWidget(self.scale_indicator, 0, 2)
+                    self.widget_layout.addItem(self.limits_layout, r, 1)
+                    self.widget_layout.addWidget(self.scale_indicator, r, 2)
                 elif value_position == Qt.RightEdge:
-                    self.widget_layout.addItem(self.limits_layout, 0, 0)
-                    self.widget_layout.addWidget(self.scale_indicator, 0, 1)
-                    self.widget_layout.addWidget(self.value_label, 0, 2)
+                    self.widget_layout.addItem(self.limits_layout, r, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, r, 1)
+                    self.widget_layout.addWidget(self.value_label, r, 2)
                 elif value_position == Qt.TopEdge:
-                    self.widget_layout.addWidget(self.value_label, 0, 0, 1, 2)
-                    self.widget_layout.addItem(self.limits_layout, 1, 0)
-                    self.widget_layout.addWidget(self.scale_indicator, 1, 1)
+                    self.widget_layout.addWidget(self.value_label, r, 0, 1, 2)
+                    self.widget_layout.addItem(self.limits_layout, r + 1, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, r + 1, 1)
                 elif value_position == Qt.BottomEdge:
-                    self.widget_layout.addItem(self.limits_layout, 0, 0)
-                    self.widget_layout.addWidget(self.scale_indicator, 0, 1)
-                    self.widget_layout.addWidget(self.value_label, 1, 0, 1, 2)
+                    self.widget_layout.addItem(self.limits_layout, r, 0)
+                    self.widget_layout.addWidget(self.scale_indicator, r, 1)
+                    self.widget_layout.addWidget(self.value_label, r + 1, 0, 1, 2)
 
                 if not inverted:
                     self.lower_label.setAlignment(Qt.AlignRight | Qt.AlignBottom)
@@ -626,6 +627,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             QWidget().setLayout(self.layout())
         self.widget_layout.setContentsMargins(1, 1, 1, 1)
         self.setLayout(self.widget_layout)
+
+    def _grid_row_offset(self) -> int:
+        return 0
 
     def readShowValue(self) -> bool:
         """
