@@ -90,6 +90,9 @@ def qtplugin_factory(
     class Plugin(PyDMDesignerPlugin):
         __doc__ = "PyDMDesigner Plugin for {}".format(cls.__name__)
 
+        plugin_name = cls.__name__
+        plugin_group = group
+
         def __init__(self):
             super().__init__(cls, is_container, group, extensions, icon)
 
@@ -101,6 +104,9 @@ class PyDMDesignerPlugin(BASE_PLUGIN_CLASS):
     Parent class to standardize how pydm plugins are accessed in qt designer.
     All functions have default returns that can be overridden as necessary.
     """
+
+    plugin_name: str
+    plugin_group: str
 
     def __init__(
         self,

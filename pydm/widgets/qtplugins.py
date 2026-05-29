@@ -1,5 +1,7 @@
+import inspect
 import logging
 import os
+from collections import defaultdict
 
 from pydm.utilities.iconfont import IconFont
 from .archiver_time_plot import PyDMArchiverTimePlot
@@ -30,7 +32,7 @@ from .label import PyDMLabel
 from .line_edit import PyDMLineEdit
 from .logdisplay import PyDMLogDisplay
 from .pushbutton import PyDMPushButton
-from .qtplugin_base import WidgetCategory, get_widgets_from_entrypoints, qtplugin_factory
+from .qtplugin_base import PyDMDesignerPlugin, WidgetCategory, get_widgets_from_entrypoints, qtplugin_factory
 from .qtplugin_extensions import (
     ArchiveTimeCurveEditorExtension,
     BasicSettingsExtension,
@@ -279,9 +281,68 @@ PyDMTemplateRepeaterPlugin = qtplugin_factory(
 # Terminator Widget plugin
 PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator, group=WidgetCategory.MISC, extensions=BASE_EXTENSIONS)
 
+
 # **********************************************
 # NOTE: Add in new PyDM widgets above this line.
 # **********************************************
+def is_designer_widget(WidgetCls: type) -> bool:
+    """
+    Returns True if the object is a designer plugin class that is usable in designer.
+    """
+    return (
+        inspect.isclass(WidgetCls) and issubclass(WidgetCls, PyDMDesignerPlugin) and WidgetCls is not PyDMDesignerPlugin
+    )
 
-# Add in designer widget plugins from other classes via entrypoints:
-globals().update(**get_widgets_from_entrypoints())
+
+def get_pydm_custom_widgets() -> dict[str, type[PyDMDesignerPlugin]]:
+    """
+    Returns a dictionary of all the widgets defined by PyDM itself.
+    """
+    return {key: value for key, value in globals().items() if is_designer_widget(value)}
+
+
+def get_all_custom_widgets_in_order() -> list[type[PyDMDesignerPlugin]]:
+    """
+    Yields all custom widgets in the order they should be presented to designer.
+
+    The order matters and determines how the groups are ordered and how
+    widgets within each group are order.
+
+    Widgets are added in the order they are encountered, creating new groups as necessary.
+    There is no sorting done. This is especially unfortunate for entrypoint widgets,
+    which always load alphabetically by widget name in per-library chunks, leading to a
+    chaotic group ordering by default.
+
+    Here we will sort in the following way:
+    1. PyDM widget groups in the same order as their corresponding built-in groups
+    2. PyDM widget groups with no corresponding built-in groups in alphabetical order
+    3. Entrypoint widgets groups in alphabetical order
+
+    Within each group, we will sort widget names alphabetically,
+    because doing this manually or randomly lead to extra work or confusing results.
+    """
+    pydm_widgets_by_group: dict[str, list[type[PyDMDesignerPlugin]]] = defaultdict(list)
+    for plugin in get_pydm_custom_widgets().values():
+        pydm_widgets_by_group[plugin.plugin_group].append(plugin)
+
+    entrypoint_widgets_by_group: dict[str, list[type[PyDMDesignerPlugin]]] = defaultdict(list)
+    for plugin in get_widgets_from_entrypoints().values():
+        entrypoint_widgets_by_group[plugin.plugin_group].append(plugin)
+
+    all_custom_widgets = []
+    standard_category_order = (
+        WidgetCategory.CONTAINER,
+        WidgetCategory.INPUT,
+        WidgetCategory.DISPLAY,
+        WidgetCategory.PLOT,
+        WidgetCategory.DRAWING,
+        WidgetCategory.MISC,
+    )
+    for category in standard_category_order:
+        all_custom_widgets.extend(sorted(pydm_widgets_by_group[category], key=lambda pl: pl.plugin_name))
+    for category in pydm_widgets_by_group:
+        if category not in standard_category_order:
+            all_custom_widgets.extend(sorted(pydm_widgets_by_group[category], key=lambda pl: pl.plugin_name))
+    for category in sorted(entrypoint_widgets_by_group):
+        all_custom_widgets.extend(sorted(entrypoint_widgets_by_group[category], key=lambda pl: pl.plugin_name))
+    return all_custom_widgets

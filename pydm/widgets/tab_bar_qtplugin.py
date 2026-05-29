@@ -8,6 +8,9 @@ class TabWidgetPlugin(PyDMDesignerPlugin):
 
     TabClass = PyDMTabWidget
 
+    plugin_name = "TabWidgetPlugin"
+    plugin_group = WidgetCategory.CONTAINER
+
     def __init__(self, extensions=None):
         super().__init__(self.TabClass, group=WidgetCategory.CONTAINER, extensions=extensions)
 
