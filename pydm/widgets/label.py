@@ -60,8 +60,6 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         self._display_format_type = self.DisplayFormat.Default
         self._string_encoding = "utf_8"
         self._enable_rich_text = False
-
-        print('correct code bro')
         self._display_label_text = False
 
         if is_pydm_app():
