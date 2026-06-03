@@ -60,6 +60,10 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         self._display_format_type = self.DisplayFormat.Default
         self._string_encoding = "utf_8"
         self._enable_rich_text = False
+
+        print('correct code bro')
+        self._display_label_text = False
+
         if is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
         # Execute setup calls that must be done here in the widget class's __init__,
@@ -67,7 +71,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         # (so we can avoid pyside6 throwing an error, see func def for more info)
         PostParentClassInitSetup(self)
 
-    # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
+    # On pyside6, we need to explicitly call pydm's base class's eventFilter() call or events
     # will not propagate to the parent classes properly.
     def eventFilter(self, obj, event):
         return PyDMWidget.eventFilter(self, obj, event)
@@ -86,6 +90,14 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
             self.setTextFormat(Qt.PlainText)
 
     enableRichText = Property(bool, readEnableRichText, setEnableRichText)
+
+    def readDisplayLabelText(self):
+        return self._display_label_text
+
+    def setDisplayLabelText(self, new_value):
+        self._display_label_text = new_value
+
+    displayLabelText = Property(bool, readDisplayLabelText, setDisplayLabelText)
 
     def readDisplayFormat(self):
         """
@@ -118,6 +130,9 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
             The new value from the channel. The type depends on the channel.
         """
         super().value_changed(new_value)
+        if self._display_label_text:
+            return
+
         new_value = parse_value_for_display(
             value=new_value,
             precision=self.precision,
@@ -152,6 +167,6 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
     @only_if_channel_set
     def check_enable_state(self):
         """If the channel this label is connected to becomes disconnected, display only the name of the channel."""
-        if not self._connected:
+        if not self._connected and not self._display_label_text:
             self.setText(self.channel)
         super().check_enable_state()
