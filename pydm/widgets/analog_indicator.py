@@ -1,6 +1,6 @@
 from .base import PyDMWidget
 from qtpy.QtGui import QColor, QPolygon, QPainter, QFontMetrics
-from qtpy.QtWidgets import QFrame, QSizePolicy
+from qtpy.QtWidgets import QFrame, QLabel, QSizePolicy
 from qtpy.QtCore import Qt, QPoint, QSize
 from .scale import QScale, PyDMScaleIndicator
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
@@ -261,6 +261,8 @@ class QScaleAlarmed(QScale):
         ----------
         event : QPaintEvent
         """
+        if self.width() <= 0 or self.height() <= 0:
+            return
         self.adjust_transformation()
         self._painter.begin(self)
         self._painter.translate(0, self._painter_translation_y)  # Draw vertically if needed
@@ -419,6 +421,10 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         self._show_limits = False
         self.scale_indicator = QScaleAlarmed()
 
+        self.title_label = QLabel()
+        self.title_label.setAlignment(Qt.AlignCenter)
+        self.title_label.hide()
+
         self._value_position = Qt.RightEdge
         self._minor_alarm_from_channel = True
         self._major_alarm_from_channel = True
@@ -437,6 +443,31 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         makes default size nice when dragging into designer nice
         """
         return QSize(250, 70)
+
+    def _grid_row_offset(self):
+        return 1 if hasattr(self, "title_label") else 0
+
+    def setup_widgets_for_orientation(self, new_orientation, flipped, inverted, value_position):
+        super().setup_widgets_for_orientation(new_orientation, flipped, inverted, value_position)
+        if hasattr(self, "title_label"):
+            num_cols = self.widget_layout.columnCount()
+            self.widget_layout.addWidget(self.title_label, 0, 0, 1, num_cols)
+
+    def readTitle(self) -> str:
+        return self.title_label.text()
+
+    def setTitle(self, title: str) -> None:
+        title = str(title)
+        self.title_label.setText(title)
+        if title:
+            self.title_label.show()
+        else:
+            self.title_label.hide()
+
+    def resetTitle(self) -> None:
+        self.setTitle("")
+
+    title = Property(str, readTitle, setTitle, resetTitle)
 
     def lower_warning_limit_changed(self, new_minor_alarm):
         """
