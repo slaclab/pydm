@@ -81,7 +81,7 @@ Ready to contribute? Here's how to set up `pydm` for local development.
     $ pip install -r dev-requirements.txt
     $ pip install -r docs-requirements.txt
 
-5: Now you should be able to launch pydm as follows:
+5. Now you should be able to launch pydm as follows::
 
     $ export QT_API=pyqt5 # or `export QT_AP=pyside6`, this determines which python wrapper pydm will use (chosen wrapper must be installed in the curr conda env).
     $ pydm # launches an empty main-window

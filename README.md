@@ -56,10 +56,10 @@ be used to install all requirements from pip: 'pip install -r requirements.txt'
 
 # Getting Started
 For developers who wish to contribute to PyDM and modify the source code, please follow the "Getting Started!"
-instructions found here: https://github.com/slaclab/pydm/blob/master/CONTRIBUTING.rst#get-started.
+instructions found [here.](https://github.com/slaclab/pydm/blob/master/CONTRIBUTING.rst#get-started)
 
 For users who want to just install and run PyDM, follow the "Installation"
-instructions found in the docs: https://slaclab.github.io/pydm/installation.html
+instructions found in the [docs.](https://slaclab.github.io/pydm/installation.html)
 
 # Running the Tests
 In order to run the tests you will need to install some dependencies that are
