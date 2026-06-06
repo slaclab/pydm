@@ -254,11 +254,27 @@ class WaveformCurveItem(BasePlotCurveItem):
         self.needs_new_y = True
 
     def _setCurveData(self):
-        """Sets the most recently received waveform data for display as a line graph."""
-        if self.x_waveform is None:
-            self.setData(y=self.y_waveform.astype(float))
-            return
-        self.setData(x=self.x_waveform.astype(float), y=self.y_waveform.astype(float))
+        """Set waveform data for display as a line graph.
+
+        When only a single data point is present and no symbol has been
+        configured, a circle marker is shown automatically so the point
+        remains visible.  The marker is removed when additional points
+        arrive.
+        """
+        y = self.y_waveform.astype(float)
+        x = self.x_waveform.astype(float) if self.x_waveform is not None else None
+
+        if y.shape[0] == 1 and self.opts.get("symbol") is None:
+            self.setSymbol("o")
+            self._auto_symbol = True
+        elif y.shape[0] > 1 and getattr(self, "_auto_symbol", False):
+            self.setSymbol(None)
+            self._auto_symbol = False
+
+        if x is None:
+            self.setData(y=y)
+        else:
+            self.setData(x=x, y=y)
 
     def _setBarGraphItem(self):
         """Sets the most recently received waveform data for display as a bar graph."""
