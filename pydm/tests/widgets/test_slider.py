@@ -152,7 +152,16 @@ def test_getHandleRect(slider_fixture, request):
 def test_getPositions(slider_fixture, request):
     """Test getPositions method."""
     test_slider = request.getfixturevalue(slider_fixture)
-    event = QMouseEvent(QEvent.MouseButtonPress, QPoint(50, 10), Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+    pos = QPoint(50, 10)
+    event = QMouseEvent(
+        QEvent.MouseButtonPress,
+        pos,  # local position
+        pos,  # window position
+        pos,  # screen position
+        Qt.LeftButton,
+        Qt.LeftButton,
+        Qt.NoModifier,
+    )
     handle_pos, click_pos = test_slider.getPositions(event)
     assert isinstance(handle_pos, float)
     assert isinstance(click_pos, int)

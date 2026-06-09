@@ -81,7 +81,7 @@ def test_scatterplotcurveitem_to_dict(qtbot, y_addr, x_addr, redraw_mode, buffer
         assert dictionary["name"] == name
 
 
-@pytest.mark.parametrize("new_address", ["new_address", "", None])
+@pytest.mark.parametrize("new_address", ["ca://new_address", "", None])
 def test_scatterplotcurveitem_properties_and_setters(qtbot, new_address):
     plot_curve_item = ScatterPlotCurveItem(new_address, new_address, bufferSizeChannelAddress=new_address)
 
