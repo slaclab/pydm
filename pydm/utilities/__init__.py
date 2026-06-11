@@ -94,7 +94,10 @@ def setup_renderer():
         from qtpy.QtQuick import QQuickWindow, QSGRendererInterface
 
         QCoreApplication.setAttribute(Qt.AA_UseSoftwareOpenGL)
-        QQuickWindow.setSceneGraphBackend(QSGRendererInterface.Software)
+        try:
+            QQuickWindow.setSceneGraphBackend(QSGRendererInterface.Software)
+        except TypeError:
+            QQuickWindow.setSceneGraphBackend("software")
 
 
 def is_pydm_app(app=None):
