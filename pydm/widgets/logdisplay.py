@@ -21,7 +21,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +111,23 @@ class LogLevels(object):
         return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
 
 
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+    from enum import IntEnum
+
+    class LogLevels(IntEnum):  # noqa F811
+        NOTSET = 0
+        DEBUG = 10
+        INFO = 20
+        WARNING = 30
+        ERROR = 40
+        CRITICAL = 50
+
+        @staticmethod
+        def as_dict():
+            entries = [(name, member.value) for name, member in LogLevels.__members__.items()]
+            return OrderedDict(sorted(entries, key=lambda item: item[1]))
+
+
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
     from enum import Enum
@@ -162,6 +179,10 @@ class PyDMLogDisplay(QWidget):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(LogLevels)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        LogLevels = pyqt6_designer_enum("PyDMLogDisplay", LogLevels)
     LogLevels = LogLevels
 
     # Make enum definitions known to this class
@@ -207,6 +228,13 @@ class PyDMLogDisplay(QWidget):
         self.log = None
         self.level = None
         self.logName = logname or ""
+        if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+            # PyQt6 enum properties won't accept a bare int; coerce the logging
+            # level into a LogLevels member (leave custom levels untouched).
+            try:
+                level = LogLevels(level)
+            except ValueError:
+                pass
         self.logLevel = level
         self.destroyed.connect(functools.partial(logger_destroyed, self.log))
 

@@ -15,7 +15,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 logger = logging.getLogger(__name__)
 
@@ -124,6 +124,12 @@ class LayoutType(object):
     Flow = 2
 
 
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+    from pydm.utilities import int_enum_from
+
+    LayoutType = int_enum_from("LayoutType", LayoutType)
+
+
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
     from enum import Enum
@@ -167,6 +173,10 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(LayoutType)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        LayoutType = pyqt6_designer_enum("PyDMTemplateRepeater", LayoutType)
     LayoutType = LayoutType
 
     # Make enum definitions known to this class

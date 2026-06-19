@@ -21,12 +21,18 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 
 class WidgetType(object):
     PushButton = 0
     RadioButton = 1
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+    from pydm.utilities import int_enum_from
+
+    WidgetType = int_enum_from("WidgetType", WidgetType)
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -69,6 +75,10 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(WidgetType)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        WidgetType = pyqt6_designer_enum("PyDMEnumButton", WidgetType)
     WidgetType = WidgetType
 
     # Make enum definitions known to this class

@@ -26,6 +26,12 @@ class DisplayFormat(object):
     Binary = 5
 
 
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+    from pydm.utilities import int_enum_from
+
+    DisplayFormat = int_enum_from("DisplayFormat", DisplayFormat)
+
+
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
     from enum import Enum

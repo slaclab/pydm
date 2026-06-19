@@ -13,7 +13,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +23,12 @@ class ReadingOrder(object):
 
     Fortranlike = 0
     Clike = 1
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+    from pydm.utilities import int_enum_from
+
+    ReadingOrder = int_enum_from("ReadingOrder", ReadingOrder)
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -56,6 +62,12 @@ class DimensionOrder(object):
 
     HeightFirst = 0
     WidthFirst = 1
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+    from pydm.utilities import int_enum_from
+
+    DimensionOrder = int_enum_from("DimensionOrder", DimensionOrder)
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -161,6 +173,12 @@ class PyDMImageView(ImageView, PyDMWidget):
         Q_ENUM(ReadingOrder)
         Q_ENUM(DimensionOrder)
         Q_ENUM(PyDMColorMap)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        ReadingOrder = pyqt6_designer_enum("PyDMImageView", ReadingOrder)
+        DimensionOrder = pyqt6_designer_enum("PyDMImageView", DimensionOrder)
+        PyDMColorMap = pyqt6_designer_enum("PyDMImageView", PyDMColorMap)
 
     # Make enum definitions known to this class
     Fortranlike = ReadingOrder.Fortranlike

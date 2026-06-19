@@ -15,7 +15,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 import logging
 
@@ -39,6 +39,12 @@ class updateMode(object):
 
     OnValueChange = 1
     AtFixedRate = 2
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+    from pydm.utilities import int_enum_from
+
+    updateMode = int_enum_from("updateMode", updateMode)
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -497,6 +503,14 @@ class PyDMTimePlot(BasePlot):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(updateMode)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        updateMode = pyqt6_designer_enum("PyDMTimePlot", updateMode)
+        # The Property defined below is also named "updateMode" and would replace
+        # this enum in the class namespace before PyQt6 registers it. Keep a
+        # reference under another name so it is still published as an enum type.
+        _updateMode_enum = updateMode
     updateMode = updateMode
 
     # Make enum definitions known to this class

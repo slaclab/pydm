@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 
 BASE_PLUGIN_CLASS = type
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
     BASE_PLUGIN_CLASS = QtDesigner.QPyDesignerCustomWidgetPlugin
 elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     BASE_PLUGIN_CLASS = QtDesigner.QDesignerCustomWidgetInterface
