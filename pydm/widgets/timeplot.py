@@ -10,7 +10,6 @@ from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
 from pydm.utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from datetime import datetime
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -41,21 +40,13 @@ class updateMode(object):
     AtFixedRate = 2
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     from pydm.utilities import int_enum_from
 
+    # Both Qt6 bindings need a real enum here (PyQt5 keeps the plain int-attribute class
+    # above). int_enum_from returns an IntEnum, so members stay equal to their int value,
+    # which the `value == updateMode.AtFixedRate` checks elsewhere in this module rely on.
     updateMode = int_enum_from("updateMode", updateMode)
-
-
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-    from PySide6.QtCore import QEnum
-    from enum import Enum
-
-    @QEnum
-    # overrides prev enum def
-    class updateMode(Enum):  # noqa F811
-        OnValueChange = 1
-        AtFixedRate = 2
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
@@ -846,8 +837,13 @@ class PyDMTimePlot(BasePlot):
                 yAxisName=d.get("yAxisName"),
             )
 
-    # Set to True under PyQt6 only since setting to False leads to an error on saving
-    curves = Property("QStringList", getCurves, setCurves, designable=ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6)
+    # Set to True on Qt6. With designable=False the curve editor fails to save in Designer ("Unable to set property")
+    curves = Property(
+        "QStringList",
+        getCurves,
+        setCurves,
+        designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6),
+    )
 
     def findCurve(self, pv_name):
         """
@@ -1037,7 +1033,8 @@ class PyDMTimePlot(BasePlot):
         -------
         updateMode
         """
-        return self._updateMode
+        # Property is int-typed under PySide6 (see prop_type below); return int there.
+        return int(self._updateMode) if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else self._updateMode
 
     def setUpdateMode(self, new_type) -> None:
         """
@@ -1051,7 +1048,11 @@ class PyDMTimePlot(BasePlot):
             self._updateMode = new_type
             self.setUpdatesAsynchronously(self._updateMode)
 
-    updateMode = Property(updateMode, readUpdateMode, setUpdateMode)
+    # PySide6 exposes this as a plain int field: its module-level QEnum never registered on
+    # the class, so Designer reported the property as an unsupported PyObjectWrapper. int keeps
+    # it editable/saveable (no dropdown, consistent with the other enum props under PySide6).
+    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else updateMode
+    updateMode = Property(prop_type, readUpdateMode, setUpdateMode)
 
     def getTimeSpan(self):
         """

@@ -363,8 +363,10 @@ class PyDMPrimitiveWidget(object):
             except JSONDecodeError:
                 logger.exception("Invalid format for Rules")
 
-    # Set to True under PyQt6 only since setting to False leads to an error on saving
-    rules = Property(str, readRules, setRules, designable=ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6)
+    # Set to True on Qt6. With designable=False the curve editor fails to save in Designer ("Unable to set property")
+    rules = Property(
+        str, readRules, setRules, designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6)
+    )
 
     def find_parent_display(self):
         widget = self.parent()

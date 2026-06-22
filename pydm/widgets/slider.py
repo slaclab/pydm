@@ -527,11 +527,12 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
         new_orientation : Qt.Orientation
             Qt.Horizontal or Qt.Vertical
         """
+        if isinstance(new_orientation, int):
+            new_orientation = Qt.Orientation(new_orientation)
         self._orientation = new_orientation
         self.setup_widgets_for_orientation(new_orientation)
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Orientation
-    orientation = Property(prop_type, readOrientation, setOrientation)
+    orientation = Property(Qt.Orientation, readOrientation, setOrientation)
 
     def setup_widgets_for_orientation(self, new_orientation):
         """

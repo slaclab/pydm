@@ -243,12 +243,13 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         -------
         new_orientation : Qt.Orientation, int
         """
+        if isinstance(new_orientation, int):
+            new_orientation = Qt.Orientation(new_orientation)
         if new_orientation != self._orientation:
             self._orientation = new_orientation
             self.rebuild_layout()
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Orientation
-    orientation = Property(prop_type, readOrientation, setOrientation)
+    orientation = Property(Qt.Orientation, readOrientation, setOrientation)
 
     def readMarginTop(self) -> int:
         """

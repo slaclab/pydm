@@ -1142,10 +1142,13 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if self.getShowYGrid() or self.getShowXGrid():
             self.plotItem.updateGrid()
 
-    # designable=False keeps the raw JSON out of the Designer property grid, but the PyQt6
-    # designer bridge then refuses to commit it via the curve editor's cursor().setProperty();
-    # expose it under PyQt6 so edits save (stays hidden under PyQt5/PySide6).
-    yAxes = Property("QStringList", getYAxes, setYAxes, designable=ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6)
+    # Set to True on Qt6. With designable=False the curve editor fails to save in Designer ("Unable to set property")
+    yAxes = Property(
+        "QStringList",
+        getYAxes,
+        setYAxes,
+        designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6),
+    )
 
     def getBottomAxisLabel(self) -> str:
         return self.getAxis("bottom").labelText

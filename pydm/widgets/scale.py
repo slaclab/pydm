@@ -732,11 +732,12 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         new_orientation : int
             Qt.Horizontal or Qt.Vertical
         """
+        if isinstance(orientation, int):
+            orientation = Qt.Orientation(orientation)
         self.scale_indicator.set_orientation(orientation)
         self.setup_widgets_for_orientation(orientation, self.flipScale, self.invertedAppearance, self._value_position)
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Orientation
-    orientation = Property(prop_type, readOrientation, setOrientation)
+    orientation = Property(Qt.Orientation, readOrientation, setOrientation)
 
     def readFlipScale(self) -> bool:
         """
@@ -984,11 +985,12 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
          position : int
              Qt.TopEdge, Qt.BottomEdge, Qt.LeftEdge or Qt.RightEdge
         """
+        if isinstance(position, int):
+            position = Qt.Edge(position)
         self._value_position = position
         self.setup_widgets_for_orientation(self.orientation, self.flipScale, self.invertedAppearance, position)
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Edge
-    valuePosition = Property(prop_type, readValuePosition, setValuePosition)
+    valuePosition = Property(Qt.Edge, readValuePosition, setValuePosition)
 
     def readOriginAtZero(self) -> bool:
         """

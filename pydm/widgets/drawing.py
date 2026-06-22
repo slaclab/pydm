@@ -5,7 +5,7 @@ import logging
 
 from qtpy.QtWidgets import QWidget, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPainter, QBrush, QPen, QPolygonF, QPixmap, QMovie
-from qtpy.QtCore import Qt, QPoint, QPointF, QSize, Slot, QTimer, QRectF
+from qtpy.QtCore import Qt, QPointF, QSize, Slot, QTimer, QRectF
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .base import PyDMWidget, PostParentClassInitSetup
 from pydm.utilities import is_qt_designer, find_file
@@ -327,8 +327,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setStyle(new_style)
             self.update()
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.PenStyle
-    penStyle = Property(prop_type, readPenStyle, setPenStyle)
+    penStyle = Property(Qt.PenStyle, readPenStyle, setPenStyle)
 
     def readPenCapStyle(self) -> int | Qt.PenCapStyle:
         """
@@ -358,8 +357,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setCapStyle(new_style)
             self.update()
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.PenCapStyle
-    penCapStyle = Property(prop_type, readPenCapStyle, setPenCapStyle)
+    penCapStyle = Property(Qt.PenCapStyle, readPenCapStyle, setPenCapStyle)
 
     def readPenJoinStyle(self) -> int | Qt.PenJoinStyle:
         """
@@ -389,8 +387,7 @@ class PyDMDrawing(QWidget, PyDMWidget):
             self._pen.setJoinStyle(new_style)
             self.update()
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.PenJoinStyle
-    penJoinStyle = Property(prop_type, readPenJoinStyle, setPenJoinStyle)
+    penJoinStyle = Property(Qt.PenJoinStyle, readPenJoinStyle, setPenJoinStyle)
 
     def readPenColor(self) -> QColor:
         """
@@ -1079,8 +1076,7 @@ class PyDMDrawingImage(PyDMDrawing):
             self._aspect_ratio_mode = new_mode
             self.update()
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.AspectRatioMode
-    aspectRatioMode = Property(prop_type, readAspectRatioMode, setAspectRatioMode)
+    aspectRatioMode = Property(Qt.AspectRatioMode, readAspectRatioMode, setAspectRatioMode)
 
     def draw_item(self, painter):
         """
@@ -1215,7 +1211,9 @@ class PyDMDrawingEllipse(PyDMDrawing):
         super().draw_item(painter)
         maxsize = not self.is_square()
         _, _, w, h = self.get_bounds(maxsize=maxsize)
-        painter.drawEllipse(QPoint(0, 0), w / 2.0, h / 2.0)
+        # QPointF (not QPoint) so the float-radii drawEllipse overload matches under
+        # PyQt6's strict overload resolution (PyQt5/PySide6 coerce, PyQt6 does not).
+        painter.drawEllipse(QPointF(0, 0), w / 2.0, h / 2.0)
 
 
 class PyDMDrawingCircle(PyDMDrawing):
@@ -1245,7 +1243,9 @@ class PyDMDrawingCircle(PyDMDrawing):
         super().draw_item(painter)
         _, _, w, h = self.get_bounds()
         r = self._calculate_radius(w, h)
-        painter.drawEllipse(QPoint(0, 0), r, r)
+        # QPointF (not QPoint) so the float-radii drawEllipse overload matches under
+        # PyQt6's strict overload resolution (PyQt5/PySide6 coerce, PyQt6 does not).
+        painter.drawEllipse(QPointF(0, 0), r, r)
 
 
 class PyDMDrawingArc(PyDMDrawing):

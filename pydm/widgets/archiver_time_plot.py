@@ -1496,8 +1496,13 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 liveData=d.get("liveData"),
             )
 
-    # Set to True under PyQt6 only since setting to False leads to an error on saving
-    curves = Property("QStringList", getCurves, setCurves, designable=ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6)
+    # Set to True on Qt6. With designable=False the curve editor fails to save in Designer ("Unable to set property")
+    curves = Property(
+        "QStringList",
+        getCurves,
+        setCurves,
+        designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6),
+    )
 
     def addYChannel(
         self,

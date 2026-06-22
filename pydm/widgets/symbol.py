@@ -163,8 +163,7 @@ class PyDMSymbol(QWidget, PyDMWidget):
             self._aspect_ratio_mode = new_mode
             self.update()
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.AspectRatioMode
-    aspectRatioMode = Property(prop_type, readAspectRatioMode, setAspectRatioMode)
+    aspectRatioMode = Property(Qt.AspectRatioMode, readAspectRatioMode, setAspectRatioMode)
 
     def connection_changed(self, connected):
         """

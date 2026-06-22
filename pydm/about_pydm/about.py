@@ -27,7 +27,7 @@ class AboutWindow(QWidget):
         self.ui.setupUi(self)
         self.ui.pydmVersionLabel.setText(str(self.ui.pydmVersionLabel.text()).format(version=pydm.__version__))
         pyver = ".".join([str(v) for v in sys.version_info[0:3]])
-        python_binding_name = "PyQt" if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5 else "PySide"
+        python_binding_name = "PyQt" if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6) else "PySide"
         self.ui.modulesVersionLabel.setText(
             str(self.ui.modulesVersionLabel.text()).format(
                 pyver=pyver,
