@@ -48,17 +48,26 @@ def test_reimplemented_ui_filename(qtbot):
     qtbot.addWidget(my_display)
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
+    # Both PyQt wrappers compile .ui in-process via uic.compileUi and raise on a missing
+    # file, but the exception type differs: PyQt5 raises IOError, while PyQt6's uic wraps
+    # it in its own UIFileException.
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from PyQt6.uic.exceptions import UIFileException
 
-    def test_nonexistent_ui_file_raises_pyqt5(qtbot):
-        with pytest.raises(IOError):
+        _expected_ui_error = UIFileException
+    else:
+        _expected_ui_error = IOError
+
+    def test_nonexistent_ui_file_raises_pyqt(qtbot):
+        with pytest.raises(_expected_ui_error):
             Display(parent=None, ui_filename="this_doesnt_exist.ui")
 
         class TestDisplay(Display):
             def ui_filename(self):
                 return "this_doesnt_exist.ui"
 
-        with pytest.raises(IOError):
+        with pytest.raises(_expected_ui_error):
             TestDisplay(parent=None)
 
 else:  # pyside6

@@ -247,7 +247,8 @@ class PyDMLogDisplay(QWidget):
     def setLogLevel(self, level) -> None:
         if level != self.level:
             self.level = level
-            idx = self.combo.findData(level)
+            # Search by the int value (getattr handles both an enum member and an int across all three Qt wrappers).
+            idx = self.combo.findData(getattr(level, "value", level))
             self.combo.setCurrentIndex(idx)
 
     logLevel = Property(LogLevels, readLogLevel, setLogLevel)

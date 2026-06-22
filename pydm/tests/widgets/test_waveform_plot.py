@@ -2,7 +2,7 @@ import numpy as np
 from pyqtgraph import BarGraphItem
 from unittest import mock
 from unittest.mock import MagicMock, patch
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+import qtpy
 from pydm.widgets.waveformplot import PyDMWaveformPlot, WaveformCurveItem
 
 
@@ -181,10 +181,9 @@ def test_redrawPlot_with_crosshair():
     widget.mapFromGlobal = MagicMock(return_value=dummy_local_pos)
     widget.mapToScene = MagicMock(return_value=dummy_scene_pos)
 
-    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-        patch_path = "PySide6.QtGui.QCursor.pos"
-    else:
-        patch_path = "PyQt5.QtGui.QCursor.pos"
+    # Patch QCursor.pos on whichever binding is active. Avoids hardcoding a wrapper that
+    # may not be installed (e.g. PyQt5 under a PyQt6 environment). API_NAME is the module name.
+    patch_path = f"{qtpy.API_NAME}.QtGui.QCursor.pos"
 
     # Patch QCursor.pos to return dummy_global_pos.
     with patch(patch_path, return_value=dummy_global_pos):

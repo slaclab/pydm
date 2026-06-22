@@ -50,7 +50,7 @@ def test_timeplotcurveitem_severityChanged_updates_attributes_and_emits(timeplot
     assert timeplotcurveitem_widget.severity_raw == 2
     assert timeplotcurveitem_widget.severity == "MAJOR"
 
-    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
         assert len(severity_spy) == 1
         assert severity_spy[0] == [2]
     else:

@@ -114,8 +114,8 @@ class Connection(PyDMConnection):
         reply: The response from the archiver appliance
         """
         success = (
-            reply.error() == QNetworkReply.NoError
-            and reply.header(QNetworkRequest.ContentTypeHeader) == "application/json"
+            reply.error() == QNetworkReply.NetworkError.NoError
+            and reply.header(QNetworkRequest.KnownHeaders.ContentTypeHeader) == "application/json"
         )
         self.connection_state_signal.emit(success)
         if success:
@@ -129,7 +129,7 @@ class Connection(PyDMConnection):
         else:
             logger.debug(
                 f"Request for data from archiver failed, request url: {reply.url()} retrieved header: "
-                f"{reply.header(QNetworkRequest.ContentTypeHeader)} error: {reply.error()}"
+                f"{reply.header(QNetworkRequest.KnownHeaders.ContentTypeHeader)} error: {reply.error()}"
             )
         reply.deleteLater()
 
