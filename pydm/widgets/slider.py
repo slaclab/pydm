@@ -546,6 +546,7 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
             logger.error("Invalid orientation '{0}'. The existing layout will not change.".format(new_orientation))
             return
 
+        new_orientation = Qt.Orientation(new_orientation)
         layout = None
         if new_orientation == Qt.Horizontal or new_orientation == 1:
             layout = QVBoxLayout()

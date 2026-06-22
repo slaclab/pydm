@@ -315,7 +315,9 @@ class BasePlotCurveItem(PlotDataItem):
         new_style: Qt.PenStyle
         """
         valid_styles = set(self.lines.values())
-        if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 and isinstance(new_style, int):
+        # Qt6 enums (both PySide6 and PyQt6) are strict: a bare int neither equals nor is in
+        # the set of Qt.PenStyle members, so it must be converted first.
+        if isinstance(new_style, int):
             new_style = Qt.PenStyle(new_style)
         if new_style in valid_styles:
             self._pen.setStyle(new_style)
@@ -1140,7 +1142,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if self.getShowYGrid() or self.getShowXGrid():
             self.plotItem.updateGrid()
 
-    yAxes = Property("QStringList", getYAxes, setYAxes, designable=False)
+    # designable=False keeps the raw JSON out of the Designer property grid, but the PyQt6
+    # designer bridge then refuses to commit it via the curve editor's cursor().setProperty();
+    # expose it under PyQt6 so edits save (stays hidden under PyQt5/PySide6).
+    yAxes = Property("QStringList", getYAxes, setYAxes, designable=ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6)
 
     def getBottomAxisLabel(self) -> str:
         return self.getAxis("bottom").labelText

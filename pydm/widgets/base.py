@@ -363,7 +363,8 @@ class PyDMPrimitiveWidget(object):
             except JSONDecodeError:
                 logger.exception("Invalid format for Rules")
 
-    rules = Property(str, readRules, setRules, designable=False)
+    # Set to True under PyQt6 only since setting to False leads to an error on saving
+    rules = Property(str, readRules, setRules, designable=ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6)
 
     def find_parent_display(self):
         widget = self.parent()

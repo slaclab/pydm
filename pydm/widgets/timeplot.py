@@ -846,7 +846,8 @@ class PyDMTimePlot(BasePlot):
                 yAxisName=d.get("yAxisName"),
             )
 
-    curves = Property("QStringList", getCurves, setCurves, designable=False)
+    # Set to True under PyQt6 only since setting to False leads to an error on saving
+    curves = Property("QStringList", getCurves, setCurves, designable=ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6)
 
     def findCurve(self, pv_name):
         """

@@ -489,6 +489,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         inverted : bool
             Indicates if scale appearance is inverted
         """
+        # Under strict Qt6 enums an int value_position would match none of them, so normalize to the enum first.
+        if isinstance(value_position, int):
+            value_position = Qt.Edge(value_position)
         self.limits_layout = None
         self.widget_layout = None
         r = self._grid_row_offset()

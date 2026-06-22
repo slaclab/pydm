@@ -157,6 +157,8 @@ class PyDMSymbol(QWidget, PyDMWidget):
         -----------
         new_mode : Qt.AspectRatioMode
         """
+        if isinstance(new_mode, int):
+            new_mode = Qt.AspectRatioMode(new_mode)
         if new_mode != self._aspect_ratio_mode:
             self._aspect_ratio_mode = new_mode
             self.update()

@@ -350,8 +350,8 @@ class PyDMDrawing(QWidget, PyDMWidget):
         new_style : int
             Index at Qt.PenStyle enum or int
         """
-        # pyside6 enums are more strict and will error if passed int
-        if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 and isinstance(new_style, int):
+        # Qt6 enums (both PySide6 and PyQt6) are strict and will error if passed an int
+        if isinstance(new_style, int):
             new_style = Qt.PenCapStyle(new_style)
         if new_style != self._pen_cap_style:
             self._pen_cap_style = new_style
@@ -381,8 +381,8 @@ class PyDMDrawing(QWidget, PyDMWidget):
         new_style : int
             Index at Qt.PenStyle enum or int
         """
-        # pyside6 enums are more strict and will error if passed int
-        if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 and isinstance(new_style, int):
+        # Qt6 enums (both PySide6 and PyQt6) are strict and will error if passed an int
+        if isinstance(new_style, int):
             new_style = Qt.PenJoinStyle(new_style)
         if new_style != self._pen_join_style:
             self._pen_join_style = new_style
@@ -1072,6 +1072,9 @@ class PyDMDrawingImage(PyDMDrawing):
         new_mode : int
             Index at Qt.AspectRatioMode enum
         """
+        # Qt6 rejects an int, so normalize here before storing it.
+        if isinstance(new_mode, int):
+            new_mode = Qt.AspectRatioMode(new_mode)
         if new_mode != self._aspect_ratio_mode:
             self._aspect_ratio_mode = new_mode
             self.update()
