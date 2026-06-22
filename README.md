@@ -1,5 +1,6 @@
-[![Build Status: PySide6](https://github.com/slaclab/pydm/actions/workflows/run-tests-pyqt5.yml/badge.svg?branch=master)](https://github.com/slaclab/pydm/actions/workflows/run-tests-pyqt5.yml)
-[![Build Status: PyQt5](https://github.com/slaclab/pydm/actions/workflows/run-tests-pyside6.yml/badge.svg?branch=master)](https://github.com/slaclab/pydm/actions/workflows/run-tests-pyside6.yml)
+[![Build Status: PyQt5](https://github.com/slaclab/pydm/actions/workflows/run-tests-pyqt5.yml/badge.svg?branch=master)](https://github.com/slaclab/pydm/actions/workflows/run-tests-pyqt5.yml)
+[![Build Status: PyQt6](https://github.com/slaclab/pydm/actions/workflows/run-tests-pyqt6.yml/badge.svg?branch=master)](https://github.com/slaclab/pydm/actions/workflows/run-tests-pyqt6.yml)
+[![Build Status: PySide6](https://github.com/slaclab/pydm/actions/workflows/run-tests-pyside6.yml/badge.svg?branch=master)](https://github.com/slaclab/pydm/actions/workflows/run-tests-pyside6.yml)
 
 ![PyDM: Python Display Manager](pydm_banner_full.png)
 
