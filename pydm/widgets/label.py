@@ -90,6 +90,20 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
     enableRichText = Property(bool, readEnableRichText, setEnableRichText)
 
     def readDisplayLabelText(self):
+        """
+        displayLabelText property.
+
+        When enabled, the label keeps the static text set on it (via
+        setText()) instead of displaying the channel's value or, when
+        disconnected, the channel address. The channel's alarm severity is
+        still reflected (content/border coloring).
+
+        :getter: Returns whether the label's custom text is shown in place
+            of the channel value.
+        :setter: Sets whether the label's custom text is shown in place of
+            the channel value.
+        :type: bool
+        """
         return self._display_label_text
 
     def setDisplayLabelText(self, new_value):
