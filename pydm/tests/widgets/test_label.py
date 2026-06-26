@@ -447,6 +447,53 @@ def test_label_channel_connection_changes_with_alarm(
     assert pydm_label.isEnabled() is True
 
 
+def test_display_label_text_preserves_custom_text(qtbot, signals):
+    pydm_label = PyDMLabel()
+    pydm_label.setText("Custom Text")
+    pydm_label.displayLabelText = True
+    pydm_label.channel = "CA://MTEST"
+    qtbot.addWidget(pydm_label)
+
+    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
+    signals.new_value_signal[str].connect(pydm_label.channelValueChanged)
+
+    signals.connection_state_signal.emit(True)
+    signals.new_value_signal[str].emit("Channel Value")
+
+    assert pydm_label.text() == "Custom Text"
+
+    signals.connection_state_signal.emit(False)
+
+    assert pydm_label._connected is False
+    assert pydm_label.text() == "Custom Text"
+
+    signals.connection_state_signal.emit(True)
+
+    assert pydm_label._connected is True
+    assert pydm_label.text() == "Custom Text"
+
+
+def test_display_label_text_unchecked_uses_channel_value_and_address(qtbot, signals):
+    pydm_label = PyDMLabel()
+    pydm_label.setText("Custom Text")
+    pydm_label.displayLabelText = False
+    pydm_label.channel = "CA://MTEST"
+    qtbot.addWidget(pydm_label)
+
+    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
+    signals.new_value_signal[str].connect(pydm_label.channelValueChanged)
+
+    signals.connection_state_signal.emit(True)
+    signals.new_value_signal[str].emit("Channel Value")
+
+    assert pydm_label.text() == "Channel Value"
+
+    signals.connection_state_signal.emit(False)
+
+    assert pydm_label._connected is False
+    assert pydm_label.text() == "CA://MTEST"
+
+
 @pytest.mark.parametrize(
     "alarm_sensitive_content, alarm_sensitive_border, tooltip",
     [
