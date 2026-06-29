@@ -363,7 +363,7 @@ class PyDMPrimitiveWidget(object):
             except JSONDecodeError:
                 logger.exception("Invalid format for Rules")
 
-    # Set to True on Qt6. With designable=False the curve editor fails to save in Designer ("Unable to set property")
+    # Set to True on Qt6. With designable=False this fails to save in Designer ("Unable to set property")
     rules = Property(
         str, readRules, setRules, designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6)
     )
