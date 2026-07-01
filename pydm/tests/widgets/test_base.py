@@ -3,7 +3,7 @@ import pytest
 import json
 import logging
 
-from qtpy.QtCore import Qt
+from qtpy.QtCore import Qt, QPointF
 from qtpy.QtWidgets import QMenu
 from qtpy.QtGui import QClipboard, QColor, QMouseEvent
 from pydm.tests.conftest import ConnectionSignals
@@ -219,8 +219,8 @@ def test_open_context_menu(qtbot, monkeypatch, caplog):
 
     mouse_event = QMouseEvent(
         QMouseEvent.MouseButtonRelease,
-        pydm_label.rect().center(),  # localPos
-        pydm_label.rect().center(),  # globalPos
+        QPointF(pydm_label.rect().center()),  # localPos
+        QPointF(pydm_label.rect().center()),  # globalPos
         Qt.RightButton,  # button
         Qt.RightButton,  # buttons
         Qt.ShiftModifier,  # modifiers

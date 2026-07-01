@@ -20,7 +20,7 @@ from .help_files import HelpWindow
 from .utilities import import_module_by_filename, is_pydm_app, macro, ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
     from qtpy import uic
 
 
@@ -98,7 +98,7 @@ def _compile_ui_file(uifile: str) -> Tuple[str, str]:
     -------
     Tuple[str, str] - The first element is the compiled ui file, the second is the name of the class (e.g. Ui_Form)
     """
-    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
         code_string = StringIO()
         uic.compileUi(uifile, code_string)
         code_string = code_string.getvalue()
@@ -126,7 +126,7 @@ def _compile_ui_file(uifile: str) -> Tuple[str, str]:
 
 
 def _load_ui_into_display(uifile, display):
-    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+    if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
         klass, _ = uic.loadUiType(uifile)
     else:  # pyside6
         from PySide6.QtUiTools import loadUiType

@@ -10,7 +10,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 _labelRuleProperties = {"Text": ["value_changed", str]}
 
@@ -39,6 +39,10 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(DisplayFormat)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        DisplayFormat = pyqt6_designer_enum("PyDMLabel", DisplayFormat)
 
     DisplayFormat = DisplayFormat
 

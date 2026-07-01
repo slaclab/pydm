@@ -3,7 +3,7 @@ from logging import ERROR
 import numpy as np
 
 from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QApplication, QSlider, QWidget
-from qtpy.QtCore import Qt, QMargins, QPoint, QEvent, QRect, QSize
+from qtpy.QtCore import Qt, QMargins, QPoint, QPointF, QEvent, QRect, QSize
 from qtpy.QtGui import QMouseEvent
 from pydm.widgets.slider import PyDMSlider, PyDMPrimitiveSlider
 from pydm.widgets.base import PyDMWidget
@@ -87,8 +87,8 @@ def test_mouseMoveEvent(slider_fixture, qtbot, request):
 
     press_event = QMouseEvent(
         QEvent.MouseButtonPress,
-        start_pos,  # localPos
-        start_pos,  # globalPos
+        QPointF(start_pos),  # localPos
+        QPointF(start_pos),  # globalPos
         Qt.LeftButton,  # button
         Qt.LeftButton,  # buttons
         Qt.NoModifier,
@@ -98,8 +98,8 @@ def test_mouseMoveEvent(slider_fixture, qtbot, request):
 
     move_event = QMouseEvent(
         QEvent.MouseMove,
-        end_pos,  # localPos
-        end_pos,  # globalPos
+        QPointF(end_pos),  # localPos
+        QPointF(end_pos),  # globalPos
         Qt.LeftButton,  # button
         Qt.LeftButton,  # buttons
         Qt.NoModifier,
@@ -109,8 +109,8 @@ def test_mouseMoveEvent(slider_fixture, qtbot, request):
 
     release_event = QMouseEvent(
         QEvent.MouseButtonRelease,
-        end_pos,  # localPos
-        end_pos,  # globalPos
+        QPointF(end_pos),  # localPos
+        QPointF(end_pos),  # globalPos
         Qt.LeftButton,  # button
         Qt.LeftButton,  # buttons
         Qt.NoModifier,
@@ -152,7 +152,7 @@ def test_getHandleRect(slider_fixture, request):
 def test_getPositions(slider_fixture, request):
     """Test getPositions method."""
     test_slider = request.getfixturevalue(slider_fixture)
-    event = QMouseEvent(QEvent.MouseButtonPress, QPoint(50, 10), Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+    event = QMouseEvent(QEvent.MouseButtonPress, QPointF(50, 10), Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
     handle_pos, click_pos = test_slider.getPositions(event)
     assert isinstance(handle_pos, float)
     assert isinstance(click_pos, int)
@@ -260,13 +260,11 @@ def test_construct(qtbot):
 
     assert type(pydm_slider.low_lim_label) == QLabel
     assert pydm_slider.low_lim_label.sizePolicy() == QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-    assert pydm_slider.low_lim_label.alignment() == Qt.Alignment(int(Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter))
+    assert pydm_slider.low_lim_label.alignment() == (Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter)
 
     assert type(pydm_slider.high_lim_label) == QLabel
     assert pydm_slider.high_lim_label.sizePolicy() == QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-    assert pydm_slider.high_lim_label.alignment() == Qt.Alignment(
-        int(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
-    )
+    assert pydm_slider.high_lim_label.alignment() == (Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
 
     assert type(pydm_slider._slider) == PyDMPrimitiveSlider
     assert pydm_slider._slider.orientation() == Qt.Orientation(Qt.Horizontal)

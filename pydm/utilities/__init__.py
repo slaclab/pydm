@@ -51,6 +51,7 @@ class QtWrapperTypes(IntEnum):
     UNSUPPORTED = 0
     PYSIDE6 = 1
     PYQT5 = 2
+    PYQT6 = 3
 
 
 ACTIVE_QT_WRAPPER = QtWrapperTypes.UNSUPPORTED
@@ -61,14 +62,63 @@ if qt_api == "pyside6":
     ACTIVE_QT_WRAPPER = QtWrapperTypes.PYSIDE6
 elif qt_api == "pyqt5":
     ACTIVE_QT_WRAPPER = QtWrapperTypes.PYQT5
+elif qt_api == "pyqt6":
+    ACTIVE_QT_WRAPPER = QtWrapperTypes.PYQT6
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.UNSUPPORTED:
     error_message = (
         "The QT_API variable is not set to a supported Qt Python wrapper "
-        "(PySide6 or PyQt5). Please set QT_API to 'pyside6' or 'pyqt5'."
+        "(PySide6, PyQt5, or PyQt6). Please set QT_API to 'pyside6', 'pyqt5', or 'pyqt6'."
     )
     logger.error(error_message)
     raise RuntimeError(error_message)
+
+
+def int_enum_from(name, source):
+    """Build an IntEnum mirroring the input source value.
+
+    source may be an enum.Enum or a legacy class whose integer
+    attributes define the members.  Used to give PyQt6 a real enum where the
+    other Qt wrappers historically used a plain int-attribute class (PyQt5) or
+    a QEnum-decorated enum (PySide6).
+    """
+    import enum
+
+    if isinstance(source, type) and issubclass(source, enum.Enum):
+        members = [(member.name, member.value) for member in source]
+    else:
+        members = [
+            (key, value) for key, value in vars(source).items() if isinstance(value, int) and not key.startswith("_")
+        ]
+    return enum.IntEnum(name, members)
+
+
+def pyqt6_designer_enum(owner, source):
+    """Register an enum as a PyQt6 Qt Designer property type.
+
+    PyQt6 removed Q_ENUM, its replacement requires an enum.Enum
+    whose __qualname__ matches the owning widget class, and
+    each owner needs its own object. Build a per-owner copy of source and
+    register it so the property appears as a proper enum (dropdown) in Designer.
+
+    Parameters
+    ----------
+    owner : str
+        Name of the owning widget class, used for the registered enum's
+        ``__qualname__`` so each widget gets a distinct meta-type.
+    source : type
+        The enum, or legacy class of integer attributes, to mirror.
+
+    Returns
+    -------
+    enum.IntEnum
+        A registered copy suitable as a ``Property`` type under PyQt6.
+    """
+    from PyQt6.QtCore import pyqtEnum
+
+    registered = int_enum_from(source.__name__, source)
+    registered.__qualname__ = f"{owner}.{source.__name__}"
+    return pyqtEnum(registered)
 
 
 def is_ssh_session():

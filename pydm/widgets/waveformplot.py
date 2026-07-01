@@ -7,7 +7,7 @@ from .channel import PyDMChannel
 import itertools
 import json
 from collections import OrderedDict
-from pydm.utilities import remove_protocol
+from pydm.utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 
 class WaveformCurveItem(BasePlotCurveItem):
@@ -582,7 +582,13 @@ class PyDMWaveformPlot(BasePlot):
                 yAxisName=d.get("yAxisName"),
             )
 
-    curves = Property("QStringList", getCurves, setCurves, designable=False)
+    # Set to True on Qt6. With designable=False the curve editor fails to save in Designer ("Unable to set property")
+    curves = Property(
+        "QStringList",
+        getCurves,
+        setCurves,
+        designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6),
+    )
 
     def channels(self):
         """

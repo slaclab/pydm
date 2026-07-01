@@ -7,7 +7,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +15,12 @@ logger = logging.getLogger(__name__)
 class TimeBase(object):
     Milliseconds = 0
     Seconds = 1
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+    from pydm.utilities import int_enum_from
+
+    TimeBase = int_enum_from("TimeBase", TimeBase)
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -45,6 +51,10 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(TimeBase)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        TimeBase = pyqt6_designer_enum("PyDMDateTimeEdit", TimeBase)
 
     # Make enum definitions known to this class
     Milliseconds = TimeBase.Milliseconds
@@ -163,6 +173,10 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(TimeBase)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        TimeBase = pyqt6_designer_enum("PyDMDateTimeLabel", TimeBase)
 
     # Make enum definitions known to this class
     Milliseconds = TimeBase.Milliseconds

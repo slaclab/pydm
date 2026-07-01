@@ -28,7 +28,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 
 def pen_style_to_int(pen_style) -> int:
@@ -315,7 +315,9 @@ class BasePlotCurveItem(PlotDataItem):
         new_style: Qt.PenStyle
         """
         valid_styles = set(self.lines.values())
-        if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 and isinstance(new_style, int):
+        # Qt6 enums (both PySide6 and PyQt6) are strict: a bare int neither equals nor is in
+        # the set of Qt.PenStyle members, so it must be converted first.
+        if isinstance(new_style, int):
             new_style = Qt.PenStyle(new_style)
         if new_style in valid_styles:
             self._pen.setStyle(new_style)
@@ -1140,7 +1142,13 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if self.getShowYGrid() or self.getShowXGrid():
             self.plotItem.updateGrid()
 
-    yAxes = Property("QStringList", getYAxes, setYAxes, designable=False)
+    # Set to True on Qt6. With designable=False the curve editor fails to save in Designer ("Unable to set property")
+    yAxes = Property(
+        "QStringList",
+        getYAxes,
+        setYAxes,
+        designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6),
+    )
 
     def getBottomAxisLabel(self) -> str:
         return self.getAxis("bottom").labelText

@@ -1080,6 +1080,12 @@ class PyDMColorMap(object):
     Hot = 6
 
 
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+    from pydm.utilities import int_enum_from
+
+    PyDMColorMap = int_enum_from("PyDMColorMap", PyDMColorMap)
+
+
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
     from enum import Enum

@@ -4,7 +4,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 from pydm.widgets.qtplugins import get_all_custom_widgets_in_order
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
     globals().update({pl.plugin_name: pl for pl in get_all_custom_widgets_in_order()})
 
 elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:

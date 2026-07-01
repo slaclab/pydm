@@ -19,7 +19,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +32,12 @@ class TermOutputMode:
     HIDE = 0
     SHOW = 1
     STORE = 2
+
+
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+    from pydm.utilities import int_enum_from
+
+    TermOutputMode = int_enum_from("TermOutputMode", TermOutputMode)
 
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -66,6 +72,10 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(TermOutputMode)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        TermOutputMode = pyqt6_designer_enum("PyDMShellCommand", TermOutputMode)
     TermOutputMode = TermOutputMode
 
     # Make enum definitions known to this class

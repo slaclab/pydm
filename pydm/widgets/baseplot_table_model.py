@@ -128,7 +128,7 @@ class BasePlotCurvesModel(QAbstractTableModel):
         elif column_name == "Y-Axis Name":
             curve.y_axis_name = str(value)
         elif column_name == "Line Style":
-            curve.lineStyle = int(value)
+            curve.lineStyle = value
         elif column_name == "Line Width":
             curve.lineWidth = int(value)
         elif column_name == "Symbol":

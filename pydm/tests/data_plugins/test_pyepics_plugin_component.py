@@ -1,6 +1,27 @@
-from pydm.data_plugins.epics_plugins.pyepics_plugin_component import Connection
+import pytest
+from concurrent.futures import ThreadPoolExecutor
+
+from pydm.data_plugins.epics_plugins.pyepics_plugin_component import Connection, PyEPICSPlugin
 from pydm.tests.conftest import ConnectionSignals
 from pydm.widgets.channel import PyDMChannel
+
+
+@pytest.fixture(autouse=True)
+def ensure_thread_pool():
+    # Connection.__init__ submits work to the class-level PyEPICSPlugin.thread_pool, which is
+    # normally created when the plugin itself is instantiated. These tests build a Connection
+    # directly, so initialize the pool here to keep them independent of test ordering.
+    created_here = PyEPICSPlugin.thread_pool is None
+    if created_here:
+        PyEPICSPlugin.thread_pool = ThreadPoolExecutor()
+    try:
+        yield
+    finally:
+        # Only tear down a pool this fixture created, so we don't leak worker threads or
+        # class-level state into other tests.
+        if created_here:
+            PyEPICSPlugin.thread_pool.shutdown(wait=False, cancel_futures=True)
+            PyEPICSPlugin.thread_pool = None
 
 
 def test_update_ctrl_vars(signals: ConnectionSignals):

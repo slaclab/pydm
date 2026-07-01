@@ -8,7 +8,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 
 class PyDMBitIndicator(QWidget):
@@ -515,12 +515,13 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         -------
         new_orientation : Qt.Orientation, int
         """
+        if isinstance(new_orientation, int):
+            new_orientation = Qt.Orientation(new_orientation)
         self._orientation = new_orientation
         self.set_spacing()
         self.rebuild_layout()
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.Orientation
-    orientation = Property(prop_type, readOrientation, setOrientation)
+    orientation = Property(Qt.Orientation, readOrientation, setOrientation)
 
     def set_spacing(self) -> None:
         """

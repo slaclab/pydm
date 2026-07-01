@@ -56,7 +56,7 @@ class MockNetworkReply:
         return self.url_obj
 
     def error(self):
-        return QNetworkReply.NoError
+        return QNetworkReply.NetworkError.NoError
 
     def header(self, content_type):
         return "application/json"

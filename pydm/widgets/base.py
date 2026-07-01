@@ -20,7 +20,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 from .rules import RulesDispatcher
 from datetime import datetime
 from typing import Optional
@@ -363,7 +363,10 @@ class PyDMPrimitiveWidget(object):
             except JSONDecodeError:
                 logger.exception("Invalid format for Rules")
 
-    rules = Property(str, readRules, setRules, designable=False)
+    # Set to True on Qt6. With designable=False this fails to save in Designer ("Unable to set property")
+    rules = Property(
+        str, readRules, setRules, designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6)
+    )
 
     def find_parent_display(self):
         widget = self.parent()

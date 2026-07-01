@@ -6,6 +6,7 @@ from qtpy.QtGui import QColor
 from qtpy.QtCore import Slot, Property, Qt
 from .baseplot import BasePlot, NoDataError, BasePlotCurveItem
 from .channel import PyDMChannel
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 
 DEFAULT_BUFFER_SIZE = 1200
@@ -455,7 +456,13 @@ class PyDMEventPlot(BasePlot):
                 yAxisName=d.get("yAxisName"),
             )
 
-    curves = Property("QStringList", getCurves, setCurves, designable=False)
+    # Set to True on Qt6. With designable=False the curve editor fails to save in Designer ("Unable to set property")
+    curves = Property(
+        "QStringList",
+        getCurves,
+        setCurves,
+        designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6),
+    )
 
     def channels(self):
         """

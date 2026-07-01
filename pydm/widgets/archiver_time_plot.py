@@ -6,7 +6,7 @@ import warnings
 from collections import OrderedDict
 from typing import List, Optional, Union
 from pyqtgraph import DateAxisItem, ErrorBarItem, PlotCurveItem
-from pydm.utilities import remove_protocol, is_qt_designer
+from pydm.utilities import remove_protocol, is_qt_designer, ACTIVE_QT_WRAPPER, QtWrapperTypes
 from pydm.widgets.channel import PyDMChannel
 from pydm.widgets.timeplot import TimePlotCurveItem
 from pydm.widgets import PyDMTimePlot
@@ -1496,7 +1496,13 @@ class PyDMArchiverTimePlot(PyDMTimePlot):
                 liveData=d.get("liveData"),
             )
 
-    curves = Property("QStringList", getCurves, setCurves, designable=False)
+    # Set to True on Qt6. With designable=False the curve editor fails to save in Designer ("Unable to set property")
+    curves = Property(
+        "QStringList",
+        getCurves,
+        setCurves,
+        designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6),
+    )
 
     def addYChannel(
         self,

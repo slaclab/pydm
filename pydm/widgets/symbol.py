@@ -12,7 +12,7 @@ from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
 else:
-    from PyQt5.QtCore import pyqtProperty as Property
+    from qtpy.QtCore import Property
 
 
 logger = logging.getLogger(__name__)
@@ -157,12 +157,13 @@ class PyDMSymbol(QWidget, PyDMWidget):
         -----------
         new_mode : Qt.AspectRatioMode
         """
+        if isinstance(new_mode, int):
+            new_mode = Qt.AspectRatioMode(new_mode)
         if new_mode != self._aspect_ratio_mode:
             self._aspect_ratio_mode = new_mode
             self.update()
 
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else Qt.AspectRatioMode
-    aspectRatioMode = Property(prop_type, readAspectRatioMode, setAspectRatioMode)
+    aspectRatioMode = Property(Qt.AspectRatioMode, readAspectRatioMode, setAspectRatioMode)
 
     def connection_changed(self, connected):
         """

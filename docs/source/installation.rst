@@ -11,7 +11,21 @@ with pip.
 
 Please note, this guide is written with Unix in mind, so there are probably some differences when installing on Windows.
 
-Installing PyDM and Prerequisites with Conda
+Installing PyDM and Prerequisites with Conda (PyQt6)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+After installing Miniforge (see https://conda-forge.org/download/), create a new
+environment for PyDM::
+
+  $ conda create -n pydm-environment python=3.12 pyqt6 pip numpy six psutil pyqtgraph pydm -c conda-forge
+  $ conda activate pydm-environment
+  $ export QT_API=pyqt6
+
+Once you've installed and activated the environment, you should be able to run 'pydm' to launch PyDM, or run 'designer6' to launch Qt Designer.  If you are on Windows, run these commands from the Anaconda Prompt.
+
+
+MacOS instructions in progress...
+
+Installing PyDM and Prerequisites with Conda (PyQt5)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. warning::
