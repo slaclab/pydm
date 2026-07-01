@@ -8,7 +8,7 @@ import logging
 from .channel import PyDMChannel
 from .colormaps import cmaps, cmap_names, PyDMColorMap
 from .base import PyDMWidget, PostParentClassInitSetup
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -25,21 +25,10 @@ class ReadingOrder(object):
     Clike = 1
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     from pydm.utilities import int_enum_from
 
     ReadingOrder = int_enum_from("ReadingOrder", ReadingOrder)
-
-
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-    from PySide6.QtCore import QEnum
-    from enum import Enum
-
-    @QEnum
-    # overrides prev enum def
-    class ReadingOrder(Enum):  # noqa F811
-        Fortranlike = 0
-        Clike = 1
 
 
 class DimensionOrder(object):
@@ -64,21 +53,10 @@ class DimensionOrder(object):
     WidthFirst = 1
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     from pydm.utilities import int_enum_from
 
     DimensionOrder = int_enum_from("DimensionOrder", DimensionOrder)
-
-
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-    from PySide6.QtCore import QEnum
-    from enum import Enum
-
-    @QEnum
-    # overrides prev enum def
-    class DimensionOrder(Enum):  # noqa F811
-        HeightFirst = 0
-        WidthFirst = 1
 
 
 class ImageUpdateThread(QThread):
@@ -139,7 +117,38 @@ class ImageUpdateThread(QThread):
         self.image_view.needs_redraw = False
 
 
-class PyDMImageView(ImageView, PyDMWidget):
+# PySide6 Designer-dropdown carrier(s) for this widget's enum(s) -- see the cross-wrapper enum note in pydm.utilities.
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import IntEnum
+
+    class PyDMImageView(ImageView, PyDMWidget):
+        @QEnum
+        class ReadingOrder(IntEnum):
+            Fortranlike = 0
+            Clike = 1
+
+        @QEnum
+        class DimensionOrder(IntEnum):
+            HeightFirst = 0
+            WidthFirst = 1
+
+        @QEnum
+        class PyDMColorMap(IntEnum):
+            Magma = 0
+            Inferno = 1
+            Plasma = 2
+            Viridis = 3
+            Jet = 4
+            Monochrome = 5
+            Hot = 6
+
+    _PyDMImageViewBases = (PyDMImageView,)
+else:
+    _PyDMImageViewBases = (ImageView, PyDMWidget)
+
+
+class PyDMImageView(*_PyDMImageViewBases):
     """
     A PyQtGraph ImageView with support for Channels and more from PyDM.
 
@@ -164,9 +173,6 @@ class PyDMImageView(ImageView, PyDMWidget):
         information
     """
 
-    ReadingOrder = ReadingOrder
-    DimensionOrder = DimensionOrder
-
     if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
         from PyQt5.QtCore import Q_ENUM
 
@@ -179,6 +185,17 @@ class PyDMImageView(ImageView, PyDMWidget):
         ReadingOrder = pyqt6_designer_enum("PyDMImageView", ReadingOrder)
         DimensionOrder = pyqt6_designer_enum("PyDMImageView", DimensionOrder)
         PyDMColorMap = pyqt6_designer_enum("PyDMImageView", PyDMColorMap)
+    else:  # PySide6: adopt this widget's carrier-registered enums
+        ReadingOrder = _PyDMImageViewBases[0].ReadingOrder
+        DimensionOrder = _PyDMImageViewBases[0].DimensionOrder
+        PyDMColorMap = _PyDMImageViewBases[0].PyDMColorMap
+
+    # Publish the registered enums as class attributes on every wrapper (PyQt5's Q_ENUM
+    # registers them in the metaobject but does not assign here) so self.<Enum> and uic's
+    # PyDMImageView.<Enum>.<Key> resolve.
+    ReadingOrder = ReadingOrder
+    DimensionOrder = DimensionOrder
+    PyDMColorMap = PyDMColorMap
 
     # Make enum definitions known to this class
     Fortranlike = ReadingOrder.Fortranlike
@@ -200,7 +217,7 @@ class PyDMImageView(ImageView, PyDMWidget):
     def __init__(self, parent=None, image_channel=None, width_channel=None):
         """Initialize widget."""
         # Set the default colormap.
-        self._colormap = PyDMColorMap.Inferno
+        self._colormap = self.PyDMColorMap.Inferno
         self._cm_colors = None
         self._imagechannel = None
         self._widthchannel = None
@@ -211,8 +228,8 @@ class PyDMImageView(ImageView, PyDMWidget):
         self._show_axes = False
 
         # Set default reading order of numpy array data to Fortranlike.
-        self._reading_order = ReadingOrder.Fortranlike
-        self._dimension_order = DimensionOrder.HeightFirst
+        self._reading_order = self.ReadingOrder.Fortranlike
+        self._dimension_order = self.DimensionOrder.HeightFirst
 
         self._redraw_rate = 30
 
@@ -394,6 +411,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         -------
         new_cmap : PyDMColorMap
         """
+        new_cmap = coerce_enum_value(new_cmap, self.PyDMColorMap)
         self._colormap = new_cmap
         self._cm_colors = self.color_maps[new_cmap]
         self.setColorMap()
@@ -622,6 +640,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         ----------
         new_order: ReadingOrder
         """
+        new_order = coerce_enum_value(new_order, self.ReadingOrder)
         if self._reading_order != new_order:
             self._reading_order = new_order
 
@@ -646,6 +665,7 @@ class PyDMImageView(ImageView, PyDMWidget):
         ----------
         new_order: DimensionOrder
         """
+        new_order = coerce_enum_value(new_order, self.DimensionOrder)
         if self._dimension_order != new_order:
             self._dimension_order = new_order
 

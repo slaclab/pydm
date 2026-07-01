@@ -9,8 +9,7 @@ from pydm.utilities import is_qt_designer
 import pydm.data_plugins
 from pydm.utilities import find_file
 from pydm.display import load_file
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -124,22 +123,27 @@ class LayoutType(object):
     Flow = 2
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     from pydm.utilities import int_enum_from
 
     LayoutType = int_enum_from("LayoutType", LayoutType)
 
 
+# PySide6 Designer-dropdown carrier(s) for this widget's enum(s) -- see the cross-wrapper enum note in pydm.utilities.
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
-    from enum import Enum
+    from enum import IntEnum
 
-    @QEnum
-    # overrides prev enum def
-    class LayoutType(Enum):  # noqa F811
-        Vertical = 0
-        Horizontal = 1
-        Flow = 2
+    class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
+        @QEnum
+        class LayoutType(IntEnum):
+            Vertical = 0
+            Horizontal = 1
+            Flow = 2
+
+    _PyDMTemplateRepeaterBases = (PyDMTemplateRepeater,)
+else:
+    _PyDMTemplateRepeaterBases = (QFrame, PyDMPrimitiveWidget)
 
 
 layout_class_for_type = {
@@ -149,7 +153,7 @@ layout_class_for_type = {
 }
 
 
-class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
+class PyDMTemplateRepeater(*_PyDMTemplateRepeaterBases):
     """
     PyDMTemplateRepeater takes a .ui file with macro variables as a template, and a JSON
     file (or a list of dictionaries) with a list of values to use to fill in
@@ -177,6 +181,8 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         from pydm.utilities import pyqt6_designer_enum
 
         LayoutType = pyqt6_designer_enum("PyDMTemplateRepeater", LayoutType)
+    else:  # PySide6: adopt this widget's carrier-registered enum
+        LayoutType = _PyDMTemplateRepeaterBases[0].LayoutType
     LayoutType = LayoutType
 
     # Make enum definitions known to this class
@@ -196,7 +202,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         self._recursive_data_search = False
         self._cached_template = None
         self._parent_macros = None
-        self._layout_type = LayoutType.Vertical
+        self._layout_type = self.LayoutType.Vertical
         self._temp_layout_spacing = 4
         self.app = QApplication.instance()
         self.rebuild()
@@ -224,6 +230,7 @@ class PyDMTemplateRepeater(QFrame, PyDMPrimitiveWidget):
         ----------
         new_type : LayoutType
         """
+        new_type = coerce_enum_value(new_type, self.LayoutType)
         if new_type != self._layout_type:
             self._layout_type = new_type
             self.rebuild()

@@ -41,6 +41,10 @@ if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
 elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     BASE_PLUGIN_CLASS = QtDesigner.QDesignerCustomWidgetInterface
 
+#: Top-level module names of the Qt bindings PyDM supports.  Used to find a
+#: widget's nearest genuine Qt base class for the Designer "<extends>" field.
+_QT_BINDING_MODULES = ("PyQt5", "PyQt6", "PySide6")
+
 
 class WidgetCategory(str, enum.Enum):
     """Categories for PyDM Widgets in the Qt Designer."""
@@ -224,17 +228,55 @@ class PyDMDesignerPlugin(BASE_PLUGIN_CLASS):
         """
         return QtGui.QIcon(self._icon.pixmap(QtCore.QSize(32, 32)))
 
+    def designer_base_class(self):
+        """
+        Return the name of this widget's nearest genuine Qt base class.
+
+        Qt Designer records a custom widget's base class -- its ``<extends>``
+        -- so that a saved ``.ui`` file stays loadable in an environment that
+        uses a different Qt wrapper.  By default Designer infers this from the
+        widget's immediate metaobject superclass, but some PyDM widgets
+        interpose a pure-Python base class (for example a per-widget carrier
+        class used to scope a custom enum so it appears as a Designer
+        dropdown).  Such a base is not a real Qt type and is not portable
+        across wrappers, so instead we walk the MRO and report the first
+        genuine Qt class (``QGraphicsView``, ``QLabel``, ...).  For widgets
+        that subclass a Qt type directly this is exactly what Designer would
+        have inferred on its own.
+        """
+        for klass in self.cls.__mro__:
+            module = (getattr(klass, "__module__", "") or "").split(".")[0]
+            if module in _QT_BINDING_MODULES:
+                return klass.__name__
+        return "QWidget"
+
     def domXml(self):
         """
-        XML Description of the widget's properties.
+        XML description of the widget's default property values.
+
+        The ``<widget>`` element supplies the values Designer uses when the
+        widget is first dropped onto a form.  The accompanying
+        ``<customwidgets>`` element declares the widget's Qt base class
+        explicitly via ``<extends>``; pinning this to a real Qt type (rather
+        than relying on Designer's metaobject inference) keeps saved ``.ui``
+        files portable across Qt wrappers.
         """
         return (
-            '<widget class="{0}" name="{0}">\n'
-            ' <property name="toolTip" >\n'
-            "  <string>{1}</string>\n"
-            " </property>\n"
-            "</widget>\n"
-        ).format(self.name(), self.toolTip())
+            '<ui language="c++">\n'
+            ' <widget class="{0}" name="{0}">\n'
+            '  <property name="toolTip">\n'
+            "   <string>{1}</string>\n"
+            "  </property>\n"
+            " </widget>\n"
+            " <customwidgets>\n"
+            "  <customwidget>\n"
+            "   <class>{0}</class>\n"
+            "   <extends>{2}</extends>\n"
+            "   <header>{3}</header>\n"
+            "  </customwidget>\n"
+            " </customwidgets>\n"
+            "</ui>\n"
+        ).format(self.name(), self.toolTip(), self.designer_base_class(), self.includeFile())
 
     def includeFile(self):
         """

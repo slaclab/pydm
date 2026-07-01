@@ -2,7 +2,7 @@ from .base import PyDMWidget, TextFormatter, str_types, PostParentClassInitSetup
 from qtpy.QtWidgets import QLabel, QApplication
 from qtpy.QtCore import Qt
 from .display_format import DisplayFormat, parse_value_for_display
-from pydm.utilities import is_pydm_app, is_qt_designer, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import is_pydm_app, is_qt_designer, ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 from pydm import config
 from pydm.widgets.base import only_if_channel_set
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
@@ -15,7 +15,27 @@ else:
 _labelRuleProperties = {"Text": ["value_changed", str]}
 
 
-class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
+# PySide6 Designer-dropdown carrier(s) for this widget's enum(s) -- see the cross-wrapper enum note in pydm.utilities.
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import IntEnum
+
+    class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
+        @QEnum
+        class DisplayFormat(IntEnum):
+            Default = 0
+            String = 1
+            Decimal = 2
+            Exponential = 3
+            Hex = 4
+            Binary = 5
+
+    _PyDMLabelBases = (PyDMLabel,)
+else:
+    _PyDMLabelBases = (QLabel, TextFormatter, PyDMWidget)
+
+
+class PyDMLabel(*_PyDMLabelBases):
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
@@ -43,6 +63,8 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         from pydm.utilities import pyqt6_designer_enum
 
         DisplayFormat = pyqt6_designer_enum("PyDMLabel", DisplayFormat)
+    else:  # PySide6: adopt this widget's carrier-registered enum
+        DisplayFormat = _PyDMLabelBases[0].DisplayFormat
 
     DisplayFormat = DisplayFormat
 
@@ -126,6 +148,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         return self._display_format_type
 
     def setDisplayFormat(self, new_type):
+        new_type = coerce_enum_value(new_type, self.DisplayFormat)
         if self._display_format_type == new_type:
             return
         self._display_format_type = new_type

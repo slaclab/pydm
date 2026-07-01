@@ -2,7 +2,7 @@ import logging
 from qtpy import QtWidgets, QtCore
 
 from .base import PyDMWritableWidget, PyDMWidget, PostParentClassInitSetup
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -12,29 +12,46 @@ else:
 logger = logging.getLogger(__name__)
 
 
+# Canonical TimeBase: a plain int-attr class for PyQt5; a real IntEnum for the Qt6 bindings
+# (PyQt6 + PySide6).  TimeBase (PascalCase) is intentionally distinct from the ``timeBase``
+# property name -- a same-name collision silently breaks uic runtime loading.
 class TimeBase(object):
     Milliseconds = 0
     Seconds = 1
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     from pydm.utilities import int_enum_from
 
     TimeBase = int_enum_from("TimeBase", TimeBase)
 
 
+# PySide6 Designer-dropdown carrier(s) for this widget's enum(s) -- see the cross-wrapper enum note in pydm.utilities.
+# TimeBase is shared by two widgets, so each gets its OWN carrier base (named like that widget).
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
-    from enum import Enum
+    from enum import IntEnum
 
-    @QEnum
-    # overrides prev enum def
-    class TimeBase(Enum):  # noqa F811
-        Milliseconds = 0
-        Seconds = 1
+    class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
+        @QEnum
+        class TimeBase(IntEnum):
+            Milliseconds = 0
+            Seconds = 1
+
+    class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
+        @QEnum
+        class TimeBase(IntEnum):
+            Milliseconds = 0
+            Seconds = 1
+
+    _PyDMDateTimeEditBases = (PyDMDateTimeEdit,)
+    _PyDMDateTimeLabelBases = (PyDMDateTimeLabel,)
+else:
+    _PyDMDateTimeEditBases = (QtWidgets.QDateTimeEdit, PyDMWritableWidget)
+    _PyDMDateTimeLabelBases = (QtWidgets.QLabel, PyDMWidget)
 
 
-class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
+class PyDMDateTimeEdit(*_PyDMDateTimeEditBases):
     """
     A QDateTimeEdit with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
@@ -55,8 +72,13 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         from pydm.utilities import pyqt6_designer_enum
 
         TimeBase = pyqt6_designer_enum("PyDMDateTimeEdit", TimeBase)
+    else:  # PySide6: adopt this widget's carrier-registered enum
+        TimeBase = _PyDMDateTimeEditBases[0].TimeBase
 
-    # Make enum definitions known to this class
+    # Publish the registered enum as a class attribute on every wrapper (PyQt5's Q_ENUM
+    # registers it in the metaobject but does not assign it here), so both ``self.TimeBase``
+    # and uic's ``PyDMDateTimeEdit.TimeBase.<key>`` resolve.
+    TimeBase = TimeBase
     Milliseconds = TimeBase.Milliseconds
     Seconds = TimeBase.Seconds
 
@@ -65,7 +87,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
     def __init__(self, parent=None, init_channel=None):
         self._block_past_date = True
         self._relative = True
-        self._time_base = TimeBase.Milliseconds
+        self._time_base = self.TimeBase.Milliseconds
 
         QtWidgets.QDateTimeEdit.__init__(self, parent)
         PyDMWritableWidget.__init__(self, init_channel=init_channel)
@@ -88,6 +110,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         return self._time_base
 
     def setTimeBase(self, base) -> None:
+        base = coerce_enum_value(base, self.TimeBase)
         if self._time_base != base:
             self._time_base = base
 
@@ -134,7 +157,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         else:
             new_value = val.toMSecsSinceEpoch()
 
-        if self.timeBase == TimeBase.Seconds:
+        if self.timeBase == self.TimeBase.Seconds:
             new_value /= 1000.0
 
         # Force to the same base type as the data source, else qt can cast the pointer wrong
@@ -145,7 +168,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         super().value_changed(new_val)
         new_val = int(new_val)
 
-        if self.timeBase == TimeBase.Seconds:
+        if self.timeBase == self.TimeBase.Seconds:
             new_val *= 1000
 
         val = QtCore.QDateTime.currentDateTime()
@@ -156,7 +179,7 @@ class PyDMDateTimeEdit(QtWidgets.QDateTimeEdit, PyDMWritableWidget):
         self.setDateTime(val)
 
 
-class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
+class PyDMDateTimeLabel(*_PyDMDateTimeLabelBases):
     """
     A QLabel with support for setting the text via a PyDM Channel, or
     through the PyDM Rules system.
@@ -177,8 +200,13 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
         from pydm.utilities import pyqt6_designer_enum
 
         TimeBase = pyqt6_designer_enum("PyDMDateTimeLabel", TimeBase)
+    else:  # PySide6: adopt this widget's carrier-registered enum
+        TimeBase = _PyDMDateTimeLabelBases[0].TimeBase
 
-    # Make enum definitions known to this class
+    # Publish the registered enum as a class attribute on every wrapper (PyQt5's Q_ENUM
+    # registers it in the metaobject but does not assign it here), so both ``self.TimeBase``
+    # and uic's ``PyDMDateTimeLabel.TimeBase.<key>`` resolve.
+    TimeBase = TimeBase
     Milliseconds = TimeBase.Milliseconds
     Seconds = TimeBase.Seconds
 
@@ -188,7 +216,7 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
 
         self._block_past_date = True
         self._relative = True
-        self._time_base = TimeBase.Milliseconds
+        self._time_base = self.TimeBase.Milliseconds
         self._text_format = "yyyy/MM/dd hh:mm:ss.zzz"
         self.setText("")
 
@@ -219,6 +247,7 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
         return self._time_base
 
     def setTimeBase(self, base) -> None:
+        base = coerce_enum_value(base, self.TimeBase)
         if self._time_base != base:
             self._time_base = base
 
@@ -241,7 +270,7 @@ class PyDMDateTimeLabel(QtWidgets.QLabel, PyDMWidget):
         super().value_changed(new_val)
         new_val = int(new_val)
 
-        if self.timeBase == TimeBase.Seconds:
+        if self.timeBase == self.TimeBase.Seconds:
             new_val *= 1000
 
         val = QtCore.QDateTime.currentDateTime()

@@ -346,3 +346,11 @@ def get_all_custom_widgets_in_order() -> list[type[PyDMDesignerPlugin]]:
     for category in sorted(entrypoint_widgets_by_group):
         all_custom_widgets.extend(sorted(entrypoint_widgets_by_group[category], key=lambda pl: pl.plugin_name))
     return all_custom_widgets
+
+
+# Restrict `from pydm.widgets.qtplugins import *` to the generated Designer plugin classes only.
+# A stale copy of register_pydm_designer_plugin.py (older PyDM installs used that wildcard import)
+# would otherwise also pull in the PyDMDesignerPlugin base; the Qt Designer bridge then tries to
+# instantiate it with no args and raises
+# "PyDMDesignerPlugin.__init__() missing 1 required positional argument: 'cls'".
+__all__ = [_name for _name, _obj in list(globals().items()) if is_designer_widget(_obj)]

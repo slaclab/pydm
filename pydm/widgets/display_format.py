@@ -26,25 +26,13 @@ class DisplayFormat(object):
     Binary = 5
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+# Under the Qt6 bindings (PyQt6 + PySide6) DisplayFormat must be a real IntEnum so the
+# per-widget carriers (in label.py / line_edit.py) can register it as a Qt Designer dropdown.
+# PyQt5 keeps the plain int-attribute class defined above.
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     from pydm.utilities import int_enum_from
 
     DisplayFormat = int_enum_from("DisplayFormat", DisplayFormat)
-
-
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-    from PySide6.QtCore import QEnum
-    from enum import Enum
-
-    @QEnum
-    # overrides prev enum def
-    class DisplayFormat(Enum):  # noqa F811
-        Default = 0
-        String = 1
-        Decimal = 2
-        Exponential = 3
-        Hex = 4
-        Binary = 5
 
 
 def parse_value_for_display(

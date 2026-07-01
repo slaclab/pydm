@@ -10,7 +10,7 @@ from qtpy.QtGui import QFocusEvent
 from .base import PyDMWritableWidget, TextFormatter, str_types, PostParentClassInitSetup
 from pydm import utilities
 from .display_format import DisplayFormat, parse_value_for_display
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -20,7 +20,27 @@ else:
 logger = logging.getLogger(__name__)
 
 
-class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
+# PySide6 Designer-dropdown carrier(s) for this widget's enum(s) -- see the cross-wrapper enum note in pydm.utilities.
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import IntEnum
+
+    class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
+        @QEnum
+        class DisplayFormat(IntEnum):
+            Default = 0
+            String = 1
+            Decimal = 2
+            Exponential = 3
+            Hex = 4
+            Binary = 5
+
+    _PyDMLineEditBases = (PyDMLineEdit,)
+else:
+    _PyDMLineEditBases = (QLineEdit, TextFormatter, PyDMWritableWidget)
+
+
+class PyDMLineEdit(*_PyDMLineEditBases):
     """
     A QLineEdit (writable text field) with support for Channels and more
     from PyDM.
@@ -43,6 +63,8 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
         from pydm.utilities import pyqt6_designer_enum
 
         DisplayFormat = pyqt6_designer_enum("PyDMLineEdit", DisplayFormat)
+    else:  # PySide6: adopt this widget's carrier-registered enum
+        DisplayFormat = _PyDMLineEditBases[0].DisplayFormat
     DisplayFormat = DisplayFormat
 
     # Make enum definitions known to this class
@@ -82,6 +104,7 @@ class PyDMLineEdit(QLineEdit, TextFormatter, PyDMWritableWidget):
         return self._display_format_type
 
     def setDisplayFormat(self, new_type) -> None:
+        new_type = coerce_enum_value(new_type, self.DisplayFormat)
         if self._display_format_type != new_type:
             self._display_format_type = new_type
             # Trigger the update of display format
