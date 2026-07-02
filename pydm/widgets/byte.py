@@ -1,9 +1,9 @@
-from qtpy.QtWidgets import QWidget, QTabWidget, QGridLayout, QLabel, QStyle, QStyleOption
+from qtpy.QtWidgets import QWidget, QGridLayout, QLabel, QStyle, QStyleOption
 from qtpy.QtGui import QColor, QPen, QFontMetrics, QPainter, QPaintEvent, QBrush
 from qtpy.QtCore import Qt, QSize, QPoint, QTimer
 from typing import List, Optional
 from .base import PyDMWidget, PostParentClassInitSetup
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -72,7 +72,41 @@ class PyDMBitIndicator(QWidget):
         return QSize(fm.height(), fm.height())
 
 
-class PyDMByteIndicator(QWidget, PyDMWidget):
+# LabelPosition is scoped to PyDMByteIndicator so it renders as a Designer dropdown on
+# every qt wrapper. PySide6's Designer won't work with a built-in QTabWidget::TabPosition
+# enum used as a custom-widget property.
+class LabelPosition(object):
+    North = 0
+    South = 1
+    West = 2
+    East = 3
+
+
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
+    from pydm.utilities import int_enum_from
+
+    LabelPosition = int_enum_from("LabelPosition", LabelPosition)
+
+
+# PySide6 Designer-dropdown carrier for this widget's enum. See the cross-wrapper enum note in pydm.utilities.
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import IntEnum
+
+    class PyDMByteIndicator(QWidget, PyDMWidget):
+        @QEnum
+        class LabelPosition(IntEnum):
+            North = 0
+            South = 1
+            West = 2
+            East = 3
+
+    _PyDMByteIndicatorBases = (PyDMByteIndicator,)
+else:
+    _PyDMByteIndicatorBases = (QWidget, PyDMWidget)
+
+
+class PyDMByteIndicator(*_PyDMByteIndicatorBases):
     """
     Widget for graphical representation of bits from an integer number
     with support for Channels and more from PyDM, including blinking functionality.
@@ -84,6 +118,25 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(LabelPosition)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        LabelPosition = pyqt6_designer_enum("PyDMByteIndicator", LabelPosition)
+    else:  # PySide6: adopt this widget's carrier-registered enum
+        LabelPosition = _PyDMByteIndicatorBases[0].LabelPosition
+
+    LabelPosition = LabelPosition  # PyQt5 Q_ENUM binds no class attr; keep this publish
+
+    # Make enum definitions known to this class
+    North = LabelPosition.North
+    South = LabelPosition.South
+    West = LabelPosition.West
+    East = LabelPosition.East
 
     def __init__(self, parent: Optional[QWidget] = None, init_channel=None):
         QWidget.__init__(self, parent)
@@ -108,11 +161,9 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
 
         self._orientation = Qt.Vertical
 
-        # This is kind of ridiculous, importing QTabWidget just to get a 4-item enum that's usable in Designer.
-        # PyQt5 lets you define custom enums that you can use in designer with QtCore.Q_ENUMS(), doesn't exist in PyQt4.
         self._labels = []
         self._show_labels = True
-        self._label_position = QTabWidget.East
+        self._label_position = self.LabelPosition.East
 
         self._num_bits = 1
 
@@ -213,11 +264,11 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         orient = self.orientation
         if orient == Qt.Vertical or orient == 2:
             for i, (label, indicator) in enumerate(pairs):
-                if self.labelPosition == QTabWidget.East:
+                if self.labelPosition == self.LabelPosition.East:
                     self.layout().addWidget(indicator, i, 0)
                     self.layout().addWidget(label, i, 1, 1, 1, Qt.AlignVCenter)
                     label.setVisible(self._show_labels)
-                elif self.labelPosition == QTabWidget.West:
+                elif self.labelPosition == self.LabelPosition.West:
                     self.layout().addWidget(label, i, 0, 1, 1, Qt.AlignVCenter)
                     self.layout().addWidget(indicator, i, 1)
                     label.setVisible(self._show_labels)
@@ -227,11 +278,11 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
                     # so we don't reset label visibility here.
         elif orient == Qt.Horizontal or orient == 1:
             for i, (label, indicator) in enumerate(pairs):
-                if self.labelPosition == QTabWidget.North:
+                if self.labelPosition == self.LabelPosition.North:
                     self.layout().addWidget(label, 0, i, 1, 1, Qt.AlignHCenter)
                     self.layout().addWidget(indicator, 1, i)
                     label.setVisible(self._show_labels)
-                elif self.labelPosition == QTabWidget.South:
+                elif self.labelPosition == self.LabelPosition.South:
                     self.layout().addWidget(indicator, 0, i)
                     self.layout().addWidget(label, 1, i, 1, 1, Qt.AlignHCenter)
                     label.setVisible(self._show_labels)
@@ -625,7 +676,7 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
 
     circles = Property(bool, readCircles, setCircles)
 
-    def readLabelPosition(self) -> QTabWidget.TabPosition:
+    def readLabelPosition(self) -> LabelPosition:
         """
         The side of the widget to display labels on.
 
@@ -635,18 +686,19 @@ class PyDMByteIndicator(QWidget, PyDMWidget):
         """
         return self._label_position
 
-    def setLabelPosition(self, new_pos: QTabWidget.TabPosition) -> None:
+    def setLabelPosition(self, new_pos) -> None:
         """
         The side of the widget to display labels on.
 
         Parameters
         ----------
-        new_pos : QTabWidget.TabPosition, int
+        new_pos : LabelPosition, int
         """
+        new_pos = coerce_enum_value(new_pos, self.LabelPosition)
         self._label_position = new_pos
         self.rebuild_layout()
 
-    labelPosition = Property(QTabWidget.TabPosition, readLabelPosition, setLabelPosition)
+    labelPosition = Property(LabelPosition, readLabelPosition, setLabelPosition)
 
     def readNumBits(self) -> int:
         """

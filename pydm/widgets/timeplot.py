@@ -565,7 +565,7 @@ class PyDMTimePlot(_PyDMTimePlotBase):
             The background color for the plot.  Accepts any arguments that
             pyqtgraph.mkColor will accept.
         """
-        self._updateMode = UpdateMode.OnValueChange
+        self._updateMode = self.UpdateMode.OnValueChange
         self._plot_by_timestamps = plot_by_timestamps
 
         if bottom_axis is not None:

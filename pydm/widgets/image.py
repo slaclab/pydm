@@ -254,11 +254,11 @@ class PyDMImageView(*_PyDMImageViewBases):
 
         # Make a right-click menu for changing the color map.
         self.cm_group = QActionGroup(self)
-        self.cmap_for_action = {}
+        self.cmap_for_name = {}
         for cm in self.color_maps:
             action = self.cm_group.addAction(cmap_names[cm])
             action.setCheckable(True)
-            self.cmap_for_action[action] = cm
+            self.cmap_for_name[cmap_names[cm]] = cm
 
         self.colorMap = self._colormap
 
@@ -308,7 +308,7 @@ class PyDMImageView(*_PyDMImageViewBases):
         """
         self.menu = ViewBoxMenu(self.getView().getViewBox())
         cm_menu = self.menu.addMenu("Color Map")
-        for act in self.cmap_for_action.keys():
+        for act in self.cm_group.actions():
             cm_menu.addAction(act)
         cm_menu.triggered.connect(self._changeColorMap)
         return self.menu
@@ -323,7 +323,7 @@ class PyDMImageView(*_PyDMImageViewBases):
         ----------
         action : QAction
         """
-        self.colorMap = self.cmap_for_action[action]
+        self.colorMap = self.cmap_for_name[action.text()]
 
     def readColorMapMin(self) -> float:
         """
@@ -415,11 +415,12 @@ class PyDMImageView(*_PyDMImageViewBases):
         self._colormap = new_cmap
         self._cm_colors = self.color_maps[new_cmap]
         self.setColorMap()
+        # Sync the right-click menu's check marks.  The QActions created in __init__
+        # can be invalidated when the widget is loaded from a .ui (Qt reparents or
+        # recreates them), so use the live group actions, matched by their stable text.
+        current_name = cmap_names.get(self._colormap)
         for action in self.cm_group.actions():
-            if self.cmap_for_action[action] == self._colormap:
-                action.setChecked(True)
-            else:
-                action.setChecked(False)
+            action.setChecked(action.text() == current_name)
 
     colorMap = Property(PyDMColorMap, readColorMap, _setColorMap)
 

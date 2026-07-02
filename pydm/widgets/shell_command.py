@@ -14,7 +14,6 @@ from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
 from pydm.utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 from typing import Optional, Union, List
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property

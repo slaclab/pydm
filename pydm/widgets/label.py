@@ -5,7 +5,6 @@ from .display_format import DisplayFormat, parse_value_for_display
 from pydm.utilities import is_pydm_app, is_qt_designer, ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 from pydm import config
 from pydm.widgets.base import only_if_channel_set
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
