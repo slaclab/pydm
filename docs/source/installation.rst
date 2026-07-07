@@ -12,7 +12,15 @@ with pip.
 Please note, this guide is written with Unix in mind, so there are probably some differences when installing on Windows.
 
 Installing PyDM and Prerequisites with Conda (PyQt6)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+  These PyQt6 instructions currently work on Linux and Windows only.  Due to packaging
+  issues in the conda-forge PyQt6 packages for MacOS, Qt Designer cannot load Python
+  plugins there so the PyDM widgets will not show up.  On MacOS, follow the PySide6
+  instructions in the next section instead. This section will be updated once those
+  issues are resolved.
+
 After installing Miniforge (see https://conda-forge.org/download/), create a new
 environment for PyDM::
 
@@ -22,11 +30,34 @@ environment for PyDM::
 
 Once you've installed and activated the environment, you should be able to run 'pydm' to launch PyDM, or run 'designer6' to launch Qt Designer.  If you are on Windows, run these commands from the Anaconda Prompt.
 
+Installing PyDM and Prerequisites with Conda (PySide6)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-MacOS instructions in progress...
+After installing Miniforge (see https://conda-forge.org/download/), create and activate the environment::
+
+  $ conda create -n pydm-environment python=3.12 pyside6 pip numpy six psutil pyqtgraph pydm -c conda-forge
+  $ conda activate pydm-environment
+  $ export QT_API=pyside6
+
+Once the environment is activated, you should be able to run 'pydm' to launch PyDM.
+
+If using linux, Qt Designer needs libpython preloaded before the PyDM widgets will load.
+With the environment activated, run (replace 3.12 if you chose a different Python version)::
+
+  $ export LD_PRELOAD=$CONDA_PREFIX/lib/libpython3.12.so
+  $ designer6  # or pyside-designer6 if on a pip install
+
+Likewise on MacOS, Qt Designer also takes an extra step to get custom widgets to load.
+With the environment activated, run (replace 3.12 if you chose a different Python version)::
+
+  $ export DYLD_INSERT_LIBRARIES=$CONDA_PREFIX/lib/libpython3.12.dylib
+  $ Designer6
+
+When everything is working, the terminal will print "Loading PyDM Widgets" while
+Designer starts, and the PyDM widgets will appear in Designer's widget box.
 
 Installing PyDM and Prerequisites with Conda (PyQt5)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. warning::
     There is currently no PyQt 5.15+ build available on conda or PyPI that has
@@ -63,7 +94,7 @@ Now, you can use 'open' to open Designer.app::
     $ export QT_MAC_WANTS_LAYER=1
 
 Installing Manually, Without Anaconda (PyQt5)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This alternate installation method is only recommended for large 'site' installations that want to avoid using Anaconda.
 
 Qt 5
@@ -93,7 +124,7 @@ build and install it.  Note that you may need to manually set the '--qmake' opti
 qmake binary you created when you built Qt5.
 
 Installing Manually, Without Anaconda (PySide6)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Instructions coming soon...
 
 Installing PyDM with PIP
@@ -121,6 +152,7 @@ If you want to use Designer to build displays with PyDM widgets, you'll need to
 add the PyDM install location to the PYQTDESIGNERPATH environment variable.  This
 directory might be buried pretty deep, depending on how Python is installed on your
 system.  For example, mine lives at '/usr/local/lib/python2.7/site-packages/pydm/'.
+If you are using PySide6, the equivalent environment variable is PYSIDE_DESIGNER_PLUGINS.
 
 Default Data Source
 ###################
@@ -143,4 +175,3 @@ installed.  This is usually done as part of the PyQt install process, but some
 package managers (like homebrew on OSX) don't install the plugin when PyQt is
 installed.  In that case, you'll probably need to install PyQt from source.
 Follow the directions from the PyQt documentation: http://pyqt.sourceforge.net/Docs/PyQt5/installation.html#building-and-installing-from-source
-
