@@ -48,13 +48,12 @@ if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     # which the `value == UpdateMode.AtFixedRate` checks elsewhere in this module rely on.
     UpdateMode = int_enum_from("UpdateMode", UpdateMode)
 
-# Back-compat alias.  This enum was historically named ``updateMode`` -- the same name as the
-# Qt property below.  That collision is invisible to Designer (it resolves enums through the
-# C++ metaobject) but breaks ``uic``-generated code, which reaches an enum member by attribute
-# access: ``PyDMTimePlot.updateMode.AtFixedRate`` lands on the *property*, not the enum, so any
-# ``.ui`` with updateMode set fails to load on every wrapper.  The canonical name is now the
-# PascalCase ``UpdateMode`` (matching ``TimeBase``, ``ReadingOrder``, ... on the other widgets);
-# keep the old name importable for existing code.
+# Backwards-compatibility alias.  This enum was historically named updateMode which is the same name as the
+# Qt property below.  That collision breaks uic-generated code, which reaches an enum member by attribute
+# access: PyDMTimePlot.updateMode.AtFixedRate lands on the property, not the enum, so any
+# .ui with updateMode set fails to load on every wrapper.  The canonical name is now UpdateMode
+# (matching TimeBase, ReadingOrder, etc.,  on the other widgets)
+# Keep the old name importable for existing code.
 updateMode = UpdateMode
 
 
