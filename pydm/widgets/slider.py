@@ -286,14 +286,13 @@ class PyDMSlider(*_PyDMSliderBases):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(TickPosition)
+        TickPosition = TickPosition
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         TickPosition = pyqt6_designer_enum("PyDMSlider", TickPosition)
-    else:  # PySide6: adopt this widget's carrier-registered enum
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         TickPosition = _PyDMSliderBases[0].TickPosition
-
-    TickPosition = TickPosition  # PyQt5 Q_ENUM binds no class attr; keep this publish
 
     # Make enum definitions known to this class
     NoTicks = TickPosition.NoTicks

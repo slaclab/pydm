@@ -59,13 +59,13 @@ class PyDMLineEdit(*_PyDMLineEditBases):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(DisplayFormat)
+        DisplayFormat = DisplayFormat
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         DisplayFormat = pyqt6_designer_enum("PyDMLineEdit", DisplayFormat)
-    else:  # PySide6: adopt this widget's carrier-registered enum
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         DisplayFormat = _PyDMLineEditBases[0].DisplayFormat
-    DisplayFormat = DisplayFormat
 
     # Make enum definitions known to this class
     Default = DisplayFormat.Default

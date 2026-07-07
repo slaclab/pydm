@@ -76,22 +76,19 @@ if ACTIVE_QT_WRAPPER == QtWrapperTypes.UNSUPPORTED:
 
 # Cross-wrapper custom-enum Designer registration
 # ------------------------------------------------
-# For a custom "enum" widget property to render as a NAMED DROPDOWN in Qt Designer (rather than a
+# For a custom enum property to render as a named dropdown in Qt Designer (rather than a
 # bare integer spin-box) the enum has to be registered with the meta-object system, and each Qt
 # wrapper does it differently:
-#   * PyQt5   -- ``Q_ENUM(TheEnum)`` in the widget class body.
-#   * PyQt6   -- ``pyqt6_designer_enum("PyDMWidget", TheEnum)`` (a per-widget ``pyqtEnum`` copy).
-#   * PySide6 -- ``@QEnum`` on a QObject-derived *carrier base class* whose NAME EQUALS the widget
-#                class, so the enum's meta-type scope becomes ``PyDMWidget::TheEnum`` and a value
-#                saved in a ``.ui`` round-trips across wrappers.  The real widget then subclasses the
-#                carrier (``class PyDMWidget(*_PyDMWidgetBases)``).  A shared enum needs one carrier
-#                per widget; a single carrier may host several enums.
-# The canonical enum is a real ``IntEnum`` on the Qt6 bindings (:func:`int_enum_from`).  Two rules
-# every such property must follow, or Designer/attribute-assignment break: initialise the backing
-# attribute from the registered enum (``self._x = self.TheEnum.Member`` -- a module-global member has
-# no C++ meta-type and Designer's property editor can't convert it), and funnel every incoming value
-# through :func:`coerce_enum_value` in the setter (a bare int assigned via ``setattr`` is not
-# auto-coerced on the Qt6 bindings and would otherwise read back wrong).
+#   * PyQt5   -- Q_ENUM(TheEnum) in the widget class body.
+#   * PyQt6   -- pyqt6_designer_enum("PyDMWidget", TheEnum) (a per-widget pyqtEnum copy).
+#   * PySide6 -- @QEnum on a QObject-derived carrier base class whose name equals the widget
+#                class, so the enum's meta-type scope becomes PyDMWidget::TheEnum and a value
+#                saved in a .ui file works across wrappers.  The real widget then subclasses the
+#                carrier class.  A shared enum needs one carrier per widget, and a single
+#                carrier may host several enums.
+# Every wrapper must also leave TheEnum bound as a class attribute. PyQt6/PySide6 bind it by assignment, while
+# PyQt5 follows Q_ENUM (which registers the enum but binds nothing) with TheEnum = TheEnum to publish
+# the module-level enum on the class.
 def int_enum_from(name, source):
     """Build an IntEnum mirroring the input source value.
 
@@ -140,25 +137,22 @@ def pyqt6_designer_enum(owner, source):
 
 
 def coerce_enum_value(value, enum_type):
-    """Coerce a bare ``int`` to a member of ``enum_type`` on the Qt6 bindings.
+    """Coerce an int to a member of enum_type on the Qt6 bindings.
 
-    PyQt6 and PySide6 corrupt an enum-typed ``Property`` when a bare ``int`` is stored in
-    its backing attribute (it reads back wrong through the meta-object).  Assigning e.g.
-    ``widget.displayFormat = 2`` -- as the rules engine does (``setattr`` in
-    ``pydm.widgets.base``), as user code may, or as a widget constructor may -- must be
-    normalised to ``enum_type(2)`` first.  ``setProperty`` / ``.ui`` loading already
+    PyQt6 and PySide6 corrupt an enum-typed Property when an int is stored in
+    its backing attribute (it reads back wrong through the meta-object).  Assigning something like
+    widget.displayFormat = 2 must be normalised to enum_type(2) first.  Loading .ui files will already
     auto-coerce, but attribute assignment does not, so every custom-enum setter runs its
     incoming value through this before storing it.
 
-    Idempotent for values that are already members; a no-op on PyQt5 (whose ``Q_ENUM``
-    properties accept plain ints); and a pass-through when ``value`` is not a valid member
-    (e.g. a custom ``logging`` level that is not in ``LogLevels``), so callers that accept
-    out-of-enum ints keep working.
+    Idempotent for values that are already members and a no-op on PyQt5.
+
+    A pass-through when value is not a valid member so callers that accept out-of-enum ints keep working.
 
     Parameters
     ----------
     value : Any
-        The incoming value -- typically an ``int`` or an existing member of ``enum_type``.
+        The incoming value -- typically an int or an existing member of enum_type.
     enum_type : type
         The per-wrapper registered enum (``self.<Enum>``) the property is typed as.
     """

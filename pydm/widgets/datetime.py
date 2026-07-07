@@ -12,9 +12,6 @@ else:
 logger = logging.getLogger(__name__)
 
 
-# Canonical TimeBase: a plain int-attr class for PyQt5; a real IntEnum for the Qt6 bindings
-# (PyQt6 + PySide6).  TimeBase (PascalCase) is intentionally distinct from the ``timeBase``
-# property name -- a same-name collision silently breaks uic runtime loading.
 class TimeBase(object):
     Milliseconds = 0
     Seconds = 1
@@ -27,7 +24,7 @@ if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
 
 
 # PySide6 Designer-dropdown carrier(s) for this widget's enum(s) -- see the cross-wrapper enum note in pydm.utilities.
-# TimeBase is shared by two widgets, so each gets its OWN carrier base (named like that widget).
+# TimeBase is shared by two widgets, so each gets its own carrier base named like that widget.
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
     from enum import IntEnum
@@ -68,17 +65,14 @@ class PyDMDateTimeEdit(*_PyDMDateTimeEditBases):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(TimeBase)
+        TimeBase = TimeBase
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         TimeBase = pyqt6_designer_enum("PyDMDateTimeEdit", TimeBase)
-    else:  # PySide6: adopt this widget's carrier-registered enum
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         TimeBase = _PyDMDateTimeEditBases[0].TimeBase
 
-    # Publish the registered enum as a class attribute on every wrapper (PyQt5's Q_ENUM
-    # registers it in the metaobject but does not assign it here), so both ``self.TimeBase``
-    # and uic's ``PyDMDateTimeEdit.TimeBase.<key>`` resolve.
-    TimeBase = TimeBase
     Milliseconds = TimeBase.Milliseconds
     Seconds = TimeBase.Seconds
 
@@ -196,17 +190,14 @@ class PyDMDateTimeLabel(*_PyDMDateTimeLabelBases):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(TimeBase)
+        TimeBase = TimeBase
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         TimeBase = pyqt6_designer_enum("PyDMDateTimeLabel", TimeBase)
-    else:  # PySide6: adopt this widget's carrier-registered enum
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         TimeBase = _PyDMDateTimeLabelBases[0].TimeBase
 
-    # Publish the registered enum as a class attribute on every wrapper (PyQt5's Q_ENUM
-    # registers it in the metaobject but does not assign it here), so both ``self.TimeBase``
-    # and uic's ``PyDMDateTimeLabel.TimeBase.<key>`` resolve.
-    TimeBase = TimeBase
     Milliseconds = TimeBase.Milliseconds
     Seconds = TimeBase.Seconds
 

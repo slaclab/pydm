@@ -177,13 +177,13 @@ class PyDMTemplateRepeater(*_PyDMTemplateRepeaterBases):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(LayoutType)
+        LayoutType = LayoutType
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         LayoutType = pyqt6_designer_enum("PyDMTemplateRepeater", LayoutType)
-    else:  # PySide6: adopt this widget's carrier-registered enum
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         LayoutType = _PyDMTemplateRepeaterBases[0].LayoutType
-    LayoutType = LayoutType
 
     # Make enum definitions known to this class
     Vertical = LayoutType.Vertical

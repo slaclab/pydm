@@ -176,13 +176,13 @@ class PyDMLogDisplay(*_PyDMLogDisplayBases):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(LogLevels)
+        LogLevels = LogLevels
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         LogLevels = pyqt6_designer_enum("PyDMLogDisplay", LogLevels)
-    else:  # PySide6: adopt this widget's carrier-registered enum
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         LogLevels = _PyDMLogDisplayBases[0].LogLevels
-    LogLevels = LogLevels
 
     # Make enum definitions known to this class
     NOTSET = LogLevels.NOTSET

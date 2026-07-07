@@ -474,35 +474,23 @@ class TimePlotCurveItem(BasePlotCurveItem):
         return [self.channel]
 
 
+# PySide6 Designer-dropdown carrier for this widget's enum. See the cross-wrapper enum note in pydm.utilities.
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from enum import IntEnum
     from PySide6.QtCore import QEnum
 
-    # PySide6 shows a custom enum as a Designer dropdown only when it is registered with a
-    # meta-type via @QEnum, and that requires the enum to live on a QObject-derived *base*
-    # class -- declaring the enum and a Property of that type in the same class body raises
-    # "Invalid property type" (the meta-type isn't registered until the class is finalized).
-    # This carrier base is named PyDMTimePlot (not a private name) on purpose: the registered
-    # enum's meta-type then becomes "PyDMTimePlot::UpdateMode", matching the widget class, so a
-    # value saved in a .ui ("PyDMTimePlot::UpdateMode::AtFixedRate") round-trips through both
-    # pyside6-designer and pyside6-uic. The real widget below redefines PyDMTimePlot as its
-    # subclass; the enum is already registered by the time its updateMode Property is built.
     class PyDMTimePlot(BasePlot):
         @QEnum
         class UpdateMode(IntEnum):
             OnValueChange = 1
             AtFixedRate = 2
 
-    _PyDMTimePlotBase = PyDMTimePlot
-    # Read/stored values must be members of this exact registered enum for the Property to
-    # round-trip, so adopt it as the canonical UpdateMode under PySide6.
-    UpdateMode = PyDMTimePlot.UpdateMode
-    updateMode = UpdateMode  # keep the back-compat alias pointing at the registered enum
+    _PyDMTimePlotBases = (PyDMTimePlot,)
 else:
-    _PyDMTimePlotBase = BasePlot
+    _PyDMTimePlotBases = (BasePlot,)
 
 
-class PyDMTimePlot(_PyDMTimePlotBase):
+class PyDMTimePlot(*_PyDMTimePlotBases):
     """
     PyDMTimePlot is a widget to plot one or more channels vs. time.
 
@@ -531,14 +519,13 @@ class PyDMTimePlot(_PyDMTimePlotBase):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(UpdateMode)
+        UpdateMode = UpdateMode
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         UpdateMode = pyqt6_designer_enum("PyDMTimePlot", UpdateMode)
-    # Publish the registered enum on the class as ``UpdateMode``.  The Property below is named
-    # ``updateMode`` (camelCase) -- a deliberately different name, so it no longer shadows the
-    # enum and ``PyDMTimePlot.UpdateMode.AtFixedRate`` stays reachable for uic-generated code.
-    UpdateMode = UpdateMode
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+        UpdateMode = _PyDMTimePlotBases[0].UpdateMode
 
     # Make enum definitions known to this class
     OnValueChange = UpdateMode.OnValueChange
@@ -1085,15 +1072,8 @@ class PyDMTimePlot(_PyDMTimePlotBase):
             self.setUpdatesAsynchronously(self._updateMode)
 
     # UpdateMode is the per-wrapper registered enum (see the enum setup in the class body and,
-    # for PySide6, _PyDMTimePlotBase above): PyQt5 Q_ENUM, PyQt6 pyqt6_designer_enum, PySide6
-    # @QEnum on the base. Typing the Property as it makes Designer render a named dropdown of
-    # the members on all three wrappers. The property is intentionally named differently from
+    # for PySide6, the carrier in _PyDMTimePlotBases above). The property is intentionally named differently from
     # the enum (updateMode vs UpdateMode) so uic-generated code can still reach enum members.
-    # setUpdateMode runs its incoming value through pydm.utilities.coerce_enum_value so a bare int
-    # (from the rules engine's setattr, user code, or a constructor) is normalised to an UpdateMode
-    # member -- the Qt6 bindings corrupt an enum-typed property when a bare int is stored via
-    # attribute assignment. (.ui loading is unaffected either way: uic emits
-    # ``setProperty("updateMode", PyDMTimePlot.AtFixedRate)``, routed through the Qt metaobject.)
     updateMode = Property(UpdateMode, readUpdateMode, setUpdateMode)
 
     def getTimeSpan(self):

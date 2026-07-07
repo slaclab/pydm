@@ -80,13 +80,13 @@ class PyDMEnumButton(*_PyDMEnumButtonBases):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(WidgetType)
+        WidgetType = WidgetType
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         WidgetType = pyqt6_designer_enum("PyDMEnumButton", WidgetType)
-    else:  # PySide6: adopt this widget's carrier-registered enum
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         WidgetType = _PyDMEnumButtonBases[0].WidgetType
-    WidgetType = WidgetType
 
     # Make enum definitions known to this class
     PushButton = WidgetType.PushButton

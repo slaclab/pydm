@@ -179,23 +179,19 @@ class PyDMImageView(*_PyDMImageViewBases):
         Q_ENUM(ReadingOrder)
         Q_ENUM(DimensionOrder)
         Q_ENUM(PyDMColorMap)
+        ReadingOrder = ReadingOrder
+        DimensionOrder = DimensionOrder
+        PyDMColorMap = PyDMColorMap
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         ReadingOrder = pyqt6_designer_enum("PyDMImageView", ReadingOrder)
         DimensionOrder = pyqt6_designer_enum("PyDMImageView", DimensionOrder)
         PyDMColorMap = pyqt6_designer_enum("PyDMImageView", PyDMColorMap)
-    else:  # PySide6: adopt this widget's carrier-registered enums
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         ReadingOrder = _PyDMImageViewBases[0].ReadingOrder
         DimensionOrder = _PyDMImageViewBases[0].DimensionOrder
         PyDMColorMap = _PyDMImageViewBases[0].PyDMColorMap
-
-    # Publish the registered enums as class attributes on every wrapper (PyQt5's Q_ENUM
-    # registers them in the metaobject but does not assign here) so self.<Enum> and uic's
-    # PyDMImageView.<Enum>.<Key> resolve.
-    ReadingOrder = ReadingOrder
-    DimensionOrder = DimensionOrder
-    PyDMColorMap = PyDMColorMap
 
     # Make enum definitions known to this class
     Fortranlike = ReadingOrder.Fortranlike

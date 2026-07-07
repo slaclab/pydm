@@ -123,14 +123,13 @@ class PyDMByteIndicator(*_PyDMByteIndicatorBases):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(LabelPosition)
+        LabelPosition = LabelPosition
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         LabelPosition = pyqt6_designer_enum("PyDMByteIndicator", LabelPosition)
-    else:  # PySide6: adopt this widget's carrier-registered enum
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         LabelPosition = _PyDMByteIndicatorBases[0].LabelPosition
-
-    LabelPosition = LabelPosition  # PyQt5 Q_ENUM binds no class attr; keep this publish
 
     # Make enum definitions known to this class
     North = LabelPosition.North
@@ -694,7 +693,7 @@ class PyDMByteIndicator(*_PyDMByteIndicatorBases):
         ----------
         new_pos : LabelPosition, int
         """
-        new_pos = coerce_enum_value(new_pos, self.LabelPosition)
+        new_pos = coerce_enum_value(int(getattr(new_pos, "value", new_pos)), self.LabelPosition)
         self._label_position = new_pos
         self.rebuild_layout()
 

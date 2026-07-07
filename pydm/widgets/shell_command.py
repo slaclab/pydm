@@ -76,13 +76,13 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(TermOutputMode)
+        TermOutputMode = TermOutputMode
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         TermOutputMode = pyqt6_designer_enum("PyDMShellCommand", TermOutputMode)
-    else:  # PySide6: adopt this widget's carrier-registered enum
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
         TermOutputMode = _PyDMShellCommandBases[0].TermOutputMode
-    TermOutputMode = TermOutputMode
 
     # Make enum definitions known to this class
     HIDE = TermOutputMode.HIDE
