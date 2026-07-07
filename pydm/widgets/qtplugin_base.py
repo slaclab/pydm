@@ -42,8 +42,6 @@ if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
 elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     BASE_PLUGIN_CLASS = QtDesigner.QDesignerCustomWidgetInterface
 
-#: Top-level module names of the Qt bindings PyDM supports.  Used to find a
-#: widget's nearest genuine Qt base class for the Designer "<extends>" field.
 _QT_BINDING_MODULES = ("PyQt5", "PyQt6", "PySide6")
 
 
@@ -231,33 +229,30 @@ class PyDMDesignerPlugin(BASE_PLUGIN_CLASS):
 
     def designer_base_class(self):
         """
-        Return the base class Designer should record as this widget's ``<extends>``.
+        Return the base class Designer should record as this widget's <extends>.
 
-        Qt Designer records a custom widget's base class -- its ``<extends>``
-        -- so that a saved ``.ui`` file stays loadable in an environment that
-        uses a different Qt wrapper.  Designer normally infers this from the
-        widget's metaobject superclass; two PyDM specifics need correcting:
+        Qt Designer records a custom widget's base class -- its <extends>
+        -- so that a saved .ui file stays loadable in an environment that
+        uses a different Qt wrapper.  Designer infers this from the
+        widget's metaobject superclass, but two PyDM specifics need correcting:
 
-        * A per-widget PySide6 *carrier* base (used to scope a custom enum so
+        * A per-widget PySide6 carrier base (used to scope a custom enum so
           it renders as a Designer dropdown) is a pure-Python class named
           identically to the widget.  Left alone, Designer would emit a
-          self-referential ``<extends>`` that no other wrapper can resolve.
-        * PyDM's abstract intermediate bases (``PyDMDrawing``, ``BasePlot``,
+          self-referential <extends> that no other wrapper can resolve.
+        * PyDM's abstract intermediate bases (PyDMDrawing, BasePlot,
           ...) are not registered widgets, so they are not resolvable as an
-          ``<extends>`` either.
+          <extends> either.
 
         So we walk the MRO, skip the same-named carrier, and report the first
-        base that is a genuine Qt class *or* another registered PyDM widget --
-        exactly what Designer infers for a directly-subclassed widget
-        (``PyDMDrawingPie`` -> ``PyDMDrawingArc``, ``PyDMLabel`` -> ``QLabel``).
+        base that is a genuine Qt class or another registered PyDM widget.
         """
         try:
             from pydm.widgets.qtplugins import get_pydm_custom_widgets
 
             registered = {plugin.plugin_name for plugin in get_pydm_custom_widgets().values()}
         except Exception:
-            # If the registry can't be read, fall back to the nearest genuine Qt
-            # base -- always resolvable, just less specific than the true parent.
+            # If the registry can't be read, fall back to the nearest genuine Qt base.
             registered = set()
         for klass in self.cls.__mro__[1:]:
             if klass.__name__ == self.cls.__name__:
@@ -271,11 +266,11 @@ class PyDMDesignerPlugin(BASE_PLUGIN_CLASS):
         """
         XML description of the widget's default property values.
 
-        The ``<widget>`` element supplies the values Designer uses when the
+        The <widget> element supplies the values Designer uses when the
         widget is first dropped onto a form.  The accompanying
-        ``<customwidgets>`` element declares the widget's Qt base class
-        explicitly via ``<extends>``; pinning this to a real Qt type (rather
-        than relying on Designer's metaobject inference) keeps saved ``.ui``
+        <customwidgets> element declares the widget's Qt base class
+        explicitly via <extends>. Pinning this to a real Qt type (rather
+        than relying on Designer's metaobject inference) keeps saved .ui
         files portable across Qt wrappers.
         """
         return (
