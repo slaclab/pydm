@@ -65,6 +65,7 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         self._string_encoding = "utf_8"
         self._enable_rich_text = False
         self._display_label_text = False
+        self._disconnected_text = ""
 
         if is_pydm_app():
             self._string_encoding = self.app.get_string_encoding()
@@ -114,6 +115,24 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
         self._display_label_text = new_value
 
     displayLabelText = Property(bool, readDisplayLabelText, setDisplayLabelText)
+
+    def readDisconnectedText(self):
+        """
+        disconnectedText property.
+
+        The text to display when the label's channel is disconnected. When
+        left empty, the channel address is displayed instead.
+
+        :getter: Returns the text shown while the channel is disconnected.
+        :setter: Sets the text shown while the channel is disconnected.
+        :type: str
+        """
+        return self._disconnected_text
+
+    def setDisconnectedText(self, new_text):
+        self._disconnected_text = new_text
+
+    disconnectedText = Property(str, readDisconnectedText, setDisconnectedText)
 
     def readDisplayFormat(self):
         """
@@ -182,7 +201,8 @@ class PyDMLabel(QLabel, TextFormatter, PyDMWidget):
 
     @only_if_channel_set
     def check_enable_state(self):
-        """If the channel this label is connected to becomes disconnected, display only the name of the channel."""
+        """If the channel this label is connected to becomes disconnected, display the disconnectedText
+        if set, otherwise the name of the channel."""
         if not self._connected and not self._display_label_text:
-            self.setText(self.channel)
+            self.setText(self._disconnected_text or self.channel)
         super().check_enable_state()
