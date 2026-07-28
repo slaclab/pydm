@@ -494,6 +494,32 @@ def test_display_label_text_unchecked_uses_channel_value_and_address(qtbot, sign
     assert pydm_label.text() == "CA://MTEST"
 
 
+def test_disconnected_text_replaces_channel_address(qtbot, signals):
+    """Verify the label's text changes correctly based on text the user specified."""
+    pydm_label = PyDMLabel()
+    pydm_label.disconnectedText = "------"
+    pydm_label.channel = "CA://MTEST"
+    qtbot.addWidget(pydm_label)
+
+    signals.connection_state_signal.connect(pydm_label.connectionStateChanged)
+    signals.new_value_signal[str].connect(pydm_label.channelValueChanged)
+
+    # Displays the expected value when the channel is connected
+    signals.connection_state_signal.emit(True)
+    signals.new_value_signal[str].emit("Channel Value")
+    assert pydm_label.text() == "Channel Value"
+
+    # Changes to the disconnected text if the channel disconnects
+    signals.connection_state_signal.emit(False)
+    assert pydm_label._connected is False
+    assert pydm_label.text() == "------"
+
+    # Back to the actual value when the connection is restored
+    signals.connection_state_signal.emit(True)
+    signals.new_value_signal[str].emit("Channel Value")
+    assert pydm_label.text() == "Channel Value"
+
+
 @pytest.mark.parametrize(
     "alarm_sensitive_content, alarm_sensitive_border, tooltip",
     [
