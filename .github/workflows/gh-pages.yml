@@ -6,6 +6,10 @@ on:
   push:
     branches: [ "master" ]
 
+# Required to push the built docs to the gh-pages branch
+permissions:
+  contents: write
+
 jobs:
   deploy:
     if: ${{ github.repository == 'slaclab/pydm' }}
