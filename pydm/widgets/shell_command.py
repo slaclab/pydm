@@ -12,9 +12,8 @@ from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import QSize, Qt, QTimer, Signal
 from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
-from pydm.utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 from typing import Optional, Union, List
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -34,25 +33,30 @@ class TermOutputMode:
     STORE = 2
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     from pydm.utilities import int_enum_from
 
     TermOutputMode = int_enum_from("TermOutputMode", TermOutputMode)
 
 
+# PySide6 Designer-dropdown carrier(s) for this widget's enum(s) -- see the cross-wrapper enum note in pydm.utilities.
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
-    from enum import Enum
+    from enum import IntEnum
 
-    @QEnum
-    # overrides prev enum def
-    class TermOutputMode(Enum):  # noqa: F811
-        HIDE = 0
-        SHOW = 1
-        STORE = 2
+    class PyDMShellCommand(QPushButton, PyDMWidget):
+        @QEnum
+        class TermOutputMode(IntEnum):
+            HIDE = 0
+            SHOW = 1
+            STORE = 2
+
+    _PyDMShellCommandBases = (PyDMShellCommand,)
+else:
+    _PyDMShellCommandBases = (QPushButton, PyDMWidget)
 
 
-class PyDMShellCommand(QPushButton, PyDMWidget):
+class PyDMShellCommand(*_PyDMShellCommandBases):
     """
     A QPushButton capable of executing shell commands.
 
@@ -72,11 +76,13 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(TermOutputMode)
+        TermOutputMode = TermOutputMode
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         TermOutputMode = pyqt6_designer_enum("PyDMShellCommand", TermOutputMode)
-    TermOutputMode = TermOutputMode
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+        TermOutputMode = _PyDMShellCommandBases[0].TermOutputMode
 
     # Make enum definitions known to this class
     HIDE = TermOutputMode.HIDE
@@ -116,8 +122,8 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         self._allow_multiple = False
         self.process = None
         self._show_icon = True
-        self._stdout = TermOutputMode.HIDE
-        self._stderr = TermOutputMode.HIDE
+        self._stdout = self.TermOutputMode.HIDE
+        self._stderr = self.TermOutputMode.HIDE
         self._uses_stdout_intf = False
         # shell allows for more options such as command chaining ("cmd1;cmd2", "cmd1 && cmd2", etc ...),
         # use of environment variables, glob expansion ('ls *.txt'), etc...
@@ -406,9 +412,9 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
             )
             return
         if value:
-            self._stdout = TermOutputMode.SHOW
+            self._stdout = self.TermOutputMode.SHOW
         else:
-            self._stdout = TermOutputMode.HIDE
+            self._stdout = self.TermOutputMode.HIDE
 
     redirectCommandOutput = Property(bool, readRedirectCommandOutput, setRedirectCommandOutput, designable=False)
 
@@ -431,6 +437,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         return self._stdout
 
     def setStdout(self, value: TermOutputMode) -> None:
+        value = coerce_enum_value(value, self.TermOutputMode)
         self._uses_stdout_intf = True
         self._stdout = value
 
@@ -449,6 +456,7 @@ class PyDMShellCommand(QPushButton, PyDMWidget):
         return self._stderr
 
     def setStderr(self, value: TermOutputMode) -> None:
+        value = coerce_enum_value(value, self.TermOutputMode)
         self._stderr = value
 
     stderr = Property(TermOutputMode, readStderr, setStderr)

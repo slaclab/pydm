@@ -23,6 +23,7 @@ import enum
 import inspect
 import logging
 from typing import Dict, List, Optional, Type
+from xml.sax.saxutils import escape
 
 import entrypoints
 from qtpy import QtCore, QtDesigner, QtGui, QtWidgets
@@ -40,6 +41,8 @@ if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
     BASE_PLUGIN_CLASS = QtDesigner.QPyDesignerCustomWidgetPlugin
 elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     BASE_PLUGIN_CLASS = QtDesigner.QDesignerCustomWidgetInterface
+
+_QT_BINDING_MODULES = ("PyQt5", "PyQt6", "PySide6")
 
 
 class WidgetCategory(str, enum.Enum):
@@ -224,17 +227,68 @@ class PyDMDesignerPlugin(BASE_PLUGIN_CLASS):
         """
         return QtGui.QIcon(self._icon.pixmap(QtCore.QSize(32, 32)))
 
+    def designer_base_class(self):
+        """
+        Return the base class Designer should record as this widget's <extends>.
+
+        Qt Designer records a custom widget's base class -- its <extends>
+        -- so that a saved .ui file stays loadable in an environment that
+        uses a different Qt wrapper.  Designer infers this from the
+        widget's metaobject superclass, but two PyDM specifics need correcting:
+
+        * A per-widget PySide6 carrier base (used to scope a custom enum so
+          it renders as a Designer dropdown) is a pure-Python class named
+          identically to the widget.  Left alone, Designer would emit a
+          self-referential <extends> that no other wrapper can resolve.
+        * PyDM's abstract intermediate bases (PyDMDrawing, BasePlot,
+          ...) are not registered widgets, so they are not resolvable as an
+          <extends> either.
+
+        So we walk the MRO, skip the same-named carrier, and report the first
+        base that is a genuine Qt class or another registered PyDM widget.
+        """
+        try:
+            from pydm.widgets.qtplugins import get_pydm_custom_widgets
+
+            registered = {plugin.plugin_name for plugin in get_pydm_custom_widgets().values()}
+        except Exception:
+            # If the registry can't be read, fall back to the nearest genuine Qt base.
+            registered = set()
+        for klass in self.cls.__mro__[1:]:
+            if klass.__name__ == self.cls.__name__:
+                continue  # a PySide6 enum carrier, named like the widget itself
+            module = (getattr(klass, "__module__", "") or "").split(".")[0]
+            if module in _QT_BINDING_MODULES or klass.__name__ in registered:
+                return klass.__name__
+        return "QWidget"
+
     def domXml(self):
         """
-        XML Description of the widget's properties.
+        XML description of the widget's default property values.
+
+        The <widget> element supplies the values Designer uses when the
+        widget is first dropped onto a form.  The accompanying
+        <customwidgets> element declares the widget's Qt base class
+        explicitly via <extends>. Pinning this to a real Qt type (rather
+        than relying on Designer's metaobject inference) keeps saved .ui
+        files portable across Qt wrappers.
         """
         return (
-            '<widget class="{0}" name="{0}">\n'
-            ' <property name="toolTip" >\n'
-            "  <string>{1}</string>\n"
-            " </property>\n"
-            "</widget>\n"
-        ).format(self.name(), self.toolTip())
+            '<ui language="c++">\n'
+            ' <widget class="{0}" name="{0}">\n'
+            '  <property name="toolTip">\n'
+            "   <string>{1}</string>\n"
+            "  </property>\n"
+            " </widget>\n"
+            " <customwidgets>\n"
+            "  <customwidget>\n"
+            "   <class>{0}</class>\n"
+            "   <extends>{2}</extends>\n"
+            "   <header>{3}</header>\n"
+            "  </customwidget>\n"
+            " </customwidgets>\n"
+            "</ui>\n"
+        ).format(self.name(), escape(self.toolTip()), self.designer_base_class(), self.includeFile())
 
     def includeFile(self):
         """

@@ -8,7 +8,7 @@ from qtpy.QtGui import QColor, QCursor
 from qtpy.QtCore import Signal, Slot, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
-from pydm.utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 from datetime import datetime
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -33,8 +33,8 @@ DEFAULT_SEVERITY_RAW = -1
 DEFAULT_SEVERITY_STRING = "N/A"
 
 
-class updateMode(object):
-    """updateMode as new type for plot update"""
+class UpdateMode(object):
+    """UpdateMode as new type for plot update"""
 
     OnValueChange = 1
     AtFixedRate = 2
@@ -45,8 +45,16 @@ if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
 
     # Both Qt6 bindings need a real enum here (PyQt5 keeps the plain int-attribute class
     # above). int_enum_from returns an IntEnum, so members stay equal to their int value,
-    # which the `value == updateMode.AtFixedRate` checks elsewhere in this module rely on.
-    updateMode = int_enum_from("updateMode", updateMode)
+    # which the `value == UpdateMode.AtFixedRate` checks elsewhere in this module rely on.
+    UpdateMode = int_enum_from("UpdateMode", UpdateMode)
+
+# Backwards-compatibility alias.  This enum was historically named updateMode which is the same name as the
+# Qt property below.  That collision breaks uic-generated code, which reaches an enum member by attribute
+# access: PyDMTimePlot.updateMode.AtFixedRate lands on the property, not the enum, so any
+# .ui with updateMode set fails to load on every wrapper.  The canonical name is now UpdateMode
+# (matching TimeBase, ReadingOrder, etc.,  on the other widgets)
+# Keep the old name importable for existing code.
+updateMode = UpdateMode
 
 
 class TimePlotCurveItem(BasePlotCurveItem):
@@ -428,7 +436,7 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
-        if isinstance(value, int) and value == updateMode.AtFixedRate or isinstance(value, bool) and value is True:
+        if isinstance(value, int) and value == UpdateMode.AtFixedRate or isinstance(value, bool) and value is True:
             self._update_mode = PyDMTimePlot.AtFixedRate
         else:
             self._update_mode = PyDMTimePlot.OnValueChange
@@ -465,7 +473,23 @@ class TimePlotCurveItem(BasePlotCurveItem):
         return [self.channel]
 
 
-class PyDMTimePlot(BasePlot):
+# PySide6 Designer-dropdown carrier for this widget's enum. See the cross-wrapper enum note in pydm.utilities.
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from enum import IntEnum
+    from PySide6.QtCore import QEnum
+
+    class PyDMTimePlot(BasePlot):
+        @QEnum
+        class UpdateMode(IntEnum):
+            OnValueChange = 1
+            AtFixedRate = 2
+
+    _PyDMTimePlotBases = (PyDMTimePlot,)
+else:
+    _PyDMTimePlotBases = (BasePlot,)
+
+
+class PyDMTimePlot(*_PyDMTimePlotBases):
     """
     PyDMTimePlot is a widget to plot one or more channels vs. time.
 
@@ -493,20 +517,18 @@ class PyDMTimePlot(BasePlot):
     if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
         from PyQt5.QtCore import Q_ENUM
 
-        Q_ENUM(updateMode)
+        Q_ENUM(UpdateMode)
+        UpdateMode = UpdateMode
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
-        updateMode = pyqt6_designer_enum("PyDMTimePlot", updateMode)
-        # The Property defined below is also named "updateMode" and would replace
-        # this enum in the class namespace before PyQt6 registers it. Keep a
-        # reference under another name so it is still published as an enum type.
-        _updateMode_enum = updateMode
-    updateMode = updateMode
+        UpdateMode = pyqt6_designer_enum("PyDMTimePlot", UpdateMode)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+        UpdateMode = _PyDMTimePlotBases[0].UpdateMode
 
     # Make enum definitions known to this class
-    OnValueChange = updateMode.OnValueChange
-    AtFixedRate = updateMode.AtFixedRate
+    OnValueChange = UpdateMode.OnValueChange
+    AtFixedRate = UpdateMode.AtFixedRate
 
     plot_redrawn_signal = Signal(TimePlotCurveItem)
 
@@ -529,7 +551,7 @@ class PyDMTimePlot(BasePlot):
             The background color for the plot.  Accepts any arguments that
             pyqtgraph.mkColor will accept.
         """
-        self._updateMode = updateMode.OnValueChange
+        self._updateMode = self.UpdateMode.OnValueChange
         self._plot_by_timestamps = plot_by_timestamps
 
         if bottom_axis is not None:
@@ -1008,7 +1030,7 @@ class PyDMTimePlot(BasePlot):
         """
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
-        if isinstance(value, int) and value == updateMode.AtFixedRate or isinstance(value, bool) and value is True:
+        if isinstance(value, int) and value == UpdateMode.AtFixedRate or isinstance(value, bool) and value is True:
             self._update_mode = PyDMTimePlot.AtFixedRate
             self.update_timer.start()
         else:
@@ -1025,16 +1047,15 @@ class PyDMTimePlot(BasePlot):
         "bool", getUpdatesAsynchronously, setUpdatesAsynchronously, resetUpdatesAsynchronously, designable=False
     )
 
-    def readUpdateMode(self) -> updateMode:
+    def readUpdateMode(self) -> UpdateMode:
         """
         The updateMode to be used as property to set plot update mode.
 
         Returns
         -------
-        updateMode
+        UpdateMode
         """
-        # Property is int-typed under PySide6 (see prop_type below); return int there.
-        return int(self._updateMode) if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else self._updateMode
+        return self._updateMode
 
     def setUpdateMode(self, new_type) -> None:
         """
@@ -1042,17 +1063,17 @@ class PyDMTimePlot(BasePlot):
 
         Parameters
         ----------
-        new_type : updateMode
+        new_type : UpdateMode
         """
+        new_type = coerce_enum_value(new_type, self.UpdateMode)
         if new_type != self._updateMode:
             self._updateMode = new_type
             self.setUpdatesAsynchronously(self._updateMode)
 
-    # PySide6 exposes this as a plain int field: its module-level QEnum never registered on
-    # the class, so Designer reported the property as an unsupported PyObjectWrapper. int keeps
-    # it editable/saveable (no dropdown, consistent with the other enum props under PySide6).
-    prop_type = int if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6 else updateMode
-    updateMode = Property(prop_type, readUpdateMode, setUpdateMode)
+    # UpdateMode is the per-wrapper registered enum (see the enum setup in the class body and,
+    # for PySide6, the carrier in _PyDMTimePlotBases above). The property is intentionally named differently from
+    # the enum (updateMode vs UpdateMode) so uic-generated code can still reach enum members.
+    updateMode = Property(UpdateMode, readUpdateMode, setUpdateMode)
 
     def getTimeSpan(self):
         """

@@ -16,7 +16,7 @@ from qtpy.QtWidgets import (
     QStyle,
 )
 from qtpy.QtGui import QPainter
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -111,7 +111,10 @@ class LogLevels(object):
         return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+# Under the Qt6 bindings (PyQt6 + PySide6) LogLevels must be a real IntEnum (preserving the
+# Python logging-level values) so it can be registered as a Qt Designer dropdown.  PyQt5 keeps
+# the plain int-attribute class above.
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     from enum import IntEnum
 
     class LogLevels(IntEnum):  # noqa F811
@@ -128,33 +131,27 @@ if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
             return OrderedDict(sorted(entries, key=lambda item: item[1]))
 
 
+# PySide6 Designer-dropdown carrier for LogLevels (see the cross-wrapper enum note in pydm.utilities); the
+# module-global LogLevels above keeps as_dict() for the combo box.
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
-    from enum import Enum
 
-    @QEnum
-    class LogLevels(Enum):  # noqa F811
-        NOTSET = 0
-        DEBUG = 10
-        INFO = 20
-        WARNING = 30
-        ERROR = 40
-        CRITICAL = 50
+    class PyDMLogDisplay(QWidget):
+        @QEnum
+        class LogLevels(IntEnum):
+            NOTSET = 0
+            DEBUG = 10
+            INFO = 20
+            WARNING = 30
+            ERROR = 40
+            CRITICAL = 50
 
-        @staticmethod
-        def as_dict():
-            """
-            Returns an ordered dict of LogLevels ordered by value.
-            Returns
-            -------
-            OrderedDict
-            """
-            # First let's remove the internals
-            entries = [(k, v.value) for k, v in LogLevels.__members__.items()]
-            return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
+    _PyDMLogDisplayBases = (PyDMLogDisplay,)
+else:
+    _PyDMLogDisplayBases = (QWidget,)
 
 
-class PyDMLogDisplay(QWidget):
+class PyDMLogDisplay(*_PyDMLogDisplayBases):
     """
     Standard display for Log Output
 
@@ -179,11 +176,13 @@ class PyDMLogDisplay(QWidget):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(LogLevels)
+        LogLevels = LogLevels
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         LogLevels = pyqt6_designer_enum("PyDMLogDisplay", LogLevels)
-    LogLevels = LogLevels
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+        LogLevels = _PyDMLogDisplayBases[0].LogLevels
 
     # Make enum definitions known to this class
     NOTSET = LogLevels.NOTSET
@@ -228,13 +227,7 @@ class PyDMLogDisplay(QWidget):
         self.log = None
         self.level = None
         self.logName = logname or ""
-        if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
-            # PyQt6 enum properties won't accept a bare int; coerce the logging
-            # level into a LogLevels member (leave custom levels untouched).
-            try:
-                level = LogLevels(level)
-            except ValueError:
-                pass
+        # setLogLevel coerces a bare int (e.g. logging.NOTSET) into a LogLevels member.
         self.logLevel = level
         self.destroyed.connect(functools.partial(logger_destroyed, self.log))
 
@@ -245,6 +238,7 @@ class PyDMLogDisplay(QWidget):
         return self.level
 
     def setLogLevel(self, level) -> None:
+        level = coerce_enum_value(level, self.LogLevels)
         if level != self.level:
             self.level = level
             # Search by the int value (getattr handles both an enum member and an int across all three Qt wrappers).

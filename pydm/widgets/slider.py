@@ -18,7 +18,7 @@ from qtpy.QtWidgets import (
 from pydm.widgets import PyDMLabel
 from .base import PyDMWritableWidget, TextFormatter, is_channel_valid
 from .channel import PyDMChannel
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -236,7 +236,41 @@ class PyDMPrimitiveSlider(QSlider):
             return (1 - proportion) * slider_length + self.getHandleSize().height() / 2
 
 
-class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
+# TickPosition mirrors QSlider.TickPosition's values but is scoped to PyDMSlider so it renders as
+# a Designer dropdown on every wrapper -- PySide6's Designer can't handle a built-in
+# QSlider::TickPosition enum reused as a custom-widget property.
+class TickPosition(object):
+    NoTicks = 0
+    TicksAbove = 1
+    TicksBelow = 2
+    TicksBothSides = 3
+
+
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
+    from pydm.utilities import int_enum_from
+
+    TickPosition = int_enum_from("TickPosition", TickPosition)
+
+
+# PySide6 Designer-dropdown carrier for this widget's enum -- see the cross-wrapper enum note in pydm.utilities.
+if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+    from PySide6.QtCore import QEnum
+    from enum import IntEnum
+
+    class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
+        @QEnum
+        class TickPosition(IntEnum):
+            NoTicks = 0
+            TicksAbove = 1
+            TicksBelow = 2
+            TicksBothSides = 3
+
+    _PyDMSliderBases = (PyDMSlider,)
+else:
+    _PyDMSliderBases = (QFrame, TextFormatter, PyDMWritableWidget)
+
+
+class PyDMSlider(*_PyDMSliderBases):
     """
     A QSlider with support for Channels and more from PyDM.
 
@@ -247,6 +281,24 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
     init_channel : str, optional
         The channel to be used by the widget.
     """
+
+    if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
+        from PyQt5.QtCore import Q_ENUM
+
+        Q_ENUM(TickPosition)
+        TickPosition = TickPosition
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+        from pydm.utilities import pyqt6_designer_enum
+
+        TickPosition = pyqt6_designer_enum("PyDMSlider", TickPosition)
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+        TickPosition = _PyDMSliderBases[0].TickPosition
+
+    # Make enum definitions known to this class
+    NoTicks = TickPosition.NoTicks
+    TicksAbove = TickPosition.TicksAbove
+    TicksBelow = TickPosition.TicksBelow
+    TicksBothSides = TickPosition.TicksBothSides
 
     new_properties = _step_size_properties
 
@@ -1033,15 +1085,16 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
     showValueLabel = Property(bool, readShowValueLabel, setShowValueLabel)
 
-    def readTickPosition(self) -> QSlider.TickPosition:
+    def readTickPosition(self) -> TickPosition:
         """
         Where to draw tick marks for the slider.
 
         Returns
         -------
-        QSlider.TickPosition
+        TickPosition
         """
-        return self._slider.tickPosition()
+        pos = self._slider.tickPosition()
+        return coerce_enum_value(int(getattr(pos, "value", pos)), self.TickPosition)
 
     def setTickPosition(self, position) -> None:
         """
@@ -1049,11 +1102,15 @@ class PyDMSlider(QFrame, TextFormatter, PyDMWritableWidget):
 
         Parameter
         ---------
-        position : QSlider.TickPosition
+        position : TickPosition, int
         """
-        self._slider.setTickPosition(position)
+        # tickPosition drives the internal QSlider, which needs a real QSlider.TickPosition (the
+        # Qt6 bindings reject a bare int).  The incoming value may be a bare int (rules engine),
+        # this widget's TickPosition, or a legacy QSlider.TickPosition -- normalise via its int.
+        value = int(getattr(position, "value", position))
+        self._slider.setTickPosition(QSlider.TickPosition(value))
 
-    tickPosition = Property(QSlider.TickPosition, readTickPosition, setTickPosition)
+    tickPosition = Property(TickPosition, readTickPosition, setTickPosition)
 
     def readUserDefinedLimits(self) -> bool:
         """

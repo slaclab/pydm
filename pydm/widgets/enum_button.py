@@ -16,7 +16,7 @@ from qtpy.QtWidgets import (
 
 from .base import PyDMWritableWidget, PostParentClassInitSetup
 from pydm import data_plugins
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -29,21 +29,26 @@ class WidgetType(object):
     RadioButton = 1
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     from pydm.utilities import int_enum_from
 
     WidgetType = int_enum_from("WidgetType", WidgetType)
 
 
+# PySide6 Designer-dropdown carrier(s) for this widget's enum(s) -- see the cross-wrapper enum note in pydm.utilities.
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import QEnum
-    from enum import Enum
+    from enum import IntEnum
 
-    @QEnum
-    # overrides prev enum def
-    class WidgetType(Enum):  # noqa: F811
-        PushButton = 0
-        RadioButton = 1
+    class PyDMEnumButton(QWidget, PyDMWritableWidget):
+        @QEnum
+        class WidgetType(IntEnum):
+            PushButton = 0
+            RadioButton = 1
+
+    _PyDMEnumButtonBases = (PyDMEnumButton,)
+else:
+    _PyDMEnumButtonBases = (QWidget, PyDMWritableWidget)
 
 
 class_for_type = {WidgetType.PushButton: QPushButton, WidgetType.RadioButton: QRadioButton}
@@ -51,7 +56,7 @@ class_for_type = {WidgetType.PushButton: QPushButton, WidgetType.RadioButton: QR
 logger = logging.getLogger(__name__)
 
 
-class PyDMEnumButton(QWidget, PyDMWritableWidget):
+class PyDMEnumButton(*_PyDMEnumButtonBases):
     """
     A QWidget that renders buttons for every option of Enum Items.
     For now, two types of buttons can be rendered:
@@ -75,11 +80,13 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         from PyQt5.QtCore import Q_ENUM
 
         Q_ENUM(WidgetType)
+        WidgetType = WidgetType
     elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
         from pydm.utilities import pyqt6_designer_enum
 
         WidgetType = pyqt6_designer_enum("PyDMEnumButton", WidgetType)
-    WidgetType = WidgetType
+    elif ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
+        WidgetType = _PyDMEnumButtonBases[0].WidgetType
 
     # Make enum definitions known to this class
     PushButton = WidgetType.PushButton
@@ -100,7 +107,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         self._btn_group = QButtonGroup()
         self._btn_group.setExclusive(True)
         self._btn_group.buttonClicked.connect(self.handle_button_clicked)
-        self._widget_type = WidgetType.PushButton
+        self._widget_type = self.WidgetType.PushButton
         self._orientation = Qt.Vertical
         self._widgets = []
         self.rebuild_widgets()
@@ -219,6 +226,7 @@ class PyDMEnumButton(QWidget, PyDMWritableWidget):
         ----------
         new_type : WidgetType
         """
+        new_type = coerce_enum_value(new_type, self.WidgetType)
         if new_type != self._widget_type:
             self._widget_type = new_type
             self.rebuild_widgets()

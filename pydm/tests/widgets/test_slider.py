@@ -425,7 +425,11 @@ def test_properties_and_setters(qtbot, show_labels, orientation, tick_position):
     pydm_slider.orientation = orientation
 
     pydm_slider.tickPosition = tick_position
-    assert pydm_slider.tickPosition == tick_position
+    expected_tick_position = int(getattr(tick_position, "value", tick_position))
+    assert int(pydm_slider.tickPosition) == expected_tick_position
+    # The value must also read back intact through the meta-object system (Designer's path).
+    stored = pydm_slider.property("tickPosition")
+    assert int(getattr(stored, "value", stored)) == expected_tick_position
     pydm_slider.num_steps = 5
     assert pydm_slider.num_steps == 5
 

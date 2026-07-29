@@ -1080,26 +1080,14 @@ class PyDMColorMap(object):
     Hot = 6
 
 
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT6:
+# Under the Qt6 bindings (PyQt6 + PySide6) PyDMColorMap must be a real IntEnum so the per-widget
+# carrier in image.py can register it as a Qt Designer dropdown.  The cmaps/cmap_names dicts and
+# module-level colour arrays below are then keyed by IntEnum members (compared by value).
+# PyQt5 keeps the plain int-attribute class defined above.
+if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
     from pydm.utilities import int_enum_from
 
     PyDMColorMap = int_enum_from("PyDMColorMap", PyDMColorMap)
-
-
-if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
-    from PySide6.QtCore import QEnum
-    from enum import Enum
-
-    @QEnum
-    # overrides prev enum def
-    class PyDMColorMap(Enum):  # noqa F811
-        Magma = 0
-        Inferno = 1
-        Plasma = 2
-        Viridis = 3
-        Jet = 4
-        Monochrome = 5
-        Hot = 6
 
 
 for name, data in (
