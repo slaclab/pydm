@@ -52,6 +52,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installing-pydm-and-prerequisites-with-conda-pyqt6">Installing PyDM and Prerequisites with Conda (PyQt6)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-pydm-and-prerequisites-with-conda-pyside6">Installing PyDM and Prerequisites with Conda (PySide6)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-pydm-and-prerequisites-with-conda-pyqt5">Installing PyDM and Prerequisites with Conda (PyQt5)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-manually-without-anaconda-pyqt5">Installing Manually, Without Anaconda (PyQt5)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#qt-5">Qt 5</a></li>
@@ -145,6 +146,14 @@ with pip.</p>
 <p>Please note, this guide is written with Unix in mind, so there are probably some differences when installing on Windows.</p>
 <section id="installing-pydm-and-prerequisites-with-conda-pyqt6">
 <h2>Installing PyDM and Prerequisites with Conda (PyQt6)<a class="headerlink" href="#installing-pydm-and-prerequisites-with-conda-pyqt6" title="Permalink to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These PyQt6 instructions currently work on Linux and Windows only.  Due to packaging
+issues in the conda-forge PyQt6 packages for MacOS, Qt Designer cannot load Python
+plugins there so the PyDM widgets will not show up.  On MacOS, follow the PySide6
+instructions in the next section instead. This section will be updated once those
+issues are resolved.</p>
+</div>
 <p>After installing Miniforge (see <a class="reference external" href="https://conda-forge.org/download/">https://conda-forge.org/download/</a>), create a new
 environment for PyDM:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create -n pydm-environment python=3.12 pyqt6 pip numpy six psutil pyqtgraph pydm -c conda-forge
@@ -153,7 +162,30 @@ $ export QT_API=pyqt6
 </pre></div>
 </div>
 <p>Once you’ve installed and activated the environment, you should be able to run ‘pydm’ to launch PyDM, or run ‘designer6’ to launch Qt Designer.  If you are on Windows, run these commands from the Anaconda Prompt.</p>
-<p>MacOS instructions in progress…</p>
+</section>
+<section id="installing-pydm-and-prerequisites-with-conda-pyside6">
+<h2>Installing PyDM and Prerequisites with Conda (PySide6)<a class="headerlink" href="#installing-pydm-and-prerequisites-with-conda-pyside6" title="Permalink to this heading"></a></h2>
+<p>After installing Miniforge (see <a class="reference external" href="https://conda-forge.org/download/">https://conda-forge.org/download/</a>), create and activate the environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create -n pydm-environment python=3.12 pyside6 pip numpy six psutil pyqtgraph pydm -c conda-forge
+$ conda activate pydm-environment
+$ export QT_API=pyside6
+</pre></div>
+</div>
+<p>Once the environment is activated, you should be able to run ‘pydm’ to launch PyDM.</p>
+<p>If using linux, Qt Designer needs libpython preloaded before the PyDM widgets will load.
+With the environment activated, run (replace 3.12 if you chose a different Python version):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ export LD_PRELOAD=$CONDA_PREFIX/lib/libpython3.12.so
+$ designer6  # or pyside-designer6 if on a pip install
+</pre></div>
+</div>
+<p>Likewise on MacOS, Qt Designer also takes an extra step to get custom widgets to load.
+With the environment activated, run (replace 3.12 if you chose a different Python version):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ export DYLD_INSERT_LIBRARIES=$CONDA_PREFIX/lib/libpython3.12.dylib
+$ Designer6
+</pre></div>
+</div>
+<p>When everything is working, the terminal will print “Loading PyDM Widgets” while
+Designer starts, and the PyDM widgets will appear in Designer’s widget box.</p>
 </section>
 <section id="installing-pydm-and-prerequisites-with-conda-pyqt5">
 <h2>Installing PyDM and Prerequisites with Conda (PyQt5)<a class="headerlink" href="#installing-pydm-and-prerequisites-with-conda-pyqt5" title="Permalink to this heading"></a></h2>
@@ -245,7 +277,8 @@ are using bash).</p>
 <p>If you want to use Designer to build displays with PyDM widgets, you’ll need to
 add the PyDM install location to the PYQTDESIGNERPATH environment variable.  This
 directory might be buried pretty deep, depending on how Python is installed on your
-system.  For example, mine lives at ‘/usr/local/lib/python2.7/site-packages/pydm/’.</p>
+system.  For example, mine lives at ‘/usr/local/lib/python2.7/site-packages/pydm/’.
+If you are using PySide6, the equivalent environment variable is PYSIDE_DESIGNER_PLUGINS.</p>
 </section>
 <section id="default-data-source">
 <h4>Default Data Source<a class="headerlink" href="#default-data-source" title="Permalink to this heading"></a></h4>

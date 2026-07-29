@@ -517,7 +517,7 @@
         <bool>true</bool>
        </property>
        <property name="labelPosition" stdset="0">
-        <enum>QTabWidget::East</enum>
+        <enum>PyDMByteIndicator::East</enum>
        </property>
        <property name="labels" stdset="0">
         <stringlist>
