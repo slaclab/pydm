@@ -383,9 +383,15 @@ class Connection(PyDMConnection):
 
     @staticmethod
     def precision_for_value(value, max_precision=8):
-        dec = decimal.Decimal(str(value))
-        solution = min((len(str(dec).split(".")[1]), max_precision))
-        return solution
+        exponent = decimal.Decimal(str(value)).as_tuple().exponent
+        # The exponent is a string ("n", "N", "F") for NaN and Infinity, and is
+        # zero or positive for values with no fractional digits. Decimal renders
+        # both of those without a ".", so reading str(dec).split(".")[1] used to
+        # raise IndexError, which also caught floats in exponential form such as
+        # 1e-9 and 1e20.
+        if not isinstance(exponent, int) or exponent >= 0:
+            return 0
+        return min(-exponent, max_precision)
 
 
 class LocalPlugin(PyDMPlugin):
