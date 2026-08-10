@@ -11,7 +11,7 @@ from .utilities import (
     close_widget_connections,
 )
 from .pydm_ui import Ui_MainWindow
-from .display import Display, ScreenTarget, load_file, clear_compiled_ui_file_cache
+from .display import Display, DisplayBase, ScreenTarget, load_file, clear_compiled_ui_file_cache
 from .connection_inspector import ConnectionInspector
 from .about_pydm import AboutWindow
 from .show_macros import MacroWindow
@@ -255,7 +255,7 @@ class PyDMMainWindow(QMainWindow):
             self.ui.actionForward.setDisabled(True)
             return
 
-        if not isinstance(w, Display):
+        if not isinstance(w, DisplayBase):
             # We can't do much if it is not a Display and we don't have the
             # previous_display and next_display properties since we don't
             # have the navigation stack set.
@@ -327,7 +327,7 @@ class PyDMMainWindow(QMainWindow):
         if extension == ".ui":
             return self.current_file(), None
         else:
-            central_widget = self.centralWidget() if isinstance(self.centralWidget(), Display) else None
+            central_widget = self.centralWidget() if isinstance(self.centralWidget(), DisplayBase) else None
             if central_widget is not None:
                 ui_file = central_widget.ui_filepath()
             return ui_file, self.current_file()
@@ -571,7 +571,7 @@ class PyDMMainWindow(QMainWindow):
 
     def add_menu_items(self):
         # create the custom menu with user given items
-        if not isinstance(self.display_widget(), Display):
+        if not isinstance(self.display_widget(), DisplayBase):
             return
 
         # Only provide the view help menu option if an associated help file has been loaded
