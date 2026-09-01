@@ -1,5 +1,7 @@
 import pytest
 from pydm.widgets.analog_indicator import PyDMAnalogIndicator
+from pydm.widgets.scale import QScale
+from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QWidget
 
 
@@ -93,6 +95,34 @@ def test_title_reset(qtbot):
     indicator.resetTitle()
     assert indicator.title == ""
     assert indicator.title_label.isHidden()
+
+    parent.deleteLater()
+    indicator.deleteLater()
+
+
+@pytest.mark.parametrize(
+    "prop, value",
+    [
+        ("valuePosition", Qt.LeftEdge),
+        ("orientation", Qt.Vertical),
+        ("flipScale", True),
+        ("invertedAppearance", True),
+    ],
+)
+def test_title_survives_relayout(qtbot, prop, value):
+    """Changing any layout-affecting property rebuilds the layout, ensure the title widget remains as expected."""
+    parent = QWidget()
+    qtbot.addWidget(parent)
+    indicator = PyDMAnalogIndicator(parent=parent)
+    qtbot.addWidget(indicator)
+    indicator.title = "Title"
+
+    setattr(indicator, prop, value)
+    # Both calls would raise RuntimeError if the QLabel's C++ object was deleted along with the old layout
+    assert indicator.title_label.text() == "Title"
+    assert indicator.title == "Title"
+    assert indicator.widget_layout.indexOf(indicator.title_label) != -1
+    assert indicator.title_label.parent() is indicator
 
     parent.deleteLater()
     indicator.deleteLater()

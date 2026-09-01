@@ -397,7 +397,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self._show_value = True
         self._show_limits = True
 
-        self.scale_indicator = QScale()
+        self.scale_indicator = self._make_scale_indicator()
         self.value_label = QLabel()
         self.lower_label = QLabel()
         self.upper_label = QLabel()
@@ -624,6 +624,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
                     self.upper_label.setAlignment(Qt.AlignRight | Qt.AlignBottom)
 
         self.value_label.setAlignment(Qt.AlignCenter)
+        self._add_extra_widgets(self.widget_layout)
 
         if self.layout() is not None:
             # Trick to remove the existing layout by re-parenting it in an empty widget.
@@ -631,8 +632,15 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self.widget_layout.setContentsMargins(1, 1, 1, 1)
         self.setLayout(self.widget_layout)
 
+    def _make_scale_indicator(self) -> QScale:
+        """Create the scale widget used by this indicator."""
+        return QScale()
+
     def _grid_row_offset(self) -> int:
         return 0
+
+    def _add_extra_widgets(self, layout: QGridLayout) -> None:
+        """Subclass hook: place additional widgets in the new layout before the old one is discarded."""
 
     def readShowValue(self) -> bool:
         """
