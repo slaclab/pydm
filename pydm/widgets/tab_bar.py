@@ -1,11 +1,12 @@
+from qtpy import QtDesigner
 from qtpy.QtWidgets import QTabBar, QTabWidget
 from qtpy.QtGui import QIcon, QColor
-from qtpy.QtCore import QByteArray
+from qtpy.QtCore import QByteArray, QTimer
 from .base import PyDMWidget, PostParentClassInitSetup
 from .channel import PyDMChannel
 from functools import partial
 from pydm.utilities.iconfont import IconFont
-from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
+from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes, is_qt_designer
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
     from PySide6.QtCore import Property
@@ -202,6 +203,7 @@ class PyDMTabWidget(QTabWidget):
         super().__init__(parent)
         self.tb = PyDMTabBar(parent=self)
         self.setTabBar(self.tb)
+        self._designer_alarm_channels_sync_pending = False
 
     def readCurrentTabAlarmChannel(self) -> QByteArray:
         """
@@ -217,12 +219,34 @@ class PyDMTabWidget(QTabWidget):
             return bytearray()
 
     def setCurrentTabAlarmChannel(self, new_alarm_channel) -> None:
+        old_channels = self.getAlarmChannels()
         try:
             self.tabBar().currentTabAlarmChannel = bytes(new_alarm_channel).decode()
         except (TypeError, ValueError, AttributeError):
             self.tabBar().currentTabAlarmChannel = str(new_alarm_channel)
+        if is_qt_designer() and self.getAlarmChannels() != old_channels:
+            self._queue_designer_alarm_channels_sync()
 
     currentTabAlarmChannel = Property(QByteArray, readCurrentTabAlarmChannel, setCurrentTabAlarmChannel)
+
+    def _queue_designer_alarm_channels_sync(self):
+        """
+        Set alarmChannels through the Designer form window so they get marked as changed
+        and written on save.  currentTabAlarmChannel alone can't restore anything at load time
+        (it is applied before any tabs exist), so a .ui file whose tab widget is missing the
+        alarmChannels property would otherwise silently lose its alarm channels on every save.
+        Deferred with a timer because this runs from inside Designer's own set-property command.
+        """
+        if self._designer_alarm_channels_sync_pending:
+            return
+        self._designer_alarm_channels_sync_pending = True
+        QTimer.singleShot(0, self._sync_designer_alarm_channels)
+
+    def _sync_designer_alarm_channels(self):
+        self._designer_alarm_channels_sync_pending = False
+        form_window = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self)
+        if form_window:
+            form_window.cursor().setWidgetProperty(self, "alarmChannels", self.getAlarmChannels())
 
     def channels(self):
         """
@@ -330,7 +354,13 @@ class PyDMTabWidget(QTabWidget):
 
     disconnectedAlarmIconColor = Property(QColor, readDisconnectedAlarmIconColor, setDisconnectedAlarmIconColor)
 
-    alarmChannels = Property("QStringList", getAlarmChannels, setAlarmChannels, designable=False)
+    # Set to True on Qt6. With designable=False this fails to save in Designer ("Unable to set property")
+    alarmChannels = Property(
+        "QStringList",
+        getAlarmChannels,
+        setAlarmChannels,
+        designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6),
+    )
 
     # We make a bunch of dummy properties to block out properties available on QTabWidget,
     # but that we don't want to support on PyDMTabWidget.
