@@ -1,6 +1,6 @@
 from .base import PyDMWidget, TextFormatter, PostParentClassInitSetup
 from qtpy.QtGui import QColor, QPolygon, QPen, QPainter, QPaintEvent
-from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
+from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QLayout, QSizePolicy, QWidget, QGridLayout
 from qtpy.QtCore import Qt, QPoint
 from typing import Optional
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
@@ -376,6 +376,16 @@ class QScale(QFrame):
             self.repaint()
 
 
+def _detach_all_items(layout: QLayout) -> None:
+    """Recursively empty the layout, un-parenting its widgets so only the ones still referenced elsewhere survive."""
+    while layout.count():
+        item = layout.takeAt(0)
+        if item.widget() is not None:
+            item.widget().setParent(None)
+        elif item.layout() is not None:
+            _detach_all_items(item.layout())
+
+
 class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
     """
     A bar-shaped indicator for scalar value with support for Channels and
@@ -397,7 +407,7 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self._show_value = True
         self._show_limits = True
 
-        self.scale_indicator = QScale()
+        self.scale_indicator = self._make_scale_indicator()
         self.value_label = QLabel()
         self.lower_label = QLabel()
         self.upper_label = QLabel()
@@ -624,15 +634,29 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
                     self.upper_label.setAlignment(Qt.AlignRight | Qt.AlignBottom)
 
         self.value_label.setAlignment(Qt.AlignCenter)
+        self._add_extra_widgets(self.widget_layout)
 
-        if self.layout() is not None:
+        old_layout = self.layout()
+        if old_layout is not None:
+            # Un-parent whatever was not re-added, so a widget that is still referenced is not deleted below.
+            _detach_all_items(old_layout)
             # Trick to remove the existing layout by re-parenting it in an empty widget.
-            QWidget().setLayout(self.layout())
+            QWidget().setLayout(old_layout)
         self.widget_layout.setContentsMargins(1, 1, 1, 1)
         self.setLayout(self.widget_layout)
 
+    def _make_scale_indicator(self) -> QScale:
+        """Create the scale widget. Called from the base __init__, before any subclass __init__ body runs."""
+        return QScale()
+
     def _grid_row_offset(self) -> int:
         return 0
+
+    def _add_extra_widgets(self, layout: QGridLayout) -> None:
+        """Subclass hook: place additional widgets in the new layout before the old one is discarded.
+
+        Overrides should call super()._add_extra_widgets(layout) so widgets added by parent classes are placed too.
+        """
 
     def readShowValue(self) -> bool:
         """
