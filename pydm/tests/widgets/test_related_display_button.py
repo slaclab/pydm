@@ -7,6 +7,7 @@ from qtpy.QtWidgets import QApplication
 from pydm.utilities.stylesheet import global_style
 from pydm.widgets.related_display_button import PyDMRelatedDisplayButton
 from pydm.utilities import IconFont, checkObjectProperties
+from pydm.data_plugins import plugin_for_address
 
 test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../test_data", "test.ui")
 test_ui_path_with_stylesheet = os.path.join(
@@ -254,3 +255,131 @@ def test_no_pydm_app_stylesheet(monkeypatch, qtbot):
     assert original_style in display4.styleSheet()
     # And we need to add the global stylesheet too
     assert global_style() in display4.styleSheet()
+
+
+def _icon_key(button, severity):
+    return button._alarm_icons[severity].cacheKey()
+
+
+def test_alarm_channels_create_entry_channels(qtbot, test_plugin):
+    """Setting alarmChannels creates a channel per non-blank entry, listed in channels() after the button's own."""
+    button = PyDMRelatedDisplayButton()
+    qtbot.addWidget(button)
+    button.channel = "tst://main"
+    button.filenames = ["one.ui", "", "three.ui", "four.ui"]
+    button.alarmChannels = ["tst://one", "tst://two", "", "tst://four"]
+    assert button.alarmChannels == ["tst://one", "tst://two", "", "tst://four"]
+    # Blank filename and blank alarm channel entries get no channel; the button's own channel stays first
+    assert [c.address for c in button.channels()] == ["tst://main", "tst://one", "tst://four"]
+    plugin = plugin_for_address("tst://one")
+    assert all(c in plugin.channels for c in button._entry_channels.values())
+
+
+def test_alarm_channels_ignored_for_single_filename(qtbot, test_plugin):
+    """Entry channels exist only while there is more than one filename, since one filename opens with no menu."""
+    button = PyDMRelatedDisplayButton()
+    qtbot.addWidget(button)
+    button.filenames = ["one.ui"]
+    button.alarmChannels = ["tst://one"]
+    assert button.channels() is None
+    button.filenames = ["one.ui", "two.ui"]
+    assert [c.address for c in button.channels()] == ["tst://one"]
+    button.filenames = ["one.ui"]
+    assert button.channels() is None
+
+
+def test_entry_channels_resync_when_lists_change(qtbot, test_plugin):
+    """Changing filenames or alarmChannels disconnects only the affected entries and replaces changed addresses."""
+    button = PyDMRelatedDisplayButton()
+    qtbot.addWidget(button)
+    button.filenames = ["one.ui", "two.ui"]
+    button.alarmChannels = ["tst://one", "tst://two"]
+    plugin = plugin_for_address("tst://one")
+    first, second = button._entry_channels[0], button._entry_channels[1]
+
+    # Dropping a filename disconnects only that entry's channel
+    button.filenames = ["one.ui", ""]
+    assert list(button._entry_channels) == [0]
+    assert button._entry_channels[0] is first
+    assert second not in plugin.channels
+
+    # Changing an address replaces the channel
+    button.alarmChannels = ["tst://other", ""]
+    assert button._entry_channels[0] is not first
+    assert first not in plugin.channels
+    assert button._entry_channels[0].address == "tst://other"
+
+    button.alarmChannels = []
+    assert button.channels() is None
+    assert button._entry_connected == {} and button._entry_severity == {}
+
+
+def test_menu_entry_icons_follow_alarm_state(qtbot, test_plugin):
+    """Menu entry icons track the connection and severity slots, showing disconnected until both have reported."""
+    button = PyDMRelatedDisplayButton()
+    qtbot.addWidget(button)
+    button.filenames = ["one.ui", "two.ui"]
+    button.titles = ["One", "Two"]
+    button.alarmChannels = ["tst://one", ""]
+    button._rebuild_menu()
+    one, two = button.menu().actions()
+
+    assert two.icon().isNull()
+    assert two.toolTip() == "Two"  # Qt falls back to the action text when no tooltip is set
+    assert one.toolTip() == "tst://one"
+    assert one.isIconVisibleInMenu()
+    assert button.menu().toolTipsVisible()
+
+    # Disconnected until both a connection and a severity have been reported
+    assert one.icon().cacheKey() == _icon_key(button, button.ALARM_DISCONNECTED)
+    button._entry_alarm_changed(0, button.ALARM_MAJOR)
+    assert one.icon().cacheKey() == _icon_key(button, button.ALARM_DISCONNECTED)
+    button._entry_connection_changed(0, True)
+    assert one.icon().cacheKey() == _icon_key(button, button.ALARM_MAJOR)
+    button._entry_alarm_changed(0, button.ALARM_NONE)
+    assert one.icon().cacheKey() == _icon_key(button, button.ALARM_NONE)
+
+    # A disconnect forgets the old severity; reconnecting waits for a fresh one
+    button._entry_connection_changed(0, False)
+    assert one.icon().cacheKey() == _icon_key(button, button.ALARM_DISCONNECTED)
+    button._entry_connection_changed(0, True)
+    assert one.icon().cacheKey() == _icon_key(button, button.ALARM_DISCONNECTED)
+    button._entry_alarm_changed(0, button.ALARM_MINOR)
+    assert one.icon().cacheKey() == _icon_key(button, button.ALARM_MINOR)
+
+    # Unknown severities fall back to the invalid icon rather than raising inside the slot
+    button._entry_alarm_changed(0, 99)
+    assert one.icon().cacheKey() == _icon_key(button, button.ALARM_INVALID)
+
+
+def test_menu_entry_icons_survive_rebuild_and_context_menu(qtbot, test_plugin):
+    """Alarm state recorded before or between menu rebuilds is applied to the dropdown and the right-click submenu."""
+    button = PyDMRelatedDisplayButton()
+    qtbot.addWidget(button)
+    button.filenames = ["one.ui", "two.ui"]
+    button.titles = ["One", "Two"]
+    button.alarmChannels = ["", "tst://two"]
+    button._entry_connection_changed(1, True)
+    button._entry_alarm_changed(1, button.ALARM_MINOR)
+
+    # State recorded before the menu existed is applied when it gets built, and again after a rebuild
+    button._rebuild_menu()
+    assert button.menu().actions()[1].icon().cacheKey() == _icon_key(button, button.ALARM_MINOR)
+    button._entry_alarm_changed(1, button.ALARM_MAJOR)
+    button._menu_needs_rebuild = True
+    button._rebuild_menu()
+    assert button.menu().actions()[0].icon().isNull()
+    assert button.menu().actions()[1].icon().cacheKey() == _icon_key(button, button.ALARM_MAJOR)
+
+    # The right-click "Open in New Window" submenu shows the same state
+    context_menu = button.context_menu()
+    # Hold the action, not just its submenu: PySide6 invalidates the submenu wrapper otherwise
+    open_new_window = [a for a in context_menu.actions() if a.text() == "Open in New Window"]
+    assert len(open_new_window) == 1
+    sub_menu = open_new_window[0].menu()
+    assert sub_menu.actions()[1].icon().cacheKey() == _icon_key(button, button.ALARM_MAJOR)
+    assert sub_menu.actions()[1].toolTip() == "tst://two"
+
+    # Removing the alarm channel clears the icon on the live menu without a rebuild
+    button.alarmChannels = ["", ""]
+    assert button.menu().actions()[1].icon().isNull()
