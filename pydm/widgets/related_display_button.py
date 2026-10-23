@@ -9,11 +9,12 @@ from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Slot, Qt, QSize, QPoint
 from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
+from .channel import PyDMChannel
 from pydm.utilities import IconFont, find_file, is_pydm_app
 from pydm.utilities.macro import parse_macro_string
 from pydm.utilities.stylesheet import merge_widget_stylesheet
 from pydm.display import load_file, ScreenTarget
-from typing import Optional, List
+from typing import Optional, List, Dict
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -63,6 +64,13 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         self._filenames = [filename] if filename is not None else []
         self._titles = []
         self._macros = []
+        self._alarm_channels = []
+        # Per-entry alarm indicators for the dropdown menu, keyed by index into filenames
+        self._entry_channels: Dict[int, PyDMChannel] = {}
+        self._entry_connected: Dict[int, bool] = {}
+        self._entry_severity: Dict[int, int] = {}
+        self._entry_actions: Dict[int, QAction] = {}
+        self._alarm_icons = self._generate_alarm_icons()
         self.num_additional_items = 0
         self._shift_key_was_down = False
         self.setCursor(QCursor(self._icon.pixmap(16, 16)))
@@ -195,6 +203,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
     def setFilenames(self, val: List[str]) -> None:
         self._filenames = val
         self._menu_needs_rebuild = True
+        self._sync_entry_channels()
 
     filenames = Property("QStringList", readFilenames, setFilenames)
 
@@ -207,6 +216,106 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
     titles = Property("QStringList", readTitles, setTitles)
 
+    def readAlarmChannels(self) -> List[str]:
+        """
+        Alarm channels for the entries of the dropdown menu, one per entry in
+        ``filenames``.  Each menu entry shows an icon reflecting the alarm
+        severity of its channel.  Leave an entry blank for no indicator.
+        Only used when the button has more than since a single filename opens without a menu.
+
+        Returns
+        -------
+        list of str
+        """
+        return self._alarm_channels
+
+    def setAlarmChannels(self, val: List[str]) -> None:
+        """
+        Alarm channels for the entries of the dropdown menu, one per entry in
+        ``filenames``.
+
+        Parameters
+        ----------
+        val : list of str
+        """
+        self._alarm_channels = list(val) if val else []
+        self._menu_needs_rebuild = True
+        self._sync_entry_channels()
+
+    alarmChannels = Property("QStringList", readAlarmChannels, setAlarmChannels)
+
+    def _generate_alarm_icons(self) -> Dict[int, QIcon]:
+        icon_font = IconFont()
+        return {
+            self.ALARM_NONE: icon_font.icon("circle", color=QColor(0, 220, 0)),
+            self.ALARM_MINOR: icon_font.icon("circle", color=QColor(220, 220, 0)),
+            self.ALARM_MAJOR: icon_font.icon("exclamation-circle", color=QColor(255, 0, 0)),
+            self.ALARM_INVALID: icon_font.icon("question-circle", color=QColor(220, 0, 220)),
+            self.ALARM_DISCONNECTED: icon_font.icon("times-circle", color=QColor(150, 150, 150)),
+        }
+
+    def _entry_alarm_addresses(self) -> Dict[int, str]:
+        """Index to alarm channel address for every entry that gets a menu item and has a channel."""
+        if len(self._filenames) <= 1:
+            return {}
+        addresses = {}
+        for i, filename in enumerate(self._filenames):
+            if not filename or i >= len(self._alarm_channels):
+                continue
+            if self._alarm_channels[i]:
+                addresses[i] = str(self._alarm_channels[i])
+        return addresses
+
+    def _sync_entry_channels(self) -> None:
+        """Make the per-entry alarm channels match the current filenames/alarmChannels lists."""
+        wanted = self._entry_alarm_addresses()
+        for index, chan in list(self._entry_channels.items()):
+            if wanted.get(index) == chan.address:
+                continue
+            chan.disconnect()
+            del self._entry_channels[index]
+            self._entry_connected.pop(index, None)
+            self._entry_severity.pop(index, None)
+            self._apply_entry_icon(index)
+        for index, address in wanted.items():
+            if index in self._entry_channels:
+                continue
+            chan = PyDMChannel(
+                address=address,
+                connection_slot=partial(self._entry_connection_changed, index),
+                severity_slot=partial(self._entry_alarm_changed, index),
+            )
+            self._entry_channels[index] = chan
+            chan.connect()
+
+    def _entry_connection_changed(self, index: int, connected: bool) -> None:
+        self._entry_connected[index] = connected
+        if not connected:
+            # Forget the stale severity so a reconnect shows disconnected until a fresh one arrives
+            self._entry_severity.pop(index, None)
+        self._apply_entry_icon(index)
+
+    def _entry_alarm_changed(self, index: int, severity: int) -> None:
+        self._entry_severity[index] = severity
+        self._apply_entry_icon(index)
+
+    def _entry_icon(self, index: int) -> QIcon:
+        if index not in self._entry_channels:
+            return QIcon()
+        if self._entry_connected.get(index) and index in self._entry_severity:
+            return self._alarm_icons.get(self._entry_severity[index], self._alarm_icons[self.ALARM_INVALID])
+        return self._alarm_icons[self.ALARM_DISCONNECTED]
+
+    def _apply_entry_icon(self, index: int) -> None:
+        action = self._entry_actions.get(index)
+        if action is None:
+            return
+        try:
+            action.setIcon(self._entry_icon(index))
+        except RuntimeError:
+            # Menu already torn down (display closing) while a channel update was still queued
+            self._entry_actions.pop(index, None)
+
     def _get_items(self):
         """
         Aggregate file entry information.
@@ -214,14 +323,14 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         Yields
         ------
         item : dict
-            Containing filename, title, and macros/empty macros
+            Containing index, filename, title, macros/empty macros and alarm channel/empty
             Only containing valid entries or nothing
 
         """
         for i, filename in enumerate(self.filenames):
             if not filename:
                 continue
-            item = {"filename": filename}
+            item = {"index": i, "filename": filename}
             if i >= len(self.titles):
                 item["title"] = filename
             else:
@@ -230,9 +339,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
                 item["macros"] = self.macros[i]
             else:
                 item["macros"] = ""
+            item["alarm_channel"] = self._entry_channels[i].address if i in self._entry_channels else ""
             yield item
 
     def _rebuild_menu(self) -> None:
+        self._entry_actions = {}
         if not any(self._filenames):
             self._filenames = []
         if not any(self._titles):
@@ -244,7 +355,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             self._menu_needs_rebuild = False
             return
         menu = QMenu(self)
-        self._assemble_menu(menu, target=None)
+        self._assemble_menu(menu, target=None, track_actions=True)
         self.setMenu(menu)
         self._menu_needs_rebuild = False
 
@@ -587,13 +698,33 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
             except Exception:
                 logger.exception("Failed to open display.")
 
-    def _assemble_menu(self, menu, target=None):
+    def _assemble_menu(self, menu, target=None, track_actions=False):
+        if self._entry_channels:
+            menu.setToolTipsVisible(True)
         for item in self._get_items():
             try:
                 action = menu.addAction(item["title"])
                 action.triggered.connect(partial(self.open_display, item["filename"], item["macros"], target=target))
+                if item["alarm_channel"]:
+                    action.setIcon(self._entry_icon(item["index"]))
+                    action.setIconVisibleInMenu(True)
+                    action.setToolTip(item["alarm_channel"])
+                if track_actions:
+                    self._entry_actions[item["index"]] = action
             except Exception:
                 logger.exception("Failed to open display.")
+
+    def channels(self):
+        """
+        The button's own channel plus the per-entry alarm channels of the dropdown menu.
+
+        Returns
+        -------
+        list of PyDMChannel or None
+        """
+        base = super().channels() or []
+        chans = list(base) + list(self._entry_channels.values())
+        return chans or None
 
     @Slot()
     def open_display(self, filename, macro_string="", target=None):
