@@ -419,7 +419,6 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def __init__(self, parent=None, init_channel=None):
         super().__init__(parent=parent, init_channel=init_channel)
         self._show_limits = False
-        self.scale_indicator = QScaleAlarmed()
 
         self.title_label = QLabel()
         self.title_label.setAlignment(Qt.AlignCenter)
@@ -444,14 +443,15 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         return QSize(250, 70)
 
+    def _make_scale_indicator(self):
+        return QScaleAlarmed()
+
     def _grid_row_offset(self):
         return 1 if hasattr(self, "title_label") else 0
 
-    def setup_widgets_for_orientation(self, new_orientation, flipped, inverted, value_position):
-        super().setup_widgets_for_orientation(new_orientation, flipped, inverted, value_position)
+    def _add_extra_widgets(self, layout):
         if hasattr(self, "title_label"):
-            num_cols = self.widget_layout.columnCount()
-            self.widget_layout.addWidget(self.title_label, 0, 0, 1, num_cols)
+            layout.addWidget(self.title_label, 0, 0, 1, layout.columnCount())
 
     def readTitle(self) -> str:
         return self.title_label.text()
