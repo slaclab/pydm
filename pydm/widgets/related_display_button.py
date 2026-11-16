@@ -4,9 +4,19 @@ import logging
 import warnings
 from functools import partial
 import hashlib
-from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
+from qtpy.QtWidgets import (
+    QPushButton,
+    QMenu,
+    QAction,
+    QMessageBox,
+    QInputDialog,
+    QLineEdit,
+    QWidget,
+    QStyle,
+    QApplication,
+)
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
-from qtpy.QtCore import Slot, Qt, QSize, QPoint
+from qtpy.QtCore import Slot, Qt, QSize, QPoint, QTimer, QEvent
 from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
 from pydm.utilities import IconFont, find_file, is_pydm_app
@@ -24,6 +34,47 @@ else:
 logger = logging.getLogger(__name__)
 
 _relatedDisplayRuleProperties = {"Text": ["setText", str], "Filenames": ["filenames", list]}
+
+
+def _build_activity_event_types():
+    """
+    Collect the Qt event types that should be treated as "user activity"
+    and thus reset the idle auto-close timer.
+
+    Returns
+    -------
+    frozenset
+        Set of QEvent.Type values that count as user activity (mouse,
+        keyboard, wheel, touch, context menu, and non-client-area
+        mouse events).
+    """
+    names = [
+        "MouseButtonPress",
+        "MouseButtonRelease",
+        "MouseButtonDblClick",
+        "MouseMove",
+        "Wheel",
+        "KeyPress",
+        "KeyRelease",
+        "TouchBegin",
+        "TouchUpdate",
+        "TouchEnd",
+        "ContextMenu",
+        "NonClientAreaMouseButtonPress",
+        "NonClientAreaMouseButtonRelease",
+        "NonClientAreaMouseButtonDblClick",
+        "NonClientAreaMouseMove",
+    ]
+    types = set()
+    for name in names:
+        event_type = getattr(QEvent, name, None)
+        if event_type is not None:
+            types.add(event_type)
+    return frozenset(types)
+
+
+# Qt event types that reset the idle auto-close timer.
+_ACTIVITY_EVENT_TYPES = _build_activity_event_types()
 
 
 class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
@@ -82,6 +133,16 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
         self._follow_symlinks = False
 
+        # Auto-close (idle timeout) configuration for popup displays.
+        # Disabled by default to preserve the original behavior.
+        self._auto_close_enabled = False
+        self._auto_close_seconds = 300.0
+        # Each entry: {"display": QWidget, "timer": QTimer}
+        self._auto_close_states = []
+        # Whether the button is currently installed as a global event filter
+        # on QApplication for activity detection.
+        self._auto_close_filter_installed = False
+
         # Standard icons (which come with the qt install, and work cross-platform),
         # and icons from the "Font Awesome" icon set (https://fontawesome.com/)
         # can not be set with a widget's "icon" property in designer, only in python.
@@ -102,6 +163,12 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
     # On pyside6, we need to expilcity call pydm's base class's eventFilter() call or events
     # will not propagate to the parent classes properly.
     def eventFilter(self, obj, event):
+        # Handle idle activity detection before forwarding to the PyDM base
+        # class eventFilter chain.
+        try:
+            self._handle_auto_close_activity(obj, event)
+        except Exception:
+            logger.exception("Failed to process auto-close activity event.")
         return PyDMWidget.eventFilter(self, obj, event)
 
     @only_if_channel_set
@@ -393,6 +460,285 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
     openInNewWindow = Property(bool, readOpenInNewWindow, setOpenInNewWindow)
 
+    def readAutoCloseEnabled(self) -> bool:
+        """
+        Whether popup displays opened by this button should be automatically
+        closed after a period of inactivity.
+
+        Returns
+        -------
+        bool
+        """
+        return self._auto_close_enabled
+
+    def setAutoCloseEnabled(self, enabled: bool) -> None:
+        """
+        Whether popup displays opened by this button should be automatically
+        closed after a period of inactivity.
+
+        Parameters
+        ----------
+        enabled : bool
+        """
+        self._auto_close_enabled = enabled
+
+    autoCloseEnabled = Property(bool, readAutoCloseEnabled, setAutoCloseEnabled)
+
+    def readAutoCloseSeconds(self) -> float:
+        """
+        Number of seconds of inactivity after which popup displays should be
+        automatically closed. This is only used when autoCloseEnabled is True.
+
+        Returns
+        -------
+        float
+        """
+        return self._auto_close_seconds
+
+    def setAutoCloseSeconds(self, seconds: float) -> None:
+        """
+        Number of seconds of inactivity after which popup displays should be
+        automatically closed. This is only used when autoCloseEnabled is True.
+
+        Parameters
+        ----------
+        seconds : float
+            Idle timeout in seconds. Non-numeric or negative values are
+            clamped to 0.0.
+        """
+        try:
+            seconds = float(seconds)
+        except (TypeError, ValueError):
+            seconds = 0.0
+        if seconds < 0:
+            seconds = 0.0
+        self._auto_close_seconds = seconds
+
+    autoCloseSeconds = Property(float, readAutoCloseSeconds, setAutoCloseSeconds)
+
+    def _is_auto_close_active(self) -> bool:
+        """
+        Whether idle auto-close is currently active, i.e. enabled and with a
+        positive timeout.
+
+        Returns
+        -------
+        bool
+        """
+        try:
+            return self._auto_close_enabled and float(self._auto_close_seconds) > 0
+        except (TypeError, ValueError):
+            return False
+
+    # ------------------------------------------------------------------
+    # Idle auto-close implementation
+    # ------------------------------------------------------------------
+
+    def _ensure_auto_close_event_filter_installed(self) -> None:
+        """
+        Install this widget as a global event filter on QApplication so that
+        user activity inside tracked popups can reset their idle timers.
+        """
+        if self._auto_close_filter_installed:
+            return
+        app = QApplication.instance()
+        if app is None:
+            return
+        app.installEventFilter(self)
+        self._auto_close_filter_installed = True
+
+    def _maybe_remove_auto_close_event_filter(self) -> None:
+        """
+        Remove the global event filter when no popup is being tracked,
+        avoiding unnecessary application-wide event processing.
+        """
+        if not self._auto_close_filter_installed:
+            return
+        if self._auto_close_states:
+            return
+        app = QApplication.instance()
+        if app is not None:
+            try:
+                app.removeEventFilter(self)
+            except Exception:
+                pass
+        self._auto_close_filter_installed = False
+
+    def _remove_auto_close_state(self, state) -> None:
+        """
+        Remove a single popup auto-close tracking state and update the
+        global event filter installation accordingly.
+
+        Parameters
+        ----------
+        state : dict
+            Auto-close tracking state, typically {"display": QWidget,
+            "timer": QTimer}.
+        """
+        if state in self._auto_close_states:
+            self._auto_close_states.remove(state)
+        self._maybe_remove_auto_close_event_filter()
+
+    def _on_auto_close_display_destroyed(self, state, *_args) -> None:
+        """
+        Clean up tracking state and timer when the tracked popup has been
+        destroyed (e.g. closed manually by the user).
+
+        Parameters
+        ----------
+        state : dict
+            Auto-close tracking state for the destroyed popup.
+        """
+        self._remove_auto_close_state(state)
+        timer = state.get("timer")
+        if timer is not None:
+            try:
+                timer.stop()
+                timer.deleteLater()
+            except RuntimeError:
+                pass
+
+    def _schedule_auto_close(self, display) -> None:
+        """
+        Schedule idle auto-close for a popup display.
+
+        The popup is closed after `autoCloseSeconds` of inactivity on the
+        popup window (including all its children). Any user activity inside
+        the popup resets the countdown.
+
+        To avoid PyDM RulesEngine signal-signature issues during window
+        destruction, WA_DeleteOnClose is disabled and the window is hidden
+        first, then deleted after a short delay.
+
+        Parameters
+        ----------
+        display : QWidget
+            The popup display to track. If None, nothing is scheduled.
+        """
+        if not self._is_auto_close_active() or display is None:
+            return
+
+        try:
+            seconds = float(self._auto_close_seconds)
+        except (TypeError, ValueError):
+            return
+
+        if seconds <= 0:
+            return
+
+        try:
+            display.setAttribute(Qt.WA_DeleteOnClose, False)
+        except Exception:
+            pass
+
+        timer = QTimer(self)
+        timer.setSingleShot(True)
+        timer.setInterval(max(1, int(seconds * 1000)))
+
+        state = {"display": display, "timer": timer}
+        timer.timeout.connect(partial(self._auto_close_display, state))
+
+        try:
+            display.destroyed.connect(partial(self._on_auto_close_display_destroyed, state))
+        except Exception:
+            pass
+
+        self._auto_close_states.append(state)
+        self._ensure_auto_close_event_filter_installed()
+        timer.start()
+
+    def _handle_auto_close_activity(self, obj, event) -> None:
+        """
+        Reset idle timers when user activity happens inside a tracked popup.
+
+        Called from ``eventFilter`` for events dispatched to widgets while
+        the idle auto-close event filter is installed.
+
+        Parameters
+        ----------
+        obj : QObject
+            The object the event was delivered to.
+        event : QEvent
+            The event being delivered.
+        """
+        if not self._auto_close_states:
+            return
+        if event.type() not in _ACTIVITY_EVENT_TYPES:
+            return
+        if not isinstance(obj, QWidget):
+            return
+
+        for state in list(self._auto_close_states):
+            display = state.get("display")
+            timer = state.get("timer")
+            if display is None or timer is None:
+                continue
+            try:
+                if display is obj or display.isAncestorOf(obj):
+                    if display.isVisible():
+                        # Restart the timer, keeping its configured interval.
+                        timer.start()
+            except RuntimeError:
+                self._remove_auto_close_state(state)
+                continue
+
+    def _auto_close_display(self, state) -> None:
+        """
+        Hide the popup window, then delete it after a short delay to give
+        PyDM RulesEngine enough time to tear down cleanly.
+
+        Parameters
+        ----------
+        state : dict
+            Auto-close tracking state; ``state["display"]`` is the popup
+            to hide/delete and ``state["timer"]`` is its expired QTimer.
+        """
+        timer = state.get("timer")
+        display = state.get("display")
+
+        self._remove_auto_close_state(state)
+
+        if timer is not None:
+            try:
+                timer.deleteLater()
+            except RuntimeError:
+                pass
+
+        if display is None:
+            return
+
+        try:
+            display.hide()
+        except RuntimeError:
+            return
+        except Exception:
+            logger.exception("Failed to hide display for auto-close.")
+            return
+
+        QTimer.singleShot(500, partial(self._finalize_auto_close, display))
+
+    def _finalize_auto_close(self, display) -> None:
+        """
+        Delete the popup window that was previously hidden by auto-close.
+
+        Parameters
+        ----------
+        display : QWidget
+            The popup display to delete.
+        """
+        if display is None:
+            return
+        try:
+            display.deleteLater()
+        except RuntimeError:
+            pass
+        except Exception:
+            logger.exception("Failed to finalize auto-close display.")
+
+    # ------------------------------------------------------------------
+    # Password / symlink handling
+    # ------------------------------------------------------------------
+
     def readPasswordProtected(self) -> bool:
         """
         Whether or not this button is password protected.
@@ -464,6 +810,13 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         return self._protected_password
 
     def setProtectedPassword(self, value: str) -> None:
+        """
+        The encrypted password.
+
+        Parameters
+        ----------
+        value : str
+        """
         if self._protected_password != value:
             self._protected_password = value
 
@@ -498,6 +851,10 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         self._follow_symlinks = follow_symlinks
 
     followSymlinks = Property(bool, readFollowSymlinks, setFollowSymlinks)
+
+    # ------------------------------------------------------------------
+    # Mouse / interaction handling
+    # ------------------------------------------------------------------
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if self._menu_needs_rebuild:
@@ -631,24 +988,35 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         widget_macros = parse_macro_string(macro_string)
         macros.update(widget_macros)
 
-        screen_target = None
-        if target is self.NEW_WINDOW:
-            screen_target = ScreenTarget.NEW_PROCESS
+        auto_close_active = self._is_auto_close_active()
+
         if self._shift_key_was_down:
             target = self.NEW_WINDOW
-            screen_target = ScreenTarget.NEW_PROCESS
         if target is None:
-            if self._open_in_new_window:
+            if self._open_in_new_window or auto_close_active:
                 target = self.NEW_WINDOW
-                screen_target = ScreenTarget.NEW_PROCESS
             else:
                 target = self.EXISTING_WINDOW
-                screen_target = None
+
+        # When auto-close is active, open in-process (DIALOG) so that the
+        # QTimer can actually hide/delete the widget. ScreenTarget.NEW_PROCESS
+        # spawns a separate process whose window cannot be closed this way.
+        if target == self.NEW_WINDOW:
+            if auto_close_active:
+                screen_target = ScreenTarget.DIALOG
+            else:
+                screen_target = ScreenTarget.NEW_PROCESS
+        else:
+            screen_target = None
 
         if is_pydm_app():
             if target == self.NEW_WINDOW:
-                return load_file(fname, macros=macros, target=screen_target)
+                display = load_file(fname, macros=macros, target=screen_target)
+                self._schedule_auto_close(display)
+                return display
             else:
+                # EXISTING_WINDOW: content is shown inside the main window,
+                # so auto-close does not apply.
                 return self.window().open(fname, macros=macros)
         else:
             display = load_file(fname, macros=macros, target=ScreenTarget.DIALOG)
@@ -662,6 +1030,7 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
                     self._subdisplays.remove(old_display)
             # Retain a reference to avoid garbage collection
             self._subdisplays.append(display)
+            self._schedule_auto_close(display)
             return display
 
     def context_menu(self):
