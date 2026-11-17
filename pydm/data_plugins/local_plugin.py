@@ -25,11 +25,23 @@ class Connection(PyDMConnection):
 
         self._required_config_keys = ["name", "type", "init"]
 
-        self._extra_config_keys = ["precision", "unit", "upper_limit", "lower_limit", "enum_string"]
+        self._extra_config_keys = [
+            "precision",
+            "unit",
+            "upper_limit",
+            "lower_limit",
+            "enum_string",
+        ]
 
         self._extra_numpy_config_keys = ["dtype", "copy", "order", "subok", "ndmin"]
 
-        self._data_types = {"int": int, "float": float, "str": str, "bool": bool, "array": np.array}
+        self._data_types = {
+            "int": int,
+            "float": float,
+            "str": str,
+            "bool": bool,
+            "array": np.array,
+        }
 
         self._precision = None
         self._unit = None
@@ -52,7 +64,9 @@ class Connection(PyDMConnection):
         try:
             url_data = UrlToPython(channel).get_info()
         except ValueError("Not enough information"):
-            logger.debug("Invalid configuration for LocalPlugin connection", exc_info=True)
+            logger.debug(
+                "Invalid configuration for LocalPlugin connection", exc_info=True
+            )
             return
 
         self._configuration["name"] = url_data[1]
@@ -111,16 +125,22 @@ class Connection(PyDMConnection):
         if unit is not None:
             self.unit_signal.emit(str(unit[0]))
         upper_limit = extras.get("upper_limit")
-        if upper_limit is not None and (self._value_type == "float" or self._value_type == "int"):
+        if upper_limit is not None and (
+            self._value_type == "float" or self._value_type == "int"
+        ):
             self.send_upper_limit(upper_limit[0])
         lower_limit = extras.get("lower_limit")
-        if lower_limit is not None and (self._value_type == "float" or self._value_type == "int"):
+        if lower_limit is not None and (
+            self._value_type == "float" or self._value_type == "int"
+        ):
             self.send_lower_limit(lower_limit[0])
         enum_string = extras.get("enum_string")
         if enum_string is not None:
             self.send_enum_string(enum_string[0])
 
-        type_kwargs = {k: v for k, v in extras.items() if k in self._extra_numpy_config_keys}
+        type_kwargs = {
+            k: v for k, v in extras.items() if k in self._extra_numpy_config_keys
+        }
 
         if type_kwargs:
             self.format_type_params(type_kwargs)
@@ -352,7 +372,9 @@ class Connection(PyDMConnection):
         if channel.value_signal is not None:
             for signal_type in (int, float, str, bool, np.ndarray):
                 try:
-                    channel.value_signal[signal_type].connect(self.put_value, Qt.QueuedConnection)
+                    channel.value_signal[signal_type].connect(
+                        self.put_value, Qt.QueuedConnection
+                    )
                 # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
                 # If signal type exists but doesn't match the slot, TypeError gets thrown.
                 except (KeyError, IndexError, TypeError):

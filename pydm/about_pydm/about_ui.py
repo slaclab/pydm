@@ -23,10 +23,14 @@ class Ui_Form(object):
         self.versionTab.setObjectName("versionTab")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.versionTab)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout_2.addItem(spacerItem)
         self.pydmLabel = QtWidgets.QLabel(self.versionTab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pydmLabel.sizePolicy().hasHeightForWidth())
@@ -42,10 +46,14 @@ class Ui_Form(object):
         self.pydmLabel.setObjectName("pydmLabel")
         self.verticalLayout_2.addWidget(self.pydmLabel)
         self.pydmVersionLabel = QtWidgets.QLabel(self.versionTab)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pydmVersionLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.pydmVersionLabel.sizePolicy().hasHeightForWidth()
+        )
         self.pydmVersionLabel.setSizePolicy(sizePolicy)
         self.pydmVersionLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.pydmVersionLabel.setObjectName("pydmVersionLabel")
@@ -55,7 +63,9 @@ class Ui_Form(object):
         self.modulesVersionLabel.setWordWrap(True)
         self.modulesVersionLabel.setObjectName("modulesVersionLabel")
         self.verticalLayout_2.addWidget(self.modulesVersionLabel)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout_2.addItem(spacerItem1)
         self.tabWidget.addTab(self.versionTab, "")
         self.externalToolsTab = QtWidgets.QWidget()
@@ -102,7 +112,18 @@ class Ui_Form(object):
                 """Using Python v{pyver}, {python_binding} v{python_binding_ver}, Qt v{qtver}, Numpy v{numpyver}, and PyQtGraph v{pyqtgraphver}.""",
             )
         )
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.versionTab), _translate("Form", "Version"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.externalToolsTab), _translate("Form", "External Tools"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.dataPluginsTab), _translate("Form", "Data Plugins"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.contributorsTab), _translate("Form", "Contributors"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.versionTab), _translate("Form", "Version")
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.externalToolsTab),
+            _translate("Form", "External Tools"),
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.dataPluginsTab),
+            _translate("Form", "Data Plugins"),
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.contributorsTab),
+            _translate("Form", "Contributors"),
+        )

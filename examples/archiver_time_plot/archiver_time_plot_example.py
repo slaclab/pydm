@@ -52,7 +52,9 @@ class archiver_time_plot_example(Display):
         )
 
         self.chkbx_live.stateChanged.connect(lambda x: self.set_live(curve_live, x))
-        self.chkbx_archived.stateChanged.connect(lambda x: self.set_live(curve_archived, x))
+        self.chkbx_archived.stateChanged.connect(
+            lambda x: self.set_live(curve_archived, x)
+        )
 
     @staticmethod
     def set_live(curve, live):

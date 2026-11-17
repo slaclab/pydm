@@ -256,8 +256,12 @@ def test_open_context_menu(qtbot, monkeypatch, caplog):
         # PyDMWaveformTable -> child of PyDMWritableWidget, but never had middle click functionality
     ],
 )
-@pytest.mark.parametrize("init_channel, expected_clipboard_text", [("CA://MA_TEST", "MA_TEST"), (None, "")])
-def test_middle_click(qtbot, monkeypatch, widget_class, init_channel, expected_clipboard_text):
+@pytest.mark.parametrize(
+    "init_channel, expected_clipboard_text", [("CA://MA_TEST", "MA_TEST"), (None, "")]
+)
+def test_middle_click(
+    qtbot, monkeypatch, widget_class, init_channel, expected_clipboard_text
+):
     """
     Verify that when a middle click happens on a PyDM widget, the PV name of the channel connected to will be
     copied to the clipboard as expected. Also verify the copy does not happen if there is no connected channel.
@@ -384,12 +388,16 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
     qtbot.addWidget(pydm_label)
 
     if which_limit == "UPPER":
-        signals.upper_ctrl_limit_signal[type(new_limit)].connect(pydm_label.upperCtrlLimitChanged)
+        signals.upper_ctrl_limit_signal[type(new_limit)].connect(
+            pydm_label.upperCtrlLimitChanged
+        )
         signals.upper_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_label.get_ctrl_limits()[1] == new_limit
     elif which_limit == "LOWER":
-        signals.lower_ctrl_limit_signal[type(new_limit)].connect(pydm_label.lowerCtrlLimitChanged)
+        signals.lower_ctrl_limit_signal[type(new_limit)].connect(
+            pydm_label.lowerCtrlLimitChanged
+        )
         signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_label.get_ctrl_limits()[0] == new_limit
@@ -397,9 +405,16 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit):
 
 @pytest.mark.parametrize(
     "which_limit, new_limit",
-    [(AlarmLimit.HIHI, 100.10), (AlarmLimit.HIGH, 90), (AlarmLimit.LOW, 20.5), (AlarmLimit.LOLO, 7)],
+    [
+        (AlarmLimit.HIHI, 100.10),
+        (AlarmLimit.HIGH, 90),
+        (AlarmLimit.LOW, 20.5),
+        (AlarmLimit.LOLO, 7),
+    ],
 )
-def test_alarm_limits_changed(qtbot, signals: ConnectionSignals, which_limit: str, new_limit: float):
+def test_alarm_limits_changed(
+    qtbot, signals: ConnectionSignals, which_limit: str, new_limit: float
+):
     """Ensure that changes to the alarm limits of a PV get sent to the right place"""
     pydm_label = PyDMLabel(init_channel="CA://MA_TEST")
     qtbot.addWidget(pydm_label)
@@ -505,7 +520,9 @@ def test_channels_for_tools(qtbot):
     pydm_label = PyDMLabel(init_channel="tst://This")
     qtbot.addWidget(pydm_label)
 
-    assert all(x == y for x, y in zip(pydm_label.channels(), pydm_label.channels_for_tools()))
+    assert all(
+        x == y for x, y in zip(pydm_label.channels(), pydm_label.channels_for_tools())
+    )
 
 
 def test_pydmwidget_channel_change(qtbot):
@@ -602,7 +619,12 @@ def test_pydmwidget_tooltip(qtbot):
 
 @pytest.mark.parametrize(
     "channel_address, monitor_disp",
-    [("tst://this", True), ("tst://this.VAL", True), ("tst://this.[1:2]", True), ("tst://this", False)],
+    [
+        ("tst://this", True),
+        ("tst://this.VAL", True),
+        ("tst://this.[1:2]", True),
+        ("tst://this", False),
+    ],
 )
 def test_pydmwritablewidget_channels(qtbot, channel_address, monitor_disp):
     """

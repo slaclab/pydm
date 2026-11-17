@@ -2,7 +2,17 @@ import os
 import json
 import copy
 import logging
-from qtpy.QtWidgets import QFrame, QApplication, QLabel, QVBoxLayout, QHBoxLayout, QWidget, QStyle, QSizePolicy, QLayout
+from qtpy.QtWidgets import (
+    QFrame,
+    QApplication,
+    QLabel,
+    QVBoxLayout,
+    QHBoxLayout,
+    QWidget,
+    QStyle,
+    QSizePolicy,
+    QLayout,
+)
 from qtpy.QtCore import Qt, QSize, QRect, QPoint
 from .base import PyDMPrimitiveWidget
 from pydm.utilities import is_qt_designer
@@ -91,10 +101,14 @@ class FlowLayout(QLayout):
             wid = item.widget()
             space_x = self.horizontalSpacing()
             if space_x == -1:
-                space_x = wid.style().layoutSpacing(QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Horizontal)
+                space_x = wid.style().layoutSpacing(
+                    QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Horizontal
+                )
             space_y = self.verticalSpacing()
             if space_y == -1:
-                space_y = wid.style().layoutSpacing(QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Vertical)
+                space_y = wid.style().layoutSpacing(
+                    QSizePolicy.PushButton, QSizePolicy.PushButton, Qt.Vertical
+                )
             next_x = x + item.sizeHint().width() + space_x
             if next_x - space_x > effective_rect.right() and line_height > 0:
                 x = effective_rect.x()
@@ -281,7 +295,9 @@ class PyDMTemplateRepeater(*_PyDMTemplateRepeaterBases):
             self._count_shown_in_designer = new_count
             self.rebuild()
 
-    countShownInDesigner = Property(int, readCountShownInDesigner, setCountShownInDesigner)
+    countShownInDesigner = Property(
+        int, readCountShownInDesigner, setCountShownInDesigner
+    )
 
     def readTemplateFilename(self) -> str:
         """
@@ -335,7 +351,9 @@ class PyDMTemplateRepeater(*_PyDMTemplateRepeaterBases):
         """
         self._recursive_template_search = new_value
 
-    recursiveTemplateSearch = Property(bool, readRecursiveTemplateSearch, setRecursiveTemplateSearch)
+    recursiveTemplateSearch = Property(
+        bool, readRecursiveTemplateSearch, setRecursiveTemplateSearch
+    )
 
     def _is_json(self, source):
         """
@@ -392,7 +410,9 @@ class PyDMTemplateRepeater(*_PyDMTemplateRepeaterBases):
                     logger.debug("TemplateRepeater dataSource is a valid JSON.")
                     self.data = data
                 else:
-                    logger.debug("TemplateRepeater dataSource is not a valid JSON. Assuming it is a file path.")
+                    logger.debug(
+                        "TemplateRepeater dataSource is not a valid JSON. Assuming it is a file path."
+                    )
                     try:
                         parent_display = self.find_parent_display()
                         base_path = None
@@ -419,7 +439,9 @@ class PyDMTemplateRepeater(*_PyDMTemplateRepeaterBases):
                                     self.data = json.load(f)
                                 except ValueError:
                                     logger.error(
-                                        "Failed to parse data source file {} for PyDMTemplateRepeater.".format(fname)
+                                        "Failed to parse data source file {} for PyDMTemplateRepeater.".format(
+                                            fname
+                                        )
                                     )
                                     self.data = []
                     except IOError:
@@ -453,7 +475,9 @@ class PyDMTemplateRepeater(*_PyDMTemplateRepeaterBases):
         """
         self._recursive_data_search = new_value
 
-    recursiveDataSearch = Property(bool, readRecursiveDataSearch, setRecursiveDataSearch)
+    recursiveDataSearch = Property(
+        bool, readRecursiveDataSearch, setRecursiveDataSearch
+    )
 
     def open_template_file(self, variables=None):
         """

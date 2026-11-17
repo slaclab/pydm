@@ -38,7 +38,9 @@ class MultiAxisViewBoxMenu(ViewBoxMenu):
 
     def __init__(self, view):
         super().__init__(view)
-        self.restoreRangesAction = QAction(QCoreApplication.translate("ViewBox", "Restore default X/Y ranges"), self)
+        self.restoreRangesAction = QAction(
+            QCoreApplication.translate("ViewBox", "Restore default X/Y ranges"), self
+        )
         self.restoreRangesAction.triggered.connect(self.restoreRanges)
 
         # Insert/remove/insert because there is no QMenu function for inserting based on index

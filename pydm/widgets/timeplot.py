@@ -8,7 +8,12 @@ from qtpy.QtGui import QColor, QCursor
 from qtpy.QtCore import Signal, Slot, QTimer
 from .baseplot import BasePlot, BasePlotCurveItem
 from .channel import PyDMChannel
-from pydm.utilities import remove_protocol, ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
+from pydm.utilities import (
+    remove_protocol,
+    ACTIVE_QT_WRAPPER,
+    QtWrapperTypes,
+    coerce_enum_value,
+)
 from datetime import datetime
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -94,7 +99,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
     severitySignal = Signal(int)
     live_channel_connection = Signal(bool)
 
-    def __init__(self, channel_address=None, plot_by_timestamps=True, plot_style="Line", **kws):
+    def __init__(
+        self, channel_address=None, plot_by_timestamps=True, plot_style="Line", **kws
+    ):
         """
         Parameters
         ----------
@@ -168,7 +175,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
             severity_slot=self.severityChanged,
         )
         self.channel.connect()
-        QTimer.singleShot(10, self.initialize_buffer)  # removes live point receives upon connection
+        QTimer.singleShot(
+            10, self.initialize_buffer
+        )  # removes live point receives upon connection
 
     @property
     def plotByTimeStamps(self):
@@ -362,16 +371,24 @@ class TimePlotCurveItem(BasePlotCurveItem):
         min_insertion_index = np.searchsorted(self.data_buffer[0], min_x)
         max_insertion_index = np.searchsorted(self.data_buffer[0], max_x)
         # Delete any non-raw data between the indices so we don't have multiple data points for the same timestamp
-        self.data_buffer = np.delete(self.data_buffer, slice(min_insertion_index, max_insertion_index), axis=1)
+        self.data_buffer = np.delete(
+            self.data_buffer, slice(min_insertion_index, max_insertion_index), axis=1
+        )
         num_points_deleted = max_insertion_index - min_insertion_index
         delta_points = live_data_length - num_points_deleted
         if live_data_length > num_points_deleted:
             # If the insertion will overflow the data buffer, need to delete the oldest points
-            self.data_buffer = np.delete(self.data_buffer, slice(0, delta_points), axis=1)
+            self.data_buffer = np.delete(
+                self.data_buffer, slice(0, delta_points), axis=1
+            )
         else:
-            self.data_buffer = np.insert(self.data_buffer, [0], np.zeros((2, delta_points)), axis=1)
+            self.data_buffer = np.insert(
+                self.data_buffer, [0], np.zeros((2, delta_points)), axis=1
+            )
         min_insertion_index = np.searchsorted(self.data_buffer[0], min_x)
-        self.data_buffer = np.insert(self.data_buffer, [min_insertion_index], data[0:2], axis=1)
+        self.data_buffer = np.insert(
+            self.data_buffer, [min_insertion_index], data[0:2], axis=1
+        )
 
         self.points_accumulated += live_data_length - num_points_deleted
 
@@ -411,7 +428,9 @@ class TimePlotCurveItem(BasePlotCurveItem):
                 # of the plot, and we will only render bars within that range.
                 min_index = np.searchsorted(x, min_x)
                 max_index = np.searchsorted(x, max_x) + 1
-                self._setBarGraphItem(x=x[min_index:max_index], y=y[min_index:max_index])
+                self._setBarGraphItem(
+                    x=x[min_index:max_index], y=y[min_index:max_index]
+                )
         except (ZeroDivisionError, OverflowError):
             # Solve an issue with pyqtgraph and initial downsampling
             pass
@@ -436,7 +455,12 @@ class TimePlotCurveItem(BasePlotCurveItem):
         """
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
-        if isinstance(value, int) and value == UpdateMode.AtFixedRate or isinstance(value, bool) and value is True:
+        if (
+            isinstance(value, int)
+            and value == UpdateMode.AtFixedRate
+            or isinstance(value, bool)
+            and value is True
+        ):
             self._update_mode = PyDMTimePlot.AtFixedRate
         else:
             self._update_mode = PyDMTimePlot.OnValueChange
@@ -533,7 +557,12 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
     plot_redrawn_signal = Signal(TimePlotCurveItem)
 
     def __init__(
-        self, parent=None, init_y_channels=[], plot_by_timestamps=True, background="default", bottom_axis=None
+        self,
+        parent=None,
+        init_y_channels=[],
+        plot_by_timestamps=True,
+        background="default",
+        bottom_axis=None,
     ):
         """
         Parameters
@@ -562,7 +591,11 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
             self.starting_epoch_time = time.time()
             self._bottom_axis = AxisItem("bottom")
 
-        super().__init__(parent=parent, background=background, axisItems={"bottom": self._bottom_axis})
+        super().__init__(
+            parent=parent,
+            background=background,
+            axisItems={"bottom": self._bottom_axis},
+        )
 
         # Removing the downsampling while PR 763 is not merged at pyqtgraph
         # Reference: https://github.com/pyqtgraph/pyqtgraph/pull/763
@@ -598,7 +631,9 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
     def to_dict(self) -> OrderedDict:
         """Adds attribute specific to TimePlot to add onto BasePlot's to_dict.
         This helps to recreate the Plot Config if we import a save file of it"""
-        dic_ = OrderedDict([("refreshInterval", self.auto_scroll_timer.interval() / 1000)])
+        dic_ = OrderedDict(
+            [("refreshInterval", self.auto_scroll_timer.interval() / 1000)]
+        )
         dic_.update(super().to_dict())
         return dic_
 
@@ -693,8 +728,12 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
         if plot_style == "Bar":
             if barWidth is None:
                 barWidth = 1.0  # Can't use default since it can be explicitly set to None and avoided
-            new_curve.bar_graph_item = BarGraphItem(x=[], height=[], width=barWidth, brush=color)
-            new_curve.setBarGraphInfo(barWidth, upperThreshold, lowerThreshold, thresholdColor)
+            new_curve.bar_graph_item = BarGraphItem(
+                x=[], height=[], width=barWidth, brush=color
+            )
+            new_curve.setBarGraphInfo(
+                barWidth, upperThreshold, lowerThreshold, thresholdColor
+            )
         self.addCurve(new_curve, curve_color=color, y_axis_name=yAxisName)
         if new_curve.bar_graph_item is not None:
             # Must happen after addCurve() so that the view box has been created
@@ -788,15 +827,22 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
             else:
                 maxrange = time.time()
             minrange = maxrange - self._time_span
-            current_min_x = self.plotItem.getAxis("bottom").range[0]  # Minimum x value currently displayed on the plot
+            current_min_x = self.plotItem.getAxis("bottom").range[
+                0
+            ]  # Minimum x value currently displayed on the plot
             if not self.plotItem.isAnyXAutoRange() or (
-                self.plotItem.isAnyXAutoRange() and maxrange - current_min_x >= self._time_span
+                self.plotItem.isAnyXAutoRange()
+                and maxrange - current_min_x >= self._time_span
             ):
                 # Keep the rolling window of data moving, unless the user asked for autorange and we've
                 # not yet hit the maximum amount of data to display based on the time span
-                self.plotItem.setXRange(minrange, maxrange, padding=0.0, update=update_immediately)
+                self.plotItem.setXRange(
+                    minrange, maxrange, padding=0.0, update=update_immediately
+                )
         else:
-            diff_time = self.starting_epoch_time - max([curve.max_x() for curve in self._curves])
+            diff_time = self.starting_epoch_time - max(
+                [curve.max_x() for curve in self._curves]
+            )
             if diff_time > DEFAULT_X_MIN:
                 diff_time = DEFAULT_X_MIN
             self.getViewBox().setLimits(minXRange=diff_time)
@@ -915,7 +961,13 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
                 yAxisName=curve.y_axis_name,
             )
 
-    def setAutoScroll(self, enable: bool = False, timespan: float = 60, padding: float = 0.1, refresh_rate: int = 5000):
+    def setAutoScroll(
+        self,
+        enable: bool = False,
+        timespan: float = 60,
+        padding: float = 0.1,
+        refresh_rate: int = 5000,
+    ):
         """Enable/Disable autoscrolling along the x-axis. This will (un)pause
         the autoscrolling QTimer, which calls the auto_scroll slot when time is up.
 
@@ -1030,7 +1082,12 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
         """
         Check if value is from updatesAsynchronously(bool) or updateMode(int)
         """
-        if isinstance(value, int) and value == UpdateMode.AtFixedRate or isinstance(value, bool) and value is True:
+        if (
+            isinstance(value, int)
+            and value == UpdateMode.AtFixedRate
+            or isinstance(value, bool)
+            and value is True
+        ):
             self._update_mode = PyDMTimePlot.AtFixedRate
             self.update_timer.start()
         else:
@@ -1044,7 +1101,11 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
             curve.resetUpdatesAsynchronously()
 
     updatesAsynchronously = Property(
-        "bool", getUpdatesAsynchronously, setUpdatesAsynchronously, resetUpdatesAsynchronously, designable=False
+        "bool",
+        getUpdatesAsynchronously,
+        setUpdatesAsynchronously,
+        resetUpdatesAsynchronously,
+        designable=False,
     )
 
     def readUpdateMode(self) -> UpdateMode:
@@ -1106,7 +1167,9 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
             self._time_span = value
 
             if self.getUpdatesAsynchronously():
-                self.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
+                self.setBufferSize(
+                    int((self._time_span * 1000.0) / self._update_interval)
+                )
 
             self.updateXAxis(update_immediately=True)
 
@@ -1117,7 +1180,9 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
         if self._time_span != DEFAULT_TIME_SPAN:
             self._time_span = DEFAULT_TIME_SPAN
             if self.getUpdatesAsynchronously():
-                self.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
+                self.setBufferSize(
+                    int((self._time_span * 1000.0) / self._update_interval)
+                )
             self.updateXAxis(update_immediately=True)
 
     timeSpan = Property(float, getTimeSpan, setTimeSpan, resetTimeSpan)
@@ -1147,7 +1212,9 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
             self._update_interval = value
             self.update_timer.setInterval(self._update_interval)
             if self.getUpdatesAsynchronously():
-                self.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
+                self.setBufferSize(
+                    int((self._time_span * 1000.0) / self._update_interval)
+                )
 
     def resetUpdateInterval(self):
         """
@@ -1157,9 +1224,13 @@ class PyDMTimePlot(*_PyDMTimePlotBases):
             self._update_interval = DEFAULT_UPDATE_INTERVAL
             self.update_timer.setInterval(self._update_interval)
             if self.getUpdatesAsynchronously():
-                self.setBufferSize(int((self._time_span * 1000.0) / self._update_interval))
+                self.setBufferSize(
+                    int((self._time_span * 1000.0) / self._update_interval)
+                )
 
-    updateInterval = Property(float, getUpdateInterval, setUpdateInterval, resetUpdateInterval)
+    updateInterval = Property(
+        float, getUpdateInterval, setUpdateInterval, resetUpdateInterval
+    )
 
     def getAutoRangeX(self):
         if self._plot_by_timestamps:

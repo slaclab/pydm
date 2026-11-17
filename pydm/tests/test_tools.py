@@ -57,9 +57,14 @@ def test_valid_external_tool(cls: Any, valid: bool):
         ),
     ],
 )
-def test_tools_from_source(source_file: pathlib.Path, expected_tools: Set[str], qapp: PyDMApplication):
+def test_tools_from_source(
+    source_file: pathlib.Path, expected_tools: Set[str], qapp: PyDMApplication
+):
     assert source_file.exists()
-    loaded_tools = [tool.__class__.__name__ for tool in tools._get_tools_from_source(str(source_file))]
+    loaded_tools = [
+        tool.__class__.__name__
+        for tool in tools._get_tools_from_source(str(source_file))
+    ]
     assert set(loaded_tools) == expected_tools
 
 

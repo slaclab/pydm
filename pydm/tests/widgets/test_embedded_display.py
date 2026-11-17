@@ -4,7 +4,9 @@ import sys
 from qtpy.QtWidgets import QApplication
 
 test_ui_path_with_relative_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), "../test_data", "test_relative_filename_parent.ui"
+    os.path.dirname(os.path.realpath(__file__)),
+    "../test_data",
+    "test_relative_filename_parent.ui",
 )
 
 

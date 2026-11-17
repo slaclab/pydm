@@ -89,7 +89,9 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         if self._new_item_added:
             self._new_item_added = False
             # Recalculate the enums
-            super().enum_strings_changed(tuple(self.itemText(i) for i in range(self.count())))
+            super().enum_strings_changed(
+                tuple(self.itemText(i) for i in range(self.count()))
+            )
             self._has_enums = True
             self.check_enable_state()
 
@@ -106,21 +108,29 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
         """
         if not enums:
             logger.error(
-                "Invalid enum value '{0}'. The value is expected to be a valid list of string values.".format(enums)
+                "Invalid enum value '{0}'. The value is expected to be a valid list of string values.".format(
+                    enums
+                )
             )
             return
 
         self.clear()
         for e_str in enums:
             if e_str is None:
-                logger.error("Invalid enum type '{0}'. The expected type is 'string'.".format(type(e_str)))
+                logger.error(
+                    "Invalid enum type '{0}'. The expected type is 'string'.".format(
+                        type(e_str)
+                    )
+                )
                 return
 
             try:
                 self.addItem(e_str)
             except TypeError as error:
                 logger.error(
-                    "Invalid enum type '{0}'. The expected type is 'string'. Exception: {1}".format(type(e_str), error)
+                    "Invalid enum type '{0}'. The expected type is 'string'. Exception: {1}".format(
+                        type(e_str), error
+                    )
                 )
         self._has_enums = True
         self.check_enable_state()
@@ -185,7 +195,10 @@ class PyDMEnumComboBox(QComboBox, PyDMWritableWidget):
                 # findText return -1 when we can not find the text inside the
                 # QComboBox
                 if idx == -1:
-                    logger.error("Can not change value to %r. Not an option in PyDMComboBox", new_val)
+                    logger.error(
+                        "Can not change value to %r. Not an option in PyDMComboBox",
+                        new_val,
+                    )
                     return
             # Handle bool, float, and ndarray
             else:

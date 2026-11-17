@@ -2,7 +2,13 @@ from .base import PyDMWidget, TextFormatter, str_types, PostParentClassInitSetup
 from qtpy.QtWidgets import QLabel, QApplication
 from qtpy.QtCore import Qt
 from .display_format import DisplayFormat, parse_value_for_display
-from pydm.utilities import is_pydm_app, is_qt_designer, ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
+from pydm.utilities import (
+    is_pydm_app,
+    is_qt_designer,
+    ACTIVE_QT_WRAPPER,
+    QtWrapperTypes,
+    coerce_enum_value,
+)
 from pydm import config
 from pydm.widgets.base import only_if_channel_set
 

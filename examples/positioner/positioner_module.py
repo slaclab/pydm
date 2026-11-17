@@ -39,7 +39,9 @@ class Positioner(Display):
         while waiting:
             time.sleep(0.001)
             waiting = not all([pv.put_complete for pv in self.motor_pvs])
-        self.display_manager_window.statusBar().showMessage("Motor move complete.", 2000)
+        self.display_manager_window.statusBar().showMessage(
+            "Motor move complete.", 2000
+        )
         self.ui.pushButton.setEnabled(True)
         self.moving = False
 
@@ -59,7 +61,9 @@ class Positioner(Display):
             )
             return
 
-        self.display_manager_window.statusBar().showMessage("Calculating new position...", 1000)
+        self.display_manager_window.statusBar().showMessage(
+            "Calculating new position...", 1000
+        )
         (self.m1des, self.m2des, self.m3des, valid) = cams.real2cams((x, y, theta))
         self.ui.motor1DesLabel.setText("%.3f" % self.m1des)
         self.ui.motor2DesLabel.setText("%.3f" % self.m2des)

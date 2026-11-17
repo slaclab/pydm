@@ -42,7 +42,12 @@ def test_parsed_address():
     assert out == ("foo", "rd", "", "question!")
 
     out = parsed_address("alpha://beta/delta?gamma")
-    assert out.scheme == "alpha" and out.netloc == "beta" and out.path == "/delta" and out.query == "gamma"
+    assert (
+        out.scheme == "alpha"
+        and out.netloc == "beta"
+        and out.path == "/delta"
+        and out.query == "gamma"
+    )
 
     out = parsed_address("foo://test:channel.{'f': {'lo':0, 'hi':10} }?and_query_too")
     assert out == ("foo", "test:channel.{'f': {'lo':0, 'hi':10} }", "", "and_query_too")
@@ -50,5 +55,12 @@ def test_parsed_address():
     out = parsed_address("foo://TEST:PV[3]")
     assert out == ("foo", "TEST:PV[3]", "", "")
 
-    out = parsed_address("loc://my_variable_name?type=variable_type&init=initial_values")
-    assert out == ("loc", "my_variable_name", "", "type=variable_type&init=initial_values")
+    out = parsed_address(
+        "loc://my_variable_name?type=variable_type&init=initial_values"
+    )
+    assert out == (
+        "loc",
+        "my_variable_name",
+        "",
+        "type=variable_type&init=initial_values",
+    )

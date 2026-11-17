@@ -16,7 +16,9 @@ class ConnectionTableModel(QAbstractTableModel):
             return
         self.layoutAboutToBeChanged.emit()
         sort_reversed = order == Qt.AscendingOrder
-        self._connections.sort(key=attrgetter(self._column_names[col]), reverse=sort_reversed)
+        self._connections.sort(
+            key=attrgetter(self._column_names[col]), reverse=sort_reversed
+        )
         self.layoutChanged.emit()
 
     @property

@@ -164,7 +164,9 @@ class PyDMDesignerPlugin(BASE_PLUGIN_CLASS):
             self.manager = core.extensionManager()
             if self.manager:
                 factory = PyDMExtensionFactory(parent=self.manager)
-                self.manager.registerExtensions(factory, "org.qt-project.Qt.Designer.TaskMenu")  # Qt5
+                self.manager.registerExtensions(
+                    factory, "org.qt-project.Qt.Designer.TaskMenu"
+                )  # Qt5
 
     def isInitialized(self):
         """
@@ -250,7 +252,9 @@ class PyDMDesignerPlugin(BASE_PLUGIN_CLASS):
         try:
             from pydm.widgets.qtplugins import get_pydm_custom_widgets
 
-            registered = {plugin.plugin_name for plugin in get_pydm_custom_widgets().values()}
+            registered = {
+                plugin.plugin_name for plugin in get_pydm_custom_widgets().values()
+            }
         except Exception:
             # If the registry can't be read, fall back to the nearest genuine Qt base.
             registered = set()
@@ -288,7 +292,12 @@ class PyDMDesignerPlugin(BASE_PLUGIN_CLASS):
             "  </customwidget>\n"
             " </customwidgets>\n"
             "</ui>\n"
-        ).format(self.name(), escape(self.toolTip()), self.designer_base_class(), self.includeFile())
+        ).format(
+            self.name(),
+            escape(self.toolTip()),
+            self.designer_base_class(),
+            self.includeFile(),
+        )
 
     def includeFile(self):
         """
@@ -318,10 +327,14 @@ def create_designer_widget_from_widget(
         designer_kwargs = getattr(widget_cls, "_qt_designer_", None) or {}
         return qtplugin_factory(widget_cls, **designer_kwargs)
 
-    raise ValueError(f"Expected a PyDMDesignerPlugin or a QWidget subclass, got a {type(widget_cls).__name__}")
+    raise ValueError(
+        f"Expected a PyDMDesignerPlugin or a QWidget subclass, got a {type(widget_cls).__name__}"
+    )
 
 
-def get_widgets_from_entrypoints(key: str = config.ENTRYPOINT_WIDGET) -> Dict[str, Type[PyDMDesignerPlugin]]:
+def get_widgets_from_entrypoints(
+    key: str = config.ENTRYPOINT_WIDGET,
+) -> Dict[str, Type[PyDMDesignerPlugin]]:
     """
     Get all widgets from entrypoint definitions.
 
@@ -347,7 +360,11 @@ def get_widgets_from_entrypoints(key: str = config.ENTRYPOINT_WIDGET) -> Dict[st
         try:
             designer_widget = create_designer_widget_from_widget(plugin_cls)
         except Exception:
-            logger.warning("Invalid widget class specified in entrypoint %s: %s", entry.name, plugin_cls)
+            logger.warning(
+                "Invalid widget class specified in entrypoint %s: %s",
+                entry.name,
+                plugin_cls,
+            )
         else:
             widgets[entry.name] = designer_widget
 

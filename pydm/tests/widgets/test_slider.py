@@ -2,7 +2,15 @@ import pytest
 from logging import ERROR
 import numpy as np
 
-from qtpy.QtWidgets import QLabel, QVBoxLayout, QHBoxLayout, QSizePolicy, QApplication, QSlider, QWidget
+from qtpy.QtWidgets import (
+    QLabel,
+    QVBoxLayout,
+    QHBoxLayout,
+    QSizePolicy,
+    QApplication,
+    QSlider,
+    QWidget,
+)
 from qtpy.QtCore import Qt, QMargins, QPoint, QPointF, QEvent, QRect, QSize
 from qtpy.QtGui import QMouseEvent
 from pydm.widgets.slider import PyDMSlider, PyDMPrimitiveSlider
@@ -152,7 +160,13 @@ def test_getHandleRect(slider_fixture, request):
 def test_getPositions(slider_fixture, request):
     """Test getPositions method."""
     test_slider = request.getfixturevalue(slider_fixture)
-    event = QMouseEvent(QEvent.MouseButtonPress, QPointF(50, 10), Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
+    event = QMouseEvent(
+        QEvent.MouseButtonPress,
+        QPointF(50, 10),
+        Qt.LeftButton,
+        Qt.LeftButton,
+        Qt.NoModifier,
+    )
     handle_pos, click_pos = test_slider.getPositions(event)
     assert isinstance(handle_pos, float)
     assert isinstance(click_pos, int)
@@ -259,12 +273,20 @@ def test_construct(qtbot):
     assert pydm_slider.isEnabled() is False
 
     assert type(pydm_slider.low_lim_label) == QLabel
-    assert pydm_slider.low_lim_label.sizePolicy() == QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-    assert pydm_slider.low_lim_label.alignment() == (Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter)
+    assert pydm_slider.low_lim_label.sizePolicy() == QSizePolicy(
+        QSizePolicy.Maximum, QSizePolicy.Fixed
+    )
+    assert pydm_slider.low_lim_label.alignment() == (
+        Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter
+    )
 
     assert type(pydm_slider.high_lim_label) == QLabel
-    assert pydm_slider.high_lim_label.sizePolicy() == QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-    assert pydm_slider.high_lim_label.alignment() == (Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
+    assert pydm_slider.high_lim_label.sizePolicy() == QSizePolicy(
+        QSizePolicy.Maximum, QSizePolicy.Fixed
+    )
+    assert pydm_slider.high_lim_label.alignment() == (
+        Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter
+    )
 
     assert type(pydm_slider._slider) == PyDMPrimitiveSlider
     assert pydm_slider._slider.orientation() == Qt.Orientation(Qt.Horizontal)
@@ -480,7 +502,9 @@ def test_setup_widgets_for_orientation(qtbot, new_orientation):
         label_layout = layout.itemAt(0)
         assert type(label_layout) == QHBoxLayout
         assert label_layout.count() == 5
-        assert all([label_layout.stretch(i) == 0 for i in range(0, label_layout.count())])
+        assert all(
+            [label_layout.stretch(i) == 0 for i in range(0, label_layout.count())]
+        )
         assert pydm_slider.orientation == new_orientation
     elif new_orientation == Qt.Vertical:
         assert type(layout) == QHBoxLayout
@@ -491,7 +515,9 @@ def test_setup_widgets_for_orientation(qtbot, new_orientation):
         label_layout = layout.itemAt(0)
         assert type(label_layout) == QVBoxLayout
         assert label_layout.count() == 5
-        assert all([label_layout.stretch(i) == 0 for i in range(0, label_layout.count())])
+        assert all(
+            [label_layout.stretch(i) == 0 for i in range(0, label_layout.count())]
+        )
         assert pydm_slider._slider.orientation() == new_orientation
 
 
@@ -606,10 +632,14 @@ def test_reset_slider_limits(qtbot, signals, minimum, maximum, write_access, con
         assert pydm_slider._slider.pageStep() == 1
         assert np.array_equal(
             pydm_slider._slider_position_to_value_map,
-            np.linspace(pydm_slider.minimum, pydm_slider.maximum, num=pydm_slider._num_steps),
+            np.linspace(
+                pydm_slider.minimum, pydm_slider.maximum, num=pydm_slider._num_steps
+            ),
         )
         assert pydm_slider.isEnabled() == (
-            pydm_slider._write_access and pydm_slider._connected and not pydm_slider._needs_limit_info
+            pydm_slider._write_access
+            and pydm_slider._connected
+            and not pydm_slider._needs_limit_info
         )
 
 
@@ -652,7 +682,9 @@ def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
     pydm_slider._slider.setValue(0)
     assert pydm_slider._slider.value() == 0
 
-    expected_slider_value = np.argmin(abs(pydm_slider._slider_position_to_value_map - float(new_value)))
+    expected_slider_value = np.argmin(
+        abs(pydm_slider._slider_position_to_value_map - float(new_value))
+    )
     pydm_slider.set_slider_to_closest_value(new_value)
 
     if new_value is None or pydm_slider._needs_limit_info:
@@ -700,7 +732,12 @@ def test_set_slider_to_closest_value(qtbot, new_value, minimum, maximum):
     ],
 )
 def test_alarm_severity_change(
-    qtbot, signals, channel, alarm_sensitive_content, alarm_sensitive_border, new_alarm_severity
+    qtbot,
+    signals,
+    channel,
+    alarm_sensitive_content,
+    alarm_sensitive_border,
+    new_alarm_severity,
 ):
     """
     Test the style of the widget changing according to alarm sensitivity settings and alarm severity changes.
@@ -744,7 +781,9 @@ def test_alarm_severity_change(
         ("LOWER", -10.123, False),
     ],
 )
-def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined_limits):
+def test_ctrl_limit_changed(
+    qtbot, signals, which_limit, new_limit, user_defined_limits
+):
     """
     Test the widget's handling of the upper and lower limit changes.
 
@@ -770,12 +809,16 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined
     pydm_slider.userDefinedLimits = user_defined_limits
 
     if which_limit == "UPPER":
-        signals.upper_ctrl_limit_signal[type(new_limit)].connect(pydm_slider.upperCtrlLimitChanged)
+        signals.upper_ctrl_limit_signal[type(new_limit)].connect(
+            pydm_slider.upperCtrlLimitChanged
+        )
         signals.upper_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_slider.get_ctrl_limits()[1] == new_limit
     elif which_limit == "LOWER":
-        signals.lower_ctrl_limit_signal[type(new_limit)].connect(pydm_slider.lowerCtrlLimitChanged)
+        signals.lower_ctrl_limit_signal[type(new_limit)].connect(
+            pydm_slider.lowerCtrlLimitChanged
+        )
         signals.lower_ctrl_limit_signal[type(new_limit)].emit(new_limit)
 
         assert pydm_slider.get_ctrl_limits()[0] == new_limit
@@ -788,7 +831,9 @@ def test_ctrl_limit_changed(qtbot, signals, which_limit, new_limit, user_defined
         (123.456, 3, "mV", True, "{:.3f} mV"),
     ],
 )
-def test_update_format_string(qtbot, value, precision, unit, show_unit, expected_format_string):
+def test_update_format_string(
+    qtbot, value, precision, unit, show_unit, expected_format_string
+):
     """
     Test the unit conversion by examining the resulted format string.
 

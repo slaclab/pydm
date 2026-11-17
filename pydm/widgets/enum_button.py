@@ -51,7 +51,10 @@ else:
     _PyDMEnumButtonBases = (QWidget, PyDMWritableWidget)
 
 
-class_for_type = {WidgetType.PushButton: QPushButton, WidgetType.RadioButton: QRadioButton}
+class_for_type = {
+    WidgetType.PushButton: QPushButton,
+    WidgetType.RadioButton: QRadioButton,
+}
 
 logger = logging.getLogger(__name__)
 

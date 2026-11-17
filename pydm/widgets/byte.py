@@ -196,7 +196,9 @@ class PyDMByteIndicator(*_PyDMByteIndicatorBases):
         Toggle between blink colors for blinking effect.
         """
         self._blink_state = not self._blink_state
-        self._current_blink_color = self._blink_color_2 if self._blink_state else self._blink_color_1
+        self._current_blink_color = (
+            self._blink_color_2 if self._blink_state else self._blink_color_1
+        )
         self.update_indicators()
 
     def _start_blinking(self) -> None:
@@ -693,7 +695,9 @@ class PyDMByteIndicator(*_PyDMByteIndicatorBases):
         ----------
         new_pos : LabelPosition, int
         """
-        new_pos = coerce_enum_value(int(getattr(new_pos, "value", new_pos)), self.LabelPosition)
+        new_pos = coerce_enum_value(
+            int(getattr(new_pos, "value", new_pos)), self.LabelPosition
+        )
         self._label_position = new_pos
         self.rebuild_layout()
 
@@ -722,7 +726,10 @@ class PyDMByteIndicator(*_PyDMByteIndicatorBases):
         self._num_bits = new_num_bits
         for indicator in self._indicators:
             indicator.deleteLater()
-        self._indicators = [PyDMBitIndicator(parent=self, circle=self.circles) for i in range(0, self._num_bits)]
+        self._indicators = [
+            PyDMBitIndicator(parent=self, circle=self.circles)
+            for i in range(0, self._num_bits)
+        ]
         old_labels = self.labels
         new_labels = ["Bit {}".format(i) for i in range(0, self._num_bits)]
         for i, old_label in enumerate(old_labels):

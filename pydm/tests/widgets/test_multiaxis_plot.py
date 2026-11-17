@@ -11,11 +11,19 @@ def sample_plot(qtbot, monkeypatch):
     """Set up a plot with a couple of test axis items for use in test cases below"""
     plot = MultiAxisPlot()
     scene = QGraphicsScene()
-    monkeypatch.setattr(plot, "scene", lambda: scene)  # Have the plot return a dummy scene when needed
+    monkeypatch.setattr(
+        plot, "scene", lambda: scene
+    )  # Have the plot return a dummy scene when needed
 
     # Create two axes, one with a fixed range and one that should auto-range (adjust to always display all data)
     fixed_range_axis = AxisItem("left")
-    plot.addAxis(fixed_range_axis, "Fixed Range Axis", enableAutoRangeY=False, minRange=-5.0, maxRange=7.5)
+    plot.addAxis(
+        fixed_range_axis,
+        "Fixed Range Axis",
+        enableAutoRangeY=False,
+        minRange=-5.0,
+        maxRange=7.5,
+    )
     auto_range_axis = AxisItem("left")
     plot.addAxis(auto_range_axis, "Auto Range Axis", enableAutoRangeY=True)
 
@@ -37,7 +45,9 @@ def test_original_ranges_set_correctly(sample_plot):
 @mock.patch("pyqtgraph.ViewBox.enableAutoRange")
 @mock.patch("pyqtgraph.PlotItem.setXRange")
 @mock.patch("pyqtgraph.ViewBox.setYRange")
-def test_restore_axis_ranges(mocked_y_range, mocked_x_range, mocked_auto_range, sample_plot):
+def test_restore_axis_ranges(
+    mocked_y_range, mocked_x_range, mocked_auto_range, sample_plot
+):
     """
     Verify that when axis ranges have been changed from their defaults, calling restore will set them back to
     their original values
@@ -50,9 +60,15 @@ def test_restore_axis_ranges(mocked_y_range, mocked_x_range, mocked_auto_range, 
 
     # After the call to restore axis ranges, ensure the view box calls are made as expected. (Don't want to test
     # view box functionality here as that is very involved and covered in pyqtgraph itself)
-    mocked_auto_range.assert_any_call(axis=ViewBox.YAxis, enable=True)  # Auto-range enabled for our auto-range axis
-    mocked_y_range.assert_called_once_with(-5.0, 7.5)  # Fixed range restored for the other axis
-    mocked_x_range.assert_called_once_with(0.0, 10.0, padding=0)  # X-axis restored to the values specified above
+    mocked_auto_range.assert_any_call(
+        axis=ViewBox.YAxis, enable=True
+    )  # Auto-range enabled for our auto-range axis
+    mocked_y_range.assert_called_once_with(
+        -5.0, 7.5
+    )  # Fixed range restored for the other axis
+    mocked_x_range.assert_called_once_with(
+        0.0, 10.0, padding=0
+    )  # X-axis restored to the values specified above
 
 
 def test_link_data_to_logarithmic_axis(qtbot, monkeypatch, sample_plot):
@@ -179,7 +195,9 @@ def test_get_view_box_for_axis_valid_axis_with_link(sample_plot):
     assert linked_vb is not None, "Expected newly added axis to have a linked ViewBox."
 
     returned_vb = sample_plot.getViewBoxForAxis(axis_name)
-    assert returned_vb == linked_vb, "getViewBoxForAxis should return the specific ViewBox linked to the axis."
+    assert returned_vb == linked_vb, (
+        "getViewBoxForAxis should return the specific ViewBox linked to the axis."
+    )
 
 
 def test_get_view_box_for_axis_valid_axis_no_link(sample_plot):
@@ -194,7 +212,9 @@ def test_get_view_box_for_axis_valid_axis_no_link(sample_plot):
     with patch.object(test_axis, "linkedView", return_value=None):
         returned_vb = sample_plot.getViewBoxForAxis(axis_name)
         main_vb = sample_plot.getViewBox()
-        assert returned_vb == main_vb, "If linkedView() is None, getViewBoxForAxis should return the main ViewBox."
+        assert returned_vb == main_vb, (
+            "If linkedView() is None, getViewBoxForAxis should return the main ViewBox."
+        )
 
 
 def test_get_view_box_for_axis_invalid_axis(sample_plot):
@@ -205,4 +225,6 @@ def test_get_view_box_for_axis_invalid_axis(sample_plot):
     axis_name = "NonExistentAxis"
     returned_vb = sample_plot.getViewBoxForAxis(axis_name)
     main_vb = sample_plot.getViewBox()
-    assert returned_vb == main_vb, "An invalid axis name should cause getViewBoxForAxis to return the main ViewBox."
+    assert returned_vb == main_vb, (
+        "An invalid axis name should cause getViewBoxForAxis to return the main ViewBox."
+    )

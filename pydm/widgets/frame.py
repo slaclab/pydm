@@ -64,7 +64,9 @@ class PyDMFrame(QFrame, PyDMWidget):
             self._disable_on_disconnect = new_val
             self.check_enable_state()
 
-    disableOnDisconnect = Property(bool, readDisableOnDisconnect, setDisableOnDisconnect)
+    disableOnDisconnect = Property(
+        bool, readDisableOnDisconnect, setDisableOnDisconnect
+    )
 
     def check_enable_state(self):
         """

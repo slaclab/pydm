@@ -25,9 +25,15 @@ class AboutWindow(QWidget):
         super().__init__(parent, Qt.Window)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.ui.pydmVersionLabel.setText(str(self.ui.pydmVersionLabel.text()).format(version=pydm.__version__))
+        self.ui.pydmVersionLabel.setText(
+            str(self.ui.pydmVersionLabel.text()).format(version=pydm.__version__)
+        )
         pyver = ".".join([str(v) for v in sys.version_info[0:3]])
-        python_binding_name = "PyQt" if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6) else "PySide"
+        python_binding_name = (
+            "PyQt"
+            if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6)
+            else "PySide"
+        )
         self.ui.modulesVersionLabel.setText(
             str(self.ui.modulesVersionLabel.text()).format(
                 pyver=pyver,
@@ -83,7 +89,9 @@ class AboutWindow(QWidget):
             self.ui.dataPluginsTableWidget.setItem(new_row, 1, file_item)
 
     def populate_contributor_list(self):
-        contrib_file = path.join(path.dirname(path.realpath(__file__)), "contributors.txt")
+        contrib_file = path.join(
+            path.dirname(path.realpath(__file__)), "contributors.txt"
+        )
         with open(contrib_file) as f:
             for line in f:
                 self.ui.contributorsListWidget.addItem(str(line).strip())

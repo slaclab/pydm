@@ -7,12 +7,26 @@ import logging
 import warnings
 import hashlib
 from ast import literal_eval
-from qtpy.QtWidgets import QApplication, QPushButton, QMenu, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle
+from qtpy.QtWidgets import (
+    QApplication,
+    QPushButton,
+    QMenu,
+    QMessageBox,
+    QInputDialog,
+    QLineEdit,
+    QWidget,
+    QStyle,
+)
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import QSize, Qt, QTimer, Signal
 from qtpy import QtDesigner
 from .base import PyDMWidget, only_if_channel_set, PostParentClassInitSetup
-from pydm.utilities import IconFont, ACTIVE_QT_WRAPPER, QtWrapperTypes, coerce_enum_value
+from pydm.utilities import (
+    IconFont,
+    ACTIVE_QT_WRAPPER,
+    QtWrapperTypes,
+    coerce_enum_value,
+)
 from typing import Optional, Union, List
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
@@ -102,7 +116,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         PyDMWidget.__init__(self, init_channel=init_channel)
         self.iconFont = IconFont()
         self._icon = self.iconFont.icon("cog")
-        self._warning_icon = self.iconFont.icon("exclamation-circle", color=QColor("red"))
+        self._warning_icon = self.iconFont.icon(
+            "exclamation-circle", color=QColor("red")
+        )
         self.setIconSize(QSize(16, 16))
         self.setIcon(self._icon)
         self.setCursor(QCursor(self._icon.pixmap(16, 16)))
@@ -115,7 +131,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         if isinstance(command, str):
             command = [command]
         if len(title) > 0 and (len(title) != len(command)):
-            raise ValueError("Number of items in 'command' must match number of items in 'title'.")
+            raise ValueError(
+                "Number of items in 'command' must match number of items in 'title'."
+            )
         self._commands = command
         self._titles = title
         self._menu_needs_rebuild = True
@@ -295,7 +313,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         if self._run_commands_in_full_shell != value:
             self._run_commands_in_full_shell = value
 
-    runCommandsInFullShell = Property(bool, readRunCommandsInFullShell, setRunCommandsInFullShell)
+    runCommandsInFullShell = Property(
+        bool, readRunCommandsInFullShell, setRunCommandsInFullShell
+    )
 
     def readConfirmMessage(self) -> str:
         """
@@ -358,7 +378,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         if self.env_var != new_dict:
             self.env_var = new_dict
 
-    environmentVariables = Property(str, readEnvironmentVariables, setEnvironmentVariables)
+    environmentVariables = Property(
+        str, readEnvironmentVariables, setEnvironmentVariables
+    )
 
     def readShowIcon(self) -> bool:
         """
@@ -416,7 +438,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         else:
             self._stdout = self.TermOutputMode.HIDE
 
-    redirectCommandOutput = Property(bool, readRedirectCommandOutput, setRedirectCommandOutput, designable=False)
+    redirectCommandOutput = Property(
+        bool, readRedirectCommandOutput, setRedirectCommandOutput, designable=False
+    )
 
     def readStdout(self) -> TermOutputMode:
         """
@@ -484,7 +508,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         if self._allow_multiple != value:
             self._allow_multiple = value
 
-    allowMultipleExecutions = Property(bool, readAllowMultipleExecutions, setAllowMultipleExecutions)
+    allowMultipleExecutions = Property(
+        bool, readAllowMultipleExecutions, setAllowMultipleExecutions
+    )
 
     def readTitles(self) -> List[str]:
         return self._titles
@@ -533,7 +559,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         ----------
         value : str
         """
-        warnings.warn("'PyDMShellCommand.command' is deprecated, use 'PyDMShellCommand.commands' instead.")
+        warnings.warn(
+            "'PyDMShellCommand.command' is deprecated, use 'PyDMShellCommand.commands' instead."
+        )
         if not self._commands:
             if value:
                 self.commands = [value]
@@ -598,7 +626,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
             # Make sure designer knows it should save the protectedPassword field
             formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self)
             if formWindow:
-                formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
+                formWindow.cursor().setProperty(
+                    "protectedPassword", self.protectedPassword
+                )
 
     password = Property(str, readPassword, setPassword)
 
@@ -694,7 +724,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
             return super().mouseReleaseEvent(mouse_event)
         if self.menu() is not None:
             return super().mouseReleaseEvent(mouse_event)
-        assert len(self.commands) == 1, "More than one command present, but no menu created."
+        assert len(self.commands) == 1, (
+            "More than one command present, but no menu created."
+        )
         self.execute_command(self.commands[0])
         super().mouseReleaseEvent(mouse_event)
 
@@ -704,15 +736,28 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         if len(menu.actions()) > 0:
             menu.addSeparator()
         if len(self.commands) == 1:
-            menu.addAction("Display Command", lambda: QMessageBox.information(self, "Shell Command", self.commands[0]))
-            menu.addAction("Copy Command", lambda: QApplication.clipboard().setText(self.commands[0]))
+            menu.addAction(
+                "Display Command",
+                lambda: QMessageBox.information(
+                    self, "Shell Command", self.commands[0]
+                ),
+            )
+            menu.addAction(
+                "Copy Command",
+                lambda: QApplication.clipboard().setText(self.commands[0]),
+            )
         else:
             menu.addAction(
                 "Display Commands",
                 lambda: QMessageBox.information(
                     self,
                     "Shell Commands",
-                    "\n\n".join([f"{name}:\n{cmd}" for name, cmd in zip(self.titles, self.commands)]),
+                    "\n\n".join(
+                        [
+                            f"{name}:\n{cmd}"
+                            for name, cmd in zip(self.titles, self.commands)
+                        ]
+                    ),
                 ),
             )
 
@@ -747,7 +792,13 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         if not self._password_protected:
             return True
 
-        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:", QLineEdit.Password, "")
+        pwd, ok = QInputDialog().getText(
+            None,
+            "Authentication",
+            "Please enter your password:",
+            QLineEdit.Password,
+            "",
+        )
         pwd = str(pwd)
         if not ok or pwd == "":
             return False
@@ -794,7 +845,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
         original_button_text = self.text()
         original_action_text = action.text() if action else ""
 
-        if (self.process is None or self.process.poll() is not None) or self._allow_multiple:
+        if (
+            self.process is None or self.process.poll() is not None
+        ) or self._allow_multiple:
             cmd = os.path.expanduser(os.path.expandvars(command))
             args = shlex.split(cmd, posix="win" not in sys.platform)
             # When shell enabled, Popen should take the cmds as a single string (not list)
@@ -853,7 +906,11 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
                         self.setEnabled(False)
 
                 self.process = subprocess.Popen(
-                    args, stdout=stdout, stderr=stderr, env=env_var, shell=self._run_commands_in_full_shell
+                    args,
+                    stdout=stdout,
+                    stderr=stderr,
+                    env=env_var,
+                    shell=self._run_commands_in_full_shell,
                 )
 
                 if self._show_currently_running_indication and not self._allow_multiple:
@@ -862,7 +919,9 @@ class PyDMShellCommand(*_PyDMShellCommandBases):
                     # Check if cmd completed every 50 ms (time is arbitrary and can be adjusted if feels laggy)
                     self.timer.setInterval(50)
                     self.timer.timeout.connect(
-                        lambda: self._check_process_done(action, original_button_text, original_action_text)
+                        lambda: self._check_process_done(
+                            action, original_button_text, original_action_text
+                        )
                     )
                     self.destroyed.connect(self.timer.stop)
                     self.timer.start()

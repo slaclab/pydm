@@ -40,7 +40,13 @@ def test_epics_unsigned(input_int: int, bits: int, expected: int):
         ("val + 3", 0, 3, 1, 4),
         ("int(np.abs(val))", -5, 5, -10, 10),
         ("math.floor(val)", 3.4, 3, 5.7, 5),
-        ("epics_string(val)", np.array((0x61, 0), dtype=np.int8), "a", np.array((0x62, 0), dtype=np.int8), "b"),
+        (
+            "epics_string(val)",
+            np.array((0x61, 0), dtype=np.int8),
+            "a",
+            np.array((0x62, 0), dtype=np.int8),
+            "b",
+        ),
         ("epics_unsigned(val, 8)", -1, 255, -2, 254),
     ],
 )

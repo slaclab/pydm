@@ -1,6 +1,9 @@
 import warnings
 
-warnings.warn("pydm.utilities.display_loading was deprecated in favor of pydm.display", DeprecationWarning)
+warnings.warn(
+    "pydm.utilities.display_loading was deprecated in favor of pydm.display",
+    DeprecationWarning,
+)
 
 
 def load_py_file(*args, **kwargs):

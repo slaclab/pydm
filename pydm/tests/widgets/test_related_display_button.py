@@ -8,17 +8,24 @@ from pydm.utilities.stylesheet import global_style
 from pydm.widgets.related_display_button import PyDMRelatedDisplayButton
 from pydm.utilities import IconFont, checkObjectProperties
 
-test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../test_data", "test.ui")
+test_ui_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), "../test_data", "test.ui"
+)
 test_ui_path_with_stylesheet = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), "../test_data", "test_emb_style.ui"
 )
 test_ui_path_with_relative_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), "../test_data", "test_relative_filename_parent.ui"
+    os.path.dirname(os.path.realpath(__file__)),
+    "../test_data",
+    "test_relative_filename_parent.ui",
 )
 
 
 # additional props we expect to get added to PyDMRelatedDisplayButton class RULE_PROPERTIES
-expected_related_display_button_properties = {"Text": ["setText", str], "Filenames": ["filenames", list]}
+expected_related_display_button_properties = {
+    "Text": ["setText", str],
+    "Filenames": ["filenames", list],
+}
 
 
 def test_old_display_filename_property(qtbot):
@@ -29,7 +36,10 @@ def test_old_display_filename_property(qtbot):
     main_window.setWindowTitle("Related Display Button Test")
     qtbot.addWidget(main_window)
     button = PyDMRelatedDisplayButton(parent=main_window)
-    assert checkObjectProperties(button, expected_related_display_button_properties) is True
+    assert (
+        checkObjectProperties(button, expected_related_display_button_properties)
+        is True
+    )
     with warnings.catch_warnings(record=True) as record:
         button.displayFilename = test_ui_path
     assert len(record) >= 1

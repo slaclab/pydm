@@ -85,7 +85,15 @@ def generic_mon_cb(source, signal):
     return cb
 
 
-def setup_pv(pvname, con_cb=None, mon_cb=None, rwaccess_cb=None, signal=None, mon_cb_once=False, control=False):
+def setup_pv(
+    pvname,
+    con_cb=None,
+    mon_cb=None,
+    rwaccess_cb=None,
+    signal=None,
+    mon_cb_once=False,
+    control=False,
+):
     """
     Initialize an EPICS PV using psp with proper callbacks.
 
@@ -147,7 +155,11 @@ class Connection(PyDMConnection):
         super().__init__(channel, pv, protocol, parent)
         self.python_type = None
         self.pv = setup_pv(
-            pv, con_cb=self.connected_cb, mon_cb=self.monitor_cb, rwaccess_cb=self.rwaccess_cb, control=True
+            pv,
+            con_cb=self.connected_cb,
+            mon_cb=self.monitor_cb,
+            rwaccess_cb=self.rwaccess_cb,
+            control=True,
         )
         self.enums = None
         self.sevr = None
@@ -194,7 +206,11 @@ class Connection(PyDMConnection):
                 self.pv.monitor()
             self.python_type = type_map.get(self.epics_type)
             if self.python_type is None:
-                raise Exception("Unsupported EPICS type {0} for pv {1}".format(self.epics_type, self.pv.name))
+                raise Exception(
+                    "Unsupported EPICS type {0} for pv {1}".format(
+                        self.epics_type, self.pv.name
+                    )
+                )
 
     def monitor_cb(self, e=None):
         """
@@ -267,7 +283,9 @@ class Connection(PyDMConnection):
             if self.units != units:
                 self.units = units
                 self.unit_signal.emit(
-                    self.units.decode(encoding="ascii") if isinstance(self.units, bytes) else self.units
+                    self.units.decode(encoding="ascii")
+                    if isinstance(self.units, bytes)
+                    else self.units
                 )
 
         time = self.timestamp()
@@ -443,7 +461,8 @@ class Connection(PyDMConnection):
         if self.epics_type == "DBF_ENUM":
             if self.enums is None:
                 self.enums = tuple(
-                    b.decode(encoding="ascii") if isinstance(b, bytes) else b for b in self.pv.data["enum_set"]
+                    b.decode(encoding="ascii") if isinstance(b, bytes) else b
+                    for b in self.pv.data["enum_set"]
                 )
             self.enum_strings_signal.emit(self.enums)
 
@@ -541,7 +560,9 @@ class Connection(PyDMConnection):
         if channel.value_signal is not None:
             for signal_type in (str, int, float, np.ndarray):
                 try:
-                    channel.value_signal[signal_type].connect(self.put_value, Qt.QueuedConnection)
+                    channel.value_signal[signal_type].connect(
+                        self.put_value, Qt.QueuedConnection
+                    )
                 # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
                 # If signal type exists but doesn't match the slot, TypeError gets thrown.
                 except (KeyError, IndexError, TypeError):

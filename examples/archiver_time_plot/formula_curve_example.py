@@ -83,6 +83,12 @@ class SimpleFormulaExample(Display):
         )
 
         # Connect checkboxes to show/hide curves
-        self.chkbx_sin.stateChanged.connect(lambda state: self.sin_curve.setVisible(state == 2))
-        self.chkbx_cos.stateChanged.connect(lambda state: self.cos_curve.setVisible(state == 2))
-        self.chkbx_sum.stateChanged.connect(lambda state: self.sum_formula.setVisible(state == 2))
+        self.chkbx_sin.stateChanged.connect(
+            lambda state: self.sin_curve.setVisible(state == 2)
+        )
+        self.chkbx_cos.stateChanged.connect(
+            lambda state: self.cos_curve.setVisible(state == 2)
+        )
+        self.chkbx_sum.stateChanged.connect(
+            lambda state: self.sum_formula.setVisible(state == 2)
+        )

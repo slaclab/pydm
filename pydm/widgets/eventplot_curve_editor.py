@@ -51,7 +51,9 @@ class PyDMEventPlotCurvesModel(BasePlotCurvesModel):
         return True
 
     def append(self, channel=None, y_idx=None, x_idx=None, name=None, color=None):
-        self.beginInsertRows(QModelIndex(), len(self._plot._curves), len(self._plot._curves))
+        self.beginInsertRows(
+            QModelIndex(), len(self._plot._curves), len(self._plot._curves)
+        )
         self._plot.addChannel(channel, y_idx, x_idx, name, color)
         self.endInsertRows()
 
@@ -75,5 +77,7 @@ class EventPlotCurveEditorDialog(BasePlotCurveEditorDialog):
     def __init__(self, plot, parent=None):
         super().__init__(plot, parent)
 
-        plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
+        plot_style_delegate = PlotStyleColumnDelegate(
+            self, self.table_model, self.table_view
+        )
         plot_style_delegate.hideColumns(hide_line_columns=False, hide_bar_columns=True)

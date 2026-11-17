@@ -156,7 +156,9 @@ class RulesEngine(QThread):
         self.app.aboutToQuit.connect(self.requestInterruption)
         self.map_lock = QMutex()
         self.widget_map = dict()
-        self.disconnect_request.connect(self._on_disconnect_request, Qt.QueuedConnection)
+        self.disconnect_request.connect(
+            self._on_disconnect_request, Qt.QueuedConnection
+        )
 
     def widget_destroyed(self, ref):
         self.unregister(ref)
@@ -184,8 +186,12 @@ class RulesEngine(QThread):
 
             for ch_idx, ch in enumerate(channels_list):
                 conn_cb = functools.partial(self.callback_conn, widget_ref, idx, ch_idx)
-                value_cb = functools.partial(self.callback_value, widget_ref, idx, ch_idx, ch["trigger"])
-                enums_cb = functools.partial(self.callback_enum, widget_ref, idx, ch_idx)
+                value_cb = functools.partial(
+                    self.callback_value, widget_ref, idx, ch_idx, ch["trigger"]
+                )
+                enums_cb = functools.partial(
+                    self.callback_enum, widget_ref, idx, ch_idx
+                )
                 c = PyDMChannel(
                     ch["channel"],
                     connection_slot=conn_cb,

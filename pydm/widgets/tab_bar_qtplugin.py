@@ -12,7 +12,9 @@ class TabWidgetPlugin(PyDMDesignerPlugin):
     plugin_group = WidgetCategory.CONTAINER
 
     def __init__(self, extensions=None):
-        super().__init__(self.TabClass, group=WidgetCategory.CONTAINER, extensions=extensions)
+        super().__init__(
+            self.TabClass, group=WidgetCategory.CONTAINER, extensions=extensions
+        )
 
     def domXml(self):
         """

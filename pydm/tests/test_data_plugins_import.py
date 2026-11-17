@@ -37,8 +37,13 @@ def test_plugin_directory_loading(qapp, caplog):
 
         # Check for the error logged when a plugin fails to load. Confirms that the plugin that failed to load
         # was the one expected to fail, and that there was only one failure total.
-        assert "FailingTestPlugin'> failed to load and will not be available for use" in caplog.text
-        assert caplog.text.count("failed to load and will not be available for use") == 1
+        assert (
+            "FailingTestPlugin'> failed to load and will not be available for use"
+            in caplog.text
+        )
+        assert (
+            caplog.text.count("failed to load and will not be available for use") == 1
+        )
     finally:
         os.remove(os.path.join(cur_dir, "plugin_foo.py"))
 

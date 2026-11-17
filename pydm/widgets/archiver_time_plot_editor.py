@@ -12,9 +12,16 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
 
     def __init__(self, plot: BasePlot, parent: Optional[QObject] = None):
         super().__init__(plot, parent=parent)
-        self._column_names = ("Channel", "Live Data", "Archive Data") + self._column_names
+        self._column_names = (
+            "Channel",
+            "Live Data",
+            "Archive Data",
+        ) + self._column_names
 
-        self.checkable_cols = {self.getColumnIndex("Live Data"), self.getColumnIndex("Archive Data")}
+        self.checkable_cols = {
+            self.getColumnIndex("Live Data"),
+            self.getColumnIndex("Archive Data"),
+        }
 
     def flags(self, index: QModelIndex) -> Qt.ItemFlags:
         """Return flags that determine how users can interact with the items in the table"""
@@ -62,7 +69,9 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
             return super().setData(index, value, role)
         return None
 
-    def set_data(self, column_name: str, curve: ArchivePlotCurveItem, value: Any) -> bool:
+    def set_data(
+        self, column_name: str, curve: ArchivePlotCurveItem, value: Any
+    ) -> bool:
         """Set data on the input curve for the given name and value. Return true if successful."""
         if column_name == "Channel":
             curve.address = str(value)
@@ -74,9 +83,16 @@ class PyDMArchiverTimePlotCurvesModel(BasePlotCurvesModel):
             return super().set_data(column_name=column_name, curve=curve, value=value)
         return True
 
-    def append(self, address: Optional[str] = None, name: Optional[str] = None, color: Optional[QColor] = None) -> None:
+    def append(
+        self,
+        address: Optional[str] = None,
+        name: Optional[str] = None,
+        color: Optional[QColor] = None,
+    ) -> None:
         """Add a row for a curve with the input address"""
-        self.beginInsertRows(QModelIndex(), len(self._plot._curves), len(self._plot._curves))
+        self.beginInsertRows(
+            QModelIndex(), len(self._plot._curves), len(self._plot._curves)
+        )
         self._plot.addYChannel(address, name, color)
         self.endInsertRows()
 
@@ -101,5 +117,7 @@ class ArchiverTimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
     def __init__(self, plot, parent=None):
         super().__init__(plot, parent)
 
-        plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
+        plot_style_delegate = PlotStyleColumnDelegate(
+            self, self.table_model, self.table_view
+        )
         plot_style_delegate.hideColumns(hide_line_columns=False, hide_bar_columns=True)

@@ -173,22 +173,42 @@ class PyDMChannel(object):
             connection_slot_matched = self.connection_slot == other.connection_slot
             value_slot_matched = self.value_slot == other.value_slot
             severity_slot_matched = self.severity_slot == other.severity_slot
-            enum_strings_slot_matched = self.enum_strings_slot == other.enum_strings_slot
+            enum_strings_slot_matched = (
+                self.enum_strings_slot == other.enum_strings_slot
+            )
             unit_slot_matched = self.unit_slot == other.unit_slot
             prec_slot_matched = self.prec_slot == other.prec_slot
-            upper_ctrl_slot_matched = self.upper_ctrl_limit_slot == other.upper_ctrl_limit_slot
-            lower_ctrl_slot_matched = self.lower_ctrl_limit_slot == other.lower_ctrl_limit_slot
-            upper_alarm_slot_matched = self.upper_alarm_limit_slot == other.upper_alarm_limit_slot
-            lower_alarm_slot_matched = self.lower_alarm_limit_slot == other.lower_alarm_limit_slot
-            upper_warning_slot_matched = self.upper_warning_limit_slot == other.upper_warning_limit_slot
-            lower_warning_slot_matched = self.lower_warning_limit_slot == other.lower_warning_limit_slot
-            write_access_slot_matched = self.write_access_slot == other.write_access_slot
+            upper_ctrl_slot_matched = (
+                self.upper_ctrl_limit_slot == other.upper_ctrl_limit_slot
+            )
+            lower_ctrl_slot_matched = (
+                self.lower_ctrl_limit_slot == other.lower_ctrl_limit_slot
+            )
+            upper_alarm_slot_matched = (
+                self.upper_alarm_limit_slot == other.upper_alarm_limit_slot
+            )
+            lower_alarm_slot_matched = (
+                self.lower_alarm_limit_slot == other.lower_alarm_limit_slot
+            )
+            upper_warning_slot_matched = (
+                self.upper_warning_limit_slot == other.upper_warning_limit_slot
+            )
+            lower_warning_slot_matched = (
+                self.lower_warning_limit_slot == other.lower_warning_limit_slot
+            )
+            write_access_slot_matched = (
+                self.write_access_slot == other.write_access_slot
+            )
             timestamp_slot_matched = self.timestamp_slot == other.timestamp_slot
 
-            value_signal_matched = self.value_signal is None and other.value_signal is None
+            value_signal_matched = (
+                self.value_signal is None and other.value_signal is None
+            )
             if self.value_signal and other.value_signal:
                 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
-                    value_signal_matched = self.value_signal.signal == other.value_signal.signal
+                    value_signal_matched = (
+                        self.value_signal.signal == other.value_signal.signal
+                    )
                 else:
                     # PySide6 changes how we do signal comparison, if we try to use .signal it throws error:
                     # "AttributeError: 'PySide6.QtCore.SignalInstance' object has no attribute 'signal'"

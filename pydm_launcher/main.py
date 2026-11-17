@@ -37,7 +37,8 @@ def main():
     parser = argparse.ArgumentParser(description="Python Display Manager")
     parser.add_argument(
         "displayfile",
-        help="A PyDM file to display." + "    Can be either a Qt .ui file, or a Python file.",
+        help="A PyDM file to display."
+        + "    Can be either a Qt .ui file, or a Python file.",
         nargs="?",
         default=None,
     )
@@ -48,20 +49,45 @@ def main():
         help="Recursively search for the provided displayfile in the current working directory and subfolders",
     )
     parser.add_argument(
-        "--homefile", help="Path to a PyDM file to return to when the home button is clicked in the navigation bar"
+        "--homefile",
+        help="Path to a PyDM file to return to when the home button is clicked in the navigation bar",
     )
     parser.add_argument(
         "--perfmon",
         action="store_true",
         help="Enable performance monitoring, and print CPU usage to the terminal.",
     )
-    parser.add_argument("--profile", action="store_true", help="Enable cProfile function profiling, printing on exit.")
-    parser.add_argument("--faulthandler", action="store_true", help="Enable faulthandler to trace segmentation faults.")
-    parser.add_argument("--hide-nav-bar", action="store_true", help="Start PyDM with the navigation bar hidden.")
-    parser.add_argument("--hide-menu-bar", action="store_true", help="Start PyDM with the menu bar hidden.")
-    parser.add_argument("--hide-status-bar", action="store_true", help="Start PyDM with the status bar hidden.")
-    parser.add_argument("--fullscreen", action="store_true", help="Start PyDM in full screen mode.")
-    parser.add_argument("--read-only", action="store_true", help="Start PyDM in a Read-Only mode.")
+    parser.add_argument(
+        "--profile",
+        action="store_true",
+        help="Enable cProfile function profiling, printing on exit.",
+    )
+    parser.add_argument(
+        "--faulthandler",
+        action="store_true",
+        help="Enable faulthandler to trace segmentation faults.",
+    )
+    parser.add_argument(
+        "--hide-nav-bar",
+        action="store_true",
+        help="Start PyDM with the navigation bar hidden.",
+    )
+    parser.add_argument(
+        "--hide-menu-bar",
+        action="store_true",
+        help="Start PyDM with the menu bar hidden.",
+    )
+    parser.add_argument(
+        "--hide-status-bar",
+        action="store_true",
+        help="Start PyDM with the status bar hidden.",
+    )
+    parser.add_argument(
+        "--fullscreen", action="store_true", help="Start PyDM in full screen mode."
+    )
+    parser.add_argument(
+        "--read-only", action="store_true", help="Start PyDM in a Read-Only mode."
+    )
     parser.add_argument(
         "--log_level",
         help="Configure level of log display",
@@ -96,7 +122,8 @@ def main():
     )
     parser.add_argument(
         "display_args",
-        help="Arguments to be passed to the PyDM client application" + " (which is a QApplication subclass).",
+        help="Arguments to be passed to the PyDM client application"
+        + " (which is a QApplication subclass).",
         nargs=argparse.REMAINDER,
         default=None,
     )

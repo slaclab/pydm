@@ -14,7 +14,14 @@ logger = logging.getLogger(__name__)
 
 
 class PythonTableModel(QtCore.QAbstractTableModel):
-    def __init__(self, column_names, initial_list=None, parent=None, edit_method=None, can_edit_method=None):
+    def __init__(
+        self,
+        column_names,
+        initial_list=None,
+        parent=None,
+        edit_method=None,
+        can_edit_method=None,
+    ):
         super().__init__(parent)
         self.parent = parent
         self._list = None
@@ -140,7 +147,9 @@ class PythonTableModel(QtCore.QAbstractTableModel):
         self.endInsertRows()
 
     def extend(self, values):
-        self.beginInsertRows(QtCore.QModelIndex(), len(self._list), len(self._list) + len(values) - 1)
+        self.beginInsertRows(
+            QtCore.QModelIndex(), len(self._list), len(self._list) + len(values) - 1
+        )
         self._list.extend(values)
         self.endInsertRows()
 
@@ -269,7 +278,9 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
                 self.edit_method = None
 
             self._table_labels = labels
-            self._model = PythonTableModel(labels, initial_list=values, parent=self, edit_method=self.edit_method)
+            self._model = PythonTableModel(
+                labels, initial_list=values, parent=self, edit_method=self.edit_method
+            )
             self._table.setModel(self._model)
         else:
             self._model.list = values
@@ -288,7 +299,9 @@ class PyDMNTTable(QtWidgets.QWidget, PyDMWritableWidget):
             new value of cell
         """
         if isinstance(self.value[self._table_labels[column]], np.ndarray):
-            self.value[self._table_labels[column]] = self.value[self._table_labels[column]].copy()
+            self.value[self._table_labels[column]] = self.value[
+                self._table_labels[column]
+            ].copy()
 
         if isinstance(self.value[self._table_labels[column]][row], np.bool_):
             if value == "True":

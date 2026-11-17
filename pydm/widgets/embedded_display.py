@@ -59,7 +59,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_context_menu)
         self.open_in_new_window_action = QAction("Open in New Window", self)
-        self.open_in_new_window_action.triggered.connect(self.open_display_in_new_window)
+        self.open_in_new_window_action.triggered.connect(
+            self.open_display_in_new_window
+        )
 
         self.layout = QVBoxLayout(self)
         self.err_label = QLabel(self)
@@ -199,7 +201,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         self._recursive_display_search = new_value
 
-    recursiveDisplaySearch = Property(bool, readRecursiveDisplaySearch, setRecursiveDisplaySearch)
+    recursiveDisplaySearch = Property(
+        bool, readRecursiveDisplaySearch, setRecursiveDisplaySearch
+    )
 
     def set_macros_and_filename(self, new_filename, new_macros):
         """
@@ -236,7 +240,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         return parent_macros
 
     def load_if_needed(self):
-        if self._needs_load and (not self._only_load_when_shown or self.isVisible() or is_qt_designer()):
+        if self._needs_load and (
+            not self._only_load_when_shown or self.isVisible() or is_qt_designer()
+        ):
             self.embedded_widget = self.open_file()
 
     def open_file(self, force=False):
@@ -290,7 +296,11 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         self.err_label.hide()
 
     def display_error_text(self, e):
-        self.err_label.setText("Could not open {filename}.\nError: {err}".format(filename=self._filename, err=e))
+        self.err_label.setText(
+            "Could not open {filename}.\nError: {err}".format(
+                filename=self._filename, err=e
+            )
+        )
         self.err_label.show()
 
     @property
@@ -390,7 +400,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
         """
         self._disconnect_when_hidden = disconnect_when_hidden
 
-    disconnectWhenHidden = Property(bool, readDisconnectWhenHidden, setDisconnectWhenHidden)
+    disconnectWhenHidden = Property(
+        bool, readDisconnectWhenHidden, setDisconnectWhenHidden
+    )
 
     def readFollowSymlinks(self) -> bool:
         """
@@ -450,7 +462,9 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
 
     def _display_designer_load_error(self):
         self._load_error_timer = None
-        logger.exception("Exception while opening embedded display file.", exc_info=self._load_error)
+        logger.exception(
+            "Exception while opening embedded display file.", exc_info=self._load_error
+        )
         if self._load_error:
             self.display_error_text(self._load_error)
 
@@ -500,7 +514,13 @@ class PyDMEmbeddedDisplay(QFrame, PyDMPrimitiveWidget):
                         accept_event = object.__new__(MouseClickEvent)
                         accept_event.accepted = True
                         accept_event.acceptedItem = plot.getViewBox()
-                        menu = plot.getViewBox().scene().addParentContextMenus(plot.getViewBox(), menu, accept_event)
+                        menu = (
+                            plot.getViewBox()
+                            .scene()
+                            .addParentContextMenus(
+                                plot.getViewBox(), menu, accept_event
+                            )
+                        )
             except AttributeError:
                 pass
 

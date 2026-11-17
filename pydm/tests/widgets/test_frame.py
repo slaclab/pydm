@@ -43,7 +43,10 @@ def test_construct(qtbot):
     pydm_frame.deleteLater()
 
 
-@pytest.mark.parametrize("init_value, new_value", [(False, True), (True, False), (False, False), (True, True)])
+@pytest.mark.parametrize(
+    "init_value, new_value",
+    [(False, True), (True, False), (False, False), (True, True)],
+)
 def test_disable_on_disconnect(qtbot, init_value, new_value):
     """
     Test setting the flag to disable the widget when there's a channel disconnection.
@@ -100,7 +103,12 @@ def test_disable_on_disconnect(qtbot, init_value, new_value):
     ],
 )
 def test_alarm_severity_change(
-    qtbot, signals, channel, alarm_sensitive_content, alarm_sensitive_border, new_alarm_severity
+    qtbot,
+    signals,
+    channel,
+    alarm_sensitive_content,
+    alarm_sensitive_border,
+    new_alarm_severity,
 ):
     """
     Test the style of the widget changing according to alarm sensitivity settings and alarm severity changes.
@@ -147,7 +155,9 @@ def test_alarm_severity_change(
         (None, False, False, False),
     ],
 )
-def test_check_enable_state(qtbot, signals, channel_address, connected, write_access, is_app_read_only):
+def test_check_enable_state(
+    qtbot, signals, channel_address, connected, write_access, is_app_read_only
+):
     """
     Test the tooltip generated depending on the channel address validation, connection, write access, and whether the
     app is read-only.

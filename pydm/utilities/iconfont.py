@@ -11,7 +11,15 @@ from typing import Optional
 
 from qtpy import QtGui, QtWidgets
 from qtpy.QtCore import QPoint, QRect, Qt
-from qtpy.QtGui import QColor, QFont, QFontDatabase, QIcon, QIconEngine, QPainter, QPixmap
+from qtpy.QtGui import (
+    QColor,
+    QFont,
+    QFontDatabase,
+    QIcon,
+    QIconEngine,
+    QPainter,
+    QPixmap,
+)
 
 if sys.version_info[0] == 3:
     unichr = chr
@@ -55,7 +63,9 @@ class IconFont(object):
             return
 
         cache_key = ttf_filename + "|" + charmap_filename
-        ttf_fname = os.path.join(os.path.dirname(os.path.realpath(__file__)), ttf_filename)
+        ttf_fname = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), ttf_filename
+        )
         font_id = QFontDatabase.addApplicationFont(ttf_fname)
         if font_id >= 0:
             font_families = QFontDatabase.applicationFontFamilies(font_id)
@@ -69,7 +79,9 @@ class IconFont(object):
 
         self.font_name = font_families[0]
 
-        filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), charmap_filename)
+        filename = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), charmap_filename
+        )
         with open(filename, "r") as codes:
             self.char_map = json.load(codes, object_hook=hook)
 

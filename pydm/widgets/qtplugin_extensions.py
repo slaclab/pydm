@@ -79,7 +79,9 @@ class BasicSettingsExtension(PyDMExtension):
     def __init__(self, widget):
         super().__init__(widget)
         self.widget = widget
-        self.edit_settings_action = QtWidgets.QAction("Py&DM basic settings...", self.widget)
+        self.edit_settings_action = QtWidgets.QAction(
+            "Py&DM basic settings...", self.widget
+        )
         self.edit_settings_action.triggered.connect(self.open_dialog)
 
         if not hasattr(widget, "channel"):
@@ -102,7 +104,9 @@ class BasicSettingsExtension(PyDMExtension):
     def update_action_clipboard_text(self):
         self.copy_channel_action.setText(f"&Copy to clipboard: {self.widget.channel}")
         clipboard_text = get_clipboard_text() or ""
-        self.paste_channel_action.setText(f"&Paste from clipboard: {clipboard_text[:100]}")
+        self.paste_channel_action.setText(
+            f"&Paste from clipboard: {clipboard_text[:100]}"
+        )
 
     def copy_channel(self, _):
         channel = self.widget.channel

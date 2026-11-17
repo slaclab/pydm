@@ -117,5 +117,13 @@ def test_data_request_finished(signals: ConnectionSignals):
     archiver_connection.data_request_finished(mock_reply)  # type: ignore
 
     # Verify the data was sent as expected (timestamps, values, standard deviations, minimums, maximums)
-    expected_data_sent = np.array([[100, 101, 102], [53, 54.1, 53.9], [0.2, 0.3, 0.1], [52, 54, 53.8], [54, 55, 54]])
+    expected_data_sent = np.array(
+        [
+            [100, 101, 102],
+            [53, 54.1, 53.9],
+            [0.2, 0.3, 0.1],
+            [52, 54, 53.8],
+            [54, 55, 54],
+        ]
+    )
     assert np.array_equal(signals._value, expected_data_sent)

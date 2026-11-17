@@ -1,6 +1,10 @@
 from qtpy.QtCore import QModelIndex
 from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import BasePlotCurveEditorDialog, PlotStyleColumnDelegate, RedrawModeColumnDelegate
+from .baseplot_curve_editor import (
+    BasePlotCurveEditorDialog,
+    PlotStyleColumnDelegate,
+    RedrawModeColumnDelegate,
+)
 
 
 class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
@@ -49,7 +53,9 @@ class PyDMScatterPlotCurvesModel(BasePlotCurvesModel):
         return True
 
     def append(self, y_address=None, x_address=None, name=None, color=None):
-        self.beginInsertRows(QModelIndex(), len(self._plot._curves), len(self._plot._curves))
+        self.beginInsertRows(
+            QModelIndex(), len(self._plot._curves), len(self._plot._curves)
+        )
         self._plot.addChannel(y_address, x_address, name, color)
         self.endInsertRows()
 
@@ -74,7 +80,11 @@ class ScatterPlotCurveEditorDialog(BasePlotCurveEditorDialog):
         super().__init__(plot, parent)
 
         redraw_mode_delegate = RedrawModeColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Redraw Mode"), redraw_mode_delegate)
+        self.table_view.setItemDelegateForColumn(
+            self.table_model.getColumnIndex("Redraw Mode"), redraw_mode_delegate
+        )
 
-        plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
+        plot_style_delegate = PlotStyleColumnDelegate(
+            self, self.table_model, self.table_view
+        )
         plot_style_delegate.hideColumns(hide_line_columns=False, hide_bar_columns=True)

@@ -91,9 +91,13 @@ class MultiAxisPlot(PlotItem):
         view.setYRange(minRange, maxRange)
         view.enableAutoRange(axis=ViewBox.XAxis, enable=enableAutoRangeX)
         view.enableAutoRange(axis=ViewBox.YAxis, enable=enableAutoRangeY)
-        self.axes["bottom"]["item"].linkToView(view)  # Ensure the x axis will update when the view does
+        self.axes["bottom"]["item"].linkToView(
+            view
+        )  # Ensure the x axis will update when the view does
 
-        view.setMouseMode(self.vb.state["mouseMode"])  # Ensure that mouse behavior is consistent between stacked views
+        view.setMouseMode(
+            self.vb.state["mouseMode"]
+        )  # Ensure that mouse behavior is consistent between stacked views
         axis.linkToView(view)
 
         if plotDataItem is not None:
@@ -213,7 +217,11 @@ class MultiAxisPlot(PlotItem):
 
         if plotDataItem.name() and not axisToLink.labelText:
             axisToLink.setLabel(plotDataItem.name(), color=plotDataItem.color_string)
-        elif axisToLink.labelText and plotDataItem.color_string and axisToLink.labelStyle["color"] == "#969696":
+        elif (
+            axisToLink.labelText
+            and plotDataItem.color_string
+            and axisToLink.labelStyle["color"] == "#969696"
+        ):
             # The color for the axis was not specified by the user (#969696 is default) so set it appropriately
             axisToLink.labelStyle["color"] = plotDataItem.color_string
             axisToLink._updateLabel()
@@ -281,7 +289,11 @@ class MultiAxisPlot(PlotItem):
             # We don't have any visible curves, but are we the only curve being shown?
             for otherAxis in self.axes.keys():
                 otherItem = self.axes[otherAxis]["item"]
-                if otherItem is not axis and otherAxis not in ["bottom", "top"] and otherItem.isVisible():
+                if (
+                    otherItem is not axis
+                    and otherAxis not in ["bottom", "top"]
+                    and otherItem.isVisible()
+                ):
                     axis.hide()
                     return
             # No other axis is visible.
@@ -358,7 +370,9 @@ class MultiAxisPlot(PlotItem):
         # Reset the axes associated with all y axis curves
         allAxes = [val["item"] for val in self.axes.values()]
         for oldAxis in allAxes:
-            if oldAxis.orientation != "bottom":  # Currently only multiple y axes are supported
+            if (
+                oldAxis.orientation != "bottom"
+            ):  # Currently only multiple y axes are supported
                 self.layout.removeItem(oldAxis)
                 if oldAxis.scene() is not None:
                     oldAxis.scene().removeItem(oldAxis)
@@ -391,8 +405,14 @@ class MultiAxisPlot(PlotItem):
                 linkedView.setYRange(original_ranges[0], original_ranges[1])
 
         # Now restore the x-axis range as well if needed
-        if "bottom" in self.axesOriginalRanges and self.axesOriginalRanges["bottom"][0] is not None:
-            self.setXRange(self.axesOriginalRanges["bottom"][0], self.axesOriginalRanges["bottom"][1])
+        if (
+            "bottom" in self.axesOriginalRanges
+            and self.axesOriginalRanges["bottom"][0] is not None
+        ):
+            self.setXRange(
+                self.axesOriginalRanges["bottom"][0],
+                self.axesOriginalRanges["bottom"][1],
+            )
         else:
             self.setPlotAutoRange(x=True)
 
@@ -410,7 +430,9 @@ class MultiAxisPlot(PlotItem):
             stackedView.enableAutoRange(x=x, y=y)
         self.getViewBox().enableAutoRange(x=x, y=y)
 
-    def setPlotAutoPan(self, auto_pan_x: Optional[bool] = None, auto_pan_y: Optional[bool] = None) -> None:
+    def setPlotAutoPan(
+        self, auto_pan_x: Optional[bool] = None, auto_pan_y: Optional[bool] = None
+    ) -> None:
         """
         Toggle pan only mode (no scaling) when auto range is enabled.
 
@@ -425,7 +447,9 @@ class MultiAxisPlot(PlotItem):
             stackedView.setAutoPan(x=auto_pan_x, y=auto_pan_y)
 
     def setPlotAutoRangeVisibleOnly(
-        self, visible_only_x: Optional[bool] = None, visible_only_y: Optional[bool] = None
+        self,
+        visible_only_x: Optional[bool] = None,
+        visible_only_y: Optional[bool] = None,
     ) -> None:
         """
         Toggle if auto range should use only visible data when calculating the range to show
@@ -512,7 +536,9 @@ class MultiAxisPlot(PlotItem):
         for x, axis in enumerate(orientations["left"] + [None] + orientations["right"]):
             if axis is not None:
                 self.layout.addItem(axis, topOffset, x)
-        for y, axis in enumerate([None] + orientations["top"] + [None] + orientations["bottom"]):
+        for y, axis in enumerate(
+            [None] + orientations["top"] + [None] + orientations["bottom"]
+        ):
             if axis is not None:
                 self.layout.addItem(axis, y, leftOffset)
 

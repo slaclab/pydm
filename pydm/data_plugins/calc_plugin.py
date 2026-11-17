@@ -30,7 +30,9 @@ def epics_string(value: np.ndarray, string_encoding: str = "utf-8") -> str:
         value = value[: value.index(0)]
     except (IndexError, ValueError):
         pass
-    return value.decode(string_encoding, "replace")  # <-- ignore decoding errors, just in case
+    return value.decode(
+        string_encoding, "replace"
+    )  # <-- ignore decoding errors, just in case
 
 
 def epics_unsigned(value: int, bits: int = 32) -> int:
@@ -48,7 +50,13 @@ def epics_unsigned(value: int, bits: int = 32) -> int:
 
 
 class CalcThread(QThread):
-    eval_env = {"math": math, "np": np, "numpy": np, "epics_string": epics_string, "epics_unsigned": epics_unsigned}
+    eval_env = {
+        "math": math,
+        "np": np,
+        "numpy": np,
+        "epics_string": epics_string,
+        "epics_unsigned": epics_unsigned,
+    }
 
     eval_env.update({k: v for k, v in math.__dict__.items() if k[0] != "_"})
     new_data_signal = Signal(dict)
@@ -135,7 +143,10 @@ class CalcThread(QThread):
         """
         self._values[name] = value
         if not self.connected:
-            logger.debug("Calculation '%s': Not all channels are connected, skipping execution.", self.objectName())
+            logger.debug(
+                "Calculation '%s': Not all channels are connected, skipping execution.",
+                self.objectName(),
+            )
             return
 
         if self.listen_for_update is None or name in self.listen_for_update:
@@ -175,7 +186,9 @@ class CalcThread(QThread):
             self._value = ret
             self._send_update(self.connected, ret)
         except Exception:
-            logger.exception("Error while evaluating CalcPlugin connection %s", self.objectName())
+            logger.exception(
+                "Error while evaluating CalcPlugin connection %s", self.objectName()
+            )
 
 
 class Connection(PyDMConnection):
@@ -210,7 +223,9 @@ class Connection(PyDMConnection):
         try:
             url_data = UrlToPython(channel)
         except ValueError("Not enough information"):
-            logger.debug("Invalid configuration for Calc Plugin connection", exc_info=True)
+            logger.debug(
+                "Invalid configuration for Calc Plugin connection", exc_info=True
+            )
             return
 
         self._configuration["name"] = url_data.name
@@ -219,7 +234,9 @@ class Connection(PyDMConnection):
 
         self._calc_thread = CalcThread(self._configuration)
         self._calc_thread.setObjectName("calc_{}".format(url_data.name))
-        self._calc_thread.new_data_signal.connect(self.receive_new_data, Qt.QueuedConnection)
+        self._calc_thread.new_data_signal.connect(
+            self.receive_new_data, Qt.QueuedConnection
+        )
         self._calc_thread.start()
         return True
 
@@ -283,7 +300,9 @@ class UrlToPython:
             try:
                 if not self.name:
                     raise
-                logger.debug("Calc Plugin  connection %s got new listener.", self.parsed_address)
+                logger.debug(
+                    "Calc Plugin  connection %s got new listener.", self.parsed_address
+                )
                 return None, self.name, self.parsed_address
             except Exception:
                 msg = "Invalid configuration for Calc Plugin  connection. %s"

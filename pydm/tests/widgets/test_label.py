@@ -48,7 +48,11 @@ def test_construct(qtbot):
 
     display_format_type = pydm_label.displayFormat
     assert display_format_type == pydm_label.DisplayFormat.Default
-    assert pydm_label._string_encoding == pydm_label.app.get_string_encoding() if is_pydm_app() else "utf_8"
+    assert (
+        pydm_label._string_encoding == pydm_label.app.get_string_encoding()
+        if is_pydm_app()
+        else "utf_8"
+    )
     assert pydm_label.parent() == parent
 
     # This prevents pyside6 from deleting the internal c++ object
@@ -89,7 +93,10 @@ def test_enable_rich_text(qtbot):
         (123, DisplayFormat.String),
         (0b100, DisplayFormat.String),
         (0x1FF, DisplayFormat.String),
-        ("abc", DisplayFormat.Decimal),  # This setting is acceptable. The displayed value will be "abc"
+        (
+            "abc",
+            DisplayFormat.Decimal,
+        ),  # This setting is acceptable. The displayed value will be "abc"
         (123, DisplayFormat.Decimal),
         (123.45, DisplayFormat.Decimal),
         (0b100, DisplayFormat.Decimal),
@@ -136,7 +143,10 @@ def test_value_changed(qtbot, signals, value, display_format):
     pydm_label.displayFormat = display_format
 
     displayed_value = parse_value_for_display(
-        value=pydm_label.value, precision=1, display_format_type=pydm_label.displayFormat, widget=pydm_label
+        value=pydm_label.value,
+        precision=1,
+        display_format_type=pydm_label.displayFormat,
+        widget=pydm_label,
     )
     expected_value = parse_value_for_display(
         value=value, precision=1, display_format_type=display_format, widget=pydm_label
@@ -180,7 +190,9 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     signals.enum_strings_signal.emit(values)
     pydm_label.displayFormat = DisplayFormat.String
 
-    signals.new_value_signal[type(selected_index)].connect(pydm_label.channelValueChanged)
+    signals.new_value_signal[type(selected_index)].connect(
+        pydm_label.channelValueChanged
+    )
     signals.new_value_signal[type(selected_index)].emit(selected_index)
 
     assert pydm_label.value == selected_index
@@ -201,7 +213,12 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
         (0x1FF, DisplayFormat.String, "s", "511 s"),
         ("abc", DisplayFormat.Decimal, "light years", "abc light years"),
         (123, DisplayFormat.Decimal, "light years", "123 light years"),
-        (123.45, DisplayFormat.Decimal, "light years", "123 light years"),  # Using default precision of 0
+        (
+            123.45,
+            DisplayFormat.Decimal,
+            "light years",
+            "123 light years",
+        ),  # Using default precision of 0
         (0b100, DisplayFormat.Decimal, "light years", "4 light years"),
         (0x1FF, DisplayFormat.Decimal, "light years", "511 light years"),
         (123, DisplayFormat.Exponential, "ms", "1e+02 ms"),
@@ -295,7 +312,9 @@ def test_show_units(qtbot, signals, value, display_format, unit_name, expected):
         (PyDMWidget.ALARM_DISCONNECTED, False, False),
     ],
 )
-def test_label_alarms(qtbot, signals, alarm_severity, alarm_sensitive_content, alarm_sensitive_border):
+def test_label_alarms(
+    qtbot, signals, alarm_severity, alarm_sensitive_content, alarm_sensitive_border
+):
     """
     Test the widget's appearance changes according to changes in alarm severity.
 
@@ -624,12 +643,26 @@ def test_label_connection_changes_with_alarm_and_no_channel(
     [
         (np.array([-1, -2]), DisplayFormat.String, "Could not decode"),
         (np.array([0xFFFE, 0xFFFF]), DisplayFormat.String, "Could not decode"),
-        ("aaa", DisplayFormat.Exponential, "Could not display value 'aaa' using displayFormat 'Exponential'"),
-        ("zzz", DisplayFormat.Hex, "Could not display value 'zzz' using displayFormat 'Hex'"),
-        ("zzz", DisplayFormat.Binary, "Could not display value 'zzz' using displayFormat 'Binary'"),
+        (
+            "aaa",
+            DisplayFormat.Exponential,
+            "Could not display value 'aaa' using displayFormat 'Exponential'",
+        ),
+        (
+            "zzz",
+            DisplayFormat.Hex,
+            "Could not display value 'zzz' using displayFormat 'Hex'",
+        ),
+        (
+            "zzz",
+            DisplayFormat.Binary,
+            "Could not display value 'zzz' using displayFormat 'Binary'",
+        ),
     ],
 )
-def test_value_changed_incorrect_display_format(qtbot, signals, caplog, value, display_format, expected):
+def test_value_changed_incorrect_display_format(
+    qtbot, signals, caplog, value, display_format, expected
+):
     """
     Test the widget's handling of incorrect provided values.
 
@@ -670,7 +703,9 @@ def test_value_changed_incorrect_display_format(qtbot, signals, caplog, value, d
         (("ON", "OFF"), 3, "**INVALID**"),
     ],
 )
-def test_enum_strings_changed_incorrect_index(qtbot, signals, value, selected_index, expected):
+def test_enum_strings_changed_incorrect_index(
+    qtbot, signals, value, selected_index, expected
+):
     """
     Test the widget's handling of incorrect provided enum string index.
 
@@ -693,7 +728,9 @@ def test_enum_strings_changed_incorrect_index(qtbot, signals, value, selected_in
     pydm_label = PyDMLabel()
     qtbot.addWidget(pydm_label)
 
-    signals.new_value_signal[type(selected_index)].connect(pydm_label.channelValueChanged)
+    signals.new_value_signal[type(selected_index)].connect(
+        pydm_label.channelValueChanged
+    )
     signals.new_value_signal[type(selected_index)].emit(selected_index)
 
     signals.enum_strings_signal.connect(pydm_label.enumStringsChanged)

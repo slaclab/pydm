@@ -85,7 +85,9 @@ def parse_value_for_display(
                 r = value.tobytes().decode(string_encoding)
             except Exception:
                 logger.error(
-                    "Could not decode {0} using {1} at widget named '{2}'.".format(value, string_encoding, widget_name)
+                    "Could not decode {0} using {1} at widget named '{2}'.".format(
+                        value, string_encoding, widget_name
+                    )
                 )
                 return value
             return r

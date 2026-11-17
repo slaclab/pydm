@@ -240,11 +240,15 @@ class PyDMDrawing(QWidget, PyDMWidget):
         origHeight = self.height()
 
         if origWidth == 0:
-            logger.error("Invalid width. The value must be greater than {0}".format(origWidth))
+            logger.error(
+                "Invalid width. The value must be greater than {0}".format(origWidth)
+            )
             return
 
         if origHeight == 0:
-            logger.error("Invalid height. The value must be greater than {0}".format(origHeight))
+            logger.error(
+                "Invalid height. The value must be greater than {0}".format(origHeight)
+            )
             return
 
         if origWidth <= origHeight:
@@ -718,18 +722,26 @@ class PyDMDrawingLine(PyDMDrawingLineBase):
 
         # Draw the arrows
         if self._arrow_end_point_selection:
-            points = self._arrow_points(start_point, end_point, self._arrow_size, self._arrow_size)
+            points = self._arrow_points(
+                start_point, end_point, self._arrow_size, self._arrow_size
+            )
             painter.drawPolygon(points)
 
         if self._arrow_start_point_selection:
-            points = self._arrow_points(end_point, start_point, self._arrow_size, self._arrow_size)
+            points = self._arrow_points(
+                end_point, start_point, self._arrow_size, self._arrow_size
+            )
             painter.drawPolygon(points)
 
         if self._arrow_mid_point_selection:
             if self._arrow_mid_point_flipped:
-                points = self._arrow_points(start_point, mid_point, self._arrow_size, self._arrow_size)
+                points = self._arrow_points(
+                    start_point, mid_point, self._arrow_size, self._arrow_size
+                )
             else:
-                points = self._arrow_points(end_point, mid_point, self._arrow_size, self._arrow_size)
+                points = self._arrow_points(
+                    end_point, mid_point, self._arrow_size, self._arrow_size
+                )
             painter.drawPolygon(points)
 
 
@@ -791,11 +803,24 @@ class PyDMDrawingPolyline(PyDMDrawingLineBase):
         # Draw the arrows
         # While we enforce >=2 points when user adds points, we need to check '(len(self._points) > 0)' here so we
         # don't break trying to add arrows to new polyline with no points yet.
-        if self._arrow_end_point_selection and (len(self._points) > 0) and (len(self._points[1]) >= 2):
-            points = self._arrow_points(p2d(self._points[1]), p2d(self._points[0]), self._arrow_size, self._arrow_size)
+        if (
+            self._arrow_end_point_selection
+            and (len(self._points) > 0)
+            and (len(self._points[1]) >= 2)
+        ):
+            points = self._arrow_points(
+                p2d(self._points[1]),
+                p2d(self._points[0]),
+                self._arrow_size,
+                self._arrow_size,
+            )
             painter.drawPolygon(points)
 
-        if self._arrow_start_point_selection and (len(self._points) > 0) and (len(self._points[1]) >= 2):
+        if (
+            self._arrow_start_point_selection
+            and (len(self._points) > 0)
+            and (len(self._points[1]) >= 2)
+        ):
             points = self._arrow_points(
                 p2d(self._points[len(self._points) - 2]),
                 p2d(self._points[len(self._points) - 1]),
@@ -969,7 +994,9 @@ class PyDMDrawingImage(PyDMDrawing):
         """
         self._recursive_image_search = new_value
 
-    recursiveImageSearch = Property(bool, readRecursiveImageSearch, setRecursiveImageSearch)
+    recursiveImageSearch = Property(
+        bool, readRecursiveImageSearch, setRecursiveImageSearch
+    )
 
     def readFilename(self) -> str:
         """
@@ -1006,7 +1033,11 @@ class PyDMDrawingImage(PyDMDrawing):
             base_path = None
             if parent_display:
                 base_path = os.path.dirname(parent_display.loaded_file())
-            abs_path = find_file(abs_path, base_path=base_path, subdir_scan_enabled=self._recursive_image_search)
+            abs_path = find_file(
+                abs_path,
+                base_path=base_path,
+                subdir_scan_enabled=self._recursive_image_search,
+            )
             if not abs_path:
                 logger.error("Unable to find full filepath for %s", self._file)
                 return
@@ -1076,7 +1107,9 @@ class PyDMDrawingImage(PyDMDrawing):
             self._aspect_ratio_mode = new_mode
             self.update()
 
-    aspectRatioMode = Property(Qt.AspectRatioMode, readAspectRatioMode, setAspectRatioMode)
+    aspectRatioMode = Property(
+        Qt.AspectRatioMode, readAspectRatioMode, setAspectRatioMode
+    )
 
     def draw_item(self, painter):
         """
@@ -1086,7 +1119,9 @@ class PyDMDrawingImage(PyDMDrawing):
         super().draw_item(painter)
         x, y, w, h = self.get_bounds(maxsize=True, force_no_pen=True)
         if not isinstance(self._pixmap, QMovie):
-            _scaled = self._pixmap.scaled(int(w), int(h), self._aspect_ratio_mode, Qt.SmoothTransformation)
+            _scaled = self._pixmap.scaled(
+                int(w), int(h), self._aspect_ratio_mode, Qt.SmoothTransformation
+            )
             # Make sure the image is centered if smaller than the widget itself
             if w > _scaled.width():
                 logger.debug("Centering image horizontally ...")
@@ -1261,7 +1296,10 @@ class PyDMDrawingArc(PyDMDrawing):
         The channel to be used by the widget.
     """
 
-    new_properties = {"Start Angle": ["startAngle", float], "Span Angle": ["spanAngle", float]}
+    new_properties = {
+        "Start Angle": ["startAngle", float],
+        "Span Angle": ["spanAngle", float],
+    }
 
     def __init__(self, parent=None, init_channel=None):
         super().__init__(parent, init_channel)
@@ -1330,7 +1368,9 @@ class PyDMDrawingArc(PyDMDrawing):
         super().draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        painter.drawArc(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
+        painter.drawArc(
+            QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle)
+        )
 
 
 class PyDMDrawingPie(PyDMDrawingArc):
@@ -1357,7 +1397,9 @@ class PyDMDrawingPie(PyDMDrawingArc):
         super().draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        painter.drawPie(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
+        painter.drawPie(
+            QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle)
+        )
 
 
 class PyDMDrawingChord(PyDMDrawingArc):
@@ -1384,7 +1426,9 @@ class PyDMDrawingChord(PyDMDrawingArc):
         super().draw_item(painter)
         maxsize = not self.is_square()
         x, y, w, h = self.get_bounds(maxsize=maxsize)
-        painter.drawChord(QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle))
+        painter.drawChord(
+            QRectF(x, y, w, h), int(self._start_angle), int(self._span_angle)
+        )
 
 
 class PyDMDrawingPolygon(PyDMDrawing):

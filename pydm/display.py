@@ -17,7 +17,13 @@ import six
 from qtpy.QtWidgets import QApplication, QWidget
 
 from .help_files import HelpWindow
-from .utilities import import_module_by_filename, is_pydm_app, macro, ACTIVE_QT_WRAPPER, QtWrapperTypes
+from .utilities import (
+    import_module_by_filename,
+    is_pydm_app,
+    macro,
+    ACTIVE_QT_WRAPPER,
+    QtWrapperTypes,
+)
 
 
 if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT5, QtWrapperTypes.PYQT6):
@@ -58,7 +64,10 @@ def load_file(file, macros=None, args=None, target=ScreenTarget.NEW_PROCESS):
     pydm.Display
     """
     if not is_pydm_app() and target == ScreenTarget.NEW_PROCESS:
-        logger.warning("New Process is only valid with PyDM Application. " + "Falling back to ScreenTarget.DIALOG.")
+        logger.warning(
+            "New Process is only valid with PyDM Application. "
+            + "Falling back to ScreenTarget.DIALOG."
+        )
         target = ScreenTarget.DIALOG
 
     if target == ScreenTarget.NEW_PROCESS:
@@ -114,12 +123,16 @@ def _compile_ui_file(uifile: str) -> Tuple[str, str]:
             )
             code_string = result.stdout
         except subprocess.CalledProcessError as e:
-            raise RuntimeError(f"Error compiling {uifile} with pyside6-uic: {e.stderr.strip()}") from e
+            raise RuntimeError(
+                f"Error compiling {uifile} with pyside6-uic: {e.stderr.strip()}"
+            ) from e
 
     # Grabs non-whitespace characters between class and the opening parenthesis
     class_name_match = re.search(r"^class\s*(\S*)\(", code_string, re.MULTILINE)
     if not class_name_match:
-        raise ValueError("Unable to determine the class name from the compiled .ui file.")
+        raise ValueError(
+            "Unable to determine the class name from the compiled .ui file."
+        )
     class_name = class_name_match.group(1)
 
     return code_string, class_name
@@ -154,7 +167,10 @@ def clear_compiled_ui_file_cache() -> None:
 
 
 def _load_compiled_ui_into_display(
-    code_string: str, class_name: str, display: Display, macros: Optional[Dict[str, str]] = None
+    code_string: str,
+    class_name: str,
+    display: Display,
+    macros: Optional[Dict[str, str]] = None,
 ) -> None:
     """
     Takes a ui file which has already been compiled by uic and loads it into the input display.
@@ -173,7 +189,9 @@ def _load_compiled_ui_into_display(
         Macros to be substituted
     """
     if macros:
-        code_string = macro.replace_macros_in_template(Template(code_string), macros).getvalue()
+        code_string = macro.replace_macros_in_template(
+            Template(code_string), macros
+        ).getvalue()
     # Create and grab the class described by the compiled ui file
     ui_globals = {}
     exec(code_string, ui_globals)
@@ -302,7 +320,9 @@ def load_py_file(pyfile, args=None, macros=None):
         if len(classes) > 1:
             warnings.warn(
                 "More than one Display class in file {}. "
-                "The first occurrence (in alphabetical order) will be opened: {}".format(pyfile, classes[0].__name__),
+                "The first occurrence (in alphabetical order) will be opened: {}".format(
+                    pyfile, classes[0].__name__
+                ),
                 RuntimeWarning,
                 stacklevel=2,
             )
@@ -447,7 +467,9 @@ class Display(QWidget):
         if self.ui_filepath() is not None and self.ui_filepath() != "":
             self.load_ui_from_file(self.ui_filepath(), macros)
 
-    def load_ui_from_file(self, ui_file_path: str, macros: Optional[Dict[str, str]] = None):
+    def load_ui_from_file(
+        self, ui_file_path: str, macros: Optional[Dict[str, str]] = None
+    ):
         """Load the ui file from the input path, and make the file's widgets available in self.ui"""
         self._loaded_file = ui_file_path
         code_string, class_name = _compile_ui_file(ui_file_path)
@@ -459,8 +481,13 @@ class Display(QWidget):
 
     def setStyleSheet(self, new_stylesheet):
         # Handle the case where the widget's styleSheet property contains a filename, rather than a stylesheet.
-        possible_stylesheet_filename = os.path.expanduser(os.path.expandvars(new_stylesheet))
-        logger.debug("Calling Display.setStyleSheet, new_stylesheet is %s", possible_stylesheet_filename)
+        possible_stylesheet_filename = os.path.expanduser(
+            os.path.expandvars(new_stylesheet)
+        )
+        logger.debug(
+            "Calling Display.setStyleSheet, new_stylesheet is %s",
+            possible_stylesheet_filename,
+        )
         stylesheet_filename = None
         try:
             # First, check if the file is already an absolute path.
@@ -469,7 +496,8 @@ class Display(QWidget):
             # Second, check if the css file is specified relative to the display file.
             else:
                 rel_path = os.path.join(
-                    os.path.dirname(os.path.abspath(self._loaded_file)), possible_stylesheet_filename
+                    os.path.dirname(os.path.abspath(self._loaded_file)),
+                    possible_stylesheet_filename,
                 )
                 if os.path.isfile(rel_path):
                     stylesheet_filename = rel_path
@@ -478,7 +506,10 @@ class Display(QWidget):
             pass
         self._local_style = new_stylesheet
         if stylesheet_filename is not None:
-            logger.debug("styleSheet property contains a filename, loading %s", stylesheet_filename)
+            logger.debug(
+                "styleSheet property contains a filename, loading %s",
+                stylesheet_filename,
+            )
             with open(stylesheet_filename) as f:
                 self._local_style = f.read()
         logger.debug("Setting stylesheet to: %s", self._local_style)

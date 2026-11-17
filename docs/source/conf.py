@@ -228,7 +228,13 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "PyDM.tex", "PyDM Documentation", "mgibbs, hhslepicka, trendahl, zlentz", "manual"),
+    (
+        master_doc,
+        "PyDM.tex",
+        "PyDM Documentation",
+        "mgibbs, hhslepicka, trendahl, zlentz",
+        "manual",
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -268,7 +274,15 @@ man_pages = [(master_doc, "pydm", "PyDM Documentation", [author], 1)]
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, "PyDM", "PyDM Documentation", author, "PyDM", "One line description of project.", "Miscellaneous"),
+    (
+        master_doc,
+        "PyDM",
+        "PyDM Documentation",
+        author,
+        "PyDM",
+        "One line description of project.",
+        "Miscellaneous",
+    ),
 ]
 
 # Documents to append as an appendix to all manuals.

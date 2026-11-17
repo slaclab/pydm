@@ -58,12 +58,18 @@ class ConnectionInspector(QWidget):
             for connection in p.connections.values()
             # DISP field is connected to separately for writable channels, including it on this list is redundant
             # Local plugins have a ParseResult address, not a string, so they may not have a 'endswith' attribute
-            if (not connection.address.endswith(".DISP") if hasattr(connection.address, "endswith") else True)
+            if (
+                not connection.address.endswith(".DISP")
+                if hasattr(connection.address, "endswith")
+                else True
+            )
         ]
 
     @Slot()
     def save_list_to_file(self):
-        filename, _ = QFileDialog.getSaveFileName(self, "Save connection list", "", "Text Files (*.txt)")
+        filename, _ = QFileDialog.getSaveFileName(
+            self, "Save connection list", "", "Text Files (*.txt)"
+        )
         try:
             if len(filename) == 0:
                 # User hit Cancel
@@ -82,7 +88,9 @@ class ConnectionInspector(QWidget):
     @Slot()
     def copy_pv_list_to_clipboard(self):
         """Copy the list of PVs from the table to the clipboard"""
-        pv_list = [connection.address for connection in self.table_view.model().connections]
+        pv_list = [
+            connection.address for connection in self.table_view.model().connections
+        ]
         if len(pv_list) == 0:
             return
 

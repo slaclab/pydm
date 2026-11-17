@@ -83,7 +83,9 @@ def plugin_for_address(address: str) -> Optional[PyDMPlugin]:
 
     # Use default protocol
     if protocol is None and config.DEFAULT_PROTOCOL is not None:
-        logger.debug("Using default protocol %s for %s", config.DEFAULT_PROTOCOL, address)
+        logger.debug(
+            "Using default protocol %s for %s", config.DEFAULT_PROTOCOL, address
+        )
         # If no protocol was specified, and the default protocol
         # environment variable is specified, try to use that instead.
         protocol = config.DEFAULT_PROTOCOL
@@ -132,7 +134,9 @@ def add_plugin(plugin: Type[PyDMPlugin]) -> Optional[PyDMPlugin]:
     try:
         instance = plugin()
     except Exception:
-        logger.exception(f"Data plugin: {plugin} failed to load and will not be available for use!")
+        logger.exception(
+            f"Data plugin: {plugin} failed to load and will not be available for use!"
+        )
         return None
 
     plugin_modules[plugin.protocol] = instance
@@ -141,7 +145,9 @@ def add_plugin(plugin: Type[PyDMPlugin]) -> Optional[PyDMPlugin]:
 
 @log_failures(
     logger,
-    explanation=("Unable to import plugin file: {args[0]}.  This plugin will be skipped."),
+    explanation=(
+        "Unable to import plugin file: {args[0]}.  This plugin will be skipped."
+    ),
     include_traceback=True,
 )
 def _get_plugins_from_source(source_filename: str) -> List[Type[PyDMPlugin]]:
@@ -159,7 +165,9 @@ def _get_plugins_from_source(source_filename: str) -> List[Type[PyDMPlugin]]:
         The plugin classes.
     """
     module = import_module_by_filename(source_filename)
-    return list(set(obj for _, obj in inspect.getmembers(module) if _is_valid_plugin_class(obj)))
+    return list(
+        set(obj for _, obj in inspect.getmembers(module) if _is_valid_plugin_class(obj))
+    )
 
 
 def find_plugins_from_path(
@@ -209,7 +217,11 @@ def find_plugins_from_entrypoints(
             continue
 
         if not _is_valid_plugin_class(plugin_cls):
-            logger.warning("Invalid plugin class specified in entrypoint %s: %s", entry.name, plugin_cls)
+            logger.warning(
+                "Invalid plugin class specified in entrypoint %s: %s",
+                entry.name,
+                plugin_cls,
+            )
             continue
 
         yield plugin_cls
@@ -217,10 +229,14 @@ def find_plugins_from_entrypoints(
 
 def _is_valid_plugin_class(obj: Any) -> bool:
     """Is the object a data plugin class?"""
-    return inspect.isclass(obj) and issubclass(obj, PyDMPlugin) and obj is not PyDMPlugin
+    return (
+        inspect.isclass(obj) and issubclass(obj, PyDMPlugin) and obj is not PyDMPlugin
+    )
 
 
-def load_plugins_from_entrypoints(key: str = config.ENTRYPOINT_DATA_PLUGIN) -> Dict[str, PyDMPlugin]:
+def load_plugins_from_entrypoints(
+    key: str = config.ENTRYPOINT_DATA_PLUGIN,
+) -> Dict[str, PyDMPlugin]:
     """
     Load plugins from file locations that match a specific token
 
@@ -249,7 +265,9 @@ def load_plugins_from_entrypoints(key: str = config.ENTRYPOINT_DATA_PLUGIN) -> D
     return added_plugins
 
 
-def load_plugins_from_path(locations: List[str], token: str = config.DATA_PLUGIN_SUFFIX) -> Dict[str, PyDMPlugin]:
+def load_plugins_from_path(
+    locations: List[str], token: str = config.DATA_PLUGIN_SUFFIX
+) -> Dict[str, PyDMPlugin]:
     """
     Load plugins from file locations that match a specific token
 

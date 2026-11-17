@@ -24,7 +24,11 @@ DEFAULT_RPC_TIMEOUT = 5.0
 
 class Connection(PyDMConnection):
     def __init__(
-        self, channel: PyDMChannel, address: str, protocol: Optional[str] = None, parent: Optional[QObject] = None
+        self,
+        channel: PyDMChannel,
+        address: str,
+        protocol: Optional[str] = None,
+        parent: Optional[QObject] = None,
     ):
         """
         Manages the connection to a channel using the P4P library. A given channel can have multiple listeners.
@@ -75,7 +79,9 @@ class Connection(PyDMConnection):
         # instead they use the p4p 'rpc' call at a specified a pollrate.
         self.add_listener(channel)
         if not self.is_rpc:
-            self.monitor = P4PPlugin.context.monitor(name=self.address, cb=self.send_new_value, notify_disconnect=True)
+            self.monitor = P4PPlugin.context.monitor(
+                name=self.address, cb=self.send_new_value, notify_disconnect=True
+            )
 
     def emit_for_type(self, value) -> None:
         # Emit for the types currently supported as RPC request args
@@ -103,7 +109,9 @@ class Connection(PyDMConnection):
             result = None
             try:
                 result = P4PPlugin.context.rpc(
-                    name=self._rpc_function_name, value=self._value_obj, timeout=self._rpc_poll_rate
+                    name=self._rpc_function_name,
+                    value=self._value_obj,
+                    timeout=self._rpc_poll_rate,
                 )
             except Exception:
                 # So widget displays name of channel when can't connect to RPC channel
@@ -152,7 +160,9 @@ class Connection(PyDMConnection):
                 return None
             arg_datatypes.append((rpc_arg_names[i], data_type))
         # example arg_datatypes: [('a', 'i'), ('b', 'i')]
-        arg_val_mapping = {key: value for (key, _), value in zip(arg_datatypes, rpc_arg_values)}
+        arg_val_mapping = {
+            key: value for (key, _), value in zip(arg_datatypes, rpc_arg_values)
+        }
         # example arg_val_mapping: {'a': '2', 'b': '7'}
 
         # https://mdavidsaver.github.io/p4p/nt.html#p4p.nt.NTURI
@@ -190,7 +200,9 @@ class Connection(PyDMConnection):
                 del parsed_args["pydm_pollrate"]
 
         for curr_arg_name, curr_arg_value in parsed_args.items():
-            parsed_args[curr_arg_name] = curr_arg_value[0]  # [0] takes value out of 1 item list
+            parsed_args[curr_arg_name] = curr_arg_value[
+                0
+            ]  # [0] takes value out of 1 item list
 
         self._rpc_function_name = function_name
         self._rpc_arg_names = list(parsed_args.keys())
@@ -262,7 +274,9 @@ class Connection(PyDMConnection):
                     if self.nttable_data_location:
                         msg = f"Invalid channel... {self.nttable_data_location}"
                         for subfield in self.nttable_data_location:
-                            if isinstance(new_value, collections.abc.Container) and not isinstance(new_value, str):
+                            if isinstance(
+                                new_value, collections.abc.Container
+                            ) and not isinstance(new_value, str):
                                 if isinstance(subfield, str):
                                     try:
                                         new_value = new_value[subfield]
@@ -303,22 +317,39 @@ class Connection(PyDMConnection):
                         elif isinstance(new_value, np.integer):
                             self.new_value_signal[int].emit(int(new_value))
                         else:
-                            raise ValueError(f"No matching signal for value: {new_value} with type: {type(new_value)}")
+                            raise ValueError(
+                                f"No matching signal for value: {new_value} with type: {type(new_value)}"
+                            )
                 # Sometimes unchanged control variables appear to be returned with value changes, so checking against
                 # stored values to avoid sending misleading signals. Will revisit on data plugin changes.
-                elif changed_value == "alarm.severity" and value.alarm.severity != self._severity:
+                elif (
+                    changed_value == "alarm.severity"
+                    and value.alarm.severity != self._severity
+                ):
                     self._severity = value.alarm.severity
                     self.new_severity_signal.emit(value.alarm.severity)
-                elif changed_value == "display.precision" and value.display.precision != self._precision:
+                elif (
+                    changed_value == "display.precision"
+                    and value.display.precision != self._precision
+                ):
                     self._precision = value.display.precision
                     self.prec_signal.emit(value.display.precision)
-                elif changed_value == "display.units" and value.display.units != self._units:
+                elif (
+                    changed_value == "display.units"
+                    and value.display.units != self._units
+                ):
                     self._units = value.display.units
                     self.unit_signal.emit(value.display.units)
-                elif changed_value == "control.limitLow" and value.control.limitLow != self._lower_ctrl_limit:
+                elif (
+                    changed_value == "control.limitLow"
+                    and value.control.limitLow != self._lower_ctrl_limit
+                ):
                     self._lower_ctrl_limit = value.control.limitLow
                     self.lower_ctrl_limit_signal.emit(value.control.limitLow)
-                elif changed_value == "control.limitHigh" and value.control.limitHigh != self._upper_ctrl_limit:
+                elif (
+                    changed_value == "control.limitHigh"
+                    and value.control.limitHigh != self._upper_ctrl_limit
+                ):
                     self._upper_ctrl_limit = value.control.limitHigh
                     self.upper_ctrl_limit_signal.emit(value.control.limitHigh)
                 elif (
@@ -338,13 +369,17 @@ class Connection(PyDMConnection):
                     and value.valueAlarm.highWarningLimit != self._upper_warning_limit
                 ):
                     self._upper_warning_limit = value.valueAlarm.highWarningLimit
-                    self.upper_warning_limit_signal.emit(value.valueAlarm.highWarningLimit)
+                    self.upper_warning_limit_signal.emit(
+                        value.valueAlarm.highWarningLimit
+                    )
                 elif (
                     changed_value == "valueAlarm.lowWarningLimit"
                     and value.valueAlarm.lowWarningLimit != self._lower_warning_limit
                 ):
                     self._lower_warning_limit = value.valueAlarm.lowWarningLimit
-                    self.lower_warning_limit_signal.emit(value.valueAlarm.lowWarningLimit)
+                    self.lower_warning_limit_signal.emit(
+                        value.valueAlarm.lowWarningLimit
+                    )
                 elif (
                     changed_value == "timeStamp.secondsPastEpoch"
                     and value.timeStamp.secondsPastEpoch != self._timestamp
@@ -407,7 +442,9 @@ class Connection(PyDMConnection):
             Connection.set_value_by_keys(nttable, self.nttable_data_location, value)
             value = {"value": nttable}
         if is_read_only():
-            logger.warning(f"PyDM read-only mode is enabled, could not write value: {value} to {self.address}")
+            logger.warning(
+                f"PyDM read-only mode is enabled, could not write value: {value} to {self.address}"
+            )
             return
 
         if self.is_rpc:
@@ -415,7 +452,9 @@ class Connection(PyDMConnection):
         try:
             P4PPlugin.context.put(self.monitor.name, value)
         except Exception as e:
-            logger.error(f"Unable to put value: {value} to channel {self.monitor.name}: {e}")
+            logger.error(
+                f"Unable to put value: {value} to channel {self.monitor.name}: {e}"
+            )
 
     def add_listener(self, channel: PyDMChannel):
         """
@@ -430,14 +469,20 @@ class Connection(PyDMConnection):
         if self.is_rpc:
             # In case of a RPC, we can just query the channel immediately and emit the value,
             # and let the pollrate dictate if/when we query and emit again.f
-            self._value_obj = self.create_request(self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values)
+            self._value_obj = self.create_request(
+                self._rpc_function_name, self._rpc_arg_names, self._rpc_arg_values
+            )
             if self._value_obj is None:
-                logger.warning(f"failed to create request object for RPC to {self._rpc_function_name}")
+                logger.warning(
+                    f"failed to create request object for RPC to {self._rpc_function_name}"
+                )
                 return
 
             # Use daemon threads so they will be stopped when all the non-daemon
             # threads (in our case just the main thread) are killed, preventing them from running forever.
-            self._background_polling_thread = threading.Thread(target=self.poll_rpc_channel, daemon=True)
+            self._background_polling_thread = threading.Thread(
+                target=self.poll_rpc_channel, daemon=True
+            )
             self._background_polling_thread.start()
 
             return
@@ -455,7 +500,9 @@ class Connection(PyDMConnection):
         if channel.value_signal is not None:
             for signal_type in (str, int, float, np.ndarray, dict):
                 try:
-                    channel.value_signal[signal_type].connect(self.put_value, Qt.QueuedConnection)
+                    channel.value_signal[signal_type].connect(
+                        self.put_value, Qt.QueuedConnection
+                    )
                 # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
                 # If signal type exists but doesn't match the slot, TypeError gets thrown.
                 except (KeyError, IndexError, TypeError):

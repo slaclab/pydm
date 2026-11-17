@@ -84,7 +84,9 @@ def test_value_changed(qtbot, signals, init_checked_status, new_value):
 
     pydm_checkbox.setChecked(init_checked_status)
 
-    signals.send_value_signal[type(new_value)].connect(pydm_checkbox.channelValueChanged)
+    signals.send_value_signal[type(new_value)].connect(
+        pydm_checkbox.channelValueChanged
+    )
     signals.send_value_signal[type(new_value)].emit(new_value)
 
     assert pydm_checkbox.isChecked() if new_value > 0 else not pydm_checkbox.isChecked()

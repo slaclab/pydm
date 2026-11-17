@@ -48,7 +48,9 @@ class WaveformCurveItem(BasePlotCurveItem):
 
     _channels = ("x_channel", "y_channel")
 
-    def __init__(self, y_addr=None, x_addr=None, redraw_mode=None, plot_style="Line", **kws):
+    def __init__(
+        self, y_addr=None, x_addr=None, redraw_mode=None, plot_style="Line", **kws
+    ):
         y_addr = "" if y_addr is None else y_addr
         if kws.get("name") is None:
             y_name = remove_protocol(y_addr)
@@ -58,7 +60,9 @@ class WaveformCurveItem(BasePlotCurveItem):
                 x_name = remove_protocol(x_addr)
                 plot_name = "{y} vs. {x}".format(y=y_name, x=x_name)
             kws["name"] = plot_name
-        self.redraw_mode = redraw_mode if redraw_mode is not None else self.REDRAW_ON_EITHER
+        self.redraw_mode = (
+            redraw_mode if redraw_mode is not None else self.REDRAW_ON_EITHER
+        )
         self.needs_new_x = True
         self.needs_new_y = True
         self.x_channel = None
@@ -87,7 +91,11 @@ class WaveformCurveItem(BasePlotCurveItem):
         OrderedDict
         """
         dic_ = OrderedDict(
-            [("y_channel", self.y_address), ("x_channel", self.x_address), ("plot_style", self.plot_style)]
+            [
+                ("y_channel", self.y_address),
+                ("x_channel", self.x_address),
+                ("plot_style", self.plot_style),
+            ]
         )
         dic_.update(super().to_dict())
         dic_["redraw_mode"] = self.redraw_mode
@@ -119,7 +127,9 @@ class WaveformCurveItem(BasePlotCurveItem):
             self.x_channel = None
             return
         self.x_channel = PyDMChannel(
-            address=new_address, connection_slot=self.xConnectionStateChanged, value_slot=self.receiveXWaveform
+            address=new_address,
+            connection_slot=self.xConnectionStateChanged,
+            value_slot=self.receiveXWaveform,
         )
 
     @property
@@ -148,7 +158,9 @@ class WaveformCurveItem(BasePlotCurveItem):
             self.y_channel = None
             return
         self.y_channel = PyDMChannel(
-            address=new_address, connection_slot=self.yConnectionStateChanged, value_slot=self.receiveYWaveform
+            address=new_address,
+            connection_slot=self.yConnectionStateChanged,
+            value_slot=self.receiveYWaveform,
         )
 
     def update_waveforms_if_ready(self):
@@ -284,15 +296,25 @@ class WaveformCurveItem(BasePlotCurveItem):
         brushes = np.array([self.color] * len(self.y_waveform))
         if self.threshold_color is not None:
             if self.upper_threshold is not None:
-                brushes[np.argwhere(self.y_waveform > self.upper_threshold)] = self.threshold_color
+                brushes[np.argwhere(self.y_waveform > self.upper_threshold)] = (
+                    self.threshold_color
+                )
             if self.lower_threshold is not None:
-                brushes[np.argwhere(self.y_waveform < self.lower_threshold)] = self.threshold_color
+                brushes[np.argwhere(self.y_waveform < self.lower_threshold)] = (
+                    self.threshold_color
+                )
 
         if self.x_waveform is None:
-            self.bar_graph_item.setOpts(x=np.arange(len(self.y_waveform)), height=self.y_waveform, brushes=brushes)
+            self.bar_graph_item.setOpts(
+                x=np.arange(len(self.y_waveform)),
+                height=self.y_waveform,
+                brushes=brushes,
+            )
             return
 
-        self.bar_graph_item.setOpts(x=self.x_waveform, height=self.y_waveform, brushes=brushes)
+        self.bar_graph_item.setOpts(
+            x=self.x_waveform, height=self.y_waveform, brushes=brushes
+        )
 
     def limits(self):
         """
@@ -309,7 +331,10 @@ class WaveformCurveItem(BasePlotCurveItem):
             yspan = float(np.amax(self.y_waveform)) - float(np.amin(self.y_waveform))
             return (
                 (0, len(self.y_waveform)),
-                (float(np.amin(self.y_waveform) - yspan), float(np.amax(self.y_waveform) + yspan)),
+                (
+                    float(np.amin(self.y_waveform) - yspan),
+                    float(np.amax(self.y_waveform) + yspan),
+                ),
             )
         else:
             return (
@@ -352,7 +377,9 @@ class PyDMWaveformPlot(BasePlot):
         pyqtgraph.mkColor will accept.
     """
 
-    def __init__(self, parent=None, init_x_channels=[], init_y_channels=[], background="default"):
+    def __init__(
+        self, parent=None, init_x_channels=[], init_y_channels=[], background="default"
+    ):
         super().__init__(parent, background)
         # If the user supplies a single string instead of a list,
         # wrap it in a list.
@@ -363,7 +390,10 @@ class PyDMWaveformPlot(BasePlot):
         if len(init_x_channels) == 0:
             init_x_channels = list(itertools.repeat(None, len(init_y_channels)))
         if len(init_x_channels) != len(init_y_channels):
-            raise ValueError("If lists are provided for both X and Y " + "channels, they must be the same length.")
+            raise ValueError(
+                "If lists are provided for both X and Y "
+                + "channels, they must be the same length."
+            )
         # self.channel_pairs is an ordered dictionary that is keyed on a
         # (x_channel, y_channel) tuple, with WaveformCurveItem values.
         # It gets populated in self.addChannel().
@@ -465,8 +495,12 @@ class PyDMWaveformPlot(BasePlot):
         if plot_style == "Bar":
             if barWidth is None:
                 barWidth = 1.0  # Can't use default since it can be explicitly set to None and avoided
-            curve.bar_graph_item = BarGraphItem(x=[], height=[], width=barWidth, brush=color)
-            curve.setBarGraphInfo(barWidth, upperThreshold, lowerThreshold, thresholdColor)
+            curve.bar_graph_item = BarGraphItem(
+                x=[], height=[], width=barWidth, brush=color
+            )
+            curve.setBarGraphInfo(
+                barWidth, upperThreshold, lowerThreshold, thresholdColor
+            )
         self.addCurve(curve, curve_color=color, y_axis_name=yAxisName)
         if curve.bar_graph_item is not None:
             # Must happen after addCurve() so that the view box has been created
@@ -600,7 +634,9 @@ class PyDMWaveformPlot(BasePlot):
         """
         chans = []
         chans.extend([curve.y_channel for curve in self._curves])
-        chans.extend([curve.x_channel for curve in self._curves if curve.x_channel is not None])
+        chans.extend(
+            [curve.x_channel for curve in self._curves if curve.x_channel is not None]
+        )
         return chans
 
     # The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange,

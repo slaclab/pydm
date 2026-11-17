@@ -103,7 +103,9 @@ def int_enum_from(name, source):
         members = [(member.name, member.value) for member in source]
     else:
         members = [
-            (key, value) for key, value in vars(source).items() if isinstance(value, int) and not key.startswith("_")
+            (key, value)
+            for key, value in vars(source).items()
+            if isinstance(value, int) and not key.startswith("_")
         ]
     return enum.IntEnum(name, members)
 
@@ -156,7 +158,10 @@ def coerce_enum_value(value, enum_type):
     enum_type : type
         The per-wrapper registered enum (``self.<Enum>``) the property is typed as.
     """
-    if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6) and isinstance(value, int):
+    if ACTIVE_QT_WRAPPER in (
+        QtWrapperTypes.PYQT6,
+        QtWrapperTypes.PYSIDE6,
+    ) and isinstance(value, int):
         try:
             return enum_type(value)
         except ValueError:
@@ -406,11 +411,16 @@ def find_file(
     while file_path is None and len(x_path) > 0:
         # Loop through the possible screen file extensions
         for e in _screen_file_extensions(ext):
-            file_path = which(str(root) + str(e), mode=mode, pathext=e, extra_path=x_path)
+            file_path = which(
+                str(root) + str(e), mode=mode, pathext=e, extra_path=x_path
+            )
             if file_path is not None:
                 break  # pick the first screen file found
 
-        if not subdir_scan_enabled or time.perf_counter() - start_time >= SUBDIR_SCAN_TIME_LIMIT:
+        if (
+            not subdir_scan_enabled
+            or time.perf_counter() - start_time >= SUBDIR_SCAN_TIME_LIMIT
+        ):
             if not file_path and raise_if_not_found:
                 raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), fname)
             break
@@ -563,7 +573,9 @@ def only_main_thread(func):
         main_t = QtWidgets.QApplication.instance().thread()
         curr_t = QtCore.QThread.currentThread()
         if curr_t != main_t:
-            msg = "{}.{} can only be invoked from the main Qt thread.".format(func.__module__, func.__name__)
+            msg = "{}.{} can only be invoked from the main Qt thread.".format(
+                func.__module__, func.__name__
+            )
             logger.error(msg)
             raise RuntimeError(msg)
         return func(*args, **kwargs)
@@ -617,7 +629,9 @@ def log_failures(
     return wrapper
 
 
-def import_module_by_filename(source_filename: str, *, add_to_modules: bool = True) -> types.ModuleType:
+def import_module_by_filename(
+    source_filename: str, *, add_to_modules: bool = True
+) -> types.ModuleType:
     """
     For a given source filename, import it and search for objects.
 
@@ -700,7 +714,12 @@ def copy_to_clipboard(text: str, *, quiet: bool = False):
             app.sendEvent(clipboard, event)
 
     if not quiet:
-        logger.warning(("Copied text to clipboard:\n-------------------------\n%s\n-------------------------\n"), text)
+        logger.warning(
+            (
+                "Copied text to clipboard:\n-------------------------\n%s\n-------------------------\n"
+            ),
+            text,
+        )
 
 
 def get_clipboard_text() -> str:
@@ -759,6 +778,8 @@ def checkObjectProperties(class_object, extra_properties):
             print("Missing property: ", key)
             return False
         if class_object.RULE_PROPERTIES[key] != value:
-            print(f"Mismatch for property '{key}': expected {value}, got {class_object.RULE_PROPERTIES[key]}")
+            print(
+                f"Mismatch for property '{key}': expected {value}, got {class_object.RULE_PROPERTIES[key]}"
+            )
             return False
     return True

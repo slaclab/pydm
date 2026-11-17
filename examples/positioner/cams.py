@@ -24,7 +24,9 @@ def real2cams(coords):
     bp = (np.cos(theta) + np.sin(theta)) / np.sqrt(2.0)
     bm = (np.cos(theta) - np.sin(theta)) / np.sqrt(2.0)
 
-    p1 = theta - np.arcsin((1 / L) * (((x1 + S2) * np.sin(theta)) - (y1 * np.cos(theta)) + (c - b)))
+    p1 = theta - np.arcsin(
+        (1 / L) * (((x1 + S2) * np.sin(theta)) - (y1 * np.cos(theta)) + (c - b))
+    )
     p2 = theta - np.arcsin((1 / L) * (((x1 + S1) * bm) + (y1 * bp) - R))
     p3 = theta - np.arcsin((1 / L) * (((x1 - S1) * bp) - (y1 * bm) + R))
 

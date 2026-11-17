@@ -60,7 +60,12 @@ class PyDMMainWindow(QMainWindow):
         self.home_file = home_file
         self.home_widget = None
         if home_file:
-            self.home_widget = load_file(home_file, macros=macros, args=command_line_args, target=ScreenTarget.HOME)
+            self.home_widget = load_file(
+                home_file,
+                macros=macros,
+                args=command_line_args,
+                target=ScreenTarget.HOME,
+            )
             close_widget_connections(self.home_widget)
 
         self.designer_path = None
@@ -86,7 +91,9 @@ class PyDMMainWindow(QMainWindow):
         self.ui.actionDecrease_Font_Size.triggered.connect(self.decrease_font_size)
         self.ui.actionDefault_Font_Size.triggered.connect(self.reset_font_size)
         self.ui.actionEnter_Fullscreen.triggered.connect(self.enter_fullscreen)
-        self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(self.toggle_file_path_in_title_bar)
+        self.ui.actionShow_File_Path_in_Title_Bar.triggered.connect(
+            self.toggle_file_path_in_title_bar
+        )
         self.ui.actionShow_Navigation_Bar.triggered.connect(self.toggle_nav_bar)
         self.ui.actionShow_Menu_Bar.triggered.connect(self.toggle_menu_bar)
         self.ui.actionShow_Status_Bar.triggered.connect(self.toggle_status_bar)
@@ -126,7 +133,9 @@ class PyDMMainWindow(QMainWindow):
 
         for bin_path in possible_designer_bin_paths:
             if platform.system() == "Darwin":
-                designer_path = os.path.join(bin_path, "Designer.app/Contents/MacOS/Designer")
+                designer_path = os.path.join(
+                    bin_path, "Designer.app/Contents/MacOS/Designer"
+                )
             elif platform.system() == "Linux":
                 designer_path = os.path.join(bin_path, "designer")
             else:
@@ -169,7 +178,9 @@ class PyDMMainWindow(QMainWindow):
             self.ui.actionEdit_in_Designer.setEnabled(False)
 
     def handle_open_file_error(self, filename, error):
-        self.statusBar().showMessage("Cannot open file: '{0}', reason: '{1}'...".format(filename, error), 5000)
+        self.statusBar().showMessage(
+            "Cannot open file: '{0}', reason: '{1}'...".format(filename, error), 5000
+        )
 
     def back_triggered(self):
         new_process = QApplication.keyboardModifiers() == Qt.ShiftModifier
@@ -259,7 +270,9 @@ class PyDMMainWindow(QMainWindow):
             # We can't do much if it is not a Display and we don't have the
             # previous_display and next_display properties since we don't
             # have the navigation stack set.
-            nav_stack_methods = hasattr(w, "previous_display") and hasattr(w, "next_display")
+            nav_stack_methods = hasattr(w, "previous_display") and hasattr(
+                w, "next_display"
+            )
             if not nav_stack_methods:
                 return
 
@@ -327,7 +340,11 @@ class PyDMMainWindow(QMainWindow):
         if extension == ".ui":
             return self.current_file(), None
         else:
-            central_widget = self.centralWidget() if isinstance(self.centralWidget(), Display) else None
+            central_widget = (
+                self.centralWidget()
+                if isinstance(self.centralWidget(), Display)
+                else None
+            )
             if central_widget is not None:
                 ui_file = central_widget.ui_filepath()
             return ui_file, self.current_file()
@@ -337,8 +354,12 @@ class PyDMMainWindow(QMainWindow):
         def open_editor_ui(fname):
             if self.designer_path is None or fname is None or fname == "":
                 return
-            self.statusBar().showMessage("Launching '{0}' in Qt Designer...".format(fname), 5000)
-            _ = subprocess.Popen('{0} "{1}"'.format(self.designer_path, fname), shell=True)
+            self.statusBar().showMessage(
+                "Launching '{0}' in Qt Designer...".format(fname), 5000
+            )
+            _ = subprocess.Popen(
+                '{0} "{1}"'.format(self.designer_path, fname), shell=True
+            )
 
         def open_editor_generic(fname):
             if platform.system() == "Darwin":
@@ -363,7 +384,9 @@ class PyDMMainWindow(QMainWindow):
         except Exception:
             folder = os.getcwd()
 
-        filename = QFileDialog.getOpenFileName(self, "Open File...", folder, "PyDM Display Files (*.ui *.py)")
+        filename = QFileDialog.getOpenFileName(
+            self, "Open File...", folder, "PyDM Display Files (*.ui *.py)"
+        )
         filename = filename[0] if isinstance(filename, (list, tuple)) else filename
 
         if filename:
@@ -434,8 +457,12 @@ class PyDMMainWindow(QMainWindow):
             curr_dir = os.path.dirname(self.current_file())
         except Exception:
             curr_dir = os.getcwd()
-            logger.error("The display manager does not have a display loaded. Suggesting current work directory.")
-        filename = QFileDialog.getOpenFileName(self, "Load tool...", curr_dir, "PyDM External Tool Files (*_tool.py)")
+            logger.error(
+                "The display manager does not have a display loaded. Suggesting current work directory."
+            )
+        filename = QFileDialog.getOpenFileName(
+            self, "Load tool...", curr_dir, "PyDM External Tool Files (*_tool.py)"
+        )
         filename = filename[0] if isinstance(filename, (list, tuple)) else filename
 
         if filename:
@@ -472,7 +499,9 @@ class PyDMMainWindow(QMainWindow):
         args = curr_display.args()
         loaded_file = curr_display.loaded_file()
 
-        self.statusBar().showMessage("Reloading '{0}'...".format(self.current_file()), 5000)
+        self.statusBar().showMessage(
+            "Reloading '{0}'...".format(self.current_file()), 5000
+        )
         clear_compiled_ui_file_cache()
         new_widget = self.open(loaded_file, macros=macros, args=args)
         new_widget.previous_display = prev_display
@@ -514,10 +543,14 @@ class PyDMMainWindow(QMainWindow):
         _translate = QCoreApplication.translate
         if self.isFullScreen():
             self.showNormal()
-            self.ui.actionEnter_Fullscreen.setText(_translate("MainWindow", "Enter Fullscreen"))
+            self.ui.actionEnter_Fullscreen.setText(
+                _translate("MainWindow", "Enter Fullscreen")
+            )
         else:
             self.showFullScreen()
-            self.ui.actionEnter_Fullscreen.setText(_translate("MainWindow", "Exit Fullscreen"))
+            self.ui.actionEnter_Fullscreen.setText(
+                _translate("MainWindow", "Exit Fullscreen")
+            )
 
     @Slot(bool)
     def show_connections(self, checked):
@@ -545,7 +578,9 @@ class PyDMMainWindow(QMainWindow):
             self.clear_display_widget()
             event.accept()
 
-        main_windows = [w for w in self.app.topLevelWidgets() if isinstance(w, QMainWindow)]
+        main_windows = [
+            w for w in self.app.topLevelWidgets() if isinstance(w, QMainWindow)
+        ]
         if len(main_windows) == 1 and main_windows[0] == self:
             self._confirm_quit(callback=do_close)
         else:
@@ -560,7 +595,10 @@ class PyDMMainWindow(QMainWindow):
             callback()
         else:
             quit_message = QMessageBox.question(
-                self, "Quitting Application", "Exit Application?", QMessageBox.Yes | QMessageBox.No
+                self,
+                "Quitting Application",
+                "Exit Application?",
+                QMessageBox.Yes | QMessageBox.No,
             )
             if quit_message == QMessageBox.Yes:
                 callback()
@@ -604,13 +642,17 @@ class PyDMMainWindow(QMainWindow):
                         shortcut_action_callable = callable(fileAction)
                         if shortcut_action_callable:
                             PyDMMainWindow().add_shortcut(ui_action, shortcut)
-                    if (has_shortcut and shortcut_action_callable) or callable(fileAction):
+                    if (has_shortcut and shortcut_action_callable) or callable(
+                        fileAction
+                    ):
                         ui_action.setVisible(True)
                         ui_action.triggered.connect(fileAction)
                     else:
                         logger.error("Cannot add non callable object to menu.")
                 else:
-                    logger.error(f"File menu key not recognized, {key} action not added to file menu.")
+                    logger.error(
+                        f"File menu key not recognized, {key} action not added to file menu."
+                    )
 
     @staticmethod
     def create_menu(menu, items):

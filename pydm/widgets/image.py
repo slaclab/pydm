@@ -543,7 +543,9 @@ class PyDMImageView(*_PyDMImageViewBases):
         mini, maxi = data[0], data[1]
         img = data[2]
         self.getImageItem().setLevels([mini, maxi])
-        self.getImageItem().setImage(img, autoLevels=False, autoDownsample=self.autoDownsample)
+        self.getImageItem().setImage(
+            img, autoLevels=False, autoDownsample=self.autoDownsample
+        )
 
     def readAutoDownsample(self) -> bool:
         """
@@ -590,7 +592,9 @@ class PyDMImageView(*_PyDMImageViewBases):
         ----------
         new_width: int
         """
-        if self._image_width != int(new_width) and (self._widthchannel is None or self._widthchannel == ""):
+        if self._image_width != int(new_width) and (
+            self._widthchannel is None or self._widthchannel == ""
+        ):
             self._image_width = int(new_width)
 
     imageWidth = Property(int, readImageWidth, setImageWidth)

@@ -31,12 +31,21 @@ def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
     waveform_plot.redrawPlot()
 
     # The line item should result in a call to set data displaying all available data points as defined above
-    assert np.array_equal(mocked_set_data.call_args_list[2][1]["x"], np.array([1, 5, 10]))
-    assert np.array_equal(mocked_set_data.call_args_list[2][1]["y"], np.array([10, 15, 12]))
+    assert np.array_equal(
+        mocked_set_data.call_args_list[2][1]["x"], np.array([1, 5, 10])
+    )
+    assert np.array_equal(
+        mocked_set_data.call_args_list[2][1]["y"], np.array([10, 15, 12])
+    )
 
     # As should the bar item, using the set_opts call instead of setData
-    assert np.array_equal(mocked_set_opts.call_args_list[1][1]["x"], np.array([0.5, 1, 1.5, 2, 10, 11]))
-    assert np.array_equal(mocked_set_opts.call_args_list[1][1]["height"], np.array([45, 50, 52, 40, 24, 30]))
+    assert np.array_equal(
+        mocked_set_opts.call_args_list[1][1]["x"], np.array([0.5, 1, 1.5, 2, 10, 11])
+    )
+    assert np.array_equal(
+        mocked_set_opts.call_args_list[1][1]["height"],
+        np.array([45, 50, 52, 40, 24, 30]),
+    )
 
     # After a call to redraw, the plot returns to this state until more data arrives
     assert not waveform_plot._needs_redraw
@@ -85,7 +94,9 @@ def test_clear_curves(qtbot):
     waveform_plot.addCurve(data_one)
     waveform_plot.addCurve(data_two)
 
-    assert len(waveform_plot.plotItem.curves) == 2  # Confirm that the curves were added properly
+    assert (
+        len(waveform_plot.plotItem.curves) == 2
+    )  # Confirm that the curves were added properly
 
     waveform_plot.clearCurves()
     assert len(waveform_plot.plotItem.curves) == 0  # Now they should be gone
@@ -104,7 +115,9 @@ def test_clear_axes(qtbot):
     # Ensure both axes were properly added
     assert "Axis 1" in waveform_plot.plotItem.axes
     assert "Axis 2" in waveform_plot.plotItem.axes
-    assert len(waveform_plot.plotItem.stackedViews) == 3  # There is a main top level view in addition to the 2 we added
+    assert (
+        len(waveform_plot.plotItem.stackedViews) == 3
+    )  # There is a main top level view in addition to the 2 we added
 
     waveform_plot.clearAxes()
 
@@ -218,8 +231,14 @@ def test_redrawPlot_with_crosshair():
     assert widget._needs_redraw is False
 
     # Verify that the crosshair lines' setPos methods were called with the mapped coordinates.
-    widget.vertical_crosshair_line.setPos.assert_called_once_with(dummy_mapped_point.x())
-    widget.horizontal_crosshair_line.setPos.assert_called_once_with(dummy_mapped_point.y())
+    widget.vertical_crosshair_line.setPos.assert_called_once_with(
+        dummy_mapped_point.x()
+    )
+    widget.horizontal_crosshair_line.setPos.assert_called_once_with(
+        dummy_mapped_point.y()
+    )
 
     # Verify that the crosshair_position_updated signal was emitted with the scene position.
-    widget.crosshair_position_updated.emit.assert_called_once_with(dummy_scene_pos.x(), dummy_scene_pos.y())
+    widget.crosshair_position_updated.emit.assert_called_once_with(
+        dummy_scene_pos.x(), dummy_scene_pos.y()
+    )

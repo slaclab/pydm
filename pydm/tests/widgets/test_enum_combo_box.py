@@ -74,8 +74,14 @@ def test_set_items(qtbot, enums):
     pydm_enumcombobox.set_items(enums)
     assert pydm_enumcombobox.count() == len(enums)
 
-    assert all([enums[i] == pydm_enumcombobox.itemText(i) for i in range(0, len(enums))])
-    assert pydm_enumcombobox._has_enums is True if len(enums) else pydm_enumcombobox._has_enums is False
+    assert all(
+        [enums[i] == pydm_enumcombobox.itemText(i) for i in range(0, len(enums))]
+    )
+    assert (
+        pydm_enumcombobox._has_enums is True
+        if len(enums)
+        else pydm_enumcombobox._has_enums is False
+    )
 
 
 @pytest.mark.parametrize(
@@ -99,7 +105,9 @@ def test_set_items(qtbot, enums):
         (False, False, False, False),
     ],
 )
-def test_check_enable_state(qtbot, signals, connected, write_access, has_enum, is_app_read_only):
+def test_check_enable_state(
+    qtbot, signals, connected, write_access, has_enum, is_app_read_only
+):
     """
     Test the tooltip generated depending on the channel connection, write access, whether the widget has enum strings,
     and whether the app is read-only.
@@ -132,7 +140,9 @@ def test_check_enable_state(qtbot, signals, connected, write_access, has_enum, i
     signals.write_access_signal[bool].connect(pydm_enumcombobox.writeAccessChanged)
     signals.write_access_signal[bool].emit(write_access)
 
-    signals.connection_state_signal[bool].connect(pydm_enumcombobox.connectionStateChanged)
+    signals.connection_state_signal[bool].connect(
+        pydm_enumcombobox.connectionStateChanged
+    )
     signals.connection_state_signal[bool].emit(connected)
 
     if has_enum:
@@ -196,7 +206,9 @@ def test_enum_strings_changed(qtbot, signals, values, selected_index, expected):
     signals.enum_strings_signal.connect(pydm_enumcombobox.enumStringsChanged)
     signals.enum_strings_signal.emit(values)
 
-    signals.new_value_signal[type(selected_index)].connect(pydm_enumcombobox.channelValueChanged)
+    signals.new_value_signal[type(selected_index)].connect(
+        pydm_enumcombobox.channelValueChanged
+    )
     signals.new_value_signal[type(selected_index)].emit(selected_index)
 
     assert pydm_enumcombobox.value == selected_index
@@ -246,15 +258,50 @@ def test_internal_combo_box_activated_int(qtbot, signals, index):
 @pytest.mark.parametrize(
     "enums, expected_error_message",
     [
-        (None, "Invalid enum value '{0}'. The value is expected to be a valid list of string values.".format(None)),
-        ((None, "abc"), "Invalid enum type '{0}'. The expected type is 'string'.".format(type(None))),
-        ((None, 123.456), "Invalid enum type '{0}'. The expected type is 'string'".format(type(None))),
-        ((None, None, None), "Invalid enum type '{0}'. The expected type is 'string'".format(type(None))),
-        ((123,), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
-        ((123.45,), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123.45))),
-        ((123, 456), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
-        ((123.456, None), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123.456))),
-        (("spam", 123, "eggs", "ham"), "Invalid enum type '{0}'. The expected type is 'string'".format(type(123))),
+        (
+            None,
+            "Invalid enum value '{0}'. The value is expected to be a valid list of string values.".format(
+                None
+            ),
+        ),
+        (
+            (None, "abc"),
+            "Invalid enum type '{0}'. The expected type is 'string'.".format(
+                type(None)
+            ),
+        ),
+        (
+            (None, 123.456),
+            "Invalid enum type '{0}'. The expected type is 'string'".format(type(None)),
+        ),
+        (
+            (None, None, None),
+            "Invalid enum type '{0}'. The expected type is 'string'".format(type(None)),
+        ),
+        (
+            (123,),
+            "Invalid enum type '{0}'. The expected type is 'string'".format(type(123)),
+        ),
+        (
+            (123.45,),
+            "Invalid enum type '{0}'. The expected type is 'string'".format(
+                type(123.45)
+            ),
+        ),
+        (
+            (123, 456),
+            "Invalid enum type '{0}'. The expected type is 'string'".format(type(123)),
+        ),
+        (
+            (123.456, None),
+            "Invalid enum type '{0}'. The expected type is 'string'".format(
+                type(123.456)
+            ),
+        ),
+        (
+            ("spam", 123, "eggs", "ham"),
+            "Invalid enum type '{0}'. The expected type is 'string'".format(type(123)),
+        ),
     ],
 )
 def test_set_items_neg(qtbot, caplog, enums, expected_error_message):
@@ -290,7 +337,9 @@ def test_set_items_neg(qtbot, caplog, enums, expected_error_message):
         (("ON", "OFF"), -1, ""),
     ],
 )
-def test_enum_strings_changed_incorrect_index(qtbot, signals, values, selected_index, expected):
+def test_enum_strings_changed_incorrect_index(
+    qtbot, signals, values, selected_index, expected
+):
     """
     Test the widget's handling of incorrectly provided enum string index.
 
@@ -316,7 +365,9 @@ def test_enum_strings_changed_incorrect_index(qtbot, signals, values, selected_i
     signals.enum_strings_signal.connect(pydm_enumcombobox.enumStringsChanged)
     signals.enum_strings_signal.emit(values)
 
-    signals.new_value_signal[type(selected_index)].connect(pydm_enumcombobox.channelValueChanged)
+    signals.new_value_signal[type(selected_index)].connect(
+        pydm_enumcombobox.channelValueChanged
+    )
     signals.new_value_signal[type(selected_index)].emit(selected_index)
 
     assert pydm_enumcombobox.value == selected_index

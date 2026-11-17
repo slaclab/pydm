@@ -101,7 +101,9 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         PyDMWritableWidget.check_enable_state(self)
         self.setEnabled(True)
         if self._write_access and self._connected:
-            self._itemsFlags = Qt.ItemIsSelectable | Qt.ItemIsEditable | Qt.ItemIsEnabled
+            self._itemsFlags = (
+                Qt.ItemIsSelectable | Qt.ItemIsEditable | Qt.ItemIsEnabled
+            )
         elif self._connected:
             self._itemsFlags = Qt.ItemIsSelectable | Qt.ItemIsEnabled
         else:
@@ -145,7 +147,9 @@ class PyDMWaveformTable(QTableWidget, PyDMWritableWidget):
         self._columnHeaders = new_labels
         self.setHorizontalHeaderLabels(self._columnHeaders)
 
-    columnHeaderLabels = Property("QStringList", readColumnHeaderLabels, setColumnHeaderLabels)
+    columnHeaderLabels = Property(
+        "QStringList", readColumnHeaderLabels, setColumnHeaderLabels
+    )
 
     def readRowHeaderLabels(self) -> list[str]:
         """

@@ -90,7 +90,9 @@ def assert_all_signal_receivers(connection, expected_receivers):
         if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYSIDE6:
             from qtpy.QtCore import QMetaMethod, SIGNAL
 
-            signal_name = bytes(QMetaMethod.fromSignal(signal).methodSignature().data()).decode()
+            signal_name = bytes(
+                QMetaMethod.fromSignal(signal).methodSignature().data()
+            ).decode()
             assert connection.receivers(SIGNAL(signal_name)) == expected_receivers
         else:
             assert connection.receivers(signal) == expected_receivers

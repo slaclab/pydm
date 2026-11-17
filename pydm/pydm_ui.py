@@ -61,8 +61,12 @@ class Ui_MainWindow(object):
         self.actionDecrease_Font_Size.setObjectName("actionDecrease_Font_Size")
         self.actionShow_File_Path_in_Title_Bar = QtWidgets.QAction(MainWindow)
         self.actionShow_File_Path_in_Title_Bar.setCheckable(True)
-        self.actionShow_File_Path_in_Title_Bar.setShortcutContext(QtCore.Qt.ApplicationShortcut)
-        self.actionShow_File_Path_in_Title_Bar.setObjectName("actionShow_File_Path_in_Title_Bar")
+        self.actionShow_File_Path_in_Title_Bar.setShortcutContext(
+            QtCore.Qt.ApplicationShortcut
+        )
+        self.actionShow_File_Path_in_Title_Bar.setObjectName(
+            "actionShow_File_Path_in_Title_Bar"
+        )
         self.actionBack = QtWidgets.QAction(MainWindow)
         self.actionBack.setShortcutContext(QtCore.Qt.ApplicationShortcut)
         self.actionBack.setObjectName("actionBack")
@@ -165,36 +169,56 @@ class Ui_MainWindow(object):
         self.menuTools.setTitle(_translate("MainWindow", "Tools"))
         self.menuCustomActions.setTitle(_translate("MainWindow", "Actions"))
         self.navbar.setWindowTitle(_translate("MainWindow", "toolBar"))
-        self.actionEdit_in_Designer.setText(_translate("MainWindow", "Edit in Designer"))
+        self.actionEdit_in_Designer.setText(
+            _translate("MainWindow", "Edit in Designer")
+        )
         self.actionAbout_PyDM.setText(_translate("MainWindow", "About PyDM"))
         self.actionReload_Display.setText(_translate("MainWindow", "Reload Display"))
         self.actionReload_Display.setShortcut(_translate("MainWindow", "Ctrl+R"))
-        self.actionIncrease_Font_Size.setText(_translate("MainWindow", "Increase Font Size"))
+        self.actionIncrease_Font_Size.setText(
+            _translate("MainWindow", "Increase Font Size")
+        )
         self.actionIncrease_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+="))
-        self.actionDecrease_Font_Size.setText(_translate("MainWindow", "Decrease Font Size"))
+        self.actionDecrease_Font_Size.setText(
+            _translate("MainWindow", "Decrease Font Size")
+        )
         self.actionDecrease_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+-"))
-        self.actionShow_File_Path_in_Title_Bar.setText(_translate("MainWindow", "Show File Path in Title Bar"))
+        self.actionShow_File_Path_in_Title_Bar.setText(
+            _translate("MainWindow", "Show File Path in Title Bar")
+        )
         self.actionBack.setText(_translate("MainWindow", "Back"))
         self.actionBack.setShortcut(_translate("MainWindow", "Ctrl+Left"))
         self.actionForward.setText(_translate("MainWindow", "Forward"))
         self.actionForward.setShortcut(_translate("MainWindow", "Ctrl+Right"))
         self.actionHome.setText(_translate("MainWindow", "Home"))
         self.actionHome.setShortcut(_translate("MainWindow", "Ctrl+H"))
-        self.actionShow_Navigation_Bar.setText(_translate("MainWindow", "Show Navigation Bar"))
+        self.actionShow_Navigation_Bar.setText(
+            _translate("MainWindow", "Show Navigation Bar")
+        )
         self.actionOpen_File.setText(_translate("MainWindow", "Open File..."))
         self.actionOpen_File.setShortcut(_translate("MainWindow", "Ctrl+O"))
         self.actionShow_Menu_Bar.setText(_translate("MainWindow", "Show Menu Bar"))
         self.actionShow_Menu_Bar.setShortcut(_translate("MainWindow", "Ctrl+M"))
         self.actionShow_Status_Bar.setText(_translate("MainWindow", "Show Status Bar"))
-        self.actionShow_Connections.setText(_translate("MainWindow", "Show Connections..."))
-        self.actionShow_Help.setText(_translate("MainWindow", "View Help for this Display"))
+        self.actionShow_Connections.setText(
+            _translate("MainWindow", "Show Connections...")
+        )
+        self.actionShow_Help.setText(
+            _translate("MainWindow", "View Help for this Display")
+        )
         self.actionLoadTool.setText(_translate("MainWindow", "Load..."))
-        self.actionEnter_Fullscreen.setText(_translate("MainWindow", "Enter Fullscreen"))
+        self.actionEnter_Fullscreen.setText(
+            _translate("MainWindow", "Enter Fullscreen")
+        )
         self.actionEnter_Fullscreen.setShortcut(_translate("MainWindow", "F11"))
-        self.actionDefault_Font_Size.setText(_translate("MainWindow", "Default Font Size"))
+        self.actionDefault_Font_Size.setText(
+            _translate("MainWindow", "Default Font Size")
+        )
         self.actionDefault_Font_Size.setShortcut(_translate("MainWindow", "Ctrl+0"))
         self.actionQuit.setText(_translate("MainWindow", "Quit"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
         self.actionSave_As.setText(_translate("MainWindow", "Save As..."))
         self.actionLoad.setText(_translate("MainWindow", "Load"))
-        self.actionChange_Stylesheet.setText(_translate("MainWindow", "Change Stylesheet"))
+        self.actionChange_Stylesheet.setText(
+            _translate("MainWindow", "Change Stylesheet")
+        )

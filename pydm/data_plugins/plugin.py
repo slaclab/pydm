@@ -43,12 +43,16 @@ class PyDMConnection(QObject):
     def add_listener(self, channel):
         self.listener_count = self.listener_count + 1
         if channel.connection_slot is not None:
-            self.connection_state_signal.connect(channel.connection_slot, Qt.QueuedConnection)
+            self.connection_state_signal.connect(
+                channel.connection_slot, Qt.QueuedConnection
+            )
 
         if channel.value_slot is not None:
             for signal_type in (int, float, str, bool, object):
                 try:
-                    self.new_value_signal[signal_type].connect(channel.value_slot, Qt.QueuedConnection)
+                    self.new_value_signal[signal_type].connect(
+                        channel.value_slot, Qt.QueuedConnection
+                    )
                 # If the signal exists (always does in this case since we define it for all 'signal_type' values above)
                 # but doesn't match slot, TypeError is thrown. We also don't need to catch KeyError/IndexError here,
                 # since those are only thrown when signal type doesn't exist.
@@ -59,31 +63,47 @@ class PyDMConnection(QObject):
             self.new_severity_signal.connect(channel.severity_slot, Qt.QueuedConnection)
 
         if channel.write_access_slot is not None:
-            self.write_access_signal.connect(channel.write_access_slot, Qt.QueuedConnection)
+            self.write_access_signal.connect(
+                channel.write_access_slot, Qt.QueuedConnection
+            )
 
         if channel.enum_strings_slot is not None:
-            self.enum_strings_signal.connect(channel.enum_strings_slot, Qt.QueuedConnection)
+            self.enum_strings_signal.connect(
+                channel.enum_strings_slot, Qt.QueuedConnection
+            )
 
         if channel.unit_slot is not None:
             self.unit_signal.connect(channel.unit_slot, Qt.QueuedConnection)
 
         if channel.upper_ctrl_limit_slot is not None:
-            self.upper_ctrl_limit_signal.connect(channel.upper_ctrl_limit_slot, Qt.QueuedConnection)
+            self.upper_ctrl_limit_signal.connect(
+                channel.upper_ctrl_limit_slot, Qt.QueuedConnection
+            )
 
         if channel.lower_ctrl_limit_slot is not None:
-            self.lower_ctrl_limit_signal.connect(channel.lower_ctrl_limit_slot, Qt.QueuedConnection)
+            self.lower_ctrl_limit_signal.connect(
+                channel.lower_ctrl_limit_slot, Qt.QueuedConnection
+            )
 
         if channel.upper_alarm_limit_slot is not None:
-            self.upper_alarm_limit_signal.connect(channel.upper_alarm_limit_slot, Qt.QueuedConnection)
+            self.upper_alarm_limit_signal.connect(
+                channel.upper_alarm_limit_slot, Qt.QueuedConnection
+            )
 
         if channel.lower_alarm_limit_slot is not None:
-            self.lower_alarm_limit_signal.connect(channel.lower_alarm_limit_slot, Qt.QueuedConnection)
+            self.lower_alarm_limit_signal.connect(
+                channel.lower_alarm_limit_slot, Qt.QueuedConnection
+            )
 
         if channel.upper_warning_limit_slot is not None:
-            self.upper_warning_limit_signal.connect(channel.upper_warning_limit_slot, Qt.QueuedConnection)
+            self.upper_warning_limit_signal.connect(
+                channel.upper_warning_limit_slot, Qt.QueuedConnection
+            )
 
         if channel.lower_warning_limit_slot is not None:
-            self.lower_warning_limit_signal.connect(channel.lower_warning_limit_slot, Qt.QueuedConnection)
+            self.lower_warning_limit_signal.connect(
+                channel.lower_warning_limit_slot, Qt.QueuedConnection
+            )
 
         if channel.prec_slot is not None:
             self.prec_signal.connect(channel.prec_slot, Qt.QueuedConnection)
@@ -118,7 +138,9 @@ class PyDMConnection(QObject):
             if self._should_disconnect(channel.value_slot, destroying):
                 for signal_type in (int, float, str, bool, object):
                     try:
-                        self.new_value_signal[signal_type].disconnect(channel.value_slot)
+                        self.new_value_signal[signal_type].disconnect(
+                            channel.value_slot
+                        )
                     # If the signal exists (always does in this case since we define it for all 'signal_type' earlier)
                     # but doesn't match slot, TypeError is thrown. We also don't need to catch KeyError/IndexError here,
                     # since those are only thrown when signal type doesn't exist.
@@ -151,37 +173,49 @@ class PyDMConnection(QObject):
 
             if self._should_disconnect(channel.upper_ctrl_limit_slot, destroying):
                 try:
-                    self.upper_ctrl_limit_signal.disconnect(channel.upper_ctrl_limit_slot)
+                    self.upper_ctrl_limit_signal.disconnect(
+                        channel.upper_ctrl_limit_slot
+                    )
                 except (KeyError, TypeError):
                     pass
 
             if self._should_disconnect(channel.lower_ctrl_limit_slot, destroying):
                 try:
-                    self.lower_ctrl_limit_signal.disconnect(channel.lower_ctrl_limit_slot)
+                    self.lower_ctrl_limit_signal.disconnect(
+                        channel.lower_ctrl_limit_slot
+                    )
                 except (KeyError, TypeError):
                     pass
 
             if self._should_disconnect(channel.upper_alarm_limit_slot, destroying):
                 try:
-                    self.upper_alarm_limit_signal.disconnect(channel.upper_alarm_limit_slot)
+                    self.upper_alarm_limit_signal.disconnect(
+                        channel.upper_alarm_limit_slot
+                    )
                 except (KeyError, TypeError):
                     pass
 
             if self._should_disconnect(channel.lower_alarm_limit_slot, destroying):
                 try:
-                    self.lower_alarm_limit_signal.disconnect(channel.lower_alarm_limit_slot)
+                    self.lower_alarm_limit_signal.disconnect(
+                        channel.lower_alarm_limit_slot
+                    )
                 except (KeyError, TypeError):
                     pass
 
             if self._should_disconnect(channel.upper_warning_limit_slot, destroying):
                 try:
-                    self.upper_warning_limit_signal.disconnect(channel.upper_warning_limit_slot)
+                    self.upper_warning_limit_signal.disconnect(
+                        channel.upper_warning_limit_slot
+                    )
                 except (KeyError, TypeError):
                     pass
 
             if self._should_disconnect(channel.lower_warning_limit_slot, destroying):
                 try:
-                    self.lower_warning_limit_signal.disconnect(channel.lower_warning_limit_slot)
+                    self.lower_warning_limit_signal.disconnect(
+                        channel.lower_warning_limit_slot
+                    )
                 except (KeyError, TypeError):
                     pass
 
@@ -197,7 +231,11 @@ class PyDMConnection(QObject):
                 except (KeyError, TypeError):
                     pass
 
-            if not destroying and channel.value_signal is not None and hasattr(self, "put_value"):
+            if (
+                not destroying
+                and channel.value_signal is not None
+                and hasattr(self, "put_value")
+            ):
                 for signal_type in (str, int, float, np.ndarray, dict):
                     try:
                         channel.value_signal[signal_type].disconnect(self.put_value)
@@ -294,20 +332,28 @@ class PyDMPlugin(object):
             if channel in self.channels:
                 return
 
-            if is_qt_designer() and not config.DESIGNER_ONLINE and not self.designer_online_by_default:
+            if (
+                is_qt_designer()
+                and not config.DESIGNER_ONLINE
+                and not self.designer_online_by_default
+            ):
                 return
 
             self.channels.add(channel)
             if connection_id in self.connections:
                 self.connections[connection_id].add_listener(channel)
             else:
-                self.connections[connection_id] = self.connection_class(channel, address, self.protocol)
+                self.connections[connection_id] = self.connection_class(
+                    channel, address, self.protocol
+                )
 
     def remove_connection(self, channel: PyDMChannel, destroying: bool = False) -> None:
         with self.lock:
             connection_id = self.get_connection_id(channel)
             if connection_id in self.connections and channel in self.channels:
-                self.connections[connection_id].remove_listener(channel, destroying=destroying)
+                self.connections[connection_id].remove_listener(
+                    channel, destroying=destroying
+                )
                 self.channels.remove(channel)
                 if self.connections[connection_id].listener_count < 1:
                     if isalive(self.connections[connection_id]):

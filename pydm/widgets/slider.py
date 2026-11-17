@@ -84,9 +84,15 @@ class PyDMPrimitiveSlider(QSlider):
             delta = event.pos() - self.dragStartPos
 
             if self.orientation() == Qt.Horizontal:
-                delta_value = round((delta.x() / self.getSliderLength()) * (self.maximum() - self.minimum()))
+                delta_value = round(
+                    (delta.x() / self.getSliderLength())
+                    * (self.maximum() - self.minimum())
+                )
             else:
-                delta_value = round((-delta.y() / self.getSliderLength()) * (self.maximum() - self.minimum()))
+                delta_value = round(
+                    (-delta.y() / self.getSliderLength())
+                    * (self.maximum() - self.minimum())
+                )
             new_value = self.dragStartValue + delta_value
             new_value = min(max(self.minimum(), new_value), self.maximum())
             self.setValue(new_value)
@@ -336,14 +342,18 @@ class PyDMSlider(*_PyDMSliderBases):
         self.low_lim_label = QLabel(self)
         self.low_lim_label.setObjectName("lowLimLabel")
         self.low_lim_label.setSizePolicy(label_size_policy)
-        self.low_lim_label.setAlignment(Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter)
+        self.low_lim_label.setAlignment(
+            Qt.AlignLeft | Qt.AlignTrailing | Qt.AlignVCenter
+        )
         self.value_label = QLabel(self)
         self.value_label.setObjectName("valueLabel")
         self.value_label.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         self.high_lim_label = QLabel(self)
         self.high_lim_label.setObjectName("highLimLabel")
         self.high_lim_label.setSizePolicy(label_size_policy)
-        self.high_lim_label.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
+        self.high_lim_label.setAlignment(
+            Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter
+        )
         self._slider = PyDMPrimitiveSlider(parent=self)
 
         # Pass PyDMPrimitiveWidget eventfilter to self._slider so it will have the tooltip display
@@ -412,7 +422,9 @@ class PyDMSlider(*_PyDMSliderBases):
             4)	format of numbers on slider (min, max, value) - float or exp
         """
         self.slider_parameters_menu_widget = QWidget()
-        self.slider_parameters_menu_widget.move(self._slider.parentWidget().mapToGlobal(position_of_click))
+        self.slider_parameters_menu_widget.move(
+            self._slider.parentWidget().mapToGlobal(position_of_click)
+        )
         self.slider_parameters_menu_widget.show()
 
         self.slider_parameters_menu_widget.setWindowTitle("PyDM Slider Parameters")
@@ -448,21 +460,27 @@ class PyDMSlider(*_PyDMSliderBases):
             self.menu_layout[key] = QHBoxLayout()
             self.menu_layout[key].setAlignment(Qt.AlignLeft)
 
-            self.slider_parameters_menu_labels[key] = PyDMLabel(self.slider_parameters_menu_widget)
+            self.slider_parameters_menu_labels[key] = PyDMLabel(
+                self.slider_parameters_menu_widget
+            )
             self.slider_parameters_menu_labels[key].setText(text_info[key])
             self.menu_layout[key].addWidget(self.slider_parameters_menu_labels[key])
 
             if key == 4:
                 self.slider_parameters_menu_input_widgets[key] = QCheckBox()
                 self.slider_parameters_menu_input_widgets[key].setTristate(on=False)
-                self.slider_parameters_menu_input_widgets[key].setChecked(self.precisionFromPV)
+                self.slider_parameters_menu_input_widgets[key].setChecked(
+                    self.precisionFromPV
+                )
             elif key == 2 or key == 5:
                 self.slider_parameters_menu_input_widgets[key] = QComboBox()
             else:
                 self.slider_parameters_menu_input_widgets[key] = QLineEdit()
                 self.slider_parameters_menu_input_widgets[key].setText("")
 
-            self.menu_layout[key].addWidget(self.slider_parameters_menu_input_widgets[key])
+            self.menu_layout[key].addWidget(
+                self.slider_parameters_menu_input_widgets[key]
+            )
             main_layout.addLayout(self.menu_layout[key])
 
         self.menu_layout.append(3)
@@ -477,15 +495,23 @@ class PyDMSlider(*_PyDMSliderBases):
 
         for key in range(0, 3):
             self.slider_parameters_menu_buttons.append(key)
-            self.slider_parameters_menu_buttons[key] = QPushButton(self.slider_parameters_menu_widget)
+            self.slider_parameters_menu_buttons[key] = QPushButton(
+                self.slider_parameters_menu_widget
+            )
             self.slider_parameters_menu_buttons[key].setText(text_info[key + 6])
             self.menu_layout[3].addWidget(self.slider_parameters_menu_buttons[key])
 
         main_layout.addLayout(self.menu_layout[3])
 
-        self.slider_parameters_menu_buttons[0].clicked.connect(self.apply_and_close_menu)
-        self.slider_parameters_menu_buttons[1].clicked.connect(self.apply_step_size_menu_changes)
-        self.slider_parameters_menu_buttons[2].clicked.connect(self.slider_parameters_menu_widget.close)
+        self.slider_parameters_menu_buttons[0].clicked.connect(
+            self.apply_and_close_menu
+        )
+        self.slider_parameters_menu_buttons[1].clicked.connect(
+            self.apply_step_size_menu_changes
+        )
+        self.slider_parameters_menu_buttons[2].clicked.connect(
+            self.slider_parameters_menu_widget.close
+        )
 
     def apply_and_close_menu(self):
         """
@@ -509,13 +535,17 @@ class PyDMSlider(*_PyDMSliderBases):
                 self.value_changed(slider_value)
                 self.send_value_signal[float].emit(self.value)
         except ValueError:
-            logger.error("the given value is not a valid type or outside of the slider range")
+            logger.error(
+                "the given value is not a valid type or outside of the slider range"
+            )
 
         try:
             self.remap_flag = True
             # checks if input can be converted to a float if not connect to a new channel
             new_step_size = float(self.slider_parameters_menu_input_widgets[1].text())
-            new_step_size_scaled = new_step_size * float(self.slider_parameters_menu_input_widgets[2].currentText())
+            new_step_size_scaled = new_step_size * float(
+                self.slider_parameters_menu_input_widgets[2].currentText()
+            )
             if new_step_size_scaled > 0:
                 # if new step_size scaled greater than zero we want to
                 # disconnect the step size channel and reset step size
@@ -531,7 +561,9 @@ class PyDMSlider(*_PyDMSliderBases):
             # want all logic for receiving a string here
             if is_channel_valid(self.slider_parameters_menu_input_widgets[1].text()):
                 pv_address = self.slider_parameters_menu_input_widgets[1].text()
-                self.init_step_size_channel(pv_address=pv_address, slot=self.step_size_changed)
+                self.init_step_size_channel(
+                    pv_address=pv_address, slot=self.step_size_changed
+                )
                 self.step_size_channel = pv_address
             else:
                 logger.error("step input is incorrect")
@@ -539,7 +571,9 @@ class PyDMSlider(*_PyDMSliderBases):
         precision_source = self.slider_parameters_menu_input_widgets[4].isChecked()
         self.precisionFromPV = precision_source
         try:
-            user_inputted_precision = float(self.slider_parameters_menu_input_widgets[3].text())
+            user_inputted_precision = float(
+                self.slider_parameters_menu_input_widgets[3].text()
+            )
             self.precision = user_inputted_precision
 
         except ValueError:
@@ -596,7 +630,11 @@ class PyDMSlider(*_PyDMSliderBases):
             Qt.Horizontal or Qt.Vertical
         """
         if new_orientation not in (Qt.Horizontal, Qt.Vertical, 1, 2):
-            logger.error("Invalid orientation '{0}'. The existing layout will not change.".format(new_orientation))
+            logger.error(
+                "Invalid orientation '{0}'. The existing layout will not change.".format(
+                    new_orientation
+                )
+            )
             return
 
         new_orientation = Qt.Orientation(new_orientation)
@@ -666,15 +704,21 @@ class PyDMSlider(*_PyDMSliderBases):
         logger.debug("Has both limits, proceeding.")
         self._needs_limit_info = False
         if self._parameters_menu_flag:
-            self._slider_position_to_value_map = self.create_slider_positions_to_value_map()
+            self._slider_position_to_value_map = (
+                self.create_slider_positions_to_value_map()
+            )
             self._parameters_menu_flag = False
         else:
             # if no defaults. create a linear space from min to max from default num_steps = 101,
             # this means we can't step to max, but also can't call create map without a value
-            self._slider_position_to_value_map = np.linspace(self.minimum, self.maximum, num=self._num_steps)
+            self._slider_position_to_value_map = np.linspace(
+                self.minimum, self.maximum, num=self._num_steps
+            )
 
             if is_channel_valid(self.step_size_channel):
-                self.init_step_size_channel(pv_address=self.step_size_channel, slot=self.step_size_changed)
+                self.init_step_size_channel(
+                    pv_address=self.step_size_channel, slot=self.step_size_changed
+                )
 
         self.update_labels()
         self.rangeChanged.emit(self.minimum, self.maximum)
@@ -704,7 +748,10 @@ class PyDMSlider(*_PyDMSliderBases):
             self.step_size_channel_pv = PyDMChannel(address=pv_address, value_slot=slot)
             self.step_size_channel_pv.connect()
 
-        elif self.step_size_channel_pv is not None and self.step_size_channel_pv.address != pv_address:
+        elif (
+            self.step_size_channel_pv is not None
+            and self.step_size_channel_pv.address != pv_address
+        ):
             self.step_size_channel_pv.disconnect()
             self.step_size_channel_pv = None
             self.step_size_channel_pv = PyDMChannel(address=pv_address, value_slot=slot)
@@ -737,10 +784,14 @@ class PyDMSlider(*_PyDMSliderBases):
         array of allowed values where the length of the array is the number of slider positions.
         and the slider position i has value array[i].
         """
-        if self.value is not None and (self.value > self.maximum or self.value < self.minimum):
+        if self.value is not None and (
+            self.value > self.maximum or self.value < self.minimum
+        ):
             logger.debug("Slider out of bounds.")
             self._slider.setEnabled(False)
-            raise ValueError("Slider is out of bounds either greater than max or less than min")
+            raise ValueError(
+                "Slider is out of bounds either greater than max or less than min"
+            )
 
         forward_map = []
         backward_map = []
@@ -757,7 +808,9 @@ class PyDMSlider(*_PyDMSliderBases):
             # if len zero we are at or passed maximum. so all we need
             # is the max ele for the map
             forward_map.append(self.maximum)
-        elif round(float(forward_map[-1]), self.precision + 1) < round(float(self.maximum), self.precision + 1):
+        elif round(float(forward_map[-1]), self.precision + 1) < round(
+            float(self.maximum), self.precision + 1
+        ):
             forward_map.append(self.maximum)
         elif forward_map[-1] > self.maximum:
             forward_map[-1] = self.maximum
@@ -767,7 +820,9 @@ class PyDMSlider(*_PyDMSliderBases):
             backward_map.append(backward_map_value)
         if len(backward_map) == 0:
             pass
-        elif round(float(backward_map[-1]), self.precision + 1) > round(float(self.minimum), self.precision + 1):
+        elif round(float(backward_map[-1]), self.precision + 1) > round(
+            float(self.minimum), self.precision + 1
+        ):
             backward_map.append(self.minimum)
         elif backward_map[-1] < self.minimum:
             backward_map[-1] = self.minimum
@@ -800,7 +855,11 @@ class PyDMSlider(*_PyDMSliderBases):
         int
         """
         diff = abs(self._slider_position_to_value_map - float(val))
-        logger.debug("The closest value to %f is: %f", val, self._slider_position_to_value_map[np.argmin(diff)])
+        logger.debug(
+            "The closest value to %f is: %f",
+            val,
+            self._slider_position_to_value_map[np.argmin(diff)],
+        )
         return np.argmin(diff)
 
     def set_slider_to_closest_value(self, val):
@@ -927,7 +986,9 @@ class PyDMSlider(*_PyDMSliderBases):
         # Even though by documentation disabling parent QFrame (self), should disable internal
         # slider, in practice it still remains interactive (PyQt 5.12.1). Disabling explicitly, solves
         # the problem.
-        should_enable = self._write_access and self._connected and not self._needs_limit_info
+        should_enable = (
+            self._write_access and self._connected and not self._needs_limit_info
+        )
         self.setEnabled(should_enable)
         self._slider.setEnabled(should_enable)
 
@@ -1307,4 +1368,6 @@ class PyDMSlider(*_PyDMSliderBases):
     def value(self, new_value):
         self._value = new_value
         if self.remap_flag:
-            self._slider_position_to_value_map = self.create_slider_positions_to_value_map()
+            self._slider_position_to_value_map = (
+                self.create_slider_positions_to_value_map()
+            )

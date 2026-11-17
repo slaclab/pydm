@@ -63,9 +63,16 @@ def test_construct(qtbot, init_channel):
     assert pydm_lineedit.unitMenu is None
     pydm_lineedit.widget_ctx_menu()
 
-    assert isinstance(pydm_lineedit.unitMenu, QMenu) and pydm_lineedit.unitMenu.title() == "Convert Units"
+    assert (
+        isinstance(pydm_lineedit.unitMenu, QMenu)
+        and pydm_lineedit.unitMenu.title() == "Convert Units"
+    )
     assert pydm_lineedit.displayFormat == pydm_lineedit.DisplayFormat.Default
-    assert pydm_lineedit._string_encoding == pydm_lineedit.app.get_string_encoding() if is_pydm_app() else "utf_8"
+    assert (
+        pydm_lineedit._string_encoding == pydm_lineedit.app.get_string_encoding()
+        if is_pydm_app()
+        else "utf_8"
+    )
 
     assert find_action_from_menu(pydm_lineedit.unitMenu, "No Unit Conversions found")
 
@@ -114,13 +121,39 @@ def test_change_display_format_type(qtbot, display_format):
         (123.47, DisplayFormat.Decimal, 3, 2, "seconds", False, "246.940"),
         (123.4567, DisplayFormat.String, 2, 1, "", False, "123.46"),
         (123.4567, DisplayFormat.Decimal, 1, 1, "", False, "123.5"),
-        (1e2, DisplayFormat.Exponential, 2, 2, "light years", True, "2.00e+02 light years"),
+        (
+            1e2,
+            DisplayFormat.Exponential,
+            2,
+            2,
+            "light years",
+            True,
+            "2.00e+02 light years",
+        ),
         (0x1FF, DisplayFormat.Hex, 0, 1, "Me", True, "0x1ff Me"),
         (0b100, DisplayFormat.Binary, 0, 1, "KB", True, "0b100 KB"),
-        (np.array([123, 456]), DisplayFormat.Default, 3, 2, "light years", True, "[123 456] light years"),
+        (
+            np.array([123, 456]),
+            DisplayFormat.Default,
+            3,
+            2,
+            "light years",
+            True,
+            "[123 456] light years",
+        ),
     ],
 )
-def test_value_change(qtbot, signals, value, display_format, precision, scale, unit, show_unit, expected_display):
+def test_value_change(
+    qtbot,
+    signals,
+    value,
+    display_format,
+    precision,
+    scale,
+    unit,
+    show_unit,
+    expected_display,
+):
     """
     Test changing the value to be displayed by the widget, given the value's display format, precision, scale, and unit.
 
@@ -171,8 +204,28 @@ def test_value_change(qtbot, signals, value, display_format, precision, scale, u
     [
         ("abc", "cdf", DisplayFormat.Default, 3, 5, "s", True, "abc", "cdf s"),
         ("abc", "cdf", DisplayFormat.String, 3, 5, "s", False, "abc", "cdf"),
-        (np.array([65, 66]), "[C D]", DisplayFormat.Default, 0, 10, "light years", True, "[C D]", "[C D] light years"),
-        (np.array(["A", "B"]), "[C D]", DisplayFormat.String, 0, 10, "ms", True, "[C D]", "[C D] ms"),
+        (
+            np.array([65, 66]),
+            "[C D]",
+            DisplayFormat.Default,
+            0,
+            10,
+            "light years",
+            True,
+            "[C D]",
+            "[C D] light years",
+        ),
+        (
+            np.array(["A", "B"]),
+            "[C D]",
+            DisplayFormat.String,
+            0,
+            10,
+            "ms",
+            True,
+            "[C D]",
+            "[C D] ms",
+        ),
         (
             np.array(["A", "B"]),
             np.array(["C", "D"]),
@@ -255,7 +308,9 @@ def test_send_value(
     pydm_lineedit._unit = unit
     pydm_lineedit.showUnits = show_units
 
-    signals.new_value_signal[type(user_typed_value)].connect(pydm_lineedit.channelValueChanged)
+    signals.new_value_signal[type(user_typed_value)].connect(
+        pydm_lineedit.channelValueChanged
+    )
     signals.new_value_signal[type(user_typed_value)].emit(user_typed_value)
 
     # Besides receiving the new channel value, simulate the update of the new value to the widget by connecting the
@@ -264,14 +319,20 @@ def test_send_value(
     if signal_type == np.ndarray:
         signal_type = str
     pydm_lineedit.send_value_signal[signal_type].connect(signals.receiveValue)
-    pydm_lineedit.send_value_signal[signal_type].connect(pydm_lineedit.channelValueChanged)
+    pydm_lineedit.send_value_signal[signal_type].connect(
+        pydm_lineedit.channelValueChanged
+    )
     pydm_lineedit.send_value()
 
     # Python 2.7 produces the strings without the spaces, but Python 3.x does not. So, remove all the spaces, and
     # compare just the characters (in the right order)
-    assert pydm_lineedit.displayText().replace(" ", "") == expected_display_value.replace(" ", "")
+    assert pydm_lineedit.displayText().replace(
+        " ", ""
+    ) == expected_display_value.replace(" ", "")
 
-    if all(x in (int, float) for x in (type(expected_received_value), type(signals.value))):
+    if all(
+        x in (int, float) for x in (type(expected_received_value), type(signals.value))
+    ):
         # Testing the actual value sent to the data channel and the expected value using a tolerance due to floating
         # point arithmetic
         assert abs(signals.value - expected_received_value) < 0.00001
@@ -292,7 +353,15 @@ def test_send_value(
         (True, True, "", True),
     ],
 )
-def test_write_access_changed(qapp, qtbot, signals, new_write_access, is_channel_connected, tooltip, is_app_read_only):
+def test_write_access_changed(
+    qapp,
+    qtbot,
+    signals,
+    new_write_access,
+    is_channel_connected,
+    tooltip,
+    is_app_read_only,
+):
     """
     Test the widget's write access status and tooltip, which depends on the connection status of the data channel and
     the app's read-only status.
@@ -360,7 +429,9 @@ def test_write_access_changed(qapp, qtbot, signals, new_write_access, is_channel
         (False, 3, None),
     ],
 )
-def test_precision_change(qtbot, signals, is_precision_from_pv, pv_precision, non_pv_precision):
+def test_precision_change(
+    qtbot, signals, is_precision_from_pv, pv_precision, non_pv_precision
+):
     """
     Test setting the precision for the widget's value.
 
@@ -394,7 +465,9 @@ def test_precision_change(qtbot, signals, is_precision_from_pv, pv_precision, no
 
         assert pydm_lineedit.precision == pv_precision
     else:
-        assert pydm_lineedit.precision == (non_pv_precision if non_pv_precision is not None else 0)
+        assert pydm_lineedit.precision == (
+            non_pv_precision if non_pv_precision is not None else 0
+        )
 
 
 @pytest.mark.parametrize(
@@ -511,7 +584,9 @@ def test_create_unit_options(qtbot, unit, show_units):
         (123.456, 3, "mV", True, "{:.3f} mV"),
     ],
 )
-def test_apply_conversion(qtbot, value, precision, unit, show_unit, expected_format_string):
+def test_apply_conversion(
+    qtbot, value, precision, unit, show_unit, expected_format_string
+):
     """
     Test the unit conversion by examining the resulted format string.
 
@@ -561,7 +636,18 @@ def test_apply_conversion(qtbot, value, precision, unit, show_unit, expected_for
         (np.array([123, 456]), str, True, DisplayFormat.Default, 3, 2, "degree", True),
     ],
 )
-def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format, precision, scale, unit, show_units):
+def test_set_display(
+    qtbot,
+    qapp,
+    value,
+    has_focus,
+    channel_type,
+    display_format,
+    precision,
+    scale,
+    unit,
+    show_units,
+):
     """
     Test the widget's displayed value.
 
@@ -635,11 +721,16 @@ def test_set_display(qtbot, qapp, value, has_focus, channel_type, display_format
             new_value *= pydm_lineedit.channeltype(pydm_lineedit._scale)
 
         new_value = parse_value_for_display(
-            value=new_value, precision=precision, display_format_type=display_format, widget=pydm_lineedit
+            value=new_value,
+            precision=precision,
+            display_format_type=display_format,
+            widget=pydm_lineedit,
         )
 
         expected_display = str(new_value)
-        if display_format == DisplayFormat.Default and not isinstance(value, np.ndarray):
+        if display_format == DisplayFormat.Default and not isinstance(
+            value, np.ndarray
+        ):
             if isinstance(value, (int, float)):
                 expected_display = str(pydm_lineedit.format_string.format(value))
         elif pydm_lineedit.showUnits:
@@ -762,7 +853,16 @@ def test_focus_out_event(qtbot, qapp, display_value):
 @pytest.mark.parametrize(
     "value, precision, initial_unit, unit, show_unit, expected",
     [
-        (123, 0, None, int, True, ("Warning: Attempting to convert PyDMLineEdit unit, but no initial units supplied",)),
+        (
+            123,
+            0,
+            None,
+            int,
+            True,
+            (
+                "Warning: Attempting to convert PyDMLineEdit unit, but no initial units supplied",
+            ),
+        ),
         (
             123.456,
             3,
@@ -781,7 +881,10 @@ def test_focus_out_event(qtbot, qapp, display_value):
             float,
             "foo",
             True,
-            ("Warning: Attempting to convert PyDMLineEdit unit, but ", "'float'>' can not be converted to 'foo'."),
+            (
+                "Warning: Attempting to convert PyDMLineEdit unit, but ",
+                "'float'>' can not be converted to 'foo'.",
+            ),
         ),
         (
             "123.456",
@@ -795,7 +898,9 @@ def test_focus_out_event(qtbot, qapp, display_value):
         ),
     ],
 )
-def test_apply_conversion_wrong_unit(qtbot, caplog, value, precision, initial_unit, unit, show_unit, expected):
+def test_apply_conversion_wrong_unit(
+    qtbot, caplog, value, precision, initial_unit, unit, show_unit, expected
+):
     """
     Test the unit conversion error logging.
 
@@ -835,7 +940,16 @@ def test_apply_conversion_wrong_unit(qtbot, caplog, value, precision, initial_un
 @pytest.mark.parametrize(
     "init_value, user_typed_value, display_format, precision, scale, unit,show_units, expected_errors",
     [
-        (123, 345.678, DisplayFormat.Default, 0, 1, "s", True, ("Error trying to set data ", "with type ", "int'>")),
+        (
+            123,
+            345.678,
+            DisplayFormat.Default,
+            0,
+            1,
+            "s",
+            True,
+            ("Error trying to set data ", "with type ", "int'>"),
+        ),
     ],
 )
 def test_send_value_neg(
@@ -898,7 +1012,9 @@ def test_send_value_neg(
     if signal_type == np.ndarray:
         signal_type = str
     pydm_lineedit.send_value_signal[signal_type].connect(signals.receiveValue)
-    pydm_lineedit.send_value_signal[signal_type].connect(pydm_lineedit.channelValueChanged)
+    pydm_lineedit.send_value_signal[signal_type].connect(
+        pydm_lineedit.channelValueChanged
+    )
     pydm_lineedit.send_value()
 
     for record in caplog.records:

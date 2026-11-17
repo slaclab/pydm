@@ -28,4 +28,6 @@ class DisplayExample(Display):
         return "test.ui"
 
     def ui_filepath(self):
-        return os.path.join(os.path.dirname(os.path.realpath(__file__)), self.ui_filename())
+        return os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), self.ui_filename()
+        )

@@ -105,7 +105,9 @@ class LogLevels(object):
         entries = [
             (k, v)
             for k, v in LogLevels.__dict__.items()
-            if not k.startswith("__") and not callable(v) and not isinstance(v, staticmethod)
+            if not k.startswith("__")
+            and not callable(v)
+            and not isinstance(v, staticmethod)
         ]
 
         return OrderedDict(sorted(entries, key=lambda x: x[1], reverse=False))
@@ -127,7 +129,9 @@ if ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6):
 
         @staticmethod
         def as_dict():
-            entries = [(name, member.value) for name, member in LogLevels.__members__.items()]
+            entries = [
+                (name, member.value) for name, member in LogLevels.__members__.items()
+            ]
             return OrderedDict(sorted(entries, key=lambda item: item[1]))
 
 

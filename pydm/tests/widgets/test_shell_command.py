@@ -77,7 +77,9 @@ def test_construct(qtbot, command, title):
     shell_cmd_icon_pixmap = pydm_shell_command.icon().pixmap(DEFAULT_ICON_SIZE)
 
     assert shell_cmd_icon_pixmap.toImage() == default_icon_pixmap.toImage()
-    assert pydm_shell_command.cursor().pixmap().toImage() == default_icon_pixmap.toImage()
+    assert (
+        pydm_shell_command.cursor().pixmap().toImage() == default_icon_pixmap.toImage()
+    )
 
     # verify that qt standard icons can be set through our custom property
     style = pydm_shell_command.style()
@@ -157,7 +159,9 @@ def test_no_error_without_env_variable(qtbot, caplog):
     "cmd, retcode, stdout",
     [
         (
-            ["choice /c yn /d n /t 0"] if platform.system() == "Windows" else ["sleep 0"],
+            ["choice /c yn /d n /t 0"]
+            if platform.system() == "Windows"
+            else ["sleep 0"],
             [2] if platform.system() == "Windows" else [0],
             ["[Y,N]?N"] if platform.system() == "Windows" else [""],
         ),
@@ -210,14 +214,18 @@ def test_mouse_release_event(qtbot, caplog, cmd, retcode, stdout):
     pydm_shell_command.commands = cmd
 
     if len(cmd) > 1:
-        for current_command, expected_retcode, expected_stdout in zip(cmd, retcode, stdout):
+        for current_command, expected_retcode, expected_stdout in zip(
+            cmd, retcode, stdout
+        ):
             # We can't actually do the click and show the menu - it halts the test and waits
             # for user input.  So instead, we'll force trigger _rebuild_menu().
             pydm_shell_command._rebuild_menu()
             assert isinstance(pydm_shell_command.menu(), QMenu)
             actions = pydm_shell_command.menu().findChildren(QAction)
             assert current_command in [a.text() for a in actions]
-            action_for_current_command = [a for a in actions if a.text() == current_command][0]
+            action_for_current_command = [
+                a for a in actions if a.text() == current_command
+            ][0]
             action_for_current_command.trigger()
             check_command_output(current_command, expected_retcode, expected_stdout)
     elif len(cmd) == 1:
@@ -309,7 +317,11 @@ def test_long_running_command_shows_currently_running_text_dropdown(qtbot):
     pydm_shell_command.setText(original_button_text)
     pydm_shell_command.runCommandsInFullShell = True
 
-    pydm_shell_command.commands = ["echo 'command 1'", "echo 'command 2'", original_action_text]
+    pydm_shell_command.commands = [
+        "echo 'command 1'",
+        "echo 'command 2'",
+        original_action_text,
+    ]
 
     # We need to execute the shell-cmd's mousePressEvent() so it can build the drop-down menu,
     # and right-click since left-click seems to cause this test to then display the drop-down menu
@@ -323,8 +335,12 @@ def test_long_running_command_shows_currently_running_text_dropdown(qtbot):
     actions[2].trigger()
 
     # Check button icon is changed while cmd is running
-    qtbot.wait_until(lambda: pydm_shell_command.text().startswith("(Submenu cmd running...)"))
-    assert pydm_shell_command.text() == f"(Submenu cmd running...) {original_button_text}"
+    qtbot.wait_until(
+        lambda: pydm_shell_command.text().startswith("(Submenu cmd running...)")
+    )
+    assert (
+        pydm_shell_command.text() == f"(Submenu cmd running...) {original_button_text}"
+    )
 
     icon_size = QSize(16, 16)
     default_icon = IconFont().icon("hourglass-start")
@@ -439,7 +455,10 @@ options = (
 )
 
 
-@pytest.mark.parametrize("stdout_setting, stderr_setting", [(first, second) for first in options for second in options])
+@pytest.mark.parametrize(
+    "stdout_setting, stderr_setting",
+    [(first, second) for first in options for second in options],
+)
 def test_output_options(qtbot, capfd, stdout_setting, stderr_setting):
     """
     Test that the stdout and stderr options work properly.

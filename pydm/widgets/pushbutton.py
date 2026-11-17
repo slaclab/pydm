@@ -59,7 +59,14 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
     DEFAULT_CONFIRM_MESSAGE = "Are you sure you want to proceed?"
 
     def __init__(
-        self, parent=None, label=None, icon=None, pressValue=None, releaseValue=None, relative=False, init_channel=None
+        self,
+        parent=None,
+        label=None,
+        icon=None,
+        pressValue=None,
+        releaseValue=None,
+        relative=False,
+        init_channel=None,
     ):
         if icon:
             QPushButton.__init__(self, icon, label, parent)
@@ -223,7 +230,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
             # Make sure designer knows it should save the protectedPassword field
             formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self)
             if formWindow:
-                formWindow.cursor().setProperty("protectedPassword", self.protectedPassword)
+                formWindow.cursor().setProperty(
+                    "protectedPassword", self.protectedPassword
+                )
 
     password = Property(str, readPassword, setPassword)
 
@@ -439,7 +448,13 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         if not self._password_protected:
             return True
 
-        pwd, ok = QInputDialog().getText(None, "Authentication", "Please enter your password:", QLineEdit.Password, "")
+        pwd, ok = QInputDialog().getText(
+            None,
+            "Authentication",
+            "Please enter your password:",
+            QLineEdit.Password,
+            "",
+        )
         pwd = str(pwd)
         if not ok or pwd == "":
             return False
@@ -488,7 +503,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
 
         return val
 
-    def __execute_send(self, new_value, skip_confirm=False, skip_password=False, is_release=False):
+    def __execute_send(
+        self, new_value, skip_confirm=False, skip_password=False, is_release=False
+    ):
         """
         Execute the send operation for push and release.
 
@@ -577,7 +594,9 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         try:
             self.pressValue = self.channeltype(value)
         except (ValueError, TypeError):
-            logger.error("'{0}' is not a valid pressValue for '{1}'.".format(value, self.channel))
+            logger.error(
+                "'{0}' is not a valid pressValue for '{1}'.".format(value, self.channel)
+            )
 
     def readWriteWhenRelease(self) -> bool:
         """
@@ -627,4 +646,8 @@ class PyDMPushButton(QPushButton, PyDMWritableWidget):
         try:
             self.releaseValue = self.channeltype(value)
         except (ValueError, TypeError):
-            logger.error("'{0}' is not a valid releaseValue for '{1}'.".format(value, self.channel))
+            logger.error(
+                "'{0}' is not a valid releaseValue for '{1}'.".format(
+                    value, self.channel
+                )
+            )

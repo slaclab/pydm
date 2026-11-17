@@ -37,7 +37,9 @@ def replace_macros_in_template(template, macros):
     # Escape any single or double quotes to ensure macro substitution results in valid python code
     # when replaced (e.g. xterm -e 'echo hi')
     macros = {
-        key: re.sub(r'(?<!\\)"', '\\"', re.sub(r"(?<!\\)'", "\\'", value)) if isinstance(value, str) else value
+        key: re.sub(r'(?<!\\)"', '\\"', re.sub(r"(?<!\\)'", "\\'", value))
+        if isinstance(value, str)
+        else value
         for key, value in macros.items()
     }
 

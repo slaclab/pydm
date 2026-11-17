@@ -158,7 +158,9 @@ def find_unit_options(unit):
     """
     tp = find_unittype(unit)
     if tp:
-        units = [choice for choice, _ in sorted(UNITS[tp].items(), key=lambda x: 1 / x[1])]
+        units = [
+            choice for choice, _ in sorted(UNITS[tp].items(), key=lambda x: 1 / x[1])
+        ]
         return units
     else:
         return None

@@ -87,7 +87,9 @@ class PyDMSymbol(QWidget, PyDMWidget):
         """
         if not self._state_images:
             return self._state_images_string
-        return json.dumps({str(state): val[0] for (state, val) in self._state_images.items()})
+        return json.dumps(
+            {str(state): val[0] for (state, val) in self._state_images.items()}
+        )
 
     def setImageFiles(self, new_files) -> None:
         """
@@ -163,7 +165,9 @@ class PyDMSymbol(QWidget, PyDMWidget):
             self._aspect_ratio_mode = new_mode
             self.update()
 
-    aspectRatioMode = Property(Qt.AspectRatioMode, readAspectRatioMode, setAspectRatioMode)
+    aspectRatioMode = Property(
+        Qt.AspectRatioMode, readAspectRatioMode, setAspectRatioMode
+    )
 
     def connection_changed(self, connected):
         """
@@ -210,7 +214,9 @@ class PyDMSymbol(QWidget, PyDMWidget):
         -------
         QSize
         """
-        return QSize(10, 10)  # This is totally arbitrary, I just want *some* visible nonzero size
+        return QSize(
+            10, 10
+        )  # This is totally arbitrary, I just want *some* visible nonzero size
 
     def paintEvent(self, event):
         """
@@ -253,7 +259,9 @@ class PyDMSymbol(QWidget, PyDMWidget):
         elif isinstance(image_to_draw, QSvgRenderer):
             draw_size = QSizeF(image_to_draw.defaultSize())
             draw_size.scale(QSizeF(event.rect().size()), self._aspect_ratio_mode)
-            image_to_draw.render(self._painter, QRectF(0.0, 0.0, draw_size.width(), draw_size.height()))
+            image_to_draw.render(
+                self._painter, QRectF(0.0, 0.0, draw_size.width(), draw_size.height())
+            )
         self._painter.end()
 
     def qt_message_handler(self, msg_type, *args):

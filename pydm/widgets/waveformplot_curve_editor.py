@@ -49,7 +49,9 @@ class PyDMWaveformPlotCurvesModel(BasePlotCurvesModel):
         return True
 
     def append(self, y_address=None, x_address=None, name=None, color=None):
-        self.beginInsertRows(QModelIndex(), len(self._plot._curves), len(self._plot._curves))
+        self.beginInsertRows(
+            QModelIndex(), len(self._plot._curves), len(self._plot._curves)
+        )
         self._plot.addChannel(y_address, x_address, name, color)
         self.endInsertRows()
 
@@ -74,14 +76,20 @@ class WaveformPlotCurveEditorDialog(BasePlotCurveEditorDialog):
         super().__init__(plot, parent)
 
         redraw_mode_delegate = RedrawModeColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Redraw Mode"), redraw_mode_delegate)
+        self.table_view.setItemDelegateForColumn(
+            self.table_model.getColumnIndex("Redraw Mode"), redraw_mode_delegate
+        )
 
         threshold_color_delegate = ColorColumnDelegate(self)
         self.table_view.setItemDelegateForColumn(
             self.table_model.getColumnIndex("Limit Color"), threshold_color_delegate
         )
 
-        plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
-        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Style"), plot_style_delegate)
+        plot_style_delegate = PlotStyleColumnDelegate(
+            self, self.table_model, self.table_view
+        )
+        self.table_view.setItemDelegateForColumn(
+            self.table_model.getColumnIndex("Style"), plot_style_delegate
+        )
 
         plot_style_delegate.toggleColumnVisibility()

@@ -8,21 +8,26 @@ def test_find_unittype(typ, expected):
     assert tp == expected
 
 
-@pytest.mark.parametrize("unit, expected", [("cm", units.centi), ("non_existent", None)])
+@pytest.mark.parametrize(
+    "unit, expected", [("cm", units.centi), ("non_existent", None)]
+)
 def test_find_unit(unit, expected):
     r = units.find_unit(unit)
     assert r == expected
 
 
 @pytest.mark.parametrize(
-    "unit, desired, expected", [("m", "cm", 1 / units.centi), ("m", "rad", None), ("non_existent", "rad", None)]
+    "unit, desired, expected",
+    [("m", "cm", 1 / units.centi), ("m", "rad", None), ("non_existent", "rad", None)],
 )
 def test_convert(unit, desired, expected):
     r = units.convert(unit, desired)
     assert r == expected
 
 
-@pytest.mark.parametrize("unit, expected", [("V", ["MV", "kV", "V", "mV", "uV"]), ("foo", None)])
+@pytest.mark.parametrize(
+    "unit, expected", [("V", ["MV", "kV", "V", "mV", "uV"]), ("foo", None)]
+)
 def test_find_unit_options(unit, expected):
     opts = units.find_unit_options(unit)
     assert opts == expected

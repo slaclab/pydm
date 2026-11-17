@@ -223,7 +223,11 @@ class SymbolEditor(QtWidgets.QDialog):
 
         confirm_message = "Delete the selected symbol?"
         reply = QtWidgets.QMessageBox().question(
-            self, "Message", confirm_message, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No
+            self,
+            "Message",
+            confirm_message,
+            QtWidgets.QMessageBox.Yes,
+            QtWidgets.QMessageBox.No,
         )
 
         if reply == QtWidgets.QMessageBox.Yes:
@@ -294,7 +298,9 @@ class SymbolEditor(QtWidgets.QDialog):
         elif isinstance(image_to_draw, QSvgRenderer):
             draw_size = QSizeF(image_to_draw.defaultSize())
             draw_size.scale(QSizeF(size), Qt.KeepAspectRatio)
-            image_to_draw.render(_painter, QRectF(335, 120, draw_size.width(), draw_size.height()))
+            image_to_draw.render(
+                _painter, QRectF(335, 120, draw_size.width(), draw_size.height())
+            )
         _painter.end()
         self.preview = False
 
@@ -408,12 +414,16 @@ class SymbolEditor(QtWidgets.QDialog):
         status, message = self.is_data_valid()
         if status:
             data = json.dumps(self.symbols)
-            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self.widget)
+            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(
+                self.widget
+            )
             if formWindow:
                 formWindow.cursor().setProperty("imageFiles", data)
             self.accept()
         else:
-            QtWidgets.QMessageBox.critical(self, "Error Saving", message, QtWidgets.QMessageBox.Ok)
+            QtWidgets.QMessageBox.critical(
+                self, "Error Saving", message, QtWidgets.QMessageBox.Ok
+            )
 
     @QtCore.Slot()
     def cancelChanges(self):

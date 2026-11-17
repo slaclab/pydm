@@ -37,7 +37,9 @@ def timeplotcurveitem_widget(qtbot):
     return TimePlotCurveItem()
 
 
-def test_timeplotcurveitem_severityChanged_updates_attributes_and_emits(timeplotcurveitem_widget, qtbot):
+def test_timeplotcurveitem_severityChanged_updates_attributes_and_emits(
+    timeplotcurveitem_widget, qtbot
+):
     """
     Test that calling severityChanged:
     1) Sets self.severity_raw.
@@ -58,7 +60,9 @@ def test_timeplotcurveitem_severityChanged_updates_attributes_and_emits(timeplot
         assert severity_spy.at(0) == [2]
 
 
-def test_timeplotcurveitem_alarm_severity_changed_valid_values(timeplotcurveitem_widget):
+def test_timeplotcurveitem_alarm_severity_changed_valid_values(
+    timeplotcurveitem_widget,
+):
     """
     Test alarm_severity_changed with valid integer or string values for severity.
     """
@@ -75,7 +79,9 @@ def test_timeplotcurveitem_alarm_severity_changed_valid_values(timeplotcurveitem
     assert timeplotcurveitem_widget.severity == "INVALID"
 
 
-def test_timeplotcurveitem_alarm_severity_changed_invalid_values(timeplotcurveitem_widget):
+def test_timeplotcurveitem_alarm_severity_changed_invalid_values(
+    timeplotcurveitem_widget,
+):
     """
     Test alarm_severity_changed with invalid severity input, expecting "N/A".
     """
@@ -100,11 +106,14 @@ def test_timeplotcurveitem_alarm_severity_changed_invalid_values(timeplotcurveit
     ],
 )
 def test_timeplotcurveitem_construct(qtbot, channel_address, name):
-    pydm_timeplot_curve_item = TimePlotCurveItem(channel_address=channel_address, name=name)
+    pydm_timeplot_curve_item = TimePlotCurveItem(
+        channel_address=channel_address, name=name
+    )
 
     if not name:
         assert (
-            pydm_timeplot_curve_item.to_dict()["name"] == remove_protocol(channel_address)
+            pydm_timeplot_curve_item.to_dict()["name"]
+            == remove_protocol(channel_address)
             if channel_address
             else not pydm_timeplot_curve_item.to_dict()["name"]
         )
@@ -136,17 +145,24 @@ def test_timeplotcurveitem_construct(qtbot, channel_address, name):
     ],
 )
 def test_timeplotcurveitem_to_dict(qtbot, channel_address, name):
-    pydm_timeplot_curve_item = TimePlotCurveItem(channel_address=channel_address, name=name)
+    pydm_timeplot_curve_item = TimePlotCurveItem(
+        channel_address=channel_address, name=name
+    )
 
     dictionary = pydm_timeplot_curve_item.to_dict()
     assert isinstance(dictionary, OrderedDict)
 
-    assert dictionary["channel"] == channel_address if channel_address else dictionary["channel"] is None
+    assert (
+        dictionary["channel"] == channel_address
+        if channel_address
+        else dictionary["channel"] is None
+    )
     if name:
         assert dictionary["name"] == name
     else:
         assert (
-            pydm_timeplot_curve_item.to_dict()["name"] == remove_protocol(channel_address)
+            pydm_timeplot_curve_item.to_dict()["name"]
+            == remove_protocol(channel_address)
             if channel_address
             else not pydm_timeplot_curve_item.to_dict()["name"]
         )
@@ -170,12 +186,17 @@ def test_timeplotcurveitem_connection_state_changed(qtbot, signals):
     pydm_timeplot_curve_item = TimePlotCurveItem()
     assert pydm_timeplot_curve_item.connected is False
 
-    signals.connection_state_signal.connect(pydm_timeplot_curve_item.connectionStateChanged)
+    signals.connection_state_signal.connect(
+        pydm_timeplot_curve_item.connectionStateChanged
+    )
     signals.connection_state_signal.emit(True)
     assert pydm_timeplot_curve_item.connected
 
 
-@pytest.mark.parametrize("async_update, new_data", [(False, -10), (False, 10.2333), (True, 100), (True, -123.456)])
+@pytest.mark.parametrize(
+    "async_update, new_data",
+    [(False, -10), (False, 10.2333), (True, 100), (True, -123.456)],
+)
 def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data):
     """
     Also testing setUpdatesAsynchronously, resetUpdatesAsynchronously, and initialize_buffer
@@ -200,18 +221,25 @@ def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data)
             else pydm_timeplot_curve_item._update_mode == PyDMTimePlot.OnValueChange
         )
 
-    expected_data_buffer = np.zeros((2, pydm_timeplot_curve_item._bufferSize), order="f", dtype=float)
+    expected_data_buffer = np.zeros(
+        (2, pydm_timeplot_curve_item._bufferSize), order="f", dtype=float
+    )
     expected_data_buffer[0] = pydm_timeplot_curve_item.data_buffer[0]
     assert np.array_equal(expected_data_buffer, pydm_timeplot_curve_item.data_buffer)
 
-    signals.new_value_signal[type(new_data)].connect(pydm_timeplot_curve_item.receiveNewValue)
+    signals.new_value_signal[type(new_data)].connect(
+        pydm_timeplot_curve_item.receiveNewValue
+    )
     signals.new_value_signal[type(new_data)].emit(new_data)
 
     if async_update:
         assert np.array_equal(pydm_timeplot_curve_item.latest_value, new_data)
     else:
         assert np.array_equal(
-            pydm_timeplot_curve_item.data_buffer[1, pydm_timeplot_curve_item._bufferSize - 1], new_data
+            pydm_timeplot_curve_item.data_buffer[
+                1, pydm_timeplot_curve_item._bufferSize - 1
+            ],
+            new_data,
         )
         assert pydm_timeplot_curve_item.points_accumulated == 1
 
@@ -219,7 +247,10 @@ def test_timeplotcurveitem_receive_value(qtbot, signals, async_update, new_data)
     assert pydm_timeplot_curve_item._update_mode == PyDMTimePlot.OnValueChange
 
 
-@pytest.mark.parametrize("async_update, new_data", [(False, -10), (False, 10.2333), (True, 100), (True, -123.456)])
+@pytest.mark.parametrize(
+    "async_update, new_data",
+    [(False, -10), (False, 10.2333), (True, 100), (True, -123.456)],
+)
 def test_timeplotcurveitem_async_update(qtbot, signals, async_update, new_data):
     pydm_timeplot_curve_item = TimePlotCurveItem()
 
@@ -227,15 +258,22 @@ def test_timeplotcurveitem_async_update(qtbot, signals, async_update, new_data):
 
     pydm_timeplot_curve_item.setUpdatesAsynchronously(async_update)
 
-    signals.new_value_signal[type(new_data)].connect(pydm_timeplot_curve_item.receiveNewValue)
+    signals.new_value_signal[type(new_data)].connect(
+        pydm_timeplot_curve_item.receiveNewValue
+    )
     signals.new_value_signal[type(new_data)].emit(new_data)
 
-    signals.new_value_signal[type(new_data)].connect(pydm_timeplot_curve_item.asyncUpdate)
+    signals.new_value_signal[type(new_data)].connect(
+        pydm_timeplot_curve_item.asyncUpdate
+    )
     signals.new_value_signal[type(new_data)].emit(new_data)
 
     if async_update:
         assert np.array_equal(
-            pydm_timeplot_curve_item.data_buffer[1, pydm_timeplot_curve_item._bufferSize - 1], new_data
+            pydm_timeplot_curve_item.data_buffer[
+                1, pydm_timeplot_curve_item._bufferSize - 1
+            ],
+            new_data,
         )
         assert pydm_timeplot_curve_item.points_accumulated == 1
     else:
@@ -248,7 +286,9 @@ def test_timeplotcurve_initialize_buffer(qtbot):
     pydm_timeplot_curve_item.initialize_buffer()
 
     assert pydm_timeplot_curve_item.points_accumulated == 0
-    expected_data_buffer = np.zeros((2, pydm_timeplot_curve_item._bufferSize), order="f", dtype=float)
+    expected_data_buffer = np.zeros(
+        (2, pydm_timeplot_curve_item._bufferSize), order="f", dtype=float
+    )
     expected_data_buffer[0] = pydm_timeplot_curve_item.data_buffer[0]
 
     assert np.array_equal(expected_data_buffer, pydm_timeplot_curve_item.data_buffer)
@@ -263,7 +303,9 @@ def test_timeplotcurve_initialize_buffer(qtbot):
         (MINIMUM_BUFFER_SIZE + 1, MINIMUM_BUFFER_SIZE + 1),
     ],
 )
-def test_timeplotcurve_get_set_reset_buffer_size(qtbot, new_buffer_size, expected_set_buffer_size):
+def test_timeplotcurve_get_set_reset_buffer_size(
+    qtbot, new_buffer_size, expected_set_buffer_size
+):
     pydm_timeplot_curve_item = TimePlotCurveItem()
 
     assert pydm_timeplot_curve_item.getBufferSize() == MINIMUM_BUFFER_SIZE
@@ -278,12 +320,26 @@ def test_timeplotcurve_get_set_reset_buffer_size(qtbot, new_buffer_size, expecte
 def test_timeplotcurve_max_x(qtbot):
     pydm_timeplot_curve_item = TimePlotCurveItem()
 
-    pydm_timeplot_curve_item.data_buffer[0, pydm_timeplot_curve_item._bufferSize - 1] = -1
-    pydm_timeplot_curve_item.data_buffer[1, pydm_timeplot_curve_item._bufferSize - 1] = 100
+    pydm_timeplot_curve_item.data_buffer[
+        0, pydm_timeplot_curve_item._bufferSize - 1
+    ] = -1
+    pydm_timeplot_curve_item.data_buffer[
+        1, pydm_timeplot_curve_item._bufferSize - 1
+    ] = 100
 
     max_value = pydm_timeplot_curve_item.max_x()
-    assert max_value == pydm_timeplot_curve_item.data_buffer[0, pydm_timeplot_curve_item._bufferSize - 1]
-    assert pydm_timeplot_curve_item.data_buffer[1, pydm_timeplot_curve_item._bufferSize - 1] == 100
+    assert (
+        max_value
+        == pydm_timeplot_curve_item.data_buffer[
+            0, pydm_timeplot_curve_item._bufferSize - 1
+        ]
+    )
+    assert (
+        pydm_timeplot_curve_item.data_buffer[
+            1, pydm_timeplot_curve_item._bufferSize - 1
+        ]
+        == 100
+    )
 
 
 def test_timeaxisitem_tickstrings():
@@ -325,26 +381,38 @@ def test_redraw_plot(mocked_set_opts, mocked_set_data, qtbot, monkeypatch):
     # Setup some mock data for our data items
     line_item.data_buffer = np.array([[1, 5, 10], [10, 15, 12]], dtype=float)
     line_item.points_accumulated = 3
-    bar_item.data_buffer = np.array([[0.5, 1, 1.5, 2, 10, 11], [45, 50, 52, 40, 24, 30]], dtype=float)
+    bar_item.data_buffer = np.array(
+        [[0.5, 1, 1.5, 2, 10, 11], [45, 50, 52, 40, 24, 30]], dtype=float
+    )
     bar_item.points_accumulated = 6
 
     time_plot.set_needs_redraw()
     time_plot.plotItem.setXRange(1, 10)  # Sets the visible x-range of this time plot
 
-    monkeypatch.setattr(time_plot, "updateXAxis", lambda: None)  # Ensure the view box range is deterministic
+    monkeypatch.setattr(
+        time_plot, "updateXAxis", lambda: None
+    )  # Ensure the view box range is deterministic
 
     # Simulate a redraw of the plot
     time_plot.redrawPlot()
 
     # The line item should result in a call to set data displaying all available data points as defined above
-    assert np.array_equal(mocked_set_data.call_args_list[2][1]["x"], np.array([1, 5, 10]))
-    assert np.array_equal(mocked_set_data.call_args_list[2][1]["y"], np.array([10, 15, 12]))
+    assert np.array_equal(
+        mocked_set_data.call_args_list[2][1]["x"], np.array([1, 5, 10])
+    )
+    assert np.array_equal(
+        mocked_set_data.call_args_list[2][1]["y"], np.array([10, 15, 12])
+    )
 
     # Because we want to limit rendering of bar graphs to only those data points which are visible, we should
     # see a call made with only 4 of the 6 data points. The data points associated with the x values 0.5 and 11
     # were omitted since they fell outside the viewable range of 1 to 10.
-    assert np.array_equal(mocked_set_opts.call_args_list[1][1]["x"], np.array([1, 1.5, 2, 10]))
-    assert np.array_equal(mocked_set_opts.call_args_list[1][1]["height"], np.array([50, 52, 40, 24]))
+    assert np.array_equal(
+        mocked_set_opts.call_args_list[1][1]["x"], np.array([1, 1.5, 2, 10])
+    )
+    assert np.array_equal(
+        mocked_set_opts.call_args_list[1][1]["height"], np.array([50, 52, 40, 24])
+    )
 
     # After a call to redraw, the plot returns to this state until more data arrives
     assert not time_plot._needs_redraw

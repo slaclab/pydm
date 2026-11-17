@@ -169,9 +169,13 @@ class QScaleAlarmed(QScale):
 
         self._painter.setPen(Qt.black)
         self._painter.setBrush(self._minor_alarm_region_color)
-        lower_minor_alarm_width = self.calculate_position_for_value(self._lower_minor_alarm)
+        lower_minor_alarm_width = self.calculate_position_for_value(
+            self._lower_minor_alarm
+        )
 
-        upper_minor_alarm_start = self.calculate_position_for_value(self._upper_minor_alarm)
+        upper_minor_alarm_start = self.calculate_position_for_value(
+            self._upper_minor_alarm
+        )
         upper_minor_alarm_width = self._widget_width - upper_minor_alarm_start
         pointer_height = self._bg_size_rate * self._scale_height
         minor_alarm_height = self._bg_size_rate * self._widget_height - 2
@@ -179,7 +183,10 @@ class QScaleAlarmed(QScale):
         """
         sets the pen color to alarm if the value is in the lower minor alarm region
         """
-        if self._value <= self._lower_minor_alarm and self._value > self._lower_major_alarm:
+        if (
+            self._value <= self._lower_minor_alarm
+            and self._value > self._lower_major_alarm
+        ):
             self._painter.setBrush(self._minor_alarm_color)
         else:
             self._painter.setBrush(self._minor_alarm_region_color)
@@ -193,7 +200,10 @@ class QScaleAlarmed(QScale):
         """
         sets the pen color to alarm if the value is in the upper minor alarm region
         """
-        if self._value >= self._upper_minor_alarm and self._value < self._upper_major_alarm:
+        if (
+            self._value >= self._upper_minor_alarm
+            and self._value < self._upper_major_alarm
+        ):
             self._painter.setBrush(self._minor_alarm_color)
         else:
             self._painter.setBrush(self._minor_alarm_region_color)
@@ -212,9 +222,13 @@ class QScaleAlarmed(QScale):
 
         self._painter.setPen(Qt.black)
         self._painter.setBrush(self._major_alarm_region_color)
-        lower_major_alarm_width = self.calculate_position_for_value(self._lower_major_alarm)
+        lower_major_alarm_width = self.calculate_position_for_value(
+            self._lower_major_alarm
+        )
 
-        upper_major_alarm_start = self.calculate_position_for_value(self._upper_major_alarm)
+        upper_major_alarm_start = self.calculate_position_for_value(
+            self._upper_major_alarm
+        )
         upper_major_alarm_width = self._widget_width - upper_major_alarm_start
         pointer_height = self._bg_size_rate * self._scale_height
 
@@ -265,9 +279,13 @@ class QScaleAlarmed(QScale):
             return
         self.adjust_transformation()
         self._painter.begin(self)
-        self._painter.translate(0, self._painter_translation_y)  # Draw vertically if needed
+        self._painter.translate(
+            0, self._painter_translation_y
+        )  # Draw vertically if needed
         self._painter.rotate(self._painter_rotation)
-        self._painter.translate(self._painter_translation_x, 0)  # Invert appearance if needed
+        self._painter.translate(
+            self._painter_translation_x, 0
+        )  # Invert appearance if needed
         self._painter.scale(self._painter_scale_x, 1)
 
         self._painter.translate(0, self._flip_translation_y)  # Invert scale if needed
@@ -286,7 +304,9 @@ class QScaleAlarmed(QScale):
             self.draw_background()
         except Exception:
             if not self._cannot_draw_background_flag:
-                print("Error: PyDMAlalogIndicator can't draw background, check upper and lower limits")
+                print(
+                    "Error: PyDMAlalogIndicator can't draw background, check upper and lower limits"
+                )
             self._cannot_draw_background_flag = True
         else:
             self._cannot_draw_background_flag = False
@@ -295,7 +315,9 @@ class QScaleAlarmed(QScale):
                 self.draw_minor_alarm_region()
         except Exception:
             if not self._cannot_draw_minor_alarm_region_flag:
-                print("Error: PyDMAlalogIndicator can't draw minor alarm region, check minor alarm values and limits")
+                print(
+                    "Error: PyDMAlalogIndicator can't draw minor alarm region, check minor alarm values and limits"
+                )
                 self._cannot_draw_minor_alarm_region_flag = True
         else:
             self._cannot_draw_minor_alarm_region_flag = False
@@ -304,7 +326,9 @@ class QScaleAlarmed(QScale):
                 self.draw_major_alarm_region()
         except Exception:
             if not self._cannot_draw_major_alarm_region_flag:
-                print("Error: PyDMAlalogIndicator can't draw major alarm region, check major alarm values and limits")
+                print(
+                    "Error: PyDMAlalogIndicator can't draw major alarm region, check major alarm values and limits"
+                )
                 self._cannot_draw_major_alarm_region_flag = True
         else:
             self._cannot_draw_major_alarm_region_flag = False
@@ -434,7 +458,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         self._user_upper_major_alarm = 0
 
         self.value_label.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.setup_widgets_for_orientation(Qt.Horizontal, False, False, self._value_position)
+        self.setup_widgets_for_orientation(
+            Qt.Horizontal, False, False, self._value_position
+        )
         self.lower_label.hide()
         self.upper_label.hide()
 
@@ -447,8 +473,12 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
     def _grid_row_offset(self):
         return 1 if hasattr(self, "title_label") else 0
 
-    def setup_widgets_for_orientation(self, new_orientation, flipped, inverted, value_position):
-        super().setup_widgets_for_orientation(new_orientation, flipped, inverted, value_position)
+    def setup_widgets_for_orientation(
+        self, new_orientation, flipped, inverted, value_position
+    ):
+        super().setup_widgets_for_orientation(
+            new_orientation, flipped, inverted, value_position
+        )
         if hasattr(self, "title_label"):
             num_cols = self.widget_layout.columnCount()
             self.widget_layout.addWidget(self.title_label, 0, 0, 1, num_cols)
@@ -525,7 +555,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         self.scale_indicator.set_minor_alarm_region_color(color)
 
-    minorAlarmRegionColor = Property(QColor, readMinorAlarmRegionColor, setMinorAlarmRegionColor)
+    minorAlarmRegionColor = Property(
+        QColor, readMinorAlarmRegionColor, setMinorAlarmRegionColor
+    )
 
     def readMinorAlarmColor(self) -> QColor:
         """
@@ -565,7 +597,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         """
         self.scale_indicator.set_major_alarm_region_color(color)
 
-    majorAlarmRegionColor = Property(QColor, readMajorAlarmRegionColor, setMajorAlarmRegionColor)
+    majorAlarmRegionColor = Property(
+        QColor, readMajorAlarmRegionColor, setMajorAlarmRegionColor
+    )
 
     def readMajorAlarmColor(self) -> QColor:
         """
@@ -619,7 +653,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
                 self.scale_indicator.set_upper_minor_alarm(self._user_upper_minor_alarm)
             self.update_labels()
 
-    minorAlarmFromChannel = Property(bool, readMinorAlarmFromChannel, setMinorAlarmFromChannel)
+    minorAlarmFromChannel = Property(
+        bool, readMinorAlarmFromChannel, setMinorAlarmFromChannel
+    )
 
     def readUserUpperMinorAlarm(self) -> float:
         """
@@ -646,7 +682,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         self.scale_indicator.set_upper_minor_alarm(self._user_upper_minor_alarm)
         self.update_labels()
 
-    userUpperMinorAlarm = Property(float, readUserUpperMinorAlarm, setUserUpperMinorAlarm)
+    userUpperMinorAlarm = Property(
+        float, readUserUpperMinorAlarm, setUserUpperMinorAlarm
+    )
 
     def readUserLowerMinorAlarm(self) -> float:
         """
@@ -673,7 +711,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         self.scale_indicator.set_lower_minor_alarm(self._user_lower_minor_alarm)
         self.update_labels()
 
-    userLowerMinorAlarm = Property(float, readUserLowerMinorAlarm, setUserLowerMinorAlarm)
+    userLowerMinorAlarm = Property(
+        float, readUserLowerMinorAlarm, setUserLowerMinorAlarm
+    )
 
     def readMajorAlarmFromChannel(self) -> bool:
         """
@@ -711,7 +751,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
             self.scale_indicator.set_upper_major_alarm(self.upper_alarm_limit)
             self.update_labels()
 
-    majorAlarmFromChannel = Property(bool, readMajorAlarmFromChannel, setMajorAlarmFromChannel)
+    majorAlarmFromChannel = Property(
+        bool, readMajorAlarmFromChannel, setMajorAlarmFromChannel
+    )
 
     def readUserUpperMajorAlarm(self) -> float:
         """
@@ -737,7 +779,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         self._user_upper_major_alarm = value
         self.scale_indicator.set_upper_major_alarm(self._user_upper_major_alarm)
 
-    userUpperMajorAlarm = Property(float, readUserUpperMajorAlarm, setUserUpperMajorAlarm)
+    userUpperMajorAlarm = Property(
+        float, readUserUpperMajorAlarm, setUserUpperMajorAlarm
+    )
 
     def readUserLowerMajorAlarm(self) -> float:
         """
@@ -763,7 +807,9 @@ class PyDMAnalogIndicator(PyDMScaleIndicator):
         self._user_lower_major_alarm = value
         self.scale_indicator.set_lower_major_alarm(self._user_lower_major_alarm)
 
-    userLowerMajorAlarm = Property(float, readUserLowerMajorAlarm, setUserLowerMajorAlarm)
+    userLowerMajorAlarm = Property(
+        float, readUserLowerMajorAlarm, setUserLowerMajorAlarm
+    )
 
     # Two properties available on PyDMScaleIndicator we don't support for PyDMAnalogIndicator
     originAtZero = Property(bool, None, None, designable=False)

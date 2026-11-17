@@ -145,7 +145,9 @@ def test_rules_ok(qtbot, caplog):
     assert not widget.isVisible()
 
 
-@pytest.mark.parametrize("use_enum, visible", [(None, True), (True, True), (False, False)])
+@pytest.mark.parametrize(
+    "use_enum, visible", [(None, True), (True, True), (False, False)]
+)
 def test_rules_enums(use_enum, visible, qtbot, caplog):
     """
     Test the rules mechanism with enums.

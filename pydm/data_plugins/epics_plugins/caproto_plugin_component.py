@@ -55,7 +55,11 @@ class Connection(PyDMConnection):
         self._lower_warning_limit = None
         self._timestamp = None
 
-        monitor_mask = SubscriptionType.DBE_VALUE | SubscriptionType.DBE_ALARM | SubscriptionType.DBE_PROPERTY
+        monitor_mask = (
+            SubscriptionType.DBE_VALUE
+            | SubscriptionType.DBE_ALARM
+            | SubscriptionType.DBE_PROPERTY
+        )
         self.pv = epics.get_pv(
             pv,
             connection_callback=self.send_connection_state,
@@ -80,7 +84,16 @@ class Connection(PyDMConnection):
         self._lower_warning_limit = None
         self._timestamp = None
 
-    def send_new_value(self, value=None, char_value=None, count=None, typefull=None, type=None, *args, **kws):
+    def send_new_value(
+        self,
+        value=None,
+        char_value=None,
+        count=None,
+        typefull=None,
+        type=None,
+        *args,
+        **kws,
+    ):
         self.update_ctrl_vars(**kws)
 
         if value is not None and not np.array_equal(value, self._value):
@@ -141,16 +154,28 @@ class Connection(PyDMConnection):
         if lower_ctrl_limit is not None and self._lower_ctrl_limit != lower_ctrl_limit:
             self._lower_ctrl_limit = lower_ctrl_limit
             self.lower_ctrl_limit_signal.emit(lower_ctrl_limit)
-        if upper_alarm_limit is not None and self._upper_alarm_limit != upper_alarm_limit:
+        if (
+            upper_alarm_limit is not None
+            and self._upper_alarm_limit != upper_alarm_limit
+        ):
             self._upper_alarm_limit = upper_alarm_limit
             self.upper_alarm_limit_signal.emit(upper_alarm_limit)
-        if lower_alarm_limit is not None and self._lower_alarm_limit != lower_alarm_limit:
+        if (
+            lower_alarm_limit is not None
+            and self._lower_alarm_limit != lower_alarm_limit
+        ):
             self._lower_alarm_limit = lower_alarm_limit
             self.lower_alarm_limit_signal.emit(lower_alarm_limit)
-        if upper_warning_limit is not None and self._upper_warning_limit != upper_warning_limit:
+        if (
+            upper_warning_limit is not None
+            and self._upper_warning_limit != upper_warning_limit
+        ):
             self._upper_warning_limit = upper_warning_limit
             self.upper_warning_limit_signal.emit(upper_warning_limit)
-        if lower_warning_limit is not None and self._lower_warning_limit != lower_warning_limit:
+        if (
+            lower_warning_limit is not None
+            and self._lower_warning_limit != lower_warning_limit
+        ):
             self._lower_warning_limit = lower_warning_limit
             self.lower_warning_limit_signal.emit(lower_warning_limit)
         if timestamp is not None and self._timestamp != timestamp:
@@ -191,7 +216,12 @@ class Connection(PyDMConnection):
             try:
                 self.pv.put(new_val)
             except Exception as e:
-                logger.exception("Unable to put %s to %s.  Exception: %s", new_val, self.pv.pvname, str(e))
+                logger.exception(
+                    "Unable to put %s to %s.  Exception: %s",
+                    new_val,
+                    self.pv.pvname,
+                    str(e),
+                )
 
     def add_listener(self, channel):
         super().add_listener(channel)
@@ -206,7 +236,9 @@ class Connection(PyDMConnection):
         if channel.value_signal is not None:
             for signal_type in (str, int, float, np.ndarray):
                 try:
-                    channel.value_signal[signal_type].connect(self.put_value, Qt.QueuedConnection)
+                    channel.value_signal[signal_type].connect(
+                        self.put_value, Qt.QueuedConnection
+                    )
                 # When signal type can't be found, PyQt5 throws KeyError here, but PySide6 index error.
                 # If signal type exists but doesn't match the slot, TypeError gets thrown.
                 except (KeyError, IndexError, TypeError):

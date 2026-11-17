@@ -157,7 +157,9 @@ class PyDMApplication(QApplication):
         return super().exec_()
 
     def is_read_only(self):
-        warnings.warn("'PyDMApplication.is_read_only' is deprecated, use 'pydm.data_plugins.is_read_only' instead.")
+        warnings.warn(
+            "'PyDMApplication.is_read_only' is deprecated, use 'pydm.data_plugins.is_read_only' instead."
+        )
         return data_plugins.is_read_only()
 
     @Slot()
@@ -168,8 +170,13 @@ class PyDMApplication(QApplication):
         with self.perf.oneshot():
             total_percent = self.perf.cpu_percent(interval=None)
             total_time = sum(self.perf.cpu_times())
-            usage = [total_percent * ((t.system_time + t.user_time) / total_time) for t in self.perf.threads()]
-        print("Total: {tot}, Per Thread: {percpu}".format(tot=total_percent, percpu=usage))
+            usage = [
+                total_percent * ((t.system_time + t.user_time) / total_time)
+                for t in self.perf.threads()
+            ]
+        print(
+            "Total: {tot}, Per Thread: {percpu}".format(tot=total_percent, percpu=usage)
+        )
 
     def new_pydm_process(self, ui_file, macros=None, command_line_args=None):
         """
@@ -205,7 +212,10 @@ class PyDMApplication(QApplication):
                 # Not in the PATH and no ENV VAR pointing to it...
                 # Let's try the script folder...
                 pydm_display_app_path = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "..", "pydm_launcher", "main.py"
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "..",
+                    "pydm_launcher",
+                    "main.py",
                 )
 
         args = [pydm_display_app_path]
@@ -227,7 +237,12 @@ class PyDMApplication(QApplication):
             args.extend(["--homefile", self.home_file])
         if macros is not None:
             args.extend(["-m", json.dumps(macros)])
-        args.extend(["--log_level", logging.getLevelName(logging.getLogger("").getEffectiveLevel())])
+        args.extend(
+            [
+                "--log_level",
+                logging.getLevelName(logging.getLogger("").getEffectiveLevel()),
+            ]
+        )
         args.append(filepath)
         args.extend(self.display_args)
         args.extend(filepath_args)
@@ -236,7 +251,12 @@ class PyDMApplication(QApplication):
         subprocess.Popen(args, shell=False)
 
     def make_main_window(
-        self, stylesheet_path=None, home_file=None, macros=None, recursive_display_search=False, command_line_args=None
+        self,
+        stylesheet_path=None,
+        home_file=None,
+        macros=None,
+        recursive_display_search=False,
+        command_line_args=None,
     ):
         """
         Instantiate a new PyDMMainWindow, add it to the application's
@@ -290,7 +310,9 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        warnings.warn("'PyDMApplication.add_connection' is deprecated, use PyDMConnection.connect()")
+        warnings.warn(
+            "'PyDMApplication.add_connection' is deprecated, use PyDMConnection.connect()"
+        )
         channel.connect()
 
     def remove_connection(self, channel):
@@ -301,15 +323,21 @@ class PyDMApplication(QApplication):
         ----------
         channel : PyDMChannel
         """
-        warnings.warn("'PyDMApplication.remove_connection' is deprecated, use PyDMConnection.disconnect()")
+        warnings.warn(
+            "'PyDMApplication.remove_connection' is deprecated, use PyDMConnection.disconnect()"
+        )
         channel.disconnect()
 
     def eventFilter(self, obj, event):
-        warnings.warn("'PyDMApplication.eventFilter' is deprecated,  this function is now found on PyDMWidget")
+        warnings.warn(
+            "'PyDMApplication.eventFilter' is deprecated,  this function is now found on PyDMWidget"
+        )
         obj.eventFilter(obj, event)
 
     def show_address_tooltip(self, obj, event):
-        warnings.warn("'PyDMApplication.show_address_tooltip' is deprecated,  this function is now found on PyDMWidget")
+        warnings.warn(
+            "'PyDMApplication.show_address_tooltip' is deprecated,  this function is now found on PyDMWidget"
+        )
         obj.show_address_tooltip(event)
 
     def establish_widget_connections(self, widget):

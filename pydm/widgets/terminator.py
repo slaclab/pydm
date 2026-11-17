@@ -202,7 +202,11 @@ class PyDMTerminator(QLabel, PyDMPrimitiveWidget):
             self._window.close()
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Warning)
-            msg.setText("Your window was closed due to inactivity for {}.".format(self._get_time_text(self.timeout)))
+            msg.setText(
+                "Your window was closed due to inactivity for {}.".format(
+                    self._get_time_text(self.timeout)
+                )
+            )
             msg.setStandardButtons(QMessageBox.Ok)
             msg.setDefaultButton(QMessageBox.Ok)
             msg.exec_()

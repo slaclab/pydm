@@ -1,7 +1,9 @@
 import os
 from pydm.widgets import PyDMSlider, PyDMTemplateRepeater
 
-test_template_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../test_data", "template.ui")
+test_template_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), "../test_data", "template.ui"
+)
 
 
 def test_template_file(qtbot):

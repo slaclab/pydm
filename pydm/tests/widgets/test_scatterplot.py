@@ -3,7 +3,11 @@ import logging
 import numpy as np
 from collections import OrderedDict
 from pydm.widgets.channel import PyDMChannel
-from pydm.widgets.scatterplot import ScatterPlotCurveItem, MINIMUM_BUFFER_SIZE, DEFAULT_BUFFER_SIZE
+from pydm.widgets.scatterplot import (
+    ScatterPlotCurveItem,
+    MINIMUM_BUFFER_SIZE,
+    DEFAULT_BUFFER_SIZE,
+)
 from pydm.utilities import remove_protocol
 
 logger = logging.getLogger(__name__)
@@ -17,21 +21,43 @@ logger = logging.getLogger(__name__)
         ("ca://test_value:FloatY", "ca://test_value:FloatX", None, None, None),
         ("", "", None, None, None),
         (None, None, None, None, None),
-        ("ca://test_value:FloatY", "ca://test_value:FloatX", ScatterPlotCurveItem.REDRAW_ON_BOTH, None, ""),
-        ("ca://test_value:FloatY", "ca://test_value:FloatX", None, "ca://test_value:Int", "test_name"),
+        (
+            "ca://test_value:FloatY",
+            "ca://test_value:FloatX",
+            ScatterPlotCurveItem.REDRAW_ON_BOTH,
+            None,
+            "",
+        ),
+        (
+            "ca://test_value:FloatY",
+            "ca://test_value:FloatX",
+            None,
+            "ca://test_value:Int",
+            "test_name",
+        ),
     ],
 )
-def test_scatterplotcurveitem_construct(qtbot, y_addr, x_addr, redraw_mode, bufferSizeChannelAddress, name):
+def test_scatterplotcurveitem_construct(
+    qtbot, y_addr, x_addr, redraw_mode, bufferSizeChannelAddress, name
+):
     plot_curve_item = ScatterPlotCurveItem(
-        y_addr, x_addr, redraw_mode=redraw_mode, bufferSizeChannelAddress=bufferSizeChannelAddress, name=name
+        y_addr,
+        x_addr,
+        redraw_mode=redraw_mode,
+        bufferSizeChannelAddress=bufferSizeChannelAddress,
+        name=name,
     )
     assert plot_curve_item is not None
     assert isinstance(plot_curve_item, ScatterPlotCurveItem)
 
     assert plot_curve_item._bufferSize == DEFAULT_BUFFER_SIZE
-    assert plot_curve_item.redraw_mode == redraw_mode or ScatterPlotCurveItem.REDRAW_ON_EITHER
+    assert (
+        plot_curve_item.redraw_mode == redraw_mode
+        or ScatterPlotCurveItem.REDRAW_ON_EITHER
+    )
     assert np.array_equal(
-        plot_curve_item.data_buffer, np.zeros((2, plot_curve_item._bufferSize), order="f", dtype=float)
+        plot_curve_item.data_buffer,
+        np.zeros((2, plot_curve_item._bufferSize), order="f", dtype=float),
     )
     for item in "x_connected y_connected bufferSizeChannel_connected".split():
         assert getattr(plot_curve_item, item) is False
@@ -58,13 +84,31 @@ def test_scatterplotcurveitem_construct(qtbot, y_addr, x_addr, redraw_mode, buff
         ("ca://test_value:FloatY", "ca://test_value:FloatX", None, None, None),
         ("", "", None, None, None),
         (None, None, None, None, None),
-        ("ca://test_value:FloatY", "ca://test_value:FloatX", ScatterPlotCurveItem.REDRAW_ON_BOTH, None, ""),
-        ("ca://test_value:FloatY", "ca://test_value:FloatX", None, "ca://test_value:Int", "test_name"),
+        (
+            "ca://test_value:FloatY",
+            "ca://test_value:FloatX",
+            ScatterPlotCurveItem.REDRAW_ON_BOTH,
+            None,
+            "",
+        ),
+        (
+            "ca://test_value:FloatY",
+            "ca://test_value:FloatX",
+            None,
+            "ca://test_value:Int",
+            "test_name",
+        ),
     ],
 )
-def test_scatterplotcurveitem_to_dict(qtbot, y_addr, x_addr, redraw_mode, bufferSizeChannelAddress, name):
+def test_scatterplotcurveitem_to_dict(
+    qtbot, y_addr, x_addr, redraw_mode, bufferSizeChannelAddress, name
+):
     plot_curve_item = ScatterPlotCurveItem(
-        y_addr, x_addr, redraw_mode=redraw_mode, bufferSizeChannelAddress=bufferSizeChannelAddress, name=name
+        y_addr,
+        x_addr,
+        redraw_mode=redraw_mode,
+        bufferSizeChannelAddress=bufferSizeChannelAddress,
+        name=name,
     )
 
     dictionary = plot_curve_item.to_dict()
@@ -83,7 +127,9 @@ def test_scatterplotcurveitem_to_dict(qtbot, y_addr, x_addr, redraw_mode, buffer
 
 @pytest.mark.parametrize("new_address", ["new_address", "", None])
 def test_scatterplotcurveitem_properties_and_setters(qtbot, new_address):
-    plot_curve_item = ScatterPlotCurveItem(new_address, new_address, bufferSizeChannelAddress=new_address)
+    plot_curve_item = ScatterPlotCurveItem(
+        new_address, new_address, bufferSizeChannelAddress=new_address
+    )
 
     assert plot_curve_item.x_address in (None, new_address)
     assert plot_curve_item.y_address in (None, new_address)
@@ -129,7 +175,9 @@ def test_scatterplotcurveitem_receive_values(qtbot, signals, redraw_mode, new_da
 
     plot_curve_item = ScatterPlotCurveItem(None, None, redraw_mode=redraw_mode)
 
-    expected_data_buffer = np.zeros((2, plot_curve_item._bufferSize), order="f", dtype=float)
+    expected_data_buffer = np.zeros(
+        (2, plot_curve_item._bufferSize), order="f", dtype=float
+    )
     expected_data_buffer[0] = plot_curve_item.data_buffer[0]
     assert np.array_equal(expected_data_buffer, plot_curve_item.data_buffer)
 
@@ -187,7 +235,9 @@ def test_scatterplotcurve_initialize_buffer(qtbot):
     plot_curve_item.initialize_buffer()
 
     assert plot_curve_item.points_accumulated == 0
-    expected_data_buffer = np.zeros((2, plot_curve_item._bufferSize), order="f", dtype=float)
+    expected_data_buffer = np.zeros(
+        (2, plot_curve_item._bufferSize), order="f", dtype=float
+    )
     expected_data_buffer[0] = plot_curve_item.data_buffer[0]
 
     assert np.array_equal(expected_data_buffer, plot_curve_item.data_buffer)
@@ -202,7 +252,9 @@ def test_scatterplotcurve_initialize_buffer(qtbot):
         (MINIMUM_BUFFER_SIZE + 1, MINIMUM_BUFFER_SIZE + 1),
     ],
 )
-def test_scatterplotcurve_get_set_reset_buffer_size(qtbot, new_buffer_size, expected_set_buffer_size):
+def test_scatterplotcurve_get_set_reset_buffer_size(
+    qtbot, new_buffer_size, expected_set_buffer_size
+):
     plot_curve_item = ScatterPlotCurveItem(None, None)
 
     assert plot_curve_item.getBufferSize() == DEFAULT_BUFFER_SIZE
@@ -222,7 +274,9 @@ def test_scatterplotcurve_get_set_reset_buffer_size(qtbot, new_buffer_size, expe
         ("ca://test_value:Int", None, DEFAULT_BUFFER_SIZE),
     ],
 )
-def test_scatterplotcurve_get_set_reset_buffer_size_channel_addr(qtbot, addr, new_size, expected_buffer_size):
+def test_scatterplotcurve_get_set_reset_buffer_size_channel_addr(
+    qtbot, addr, new_size, expected_buffer_size
+):
     plot_curve_item = ScatterPlotCurveItem(None, None, bufferSizeChannelAddress=addr)
 
     assert plot_curve_item.getBufferSize() == DEFAULT_BUFFER_SIZE

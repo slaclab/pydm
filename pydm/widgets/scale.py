@@ -1,6 +1,14 @@
 from .base import PyDMWidget, TextFormatter, PostParentClassInitSetup
 from qtpy.QtGui import QColor, QPolygon, QPen, QPainter, QPaintEvent
-from qtpy.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QWidget, QGridLayout
+from qtpy.QtWidgets import (
+    QFrame,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLabel,
+    QSizePolicy,
+    QWidget,
+    QGridLayout,
+)
 from qtpy.QtCore import Qt, QPoint
 from typing import Optional
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
@@ -190,9 +198,13 @@ class QScale(QFrame):
         """
         self.adjust_transformation()
         self._painter.begin(self)
-        self._painter.translate(0, self._painter_translation_y)  # Draw vertically if needed
+        self._painter.translate(
+            0, self._painter_translation_y
+        )  # Draw vertically if needed
         self._painter.rotate(self._painter_rotation)
-        self._painter.translate(self._painter_translation_x, 0)  # Invert appearance if needed
+        self._painter.translate(
+            self._painter_translation_x, 0
+        )  # Invert appearance if needed
         self._painter.scale(self._painter_scale_x, 1)
 
         self._painter.translate(0, self._flip_translation_y)  # Invert scale if needed
@@ -218,7 +230,9 @@ class QScale(QFrame):
         ):
             proportion = -1  # Invalid
         else:
-            proportion = (value - self._lower_limit) / (self._upper_limit - self._lower_limit)
+            proportion = (value - self._lower_limit) / (
+                self._upper_limit - self._lower_limit
+            )
 
         position = int(proportion * self._widget_width)
         return position
@@ -355,7 +369,11 @@ class QScale(QFrame):
         return self._num_divisions
 
     def set_num_divisions(self, divisions: int) -> None:
-        if isinstance(divisions, int) and divisions > 0 and self._num_divisions != divisions:
+        if (
+            isinstance(divisions, int)
+            and divisions > 0
+            and self._num_divisions != divisions
+        ):
             self._num_divisions = divisions
             self.repaint()
 
@@ -391,7 +409,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         The channel to be used by the widget.
     """
 
-    def __init__(self, parent: Optional[QWidget] = None, init_channel: Optional[str] = None) -> None:
+    def __init__(
+        self, parent: Optional[QWidget] = None, init_channel: Optional[str] = None
+    ) -> None:
         QFrame.__init__(self, parent)
         PyDMWidget.__init__(self, init_channel=init_channel)
         self._show_value = True
@@ -412,7 +432,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         self._user_upper_limit = 0
 
         self.value_label.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.setup_widgets_for_orientation(Qt.Horizontal, False, False, self._value_position)
+        self.setup_widgets_for_orientation(
+            Qt.Horizontal, False, False, self._value_position
+        )
         # Execute setup calls that must be done here in the widget class's __init__,
         # and after it's parent __init__ calls have completed.
         # (so we can avoid pyside6 throwing an error, see func def for more info)
@@ -475,7 +497,11 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
             self.update_labels()
 
     def setup_widgets_for_orientation(
-        self, new_orientation: Qt.Orientation, flipped: bool, inverted: bool, value_position: Qt.Edge
+        self,
+        new_orientation: Qt.Orientation,
+        flipped: bool,
+        inverted: bool,
+        value_position: Qt.Edge,
     ) -> None:
         """
         Reconstruct the widget given the orientation.
@@ -556,7 +582,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
 
         elif new_orientation == Qt.Vertical or new_orientation == 2:
             self.limits_layout = QVBoxLayout()
-            if (value_position == Qt.RightEdge and not flipped) or (value_position == Qt.LeftEdge and flipped):
+            if (value_position == Qt.RightEdge and not flipped) or (
+                value_position == Qt.LeftEdge and flipped
+            ):
                 add_value_between_limits = True
             else:
                 add_value_between_limits = False
@@ -735,7 +763,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         if isinstance(orientation, int):
             orientation = Qt.Orientation(orientation)
         self.scale_indicator.set_orientation(orientation)
-        self.setup_widgets_for_orientation(orientation, self.flipScale, self.invertedAppearance, self._value_position)
+        self.setup_widgets_for_orientation(
+            orientation, self.flipScale, self.invertedAppearance, self._value_position
+        )
 
     orientation = Property(Qt.Orientation, readOrientation, setOrientation)
 
@@ -758,7 +788,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         checked : bool
         """
         self.scale_indicator.set_flip_scale(checked)
-        self.setup_widgets_for_orientation(self.orientation, checked, self.invertedAppearance, self._value_position)
+        self.setup_widgets_for_orientation(
+            self.orientation, checked, self.invertedAppearance, self._value_position
+        )
 
     flipScale = Property(bool, readFlipScale, setFlipScale)
 
@@ -781,7 +813,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         inverted : bool
         """
         self.scale_indicator.set_inverted_appearance(inverted)
-        self.setup_widgets_for_orientation(self.orientation, self.flipScale, inverted, self._value_position)
+        self.setup_widgets_for_orientation(
+            self.orientation, self.flipScale, inverted, self._value_position
+        )
 
     invertedAppearance = Property(bool, readInvertedAppearance, setInvertedAppearance)
 
@@ -988,7 +1022,9 @@ class PyDMScaleIndicator(QFrame, TextFormatter, PyDMWidget):
         if isinstance(position, int):
             position = Qt.Edge(position)
         self._value_position = position
-        self.setup_widgets_for_orientation(self.orientation, self.flipScale, self.invertedAppearance, position)
+        self.setup_widgets_for_orientation(
+            self.orientation, self.flipScale, self.invertedAppearance, position
+        )
 
     valuePosition = Property(Qt.Edge, readValuePosition, setValuePosition)
 

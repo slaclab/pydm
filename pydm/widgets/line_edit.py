@@ -146,7 +146,10 @@ class PyDMLineEdit(*_PyDMLineEditBases):
                 if scale is None or scale == 0:
                     scale = 1.0
 
-                if self._display_format_type in [DisplayFormat.Default, DisplayFormat.String]:
+                if self._display_format_type in [
+                    DisplayFormat.Default,
+                    DisplayFormat.String,
+                ]:
                     if self.channeltype == float:
                         num_value = locale.atof(send_value)
                     else:
@@ -156,7 +159,10 @@ class PyDMLineEdit(*_PyDMLineEditBases):
                     num_value = int(send_value, 16)
                 elif self._display_format_type == DisplayFormat.Binary:
                     num_value = int(send_value, 2)
-                elif self._display_format_type in [DisplayFormat.Exponential, DisplayFormat.Decimal]:
+                elif self._display_format_type in [
+                    DisplayFormat.Exponential,
+                    DisplayFormat.Decimal,
+                ]:
                     num_value = locale.atof(send_value)
 
                 num_value = self.channeltype(num_value / scale)
@@ -167,7 +173,16 @@ class PyDMLineEdit(*_PyDMLineEditBases):
                     self.send_value_signal[str].emit(send_value)
                 else:
                     arr_value = list(
-                        filter(None, ast.literal_eval(str(shlex.split(send_value.replace("[", "").replace("]", "")))))
+                        filter(
+                            None,
+                            ast.literal_eval(
+                                str(
+                                    shlex.split(
+                                        send_value.replace("[", "").replace("]", "")
+                                    )
+                                )
+                            ),
+                        )
                     )
                     arr_value = np.array(arr_value, dtype=self.subtype)
                     self.send_value_signal[np.ndarray].emit(arr_value)
@@ -185,7 +200,10 @@ class PyDMLineEdit(*_PyDMLineEditBases):
         except ValueError:
             logger.exception(
                 "Error trying to set data '{0}' with type '{1}' and format '{2}' at widget '{3}'.".format(
-                    self.text(), self.channeltype, self._display_format_type, self.objectName()
+                    self.text(),
+                    self.channeltype,
+                    self._display_format_type,
+                    self.objectName(),
                 )
             )
 
@@ -194,7 +212,9 @@ class PyDMLineEdit(*_PyDMLineEditBases):
 
     def setReadOnly(self, readOnly):
         self._user_set_read_only = readOnly
-        super().setReadOnly(True if self._user_set_read_only else not self._write_access)
+        super().setReadOnly(
+            True if self._user_set_read_only else not self._write_access
+        )
 
     def write_access_changed(self, new_write_access):
         """
@@ -251,7 +271,9 @@ class PyDMLineEdit(*_PyDMLineEditBases):
             String name of desired units
         """
         if not self._unit:
-            logger.warning("Warning: Attempting to convert PyDMLineEdit unit, but no initial units supplied.")
+            logger.warning(
+                "Warning: Attempting to convert PyDMLineEdit unit, but no initial units supplied."
+            )
             return None
 
         scale = utilities.convert(str(self._unit), unit)
@@ -350,7 +372,8 @@ class PyDMLineEdit(*_PyDMLineEditBases):
         connected long enough to receive a value, then the widget never loads the initial text from the PV.
         """
         if not self._has_displayed_value_yet and (
-            event.reason() == Qt.ActiveWindowFocusReason or event.reason() == Qt.TabFocusReason
+            event.reason() == Qt.ActiveWindowFocusReason
+            or event.reason() == Qt.TabFocusReason
         ):
             # Clearing focus ensures that the widget will display the value for the PV
             self.clearFocus()

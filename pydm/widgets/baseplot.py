@@ -140,7 +140,9 @@ class BasePlotCurveItem(PlotDataItem):
         self.bar_graph_item = None
 
         if hasattr(self, "channels"):
-            self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
+            self.destroyed.connect(
+                functools.partial(widget_destroyed, self.channels, weakref.ref(self))
+            )
 
     @property
     def color_string(self) -> str:
@@ -153,7 +155,9 @@ class BasePlotCurveItem(PlotDataItem):
         -------
         str
         """
-        return str(utilities.colors.svg_color_from_hex(self.color.name(), hex_on_fail=True))
+        return str(
+            utilities.colors.svg_color_from_hex(self.color.name(), hex_on_fail=True)
+        )
 
     @color_string.setter
     def color_string(self, new_color_string: str) -> None:
@@ -210,7 +214,11 @@ class BasePlotCurveItem(PlotDataItem):
         -------
         str
         """
-        return str(utilities.colors.svg_color_from_hex(self.threshold_color.name(), hex_on_fail=True))
+        return str(
+            utilities.colors.svg_color_from_hex(
+                self.threshold_color.name(), hex_on_fail=True
+            )
+        )
 
     @property
     def threshold_color(self) -> QColor:
@@ -630,7 +638,9 @@ class BasePlotAxisItem(AxisItem):
             axis = ViewBox.YAxis
         elif self.orientation == "top" or self.orientation == "bottom":
             axis = ViewBox.XAxis
-        return bool(self.linkedView().autoRangeEnabled()[axis])  # ViewBox axes map to 0 and 1
+        return bool(
+            self.linkedView().autoRangeEnabled()[axis]
+        )  # ViewBox axes map to 0 and 1
 
     @auto_range.setter
     def auto_range(self, auto_range: bool) -> None:
@@ -862,7 +872,9 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         """
 
         if curve_color is None:
-            curve_color = utilities.colors.default_colors[len(self._curves) % len(utilities.colors.default_colors)]
+            curve_color = utilities.colors.default_colors[
+                len(self._curves) % len(utilities.colors.default_colors)
+            ]
             plot_data_item.color_string = curve_color
 
         self._curves.append(plot_data_item)
@@ -870,10 +882,14 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
         if y_axis_name is None:
             if utilities.is_qt_designer():
                 # If we are just in designer, add an axis that will not conflict with the pyqtgraph default
-                self.addAxis(plot_data_item=plot_data_item, name="Axis 1", orientation="left")
+                self.addAxis(
+                    plot_data_item=plot_data_item, name="Axis 1", orientation="left"
+                )
             # If not in designer and the user did not name the axis, use the pyqtgraph default one named left
             elif "left" not in self.plotItem.axes:
-                self.addAxis(plot_data_item=plot_data_item, name="left", orientation="left")
+                self.addAxis(
+                    plot_data_item=plot_data_item, name="left", orientation="left"
+                )
             else:
                 self.plotItem.linkDataToAxis(plot_data_item, "left")
         elif y_axis_name in self.plotItem.axes:
@@ -1500,7 +1516,11 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
     maxRedrawRate = Property(int, readMaxRedrawRate, setMaxRedrawRate)
 
     def pausePlotting(self) -> bool:
-        (self.redraw_timer.stop() if self.redraw_timer.isActive() else self.redraw_timer.start())
+        (
+            self.redraw_timer.stop()
+            if self.redraw_timer.isActive()
+            else self.redraw_timer.start()
+        )
         return self.redraw_timer.isActive()
 
     def mouseMoved(self, evt: Any) -> None:
@@ -1538,7 +1558,8 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
             if (
                 self.vertical_crosshair_line.pos().x() != mouse_point_in_primary.x()
-                or self.horizontal_crosshair_line.pos().y() != mouse_point_in_primary.y()
+                or self.horizontal_crosshair_line.pos().y()
+                != mouse_point_in_primary.y()
             ):
                 self.vertical_crosshair_line.setPos(mouse_point_in_primary.x())
                 self.horizontal_crosshair_line.setPos(mouse_point_in_primary.y())
@@ -1597,10 +1618,16 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                 starting_y_pos = (view_y_min + view_y_max) / 2
 
             self.vertical_crosshair_line = InfiniteLine(
-                pos=starting_x_pos, angle=vertical_angle, movable=vertical_movable, pen=mkPen("y")
+                pos=starting_x_pos,
+                angle=vertical_angle,
+                movable=vertical_movable,
+                pen=mkPen("y"),
             )
             self.horizontal_crosshair_line = InfiniteLine(
-                pos=starting_y_pos, angle=horizontal_angle, movable=horizontal_movable, pen=mkPen("y")
+                pos=starting_y_pos,
+                angle=horizontal_angle,
+                movable=horizontal_movable,
+                pen=mkPen("y"),
             )
 
             self.vertical_crosshair_line.setVisible(True)
@@ -1634,7 +1661,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             if self.horizontal_crosshair_line in self.plotItem.items:
                 self.plotItem.removeItem(self.horizontal_crosshair_line)
 
-            if hasattr(self, "crosshair_movement_proxy") and self.crosshair_movement_proxy:
+            if (
+                hasattr(self, "crosshair_movement_proxy")
+                and self.crosshair_movement_proxy
+            ):
                 proxy = self.crosshair_movement_proxy
                 proxy.block = True
                 try:
@@ -1663,7 +1693,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
 
             if item not in self.textItems:
                 label: TextItem = TextItem(
-                    text="No data", color="w", border=mkPen(color="w", width=2), fill=mkBrush(0, 0, 0, 150)
+                    text="No data",
+                    color="w",
+                    border=mkPen(color="w", width=2),
+                    fill=mkBrush(0, 0, 0, 150),
                 )
 
                 label.setPos(0, 0)
@@ -1690,7 +1723,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
             for curve, label in self.textItems.items():
                 label.hide()
 
-                if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.plotItem.axes:
+                if (
+                    hasattr(curve, "y_axis_name")
+                    and curve.y_axis_name in self.plotItem.axes
+                ):
                     curve_vb = self.plotItem.getViewBoxForAxis(curve.y_axis_name)
                     if label in curve_vb.addedItems:
                         curve_vb.removeItem(label)
@@ -1731,7 +1767,10 @@ class BasePlot(PlotWidget, PyDMPrimitiveWidget):
                 label.hide()
                 continue
 
-            if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.plotItem.axes:
+            if (
+                hasattr(curve, "y_axis_name")
+                and curve.y_axis_name in self.plotItem.axes
+            ):
                 curve_vb = self.plotItem.getViewBoxForAxis(curve.y_axis_name)
             else:
                 curve_vb = self.getViewBox()

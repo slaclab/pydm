@@ -20,7 +20,12 @@ def generate_control_variables(value):
     """Generate some set values for control variables to test against"""
     return {
         "value": value,
-        "valueAlarm": {"lowAlarmLimit": 2, "lowWarningLimit": 3, "highAlarmLimit": 10, "highWarningLimit": 8},
+        "valueAlarm": {
+            "lowAlarmLimit": 2,
+            "lowWarningLimit": 3,
+            "highAlarmLimit": 10,
+            "highWarningLimit": 8,
+        },
         "alarm": {"severity": 0},
         "display": {"units": "mV"},
         "control": {"limitLow": 1, "limitHigh": 11},
@@ -30,11 +35,34 @@ def generate_control_variables(value):
 @pytest.mark.parametrize(
     "value_to_send, has_ctrl_vars, expected_value_to_receive, expected_signal_count",
     [
-        (NTScalar("i", display=True, control=True, valueAlarm=True).wrap(generate_control_variables(5)), True, 5, 9),
-        (NTScalar("b", display=True, control=True, valueAlarm=True).wrap(generate_control_variables(1)), True, 1, 9),
-        (NTScalar("h", display=True, control=True, valueAlarm=True).wrap(generate_control_variables(2)), True, 2, 9),
         (
-            NTScalar("f", display=True, control=True, valueAlarm=True).wrap(generate_control_variables(7.0)),
+            NTScalar("i", display=True, control=True, valueAlarm=True).wrap(
+                generate_control_variables(5)
+            ),
+            True,
+            5,
+            9,
+        ),
+        (
+            NTScalar("b", display=True, control=True, valueAlarm=True).wrap(
+                generate_control_variables(1)
+            ),
+            True,
+            1,
+            9,
+        ),
+        (
+            NTScalar("h", display=True, control=True, valueAlarm=True).wrap(
+                generate_control_variables(2)
+            ),
+            True,
+            2,
+            9,
+        ),
+        (
+            NTScalar("f", display=True, control=True, valueAlarm=True).wrap(
+                generate_control_variables(7.0)
+            ),
             True,
             7.0,
             9,
@@ -43,7 +71,12 @@ def generate_control_variables(value):
         (NTScalar("ai").wrap({"value": [1, 2, 4]}), False, [1, 2, 4], 1),
         (NTScalar("ab").wrap({"value": [6, 7, 8]}), False, [6, 7, 8], 1),
         (NTScalar("ah").wrap({"value": [10, 11, 12]}), False, [10, 11, 12], 1),
-        (NTScalar("af").wrap({"value": [5.0, 6.0, 7.0, 8.0]}), False, [5.0, 6.0, 7.0, 8.0], 1),
+        (
+            NTScalar("af").wrap({"value": [5.0, 6.0, 7.0, 8.0]}),
+            False,
+            [5.0, 6.0, 7.0, 8.0],
+            1,
+        ),
         (
             NTScalar("as").wrap({"value": ["PyDM", "PVA", "Test", "Strings"]}),
             False,
@@ -66,7 +99,9 @@ def test_send_new_value(
     # Set up a mock p4p client
     mock_channel = PyDMChannel()
     monkeypatch.setattr(P4PPlugin, "context", MockContext())
-    monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
+    monkeypatch.setattr(
+        P4PPlugin.context, "monitor", lambda **args: None
+    )  # Don't want to actually setup a monitor
     p4p_connection = Connection(mock_channel, "pva://TEST:ADDRESS")
 
     received_values = {}
@@ -84,16 +119,34 @@ def test_send_new_value(
     elif "NTEnum" in value_to_send.getID():
         expected_value_type = int
 
-    p4p_connection.new_value_signal[expected_value_type].connect(functools.partial(receive_signal, "value"))
-    p4p_connection.lower_alarm_limit_signal.connect(functools.partial(receive_signal, "low_alarm_limit"))
-    p4p_connection.lower_warning_limit_signal.connect(functools.partial(receive_signal, "low_warning_limit"))
-    p4p_connection.upper_alarm_limit_signal.connect(functools.partial(receive_signal, "high_alarm_limit"))
-    p4p_connection.upper_warning_limit_signal.connect(functools.partial(receive_signal, "high_warning_limit"))
-    p4p_connection.new_severity_signal.connect(functools.partial(receive_signal, "severity"))
+    p4p_connection.new_value_signal[expected_value_type].connect(
+        functools.partial(receive_signal, "value")
+    )
+    p4p_connection.lower_alarm_limit_signal.connect(
+        functools.partial(receive_signal, "low_alarm_limit")
+    )
+    p4p_connection.lower_warning_limit_signal.connect(
+        functools.partial(receive_signal, "low_warning_limit")
+    )
+    p4p_connection.upper_alarm_limit_signal.connect(
+        functools.partial(receive_signal, "high_alarm_limit")
+    )
+    p4p_connection.upper_warning_limit_signal.connect(
+        functools.partial(receive_signal, "high_warning_limit")
+    )
+    p4p_connection.new_severity_signal.connect(
+        functools.partial(receive_signal, "severity")
+    )
     p4p_connection.unit_signal.connect(functools.partial(receive_signal, "units"))
-    p4p_connection.lower_ctrl_limit_signal.connect(functools.partial(receive_signal, "lower_ctrl_limit"))
-    p4p_connection.upper_ctrl_limit_signal.connect(functools.partial(receive_signal, "upper_ctrl_limit"))
-    p4p_connection.enum_strings_signal.connect(functools.partial(receive_signal, "enum_strings"))
+    p4p_connection.lower_ctrl_limit_signal.connect(
+        functools.partial(receive_signal, "lower_ctrl_limit")
+    )
+    p4p_connection.upper_ctrl_limit_signal.connect(
+        functools.partial(receive_signal, "upper_ctrl_limit")
+    )
+    p4p_connection.enum_strings_signal.connect(
+        functools.partial(receive_signal, "enum_strings")
+    )
 
     # Send out the initial value for our test PV
     p4p_connection.send_new_value(value_to_send)
@@ -148,7 +201,9 @@ def test_convert_epics_nttable():
         ]
     )
 
-    epics_struct = Value(my_type, {"secondsPastEpoch": 0, "nanoseconds": 0, "userTag": 0})
+    epics_struct = Value(
+        my_type, {"secondsPastEpoch": 0, "nanoseconds": 0, "userTag": 0}
+    )
 
     solution = {"secondsPastEpoch": 0, "nanoseconds": 0, "userTag": 0}
 
@@ -159,7 +214,13 @@ def test_convert_epics_nttable():
 @pytest.mark.parametrize(
     "address, expected_function_name, expected_arg_names, expected_arg_values, expected_poll_rate",
     [
-        ("pva://pv:call:add?a=4&b=7&pydm_pollrate=10", "pv:call:add", ["a", "b"], ["4", "7"], 10),
+        (
+            "pva://pv:call:add?a=4&b=7&pydm_pollrate=10",
+            "pv:call:add",
+            ["a", "b"],
+            ["4", "7"],
+            10,
+        ),
         ("pva://pv:call:add?a=4&b=7&", "pv:call:add", ["a", "b"], ["4", "7"], 5.0),
         (
             "pva://pv:call:add_three_ints_negate_option?a=2&b=7&negate=True&pydm_pollrate=10",
@@ -182,11 +243,22 @@ def test_convert_epics_nttable():
             ["Hello"],
             5.0,
         ),
-        ("", "", [], [], 0.0),  # poll-rate 0 because only set to DEFAULT_RPC_TIMEOUT (5) when have realistic address
+        (
+            "",
+            "",
+            [],
+            [],
+            0.0,
+        ),  # poll-rate 0 because only set to DEFAULT_RPC_TIMEOUT (5) when have realistic address
     ],
 )
 def test_parsing_rpc_channel(
-    monkeypatch, address, expected_function_name, expected_arg_names, expected_arg_values, expected_poll_rate
+    monkeypatch,
+    address,
+    expected_function_name,
+    expected_arg_names,
+    expected_arg_values,
+    expected_poll_rate,
 ):
     """
     Ensure we can tell when a pva channel is an RPC call or not,
@@ -194,7 +266,9 @@ def test_parsing_rpc_channel(
     """
     mock_channel = PyDMChannel(address=address)
     monkeypatch.setattr(P4PPlugin, "context", MockContext())
-    monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
+    monkeypatch.setattr(
+        P4PPlugin.context, "monitor", lambda **args: None
+    )  # Don't want to actually setup a monitor
     p4p_connection = Connection(mock_channel, address)
 
     assert p4p_connection._rpc_function_name == expected_function_name
@@ -228,7 +302,9 @@ def test_is_rpc_check(
     """Ensure that the regex is working for checking if a pva address is a RPC request or not"""
     mock_channel = PyDMChannel(address=address)
     monkeypatch.setattr(P4PPlugin, "context", MockContext())
-    monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
+    monkeypatch.setattr(
+        P4PPlugin.context, "monitor", lambda **args: None
+    )  # Don't want to actually setup a monitor
     p4p_connection = Connection(mock_channel, address)
 
     assert p4p_connection.is_rpc_address(address) == is_valid_rpc
@@ -288,10 +364,14 @@ def test_create_rpc_value_obj(
     """
     mock_channel = PyDMChannel(address=address)
     monkeypatch.setattr(P4PPlugin, "context", MockContext())
-    monkeypatch.setattr(P4PPlugin.context, "monitor", lambda **args: None)  # Don't want to actually setup a monitor
+    monkeypatch.setattr(
+        P4PPlugin.context, "monitor", lambda **args: None
+    )  # Don't want to actually setup a monitor
     p4p_connection = Connection(mock_channel, address)
     request = p4p_connection.create_request(
-        p4p_connection._rpc_function_name, p4p_connection._rpc_arg_names, p4p_connection._rpc_arg_values
+        p4p_connection._rpc_function_name,
+        p4p_connection._rpc_arg_names,
+        p4p_connection._rpc_arg_values,
     )
 
     result_query = request.query

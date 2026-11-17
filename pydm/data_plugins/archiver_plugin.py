@@ -21,7 +21,11 @@ class Connection(PyDMConnection):
     """
 
     def __init__(
-        self, channel: PyDMChannel, address: str, protocol: Optional[str] = None, parent: Optional[QObject] = None
+        self,
+        channel: PyDMChannel,
+        address: str,
+        protocol: Optional[str] = None,
+        parent: Optional[QObject] = None,
     ):
         super().__init__(channel, address, protocol, parent)
         self.add_listener(channel)
@@ -43,7 +47,9 @@ class Connection(PyDMConnection):
         if channel.value_signal is not None:
             channel.value_signal.connect(self.fetch_data)
 
-    def fetch_data(self, from_date: float, to_date: float, processing_command: Optional[str] = None) -> None:
+    def fetch_data(
+        self, from_date: float, to_date: float, processing_command: Optional[str] = None
+    ) -> None:
         """
         Fetches data from the Archiver Appliance based on the input parameters.
 
@@ -61,11 +67,15 @@ class Connection(PyDMConnection):
             done on this parameter. It is the responsibility of the caller to ensure it is valid
         """
         if from_date >= to_date:
-            logger.error(f"Cannot fetch data for invalid data range, from date={from_date} and to date={to_date}")
+            logger.error(
+                f"Cannot fetch data for invalid data range, from date={from_date} and to date={to_date}"
+            )
             return
 
         if from_date <= 0 or to_date <= 0:
-            logger.warning(f"Ignoring archive request with invalid timestamp, from date={from_date}, to date={to_date}")
+            logger.warning(
+                f"Ignoring archive request with invalid timestamp, from date={from_date}, to date={to_date}"
+            )
             return
 
         # Archiver expects timestamps to be in utc by default
@@ -115,7 +125,8 @@ class Connection(PyDMConnection):
         """
         success = (
             reply.error() == QNetworkReply.NetworkError.NoError
-            and reply.header(QNetworkRequest.KnownHeaders.ContentTypeHeader) == "application/json"
+            and reply.header(QNetworkRequest.KnownHeaders.ContentTypeHeader)
+            == "application/json"
         )
         self.connection_state_signal.emit(success)
         if success:
@@ -139,7 +150,10 @@ class Connection(PyDMConnection):
         via the new value signal
         """
         data = np.array(
-            ([point["secs"] for point in data_dict[0]["data"]], [point["val"] for point in data_dict[0]["data"]])
+            (
+                [point["secs"] for point in data_dict[0]["data"]],
+                [point["val"] for point in data_dict[0]["data"]],
+            )
         )
         self.new_value_signal[np.ndarray].emit(data)
 

@@ -16,7 +16,14 @@ from qtpy.QtWidgets import (
     QColorDialog,
     QHeaderView,
 )
-from qtpy.QtCore import Qt, Slot, QAbstractItemModel, QModelIndex, QObject, QItemSelection
+from qtpy.QtCore import (
+    Qt,
+    Slot,
+    QAbstractItemModel,
+    QModelIndex,
+    QObject,
+    QItemSelection,
+)
 from qtpy.QtDesigner import QDesignerFormWindowInterface
 from .baseplot import BasePlotAxisItem, BasePlotCurveItem
 from .baseplot_table_model import BasePlotCurvesModel
@@ -57,8 +64,12 @@ class BasePlotCurveEditorDialog(QDialog):
         self.remove_axis_button.clicked.connect(self.removeSelectedAxis)
         self.remove_axis_button.setEnabled(False)
         self.add_axis_count = 0
-        self.table_view.selectionModel().selectionChanged.connect(self.handleSelectionChange)
-        self.axis_view.selectionModel().selectionChanged.connect(self.handleSelectionChange)
+        self.table_view.selectionModel().selectionChanged.connect(
+            self.handleSelectionChange
+        )
+        self.axis_view.selectionModel().selectionChanged.connect(
+            self.handleSelectionChange
+        )
         self.table_view.doubleClicked.connect(self.handleDoubleClick)
         self.resize(800, 300)
 
@@ -119,13 +130,21 @@ class BasePlotCurveEditorDialog(QDialog):
 
     def setup_delegate_columns(self):
         symbol_delegate = SymbolColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Symbol"), symbol_delegate)
+        self.table_view.setItemDelegateForColumn(
+            self.table_model.getColumnIndex("Symbol"), symbol_delegate
+        )
         line_delegate = LineColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Line Style"), line_delegate)
+        self.table_view.setItemDelegateForColumn(
+            self.table_model.getColumnIndex("Line Style"), line_delegate
+        )
         color_delegate = ColorColumnDelegate(self)
-        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Color"), color_delegate)
+        self.table_view.setItemDelegateForColumn(
+            self.table_model.getColumnIndex("Color"), color_delegate
+        )
         axis_delegate = AxisColumnDelegate(self)
-        self.axis_view.setItemDelegateForColumn(self.axis_model.getColumnIndex("Y-Axis Orientation"), axis_delegate)
+        self.axis_view.setItemDelegateForColumn(
+            self.axis_model.getColumnIndex("Y-Axis Orientation"), axis_delegate
+        )
 
     @Slot()
     def addCurve(self):
@@ -153,7 +172,9 @@ class BasePlotCurveEditorDialog(QDialog):
     @Slot(QItemSelection, QItemSelection)
     def handleSelectionChange(self, selected, deselected):
         self.remove_button.setEnabled(self.table_view.selectionModel().hasSelection())
-        self.remove_axis_button.setEnabled(self.axis_view.selectionModel().hasSelection())
+        self.remove_axis_button.setEnabled(
+            self.axis_view.selectionModel().hasSelection()
+        )
 
     @Slot(QModelIndex)
     def handleDoubleClick(self, index):
@@ -191,10 +212,14 @@ class BasePlotCurveEditorDialog(QDialog):
 
         axis_name_col_index = self.table_model.getColumnIndex("Y-Axis Name")
         curve_axis_names = [
-            str(self.table_model.index(i, axis_name_col_index).data()) for i in range(self.table_model.rowCount())
+            str(self.table_model.index(i, axis_name_col_index).data())
+            for i in range(self.table_model.rowCount())
         ]
 
-        existing_axis_names = [str(self.axis_model.index(i, 0).data()) for i in range(self.axis_model.rowCount())]
+        existing_axis_names = [
+            str(self.axis_model.index(i, 0).data())
+            for i in range(self.axis_model.rowCount())
+        ]
 
         # Removing duplicates here instead of using a set to preserve order
         names_to_add = []
@@ -325,12 +350,16 @@ class PlotStyleColumnDelegate(QStyledItemDelegate):
     line_columns_to_toggle = ("Line Style", "Line Width", "Symbol", "Symbol Size")
     bar_columns_to_toggle = ("Bar Width", "Upper Limit", "Lower Limit", "Limit Color")
 
-    def __init__(self, parent: QObject, table_model: BasePlotCurvesModel, table_view: QTableView):
+    def __init__(
+        self, parent: QObject, table_model: BasePlotCurvesModel, table_view: QTableView
+    ):
         super().__init__(parent)
         self.table_model = table_model
         self.table_view = table_view
 
-    def createEditor(self, parent: QWidget, option: QStyleOptionViewItem, index: QModelIndex) -> QWidget:
+    def createEditor(
+        self, parent: QWidget, option: QStyleOptionViewItem, index: QModelIndex
+    ) -> QWidget:
         """Create a combo box that allows the user to choose the style of plot they want."""
         editor = QComboBox(parent)
         editor.addItems(("Line", "Bar"))
@@ -340,11 +369,15 @@ class PlotStyleColumnDelegate(QStyledItemDelegate):
         val = str(index.model().data(index, Qt.EditRole))
         editor.setCurrentText(val)
 
-    def setModelData(self, editor: QWidget, model: QAbstractItemModel, index: QModelIndex) -> None:
+    def setModelData(
+        self, editor: QWidget, model: QAbstractItemModel, index: QModelIndex
+    ) -> None:
         model.setData(index, editor.currentText(), Qt.EditRole)
         self.toggleColumnVisibility()
 
-    def updateEditorGeometry(self, editor: QWidget, option: QStyleOptionViewItem, index: QModelIndex) -> None:
+    def updateEditorGeometry(
+        self, editor: QWidget, option: QStyleOptionViewItem, index: QModelIndex
+    ) -> None:
         editor.setGeometry(option.rect)
 
     def toggleColumnVisibility(self):
@@ -360,13 +393,21 @@ class PlotStyleColumnDelegate(QStyledItemDelegate):
         else:
             self.hideColumns(False, True)  # Show line columns only as a default
 
-    def hideColumns(self, hide_line_columns: Optional[bool] = None, hide_bar_columns: Optional[bool] = None) -> None:
+    def hideColumns(
+        self,
+        hide_line_columns: Optional[bool] = None,
+        hide_bar_columns: Optional[bool] = None,
+    ) -> None:
         """Show or hide columns related to a specific plot style based on the input. If an input parameter
         is omitted (or explicitly set to None), the associated columns will be left alone."""
 
         if hide_line_columns is not None:
             for column in self.line_columns_to_toggle:
-                self.table_view.setColumnHidden(self.table_model.getColumnIndex(column), hide_line_columns)
+                self.table_view.setColumnHidden(
+                    self.table_model.getColumnIndex(column), hide_line_columns
+                )
         if hide_bar_columns is not None:
             for column in self.bar_columns_to_toggle:
-                self.table_view.setColumnHidden(self.table_model.getColumnIndex(column), hide_bar_columns)
+                self.table_view.setColumnHidden(
+                    self.table_model.getColumnIndex(column), hide_bar_columns
+                )

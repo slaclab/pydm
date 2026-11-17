@@ -9,12 +9,16 @@ from unittest.mock import MagicMock, patch
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 # The path to the .ui file for creating a main window
-test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data", "test.ui")
+test_ui_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), "test_data", "test.ui"
+)
 
 if ACTIVE_QT_WRAPPER == QtWrapperTypes.PYQT5:
 
     @patch("qtpy.uic.compileUi", wraps=uic.compileUi)
-    def test_reload_display_pyqt5(wrapped_compile_ui: MagicMock, qapp: PyDMApplication) -> None:
+    def test_reload_display_pyqt5(
+        wrapped_compile_ui: MagicMock, qapp: PyDMApplication
+    ) -> None:
         """Verify that when a user reloads a PyDM window the underling display's ui file is actually reloaded"""
         clear_compiled_ui_file_cache()  # Ensure other tests have not already compiled our test file before we start
 

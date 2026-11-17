@@ -29,7 +29,9 @@ class ExceptionDispatcher(QtCore.QThread):
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
-            cls.__instance = QtCore.QThread.__new__(ExceptionDispatcher, *args, **kwargs)
+            cls.__instance = QtCore.QThread.__new__(
+                ExceptionDispatcher, *args, **kwargs
+            )
             cls.__instance.__initialized = False
         return cls.__instance
 
@@ -93,7 +95,9 @@ class DefaultExceptionNotifier(QtCore.QObject):
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
-            cls.__instance = QtCore.QObject.__new__(DefaultExceptionNotifier, *args, **kwargs)
+            cls.__instance = QtCore.QObject.__new__(
+                DefaultExceptionNotifier, *args, **kwargs
+            )
             cls.__instance.__initialized = False
         return cls.__instance
 

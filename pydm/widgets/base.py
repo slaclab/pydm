@@ -8,7 +8,13 @@ import functools
 import json
 import copy
 import numpy as np
-from qtpy.QtWidgets import QApplication, QMenu, QGraphicsOpacityEffect, QToolTip, QWidget
+from qtpy.QtWidgets import (
+    QApplication,
+    QMenu,
+    QGraphicsOpacityEffect,
+    QToolTip,
+    QWidget,
+)
 from qtpy.QtGui import QCursor, QIcon, QClipboard
 from qtpy.QtCore import Qt, QEvent, Signal, Slot
 from .channel import PyDMChannel
@@ -150,7 +156,9 @@ def PostParentClassInitSetup(self):
         # Will call the widget class's check_enable_state if it has one, else will use PyDMWidget's.
         self.check_enable_state()
 
-    self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
+    self.destroyed.connect(
+        functools.partial(widget_destroyed, self.channels, weakref.ref(self))
+    )
 
 
 class PyDMPrimitiveWidget(object):
@@ -304,7 +312,11 @@ class PyDMPrimitiveWidget(object):
         value = payload.get("value", None)
 
         if prop not in self.RULE_PROPERTIES:
-            logger.error("Error at Rule: %s. %s is not part of this widget properties.", name, prop)
+            logger.error(
+                "Error at Rule: %s. %s is not part of this widget properties.",
+                name,
+                prop,
+            )
             return
 
         method_name, data_type = self.RULE_PROPERTIES[prop]
@@ -365,7 +377,10 @@ class PyDMPrimitiveWidget(object):
 
     # Set to True on Qt6. With designable=False this fails to save in Designer ("Unable to set property")
     rules = Property(
-        str, readRules, setRules, designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6)
+        str,
+        readRules,
+        setRules,
+        designable=ACTIVE_QT_WRAPPER in (QtWrapperTypes.PYQT6, QtWrapperTypes.PYSIDE6),
     )
 
     def find_parent_display(self):
@@ -565,7 +580,11 @@ class TextFormatter(object):
             True means that the widget will use the precision information
             from the Channel if available.
         """
-        return self._precision_from_pv if self._precision_from_pv is not None else self.default_precision_from_pv
+        return (
+            self._precision_from_pv
+            if self._precision_from_pv is not None
+            else self.default_precision_from_pv
+        )
 
     def setPrecisionFromPV(self, value) -> bool:
         """
@@ -1090,7 +1109,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_content = checked
         self.alarm_severity_changed(self._alarm_state)
 
-    alarmSensitiveContent = Property(bool, readAlarmSensitiveContent, setAlarmSensitiveContent)
+    alarmSensitiveContent = Property(
+        bool, readAlarmSensitiveContent, setAlarmSensitiveContent
+    )
 
     def readAlarmSensitiveBorder(self) -> bool:
         """
@@ -1118,7 +1139,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         self._alarm_sensitive_border = checked
         self.alarm_severity_changed(self._alarm_state)
 
-    alarmSensitiveBorder = Property(bool, readAlarmSensitiveBorder, setAlarmSensitiveBorder)
+    alarmSensitiveBorder = Property(
+        bool, readAlarmSensitiveBorder, setAlarmSensitiveBorder
+    )
 
     def readPyDMToolTip(self) -> str:
         """
@@ -1165,12 +1188,17 @@ class PyDMWidget(PyDMPrimitiveWidget):
             return new_tip
 
         if not self._tool_tip_substrings:
-            list_of_attributes = [substring.start() for substring in re.finditer(r"\$\(", new_tip)]
+            list_of_attributes = [
+                substring.start() for substring in re.finditer(r"\$\(", new_tip)
+            ]
             tool_tip_substrings = []
 
             for index in list_of_attributes:
                 tool_tip_substrings.append(
-                    [new_tip[index + 2 : new_tip.index(")", index)], new_tip[index : new_tip.index(")", index) + 1]]
+                    [
+                        new_tip[index + 2 : new_tip.index(")", index)],
+                        new_tip[index : new_tip.index(")", index) + 1],
+                    ]
                 )
 
             self._tool_tip_substrings = copy.deepcopy(tool_tip_substrings)
@@ -1185,11 +1213,15 @@ class PyDMWidget(PyDMPrimitiveWidget):
                     if value[0].count(".") == 0:
                         value_of_attribute = self.value
                     else:
-                        attribute = self._tool_tip_channel_table[value[0].split(".", 1)[1]]
+                        attribute = self._tool_tip_channel_table[
+                            value[0].split(".", 1)[1]
+                        ]
                         value_of_attribute = getattr(self, attribute, None)
 
                         if attribute == "timestamp" and value_of_attribute is not None:
-                            value_of_attribute = datetime.fromtimestamp(value_of_attribute)
+                            value_of_attribute = datetime.fromtimestamp(
+                                value_of_attribute
+                            )
                 else:
                     value_of_attribute = getattr(self, value[0], None)
 
@@ -1201,7 +1233,9 @@ class PyDMWidget(PyDMPrimitiveWidget):
         tip_with_attribute_info = new_tip
 
         for value in tool_tip_substrings:
-            tip_with_attribute_info = tip_with_attribute_info.replace(value[1], value[0])
+            tip_with_attribute_info = tip_with_attribute_info.replace(
+                value[1], value[0]
+            )
 
         return tip_with_attribute_info
 
@@ -1476,11 +1510,20 @@ class PyDMWritableWidget(PyDMWidget):
             if not self._monitor_disp or self._channel is None:
                 return
 
-            base_channel = self._channel.split(".", 1)[0] if "." in self._channel else self._channel
-            if self._disp_channel is None or self._disp_channel.address != f"{base_channel}.DISP":
+            base_channel = (
+                self._channel.split(".", 1)[0]
+                if "." in self._channel
+                else self._channel
+            )
+            if (
+                self._disp_channel is None
+                or self._disp_channel.address != f"{base_channel}.DISP"
+            ):
                 if self._disp_channel is not None:
                     self._disp_channel.disconnect()
-                self._disp_channel = PyDMChannel(address=f"{base_channel}.DISP", value_slot=self.disp_value_changed)
+                self._disp_channel = PyDMChannel(
+                    address=f"{base_channel}.DISP", value_slot=self.disp_value_changed
+                )
                 self._disp_channel.connect()
 
     channel = Property(str, readChannel, setChannel)

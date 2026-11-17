@@ -72,8 +72,13 @@ class DictionaryTable(QtWidgets.QTableWidget):
 
     @property
     def dictionary(self) -> dict:
-        items = [(self.item(row, 0), self.item(row, 1)) for row in range(self.rowCount())]
-        key_value_pairs = [(key.text() if key else "", value.text() if value else "") for key, value in items]
+        items = [
+            (self.item(row, 0), self.item(row, 1)) for row in range(self.rowCount())
+        ]
+        key_value_pairs = [
+            (key.text() if key else "", value.text() if value else "")
+            for key, value in items
+        ]
         return {key.strip(): value for key, value in key_value_pairs}
 
     @dictionary.setter
@@ -212,7 +217,9 @@ class _PropertyHelper:
     def save_settings(self):
         value = self.saved_value
         if value is not None:
-            update_property_for_widget(self._property_widget, self._property_name, value)
+            update_property_for_widget(
+                self._property_widget, self._property_name, value
+            )
 
 
 class PropertyRuleEditor(_PropertyHelper, QtWidgets.QPushButton):
@@ -388,7 +395,9 @@ class BasicSettingsEditor(QtWidgets.QDialog):
                 continue
 
             prop_type = getattr(prop, "type", None)
-            helper_widget_cls = self._common_attributes_.get(attr, self._type_to_widget_.get(prop_type, None))
+            helper_widget_cls = self._common_attributes_.get(
+                attr, self._type_to_widget_.get(prop_type, None)
+            )
             if helper_widget_cls is not None:
                 helper_widget = helper_widget_cls(
                     property_widget=self.widget,

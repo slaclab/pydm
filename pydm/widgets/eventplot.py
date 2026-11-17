@@ -46,7 +46,9 @@ class EventPlotCurveItem(BasePlotCurveItem):
             Representation with values for all properties
             needed to recreate this curve.
         """
-        dic_ = OrderedDict([("channel", self.address), ("y_idx", self.y_idx), ("x_idx", self.x_idx)])
+        dic_ = OrderedDict(
+            [("channel", self.address), ("y_idx", self.y_idx), ("x_idx", self.x_idx)]
+        )
         dic_.update(super().to_dict())
         dic_["buffer_size"] = self.getBufferSize()
         dic_["bufferSizeChannelAddress"] = self.bufferSizeChannelAddress
@@ -79,7 +81,9 @@ class EventPlotCurveItem(BasePlotCurveItem):
             self.channel = None
             return
         self.channel = PyDMChannel(
-            address=new_address, connection_slot=self.connectionStateChanged, value_slot=self.receiveValue
+            address=new_address,
+            connection_slot=self.connectionStateChanged,
+            value_slot=self.receiveValue,
         )
 
     @Slot(bool)
@@ -158,7 +162,10 @@ class EventPlotCurveItem(BasePlotCurveItem):
         if new_address is None or len(str(new_address)) < 1:
             self.bufferSizeChannel = None
             return
-        if self.bufferSizeChannel is not None and self.bufferSizeChannel.address == new_address:
+        if (
+            self.bufferSizeChannel is not None
+            and self.bufferSizeChannel.address == new_address
+        ):
             return
         self.bufferSizeChannel = PyDMChannel(
             address=new_address,
@@ -210,7 +217,10 @@ class EventPlotCurveItem(BasePlotCurveItem):
             raise NoDataError("Curve has no data, cannot determine limits.")
         x_data = self.data_buffer[0, -self.points_accumulated :]
         y_data = self.data_buffer[1, -self.points_accumulated :]
-        return ((float(np.amin(x_data)), float(np.amax(x_data))), (float(np.amin(y_data)), float(np.amax(y_data))))
+        return (
+            (float(np.amin(x_data)), float(np.amax(x_data))),
+            (float(np.amin(y_data)), float(np.amax(y_data))),
+        )
 
     def channels(self):
         return [self.channel]
@@ -256,7 +266,14 @@ class PyDMEventPlot(BasePlot):
         pyqtgraph.mkColor will accept.
     """
 
-    def __init__(self, parent=None, channel=None, init_x_indices=[], init_y_indices=[], background="default"):
+    def __init__(
+        self,
+        parent=None,
+        channel=None,
+        init_x_indices=[],
+        init_y_indices=[],
+        background="default",
+    ):
         super().__init__(parent, background)
         # If the user supplies a single integer instead of a list,
         # wrap it in a list.
@@ -271,7 +288,10 @@ class PyDMEventPlot(BasePlot):
         if len(init_x_indices) == 1:
             init_x_indices = init_x_indices * len(init_y_indices)
         if len(init_x_indices) != len(init_y_indices):
-            raise ValueError("If lists are provided for both X and Y " + "indices, they must be the same length.")
+            raise ValueError(
+                "If lists are provided for both X and Y "
+                + "indices, they must be the same length."
+            )
         # self.index_pairs is an ordered dictionary that is keyed on a
         # (x_idx, y_idx) tuple, with EventPlotCurveItem values.
         # It gets populated in self.addChannel().
@@ -474,7 +494,13 @@ class PyDMEventPlot(BasePlot):
         """
         chans = []
         chans.extend([curve.channel for curve in self._curves])
-        chans.extend([curve.bufferSizeChannel for curve in self._curves if curve.bufferSizeChannel is not None])
+        chans.extend(
+            [
+                curve.bufferSizeChannel
+                for curve in self._curves
+                if curve.bufferSizeChannel is not None
+            ]
+        )
         return chans
 
     # The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange,

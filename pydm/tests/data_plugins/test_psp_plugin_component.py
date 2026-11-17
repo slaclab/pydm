@@ -34,7 +34,9 @@ def test_update_ctrl_vars(monkeypatch: MonkeyPatch, signals: ConnectionSignals):
     mock_channel = PyDMChannel()
     mock_pv = MockPV()
     monkeypatch.setattr(
-        pydm.data_plugins.epics_plugins.psp_plugin_component, "setup_pv", lambda *args, **kwargs: mock_pv
+        pydm.data_plugins.epics_plugins.psp_plugin_component,
+        "setup_pv",
+        lambda *args, **kwargs: mock_pv,
     )
     monkeypatch.setattr(Connection, "add_listener", lambda *args, **kwargs: None)
     psp_connection = Connection(mock_channel, "Test:PV:1")
@@ -51,15 +53,33 @@ def test_update_ctrl_vars(monkeypatch: MonkeyPatch, signals: ConnectionSignals):
     mock_pv.data["warn_llim"] = 10.25
 
     # Connect the signals to a slot that allows us to inspect the value received
-    psp_connection.new_value_signal[float].connect(lambda: None)  # Only testing control variables here
-    psp_connection.prec_signal.connect(functools.partial(signals.receive_value, "precision"))
-    psp_connection.unit_signal.connect(functools.partial(signals.receive_value, "units"))
-    psp_connection.lower_ctrl_limit_signal.connect(functools.partial(signals.receive_value, "ctrl_llim"))
-    psp_connection.upper_ctrl_limit_signal.connect(functools.partial(signals.receive_value, "ctrl_hlim"))
-    psp_connection.upper_alarm_limit_signal.connect(functools.partial(signals.receive_value, "alarm_hlim"))
-    psp_connection.lower_alarm_limit_signal.connect(functools.partial(signals.receive_value, "alarm_llim"))
-    psp_connection.upper_warning_limit_signal.connect(functools.partial(signals.receive_value, "warn_hlim"))
-    psp_connection.lower_warning_limit_signal.connect(functools.partial(signals.receive_value, "warn_llim"))
+    psp_connection.new_value_signal[float].connect(
+        lambda: None
+    )  # Only testing control variables here
+    psp_connection.prec_signal.connect(
+        functools.partial(signals.receive_value, "precision")
+    )
+    psp_connection.unit_signal.connect(
+        functools.partial(signals.receive_value, "units")
+    )
+    psp_connection.lower_ctrl_limit_signal.connect(
+        functools.partial(signals.receive_value, "ctrl_llim")
+    )
+    psp_connection.upper_ctrl_limit_signal.connect(
+        functools.partial(signals.receive_value, "ctrl_hlim")
+    )
+    psp_connection.upper_alarm_limit_signal.connect(
+        functools.partial(signals.receive_value, "alarm_hlim")
+    )
+    psp_connection.lower_alarm_limit_signal.connect(
+        functools.partial(signals.receive_value, "alarm_llim")
+    )
+    psp_connection.upper_warning_limit_signal.connect(
+        functools.partial(signals.receive_value, "warn_hlim")
+    )
+    psp_connection.lower_warning_limit_signal.connect(
+        functools.partial(signals.receive_value, "warn_llim")
+    )
 
     psp_connection.python_type = float
     psp_connection.send_new_value(10.0)

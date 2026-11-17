@@ -25,7 +25,9 @@ def test_construct(qtbot, init_channel):
     parent = QWidget()
     qtbot.addWidget(parent)
 
-    pydm_analog_indicator = PyDMAnalogIndicator(parent=parent, init_channel=init_channel)
+    pydm_analog_indicator = PyDMAnalogIndicator(
+        parent=parent, init_channel=init_channel
+    )
     qtbot.addWidget(pydm_analog_indicator)
 
     if init_channel:

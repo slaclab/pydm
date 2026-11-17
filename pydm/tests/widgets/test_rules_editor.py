@@ -33,7 +33,9 @@ class DummyWidget:
             self._rules = new_rules
 
 
-@pytest.mark.parametrize("use_enum, visible", [(None, False), (True, True), (False, False)])
+@pytest.mark.parametrize(
+    "use_enum, visible", [(None, False), (True, True), (False, False)]
+)
 def test_rules_editor(use_enum, visible, qtbot, monkeypatch):
     """
     Test the rules editor in general.

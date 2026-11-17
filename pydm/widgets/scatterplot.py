@@ -16,7 +16,9 @@ MINIMUM_BUFFER_SIZE = 2
 class ScatterPlotCurveItem(BasePlotCurveItem):
     _channels = ("x_channel", "y_channel")
 
-    def __init__(self, y_addr, x_addr, redraw_mode=None, bufferSizeChannelAddress=None, **kws):
+    def __init__(
+        self, y_addr, x_addr, redraw_mode=None, bufferSizeChannelAddress=None, **kws
+    ):
         self.x_channel = None
         self.y_channel = None
         self.x_address = x_addr
@@ -31,7 +33,9 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
                 y_name = remove_protocol(y_addr if y_addr is not None else "")
                 x_name = remove_protocol(x_addr if x_addr is not None else "")
                 kws["name"] = "{y} vs. {x}".format(y=y_name, x=x_name)
-        self.redraw_mode = redraw_mode if redraw_mode is not None else self.REDRAW_ON_EITHER
+        self.redraw_mode = (
+            redraw_mode if redraw_mode is not None else self.REDRAW_ON_EITHER
+        )
         self.bufferSizeChannel = None
         self.bufferSizeChannel_connected = False
         self._bufferSize = DEFAULT_BUFFER_SIZE
@@ -58,7 +62,9 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             Representation with values for all properties
             needed to recreate this curve.
         """
-        dic_ = OrderedDict([("y_channel", self.y_address), ("x_channel", self.x_address)])
+        dic_ = OrderedDict(
+            [("y_channel", self.y_address), ("x_channel", self.x_address)]
+        )
         dic_.update(super().to_dict())
         dic_["redraw_mode"] = self.redraw_mode
         dic_["buffer_size"] = self.getBufferSize()
@@ -92,7 +98,9 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             self.x_channel = None
             return
         self.x_channel = PyDMChannel(
-            address=new_address, connection_slot=self.xConnectionStateChanged, value_slot=self.receiveXValue
+            address=new_address,
+            connection_slot=self.xConnectionStateChanged,
+            value_slot=self.receiveXValue,
         )
 
     @property
@@ -122,7 +130,9 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             self.y_channel = None
             return
         self.y_channel = PyDMChannel(
-            address=new_address, connection_slot=self.yConnectionStateChanged, value_slot=self.receiveYValue
+            address=new_address,
+            connection_slot=self.yConnectionStateChanged,
+            value_slot=self.receiveYValue,
         )
 
     @Slot(bool)
@@ -251,7 +261,10 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
         if new_address is None or len(str(new_address)) < 1:
             self.bufferSizeChannel = None
             return
-        if self.bufferSizeChannel is not None and self.bufferSizeChannel.address == new_address:
+        if (
+            self.bufferSizeChannel is not None
+            and self.bufferSizeChannel.address == new_address
+        ):
             return
         self.bufferSizeChannel = PyDMChannel(
             address=new_address,
@@ -303,7 +316,10 @@ class ScatterPlotCurveItem(BasePlotCurveItem):
             raise NoDataError("Curve has no data, cannot determine limits.")
         x_data = self.data_buffer[0, -self.points_accumulated :]
         y_data = self.data_buffer[1, -self.points_accumulated :]
-        return ((float(np.amin(x_data)), float(np.amax(x_data))), (float(np.amin(y_data)), float(np.amax(y_data))))
+        return (
+            (float(np.amin(x_data)), float(np.amax(x_data))),
+            (float(np.amin(y_data)), float(np.amax(y_data))),
+        )
 
     def channels(self):
         return [self.y_channel, self.x_channel]
@@ -340,7 +356,9 @@ class PyDMScatterPlot(BasePlot):
         pyqtgraph.mkColor will accept.
     """
 
-    def __init__(self, parent=None, init_x_channels=[], init_y_channels=[], background="default"):
+    def __init__(
+        self, parent=None, init_x_channels=[], init_y_channels=[], background="default"
+    ):
         super().__init__(parent, background)
         # If the user supplies a single string instead of a list,
         # wrap it in a list.
@@ -351,7 +369,10 @@ class PyDMScatterPlot(BasePlot):
         if len(init_x_channels) == 0:
             init_x_channels = list(itertools.repeat(None, len(init_y_channels)))
         if len(init_x_channels) != len(init_y_channels):
-            raise ValueError("If lists are provided for both X and Y " + "channels, they must be the same length.")
+            raise ValueError(
+                "If lists are provided for both X and Y "
+                + "channels, they must be the same length."
+            )
         # self.channel_pairs is an ordered dictionary that is keyed on a
         # (x_channel, y_channel) tuple, with ScatterPlotCurveItem values.
         # It gets populated in self.addChannel().
@@ -563,7 +584,13 @@ class PyDMScatterPlot(BasePlot):
         chans = []
         chans.extend([curve.y_channel for curve in self._curves])
         chans.extend([curve.x_channel for curve in self._curves])
-        chans.extend([curve.bufferSizeChannel for curve in self._curves if curve.bufferSizeChannel is not None])
+        chans.extend(
+            [
+                curve.bufferSizeChannel
+                for curve in self._curves
+                if curve.bufferSizeChannel is not None
+            ]
+        )
         return chans
 
     # The methods for autoRangeX, minXRange, maxXRange, autoRangeY, minYRange,

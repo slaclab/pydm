@@ -1,7 +1,11 @@
 from qtpy.QtCore import QModelIndex, QObject
 from typing import Optional
 from .baseplot_table_model import BasePlotCurvesModel
-from .baseplot_curve_editor import BasePlotCurveEditorDialog, ColorColumnDelegate, PlotStyleColumnDelegate
+from .baseplot_curve_editor import (
+    BasePlotCurveEditorDialog,
+    ColorColumnDelegate,
+    PlotStyleColumnDelegate,
+)
 from .timeplot import PyDMTimePlot
 
 
@@ -29,7 +33,9 @@ class PyDMTimePlotCurvesModel(BasePlotCurvesModel):
         return True
 
     def append(self, address=None, name=None, color=None):
-        self.beginInsertRows(QModelIndex(), len(self._plot._curves), len(self._plot._curves))
+        self.beginInsertRows(
+            QModelIndex(), len(self._plot._curves), len(self._plot._curves)
+        )
         self._plot.addYChannel(address, name, color)
         self.endInsertRows()
 
@@ -58,6 +64,10 @@ class TimePlotCurveEditorDialog(BasePlotCurveEditorDialog):
             self.table_model.getColumnIndex("Limit Color"), threshold_color_delegate
         )
 
-        plot_style_delegate = PlotStyleColumnDelegate(self, self.table_model, self.table_view)
-        self.table_view.setItemDelegateForColumn(self.table_model.getColumnIndex("Style"), plot_style_delegate)
+        plot_style_delegate = PlotStyleColumnDelegate(
+            self, self.table_model, self.table_view
+        )
+        self.table_view.setItemDelegateForColumn(
+            self.table_model.getColumnIndex("Style"), plot_style_delegate
+        )
         plot_style_delegate.toggleColumnVisibility()

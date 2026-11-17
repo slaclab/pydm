@@ -19,7 +19,9 @@ elif EPICS_LIB == "CAPROTO":
     EPICSPlugin = CaprotoPlugin
 else:
     try:
-        from pydm.data_plugins.epics_plugins.pyepics_plugin_component import PyEPICSPlugin
+        from pydm.data_plugins.epics_plugins.pyepics_plugin_component import (
+            PyEPICSPlugin,
+        )
 
         EPICSPlugin = PyEPICSPlugin
     except ImportError:

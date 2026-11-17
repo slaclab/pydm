@@ -44,10 +44,18 @@ def test_waveform_curve_editor(qtbot):
     plot_style_index = table_model.getColumnIndex("Style")
 
     assert type(table_view.itemDelegateForColumn(color_index)) is ColorColumnDelegate
-    assert type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
+    assert (
+        type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
+    )
     assert type(table_view.itemDelegateForColumn(symbol_index)) is SymbolColumnDelegate
-    assert type(table_view.itemDelegateForColumn(redraw_mode_index)) is RedrawModeColumnDelegate
-    assert type(table_view.itemDelegateForColumn(plot_style_index)) is PlotStyleColumnDelegate
+    assert (
+        type(table_view.itemDelegateForColumn(redraw_mode_index))
+        is RedrawModeColumnDelegate
+    )
+    assert (
+        type(table_view.itemDelegateForColumn(plot_style_index))
+        is PlotStyleColumnDelegate
+    )
 
 
 def test_timeplot_curve_editor(qtbot):
@@ -73,9 +81,14 @@ def test_timeplot_curve_editor(qtbot):
     plot_style_index = table_model.getColumnIndex("Style")
 
     assert type(table_view.itemDelegateForColumn(color_index)) is ColorColumnDelegate
-    assert type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
+    assert (
+        type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
+    )
     assert type(table_view.itemDelegateForColumn(symbol_index)) is SymbolColumnDelegate
-    assert type(table_view.itemDelegateForColumn(plot_style_index)) is PlotStyleColumnDelegate
+    assert (
+        type(table_view.itemDelegateForColumn(plot_style_index))
+        is PlotStyleColumnDelegate
+    )
 
 
 def test_scatterplot_editor(qtbot):
@@ -101,9 +114,14 @@ def test_scatterplot_editor(qtbot):
     redraw_mode_index = table_model.getColumnIndex("Redraw Mode")
 
     assert type(table_view.itemDelegateForColumn(color_index)) is ColorColumnDelegate
-    assert type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
+    assert (
+        type(table_view.itemDelegateForColumn(line_style_index)) is LineColumnDelegate
+    )
     assert type(table_view.itemDelegateForColumn(symbol_index)) is SymbolColumnDelegate
-    assert type(table_view.itemDelegateForColumn(redraw_mode_index)) is RedrawModeColumnDelegate
+    assert (
+        type(table_view.itemDelegateForColumn(redraw_mode_index))
+        is RedrawModeColumnDelegate
+    )
 
 
 def test_axis_editor(qtbot):
@@ -120,7 +138,10 @@ def test_axis_editor(qtbot):
 
     # Verify the column count is correct, and the axis column delegate is placed correctly
     axis_orientation_index = axis_model._column_names.index("Y-Axis Orientation")
-    assert type(axis_view.itemDelegateForColumn(axis_orientation_index)) is AxisColumnDelegate
+    assert (
+        type(axis_view.itemDelegateForColumn(axis_orientation_index))
+        is AxisColumnDelegate
+    )
 
 
 def test_axis_table_model(qtmodeltester):

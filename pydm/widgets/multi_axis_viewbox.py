@@ -61,7 +61,11 @@ class MultiAxisViewBox(ViewBox):
         if axis != ViewBox.YAxis and not fromSignal:
             # This event happened within the view box area itself or the x axis so propagate to any stacked view boxes
             self.sigMouseDragged.emit(self, ev, axis)
-            if ev.isFinish() and self.state["mouseMode"] == ViewBox.RectMode and axis is None:
+            if (
+                ev.isFinish()
+                and self.state["mouseMode"] == ViewBox.RectMode
+                and axis is None
+            ):
                 self.sigMouseDraggedDone.emit()  # Indicates the end of a mouse drag event
         super().mouseDragEvent(ev, axis)
 

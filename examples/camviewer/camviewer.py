@@ -60,8 +60,12 @@ class CamViewer(Display):
         # self._color_map_limit_sliders_need_config = True
         self.ui.colorMapMinSlider.valueChanged.connect(self.setColorMapMin)
         self.ui.colorMapMaxSlider.valueChanged.connect(self.setColorMapMax)
-        self.ui.colorMapMinLineEdit.returnPressed.connect(self.colorMapMinLineEditChanged)
-        self.ui.colorMapMaxLineEdit.returnPressed.connect(self.colorMapMaxLineEditChanged)
+        self.ui.colorMapMinLineEdit.returnPressed.connect(
+            self.colorMapMinLineEditChanged
+        )
+        self.ui.colorMapMaxLineEdit.returnPressed.connect(
+            self.colorMapMaxLineEditChanged
+        )
 
         # Set up the stuff for single-shot and average modes.
         self.ui.singleShotRadioButton.setChecked(True)
@@ -98,22 +102,30 @@ class CamViewer(Display):
         # Instantiate markers.
         self.marker_dict = {1: {}, 2: {}, 3: {}, 4: {}}
         marker_size = QPointF(20.0, 20.0)
-        self.marker_dict[1]["marker"] = ImageMarker((0, 0), size=marker_size, pen=mkPen((100, 100, 255), width=5))
+        self.marker_dict[1]["marker"] = ImageMarker(
+            (0, 0), size=marker_size, pen=mkPen((100, 100, 255), width=5)
+        )
         self.marker_dict[1]["button"] = self.ui.marker1Button
         self.marker_dict[1]["xlineedit"] = self.ui.marker1XPosLineEdit
         self.marker_dict[1]["ylineedit"] = self.ui.marker1YPosLineEdit
 
-        self.marker_dict[2]["marker"] = ImageMarker((0, 0), size=marker_size, pen=mkPen((255, 100, 100), width=5))
+        self.marker_dict[2]["marker"] = ImageMarker(
+            (0, 0), size=marker_size, pen=mkPen((255, 100, 100), width=5)
+        )
         self.marker_dict[2]["button"] = self.ui.marker2Button
         self.marker_dict[2]["xlineedit"] = self.ui.marker2XPosLineEdit
         self.marker_dict[2]["ylineedit"] = self.ui.marker2YPosLineEdit
 
-        self.marker_dict[3]["marker"] = ImageMarker((0, 0), size=marker_size, pen=mkPen((60, 255, 60), width=5))
+        self.marker_dict[3]["marker"] = ImageMarker(
+            (0, 0), size=marker_size, pen=mkPen((60, 255, 60), width=5)
+        )
         self.marker_dict[3]["button"] = self.ui.marker3Button
         self.marker_dict[3]["xlineedit"] = self.ui.marker3XPosLineEdit
         self.marker_dict[3]["ylineedit"] = self.ui.marker3YPosLineEdit
 
-        self.marker_dict[4]["marker"] = ImageMarker((0, 0), size=marker_size, pen=mkPen((255, 60, 255), width=5))
+        self.marker_dict[4]["marker"] = ImageMarker(
+            (0, 0), size=marker_size, pen=mkPen((255, 60, 255), width=5)
+        )
         self.marker_dict[4]["button"] = self.ui.marker4Button
         self.marker_dict[4]["xlineedit"] = self.ui.marker4XPosLineEdit
         self.marker_dict[4]["ylineedit"] = self.ui.marker4YPosLineEdit
@@ -130,8 +142,12 @@ class CamViewer(Display):
             curvepen.setWidth(1)
             self.marker_dict[d]["xcurve"] = self.xLineoutPlot.plot(pen=curvepen)
             self.marker_dict[d]["ycurve"] = self.yLineoutPlot.plot(pen=curvepen)
-            self.marker_dict[d]["xlineedit"].returnPressed.connect(self.markerPositionLineEditChanged)
-            self.marker_dict[d]["ylineedit"].returnPressed.connect(self.markerPositionLineEditChanged)
+            self.marker_dict[d]["xlineedit"].returnPressed.connect(
+                self.markerPositionLineEditChanged
+            )
+            self.marker_dict[d]["ylineedit"].returnPressed.connect(
+                self.markerPositionLineEditChanged
+            )
 
         # Set up zoom buttons
         self.ui.zoomInButton.clicked.connect(self.zoomIn)
@@ -142,7 +158,9 @@ class CamViewer(Display):
         self.ui.setROIButton.clicked.connect(self.setROI)
         self.ui.resetROIButton.clicked.connect(self.resetROI)
 
-        self.destroyed.connect(functools.partial(widget_destroyed, self.channels, weakref.ref(self)))
+        self.destroyed.connect(
+            functools.partial(widget_destroyed, self.channels, weakref.ref(self))
+        )
 
     @Slot()
     def zoomIn(self):
@@ -157,7 +175,9 @@ class CamViewer(Display):
         if len(self.image_data) == 0:
             return
         self.ui.imageView.getView().setRange(
-            xRange=(0, self.image_data.shape[0]), yRange=(0, self.image_data.shape[1]), padding=0.0
+            xRange=(0, self.image_data.shape[0]),
+            yRange=(0, self.image_data.shape[1]),
+            padding=0.0,
         )
 
     def disable_all_markers(self):
@@ -194,7 +214,10 @@ class CamViewer(Display):
             try:
                 new_x = int(x_line_edit.text())
                 new_y = int(y_line_edit.text())
-                if new_x <= marker.maxBounds.width() and new_y <= marker.maxBounds.height():
+                if (
+                    new_x <= marker.maxBounds.width()
+                    and new_y <= marker.maxBounds.height()
+                ):
                     marker.setPos((new_x, new_y))
             except Exception:
                 pass
@@ -224,7 +247,9 @@ class CamViewer(Display):
             xcurve = self.marker_dict[marker_index]["xcurve"]
             ycurve = self.marker_dict[marker_index]["ycurve"]
             if marker.isVisible():
-                result, coords = marker.getArrayRegion(self.image_data, self.ui.imageView.getImageItem())
+                result, coords = marker.getArrayRegion(
+                    self.image_data, self.ui.imageView.getImageItem()
+                )
                 xcurve.setData(y=result[0], x=np.arange(len(result[0])))
                 ycurve.setData(y=np.arange(len(result[1])), x=result[1])
 
@@ -259,7 +284,10 @@ class CamViewer(Display):
         self._average_buffer = np.ndarray(0)
         self._needs_auto_range = True
         self.imageChannel = self.cameras[new_camera]["image"]
-        self.widthChannel = self.cameras[new_camera]["roi_width"] or self.cameras[new_camera]["max_width"]
+        self.widthChannel = (
+            self.cameras[new_camera]["roi_width"]
+            or self.cameras[new_camera]["max_width"]
+        )
         self.maxWidthChannel = self.cameras[new_camera]["max_width"]
         self.maxHeightChannel = self.cameras[new_camera]["max_height"]
         self.roiXChannel = self.cameras[new_camera]["roi_x"]
@@ -276,9 +304,16 @@ class CamViewer(Display):
             ),
             PyDMChannel(address=self.widthChannel, value_slot=self.receiveImageWidth),
             PyDMChannel(address=self.maxWidthChannel, value_slot=self.receiveMaxWidth),
-            PyDMChannel(address=self.maxHeightChannel, value_slot=self.receiveMaxHeight),
+            PyDMChannel(
+                address=self.maxHeightChannel, value_slot=self.receiveMaxHeight
+            ),
         ]
-        if self.roiXChannel and self.roiYChannel and self.roiWidthChannel and self.roiHeightChannel:
+        if (
+            self.roiXChannel
+            and self.roiYChannel
+            and self.roiWidthChannel
+            and self.roiHeightChannel
+        ):
             self._channels.extend(
                 [
                     PyDMChannel(
@@ -287,12 +322,20 @@ class CamViewer(Display):
                         value_signal=self.roi_x_signal,
                         write_access_slot=self.roiWriteAccessChanged,
                     ),
-                    PyDMChannel(address=self.roiYChannel, value_slot=self.receiveRoiY, value_signal=self.roi_y_signal),
                     PyDMChannel(
-                        address=self.roiWidthChannel, value_slot=self.receiveRoiWidth, value_signal=self.roi_w_signal
+                        address=self.roiYChannel,
+                        value_slot=self.receiveRoiY,
+                        value_signal=self.roi_y_signal,
                     ),
                     PyDMChannel(
-                        address=self.roiHeightChannel, value_slot=self.receiveRoiHeight, value_signal=self.roi_h_signal
+                        address=self.roiWidthChannel,
+                        value_slot=self.receiveRoiWidth,
+                        value_signal=self.roi_w_signal,
+                    ),
+                    PyDMChannel(
+                        address=self.roiHeightChannel,
+                        value_slot=self.receiveRoiHeight,
+                        value_signal=self.roi_h_signal,
                     ),
                 ]
             )
@@ -425,15 +468,21 @@ class CamViewer(Display):
         # If we are in average mode, add this image to the circular averaging buffer, otherwise just display it.
         if self._average_mode_enabled:
             if len(self._average_buffer) == 0:
-                self._average_buffer = self.createAverageBuffer(len(new_waveform), new_waveform.dtype, new_waveform)
+                self._average_buffer = self.createAverageBuffer(
+                    len(new_waveform), new_waveform.dtype, new_waveform
+                )
                 self._average_counter = 0
-            self._average_counter = (self._average_counter + 1) % len(self._average_buffer)
+            self._average_counter = (self._average_counter + 1) % len(
+                self._average_buffer
+            )
             # self._average_buffer = np.roll(self._average_buffer, 1, axis=0)
             self._average_buffer[self._average_counter] = new_waveform
             mean = np.mean(self._average_buffer, axis=0).astype(new_waveform.dtype)
             self.image_data = mean.reshape((int(self.image_width), -1), order="F")
         else:
-            self.image_data = new_waveform.reshape((int(self.image_width), -1), order="F")
+            self.image_data = new_waveform.reshape(
+                (int(self.image_width), -1), order="F"
+            )
         self.setMarkerBounds()
         self.updateLineouts()
         self.ui.imageView.image_value_changed(self.image_data)
@@ -479,7 +528,10 @@ class CamViewer(Display):
         for marker_index in self.marker_dict:
             marker = self.marker_dict[marker_index]["marker"]
             marker.maxBounds = QRectF(
-                0, 0, self.image_data.shape[0] + marker.size()[0] - 1, self.image_data.shape[1] + marker.size()[1] - 1
+                0,
+                0,
+                self.image_data.shape[0] + marker.size()[0] - 1,
+                self.image_data.shape[1] + marker.size()[1] - 1,
             )
 
     @Slot(int)

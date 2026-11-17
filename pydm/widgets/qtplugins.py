@@ -32,7 +32,12 @@ from .label import PyDMLabel
 from .line_edit import PyDMLineEdit
 from .logdisplay import PyDMLogDisplay
 from .pushbutton import PyDMPushButton
-from .qtplugin_base import PyDMDesignerPlugin, WidgetCategory, get_widgets_from_entrypoints, qtplugin_factory
+from .qtplugin_base import (
+    PyDMDesignerPlugin,
+    WidgetCategory,
+    get_widgets_from_entrypoints,
+    qtplugin_factory,
+)
 from .qtplugin_extensions import (
     ArchiveTimeCurveEditorExtension,
     BasicSettingsExtension,
@@ -69,7 +74,10 @@ BASE_EXTENSIONS = [BasicSettingsExtension, RulesExtension]
 
 # Label plugin
 PyDMLabelPlugin = qtplugin_factory(
-    PyDMLabel, group=WidgetCategory.DISPLAY, extensions=BASE_EXTENSIONS, icon=ifont.icon("tag")
+    PyDMLabel,
+    group=WidgetCategory.DISPLAY,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("tag"),
 )
 
 # Time Plot plugin
@@ -117,63 +125,111 @@ PyDMEventPlotPlugin = qtplugin_factory(
 
 # Byte plugin
 PyDMByteIndicatorPlugin = qtplugin_factory(
-    PyDMByteIndicator, group=WidgetCategory.DISPLAY, extensions=BASE_EXTENSIONS, icon=ifont.icon("ellipsis-v")
+    PyDMByteIndicator,
+    group=WidgetCategory.DISPLAY,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("ellipsis-v"),
 )
 
 # Multi-state plugin
 PyDMMultiStateLEDIndicatorPlugin = qtplugin_factory(
-    PyDMMultiStateIndicator, group=WidgetCategory.DISPLAY, extensions=BASE_EXTENSIONS, icon=ifont.icon("ellipsis-v")
+    PyDMMultiStateIndicator,
+    group=WidgetCategory.DISPLAY,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("ellipsis-v"),
 )
 
 # Checkbox plugin
 PyDMCheckboxPlugin = qtplugin_factory(
-    PyDMCheckbox, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("check-square")
+    PyDMCheckbox,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("check-square"),
 )
 
 # Date/Time plugins
 PyDMDateTimeEditPlugin = qtplugin_factory(
-    PyDMDateTimeEdit, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("calendar-minus")
+    PyDMDateTimeEdit,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("calendar-minus"),
 )
 
 PyDMDateTimeLabelPlugin = qtplugin_factory(
-    PyDMDateTimeLabel, group=WidgetCategory.DISPLAY, extensions=BASE_EXTENSIONS, icon=ifont.icon("calendar-alt")
+    PyDMDateTimeLabel,
+    group=WidgetCategory.DISPLAY,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("calendar-alt"),
 )
 # Drawing plugins
 PyDMDrawingArcPlugin = qtplugin_factory(
-    PyDMDrawingArc, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("circle-notch")
+    PyDMDrawingArc,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("circle-notch"),
 )
 PyDMDrawingChordPlugin = qtplugin_factory(
-    PyDMDrawingChord, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("moon")
+    PyDMDrawingChord,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("moon"),
 )
 PyDMDrawingCirclePlugin = qtplugin_factory(
-    PyDMDrawingCircle, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("circle")
+    PyDMDrawingCircle,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("circle"),
 )
 PyDMDrawingEllipsePlugin = qtplugin_factory(
-    PyDMDrawingEllipse, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("ellipsis-h")
+    PyDMDrawingEllipse,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("ellipsis-h"),
 )
 PyDMDrawingImagePlugin = qtplugin_factory(
-    PyDMDrawingImage, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("image")
+    PyDMDrawingImage,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("image"),
 )
 PyDMDrawingLinePlugin = qtplugin_factory(
-    PyDMDrawingLine, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("minus")
+    PyDMDrawingLine,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("minus"),
 )
 PyDMDrawingPiePlugin = qtplugin_factory(
-    PyDMDrawingPie, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("pizza-slice")
+    PyDMDrawingPie,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("pizza-slice"),
 )
 
 PyDMDrawingRectanglePlugin = qtplugin_factory(
-    PyDMDrawingRectangle, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("border-style")
+    PyDMDrawingRectangle,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("border-style"),
 )
 PyDMDrawingTrianglePlugin = qtplugin_factory(
-    PyDMDrawingTriangle, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("caret-up")
+    PyDMDrawingTriangle,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("caret-up"),
 )
 
 PyDMDrawingPolygonPlugin = qtplugin_factory(
-    PyDMDrawingPolygon, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("draw-polygon")
+    PyDMDrawingPolygon,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("draw-polygon"),
 )
 
 PyDMDrawingPolylinePlugin = qtplugin_factory(
-    PyDMDrawingPolyline, group=WidgetCategory.DRAWING, extensions=BASE_EXTENSIONS, icon=ifont.icon("share-alt")
+    PyDMDrawingPolyline,
+    group=WidgetCategory.DRAWING,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("share-alt"),
 )
 
 PyDMDrawingIrregularPolygonPlugin = qtplugin_factory(
@@ -185,42 +241,67 @@ PyDMDrawingIrregularPolygonPlugin = qtplugin_factory(
 
 # Embedded Display plugin
 PyDMEmbeddedDisplayPlugin = qtplugin_factory(
-    PyDMEmbeddedDisplay, group=WidgetCategory.CONTAINER, extensions=BASE_EXTENSIONS, icon=ifont.icon("layer-group")
+    PyDMEmbeddedDisplay,
+    group=WidgetCategory.CONTAINER,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("layer-group"),
 )
 
 # Enum Button plugin
 PyDMEnumButtonPlugin = qtplugin_factory(
-    PyDMEnumButton, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("bars")
+    PyDMEnumButton,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("bars"),
 )
 
 # Enum Combobox plugin
 PyDMEnumComboBoxPlugin = qtplugin_factory(
-    PyDMEnumComboBox, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("list-ol")
+    PyDMEnumComboBox,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("list-ol"),
 )
 
 # Frame plugin
 PyDMFramePlugin = qtplugin_factory(
-    PyDMFrame, group=WidgetCategory.CONTAINER, is_container=True, extensions=BASE_EXTENSIONS, icon=ifont.icon("expand")
+    PyDMFrame,
+    group=WidgetCategory.CONTAINER,
+    is_container=True,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("expand"),
 )
 
 # Image plugin
 PyDMImageViewPlugin = qtplugin_factory(
-    PyDMImageView, group=WidgetCategory.DISPLAY, extensions=BASE_EXTENSIONS, icon=ifont.icon("camera")
+    PyDMImageView,
+    group=WidgetCategory.DISPLAY,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("camera"),
 )
 
 # Line Edit plugin
 PyDMLineEditPlugin = qtplugin_factory(
-    PyDMLineEdit, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("edit")
+    PyDMLineEdit,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("edit"),
 )
 
 # Log Viewer
 PyDMLogDisplayPlugin = qtplugin_factory(
-    PyDMLogDisplay, group=WidgetCategory.DISPLAY, extensions=BASE_EXTENSIONS, icon=ifont.icon("clipboard")
+    PyDMLogDisplay,
+    group=WidgetCategory.DISPLAY,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("clipboard"),
 )
 
 # Push Button plugin
 PyDMPushButtonPlugin = qtplugin_factory(
-    PyDMPushButton, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("mouse")
+    PyDMPushButton,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("mouse"),
 )
 
 # Related Display Button plugin
@@ -233,41 +314,65 @@ PyDMRelatedDisplayButtonPlugin = qtplugin_factory(
 
 # Shell Command plugin
 PyDMShellCommandPlugin = qtplugin_factory(
-    PyDMShellCommand, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("terminal")
+    PyDMShellCommand,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("terminal"),
 )
 
 # Slider plugin
 PyDMSliderPlugin = qtplugin_factory(
-    PyDMSlider, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("sliders-h")
+    PyDMSlider,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("sliders-h"),
 )
 
 # Spinbox plugin
 PyDMSpinboxplugin = qtplugin_factory(
-    PyDMSpinbox, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("sort-numeric-up")
+    PyDMSpinbox,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("sort-numeric-up"),
 )
 
 # Scale Indicator plugin
 PyDMScaleIndicatorPlugin = qtplugin_factory(
-    PyDMScaleIndicator, group=WidgetCategory.DISPLAY, extensions=BASE_EXTENSIONS, icon=ifont.icon("level-up-alt")
+    PyDMScaleIndicator,
+    group=WidgetCategory.DISPLAY,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("level-up-alt"),
 )
 
 # Analog Indicator plugin
 PyDMAnalogIndicatorPlugin = qtplugin_factory(
-    PyDMAnalogIndicator, group=WidgetCategory.DISPLAY, extensions=BASE_EXTENSIONS, icon=ifont.icon("level-up-alt")
+    PyDMAnalogIndicator,
+    group=WidgetCategory.DISPLAY,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("level-up-alt"),
 )
 
 # Symbol plugin
 PyDMSymbolPlugin = qtplugin_factory(
-    PyDMSymbol, group=WidgetCategory.DISPLAY, extensions=[SymbolExtension, RulesExtension], icon=ifont.icon("icons")
+    PyDMSymbol,
+    group=WidgetCategory.DISPLAY,
+    extensions=[SymbolExtension, RulesExtension],
+    icon=ifont.icon("icons"),
 )
 
 # Waveform Table plugin
 PyDMWaveformTablePlugin = qtplugin_factory(
-    PyDMWaveformTable, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("table")
+    PyDMWaveformTable,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("table"),
 )
 # NTTable plugin
 PyDMNTTable = qtplugin_factory(
-    PyDMNTTable, group=WidgetCategory.INPUT, extensions=BASE_EXTENSIONS, icon=ifont.icon("table")
+    PyDMNTTable,
+    group=WidgetCategory.INPUT,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("table"),
 )
 
 # Tab Widget plugin
@@ -275,11 +380,16 @@ PyDMTabWidgetPlugin = TabWidgetPlugin(extensions=BASE_EXTENSIONS)
 
 # Template Repeater plugin
 PyDMTemplateRepeaterPlugin = qtplugin_factory(
-    PyDMTemplateRepeater, group=WidgetCategory.CONTAINER, extensions=BASE_EXTENSIONS, icon=ifont.icon("align-justify")
+    PyDMTemplateRepeater,
+    group=WidgetCategory.CONTAINER,
+    extensions=BASE_EXTENSIONS,
+    icon=ifont.icon("align-justify"),
 )
 
 # Terminator Widget plugin
-PyDMTerminatorPlugin = qtplugin_factory(PyDMTerminator, group=WidgetCategory.MISC, extensions=BASE_EXTENSIONS)
+PyDMTerminatorPlugin = qtplugin_factory(
+    PyDMTerminator, group=WidgetCategory.MISC, extensions=BASE_EXTENSIONS
+)
 
 
 # **********************************************
@@ -290,7 +400,9 @@ def is_designer_widget(WidgetCls: type) -> bool:
     Returns True if the object is a designer plugin class that is usable in designer.
     """
     return (
-        inspect.isclass(WidgetCls) and issubclass(WidgetCls, PyDMDesignerPlugin) and WidgetCls is not PyDMDesignerPlugin
+        inspect.isclass(WidgetCls)
+        and issubclass(WidgetCls, PyDMDesignerPlugin)
+        and WidgetCls is not PyDMDesignerPlugin
     )
 
 
@@ -325,7 +437,9 @@ def get_all_custom_widgets_in_order() -> list[type[PyDMDesignerPlugin]]:
     for plugin in get_pydm_custom_widgets().values():
         pydm_widgets_by_group[plugin.plugin_group].append(plugin)
 
-    entrypoint_widgets_by_group: dict[str, list[type[PyDMDesignerPlugin]]] = defaultdict(list)
+    entrypoint_widgets_by_group: dict[str, list[type[PyDMDesignerPlugin]]] = (
+        defaultdict(list)
+    )
     for plugin in get_widgets_from_entrypoints().values():
         entrypoint_widgets_by_group[plugin.plugin_group].append(plugin)
 
@@ -339,10 +453,16 @@ def get_all_custom_widgets_in_order() -> list[type[PyDMDesignerPlugin]]:
         WidgetCategory.MISC,
     )
     for category in standard_category_order:
-        all_custom_widgets.extend(sorted(pydm_widgets_by_group[category], key=lambda pl: pl.plugin_name))
+        all_custom_widgets.extend(
+            sorted(pydm_widgets_by_group[category], key=lambda pl: pl.plugin_name)
+        )
     for category in pydm_widgets_by_group:
         if category not in standard_category_order:
-            all_custom_widgets.extend(sorted(pydm_widgets_by_group[category], key=lambda pl: pl.plugin_name))
+            all_custom_widgets.extend(
+                sorted(pydm_widgets_by_group[category], key=lambda pl: pl.plugin_name)
+            )
     for category in sorted(entrypoint_widgets_by_group):
-        all_custom_widgets.extend(sorted(entrypoint_widgets_by_group[category], key=lambda pl: pl.plugin_name))
+        all_custom_widgets.extend(
+            sorted(entrypoint_widgets_by_group[category], key=lambda pl: pl.plugin_name)
+        )
     return all_custom_widgets

@@ -6,7 +6,9 @@ class BasePlotAxesModel(QAbstractTableModel):
     """The data model for the axes tab in the plot curve editor.
     Acts as a go-between for the axes in a plot, and QTableView items."""
 
-    name_for_orientations = {v: k for k, v in BasePlotAxisItem.axis_orientations.items()}
+    name_for_orientations = {
+        v: k for k, v in BasePlotAxisItem.axis_orientations.items()
+    }
 
     def __init__(self, plot, parent=None):
         super().__init__(parent=parent)
@@ -127,7 +129,9 @@ class BasePlotAxesModel(QAbstractTableModel):
 
     def append(self, name):
         """Append a row to the table"""
-        self.beginInsertRows(QModelIndex(), len(self._plot._axes), len(self._plot._axes))
+        self.beginInsertRows(
+            QModelIndex(), len(self._plot._axes), len(self._plot._axes)
+        )
         self._plot.addAxis(plot_data_item=None, name=name, orientation="left")
         self.endInsertRows()
 

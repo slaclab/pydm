@@ -1,7 +1,10 @@
 import pytest
 from concurrent.futures import ThreadPoolExecutor
 
-from pydm.data_plugins.epics_plugins.pyepics_plugin_component import Connection, PyEPICSPlugin
+from pydm.data_plugins.epics_plugins.pyepics_plugin_component import (
+    Connection,
+    PyEPICSPlugin,
+)
 from pydm.tests.conftest import ConnectionSignals
 from pydm.widgets.channel import PyDMChannel
 
@@ -31,12 +34,24 @@ def test_update_ctrl_vars(signals: ConnectionSignals):
     values_received = []
     mock_channel = PyDMChannel()
     mock_pyepics_connection = Connection(mock_channel, "Test:PV:1")
-    mock_pyepics_connection.upper_alarm_limit_signal.connect(lambda x: values_received.append(x))
-    mock_pyepics_connection.lower_alarm_limit_signal.connect(lambda x: values_received.append(x))
-    mock_pyepics_connection.lower_warning_limit_signal.connect(lambda x: values_received.append(x))
-    mock_pyepics_connection.upper_warning_limit_signal.connect(lambda x: values_received.append(x))
-    mock_pyepics_connection.upper_ctrl_limit_signal.connect(lambda x: values_received.append(x))
-    mock_pyepics_connection.lower_ctrl_limit_signal.connect(lambda x: values_received.append(x))
+    mock_pyepics_connection.upper_alarm_limit_signal.connect(
+        lambda x: values_received.append(x)
+    )
+    mock_pyepics_connection.lower_alarm_limit_signal.connect(
+        lambda x: values_received.append(x)
+    )
+    mock_pyepics_connection.lower_warning_limit_signal.connect(
+        lambda x: values_received.append(x)
+    )
+    mock_pyepics_connection.upper_warning_limit_signal.connect(
+        lambda x: values_received.append(x)
+    )
+    mock_pyepics_connection.upper_ctrl_limit_signal.connect(
+        lambda x: values_received.append(x)
+    )
+    mock_pyepics_connection.lower_ctrl_limit_signal.connect(
+        lambda x: values_received.append(x)
+    )
 
     mock_pyepics_connection.update_ctrl_vars(
         upper_ctrl_limit=70,

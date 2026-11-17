@@ -48,10 +48,18 @@ class MagnetPV(PVGroup):
         "TURN_ON",
         "TURN_OFF",
     )
-    ctrl = pvproperty(value=0, name=":CTRL", dtype=ChannelType.ENUM, enum_strings=ctrl_strings)
-    abort = pvproperty(value=0, name=":ABORT", dtype=ChannelType.ENUM, enum_strings=("Ready", "Abort"))
-    madname = pvproperty(value="", name=":MADNAME", read_only=True, dtype=ChannelType.STRING)
-    statmsg = pvproperty(value="", name=":STATMSG", read_only=True, dtype=ChannelType.STRING)
+    ctrl = pvproperty(
+        value=0, name=":CTRL", dtype=ChannelType.ENUM, enum_strings=ctrl_strings
+    )
+    abort = pvproperty(
+        value=0, name=":ABORT", dtype=ChannelType.ENUM, enum_strings=("Ready", "Abort")
+    )
+    madname = pvproperty(
+        value="", name=":MADNAME", read_only=True, dtype=ChannelType.STRING
+    )
+    statmsg = pvproperty(
+        value="", name=":STATMSG", read_only=True, dtype=ChannelType.STRING
+    )
 
     def __init__(self, device_name, element_name, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -123,13 +131,19 @@ def main():
     with open("xcor_list.json") as f:
         mags = json.load(f)
         pvs = [
-            MagnetPV(mag["devname"], "XCOR{}".format(mag["devname"].split(":")[-1]), prefix=mag["devname"])
+            MagnetPV(
+                mag["devname"],
+                "XCOR{}".format(mag["devname"].split(":")[-1]),
+                prefix=mag["devname"],
+            )
             for mag in mags
         ]
         for pv in pvs:
             pvdb.update(**pv.pvdb)
 
-    _, run_options = ioc_arg_parser(default_prefix="", desc="Simulated Corrector Magnet IOC")
+    _, run_options = ioc_arg_parser(
+        default_prefix="", desc="Simulated Corrector Magnet IOC"
+    )
     run(pvdb, **run_options)
 
 

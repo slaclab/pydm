@@ -1,14 +1,24 @@
 import os
 import pytest
 from pydm import Display
-from pydm.display import load_file, load_py_file, _compile_ui_file, _load_compiled_ui_into_display, ScreenTarget
+from pydm.display import (
+    load_file,
+    load_py_file,
+    _compile_ui_file,
+    _load_compiled_ui_into_display,
+    ScreenTarget,
+)
 from qtpy.QtWidgets import QLabel, QWidget
 from pydm.utilities import ACTIVE_QT_WRAPPER, QtWrapperTypes
 
 # The path to the .ui file used in these tests
-test_ui_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data", "test.ui")
+test_ui_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), "test_data", "test.ui"
+)
 
-test_ui_with_macros_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data", "macro_test.ui")
+test_ui_with_macros_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), "test_data", "macro_test.ui"
+)
 
 # The path to the .py files used in these tests
 no_display_test_py_path = os.path.join(
@@ -16,7 +26,9 @@ no_display_test_py_path = os.path.join(
 )
 
 valid_display_test_py_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), "test_data", "valid_display_test_file.py"
+    os.path.dirname(os.path.realpath(__file__)),
+    "test_data",
+    "valid_display_test_file.py",
 )
 
 
@@ -124,7 +136,9 @@ def test_file_path_in_stylesheet_property(qtbot):
     my_display = Display(parent=None, ui_filename=test_ui_path)
     qtbot.addWidget(my_display)
     my_display.setStyleSheet("test_stylesheet.css")
-    test_css_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data", "test_stylesheet.css")
+    test_css_path = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), "test_data", "test_stylesheet.css"
+    )
     with open(test_css_path) as css_file:
         css = css_file.read()
         # Assert that the stylesheet property is populated with the contents of the file.
@@ -200,5 +214,6 @@ def test_load_file_with_help_display(qtbot):
     test_display = load_file(test_ui_path, target=ScreenTarget.HOME)
     assert test_display.help_window is not None
     assert (
-        test_display.help_window.display_content.toPlainText() == "This is a test help file for the test.ui display\n"
+        test_display.help_window.display_content.toPlainText()
+        == "This is a test help file for the test.ui display\n"
     )

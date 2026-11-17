@@ -4,17 +4,7 @@ import logging
 import warnings
 from functools import partial
 import hashlib
-from qtpy.QtWidgets import (
-    QPushButton,
-    QMenu,
-    QAction,
-    QMessageBox,
-    QInputDialog,
-    QLineEdit,
-    QWidget,
-    QStyle,
-    QApplication,
-)
+from qtpy.QtWidgets import QPushButton, QMenu, QAction, QMessageBox, QInputDialog, QLineEdit, QWidget, QStyle, QApplication
 from qtpy.QtGui import QCursor, QIcon, QMouseEvent, QColor
 from qtpy.QtCore import Slot, Qt, QSize, QPoint, QTimer, QEvent
 from qtpy import QtDesigner
@@ -541,7 +531,11 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         bool
         """
         try:
-            return self._open_in_new_window and self._auto_close_enabled and float(self._auto_close_seconds) > 0
+            return (
+                self._open_in_new_window
+                and self._auto_close_enabled
+                and float(self._auto_close_seconds) > 0
+            )
         except (TypeError, ValueError):
             return False
 

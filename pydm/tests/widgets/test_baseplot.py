@@ -18,14 +18,20 @@ logger = logging.getLogger(__name__)
 
 @pytest.mark.parametrize(
     "color, line_style, line_width, name",
-    [(QColor("red"), Qt.SolidLine, 1, "test_name"), (None, Qt.DashLine, 10, ""), (None, None, None, None)],
+    [
+        (QColor("red"), Qt.SolidLine, 1, "test_name"),
+        (None, Qt.DashLine, 10, ""),
+        (None, None, None, None),
+    ],
 )
 def test_baseplotcurveitem_construct(qtbot, color, line_style, line_width, name):
     base_plotcurve_item = BasePlotCurveItem(color, line_style, line_width, name=name)
 
     assert base_plotcurve_item._color == color if color else QColor("white")
     assert base_plotcurve_item._pen.color() == color if color else QColor("white")
-    assert base_plotcurve_item._pen.style() == line_style if line_style else Qt.SolidLine
+    assert (
+        base_plotcurve_item._pen.style() == line_style if line_style else Qt.SolidLine
+    )
     assert base_plotcurve_item._pen.width() == line_width if line_width else 1
     assert base_plotcurve_item.opts["name"] == name
 
@@ -415,7 +421,9 @@ class DummyWidget:
             if not isinstance(item, DummyPlotDataItem):
                 continue
 
-            label = DummyTextItem(text="No data", color="w", border="dummy_pen", fill="dummy_brush")
+            label = DummyTextItem(
+                text="No data", color="w", border="dummy_pen", fill="dummy_brush"
+            )
 
             label.setPos(0, 0)
             label.setAnchor((0.5, 0.5))
@@ -438,7 +446,10 @@ class DummyWidget:
             self.init_label = False
 
         for curve, label in self.textItems.items():
-            if hasattr(curve, "y_axis_name") and curve.y_axis_name in self.plotItem.axes:
+            if (
+                hasattr(curve, "y_axis_name")
+                and curve.y_axis_name in self.plotItem.axes
+            ):
                 curve_vb = self.plotItem.getViewBoxForAxis(curve.y_axis_name)
             else:
                 curve_vb = self.getViewBox()

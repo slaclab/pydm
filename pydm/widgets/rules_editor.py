@@ -94,7 +94,9 @@ class RulesEditor(QtWidgets.QDialog):
 
         self.lst_rules = QtWidgets.QListWidget()
         self.lst_rules.setSizePolicy(
-            QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+            QtWidgets.QSizePolicy(
+                QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+            )
         )
         self.lst_rules.itemSelectionChanged.connect(self.load_from_list)
         lf_layout.addWidget(self.lst_rules)
@@ -179,11 +181,15 @@ class RulesEditor(QtWidgets.QDialog):
         frm_edit_layout.addWidget(self.tbl_channels)
 
         expression_layout = QtWidgets.QFormLayout()
-        expression_layout.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
+        expression_layout.setFieldGrowthPolicy(
+            QtWidgets.QFormLayout.ExpandingFieldsGrow
+        )
         lbl_expected = QtWidgets.QLabel("Expected Type:")
         self.lbl_expected_type = QtWidgets.QLabel(parent=self)
         # self.lbl_expected_type.setText("")
-        self.lbl_expected_type.setStyleSheet("color: rgb(0, 128, 255); font-weight: bold;")
+        self.lbl_expected_type.setStyleSheet(
+            "color: rgb(0, 128, 255); font-weight: bold;"
+        )
         expression_layout.addRow(lbl_expected, self.lbl_expected_type)
 
         lbl_initial = QtWidgets.QLabel("Initial Value:")
@@ -374,7 +380,11 @@ class RulesEditor(QtWidgets.QDialog):
 
         confirm_message = "Are you sure you want to delete Rule: {}?".format(name)
         reply = QtWidgets.QMessageBox().question(
-            self, "Message", confirm_message, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No
+            self,
+            "Message",
+            confirm_message,
+            QtWidgets.QMessageBox.Yes,
+            QtWidgets.QMessageBox.No,
         )
 
         if reply == QtWidgets.QMessageBox.Yes:
@@ -398,11 +408,19 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
         checkbox_trigger = QtWidgets.QTableWidgetItem()
         checkbox_trigger.setCheckState(state)
-        checkbox_trigger.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable)
+        checkbox_trigger.setFlags(
+            QtCore.Qt.ItemIsEnabled
+            | QtCore.Qt.ItemIsSelectable
+            | QtCore.Qt.ItemIsUserCheckable
+        )
         self.tbl_channels.setItem(row, 1, checkbox_trigger)
         checkbox_use_enum = QtWidgets.QTableWidgetItem()
         checkbox_use_enum.setCheckState(QtCore.Qt.Checked)
-        checkbox_use_enum.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable)
+        checkbox_use_enum.setFlags(
+            QtCore.Qt.ItemIsEnabled
+            | QtCore.Qt.ItemIsSelectable
+            | QtCore.Qt.ItemIsUserCheckable
+        )
         self.tbl_channels.setItem(row, 2, checkbox_use_enum)
         vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
@@ -418,7 +436,11 @@ class RulesEditor(QtWidgets.QDialog):
         c = "channel" if len(items) == 1 else "channels"
         confirm_message = "Delete the selected {}?".format(c)
         reply = QtWidgets.QMessageBox().question(
-            self, "Message", confirm_message, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No
+            self,
+            "Message",
+            confirm_message,
+            QtWidgets.QMessageBox.Yes,
+            QtWidgets.QMessageBox.No,
         )
 
         if reply == QtWidgets.QMessageBox.Yes:
@@ -522,12 +544,16 @@ class RulesEditor(QtWidgets.QDialog):
                 found_trigger = False
                 for ch_idx, ch in enumerate(channels):
                     if not ch.get("channel", ""):
-                        errors.append("Rule #{} - Ch. #{} has no channel.".format(idx + 1, ch_idx))
+                        errors.append(
+                            "Rule #{} - Ch. #{} has no channel.".format(idx + 1, ch_idx)
+                        )
                     if ch.get("trigger", False) and not found_trigger:
                         found_trigger = True
 
                 if not found_trigger:
-                    errors.append("Rule #{} has no channel for trigger.".format(idx + 1))
+                    errors.append(
+                        "Rule #{} has no channel for trigger.".format(idx + 1)
+                    )
 
         if len(errors) > 0:
             error_msg = os.linesep.join(errors)
@@ -550,12 +576,16 @@ class RulesEditor(QtWidgets.QDialog):
         status, message = RulesEditor.is_data_valid(self.rules)
         if status:
             data = json.dumps(self.rules)
-            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self.widget)
+            formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(
+                self.widget
+            )
             if formWindow:
                 formWindow.cursor().setProperty("rules", data)
             self.accept()
         else:
-            QtWidgets.QMessageBox.critical(self, "Error Saving", message, QtWidgets.QMessageBox.Ok)
+            QtWidgets.QMessageBox.critical(
+                self, "Error Saving", message, QtWidgets.QMessageBox.Ok
+            )
 
     @QtCore.Slot()
     def cancelChanges(self):

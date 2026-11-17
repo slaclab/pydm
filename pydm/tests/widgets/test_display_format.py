@@ -16,7 +16,13 @@ from pydm.widgets.display_format import DisplayFormat, parse_value_for_display
     "value, precision, display_format, widget, expected",
     [
         (np.array([65, 66], dtype=np.uint8), 1, DisplayFormat.String, QWidget, "AB"),
-        (np.array([65, 66, 0, 199], dtype=np.uint8), 1, DisplayFormat.String, QWidget, "AB"),
+        (
+            np.array([65, 66, 0, 199], dtype=np.uint8),
+            1,
+            DisplayFormat.String,
+            QWidget,
+            "AB",
+        ),
         ("abc", 0, DisplayFormat.Default, QWidget, "abc"),
         (123, 0, DisplayFormat.Default, QWidget, 123),
         (123.45, 0, DisplayFormat.Default, QWidget, 123.45),
@@ -27,7 +33,9 @@ from pydm.widgets.display_format import DisplayFormat, parse_value_for_display
         (0b1101, 0, DisplayFormat.Binary, QWidget, "0b1101"),
     ],
 )
-def test_parse_value_for_display_format(value, precision, display_format, widget, expected):
+def test_parse_value_for_display_format(
+    value, precision, display_format, widget, expected
+):
     """
     Test the correctness of the displayed value according to the specified value type.
 
@@ -48,7 +56,9 @@ def test_parse_value_for_display_format(value, precision, display_format, widget
     expected : str
         The expected formatted presentation of the provided value
     """
-    parsed_value = parse_value_for_display(value, precision, display_format_type=display_format, widget=widget)
+    parsed_value = parse_value_for_display(
+        value, precision, display_format_type=display_format, widget=widget
+    )
     assert parsed_value == expected
 
 
@@ -65,7 +75,9 @@ def test_parse_value_for_display_format(value, precision, display_format, widget
         (-1.234, 3, DisplayFormat.Binary, QWidget, "-0b10"),
     ],
 )
-def test_parse_value_for_display_precision(value, precision, display_format, widget, expected):
+def test_parse_value_for_display_precision(
+    value, precision, display_format, widget, expected
+):
     """
     Test the correctness of the displayed value according to the specified value precision.
 
@@ -86,7 +98,12 @@ def test_parse_value_for_display_precision(value, precision, display_format, wid
     expected : str
         The expected formatted presentation of the provided value
     """
-    assert parse_value_for_display(value, precision, display_format_type=display_format, widget=widget) == expected
+    assert (
+        parse_value_for_display(
+            value, precision, display_format_type=display_format, widget=widget
+        )
+        == expected
+    )
 
 
 # --------------------
@@ -98,7 +115,13 @@ def test_parse_value_for_display_precision(value, precision, display_format, wid
     "value, precision, display_format, widget, expected",
     [
         (np.array([-1, -2]), 1, DisplayFormat.String, QWidget, "Could not decode"),
-        (np.array([0xFFFE, 0xFFFF]), 1, DisplayFormat.String, QWidget, "Could not decode"),
+        (
+            np.array([0xFFFE, 0xFFFF]),
+            1,
+            DisplayFormat.String,
+            QWidget,
+            "Could not decode",
+        ),
         (
             "aaa",
             1,
@@ -106,8 +129,20 @@ def test_parse_value_for_display_precision(value, precision, display_format, wid
             QWidget,
             "Could not display value 'aaa' using displayFormat 'Exponential'",
         ),
-        ("zzz", 2, DisplayFormat.Hex, QWidget, "Could not display value 'zzz' using displayFormat 'Hex'"),
-        ("zzz", 3, DisplayFormat.Binary, QWidget, "Could not display value 'zzz' using displayFormat 'Binary'"),
+        (
+            "zzz",
+            2,
+            DisplayFormat.Hex,
+            QWidget,
+            "Could not display value 'zzz' using displayFormat 'Hex'",
+        ),
+        (
+            "zzz",
+            3,
+            DisplayFormat.Binary,
+            QWidget,
+            "Could not display value 'zzz' using displayFormat 'Binary'",
+        ),
     ],
 )
 def test_parse_value_for_display_precision_incorrect_display_format(
@@ -131,7 +166,9 @@ def test_parse_value_for_display_precision_incorrect_display_format(
     expected : str
         The expected formatted presentation of the provided value
     """
-    parsed_value = parse_value_for_display(value, precision, display_format_type=display_format, widget=widget)
+    parsed_value = parse_value_for_display(
+        value, precision, display_format_type=display_format, widget=widget
+    )
     if isinstance(value, np.ndarray):
         assert np.array_equal(value, parsed_value)
     else:
