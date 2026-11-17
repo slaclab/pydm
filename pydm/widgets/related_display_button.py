@@ -135,6 +135,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
         # Auto-close (idle timeout) configuration for popup displays.
         # Disabled by default to preserve the original behavior.
+        # Note: auto-close only takes effect when openInNewWindow is enabled,
+        # because it is meant for popup displays only.
         self._auto_close_enabled = False
         self._auto_close_seconds = 300.0
         # Each entry: {"display": QWidget, "timer": QTimer}
@@ -465,6 +467,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         Whether popup displays opened by this button should be automatically
         closed after a period of inactivity.
 
+        This option only takes effect when ``openInNewWindow`` is True,
+        because idle auto-close is intended for popup displays only.
+
         Returns
         -------
         bool
@@ -475,6 +480,9 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         """
         Whether popup displays opened by this button should be automatically
         closed after a period of inactivity.
+
+        This option only takes effect when ``openInNewWindow`` is True,
+        because idle auto-close is intended for popup displays only.
 
         Parameters
         ----------
@@ -487,7 +495,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
     def readAutoCloseSeconds(self) -> float:
         """
         Number of seconds of inactivity after which popup displays should be
-        automatically closed. This is only used when autoCloseEnabled is True.
+        automatically closed. This is only used when both ``openInNewWindow``
+        and ``autoCloseEnabled`` are True.
 
         Returns
         -------
@@ -498,7 +507,8 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
     def setAutoCloseSeconds(self, seconds: float) -> None:
         """
         Number of seconds of inactivity after which popup displays should be
-        automatically closed. This is only used when autoCloseEnabled is True.
+        automatically closed. This is only used when both ``openInNewWindow``
+        and ``autoCloseEnabled`` are True.
 
         Parameters
         ----------
@@ -518,15 +528,20 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
 
     def _is_auto_close_active(self) -> bool:
         """
-        Whether idle auto-close is currently active, i.e. enabled and with a
-        positive timeout.
+        Whether idle auto-close is currently effective.
+
+        Idle auto-close is only effective when all of the following hold:
+
+        - ``openInNewWindow`` is True (auto-close is meant for popups only),
+        - ``autoCloseEnabled`` is True,
+        - ``autoCloseSeconds`` is a positive number.
 
         Returns
         -------
         bool
         """
         try:
-            return self._auto_close_enabled and float(self._auto_close_seconds) > 0
+            return self._open_in_new_window and self._auto_close_enabled and float(self._auto_close_seconds) > 0
         except (TypeError, ValueError):
             return False
 
@@ -605,6 +620,10 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         The popup is closed after `autoCloseSeconds` of inactivity on the
         popup window (including all its children). Any user activity inside
         the popup resets the countdown.
+
+        Scheduling is a no-op unless :meth:`_is_auto_close_active` returns
+        True, i.e. unless ``openInNewWindow``, ``autoCloseEnabled`` are both
+        True and ``autoCloseSeconds`` is positive.
 
         To avoid PyDM RulesEngine signal-signature issues during window
         destruction, WA_DeleteOnClose is disabled and the window is hidden
@@ -988,12 +1007,15 @@ class PyDMRelatedDisplayButton(QPushButton, PyDMWidget):
         widget_macros = parse_macro_string(macro_string)
         macros.update(widget_macros)
 
+        # Idle auto-close only takes effect when openInNewWindow is enabled.
         auto_close_active = self._is_auto_close_active()
 
+        # The target decision is governed by Shift / openInNewWindow only,
+        # exactly like the original implementation.
         if self._shift_key_was_down:
             target = self.NEW_WINDOW
         if target is None:
-            if self._open_in_new_window or auto_close_active:
+            if self._open_in_new_window:
                 target = self.NEW_WINDOW
             else:
                 target = self.EXISTING_WINDOW
