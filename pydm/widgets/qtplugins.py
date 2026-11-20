@@ -2,6 +2,7 @@ import inspect
 import logging
 import os
 from collections import defaultdict
+from functools import lru_cache
 
 from pydm.utilities.iconfont import IconFont
 from .archiver_time_plot import PyDMArchiverTimePlot
@@ -294,6 +295,7 @@ def is_designer_widget(WidgetCls: type) -> bool:
     )
 
 
+@lru_cache
 def get_pydm_custom_widgets() -> dict[str, type[PyDMDesignerPlugin]]:
     """
     Returns a dictionary of all the widgets defined by PyDM itself.
