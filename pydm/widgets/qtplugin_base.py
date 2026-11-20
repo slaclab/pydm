@@ -22,6 +22,7 @@ affect any of your widgets, but it will be annoying.
 import enum
 import inspect
 import logging
+from functools import lru_cache
 from typing import Dict, List, Optional, Type
 from xml.sax.saxutils import escape
 
@@ -251,6 +252,7 @@ class PyDMDesignerPlugin(BASE_PLUGIN_CLASS):
             from pydm.widgets.qtplugins import get_pydm_custom_widgets
 
             registered = {plugin.plugin_name for plugin in get_pydm_custom_widgets().values()}
+            registered.update(plugin.plugin_name for plugin in get_widgets_from_entrypoints().values())
         except Exception:
             # If the registry can't be read, fall back to the nearest genuine Qt base.
             registered = set()
@@ -321,6 +323,7 @@ def create_designer_widget_from_widget(
     raise ValueError(f"Expected a PyDMDesignerPlugin or a QWidget subclass, got a {type(widget_cls).__name__}")
 
 
+@lru_cache
 def get_widgets_from_entrypoints(key: str = config.ENTRYPOINT_WIDGET) -> Dict[str, Type[PyDMDesignerPlugin]]:
     """
     Get all widgets from entrypoint definitions.
