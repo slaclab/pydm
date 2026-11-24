@@ -43,3 +43,31 @@ enum_labels                     enum strings
 ``DevState`` and ``DevBoolean`` attributes are sent as integers, together with the state names or
 ``("False", "True")`` as enum strings, so they can be used with enum widgets such as
 ``PyDMEnumComboBox``. Spectrum and image attributes are sent as numpy arrays.
+
+Commands
+--------
+
+If the device has no attribute of the given name but a command, the channel is a command channel::
+
+    tango://domain/family/member/command
+    tango://domain/family/member/command?argout
+
+Connecting to a command channel never executes the command. It is executed whenever a value is
+written to the channel, with that value as the input argument (ignored for commands without input).
+Before the first execution, the channel has a neutral value of the input type (``0``, ``0.0``, ``""``
+or an empty array), so that write widgets can send values and convert user input to the right type.
+Afterwards, its value is the last input argument.
+
+The ``?argout`` channel is read only and receives the output argument every time the command is executed
+from the application, e.g. to show it in a ``PyDMLabel``. It does not execute the command by itself.
+
+Typical widgets:
+
+* ``PyDMPushButton`` with a ``pressValue`` (e.g. ``1``) for commands without input. Enable
+  ``showConfirmDialog`` for commands that should not be executed by accident.
+* ``PyDMLineEdit``, ``PyDMSpinbox`` or ``PyDMCheckbox`` for commands with input.
+
+``State`` and ``Status`` are both attributes and commands, the attribute is used. Commands do not send
+events, so the connection state of a command channel is checked by pinging the device every
+``PYDM_TANGO_POLL_PERIOD`` milliseconds. Errors while executing a command, e.g. because it is not
+allowed in the current state, are logged.

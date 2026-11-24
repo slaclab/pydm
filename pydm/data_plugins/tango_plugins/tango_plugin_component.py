@@ -8,9 +8,17 @@ Channel address syntax::
     tango://host:port/domain/family/member/attribute#dbase=no
     tango://device_alias/attribute
     tango://domain/family/member/attribute?w_value
+    tango://domain/family/member/command
+    tango://domain/family/member/command?argout
 
 With ``?w_value``, the channel receives the write value (setpoint) of the attribute instead of the
 read value, with every update of the read value. Writing to such a channel writes the attribute as usual.
+
+If the device has no attribute of the given name, but a command, the channel executes the command
+whenever a value is written to it, with that value as the input argument. It never executes the
+command by itself. Its value is the last input argument, or a neutral value of the input type before
+the first execution. With ``?argout``, the channel is read only and receives the output argument
+every time the command is executed from this application.
 
 Values are received through Tango change events. If the attribute is not configured to send
 change events, the plugin falls back to polling the attribute from the client side every
@@ -23,11 +31,13 @@ import os
 import re
 import sys
 import threading
+import time
+import weakref
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 import tango
-from tango.utils import is_float_type, is_int_type, is_str_type
+from tango.utils import is_array_type, is_bool_type, is_float_type, is_int_type, is_str_type
 from qtpy.compat import isalive
 from qtpy.QtCore import Qt, QTimer, Signal, Slot
 
@@ -64,6 +74,9 @@ if hasattr(tango, "EventSubMode"):
 else:
     STATELESS = {"stateless": True}
 
+# Input arguments of these types cannot be entered with PyDM widgets
+STRUCT_TYPES = (tango.CmdArgType.DevVarLongStringArray, tango.CmdArgType.DevVarDoubleStringArray)
+
 STATE_NAMES = tuple(name for name, _ in sorted(tango.DevState.names.items(), key=lambda item: int(item[1])))
 BOOL_NAMES = ("False", "True")
 
@@ -93,6 +106,45 @@ def split_address(address):
     return device_name, attribute_name
 
 
+def neutral_value(data_type):
+    """
+    The value a command channel has before the command was executed, or None if the type cannot be written.
+
+    PyDM write widgets only send values once they received one, and convert user input into its type.
+    """
+    if data_type in STRUCT_TYPES:
+        return None
+    if is_array_type(data_type):
+        return np.array([], dtype=str if is_str_type(data_type) else float)
+    if is_float_type(data_type):
+        return 0.0
+    if is_str_type(data_type):
+        return ""
+    # DevVoid, integers, DevUChar, DevBoolean and DevState
+    return 0
+
+
+def convert_argin(data_type, value):
+    """
+    Convert a value from a PyDM widget into the input type of a command.
+
+    Unlike write_attribute, command_inout does not convert e.g. the float sent by a PyDMSpinbox into an integer.
+    """
+    if is_array_type(data_type):
+        return np.asarray(value)
+    if is_int_type(data_type) or data_type == tango.CmdArgType.DevUChar:
+        if float(value) != int(float(value)):
+            raise ValueError("{!r} is not an integer".format(value))
+        return int(float(value))
+    if is_bool_type(data_type):
+        return bool(value)
+    if is_float_type(data_type):
+        return float(value)
+    if is_str_type(data_type):
+        return str(value)
+    return value
+
+
 def parse_number(text):
     """Convert a Tango configuration string into a float, or None if it is not specified."""
     try:
@@ -109,9 +161,25 @@ def parse_precision(fmt):
     return None
 
 
+def find_command(proxy, name):
+    """
+    Return the CommandInfo if the device has a command, but no attribute of this name, else None.
+
+    Tango names are case insensitive. State and Status are attributes and commands, the attributes win.
+    """
+    if name.lower() in (attribute.lower() for attribute in proxy.get_attribute_list()):
+        return None
+    if name.lower() in (command.lower() for command in proxy.get_command_list()):
+        return proxy.command_query(name)
+    return None
+
+
 class Connection(PyDMConnection):
     _start_timer_signal = Signal()
     _stop_timer_signal = Signal()
+
+    # The ?argout connections of each command, by (device name, command name)
+    _argout_listeners = {}
 
     def __init__(self, channel, address, protocol=None, parent=None):
         super().__init__(channel, address, protocol, parent)
@@ -122,7 +190,10 @@ class Connection(PyDMConnection):
             address += "#" + fragment
         self.device_name, self.attribute_name = split_address(address)
         self.use_w_value = "w_value" in query.split("&")
+        self.use_argout = "argout" in query.split("&")
         self.proxy = None
+        # The CommandInfo if the address is a command, None for attributes
+        self._command = None
         self._event_ids = {}
         self._polling = False
         self._closed = False
@@ -151,11 +222,16 @@ class Connection(PyDMConnection):
             if self._closed:
                 return
             try:
-                self.proxy = tango.DeviceProxy(self.device_name)
+                proxy = tango.DeviceProxy(self.device_name)
+                command = find_command(proxy, self.attribute_name)
             except tango.DevFailed as e:
                 logger.error("Unable to connect to Tango device %s: %s", self.device_name, e.args[0].desc)
                 self.send_connection_state(False)
                 self._start_timer_signal.emit()
+                return
+            self.proxy = proxy
+            if command is not None:
+                self._setup_command(command)
                 return
             self._stop_timer_signal.emit()
             # Stateless subscriptions report most errors to the callbacks, and Tango keeps retrying in the
@@ -177,6 +253,44 @@ class Connection(PyDMConnection):
                     self._start_timer_signal.emit()
                     return
 
+    def _setup_command(self, command):
+        self._command = command
+        self._data_type = command.out_type if self.use_argout else command.in_type
+        if self.use_argout:
+            Connection._argout_listeners.setdefault(self._command_key(), weakref.WeakSet()).add(self)
+        self.send_command_enum_strings()
+        # Commands send no events, so the connection state is checked by pinging the device
+        self._polling = True
+        self._command_connected()
+        self._start_timer_signal.emit()
+
+    def send_command_enum_strings(self):
+        if self._data_type == tango.CmdArgType.DevState:
+            self.enum_strings_signal.emit(STATE_NAMES)
+        elif is_bool_type(self._data_type):
+            self.enum_strings_signal.emit(BOOL_NAMES)
+
+    def _command_key(self):
+        return self.device_name.lower(), self.attribute_name.lower()
+
+    def _command_connected(self):
+        self.send_connection_state(True)
+        if self._value is None and not self.use_argout:
+            value = neutral_value(self._command.in_type)
+            if value is not None:
+                self._value = value
+                self.emit_value(value)
+
+    def _ping(self):
+        try:
+            self.proxy.ping()
+        except tango.DevFailed as e:
+            if self.connected:
+                logger.warning("Lost connection to %s: %s", self.device_name, e.args[0].desc)
+            self.send_connection_state(False)
+            return
+        self._command_connected()
+
     def _on_timer(self):
         TangoPlugin.thread_pool.submit(self._poll)
 
@@ -187,6 +301,8 @@ class Connection(PyDMConnection):
         try:
             if self.proxy is None:
                 self._setup()
+            elif self._command is not None:
+                self._ping()
             elif self._polling:
                 self._read()
         finally:
@@ -270,7 +386,10 @@ class Connection(PyDMConnection):
             self._severity = None
 
     def send_write_access(self):
-        writable = self._config is not None and self._config.writable in WRITABLE_TYPES
+        if self._command is not None:
+            writable = not self.use_argout and self._command.in_type not in STRUCT_TYPES
+        else:
+            writable = self._config is not None and self._config.writable in WRITABLE_TYPES
         self.write_access_signal.emit(writable and self.connected and not is_read_only())
 
     def send_new_value(self, attr_value):
@@ -296,10 +415,24 @@ class Connection(PyDMConnection):
         self._value = value
         self.emit_value(value)
 
+    def send_argout(self, argout):
+        """Send the output argument of the command, executed by any connection to it."""
+        if argout is None:
+            return
+        self._timestamp = time.time()
+        self.timestamp_signal.emit(self._timestamp)
+        if is_array_type(self._data_type) and self._data_type not in STRUCT_TYPES:
+            argout = np.asarray(argout)
+        self._value = argout
+        self.emit_value(argout)
+
     def emit_value(self, value):
         data_type = self._data_type
         if isinstance(value, np.ndarray):
             self.new_value_signal[np.ndarray].emit(value)
+        elif data_type == tango.CmdArgType.DevVoid:
+            # The neutral value of a command without input
+            self.new_value_signal[int].emit(int(value))
         elif data_type in (tango.CmdArgType.DevState, tango.CmdArgType.DevEnum, tango.CmdArgType.DevBoolean):
             self.new_value_signal[int].emit(int(value))
         elif is_int_type(data_type) or data_type == tango.CmdArgType.DevUChar:
@@ -350,7 +483,30 @@ class Connection(PyDMConnection):
     def put_value(self, new_val):
         if is_read_only() or self.proxy is None:
             return
+        if self._command is not None:
+            if not self.use_argout:
+                TangoPlugin.thread_pool.submit(self._execute, new_val)
+            return
         TangoPlugin.thread_pool.submit(self._write, new_val)
+
+    def _execute(self, argin):
+        in_type = self._command.in_type
+        try:
+            if in_type == tango.CmdArgType.DevVoid:
+                argout = self.proxy.command_inout(self.attribute_name)
+            else:
+                argin = convert_argin(in_type, argin)
+                argout = self.proxy.command_inout(self.attribute_name, argin)
+        except (tango.DevFailed, TypeError, ValueError) as e:
+            desc = e.args[0].desc if isinstance(e, tango.DevFailed) else str(e)
+            logger.error("Unable to execute %s with %r: %s", self.address, argin, desc)
+            return
+        if in_type != tango.CmdArgType.DevVoid:
+            # Like the write value of an attribute, the channel shows the last input argument
+            self._value = argin
+            self.emit_value(argin)
+        for connection in list(Connection._argout_listeners.get(self._command_key(), ())):
+            connection.send_argout(argout)
 
     def _write(self, new_val):
         try:
@@ -368,6 +524,9 @@ class Connection(PyDMConnection):
         self.connection_state_signal.emit(self.connected)
         if self._config is not None:
             self.send_config(self._config)
+        if self._command is not None:
+            self.send_write_access()
+            self.send_command_enum_strings()
         if self._severity is not None:
             self.new_severity_signal.emit(self._severity)
         if self._timestamp is not None:
@@ -386,6 +545,9 @@ class Connection(PyDMConnection):
 
     def close(self):
         self._closed = True
+        listeners = Connection._argout_listeners.get(self._command_key())
+        if listeners is not None:
+            listeners.discard(self)
         if isalive(self._timer):
             self._timer.stop()
         try:

@@ -12,6 +12,9 @@ or for another TangoTest instance::
 
 TangoTest does not configure change events, so the plugin polls the attributes
 (see PYDM_TANGO_POLL_PERIOD).
+
+The Commands tab executes TangoTest commands: a command channel executes the command when a value is
+written to it, and its '?argout' channel shows the result.
 """
 
 from qtpy.QtCore import Qt
@@ -93,6 +96,7 @@ class TangoTestPanel(Display):
         tabs.addTab(self.spectrum_tab(), "Spectra")
         tabs.addTab(self.plot_tab(), "Time && scatter plots")
         tabs.addTab(self.image_tab(), "Images")
+        tabs.addTab(self.command_tab(), "Commands")
 
         header = QHBoxLayout()
         state = PyDMLabel(init_channel=self.ch("State"))
@@ -323,6 +327,53 @@ class TangoTestPanel(Display):
             image.normalizeData = True
             layout.addWidget(self.group("PyDMImageView: {}".format(attribute), image))
         return widget
+
+    def command_tab(self):
+        def button(command, label, confirm=False):
+            # A PyDMPushButton needs a pressValue to send, it is ignored for commands without input
+            button = PyDMPushButton(label=label, pressValue=1, init_channel=self.ch(command))
+            if confirm:
+                button.showConfirmDialog = True
+                button.confirmMessage = "Execute {} on {}?".format(command, self.device)
+            return button
+
+        def argout(command, precision=None):
+            label = PyDMLabel(init_channel=self.ch(command) + "?argout")
+            if precision is not None:
+                # Commands have no format, so there is no precision from the channel
+                label.precisionFromPV = False
+                label.precision = precision
+            return label
+
+        double_edit = PyDMLineEdit(init_channel=self.ch("DevDouble"))
+        double_edit.precisionFromPV = False
+        double_edit.precision = 3
+
+        long_spinbox = PyDMSpinbox(init_channel=self.ch("DevLong"))
+        long_spinbox.showStepExponent = False
+        long_spinbox.userDefinedLimits = True
+        long_spinbox.userMinimum = -1e6
+        long_spinbox.userMaximum = 1e6
+        long_spinbox.precisionFromPV = False
+        long_spinbox.precision = 0
+
+        commands = [
+            ("SwitchStates", button("SwitchStates", "Switch"), QLabel(), "PyDMPushButton, switches State (see top)"),
+            ("DevVoid", button("DevVoid", "Execute"), QLabel(), "PyDMPushButton, no input and output"),
+            ("DevDouble", double_edit, argout("DevDouble", 3), "PyDMLineEdit"),
+            ("DevLong", long_spinbox, argout("DevLong"), "PyDMSpinbox, executes on Enter"),
+            ("DevString", PyDMLineEdit(init_channel=self.ch("DevString")), argout("DevString"), "PyDMLineEdit"),
+            ("DevBoolean", PyDMCheckbox(init_channel=self.ch("DevBoolean")), argout("DevBoolean"), "PyDMCheckbox"),
+            (
+                "DevVarDoubleArray",
+                PyDMLineEdit(init_channel=self.ch("DevVarDoubleArray")),
+                argout("DevVarDoubleArray"),
+                "PyDMLineEdit, e.g. 1 2 3",
+            ),
+            ("Init", button("Init", "Init", confirm=True), QLabel(), "PyDMPushButton with confirmation dialog"),
+        ]
+        rows = [(name, *widgets, QLabel(remark)) for name, *widgets, remark in commands]
+        return self.grid(rows, ["Command", "Input", "Output (?argout)", "Widget"])
 
     @staticmethod
     def group(title, content):

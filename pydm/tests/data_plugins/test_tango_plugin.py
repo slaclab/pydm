@@ -5,7 +5,7 @@ import pytest
 
 tango = pytest.importorskip("tango")
 
-from tango.server import Device, attribute  # noqa: E402
+from tango.server import Device, attribute, command  # noqa: E402
 from tango.test_context import DeviceTestContext  # noqa: E402
 
 from pydm.data_plugins.tango_plugins import tango_plugin_component as tango_plugin  # noqa: E402
@@ -103,6 +103,36 @@ class TangoTestDevice(Device):
         self._doubled = value
 
     _doubled = 1.0
+
+    _resets = 0
+
+    @command
+    def Reset(self):
+        self._resets += 1
+
+    @command(dtype_out=int)
+    def Resets(self):
+        return self._resets
+
+    @command(dtype_in=float, dtype_out=float)
+    def Double(self, value):
+        return 2 * value
+
+    @command(dtype_in=str, dtype_out=str)
+    def Greet(self, name):
+        return "hello " + name
+
+    @command(dtype_in=(float,), dtype_out=(float,))
+    def Reverse(self, values):
+        return values[::-1]
+
+    @command(dtype_out=tango.DevState)
+    def GetState(self):
+        return self.get_state()
+
+    @command
+    def Fail(self):
+        raise RuntimeError("expected failure")
 
 
 @pytest.fixture(scope="module")
@@ -322,3 +352,113 @@ def test_unreachable_device(qtbot, plugin):
     assert recorder.received["connection"] is False
     assert "value" not in recorder.received
     plugin.remove_connection(recorder.channel)
+
+
+@pytest.mark.parametrize(
+    "data_type, value, expected",
+    [
+        (tango.CmdArgType.DevLong, 42.0, 42),
+        (tango.CmdArgType.DevUChar, "7", 7),
+        (tango.CmdArgType.DevDouble, 1, 1.0),
+        (tango.CmdArgType.DevBoolean, 1, True),
+        (tango.CmdArgType.DevString, 1.5, "1.5"),
+    ],
+)
+def test_convert_argin(data_type, value, expected):
+    converted = tango_plugin.convert_argin(data_type, value)
+    assert converted == expected
+    assert type(converted) is type(expected)
+
+
+def test_convert_argin_rejects_fractions():
+    with pytest.raises(ValueError):
+        tango_plugin.convert_argin(tango.CmdArgType.DevLong, 1.5)
+
+
+def test_find_command(qtbot, plugin, device_access):
+    proxy = tango.DeviceProxy(device_access)
+    assert tango_plugin.find_command(proxy, "double").cmd_name == "Double"
+    # Attributes win over commands of the same name
+    assert tango_plugin.find_command(proxy, "State") is None
+    assert tango_plugin.find_command(proxy, "position") is None
+    assert tango_plugin.find_command(proxy, "missing") is None
+
+
+def test_command_with_argin_and_argout(qtbot, plugin, device_access):
+    channel = connect(qtbot, plugin, address(device_access, "Double"), ("connection", "value", "write_access"))
+    argout = connect(qtbot, plugin, address(device_access, "Double") + "?argout", ("connection", "write_access"))
+    # Connecting must not execute the command
+    assert "value" not in argout.received
+    assert channel.received["value"] == 0.0
+    assert isinstance(channel.received["value"], float)
+    assert channel.received["write_access"] is True
+    assert argout.received["write_access"] is False
+
+    connection = plugin.connections[plugin.get_connection_id(channel.channel)]
+    connection.put_value(2.5)
+    qtbot.waitUntil(lambda: argout.received.get("value") == 5.0, timeout=5000)
+    assert channel.received["value"] == 2.5
+    assert isinstance(argout.received["timestamp"], float)
+
+    # Writing to the argout channel does not execute the command
+    plugin.connections[plugin.get_connection_id(argout.channel)].put_value(10.0)
+    qtbot.wait(300)
+    assert argout.received["value"] == 5.0
+
+    plugin.remove_connection(channel.channel)
+    plugin.remove_connection(argout.channel)
+
+
+def test_void_commands(qtbot, plugin, device_access):
+    reset = connect(qtbot, plugin, address(device_access, "Reset"))
+    resets = connect(qtbot, plugin, address(device_access, "Resets"))
+    count = connect(qtbot, plugin, address(device_access, "Resets") + "?argout", ("connection",))
+    # A command without input gets an int, so e.g. a PyDMPushButton can send its pressValue
+    assert reset.received["value"] == 0
+    assert isinstance(reset.received["value"], int)
+
+    plugin.connections[plugin.get_connection_id(resets.channel)].put_value(1)
+    qtbot.waitUntil(lambda: "value" in count.received, timeout=5000)
+    before = count.received["value"]
+    plugin.connections[plugin.get_connection_id(reset.channel)].put_value(1)
+    qtbot.wait(300)
+    plugin.connections[plugin.get_connection_id(resets.channel)].put_value(1)
+    qtbot.waitUntil(lambda: count.received["value"] == before + 1, timeout=5000)
+    assert reset.received["value"] == 0
+
+    for recorder in (reset, resets, count):
+        plugin.remove_connection(recorder.channel)
+
+
+@pytest.mark.parametrize(
+    "command_name, argin, expected",
+    [("Greet", "pydm", "hello pydm"), ("Reverse", np.array([1.0, 2.0, 3.0]), [3.0, 2.0, 1.0])],
+)
+def test_command_types(qtbot, plugin, device_access, command_name, argin, expected):
+    channel = connect(qtbot, plugin, address(device_access, command_name))
+    argout = connect(qtbot, plugin, address(device_access, command_name) + "?argout", ("connection",))
+    assert type(channel.received["value"]) is type(argin)
+    plugin.connections[plugin.get_connection_id(channel.channel)].put_value(argin)
+    qtbot.waitUntil(lambda: "value" in argout.received, timeout=5000)
+    np.testing.assert_array_equal(argout.received["value"], expected)
+    plugin.remove_connection(channel.channel)
+    plugin.remove_connection(argout.channel)
+
+
+def test_state_command(qtbot, plugin, device_access):
+    channel = connect(qtbot, plugin, address(device_access, "GetState"))
+    argout = connect(qtbot, plugin, address(device_access, "GetState") + "?argout", ("connection", "enum_strings"))
+    assert argout.received["enum_strings"] == tango_plugin.STATE_NAMES
+    plugin.connections[plugin.get_connection_id(channel.channel)].put_value(0)
+    qtbot.waitUntil(lambda: argout.received.get("value") == int(tango.DevState.ON), timeout=5000)
+    assert isinstance(argout.received["value"], int)
+    plugin.remove_connection(channel.channel)
+    plugin.remove_connection(argout.channel)
+
+
+def test_failing_command(qtbot, plugin, device_access, caplog):
+    channel = connect(qtbot, plugin, address(device_access, "Fail"))
+    plugin.connections[plugin.get_connection_id(channel.channel)].put_value(1)
+    qtbot.waitUntil(lambda: "Unable to execute" in caplog.text, timeout=5000)
+    assert channel.received["connection"] is True
+    plugin.remove_connection(channel.channel)
