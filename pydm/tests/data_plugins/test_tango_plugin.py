@@ -8,8 +8,12 @@ tango = pytest.importorskip("tango")
 from tango.server import Device, attribute  # noqa: E402
 from tango.test_context import DeviceTestContext  # noqa: E402
 
-from pydm.data_plugins import tango_plugin  # noqa: E402
-from pydm.data_plugins.tango_plugin import TangoPlugin, parse_precision, split_address  # noqa: E402
+from pydm.data_plugins.tango_plugins import tango_plugin_component as tango_plugin  # noqa: E402
+from pydm.data_plugins.tango_plugins.tango_plugin_component import (  # noqa: E402
+    TangoPlugin,
+    parse_precision,
+    split_address,
+)
 from pydm.widgets.channel import PyDMChannel  # noqa: E402
 
 SLOTS = (
@@ -252,6 +256,20 @@ def test_w_value(qtbot, plugin, device_access):
     qtbot.waitUntil(lambda: readback.received["value"] == 2.0, timeout=5000)
 
     plugin.remove_connection(readback.channel)
+    plugin.remove_connection(setpoint.channel)
+
+
+@pytest.mark.parametrize("standard_order", [True, False])
+def test_w_value_with_fragment(qtbot, plugin, device_access, standard_order):
+    device, _, fragment = device_access.partition("#")
+    if standard_order:
+        setpoint_address = "{}/doubled?w_value#{}".format(device, fragment)
+    else:
+        setpoint_address = "{}/doubled#{}?w_value".format(device, fragment)
+    setpoint = connect(qtbot, plugin, setpoint_address)
+    connection = plugin.connections[plugin.get_connection_id(setpoint.channel)]
+    assert connection.use_w_value
+    assert connection.device_name.endswith("#" + fragment)
     plugin.remove_connection(setpoint.channel)
 
 
