@@ -294,6 +294,26 @@ def test_second_listener_gets_cached_state(qtbot, plugin, device_access):
     assert len(plugin.connections) == 0
 
 
+def test_subscription_failure_is_retried(qtbot, plugin, device_access, monkeypatch):
+    subscribe_event = tango.DeviceProxy.subscribe_event
+    failures = []
+
+    def fail_once(self, attr_name, event_type, *args, **kwargs):
+        if event_type == tango.EventType.CHANGE_EVENT and not failures:
+            failures.append(attr_name)
+            tango.Except.throw_exception("API_EventConsumer", "Could not find event consumer for ptr", "test")
+        return subscribe_event(self, attr_name, event_type, *args, **kwargs)
+
+    monkeypatch.setattr(tango.DeviceProxy, "subscribe_event", fail_once)
+    recorder = connect(qtbot, plugin, address(device_access, "position"))
+    assert failures == ["position"]
+    assert recorder.received["value"] == 1.5
+    connection = plugin.connections[plugin.get_connection_id(recorder.channel)]
+    assert not connection._polling
+    assert set(connection._event_ids) == {tango.EventType.ATTR_CONF_EVENT, tango.EventType.CHANGE_EVENT}
+    plugin.remove_connection(recorder.channel)
+
+
 def test_unreachable_device(qtbot, plugin):
     recorder = Recorder("tango://127.0.0.1:1/a/b/c/attr#dbase=no")
     plugin.add_connection(recorder.channel)

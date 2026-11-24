@@ -158,8 +158,8 @@ class Connection(PyDMConnection):
                 self._start_timer_signal.emit()
                 return
             self._stop_timer_signal.emit()
-            # Stateless subscriptions do not raise; errors are delivered to the callbacks and Tango
-            # keeps retrying in the background, which also handles devices that are currently down.
+            # Stateless subscriptions report most errors to the callbacks, and Tango keeps retrying in the
+            # background, which also handles devices that are currently down.
             for event_type, callback in (
                 (tango.EventType.ATTR_CONF_EVENT, self._on_config_event),
                 (tango.EventType.CHANGE_EVENT, self._on_change_event),
@@ -169,7 +169,13 @@ class Connection(PyDMConnection):
                         self.attribute_name, event_type, callback, **STATELESS
                     )
                 except tango.DevFailed as e:
-                    logger.error("Unable to subscribe to %s: %s", self.address, e.args[0].desc)
+                    # Rarely raised anyway, e.g. "Could not find event consumer" when many subscriptions
+                    # start at once. Start over with a new proxy, otherwise the attribute never updates.
+                    logger.warning("Unable to subscribe to %s, retrying: %s", self.address, e.args[0].desc)
+                    self._unsubscribe_events()
+                    self.proxy = None
+                    self._start_timer_signal.emit()
+                    return
 
     def _on_timer(self):
         TangoPlugin.thread_pool.submit(self._poll)
@@ -390,12 +396,15 @@ class Connection(PyDMConnection):
 
     def _unsubscribe_all(self):
         with self._lock:
-            for event_id in self._event_ids.values():
-                try:
-                    self.proxy.unsubscribe_event(event_id)
-                except (tango.DevFailed, KeyError):
-                    pass
-            self._event_ids = {}
+            self._unsubscribe_events()
+
+    def _unsubscribe_events(self):
+        for event_id in self._event_ids.values():
+            try:
+                self.proxy.unsubscribe_event(event_id)
+            except (tango.DevFailed, KeyError):
+                pass
+        self._event_ids = {}
 
 
 class TangoPlugin(PyDMPlugin):
