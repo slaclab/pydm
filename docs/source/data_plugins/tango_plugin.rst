@@ -42,7 +42,9 @@ enum_labels                     enum strings
 
 ``DevState`` and ``DevBoolean`` attributes are sent as integers, together with the state names or
 ``("False", "True")`` as enum strings, so they can be used with enum widgets such as
-``PyDMEnumComboBox``. Spectrum and image attributes are sent as numpy arrays.
+``PyDMEnumComboBox``. Since the quality of ``DevState`` attributes is usually valid, their state is
+mapped onto the alarm severity as well (``ALARM`` → minor, ``FAULT`` → major, ``UNKNOWN`` → invalid);
+the higher of the two severities is sent. Spectrum and image attributes are sent as numpy arrays.
 
 Commands
 --------

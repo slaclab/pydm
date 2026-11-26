@@ -62,6 +62,13 @@ QUALITY_TO_SEVERITY = {
     tango.AttrQuality.ATTR_INVALID: 3,
 }
 
+# The quality of DevState attributes is usually valid, so the state itself is mapped onto a severity as well
+STATE_TO_SEVERITY = {
+    tango.DevState.ALARM: 1,
+    tango.DevState.FAULT: 2,
+    tango.DevState.UNKNOWN: 3,
+}
+
 WRITABLE_TYPES = (
     tango.AttrWriteType.WRITE,
     tango.AttrWriteType.READ_WRITE,
@@ -398,6 +405,8 @@ class Connection(PyDMConnection):
         self.timestamp_signal.emit(self._timestamp)
 
         severity = QUALITY_TO_SEVERITY.get(attr_value.quality, 0)
+        if attr_value.type == tango.CmdArgType.DevState and attr_value.value is not None:
+            severity = max(severity, STATE_TO_SEVERITY.get(attr_value.value, 0))
         if severity != self._severity:
             self._severity = severity
             self.new_severity_signal.emit(severity)

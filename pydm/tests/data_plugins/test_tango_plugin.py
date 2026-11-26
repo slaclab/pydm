@@ -130,6 +130,10 @@ class TangoTestDevice(Device):
     def GetState(self):
         return self.get_state()
 
+    @command(dtype_in=tango.DevState)
+    def SetDeviceState(self, state):
+        self.set_state(state)
+
     @command
     def Fail(self):
         raise RuntimeError("expected failure")
@@ -251,6 +255,26 @@ def test_enum_like_types(qtbot, plugin, device_access, attribute_name, expected_
     assert recorder.received["value"] == expected_value
     assert isinstance(recorder.received["value"], int)
     assert recorder.received["enum_strings"] == expected_enum_strings
+    plugin.remove_connection(recorder.channel)
+
+
+def test_state_severity(qtbot, plugin, device_access):
+    recorder = connect(qtbot, plugin, address(device_access, "State"), ("connection", "value", "severity"))
+    received = recorder.received
+    assert received["severity"] == 0
+    proxy = tango.DeviceProxy(device_access)
+    try:
+        for state, severity in (
+            (tango.DevState.ALARM, 1),
+            (tango.DevState.FAULT, 2),
+            (tango.DevState.UNKNOWN, 3),
+            (tango.DevState.MOVING, 0),
+        ):
+            proxy.SetDeviceState(state)
+            qtbot.waitUntil(lambda: received["value"] == int(state), timeout=5000)
+            assert received["severity"] == severity
+    finally:
+        proxy.SetDeviceState(tango.DevState.ON)
     plugin.remove_connection(recorder.channel)
 
 
